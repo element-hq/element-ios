@@ -1,0 +1,42 @@
+PODS:
+  - AFNetworking (2.4.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.4.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.4.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.4.1)
+  - AFNetworking/Security (2.4.1)
+  - AFNetworking/Serialization (2.4.1)
+  - AFNetworking/UIKit (2.4.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - Mantle (1.5):
+    - Mantle/extobjc
+  - Mantle/extobjc (1.5)
+  - MatrixSDK (0.0.1):
+    - AFNetworking (~> 2.4.1)
+    - Mantle (~> 1.5)
+
+DEPENDENCIES:
+  - MatrixSDK (from `../../MatrixSDK.podspec`)
+
+EXTERNAL SOURCES:
+  MatrixSDK:
+    :path: ../../MatrixSDK.podspec
+
+SPEC CHECKSUMS:
+  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  Mantle: c67a7e45e14196ed42b2a7cbb98ff6a9920e6b92
+  MatrixSDK: 42aac6ed0123d5339f27e3f57d8972edf17f8224
+
+COCOAPODS: 0.34.1
