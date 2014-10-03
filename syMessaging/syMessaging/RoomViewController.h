@@ -16,12 +16,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class DetailViewController;
+@interface RoomViewController : UIViewController
 
-@interface MasterViewController : UITableViewController
-
-@property (strong, nonatomic) DetailViewController *detailViewController;
-
+@property (strong, nonatomic) id detailItem;
+@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
 @end
 

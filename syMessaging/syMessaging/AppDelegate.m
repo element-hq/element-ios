@@ -15,7 +15,8 @@
  */
 
 #import "AppDelegate.h"
-#import "DetailViewController.h"
+#import "RoomViewController.h"
+#import "MatrixHandler.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -26,11 +27,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    if ([self.window.rootViewController isKindOfClass:[UISplitViewController class]]) {
-        UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
-        UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
-        navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-        splitViewController.delegate = self;
+    if ([self.window.rootViewController isKindOfClass:[UITabBarController class]])
+    {
+        self.tabBarController = (UITabBarController*)self.window.rootViewController;
+        self.tabBarController.delegate = self;
+        
+        // By default the "Contacts" tab is focussed
+        [self.tabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+        
+        UIViewController* recents = [self.tabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
+        if ([recents isKindOfClass:[UISplitViewController class]]) {
+            UISplitViewController *splitViewController = (UISplitViewController *)recents;
+            UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+            navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+            splitViewController.delegate = self;
+        }
+        
+        [self start];
     }
     return YES;
 }
@@ -57,10 +70,26 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - Internal methods
+
+- (void)start
+{
+    if (! [[MatrixHandler sharedHandler] homeServer]) {
+        [self showLoginScreen];
+    }
+}
+
+- (void)showLoginScreen {
+    //TODO
+    
+    // Restore init settings
+    [self.tabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+}
+
 #pragma mark - Split view
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
-    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[DetailViewController class]] && ([(DetailViewController *)[(UINavigationController *)secondaryViewController topViewController] detailItem] == nil)) {
+    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] detailItem] == nil)) {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
     } else {

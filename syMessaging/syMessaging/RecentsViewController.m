@@ -14,15 +14,15 @@
  limitations under the License.
  */
 
-#import "MasterViewController.h"
-#import "DetailViewController.h"
+#import "RecentsViewController.h"
+#import "RoomViewController.h"
 
-@interface MasterViewController ()
+@interface RecentsViewController ()
 
 @property NSMutableArray *objects;
 @end
 
-@implementation MasterViewController
+@implementation RecentsViewController
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -39,7 +39,7 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    self.roomViewController = (RoomViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -71,8 +71,8 @@
             controller = [segue destinationViewController];
         }
         
-        if ([controller isKindOfClass:[DetailViewController class]]) {
-            [(DetailViewController *)controller setDetailItem:object];
+        if ([controller isKindOfClass:[RoomViewController class]]) {
+            [(RoomViewController *)controller setDetailItem:object];
         }
         
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;

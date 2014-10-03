@@ -14,17 +14,22 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "SettingsViewController.h"
 
-#define TABBAR_HOME_INDEX      0
-#define TABBAR_RECENTS_INDEX   1
-#define TABBAR_SETTINGS_INDEX  2
-#define TABBAR_COUNT           3
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) UITabBarController *tabBarController;
+@interface SettingsViewController ()
 
 @end
 
+@implementation SettingsViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

@@ -16,15 +16,10 @@
 
 #import <UIKit/UIKit.h>
 
-#define TABBAR_HOME_INDEX      0
-#define TABBAR_RECENTS_INDEX   1
-#define TABBAR_SETTINGS_INDEX  2
-#define TABBAR_COUNT           3
+@interface HomeViewController : UITableViewController
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) UITabBarController *tabBarController;
+@property (strong, nonatomic) NSArray *publicRooms;
+@property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
 
 @end
 

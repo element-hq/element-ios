@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
-#import "DetailViewController.h"
+#import "RoomViewController.h"
 
-@interface DetailViewController ()
+@interface RoomViewController ()
 
 @end
 
-@implementation DetailViewController
+@implementation RoomViewController
 
 #pragma mark - Managing the detail item
 

@@ -14,12 +14,12 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import <MatrixSDK/MatrixSDK.h>
 
-@interface DetailViewController : UIViewController
+@interface MatrixHandler : NSObject
 
-@property (strong, nonatomic) id detailItem;
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (strong, nonatomic) MXHomeServer *homeServer;
+
++ (id)sharedHandler;
 
 @end
-
