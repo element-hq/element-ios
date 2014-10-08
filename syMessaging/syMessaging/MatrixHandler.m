@@ -15,8 +15,18 @@
  */
 
 #import "MatrixHandler.h"
+#import "AppDelegate.h"
 
 static MatrixHandler *sharedHandler = nil;
+
+@interface MatrixHandler ()
+
+@property (strong, nonatomic) MXSession *mxSession;
+@property (strong, nonatomic) MXData *mxData;
+
+@property BOOL isInitialSyncDone;
+
+@end
 
 @implementation MatrixHandler
 
@@ -32,38 +42,60 @@ static MatrixHandler *sharedHandler = nil;
     return sharedHandler;
 }
 
--(MatrixHandler *)init
-{
-    if (self = [super init])
-    {
+#pragma  mark - 
+
+-(MatrixHandler *)init {
+    if (self = [super init]) {
+        _isInitialSyncDone = NO;
+        
         // Read potential homeserver in shared defaults object
-        if (self.homeServerURL)
-        {
+        if (self.homeServerURL) {
             self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+            
+            if (self.accessToken) {
+                [self openSession];
+            }
         }
     }
     return self;
 }
 
-- (void)dealloc
-{
+- (void)openSession {
+    self.mxSession = [[MXSession alloc] initWithHomeServer:self.homeServerURL userId:self.userId accessToken:self.accessToken];
+    if (self.mxSession) {
+        self.mxData = [[MXData alloc] initWithMatrixSession:self.mxSession];
+        [self.mxData start:^{
+            _isInitialSyncDone = YES;
+        } failure:^(NSError *error) {
+            NSLog(@"Initial Sync failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+}
+
+- (void)closeSession {
+    [self.mxData close];
+    self.mxData = nil;
+    [self.mxSession close];
+    self.mxSession = nil;
+    _isInitialSyncDone = NO;
+}
+
+- (void)dealloc {
+    [self closeSession];
     self.homeServer = nil;
 }
 
-- (BOOL)isLogged
-{
+#pragma mark -
+
+- (BOOL)isLogged {
     return (self.accessToken != nil);
 }
 
 - (void)logout {
-    if (self.session) {
-        [self.session close];
-    }
-    
-    // Reset access token
+    // Reset access token (mxSession is closed by setter)
     self.accessToken = nil;
-    
-    
 }
 
 - (NSString *)homeServerURL {
@@ -111,10 +143,11 @@ static MatrixHandler *sharedHandler = nil;
 - (void)setAccessToken:(NSString *)inAccessToken {
     if (inAccessToken.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
+        [self openSession];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
+        [self closeSession];
     }
-    
 }
 
 @end
