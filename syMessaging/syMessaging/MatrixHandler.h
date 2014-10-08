@@ -19,6 +19,7 @@
 @interface MatrixHandler : NSObject
 
 @property (strong, nonatomic) MXHomeServer *homeServer;
+@property (strong, nonatomic) MXSession *session;
 
 @property (strong, nonatomic) NSString *homeServerURL;
 @property (strong, nonatomic) NSString *userLogin;
@@ -28,5 +29,6 @@
 + (id)sharedHandler;
 
 - (BOOL)isLogged;
+- (void)logout;
 
 @end

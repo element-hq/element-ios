@@ -16,8 +16,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MasterViewController : UITabBarController
+@interface MasterTabBarController : UITabBarController
 
+- (void)showLoginScreen;
 
 @end
 

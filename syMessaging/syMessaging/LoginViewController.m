@@ -168,6 +168,12 @@ NSString* const defaultHomeserver = @"http://www.matrix.org";
     else {
         // "Done" key has been pressed
         [textField resignFirstResponder];
+        
+        if (_loginBtn.isEnabled)
+        {
+            // Launch authentication now
+            [self onButtonPressed:_loginBtn];
+        }
     }
     
     return YES;

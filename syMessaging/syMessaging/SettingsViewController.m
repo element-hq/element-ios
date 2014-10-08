@@ -16,7 +16,18 @@
 
 #import "SettingsViewController.h"
 
+#import "AppDelegate.h"
+
 @interface SettingsViewController ()
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *tableHeader;
+@property (weak, nonatomic) IBOutlet UIButton *userPicture;
+@property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
+@property (weak, nonatomic) IBOutlet UIButton *saveBtn;
+@property (weak, nonatomic) IBOutlet UIView *tableFooter;
+@property (weak, nonatomic) IBOutlet UIButton *logoutBtn;
+
+- (IBAction)onButtonPressed:(id)sender;
 
 @end
 
@@ -32,4 +43,31 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+
+- (IBAction)onButtonPressed:(id)sender {
+    if (sender == _userPicture) {
+        // TODO open gallery
+    } else {
+        [[AppDelegate theDelegate] logout];
+    }
+}
+
+#pragma mark - keyboard
+
+- (void)dismissKeyboard
+{
+    // Hide the keyboard
+    [_userDisplayName resignFirstResponder];
+}
+
+#pragma mark - UITextField delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField*) textField
+{
+    // "Done" key has been pressed
+    [textField resignFirstResponder];
+    
+    return YES;
+}
 @end

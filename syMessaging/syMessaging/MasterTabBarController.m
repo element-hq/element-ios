@@ -14,14 +14,14 @@
  limitations under the License.
  */
 
-#import "MasterViewController.h"
+#import "MasterTabBarController.h"
 #import "MatrixHandler.h"
 
-@interface MasterViewController ()
+@interface MasterTabBarController ()
 
 @end
 
-@implementation MasterViewController
+@implementation MasterTabBarController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

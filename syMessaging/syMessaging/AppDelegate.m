@@ -33,15 +33,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    if ([self.window.rootViewController isKindOfClass:[UITabBarController class]])
+    if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
     {
-        self.tabBarController = (UITabBarController*)self.window.rootViewController;
-        self.tabBarController.delegate = self;
+        self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
+        self.masterTabBarController.delegate = self;
         
-        // By default the "Contacts" tab is focussed
-        [self.tabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+        // By default the "Home" tab is focussed
+        [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
         
-        UIViewController* recents = [self.tabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
+        UIViewController* recents = [self.masterTabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
         if ([recents isKindOfClass:[UISplitViewController class]]) {
             UISplitViewController *splitViewController = (UISplitViewController *)recents;
             UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
@@ -74,10 +74,16 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-#pragma mark - Internal methods
+#pragma mark -
 
-- (UIAlertView*)showErrorAsAlert:(NSError*)error
-{
+- (void)logout {
+    [[MatrixHandler sharedHandler] logout];
+    [self.masterTabBarController showLoginScreen];
+    // By default the "Home" tab is focussed
+    [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+}
+
+- (UIAlertView*)showErrorAsAlert:(NSError*)error {
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
     {

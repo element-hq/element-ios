@@ -55,45 +55,66 @@ static MatrixHandler *sharedHandler = nil;
     return (self.accessToken != nil);
 }
 
-- (NSString *)homeServerURL
-{
+- (void)logout {
+    if (self.session) {
+        [self.session close];
+    }
+    
+    // Reset access token
+    self.accessToken = nil;
+    
+    
+}
+
+- (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserver"];
 }
 
-- (void)setHomeServerURL:(NSString *)inHomeserver
-{
-    [[NSUserDefaults standardUserDefaults] setObject:inHomeserver forKey:@"homeserver"];
-    self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+- (void)setHomeServerURL:(NSString *)inHomeserver {
+    if (inHomeserver.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inHomeserver forKey:@"homeserver"];
+        self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserver"];
+        self.homeServer = nil;
+    }
 }
 
-- (NSString *)userLogin
-{
+- (NSString *)userLogin {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"userlogin"];
 }
 
-- (void)setUserLogin:(NSString *)inUserLogin
-{
-    [[NSUserDefaults standardUserDefaults] setObject:inUserLogin forKey:@"userlogin"];
+- (void)setUserLogin:(NSString *)inUserLogin {
+    if (inUserLogin.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inUserLogin forKey:@"userlogin"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userlogin"];
+    }
 }
 
-- (NSString *)userId
-{
+- (NSString *)userId {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"userid"];
 }
 
-- (void)setUserId:(NSString *)inUserId
-{
-    [[NSUserDefaults standardUserDefaults] setObject:inUserId forKey:@"userid"];
+- (void)setUserId:(NSString *)inUserId {
+    if (inUserId.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inUserId forKey:@"userid"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userid"];
+    }
 }
 
-- (NSString *)accessToken
-{
+- (NSString *)accessToken {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"accesstoken"];
 }
 
-- (void)setAccessToken:(NSString *)inAccessToken
-{
-    [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
+- (void)setAccessToken:(NSString *)inAccessToken {
+    if (inAccessToken.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
+    }
+    
 }
 
 @end

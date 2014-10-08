@@ -16,6 +16,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "MasterTabBarController.h"
+
 #define TABBAR_HOME_INDEX      0
 #define TABBAR_RECENTS_INDEX   1
 #define TABBAR_SETTINGS_INDEX  2
@@ -24,9 +26,11 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) UITabBarController *tabBarController;
+@property (strong, nonatomic) MasterTabBarController *masterTabBarController;
 
 + (AppDelegate*)theDelegate;
+
+- (void)logout;
 
 - (UIAlertView*)showErrorAsAlert:(NSError*)error;
 
