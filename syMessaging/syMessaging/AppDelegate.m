@@ -24,6 +24,12 @@
 
 @implementation AppDelegate
 
+#pragma mark -
+
++ (AppDelegate*)theDelegate {
+    return (AppDelegate*)[[UIApplication sharedApplication] delegate];
+}
+#pragma mark -
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -42,8 +48,6 @@
             navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
             splitViewController.delegate = self;
         }
-        
-        [self start];
     }
     return YES;
 }
@@ -72,18 +76,19 @@
 
 #pragma mark - Internal methods
 
-- (void)start
+- (UIAlertView*)showErrorAsAlert:(NSError*)error
 {
-    if (! [[MatrixHandler sharedHandler] homeServer]) {
-        [self showLoginScreen];
+    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    if (!title)
+    {
+        title = @"Error";
     }
-}
-
-- (void)showLoginScreen {
-    //TODO
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    // Restore init settings
-    [self.tabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    
+    return alert;
 }
 
 #pragma mark - Split view

@@ -20,6 +20,13 @@
 
 @property (strong, nonatomic) MXHomeServer *homeServer;
 
+@property (strong, nonatomic) NSString *homeServerURL;
+@property (strong, nonatomic) NSString *userLogin;
+@property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic) NSString *accessToken;
+
 + (id)sharedHandler;
+
+- (BOOL)isLogged;
 
 @end

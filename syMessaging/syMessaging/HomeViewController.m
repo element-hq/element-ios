@@ -17,6 +17,7 @@
 #import "HomeViewController.h"
 
 #import "MatrixHandler.h"
+#import "AppDelegate.h"
 
 @interface HomeViewController ()
 
@@ -26,17 +27,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     
-    // Retrieve public rooms
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPublicRoom:)];
+    self.navigationItem.rightBarButtonItem = addButton;
+    
+    // Do any additional setup after loading the view, typically from a nib.
     _publicRooms = nil;
-    [[[MatrixHandler sharedHandler] homeServer] publicRooms:^(NSArray *rooms) {
-        _publicRooms = rooms;
-        [_publicRoomsTable reloadData];
-    }
-                                                    failure:^(MXError *error){
-                                                        //TODO
-                                                    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,31 +40,56 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark Table view data source
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ([[MatrixHandler sharedHandler] isLogged]) {
+        [self refreshPublicRooms];
+    }
+}
+
+- (void)addPublicRoom:(id)sender {
+    // TODO
+}
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (_publicRooms){
         return _publicRooms.count;
     }
     return 0;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCell" forIndexPath:indexPath];
     
     MXPublicRoom *publicRoom = [_publicRooms objectAtIndex:indexPath.row];
-    if ([publicRoom name]) {
-        cell.textLabel.text = [publicRoom name];
-    }
-    else if ([publicRoom topic]) {
-        cell.textLabel.text = [publicRoom topic];
-    }
+    cell.textLabel.text = [publicRoom displayname];
     
     return cell;
+}
+
+#pragma mark - Internals
+
+- (void)refreshPublicRooms
+{
+    // Retrieve public rooms
+    [[[MatrixHandler sharedHandler] homeServer] publicRooms:^(NSArray *rooms){
+        _publicRooms = rooms;
+        [_publicRoomsTable reloadData];
+    }
+                                                    failure:^(NSError *error){
+                                                        NSLog(@"GET public rooms failed: %@", error);
+                                                        //Alert user
+                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                    }];
+    
 }
 
 @end

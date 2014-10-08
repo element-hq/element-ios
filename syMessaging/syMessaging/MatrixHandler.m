@@ -16,14 +16,11 @@
 
 #import "MatrixHandler.h"
 
-NSString* const homeserver = @"http://localhost:8008";
-//NSString* const userId = @"@john10:localhost";
-//NSString* const accessToken = @"QGpvaG4xMDpsb2NhbGhvc3Q..XlfSVAjsWLIZdgYJkL";
-
-
 static MatrixHandler *sharedHandler = nil;
 
 @implementation MatrixHandler
+
+@synthesize homeServerURL, userLogin, userId, accessToken;
 
 + (id)sharedHandler {
     @synchronized(self) {
@@ -39,8 +36,11 @@ static MatrixHandler *sharedHandler = nil;
 {
     if (self = [super init])
     {
-        // TODO: check potential homeserver in shared defaults object. 
-        self.homeServer = [[MXHomeServer alloc] initWithHomeServer:homeserver];
+        // Read potential homeserver in shared defaults object
+        if (self.homeServerURL)
+        {
+            self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+        }
     }
     return self;
 }
@@ -48,6 +48,52 @@ static MatrixHandler *sharedHandler = nil;
 - (void)dealloc
 {
     self.homeServer = nil;
+}
+
+- (BOOL)isLogged
+{
+    return (self.accessToken != nil);
+}
+
+- (NSString *)homeServerURL
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserver"];
+}
+
+- (void)setHomeServerURL:(NSString *)inHomeserver
+{
+    [[NSUserDefaults standardUserDefaults] setObject:inHomeserver forKey:@"homeserver"];
+    self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+}
+
+- (NSString *)userLogin
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"userlogin"];
+}
+
+- (void)setUserLogin:(NSString *)inUserLogin
+{
+    [[NSUserDefaults standardUserDefaults] setObject:inUserLogin forKey:@"userlogin"];
+}
+
+- (NSString *)userId
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"userid"];
+}
+
+- (void)setUserId:(NSString *)inUserId
+{
+    [[NSUserDefaults standardUserDefaults] setObject:inUserId forKey:@"userid"];
+}
+
+- (NSString *)accessToken
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"accesstoken"];
+}
+
+- (void)setAccessToken:(NSString *)inAccessToken
+{
+    [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
 }
 
 @end
