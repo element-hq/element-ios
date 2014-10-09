@@ -151,8 +151,12 @@
                                                     <outlet property="delegate" destination="ZlD-EU-ncw" id="fJ9-39-2ag"/>
                                                 </connections>
                                             </textField>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9oD-IQ-d8J">
-                                                <rect key="frame" x="250" y="127" width="100" height="43"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoHighRes.png" translatesAutoresizingMaskIntoConstraints="NO" id="9oD-IQ-d8J">
+                                                <rect key="frame" x="180" y="68" width="240" height="102"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="240" id="YfR-TZ-HGu"/>
+                                                    <constraint firstAttribute="height" constant="102" id="qiX-ir-FRf"/>
+                                                </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnl-LF-rEL">
                                                 <rect key="frame" x="281" y="265" width="38" height="30"/>
@@ -236,7 +240,7 @@
         <scene sceneID="whS-JX-66Y">
             <objects>
                 <navigationController title="HomeNav" id="11T-cf-rgo" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="home.ico" id="aQW-fV-f8t"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="tab_home.ico" id="aQW-fV-f8t"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HZK-D9-mlB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -464,8 +468,8 @@
     </scenes>
     <resources>
         <image name="default-profile.png" width="160" height="160"/>
-        <image name="home.ico" width="16" height="16"/>
-        <image name="logo.png" width="100" height="43"/>
+        <image name="logoHighRes.png" width="480" height="204"/>
+        <image name="tab_home.ico" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>

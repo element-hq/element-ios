@@ -47,6 +47,9 @@
             UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
             navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
             splitViewController.delegate = self;
+        } else {
+            // Patch missing image in tabBarItem for iOS < 8.0
+            recents.tabBarItem.image = [[UIImage imageNamed:@"tab_recents"] imageWithRenderingMode:UIImageRenderingModeAutomatic];
         }
     }
     return YES;
