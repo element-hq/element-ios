@@ -22,9 +22,8 @@ static MatrixHandler *sharedHandler = nil;
 @interface MatrixHandler ()
 
 @property (strong, nonatomic) MXSession *mxSession;
-@property (strong, nonatomic) MXData *mxData;
 
-@property BOOL isInitialSyncDone;
+@property (nonatomic,readwrite) BOOL isInitialSyncDone;
 
 @end
 
@@ -65,7 +64,7 @@ static MatrixHandler *sharedHandler = nil;
     if (self.mxSession) {
         self.mxData = [[MXData alloc] initWithMatrixSession:self.mxSession];
         [self.mxData start:^{
-            _isInitialSyncDone = YES;
+            self.isInitialSyncDone = YES;
         } failure:^(NSError *error) {
             NSLog(@"Initial Sync failed: %@", error);
             //Alert user
@@ -79,7 +78,7 @@ static MatrixHandler *sharedHandler = nil;
     self.mxData = nil;
     [self.mxSession close];
     self.mxSession = nil;
-    _isInitialSyncDone = NO;
+    self.isInitialSyncDone = NO;
 }
 
 - (void)dealloc {

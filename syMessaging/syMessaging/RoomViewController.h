@@ -18,7 +18,8 @@
 
 @interface RoomViewController : UIViewController
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) NSString *roomId;
+
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
 @end

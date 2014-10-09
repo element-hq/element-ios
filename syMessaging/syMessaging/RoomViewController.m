@@ -16,7 +16,11 @@
 
 #import "RoomViewController.h"
 
+#import "MatrixHandler.h"
+
 @interface RoomViewController ()
+
+@property (strong, nonatomic) MXRoomData *mxRoomData;
 
 @end
 
@@ -24,19 +28,18 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
-            
-        // Update the view.
-        [self configureView];
-    }
+- (void)setDetailItem:(NSString*)roomId {
+    _roomId = roomId;
+    
+    // Update the view.
+    [self configureView];
 }
 
 - (void)configureView {
     // Update the user interface for the detail item.
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+    if (self.roomId) {
+        self.mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:self.roomId];
+        self.detailDescriptionLabel.text = [self.mxRoomData.lastEvent event_id];
     }
 }
 
@@ -44,6 +47,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [self configureView];
+}
+
+- (void)dealloc {
+    _mxRoomData = nil;
 }
 
 - (void)didReceiveMemoryWarning {

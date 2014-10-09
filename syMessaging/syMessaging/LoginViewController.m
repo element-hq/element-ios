@@ -34,6 +34,8 @@ NSString* const defaultHomeserver = @"http://www.matrix.org";
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 @property (weak, nonatomic) IBOutlet UIButton *createAccountBtn;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation LoginViewController
@@ -179,6 +181,8 @@ NSString* const defaultHomeserver = @"http://www.matrix.org";
     return YES;
 }
 
+#pragma mark -
+
 - (IBAction)onButtonPressed:(id)sender
 {
     [self dismissKeyboard];
@@ -188,8 +192,12 @@ NSString* const defaultHomeserver = @"http://www.matrix.org";
         
         if (matrix.homeServer)
         {
+            [_activityIndicator startAnimating];
+            
             [matrix.homeServer loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
                                      success:^(MXLoginResponse *credentials){
+                                         [_activityIndicator stopAnimating];
+                                         
                                          // Report credentials
                                          [matrix setUserId:credentials.user_id];
                                          [matrix setAccessToken:credentials.access_token];
@@ -197,6 +205,8 @@ NSString* const defaultHomeserver = @"http://www.matrix.org";
                                          [self dismissViewControllerAnimated:YES completion:nil];
                                      }
                                      failure:^(NSError *error){
+                                         [_activityIndicator stopAnimating];
+                                         
                                          NSLog(@"Login failed: %@", error);
                                          //Alert user
                                          [[AppDelegate theDelegate] showErrorAsAlert:error];

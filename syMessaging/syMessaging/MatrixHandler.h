@@ -19,15 +19,19 @@
 @interface MatrixHandler : NSObject
 
 @property (strong, nonatomic) MXHomeServer *homeServer;
+@property (strong, nonatomic) MXData *mxData;
+
 
 @property (strong, nonatomic) NSString *homeServerURL;
 @property (strong, nonatomic) NSString *userLogin;
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *accessToken;
 
+@property (nonatomic,readonly) BOOL isLogged;
+@property (nonatomic,readonly) BOOL isInitialSyncDone;
+
 + (id)sharedHandler;
 
-- (BOOL)isLogged;
 - (void)logout;
 
 @end
