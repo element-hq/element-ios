@@ -46,4 +46,10 @@
     [self performSegueWithIdentifier:@"showLogin" sender:self];
 }
 
+- (void)showRoomDetails:(NSString*)roomId {
+    // Switch on recent
+    [self setSelectedIndex:TABBAR_RECENTS_INDEX];
+    //TODO
+}
+
 @end

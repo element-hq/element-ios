@@ -21,8 +21,6 @@ static MatrixHandler *sharedHandler = nil;
 
 @interface MatrixHandler ()
 
-@property (strong, nonatomic) MXSession *mxSession;
-
 @property (nonatomic,readwrite) BOOL isInitialSyncDone;
 
 @end

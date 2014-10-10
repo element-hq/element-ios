@@ -11,6 +11,7 @@
 		F01628BA19E29A270071C473 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01628B919E29A270071C473 /* LoginViewController.m */; };
 		F01628C119E29C660071C473 /* default-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BC19E29C660071C473 /* default-profile.png */; };
 		F01628C319E29C660071C473 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BE19E29C660071C473 /* logo.png */; };
+		F024098219E7D177006E741B /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F024098119E7D177006E741B /* tab_recents@2x.png */; };
 		F05B955919DEDCD9008761B0 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955219DEDCD9008761B0 /* HomeViewController.m */; };
 		F05B955A19DEDCD9008761B0 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955419DEDCD9008761B0 /* RecentsViewController.m */; };
 		F05B955B19DEDCD9008761B0 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955619DEDCD9008761B0 /* RoomViewController.m */; };
@@ -46,6 +47,7 @@
 		F01628B919E29A270071C473 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		F01628BC19E29C660071C473 /* default-profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-profile.png"; sourceTree = "<group>"; };
 		F01628BE19E29C660071C473 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		F024098119E7D177006E741B /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
 		F05B955119DEDCD9008761B0 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F05B955219DEDCD9008761B0 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F05B955319DEDCD9008761B0 /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F024098119E7D177006E741B /* tab_recents@2x.png */,
 				F0CEA5B019E6898800E47915 /* tab_home.ico */,
 				F0CEA5AD19E6895E00E47915 /* tab_recents.png */,
 				F01628BC19E29C660071C473 /* default-profile.png */,
@@ -278,6 +281,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F024098219E7D177006E741B /* tab_recents@2x.png in Resources */,
 				F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */,
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,

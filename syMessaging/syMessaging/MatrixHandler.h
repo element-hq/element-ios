@@ -19,6 +19,7 @@
 @interface MatrixHandler : NSObject
 
 @property (strong, nonatomic) MXHomeServer *homeServer;
+@property (strong, nonatomic) MXSession *mxSession;
 @property (strong, nonatomic) MXData *mxData;
 
 

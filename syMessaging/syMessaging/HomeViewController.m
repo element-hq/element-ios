@@ -28,8 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPublicRoom:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+//    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPublicRoom:)];
+//    self.navigationItem.rightBarButtonItem = addButton;
     
     // Do any additional setup after loading the view, typically from a nib.
     _publicRooms = nil;
@@ -66,6 +66,17 @@
     return 0;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (_publicRooms) {
+        NSString *homeserver = [[MatrixHandler sharedHandler] homeServerURL];
+        if (homeserver.length) {
+            return [NSString stringWithFormat:@"Public Rooms (at %@)", homeserver];
+        }
+        return @"Public Rooms";
+    }
+    return @"No Public Rooms";
+}
+
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCell" forIndexPath:indexPath];
     
@@ -73,6 +84,24 @@
     cell.textLabel.text = [publicRoom displayname];
     
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Join the selected room
+    MXPublicRoom *publicRoom = [_publicRooms objectAtIndex:indexPath.row];
+    [[[MatrixHandler sharedHandler] mxSession] join:publicRoom.room_id success:^{
+        // Show joined room
+        [[AppDelegate theDelegate].masterTabBarController showRoomDetails:publicRoom.room_id];
+    } failure:^(NSError *error) {
+        NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
+        //Alert user
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+    }];
+    
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Internals
