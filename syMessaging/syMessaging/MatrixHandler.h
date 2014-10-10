@@ -35,4 +35,7 @@
 
 - (void)logout;
 
+- (BOOL)isAttachment:(MXEvent*)message;
+- (NSString*)getMessageDisplayText:(MXEvent*)message;
+
 @end

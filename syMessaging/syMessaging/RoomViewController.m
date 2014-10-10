@@ -38,8 +38,9 @@
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.roomId) {
-        self.mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:self.roomId];
-        self.detailDescriptionLabel.text = [self.mxRoomData.lastEvent event_id];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        self.mxRoomData = [[mxHandler mxData] getRoomData:self.roomId];
+        self.detailDescriptionLabel.text = [mxHandler getMessageDisplayText:self.mxRoomData.lastMessage];
     }
 }
 

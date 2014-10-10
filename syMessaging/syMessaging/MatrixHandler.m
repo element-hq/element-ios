@@ -147,4 +147,106 @@ static MatrixHandler *sharedHandler = nil;
     }
 }
 
+#pragma mark - messages handler
+
+- (BOOL)isAttachment:(MXEvent*)message {
+    if (message.eventType == MXEventTypeRoomMessage) {
+        NSString *msgtype = message.content[@"msgtype"];
+        if ([msgtype isEqualToString:@"m.image"]
+            || [msgtype isEqualToString:@"m.audio"]
+            || [msgtype isEqualToString:@"m.video"]
+            || [msgtype isEqualToString:@"m.location"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSString*)getMessageDisplayText:(MXEvent*)message {
+    NSString *displayText = nil;
+    
+    switch (message.eventType) {
+        case MXEventTypeRoomName:
+            displayText = [NSString stringWithFormat:@"%@ changed the room name to: %@", message.user_id, message.content[@"name"]];
+            break;
+        case MXEventTypeRoomTopic:
+            displayText = [NSString stringWithFormat:@"%@ changed the topic to: %@", message.user_id, message.content[@"topic"]];
+            break;
+        case MXEventTypeRoomMember: {
+            NSString* membership = message.content[@"membership"];
+            
+            if ([membership isEqualToString:@"invite"]) {
+                displayText = [NSString stringWithFormat:@"%@ invited %@", message.user_id, message.state_key];
+            } else if ([membership isEqualToString:@"join"]) {
+                displayText = [NSString stringWithFormat:@"%@ joined", message.state_key];
+            } else if ([membership isEqualToString:@"leave"]) {
+                if ([message.user_id isEqualToString:message.state_key]) {
+                    displayText = [NSString stringWithFormat:@"%@ left", message.state_key];
+                } else {
+                    NSString *prev = message.content[@"prev"];
+                    
+                    if ([prev isEqualToString:@"join"] || [prev isEqualToString:@"invite"]) {
+                        displayText = [NSString stringWithFormat:@"%@ kicked %@", message.user_id, message.state_key];
+                        if (message.content[@"reason"]) {
+                            displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
+                        }
+                    } else if ([prev isEqualToString:@"ban"]) {
+                        displayText = [NSString stringWithFormat:@"%@ unbanned %@", message.user_id, message.state_key];
+                    }
+                }
+            } else if ([membership isEqualToString:@"ban"]) {
+                displayText = [NSString stringWithFormat:@"%@ banned %@", message.user_id, message.state_key];
+                if (message.content[@"reason"]) {
+                    displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
+                }
+            }
+            break;
+        }
+            //        case MXEventTypeRoomCreate:
+            //            break;
+            //        case MXEventTypeRoomJoinRules:
+            //            break;
+            //        case MXEventTypeRoomPowerLevels:
+            //            break;
+            //        case MXEventTypeRoomAddStateLevel:
+            //            break;
+            //        case MXEventTypeRoomSendEventLevel:
+            //            break;
+            //        case MXEventTypeRoomOpsLevel:
+            //            break;
+            //        case MXEventTypeRoomAliases:
+            //            break;
+        case MXEventTypeRoomMessage: {
+            NSString *msgtype = message.content[@"msgtype"];
+            if ([msgtype isEqualToString:@"m.text"]) {
+                displayText = message.content[@"body"];
+            } else if ([msgtype isEqualToString:@"m.emote"]) {
+                displayText = [NSString stringWithFormat:@"* %@ %@", message.user_id, message.content[@"body"]];
+            } else if ([msgtype isEqualToString:@"m.image"]) {
+                displayText = @"image attachment";
+            } else if ([msgtype isEqualToString:@"m.audio"]) {
+                displayText = @"audio attachment";
+            } else if ([msgtype isEqualToString:@"m.video"]) {
+                displayText = @"video attachment";
+            } else if ([msgtype isEqualToString:@"m.location"]) {
+                displayText = @"location attachment";
+            }
+            break;
+        }
+            //        case MXEventTypeRoomMessageFeedback:
+            //            break;
+            //        case MXEventTypeCustom:
+            //            break;
+        default:
+            break;
+    }
+    
+    if (displayText == nil) {
+        NSLog(@"ERROR: Unsupported message %@)", message.description);
+        displayText = @"";
+    }
+    
+    return displayText;
+}
+
 @end
