@@ -37,6 +37,7 @@
 - (void)logout;
 
 - (BOOL)isAttachment:(MXEvent*)message;
-- (NSString*)getMessageDisplayText:(MXEvent*)message;
+- (NSString*)displayTextFor:(MXEvent*)message inDetailMode:(BOOL)isDetailMode;
+- (NSString*)displayNameFor:(MXRoomMember*)member;
 
 @end

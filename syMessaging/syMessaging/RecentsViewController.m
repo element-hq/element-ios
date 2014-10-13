@@ -161,10 +161,11 @@
     RecentsTableViewCell *cell = (RecentsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"RecentsCell" forIndexPath:indexPath];
 
     MXEvent *mxEvent = self.recents[indexPath.row];
-    MXRoomData *mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:mxEvent.room_id];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MXRoomData *mxRoomData = [[mxHandler mxData] getRoomData:mxEvent.room_id];
     
     cell.roomTitle.text = [mxRoomData room_id]; // TODO use room display name
-    cell.lastEventDescription.text = [mxEvent description];
+    cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inDetailMode:YES];
     
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.ts];
     NSString *dateFormat =  @"MMM dd HH:mm";

@@ -40,7 +40,7 @@
     if (self.roomId) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         self.mxRoomData = [[mxHandler mxData] getRoomData:self.roomId];
-        self.detailDescriptionLabel.text = [mxHandler getMessageDisplayText:self.mxRoomData.lastMessage];
+        self.detailDescriptionLabel.text = [mxHandler displayTextFor:self.mxRoomData.lastMessage inDetailMode:NO];
     }
 }
 
