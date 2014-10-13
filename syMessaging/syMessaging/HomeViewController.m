@@ -277,10 +277,14 @@
     [self dismissKeyboard];
     
     if (sender == _createRoomBtn) {
+        // Disable button to prevent multiple request
+        _createRoomBtn.enabled = NO;
+        
         NSString *roomName = _roomNameTextField.text;
         if (! roomName.length) {
             roomName = nil;
         }
+        
         // Create new room
         [[[MatrixHandler sharedHandler] mxSession]
          createRoom:roomName
@@ -289,10 +293,15 @@
          topic:nil
          invite:self.participantsList
          success:^(MXCreateRoomResponse *response) {
+             // Reset text fields
+             _roomNameTextField.text = nil;
+             _roomAliasTextField.text = nil;
+             _participantsTextField.text = nil;
              // Open created room
              [[AppDelegate theDelegate].masterTabBarController showRoomDetails:response.room_id];
          } failure:^(NSError *error) {
-             NSLog(@"Create room (%@ %@ %@ (%d)) failed: %@", _roomNameTextField.text, self.alias, self.participantsList, _roomVisibilityControl.selectedSegmentIndex, error);
+             _createRoomBtn.enabled = YES;
+             NSLog(@"Create room (%@ %@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, self.participantsList, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
              //Alert user
              [[AppDelegate theDelegate] showErrorAsAlert:error];
          }];
