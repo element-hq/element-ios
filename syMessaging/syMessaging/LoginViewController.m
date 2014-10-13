@@ -66,7 +66,6 @@ NSString* const defaultHomeserver = @"http://matrix.org";
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
 
-    
     // Prefill text field
     _userLoginTextField.text = [[MatrixHandler sharedHandler] userLogin];
     _homeServerTextField.text = [[MatrixHandler sharedHandler] homeServerURL];
@@ -192,6 +191,8 @@ NSString* const defaultHomeserver = @"http://matrix.org";
         
         if (matrix.mxHomeServer)
         {
+            // Disable login button to prevent multiple requests
+            _loginBtn.enabled = NO;
             [_activityIndicator startAnimating];
             
             [matrix.mxHomeServer loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
@@ -207,6 +208,7 @@ NSString* const defaultHomeserver = @"http://matrix.org";
                                      }
                                      failure:^(NSError *error){
                                          [_activityIndicator stopAnimating];
+                                         _loginBtn.enabled = YES;
                                          
                                          NSLog(@"Login failed: %@", error);
                                          //Alert user
