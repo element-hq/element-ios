@@ -25,6 +25,8 @@
 
 - (void)showLoginScreen;
 
+- (void)showRoomCreationForm;
+
 - (void)showRoomDetails:(NSString*)roomId;
 
 @end

@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : UITableViewController
+@interface HomeViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSArray *publicRooms;
 @property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;

@@ -62,28 +62,34 @@
         <scene sceneID="3rt-8o-eGh">
             <objects>
                 <tableViewController title="Home" id="ldZ-75-BUU" customClass="HomeViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="30" sectionFooterHeight="22" id="LbI-fz-LaI">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="40" sectionFooterHeight="22" id="LbI-fz-LaI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="vtK-sz-hd2" userLabel="TableHeaderView">
-                            <rect key="frame" x="0.0" y="64" width="600" height="90"/>
+                            <rect key="frame" x="0.0" y="64" width="600" height="250"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Room alias" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b5x-lU-scr">
-                                    <rect key="frame" x="8" y="30" width="461" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. lunchGroup)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="b5x-lU-scr">
+                                    <rect key="frame" x="109" y="48" width="483" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="ldZ-75-BUU" id="B12-Tr-ilf"/>
+                                    </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fIu-Mb-2Ad">
-                                    <rect key="frame" x="512" y="52" width="53" height="33"/>
+                                    <rect key="frame" x="248" y="201" width="104" height="33"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                    <state key="normal" title="Create">
+                                    <state key="normal" title="Create Room">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="ldZ-75-BUU" eventType="touchUpInside" id="lqf-dU-v8c"/>
+                                    </connections>
                                 </button>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DFg-sq-K9p">
-                                    <rect key="frame" x="479" y="10" width="113" height="29"/>
+                                    <rect key="frame" x="244" y="165" width="113" height="29"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="113" id="Rxh-Zw-vxF"/>
                                     </constraints>
@@ -91,17 +97,88 @@
                                         <segment title="Public"/>
                                         <segment title="Private"/>
                                     </segments>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="ldZ-75-BUU" eventType="valueChanged" id="TQ8-yb-WDh"/>
+                                    </connections>
                                 </segmentedControl>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="C35-iH-iml">
+                                    <rect key="frame" x="8" y="52" width="93" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="93" id="amO-Op-WAj"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. #foo:homeserver)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Rfz-WH-4KQ">
+                                    <rect key="frame" x="109" y="86" width="483" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="ldZ-75-BUU" id="cVW-bM-tAs"/>
+                                    </connections>
+                                </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room alias:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rd-HA-syv">
+                                    <rect key="frame" x="8" y="90" width="86" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="86" id="TPd-b7-1nI"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. @bob:homeserver1; @john:homeserver2...)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="dWR-QZ-pru">
+                                    <rect key="frame" x="108" y="124" width="484" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="ldZ-75-BUU" id="KC8-Da-ANh"/>
+                                    </connections>
+                                </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participants:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGe-VQ-gFa">
+                                    <rect key="frame" x="8" y="127" width="91" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="91" id="AN1-NN-LU4"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Room creation:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kg7-lM-hf3">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="cGe-la-GXg"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="DFg-sq-K9p" firstAttribute="top" secondItem="vtK-sz-hd2" secondAttribute="top" constant="10" id="0B7-Rc-qbd"/>
-                                <constraint firstAttribute="trailing" secondItem="fIu-Mb-2Ad" secondAttribute="trailing" constant="35" id="ZeB-7G-AHj"/>
-                                <constraint firstItem="DFg-sq-K9p" firstAttribute="leading" secondItem="b5x-lU-scr" secondAttribute="trailing" constant="10" id="fpt-fP-KK4"/>
-                                <constraint firstAttribute="centerY" secondItem="b5x-lU-scr" secondAttribute="centerY" id="i6J-DF-oGV"/>
-                                <constraint firstAttribute="trailing" secondItem="DFg-sq-K9p" secondAttribute="trailing" constant="8" id="lHF-iX-NXM"/>
-                                <constraint firstItem="b5x-lU-scr" firstAttribute="leading" secondItem="vtK-sz-hd2" secondAttribute="leading" constant="8" id="yqk-6l-hdw"/>
-                                <constraint firstAttribute="bottom" secondItem="fIu-Mb-2Ad" secondAttribute="bottom" constant="5" id="zE1-pl-eIQ" userLabel="Vertical Space - (8) - TableHeaderView - Create"/>
+                                <constraint firstAttribute="centerX" secondItem="fIu-Mb-2Ad" secondAttribute="centerX" id="0Zj-0l-hL1"/>
+                                <constraint firstItem="C35-iH-iml" firstAttribute="leading" secondItem="vtK-sz-hd2" secondAttribute="leading" constant="8" id="10F-cg-xi8"/>
+                                <constraint firstAttribute="centerX" secondItem="DFg-sq-K9p" secondAttribute="centerX" id="3Nn-gk-cNd"/>
+                                <constraint firstAttribute="trailing" secondItem="Rfz-WH-4KQ" secondAttribute="trailing" constant="8" id="8Cj-9w-2sM"/>
+                                <constraint firstItem="fIu-Mb-2Ad" firstAttribute="top" secondItem="DFg-sq-K9p" secondAttribute="bottom" constant="8" id="97d-BQ-YZw"/>
+                                <constraint firstItem="7rd-HA-syv" firstAttribute="leading" secondItem="vtK-sz-hd2" secondAttribute="leading" constant="8" id="9wf-HB-VfV"/>
+                                <constraint firstAttribute="trailing" secondItem="kg7-lM-hf3" secondAttribute="trailing" id="Bye-La-Cpq"/>
+                                <constraint firstItem="7rd-HA-syv" firstAttribute="top" secondItem="C35-iH-iml" secondAttribute="bottom" constant="18" id="D1v-3S-hWC"/>
+                                <constraint firstItem="fGe-VQ-gFa" firstAttribute="top" secondItem="7rd-HA-syv" secondAttribute="bottom" constant="17" id="FgG-g0-kkz"/>
+                                <constraint firstItem="dWR-QZ-pru" firstAttribute="top" secondItem="Rfz-WH-4KQ" secondAttribute="bottom" constant="8" id="Kct-mU-DmK"/>
+                                <constraint firstAttribute="bottom" secondItem="fIu-Mb-2Ad" secondAttribute="bottom" constant="16" id="LQH-Fv-nZv"/>
+                                <constraint firstItem="dWR-QZ-pru" firstAttribute="leading" secondItem="fGe-VQ-gFa" secondAttribute="trailing" constant="9" id="R8i-CJ-HKJ"/>
+                                <constraint firstItem="C35-iH-iml" firstAttribute="top" secondItem="kg7-lM-hf3" secondAttribute="bottom" constant="12" id="TKy-y4-tSw"/>
+                                <constraint firstItem="b5x-lU-scr" firstAttribute="leading" secondItem="C35-iH-iml" secondAttribute="trailing" constant="8" id="TtF-HH-BwR"/>
+                                <constraint firstAttribute="trailing" secondItem="b5x-lU-scr" secondAttribute="trailing" constant="8" id="aVm-8K-x54"/>
+                                <constraint firstItem="fGe-VQ-gFa" firstAttribute="leading" secondItem="vtK-sz-hd2" secondAttribute="leading" constant="8" id="cMU-K6-utc"/>
+                                <constraint firstItem="Rfz-WH-4KQ" firstAttribute="top" secondItem="b5x-lU-scr" secondAttribute="bottom" constant="8" id="coO-Av-GkL"/>
+                                <constraint firstItem="kg7-lM-hf3" firstAttribute="leading" secondItem="vtK-sz-hd2" secondAttribute="leading" id="eUa-j9-Bqh"/>
+                                <constraint firstItem="kg7-lM-hf3" firstAttribute="top" secondItem="vtK-sz-hd2" secondAttribute="top" id="fjd-oM-mXa"/>
+                                <constraint firstItem="Rfz-WH-4KQ" firstAttribute="leading" secondItem="7rd-HA-syv" secondAttribute="trailing" constant="15" id="fo8-s4-B8z"/>
+                                <constraint firstAttribute="trailing" secondItem="dWR-QZ-pru" secondAttribute="trailing" constant="8" id="pZH-5N-xaG"/>
+                                <constraint firstItem="b5x-lU-scr" firstAttribute="top" secondItem="kg7-lM-hf3" secondAttribute="bottom" constant="8" id="rMh-HL-qPT"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -128,7 +205,16 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Home" id="vwK-UA-vG8"/>
                     <connections>
+                        <outlet property="createRoomBtn" destination="fIu-Mb-2Ad" id="y8M-zV-eeq"/>
+                        <outlet property="participantsLabel" destination="fGe-VQ-gFa" id="Wcb-dU-kdM"/>
+                        <outlet property="participantsTextField" destination="dWR-QZ-pru" id="vOa-ko-qLr"/>
                         <outlet property="publicRoomsTable" destination="LbI-fz-LaI" id="WcR-YT-Ojc"/>
+                        <outlet property="roomAliasLabel" destination="7rd-HA-syv" id="1FS-21-dtF"/>
+                        <outlet property="roomAliasTextField" destination="Rfz-WH-4KQ" id="BF4-Wb-8gu"/>
+                        <outlet property="roomCreationLabel" destination="kg7-lM-hf3" id="4uZ-AC-Xi7"/>
+                        <outlet property="roomNameLabel" destination="C35-iH-iml" id="aQW-co-XF1"/>
+                        <outlet property="roomNameTextField" destination="b5x-lU-scr" id="FMY-6L-4vf"/>
+                        <outlet property="roomVisibilityControl" destination="DFg-sq-K9p" id="AtP-8V-AOV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xpF-FS-Ykl" userLabel="First Responder" sceneMemberID="firstResponder"/>

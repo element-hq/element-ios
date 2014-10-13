@@ -18,12 +18,13 @@
 
 @interface MatrixHandler : NSObject
 
-@property (strong, nonatomic) MXHomeServer *homeServer;
+@property (strong, nonatomic) MXHomeServer *mxHomeServer;
 @property (strong, nonatomic) MXSession *mxSession;
 @property (strong, nonatomic) MXData *mxData;
 
 
 @property (strong, nonatomic) NSString *homeServerURL;
+@property (strong, nonatomic) NSString *homeServer;
 @property (strong, nonatomic) NSString *userLogin;
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *accessToken;

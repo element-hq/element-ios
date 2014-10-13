@@ -27,7 +27,7 @@ static MatrixHandler *sharedHandler = nil;
 
 @implementation MatrixHandler
 
-@synthesize homeServerURL, userLogin, userId, accessToken;
+@synthesize homeServerURL, homeServer, userLogin, userId, accessToken;
 
 + (id)sharedHandler {
     @synchronized(self) {
@@ -45,9 +45,9 @@ static MatrixHandler *sharedHandler = nil;
     if (self = [super init]) {
         _isInitialSyncDone = NO;
         
-        // Read potential homeserver in shared defaults object
+        // Read potential homeserver url in shared defaults object
         if (self.homeServerURL) {
-            self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+            self.mxHomeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
             
             if (self.accessToken) {
                 [self openSession];
@@ -81,7 +81,7 @@ static MatrixHandler *sharedHandler = nil;
 
 - (void)dealloc {
     [self closeSession];
-    self.homeServer = nil;
+    self.mxHomeServer = nil;
 }
 
 #pragma mark -
@@ -96,16 +96,28 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (NSString *)homeServerURL {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
+}
+
+- (void)setHomeServerURL:(NSString *)inHomeserverURL {
+    if (inHomeserverURL.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inHomeserverURL forKey:@"homeserverurl"];
+        self.mxHomeServer = [[MXHomeServer alloc] initWithHomeServer:inHomeserverURL];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserverurl"];
+        self.mxHomeServer = nil;
+    }
+}
+
+- (NSString *)homeServer {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserver"];
 }
 
-- (void)setHomeServerURL:(NSString *)inHomeserver {
+- (void)setHomeServer:(NSString *)inHomeserver {
     if (inHomeserver.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inHomeserver forKey:@"homeserver"];
-        self.homeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserver"];
-        self.homeServer = nil;
     }
 }
 

@@ -28,8 +28,7 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     if (! [[MatrixHandler sharedHandler] isLogged]) {
@@ -42,8 +41,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+
 - (void)showLoginScreen {
     [self performSegueWithIdentifier:@"showLogin" sender:self];
+}
+
+- (void)showRoomCreationForm {
+    // Switch in Home Tab
+    [self setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
 - (void)showRoomDetails:(NSString*)roomId {

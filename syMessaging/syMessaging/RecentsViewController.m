@@ -52,7 +52,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.roomViewController = (RoomViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
@@ -103,13 +103,8 @@
     }
 }
 
-- (void)insertNewObject:(id)sender {
-//    if (!self.recents) {
-//        self.recents = [[NSMutableArray alloc] init];
-//    }
-//    [self.recents insertObject:[NSDate date] atIndex:0];
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+- (void)createNewRoom:(id)sender {
+    [[AppDelegate theDelegate].masterTabBarController showRoomCreationForm];
 }
 
 #pragma mark - KVO

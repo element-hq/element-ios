@@ -19,7 +19,7 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
-NSString* const defaultHomeserver = @"http://www.matrix.org";
+NSString* const defaultHomeserver = @"http://matrix.org";
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewBottomConstraint;
@@ -190,17 +190,18 @@ NSString* const defaultHomeserver = @"http://www.matrix.org";
     if (sender == _loginBtn) {
         MatrixHandler *matrix = [MatrixHandler sharedHandler];
         
-        if (matrix.homeServer)
+        if (matrix.mxHomeServer)
         {
             [_activityIndicator startAnimating];
             
-            [matrix.homeServer loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
+            [matrix.mxHomeServer loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
                                      success:^(MXLoginResponse *credentials){
                                          [_activityIndicator stopAnimating];
                                          
                                          // Report credentials
                                          [matrix setUserId:credentials.user_id];
                                          [matrix setAccessToken:credentials.access_token];
+                                         [matrix setHomeServer:credentials.home_server];
                                          
                                          [self dismissViewControllerAnimated:YES completion:nil];
                                      }
