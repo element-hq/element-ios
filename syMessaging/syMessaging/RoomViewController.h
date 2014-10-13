@@ -16,11 +16,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RoomViewController : UIViewController
+@interface RoomViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSString *roomId;
-
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
 @end
 
