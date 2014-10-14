@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RoomViewController : UITableViewController <UITextFieldDelegate>
+@interface RoomViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) NSString *roomId;
 

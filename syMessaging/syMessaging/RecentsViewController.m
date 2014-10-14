@@ -58,7 +58,7 @@
     
     // Add activity indicator
     [self.view addSubview:_activityIndicator];
-    _activityIndicator.center = self.view.center;
+    _activityIndicator.center = CGPointMake(self.view.center.x, 100);
     [self.view bringSubviewToFront:_activityIndicator];
 }
 

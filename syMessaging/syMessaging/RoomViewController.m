@@ -17,14 +17,38 @@
 #import "RoomViewController.h"
 
 #import "MatrixHandler.h"
+#import "AppDelegate.h"
+
+// Table view cells
+@interface RoomMessageCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *userPicture;
+@property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
+@end
+@implementation RoomMessageCell
+@end
+
+@interface IncomingMessageCell : RoomMessageCell
+@end
+@implementation IncomingMessageCell
+@end
+
+@interface OutgoingMessageCell : RoomMessageCell
+@end
+@implementation OutgoingMessageCell
+@end
+
 
 @interface RoomViewController ()
+{
+    BOOL isFirstDisplay;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *tableFooter;
+@property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
 
 @property (strong, nonatomic) MXRoomData *mxRoomData;
 
@@ -37,12 +61,12 @@
 - (void)setRoomId:(NSString *)roomId {
     _roomId = roomId;
     
-    // Update the view.
+    // Update the view
     [self configureView];
 }
 
 - (void)configureView {
-    // Update the user interface for the detail item.
+    // Update room data
     if (self.roomId) {
         self.mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:self.roomId];
     } else {
@@ -55,7 +79,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self configureView];
+    isFirstDisplay = YES;
     
     _sendBtn.enabled = NO;
     _sendBtn.alpha = 0.5;
@@ -73,11 +97,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Scroll to the bottom
-    [self.tableView scrollRectToVisible:_messageTextField.frame animated:NO];
+    // Update the view
+    [self configureView];
     
-    // Refresh
-    // TODO
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -85,12 +109,55 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (isFirstDisplay) {
+        // Scroll to the bottom
+        [self scrollToBottomAnimated:animated];
+        isFirstDisplay = NO;
+    }
+}
+
+- (void)onKeyboardWillShow:(NSNotification *)notif {
+    NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
+    CGRect endRect = rectVal.CGRectValue;
+    
+    UIEdgeInsets insets = self.tableView.contentInset;
+    // Handle portrait/landscape mode
+    insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
+    self.tableView.contentInset = insets;
+    
+    [self scrollToBottomAnimated:YES];
+    
+    // Don't forget the offset related to tabBar
+    _controlViewBottomConstraint.constant = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+}
+
+- (void)onKeyboardWillHide:(NSNotification *)notif {
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.bottom = self.controlView.frame.size.height;
+    self.tableView.contentInset = insets;
+    
+    _controlViewBottomConstraint.constant = 0;
 }
 
 - (void)dismissKeyboard {
     // Hide the keyboard
     [_messageTextField resignFirstResponder];
+}
+
+- (void)scrollToBottomAnimated:(BOOL)animated {
+    // Scroll table view to the bottom
+    NSInteger rowNb = [self tableView:self.tableView numberOfRowsInSection:0];
+    if (rowNb) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
 }
 
 #pragma mark - Table view data source
@@ -100,25 +167,40 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger rowNb = 0;
     if (self.mxRoomData){
-        return self.mxRoomData.messages.count;
+        rowNb = self.mxRoomData.messages.count;
     }
-    return 0;
+    return rowNb;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Default message cell height
+    CGFloat rowHeight = 50;
+    
+    return rowHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:@"RoomMessageCell" forIndexPath:indexPath];
+    RoomMessageCell *cell;
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [self.mxRoomData.messages objectAtIndex:indexPath.row];
-    cell.textLabel.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
     
     if ([mxEvent.user_id isEqualToString:mxHandler.userId]) {
-        cell.textLabel.textAlignment = NSTextAlignmentRight;
+        cell = [aTableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
     } else {
-        cell.textLabel.textAlignment = NSTextAlignmentLeft;
+        cell = [aTableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
     }
     
+    cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];    
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Dismiss keyboard when user taps on table view content
+    [self dismissKeyboard];
 }
 
 #pragma mark - UITextField delegate
@@ -144,11 +226,20 @@
 #pragma mark -
 
 - (IBAction)onButtonPressed:(id)sender {
-    [self dismissKeyboard];
-    
     if (sender == _sendBtn) {
-        //TODO
+        // Send message to the room
+        [[[MatrixHandler sharedHandler] mxSession] postTextMessage:self.roomId text:self.messageTextField.text success:^(NSString *event_id) {
+            self.messageTextField.text = nil;
+            // disable send button
+            [self onTextFieldChange:nil];
+            [self configureView];
+        } failure:^(NSError *error) {
+            NSLog(@"Failed to send message (%@): %@", self.messageTextField.text, error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
     } else if (sender == _optionBtn) {
+        [self dismissKeyboard];
         //TODO
     }
 }
