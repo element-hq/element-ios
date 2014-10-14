@@ -182,6 +182,9 @@
                                     <constraint firstAttribute="centerY" secondItem="cfF-YG-Cvg" secondAttribute="centerY" id="ugG-2r-MsO"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dvT-c5-Ymf">
+                                <rect key="frame" x="290" y="100" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -189,13 +192,16 @@
                             <constraint firstItem="6fM-aJ-d0M" firstAttribute="leading" secondItem="1BF-nV-MTf" secondAttribute="leading" id="7eH-ST-BbY"/>
                             <constraint firstItem="nNf-bE-8dQ" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="bottom" id="C5t-bm-3s8"/>
                             <constraint firstAttribute="bottom" secondItem="meV-kn-sxo" secondAttribute="bottom" constant="44" id="Cos-M5-WHG"/>
+                            <constraint firstItem="dvT-c5-Ymf" firstAttribute="top" secondItem="it4-Tc-q7z" secondAttribute="bottom" constant="36" id="FV3-P0-ekh"/>
                             <constraint firstItem="meV-kn-sxo" firstAttribute="top" secondItem="1BF-nV-MTf" secondAttribute="top" id="OWt-4M-1DF"/>
                             <constraint firstItem="meV-kn-sxo" firstAttribute="leading" secondItem="1BF-nV-MTf" secondAttribute="leading" id="ext-xr-eNx"/>
+                            <constraint firstAttribute="centerX" secondItem="dvT-c5-Ymf" secondAttribute="centerX" id="u9d-Bd-6Ci"/>
                             <constraint firstAttribute="trailing" secondItem="meV-kn-sxo" secondAttribute="trailing" id="vBl-Ri-4Hb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Room title" id="3Zt-Wl-J6o"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="dvT-c5-Ymf" id="F6h-Al-Vw6"/>
                         <outlet property="controlView" destination="6fM-aJ-d0M" id="13g-Wl-z5n"/>
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
                         <outlet property="messageTextField" destination="k2m-aY-U73" id="fSA-Eg-duj"/>

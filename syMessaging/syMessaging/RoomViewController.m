@@ -49,6 +49,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) MXRoomData *mxRoomData;
 
@@ -135,6 +136,7 @@
     
     [self scrollToBottomAnimated:YES];
     
+    // Move up control view
     // Don't forget the offset related to tabBar
     _controlViewBottomConstraint.constant = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
 }
@@ -203,6 +205,43 @@
     [self dismissKeyboard];
 }
 
+// Detect vertical bounce at the top of the tableview to trigger pagination
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (scrollView == self.tableView) {
+        // paginate ?
+        if ((scrollView.contentOffset.y < -64) && (_activityIndicator.isAnimating == NO))
+        {
+            if (self.mxRoomData.canPaginate)
+            {
+                [_activityIndicator startAnimating];
+                
+                [self.mxRoomData paginateBackMessages:20 success:^(NSArray *messages) {
+                    // Update room data
+                    self.mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:self.roomId];
+                    
+                    // Refresh display
+                    [self.tableView beginUpdates];
+                    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:messages.count];
+                    for (NSUInteger index = 0; index < messages.count; index++) {
+                        [indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+                    }
+                    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                    [self.tableView endUpdates];
+                    
+                    // Maintain the current message in visible area
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(messages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    [_activityIndicator stopAnimating];
+                } failure:^(NSError *error) {
+                    [_activityIndicator stopAnimating];
+                    NSLog(@"Failed to paginate back: %@", error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            }
+        }
+    }
+}
+
 #pragma mark - UITextField delegate
 
 - (void)onTextFieldChange:(NSNotification *)notif {
@@ -240,7 +279,7 @@
         }];
     } else if (sender == _optionBtn) {
         [self dismissKeyboard];
-        //TODO
+        //TODO: display option menu (Attachments...)
     }
 }
 @end
