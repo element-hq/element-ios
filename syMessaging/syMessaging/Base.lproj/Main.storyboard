@@ -6,10 +6,10 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Recents-->
+        <!--RecentsNav-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController title="Recents" id="RMx-3f-FxP" sceneMemberID="viewController">
+                <navigationController title="RecentsNav" id="RMx-3f-FxP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -730,9 +730,9 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="YTM-8H-EpC" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="0FC-Ly-dRv"/>
+                                        <constraint firstAttribute="trailing" secondItem="YTM-8H-EpC" secondAttribute="trailing" constant="88" id="56p-nx-gML"/>
                                         <constraint firstAttribute="trailing" secondItem="5g8-vg-2EB" secondAttribute="trailing" constant="8" id="Avl-RN-f0J"/>
                                         <constraint firstItem="5g8-vg-2EB" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="YEf-Sg-fK1"/>
-                                        <constraint firstItem="eKl-0r-wFc" firstAttribute="leading" secondItem="YTM-8H-EpC" secondAttribute="trailing" constant="8" id="khz-VI-SUO"/>
                                         <constraint firstItem="eKl-0r-wFc" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="m8Q-2Z-v8h"/>
                                         <constraint firstAttribute="bottom" secondItem="5g8-vg-2EB" secondAttribute="bottom" constant="9" id="oqT-mf-B3Y"/>
                                         <constraint firstItem="YTM-8H-EpC" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="s5s-Hs-1tF"/>
