@@ -32,7 +32,7 @@
 @property (nonatomic,readonly) BOOL isLogged;
 @property (nonatomic,readonly) BOOL isInitialSyncDone;
 
-+ (id)sharedHandler;
++ (MatrixHandler *)sharedHandler;
 
 - (void)logout;
 

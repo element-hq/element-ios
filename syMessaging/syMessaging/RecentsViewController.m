@@ -31,10 +31,11 @@
 @implementation RecentsTableViewCell
 @end
 
-@interface RecentsViewController ()
+@interface RecentsViewController () {
+    NSArray  *recents;
+}
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property NSArray *recents;
 @end
 
 @implementation RecentsViewController
@@ -54,16 +55,19 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
     self.navigationItem.rightBarButtonItem = addButton;
-    self.roomViewController = (RoomViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
     // Add activity indicator
     [self.view addSubview:_activityIndicator];
     _activityIndicator.center = CGPointMake(self.view.center.x, 100);
     [self.view bringSubviewToFront:_activityIndicator];
+    
+    // Initialisation
+    recents = nil;
 }
 
 - (void)dealloc {
-    self.recents = nil;
+    recents = nil;
+    _preSelectedRoomId = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,31 +79,80 @@
     [super viewWillAppear:animated];
     
     // Refresh recents table
-    [self refresh];
+    [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    // Leave potential editing mode
+    [self setEditing:NO];
+    
+    _preSelectedRoomId = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
 }
 
-#pragma mark - recents
+#pragma mark -
 
-- (void)refresh {
+- (void)setPreSelectedRoomId:(NSString *)roomId {
+    _preSelectedRoomId = nil;
+
+    if (roomId) {
+        // Check whether recents update is in progress
+        if ([_activityIndicator isAnimating]) {
+            // Postpone room details display
+            _preSelectedRoomId = roomId;
+            return;
+        }
+        
+        // Look for the room index in recents list
+        NSIndexPath *indexPath = nil;
+        for (NSUInteger index = 0; index < recents.count; index++) {
+            MXEvent *mxEvent = [recents objectAtIndex:index];
+            if ([roomId isEqualToString:mxEvent.room_id]) {
+                indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                break;
+            }
+        }
+        
+        if (indexPath) {
+            // Open details view
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+            UITableViewCell *recentCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            [self performSegueWithIdentifier:@"showDetail" sender:recentCell];
+        } else {
+            NSLog(@"We are not able to open room (%@) because it does not appear in recents yet", roomId);
+            // Postpone room details display. We run activity indicator until recents are updated
+            _preSelectedRoomId = roomId;
+            // Start activity indicator
+            [_activityIndicator startAnimating];
+        }
+    }
+}
+
+#pragma mark - Internals
+
+- (void)configureView {
     [_activityIndicator startAnimating];
     
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     if ([mxHandler isInitialSyncDone] || [mxHandler isLogged] == NO) {
         // Update recents
         if (mxHandler.mxData) {
-            self.recents = mxHandler.mxData.recents;
+            recents = mxHandler.mxData.recents;
         } else {
-            self.recents = nil;
+            recents = nil;
         }
         
+        // Reload table
         [self.tableView reloadData];
         [_activityIndicator stopAnimating];
+        
+        // Check whether a room is preselected
+        if (_preSelectedRoomId) {
+            self.preSelectedRoomId = _preSelectedRoomId;
+        }
     }
 }
 
@@ -114,7 +167,7 @@
     if ([@"isInitialSyncDone" isEqualToString:keyPath])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self refresh];
+            [self configureView];
         });
     }
 }
@@ -124,7 +177,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        MXEvent *mxEvent = self.recents[indexPath.row];
+        MXEvent *mxEvent = recents[indexPath.row];
         
         UIViewController *controller;
         if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]]) {
@@ -149,7 +202,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.recents.count;
+    return recents.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -160,9 +213,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RecentsTableViewCell *cell = (RecentsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"RecentsCell" forIndexPath:indexPath];
 
-    MXEvent *mxEvent = self.recents[indexPath.row];
+    MXEvent *mxEvent = recents[indexPath.row];
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    MXRoomData *mxRoomData = [[mxHandler mxData] getRoomData:mxEvent.room_id];
+    MXRoomData *mxRoomData = [mxHandler.mxData getRoomData:mxEvent.room_id];
     
     cell.roomTitle.text = [mxRoomData displayname];
     cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inDetailMode:YES];
@@ -186,10 +239,18 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [self.recents removeObjectAtIndex:indexPath.row];
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        // TODO enable the following code when "leave" will be available in SDK
+//        // Leave the selected room
+//        MXEvent *mxEvent = recents[indexPath.row];
+//        [[MatrixHandler sharedHandler].mxSession leave:mxEvent.room_id success:^{
+//            // Refresh table display
+//            [recents removeObjectAtIndex:indexPath.row];
+//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        } failure:^(NSError *error) {
+//            NSLog(@"Failed to leave room (%@) failed: %@", mxEvent.room_id, error);
+//            //Alert user
+//            [[AppDelegate theDelegate] showErrorAsAlert:error];
+//        }];
     }
 }
 

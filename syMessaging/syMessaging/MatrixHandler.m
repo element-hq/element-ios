@@ -29,7 +29,7 @@ static MatrixHandler *sharedHandler = nil;
 
 @synthesize homeServerURL, homeServer, userLogin, userId, accessToken;
 
-+ (id)sharedHandler {
++ (MatrixHandler *)sharedHandler {
     @synchronized(self) {
         if(sharedHandler == nil)
         {

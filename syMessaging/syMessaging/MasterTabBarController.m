@@ -17,7 +17,12 @@
 #import "MasterTabBarController.h"
 #import "MatrixHandler.h"
 
-@interface MasterTabBarController ()
+#import "RecentsViewController.h"
+
+@interface MasterTabBarController () {
+    UINavigationController *recentsNavigationController;
+    RecentsViewController  *recentsViewController;
+}
 
 @end
 
@@ -26,6 +31,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
+    // to the recents list in Recents Tab.
+    // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
+    UIViewController* recents = [self.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
+    recentsNavigationController = nil;
+    if ([recents isKindOfClass:[UISplitViewController class]]) {
+        UISplitViewController *splitViewController = (UISplitViewController *)recents;
+        recentsNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+    } else if ([recents isKindOfClass:[UINavigationController class]]) {
+        recentsNavigationController = (UINavigationController*)recents;
+    }
+    
+    if (recentsNavigationController) {
+        for (UIViewController *viewController in recentsNavigationController.viewControllers) {
+            if ([viewController isKindOfClass:[RecentsViewController class]]) {
+                recentsViewController = (RecentsViewController*)viewController;
+            }
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -41,6 +66,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    recentsNavigationController = nil;
+    recentsViewController = nil;
+}
+
 #pragma mark -
 
 - (void)showLoginScreen {
@@ -52,10 +82,17 @@
     [self setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (void)showRoomDetails:(NSString*)roomId {
-    // Switch on recent
+- (void)showRoom:(NSString*)roomId {
+    // Force back to recents list if room details is displayed in Recents Tab
+    if (recentsViewController) {
+        [recentsNavigationController popToViewController:recentsViewController animated:NO];
+    }
+    
+    // Switch on Recents Tab
     [self setSelectedIndex:TABBAR_RECENTS_INDEX];
-    //TODO
+    
+    // Select room to display its details
+    recentsViewController.preSelectedRoomId = roomId;
 }
 
 @end

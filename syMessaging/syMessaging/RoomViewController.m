@@ -43,6 +43,7 @@
     BOOL isFirstDisplay;
 }
 
+@property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
@@ -69,12 +70,15 @@
 - (void)configureView {
     // Update room data
     if (self.roomId) {
-        self.mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:self.roomId];
+        self.mxRoomData = [[MatrixHandler sharedHandler].mxData getRoomData:self.roomId];
     } else {
         self.mxRoomData = nil;
     }
     
     [self.tableView reloadData];
+    
+    // Update room title
+    self.roomNavItem.title = self.mxRoomData.displayname;
 }
 
 - (void)viewDidLoad {

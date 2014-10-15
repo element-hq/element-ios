@@ -60,7 +60,7 @@
     
     if ([[MatrixHandler sharedHandler] isLogged]) {
         // Update alias placeholder
-        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo:%@)", [[MatrixHandler sharedHandler] homeServer]];
+        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo:%@)", [MatrixHandler sharedHandler].homeServer];
         // Refresh listed public rooms
         [self refreshPublicRooms];
     }
@@ -93,7 +93,7 @@
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     
     if (_publicRooms) {
-        NSString *homeserver = [[MatrixHandler sharedHandler] homeServerURL];
+        NSString *homeserver = [MatrixHandler sharedHandler].homeServerURL;
         if (homeserver.length) {
             sectionHeader.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
         } else {
@@ -118,17 +118,24 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Join the selected room
-    MXPublicRoom *publicRoom = [_publicRooms objectAtIndex:indexPath.row];
-    [[[MatrixHandler sharedHandler] mxSession] join:publicRoom.room_id success:^{
-        // Show joined room
-        [[AppDelegate theDelegate].masterTabBarController showRoomDetails:publicRoom.room_id];
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
-        //Alert user
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
-    }];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
+    // Check whether the user has already joined the selected public room
+    MXPublicRoom *publicRoom = [_publicRooms objectAtIndex:indexPath.row];
+    if ([mxHandler.mxData getRoomData:publicRoom.room_id]) {
+        // Open selected room
+        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
+    } else {
+        // Join the selected room
+        [mxHandler.mxSession join:publicRoom.room_id success:^{
+            // Show joined room
+            [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
+        } failure:^(NSError *error) {
+            NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -137,7 +144,7 @@
 
 - (void)refreshPublicRooms {
     // Retrieve public rooms
-    [[[MatrixHandler sharedHandler] mxHomeServer] publicRooms:^(NSArray *rooms){
+    [[MatrixHandler sharedHandler].mxHomeServer publicRooms:^(NSArray *rooms){
         _publicRooms = rooms;
         [_publicRoomsTable reloadData];
     }
@@ -163,7 +170,7 @@
         // Remove '#' character
         alias = [alias substringFromIndex:1];
         // Remove homeserver
-        NSString *suffix = [NSString stringWithFormat:@":%@",[[MatrixHandler sharedHandler] homeServer]];
+        NSString *suffix = [NSString stringWithFormat:@":%@",[MatrixHandler sharedHandler].homeServer];
         NSRange range = [alias rangeOfString:suffix];
         alias = [alias stringByReplacingCharactersInRange:range withString:@""];
     }
@@ -230,10 +237,10 @@
         NSString * alias = textField.text;
         if (alias.length) {
             // add homeserver as suffix
-            textField.text = [NSString stringWithFormat:@"#%@:%@", alias, [[MatrixHandler sharedHandler] homeServer]];
+            textField.text = [NSString stringWithFormat:@"#%@:%@", alias, [MatrixHandler sharedHandler].homeServer];
         }
         
-        textField.placeholder = [NSString stringWithFormat:@"(e.g. #foo:%@)", [[MatrixHandler sharedHandler] homeServer]];
+        textField.placeholder = [NSString stringWithFormat:@"(e.g. #foo:%@)", [MatrixHandler sharedHandler].homeServer];
     } else if (textField == _participantsTextField) {
         NSArray *participants = self.participantsList;
         textField.text = [participants componentsJoinedByString:@"; "];
@@ -252,7 +259,7 @@
                 participants = [participants stringByAppendingString:@" @"];
             } else if ([string isEqualToString:@":"]) {
                 // Add homeserver
-                participants = [participants stringByAppendingString:[[MatrixHandler sharedHandler] homeServer]];
+                participants = [participants stringByAppendingString:[MatrixHandler sharedHandler].homeServer];
             }
             
             textField.text = participants;
@@ -286,7 +293,7 @@
         }
         
         // Create new room
-        [[[MatrixHandler sharedHandler] mxSession]
+        [[MatrixHandler sharedHandler].mxSession
          createRoom:roomName
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
          room_alias_name:self.alias
@@ -298,7 +305,7 @@
              _roomAliasTextField.text = nil;
              _participantsTextField.text = nil;
              // Open created room
-             [[AppDelegate theDelegate].masterTabBarController showRoomDetails:response.room_id];
+             [[AppDelegate theDelegate].masterTabBarController showRoom:response.room_id];
          } failure:^(NSError *error) {
              _createRoomBtn.enabled = YES;
              NSLog(@"Create room (%@ %@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, self.participantsList, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);

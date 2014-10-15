@@ -206,6 +206,7 @@
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
                         <outlet property="messageTextField" destination="k2m-aY-U73" id="fSA-Eg-duj"/>
                         <outlet property="optionBtn" destination="cfF-YG-Cvg" id="Ppb-dg-Tub"/>
+                        <outlet property="roomNavItem" destination="3Zt-Wl-J6o" id="gjB-fs-Whw"/>
                         <outlet property="sendBtn" destination="Icg-kc-a2c" id="Tr0-1e-QJp"/>
                         <outlet property="tableView" destination="meV-kn-sxo" id="Q9E-0S-N40"/>
                     </connections>
@@ -678,10 +679,10 @@
             </objects>
             <point key="canvasLocation" x="55" y="842"/>
         </scene>
-        <!--Chat Rooms-->
+        <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>
-                <splitViewController title="Chat Rooms" id="H1p-Uh-vWS" sceneMemberID="viewController">
+                <splitViewController title="RecentsSplitVC" id="H1p-Uh-vWS" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="recents" id="mXn-Bx-qzv"/>
                     <toolbarItems/>
                     <connections>
@@ -767,10 +768,10 @@
             </objects>
             <point key="canvasLocation" x="1665" y="-687"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
             <objects>
-                <navigationController id="vC3-pB-5Vb" sceneMemberID="viewController">
+                <navigationController title="RoomNav" id="vC3-pB-5Vb" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="DjV-YW-jjY">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

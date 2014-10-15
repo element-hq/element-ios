@@ -20,8 +20,7 @@
 
 @interface RecentsViewController : UITableViewController
 
-@property (strong, nonatomic) RoomViewController *roomViewController;
-
+@property (strong, nonatomic) NSString *preSelectedRoomId; // set a non-nil value to this property will open room details
 
 @end
 
