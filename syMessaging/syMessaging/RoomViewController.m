@@ -19,7 +19,7 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
-// Table view cells
+// Table view cell
 @interface RoomMessageCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userPicture;
 @property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
@@ -41,6 +41,11 @@
 @interface RoomViewController ()
 {
     BOOL isFirstDisplay;
+    
+    MXRoomData *mxRoomData;
+    
+    NSMutableArray *messages;
+    id registeredListener;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -52,34 +57,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (strong, nonatomic) MXRoomData *mxRoomData;
-
 @end
 
 @implementation RoomViewController
-
-#pragma mark - Managing the detail item
-
-- (void)setRoomId:(NSString *)roomId {
-    _roomId = roomId;
-    
-    // Update the view
-    [self configureView];
-}
-
-- (void)configureView {
-    // Update room data
-    if (self.roomId) {
-        self.mxRoomData = [[MatrixHandler sharedHandler].mxData getRoomData:self.roomId];
-    } else {
-        self.mxRoomData = nil;
-    }
-    
-    [self.tableView reloadData];
-    
-    // Update room title
-    self.roomNavItem.title = self.mxRoomData.displayname;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -91,7 +71,12 @@
 }
 
 - (void)dealloc {
-    _mxRoomData = nil;
+    messages = nil;
+    if (registeredListener) {
+        [mxRoomData unregisterListener:registeredListener];
+        registeredListener = nil;
+    }
+    mxRoomData = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,7 +87,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Update the view
+    // Reload room data
     [self configureView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -113,6 +98,11 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    if (registeredListener) {
+        [mxRoomData unregisterListener:registeredListener];
+        registeredListener = nil;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -127,6 +117,65 @@
         [self scrollToBottomAnimated:animated];
         isFirstDisplay = NO;
     }
+}
+
+#pragma mark -
+
+- (void)setRoomId:(NSString *)roomId {
+    _roomId = roomId;
+    
+    // Load room data
+    [self configureView];
+}
+
+#pragma mark - Internal methods
+
+- (void)configureView {
+    // Flush messages
+    messages = nil;
+    
+    // Remove potential roomData listener
+    if (registeredListener && mxRoomData) {
+        [mxRoomData unregisterListener:registeredListener];
+        registeredListener = nil;
+    }
+    
+    // Update room data
+    if (self.roomId) {
+        mxRoomData = [[MatrixHandler sharedHandler].mxData getRoomData:self.roomId];
+        messages = [NSMutableArray arrayWithArray:mxRoomData.messages];
+        // Register a listener for all events
+        registeredListener = [mxRoomData registerEventListenerForTypes:nil block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
+            // consider only live event
+            if (isLive) {
+                // For outgoing message, remove the temporary event
+                if ([event.user_id isEqualToString:[MatrixHandler sharedHandler].userId]) {
+                    NSUInteger index = messages.count;
+                    while (index--) {
+                        MXEvent *mxEvent = [messages objectAtIndex:index];
+                        if ([mxEvent.event_id isEqualToString:event.event_id]) {
+                            [messages replaceObjectAtIndex:index withObject:event];
+                            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                            return;
+                        }
+                    }
+                }
+                // Here a new event is added
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+                [messages addObject:event];
+                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                [self scrollToBottomAnimated:YES];
+            }
+        }];
+    } else {
+        mxRoomData = nil;
+    }
+    
+    [self.tableView reloadData];
+    
+    // Update room title
+    self.roomNavItem.title = mxRoomData.displayname;
 }
 
 - (void)onKeyboardWillShow:(NSNotification *)notif {
@@ -160,7 +209,7 @@
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
     // Scroll table view to the bottom
-    NSInteger rowNb = [self tableView:self.tableView numberOfRowsInSection:0];
+    NSInteger rowNb = messages.count;
     if (rowNb) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
@@ -173,11 +222,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rowNb = 0;
-    if (self.mxRoomData){
-        rowNb = self.mxRoomData.messages.count;
-    }
-    return rowNb;
+    return messages.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -190,7 +235,7 @@
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RoomMessageCell *cell;
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    MXEvent *mxEvent = [self.mxRoomData.messages objectAtIndex:indexPath.row];
+    MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     
     if ([mxEvent.user_id isEqualToString:mxHandler.userId]) {
         cell = [aTableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
@@ -215,25 +260,26 @@
         // paginate ?
         if ((scrollView.contentOffset.y < -64) && (_activityIndicator.isAnimating == NO))
         {
-            if (self.mxRoomData.canPaginate)
+            if (mxRoomData.canPaginate)
             {
                 [_activityIndicator startAnimating];
                 
-                [self.mxRoomData paginateBackMessages:20 success:^(NSArray *messages) {
-                    // Update room data
-                    self.mxRoomData = [[[MatrixHandler sharedHandler] mxData] getRoomData:self.roomId];
+                [mxRoomData paginateBackMessages:20 success:^(NSArray *oldMessages) {
+                    // Update messages array
+                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldMessages.count)];
+                    [messages insertObjects:oldMessages atIndexes:indexSet];
                     
                     // Refresh display
                     [self.tableView beginUpdates];
-                    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:messages.count];
-                    for (NSUInteger index = 0; index < messages.count; index++) {
+                    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:oldMessages.count];
+                    for (NSUInteger index = 0; index < oldMessages.count; index++) {
                         [indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
                     }
                     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
                     [self.tableView endUpdates];
                     
                     // Maintain the current message in visible area
-                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(messages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                     [_activityIndicator stopAnimating];
                 } failure:^(NSError *error) {
                     [_activityIndicator stopAnimating];
@@ -270,17 +316,32 @@
 
 - (IBAction)onButtonPressed:(id)sender {
     if (sender == _sendBtn) {
+        NSString *msgTxt = self.messageTextField.text;
+        
         // Send message to the room
-        [[[MatrixHandler sharedHandler] mxSession] postTextMessage:self.roomId text:self.messageTextField.text success:^(NSString *event_id) {
-            self.messageTextField.text = nil;
-            // disable send button
-            [self onTextFieldChange:nil];
-            [self configureView];
+        [[[MatrixHandler sharedHandler] mxSession] postTextMessage:self.roomId text:msgTxt success:^(NSString *event_id) {
+            // Create a temporary event to displayed outgoing message
+            MXEvent *mxEvent = [[MXEvent alloc] init];
+            mxEvent.room_id = self.roomId;
+            mxEvent.event_id = event_id;
+            mxEvent.eventType = MXEventTypeRoomMessage;
+            mxEvent.type = kMXEventTypeStringRoomMessage;
+            mxEvent.content = @{@"msgtype":@"m.text", @"body":msgTxt};
+            mxEvent.user_id = [MatrixHandler sharedHandler].userId;
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+            [messages addObject:mxEvent];
+            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+            [self scrollToBottomAnimated:YES];
         } failure:^(NSError *error) {
             NSLog(@"Failed to send message (%@): %@", self.messageTextField.text, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
+        
+        self.messageTextField.text = nil;
+        // disable send button
+        [self onTextFieldChange:nil];
     } else if (sender == _optionBtn) {
         [self dismissKeyboard];
         //TODO: display option menu (Attachments...)
