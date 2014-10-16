@@ -166,7 +166,7 @@
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
     } else {
         // Join the selected room
-        [mxHandler.mxSession join:publicRoom.room_id success:^{
+        [mxHandler.mxSession joinRoom:publicRoom.room_id success:^{
             // Show joined room
             [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
         } failure:^(NSError *error) {
@@ -343,7 +343,7 @@
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
          room_alias_name:self.alias
          topic:nil
-         invite:self.participantsList
+         //invite:self.participantsList
          success:^(MXCreateRoomResponse *response) {
              // Reset text fields
              _roomNameTextField.text = nil;
