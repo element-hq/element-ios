@@ -19,6 +19,8 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
+#define TEXT_VIEW_VERTICAL_MARGIN 5
+
 // Table view cell
 @interface RoomMessageCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userPicture;
@@ -142,10 +144,11 @@
     
     // Update room data
     if (self.roomId) {
-        mxRoomData = [[MatrixHandler sharedHandler].mxData getRoomData:self.roomId];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        mxRoomData = [mxHandler.mxData getRoomData:self.roomId];
         messages = [NSMutableArray arrayWithArray:mxRoomData.messages];
-        // Register a listener for all events
-        registeredListener = [mxRoomData registerEventListenerForTypes:nil block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
+        // Register a listener for events that modify the `messages` property 
+        registeredListener = [mxRoomData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
             // consider only live event
             if (isLive) {
                 // For outgoing message, remove the temporary event
@@ -226,24 +229,38 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Default message cell height
-    CGFloat rowHeight = 50;
+    CGFloat rowHeight;
+    // Get event related to this row
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     
+    // Use a TextView template to compute cell height
+    UITextView *textViewTemplate = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
+    textViewTemplate.scrollEnabled = NO;
+    textViewTemplate.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    textViewTemplate.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
+    [textViewTemplate sizeToFit];
+    rowHeight = textViewTemplate.frame.size.height + (TEXT_VIEW_VERTICAL_MARGIN * 2);
+    
+    // Force minimum height: 50
+    if (rowHeight < 50) {
+        rowHeight = 50;
+    }    
     return rowHeight;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RoomMessageCell *cell;
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     
     if ([mxEvent.user_id isEqualToString:mxHandler.userId]) {
-        cell = [aTableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
     } else {
-        cell = [aTableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
     }
     
-    cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];    
+    cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
     return cell;
 }
 
@@ -296,7 +313,7 @@
                     // Move the current message at the middle of the visible area (dispatch this action in order to let table end its refresh)
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                    });                    
+                    });
                 } failure:^(NSError *error) {
                     [_activityIndicator stopAnimating];
                     NSLog(@"Failed to paginate back: %@", error);
