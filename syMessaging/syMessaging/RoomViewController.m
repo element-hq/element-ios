@@ -292,12 +292,11 @@
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     
     // Use a TextView template to compute cell height
-    UITextView *textViewTemplate = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
-    textViewTemplate.scrollEnabled = NO;
-    textViewTemplate.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    textViewTemplate.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
-    [textViewTemplate sizeToFit];
-    rowHeight = textViewTemplate.frame.size.height + (TEXT_VIEW_VERTICAL_MARGIN * 2);
+    UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, MAXFLOAT)];
+    dummyTextView.font = [UIFont systemFontOfSize:14];
+    dummyTextView.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
+    CGSize contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+    rowHeight = contentSize.height + (TEXT_VIEW_VERTICAL_MARGIN * 2);
     
     // Force minimum height: 50
     if (rowHeight < 50) {
