@@ -128,6 +128,11 @@
     
     // Load room data
     [self configureView];
+    
+    // Trigger a back pagination if messages number is low
+    if (messages.count < 10) {
+        [self triggerBackPagination];
+    }
 }
 
 #pragma mark - Internal methods
