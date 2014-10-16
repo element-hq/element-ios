@@ -88,97 +88,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return publicRooms.count;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *sectionHeader = [[UILabel alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.font = [UIFont boldSystemFontOfSize:16];
-    sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-    
-    if (publicRooms) {
-        NSString *homeserver = [MatrixHandler sharedHandler].homeServerURL;
-        if (homeserver.length) {
-            sectionHeader.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
-        } else {
-            sectionHeader.text = @" Public Rooms:";
-        }
-    } else {
-        sectionHeader.text = @" No Public Rooms";
-    }
-    
-    return sectionHeader;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Cell is larger for public room with topic
-    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    if (publicRoom.topic) {
-        return 60;
-    }
-    return 44;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    UITableViewCell *cell;
-    
-    // Check whether this public room has topic
-    if (publicRoom.topic) {
-        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellSubtitle" forIndexPath:indexPath];
-        cell.detailTextLabel.text = publicRoom.topic;
-    } else {
-        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellBasic" forIndexPath:indexPath];
-    }
-    
-    // Set room display name
-    cell.textLabel.text = [publicRoom displayname];
-    
-    // Highlight?
-    if (cell.textLabel.text && [highlightedPublicRooms indexOfObject:cell.textLabel.text] != NSNotFound) {
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
-        cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:17];
-    } else {
-        cell.textLabel.font = [UIFont systemFontOfSize:19];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
-    }
-    
-    return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    
-    // Check whether the user has already joined the selected public room
-    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    if ([mxHandler.mxData getRoomData:publicRoom.room_id]) {
-        // Open selected room
-        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
-    } else {
-        // Join the selected room
-        [mxHandler.mxSession joinRoom:publicRoom.room_id success:^{
-            // Show joined room
-            [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
-        } failure:^(NSError *error) {
-            NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
 #pragma mark - Internals
 
 - (void)refreshPublicRooms {
@@ -323,7 +232,7 @@
     return YES;
 }
 
-#pragma mark - 
+#pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender {
     [self dismissKeyboard];
@@ -358,6 +267,97 @@
              [[AppDelegate theDelegate] showErrorAsAlert:error];
          }];
     }
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return publicRooms.count;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *sectionHeader = [[UILabel alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
+    sectionHeader.font = [UIFont boldSystemFontOfSize:16];
+    sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+    
+    if (publicRooms) {
+        NSString *homeserver = [MatrixHandler sharedHandler].homeServerURL;
+        if (homeserver.length) {
+            sectionHeader.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
+        } else {
+            sectionHeader.text = @" Public Rooms:";
+        }
+    } else {
+        sectionHeader.text = @" No Public Rooms";
+    }
+    
+    return sectionHeader;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Cell is larger for public room with topic
+    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    if (publicRoom.topic) {
+        return 60;
+    }
+    return 44;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    UITableViewCell *cell;
+    
+    // Check whether this public room has topic
+    if (publicRoom.topic) {
+        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellSubtitle" forIndexPath:indexPath];
+        cell.detailTextLabel.text = publicRoom.topic;
+    } else {
+        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellBasic" forIndexPath:indexPath];
+    }
+    
+    // Set room display name
+    cell.textLabel.text = [publicRoom displayname];
+    
+    // Highlight?
+    if (cell.textLabel.text && [highlightedPublicRooms indexOfObject:cell.textLabel.text] != NSNotFound) {
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
+        cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:17];
+    } else {
+        cell.textLabel.font = [UIFont systemFontOfSize:19];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+    }
+    
+    return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    // Check whether the user has already joined the selected public room
+    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    if ([mxHandler.mxData getRoomData:publicRoom.room_id]) {
+        // Open selected room
+        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
+    } else {
+        // Join the selected room
+        [mxHandler.mxSession joinRoom:publicRoom.room_id success:^{
+            // Show joined room
+            [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
+        } failure:^(NSError *error) {
+            NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
