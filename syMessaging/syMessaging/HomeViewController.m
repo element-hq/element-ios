@@ -247,13 +247,24 @@
         }
         
         // Create new room
-        [[MatrixHandler sharedHandler].mxSession
-         createRoom:roomName
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxSession createRoom:roomName
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
          room_alias_name:self.alias
          topic:nil
-         //invite:self.participantsList
          success:^(MXCreateRoomResponse *response) {
+             // Check whether some users must be invited
+             NSArray *invitedUsers = self.participantsList;
+             for (NSString *userId in invitedUsers) {
+                 [mxHandler.mxSession inviteUser:userId toRoom:response.room_id success:^{
+                     NSLog(@"%@ has been invited (roomId: %@)", userId, response.room_id);
+                 } failure:^(NSError *error) {
+                     NSLog(@"%@ invitation failed (roomId: %@): %@", userId, response.room_id, error);
+                     //Alert user
+                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 }];
+             }
+             
              // Reset text fields
              _roomNameTextField.text = nil;
              _roomAliasTextField.text = nil;
@@ -262,7 +273,7 @@
              [[AppDelegate theDelegate].masterTabBarController showRoom:response.room_id];
          } failure:^(NSError *error) {
              _createRoomBtn.enabled = YES;
-             NSLog(@"Create room (%@ %@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, self.participantsList, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
+             NSLog(@"Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
              //Alert user
              [[AppDelegate theDelegate] showErrorAsAlert:error];
          }];
