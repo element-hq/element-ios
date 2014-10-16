@@ -19,7 +19,15 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
-@interface HomeViewController ()
+
+
+@interface HomeViewController () {
+    NSArray *publicRooms;
+    // List of public room names to highlight in displayed list
+    NSArray* highlightedPublicRooms;
+}
+
+@property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
 @property (weak, nonatomic) IBOutlet UILabel *roomCreationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roomNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roomAliasLabel;
@@ -44,12 +52,18 @@
     _createRoomBtn.alpha = 0.5;
     
     // Init
-    _publicRooms = nil;
+    publicRooms = nil;
+    highlightedPublicRooms = @[@"#matrix:matrix.org"]; // Add here a room name to highlight its display in public room list
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc{
+    publicRooms = nil;
+    highlightedPublicRooms = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,10 +95,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (_publicRooms){
-        return _publicRooms.count;
-    }
-    return 0;
+    return publicRooms.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -92,7 +103,7 @@
     sectionHeader.font = [UIFont boldSystemFontOfSize:16];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     
-    if (_publicRooms) {
+    if (publicRooms) {
         NSString *homeserver = [MatrixHandler sharedHandler].homeServerURL;
         if (homeserver.length) {
             sectionHeader.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
@@ -106,11 +117,39 @@
     return sectionHeader;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Cell is larger for public room with topic
+    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    if (publicRoom.topic) {
+        return 60;
+    }
+    return 44;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCell" forIndexPath:indexPath];
+    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    UITableViewCell *cell;
     
-    MXPublicRoom *publicRoom = [_publicRooms objectAtIndex:indexPath.row];
+    // Check whether this public room has topic
+    if (publicRoom.topic) {
+        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellSubtitle" forIndexPath:indexPath];
+        cell.detailTextLabel.text = publicRoom.topic;
+    } else {
+        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellBasic" forIndexPath:indexPath];
+    }
+    
+    // Set room display name
     cell.textLabel.text = [publicRoom displayname];
+    
+    // Highlight?
+    if (cell.textLabel.text && [highlightedPublicRooms indexOfObject:cell.textLabel.text] != NSNotFound) {
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
+        cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:17];
+    } else {
+        cell.textLabel.font = [UIFont systemFontOfSize:19];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+    }
     
     return cell;
 }
@@ -121,7 +160,7 @@
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Check whether the user has already joined the selected public room
-    MXPublicRoom *publicRoom = [_publicRooms objectAtIndex:indexPath.row];
+    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
     if ([mxHandler.mxData getRoomData:publicRoom.room_id]) {
         // Open selected room
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
@@ -145,7 +184,13 @@
 - (void)refreshPublicRooms {
     // Retrieve public rooms
     [[MatrixHandler sharedHandler].mxHomeServer publicRooms:^(NSArray *rooms){
-        _publicRooms = rooms;
+        publicRooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            
+            MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
+            MXPublicRoom *secondRoom = (MXPublicRoom*)b;
+            
+            return [firstRoom.displayname compare:secondRoom.displayname options:NSCaseInsensitiveSearch];
+        }];
         [_publicRoomsTable reloadData];
     }
                                                     failure:^(NSError *error){

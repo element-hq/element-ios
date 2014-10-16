@@ -18,8 +18,5 @@
 
 @interface HomeViewController : UITableViewController <UITextFieldDelegate>
 
-@property (strong, nonatomic) NSArray *publicRooms;
-@property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
-
 @end
 
