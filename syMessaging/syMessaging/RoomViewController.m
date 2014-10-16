@@ -19,7 +19,9 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
-#define TEXT_VIEW_VERTICAL_MARGIN 5
+#define ROOM_MESSAGE_CELL_TOP_MARGIN 5
+#define ROOM_MESSAGE_CELL_BOTTOM_MARGIN 5
+#define INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT 20
 
 // Table view cell
 @interface RoomMessageCell : UITableViewCell
@@ -30,6 +32,7 @@
 @end
 
 @interface IncomingMessageCell : RoomMessageCell
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @end
 @implementation IncomingMessageCell
 @end
@@ -295,13 +298,29 @@
     // Get event related to this row
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
+    BOOL isIncomingMsg = ([mxEvent.user_id isEqualToString:mxHandler.userId] == NO);
     
     // Use a TextView template to compute cell height
     UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, MAXFLOAT)];
     dummyTextView.font = [UIFont systemFontOfSize:14];
-    dummyTextView.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
+    dummyTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
     CGSize contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
-    rowHeight = contentSize.height + (TEXT_VIEW_VERTICAL_MARGIN * 2);
+    
+    // Handle incoming / outgoing layout
+    if (isIncomingMsg) {
+        // By default the user name is displayed above the message
+        rowHeight = contentSize.height + ROOM_MESSAGE_CELL_TOP_MARGIN + INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT + ROOM_MESSAGE_CELL_BOTTOM_MARGIN;
+        
+        if (indexPath.row) {
+            // This user name is hide if the previous message is from the same user
+            MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
+            if ([previousMxEvent.user_id isEqualToString:mxEvent.user_id]) {
+                rowHeight -= INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
+            }
+        }
+    } else {
+        rowHeight = contentSize.height + ROOM_MESSAGE_CELL_TOP_MARGIN + ROOM_MESSAGE_CELL_BOTTOM_MARGIN;
+    }
     
     // Force minimum height: 50
     if (rowHeight < 50) {
@@ -314,14 +333,49 @@
     RoomMessageCell *cell;
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
+    BOOL isIncomingMsg = NO;
     
     if ([mxEvent.user_id isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
+        cell.messageTextView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
+        cell.messageTextView.backgroundColor = [UIColor lightGrayColor];
+        isIncomingMsg = YES;
     }
     
-    cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inDetailMode:NO];
+    // Clear background for notifications (We consider as notification mxEvent which is not a text message or an attachment)
+    if ([mxHandler isNotification:mxEvent]) {
+        cell.messageTextView.backgroundColor = [UIColor clearColor];
+    }
+    
+    // Hide user picture if the previous message is from the same user
+    cell.userPicture.hidden = NO;
+    if (indexPath.row) {
+        MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
+        if ([previousMxEvent.user_id isEqualToString:mxEvent.user_id]) {
+            cell.userPicture.hidden = YES;
+        }
+    }
+    
+    // Hide userName in incoming message if the previous message is from the same user
+    if (isIncomingMsg) {
+        IncomingMessageCell* incomingMsgCell = (IncomingMessageCell*)cell;
+        CGRect frame = incomingMsgCell.userNameLabel.frame;
+        if (cell.userPicture.hidden) {
+            incomingMsgCell.userNameLabel.text = nil;
+            frame.size.height = 0;
+            incomingMsgCell.userNameLabel.hidden = YES;
+        } else {
+            frame.size.height = INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
+            incomingMsgCell.userNameLabel.hidden = NO;
+            NSString *userName = [mxHandler displayNameFor:[mxRoomData getMember:mxEvent.user_id]];
+            incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"- %@", userName];
+        }
+        incomingMsgCell.userNameLabel.frame = frame;
+    }
+    
+    cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
     return cell;
 }
 

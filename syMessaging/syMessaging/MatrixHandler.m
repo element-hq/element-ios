@@ -174,7 +174,19 @@ static MatrixHandler *sharedHandler = nil;
     return NO;
 }
 
-- (NSString*)displayTextFor:(MXEvent*)message inDetailMode:(BOOL)isDetailMode {
+- (BOOL)isNotification:(MXEvent*)message {
+    // We consider as notification mxEvent which is not a text message or an attachment
+    if (message.eventType == MXEventTypeRoomMessage) {
+        NSString *msgtype = message.content[@"msgtype"];
+        if ([msgtype isEqualToString:@"m.emote"]) {
+            return YES;
+        }
+        return NO;
+    }
+    return YES;
+}
+
+- (NSString*)displayTextFor:(MXEvent*)message inSubtitleMode:(BOOL)isSubtitle {
     NSString *displayText = nil;
     // Retrieve roomData related to the message
     MXRoomData *roomData = [self.mxData getRoomData:message.room_id];
@@ -255,7 +267,7 @@ static MatrixHandler *sharedHandler = nil;
             }
             
             // Check whether the sender name has to be added
-            if (isDetailMode && [msgtype isEqualToString:@"m.emote"] == NO) {
+            if (isSubtitle && [msgtype isEqualToString:@"m.emote"] == NO) {
                 displayText = [NSString stringWithFormat:@"%@: %@", userDisplayName, displayText];
             }
             

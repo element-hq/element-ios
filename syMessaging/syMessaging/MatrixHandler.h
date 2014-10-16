@@ -37,7 +37,8 @@
 - (void)logout;
 
 - (BOOL)isAttachment:(MXEvent*)message;
-- (NSString*)displayTextFor:(MXEvent*)message inDetailMode:(BOOL)isDetailMode;
+- (BOOL)isNotification:(MXEvent*)message;
+- (NSString*)displayTextFor:(MXEvent*)message inSubtitleMode:(BOOL)isSubtitle;
 - (NSString*)displayNameFor:(MXRoomMember*)member;
 
 @end

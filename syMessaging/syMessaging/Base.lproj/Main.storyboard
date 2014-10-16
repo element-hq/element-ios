@@ -37,7 +37,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="IncomingMessageCell" id="Lq0-jR-3i5" customClass="IncomingMessageCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="IncomingMessageCell" rowHeight="70" id="Lq0-jR-3i5" customClass="IncomingMessageCell">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lq0-jR-3i5" id="iJp-sA-hG6">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -52,7 +52,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5R-Mh-3hV">
-                                                    <rect key="frame" x="51" y="5" width="200" height="40"/>
+                                                    <rect key="frame" x="51" y="25" width="200" height="40"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="rsq-bW-mGt"/>
@@ -61,25 +61,33 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="egJ-aY-QVW">
+                                                    <rect key="frame" x="51" y="5" width="200" height="20"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" placeholder="YES" id="8Iq-fG-vCR"/>
+                                                        <constraint firstAttribute="width" constant="200" id="unP-98-1hS"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="uhu-R0-9NH" secondAttribute="bottom" constant="5" id="2Yn-q9-M4a"/>
                                                 <constraint firstAttribute="bottom" secondItem="J5R-Mh-3hV" secondAttribute="bottom" constant="5" id="662-Ze-6ia"/>
-                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="Esp-Qs-hAs"/>
+                                                <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="N8f-0n-ObR"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="8" id="fNV-Tp-p31"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="qkW-ys-ckn"/>
+                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="egJ-aY-QVW" secondAttribute="bottom" id="s5L-L8-rcb"/>
+                                                <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="wym-In-Raa"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="2Yn-q9-M4a"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="messageTextView" destination="J5R-Mh-3hV" id="d45-NI-bod"/>
+                                            <outlet property="userNameLabel" destination="egJ-aY-QVW" id="IWg-7t-5Vp"/>
                                             <outlet property="userPicture" destination="uhu-R0-9NH" id="b7D-KD-aga"/>
                                         </connections>
                                     </tableViewCell>

@@ -251,7 +251,7 @@
     MXRoomData *mxRoomData = [mxHandler.mxData getRoomData:mxEvent.room_id];
     
     cell.roomTitle.text = [mxRoomData displayname];
-    cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inDetailMode:YES];
+    cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:YES];
     
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.ts/1000];
     NSString *dateFormat =  @"MMM dd HH:mm";
