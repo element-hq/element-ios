@@ -32,7 +32,8 @@
 @end
 
 @interface RecentsViewController () {
-    NSArray  *recents;
+    NSMutableArray  *recents;
+    id               registeredListener;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -66,6 +67,10 @@
 }
 
 - (void)dealloc {
+    if (registeredListener) {
+        [[MatrixHandler sharedHandler].mxData unregisterListener:registeredListener];
+        registeredListener = nil;
+    }
     recents = nil;
     _preSelectedRoomId = nil;
 }
@@ -88,6 +93,11 @@
     
     // Leave potential editing mode
     [self setEditing:NO];
+    
+    if (registeredListener) {
+        [[MatrixHandler sharedHandler].mxData unregisterListener:registeredListener];
+        registeredListener = nil;
+    }
     
     _preSelectedRoomId = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
@@ -131,16 +141,39 @@
     }
 }
 
-#pragma mark - Internals
+#pragma mark - Internal methods
 
 - (void)configureView {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    // Remove potential listener
+    if (registeredListener && mxHandler.mxData) {
+        [mxHandler.mxData unregisterListener:registeredListener];
+        registeredListener = nil;
+    }
+    
     [_activityIndicator startAnimating];
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     if ([mxHandler isInitialSyncDone] || [mxHandler isLogged] == NO) {
         // Update recents
         if (mxHandler.mxData) {
-            recents = mxHandler.mxData.recents;
+            recents = [NSMutableArray arrayWithArray:mxHandler.mxData.recents];
+            // Register recent listener
+            [mxHandler.mxData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
+                // consider only live event
+                if (isLive) {
+                    // Refresh the whole recents list
+                    recents = [NSMutableArray arrayWithArray:mxHandler.mxData.recents];
+                    // Reload table
+                    [self.tableView reloadData];
+                    [_activityIndicator stopAnimating];
+                    
+                    // Check whether a room is preselected
+                    if (_preSelectedRoomId) {
+                        self.preSelectedRoomId = _preSelectedRoomId;
+                    }
+                }
+            }];
         } else {
             recents = nil;
         }
@@ -239,18 +272,17 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // TODO enable the following code when "leave" will be available in SDK
-//        // Leave the selected room
-//        MXEvent *mxEvent = recents[indexPath.row];
-//        [[MatrixHandler sharedHandler].mxSession leave:mxEvent.room_id success:^{
-//            // Refresh table display
-//            [recents removeObjectAtIndex:indexPath.row];
-//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//        } failure:^(NSError *error) {
-//            NSLog(@"Failed to leave room (%@) failed: %@", mxEvent.room_id, error);
-//            //Alert user
-//            [[AppDelegate theDelegate] showErrorAsAlert:error];
-//        }];
+        // Leave the selected room
+        MXEvent *mxEvent = recents[indexPath.row];
+        [[MatrixHandler sharedHandler].mxSession leaveRoom:mxEvent.room_id success:^{
+            // Refresh table display
+            [recents removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        } failure:^(NSError *error) {
+            NSLog(@"Failed to leave room (%@) failed: %@", mxEvent.room_id, error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
     }
 }
 
