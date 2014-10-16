@@ -181,6 +181,71 @@
     self.roomNavItem.title = mxRoomData.displayname;
 }
 
+- (void)scrollToBottomAnimated:(BOOL)animated {
+    // Scroll table view to the bottom
+    NSInteger rowNb = messages.count;
+    if (rowNb) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+}
+
+- (void)triggerBackPagination {
+    if (mxRoomData.canPaginate)
+    {
+        [_activityIndicator startAnimating];
+        
+        [mxRoomData paginateBackMessages:20 success:^(NSArray *oldMessages) {
+            if (oldMessages.count)
+            {
+                // Update table sources
+                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldMessages.count)];
+                [messages insertObjects:oldMessages atIndexes:indexSet];
+                
+                // Prepare insertion of new rows at the top of the table (compute cumulative height of added cells)
+                NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:oldMessages.count];
+                CGFloat verticalOffset = 0;
+                for (NSUInteger index = 0; index < oldMessages.count; index++) {
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    [indexPaths addObject:indexPath];
+                    verticalOffset += [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
+                }
+                
+                // Disable animation during cells insertion to prevent flickering
+                [UIView setAnimationsEnabled:NO];
+                // Store the current content offset
+                CGPoint contentOffset = self.tableView.contentOffset;
+                [self.tableView beginUpdates];
+                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView endUpdates];
+                // Enable animation again
+                [UIView setAnimationsEnabled:YES];
+                // Fix vertical offset in order to prevent scrolling down
+                contentOffset.y += verticalOffset;
+                [self.tableView setContentOffset:contentOffset animated:NO];
+                
+                [_activityIndicator stopAnimating];
+                
+                // Move the current message at the middle of the visible area (dispatch this action in order to let table end its refresh)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                });
+            } else {
+                // Here there was no event related to the `messages` property
+                [_activityIndicator stopAnimating];
+                // Trigger a new back pagination (if any)
+                [self triggerBackPagination];
+            }
+        } failure:^(NSError *error) {
+            [_activityIndicator stopAnimating];
+            NSLog(@"Failed to paginate back: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+}
+
+#pragma mark - keyboard handling
+
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
@@ -208,14 +273,6 @@
 - (void)dismissKeyboard {
     // Hide the keyboard
     [_messageTextField resignFirstResponder];
-}
-
-- (void)scrollToBottomAnimated:(BOOL)animated {
-    // Scroll table view to the bottom
-    NSInteger rowNb = messages.count;
-    if (rowNb) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
-    }
 }
 
 #pragma mark - Table view data source
@@ -277,50 +334,7 @@
         // paginate ?
         if ((scrollView.contentOffset.y < -64) && (_activityIndicator.isAnimating == NO))
         {
-            if (mxRoomData.canPaginate)
-            {
-                [_activityIndicator startAnimating];
-                
-                [mxRoomData paginateBackMessages:20 success:^(NSArray *oldMessages) {
-                    // Update table sources
-                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldMessages.count)];
-                    [messages insertObjects:oldMessages atIndexes:indexSet];
-                    
-                    // Prepare insertion of new rows at the top of the table (compute cumulative height of added cells)
-                    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:oldMessages.count];
-                    CGFloat verticalOffset = 0;
-                    for (NSUInteger index = 0; index < oldMessages.count; index++) {
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                        [indexPaths addObject:indexPath];
-                        verticalOffset += [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
-                    }
-                    
-                    // Disable animation during cells insertion to prevent flickering
-                    [UIView setAnimationsEnabled:NO];
-                    // Store the current content offset
-                    CGPoint contentOffset = self.tableView.contentOffset;
-                    [self.tableView beginUpdates];
-                    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-                    [self.tableView endUpdates];
-                    // Enable animation again
-                    [UIView setAnimationsEnabled:YES];
-                    // Fix vertical offset in order to prevent scrolling down
-                    contentOffset.y += verticalOffset;
-                    [self.tableView setContentOffset:contentOffset animated:NO];
-                    
-                    [_activityIndicator stopAnimating];
-                    
-                    // Move the current message at the middle of the visible area (dispatch this action in order to let table end its refresh)
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                    });
-                } failure:^(NSError *error) {
-                    [_activityIndicator stopAnimating];
-                    NSLog(@"Failed to paginate back: %@", error);
-                    //Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
-            }
+            [self triggerBackPagination];
         }
     }
 }
