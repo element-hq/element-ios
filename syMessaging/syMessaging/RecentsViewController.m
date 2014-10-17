@@ -253,6 +253,13 @@
     cell.roomTitle.text = [mxRoomData displayname];
     cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:YES];
     
+    // Set in bold public room name
+    if (mxRoomData.isPublic) {
+        cell.roomTitle.font = [UIFont boldSystemFontOfSize:20];
+    } else {
+        cell.roomTitle.font = [UIFont systemFontOfSize:19];
+    }
+    
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.ts/1000];
     NSString *dateFormat =  @"MMM dd HH:mm";
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
