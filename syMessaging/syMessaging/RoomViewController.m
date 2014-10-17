@@ -284,13 +284,15 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)showRoomMembers {
     members = [mxRoomData members];
     
-    // define a table background
-    CGRect frame = [[UIScreen mainScreen] bounds];
+    // define members table background
+    CGRect frame = self.messagesTableView.frame;
     UIEdgeInsets roomTableInset = self.messagesTableView.contentInset;
     frame.origin.x += roomTableInset.left;
     frame.origin.y += roomTableInset.top;
     frame.size.width -= roomTableInset.left + roomTableInset.right;
     frame.size.height -= roomTableInset.top + roomTableInset.bottom;
+    // overlap the control view
+    frame.size.height += self.controlView.frame.size.height;
     membersTableViewBackground = [[UIView alloc] initWithFrame:frame];
     membersTableViewBackground.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
     
