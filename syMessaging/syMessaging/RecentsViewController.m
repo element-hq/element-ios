@@ -159,7 +159,7 @@
         if (mxHandler.mxData) {
             recents = [NSMutableArray arrayWithArray:mxHandler.mxData.recents];
             // Register recent listener
-            [mxHandler.mxData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
+            registeredListener = [mxHandler.mxData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
                 // consider only live event
                 if (isLive) {
                     // Refresh the whole recents list
