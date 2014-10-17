@@ -19,7 +19,10 @@
 
 static MatrixHandler *sharedHandler = nil;
 
-@interface MatrixHandler ()
+@interface MatrixHandler () {
+    // We will notify user only once on session failure
+    BOOL notifyOpenSessionFailure;
+}
 
 @property (nonatomic,readwrite) BOOL isInitialSyncDone;
 
@@ -44,6 +47,7 @@ static MatrixHandler *sharedHandler = nil;
 -(MatrixHandler *)init {
     if (self = [super init]) {
         _isInitialSyncDone = NO;
+        notifyOpenSessionFailure = YES;
         
         // Read potential homeserver url in shared defaults object
         if (self.homeServerURL) {
@@ -65,8 +69,16 @@ static MatrixHandler *sharedHandler = nil;
             self.isInitialSyncDone = YES;
         } failure:^(NSError *error) {
             NSLog(@"Initial Sync failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
+            if (notifyOpenSessionFailure) {
+                //Alert user only once
+                notifyOpenSessionFailure = NO;
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }
+            
+            // Postpone a new attempt in 10 sec 
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self openSession];
+            });
         }];
     }
 }
@@ -77,6 +89,7 @@ static MatrixHandler *sharedHandler = nil;
     [self.mxSession close];
     self.mxSession = nil;
     self.isInitialSyncDone = NO;
+    notifyOpenSessionFailure = YES;
 }
 
 - (void)dealloc {
