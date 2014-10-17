@@ -36,6 +36,13 @@
 
 - (void)logout;
 
+// ******************
+// Presently the SDK is not able to handle correctly the context for the room recently joined
+// PATCH: we define temporarily a method to force initial sync
+// FIXME: this method should be removed when SDK will fix the issue
+- (void)forceInitialSync;
+// ******************
+
 - (BOOL)isAttachment:(MXEvent*)message;
 - (BOOL)isNotification:(MXEvent*)message;
 - (NSString*)displayTextFor:(MXEvent*)message inSubtitleMode:(BOOL)isSubtitle;

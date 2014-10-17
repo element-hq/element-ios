@@ -359,6 +359,13 @@
     } else {
         // Join the selected room
         [mxHandler.mxSession joinRoom:publicRoom.room_id success:^{
+            // ******************
+            // Presently the SDK is not able to handle correctly the context for the room recently joined
+            // PATCH: we force new initial sync
+            // FIXME: this new initial sync should be removed when SDK will fix the issue
+            [mxHandler forceInitialSync];
+            // ******************
+            
             // Show joined room
             [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
         } failure:^(NSError *error) {

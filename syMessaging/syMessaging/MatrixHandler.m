@@ -108,6 +108,17 @@ static MatrixHandler *sharedHandler = nil;
     self.accessToken = nil;
 }
 
+// ******************
+// Presently the SDK is not able to handle correctly the context for the room recently joined
+// PATCH: we define temporarily a method to force initial sync
+// FIXME: this method should be removed when SDK will fix the issue
+- (void)forceInitialSync {
+    [self closeSession];
+    notifyOpenSessionFailure = NO;
+    [self openSession];
+}
+// ******************
+
 - (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
 }
