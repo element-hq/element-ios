@@ -114,25 +114,32 @@
                                                         <constraint firstAttribute="width" constant="40" id="tbf-QO-jKR"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unsent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alD-cg-uMl">
+                                                    <rect key="frame" x="286" y="14" width="58" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="58" id="GX0-HR-Wge"/>
+                                                        <constraint firstAttribute="height" constant="21" id="q5G-LH-tGH"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="mks-jh-AiZ" secondAttribute="trailing" constant="8" id="1Fh-Wx-A41"/>
                                                 <constraint firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" constant="5" id="KPt-Vo-ntg"/>
-                                                <constraint firstAttribute="bottom" secondItem="mks-jh-AiZ" secondAttribute="bottom" constant="5" id="QiX-ZA-N2e"/>
+                                                <constraint firstItem="alD-cg-uMl" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="14" id="M1S-HJ-o3b"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="SSl-4u-03L"/>
+                                                <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="alD-cg-uMl" secondAttribute="trailing" constant="5" id="Vde-Q3-e8O"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="3" id="cCA-xk-XBe"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="owD-KZ-snG"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="QiX-ZA-N2e"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>
+                                            <outlet property="unsentLabel" destination="alD-cg-uMl" id="UXm-mh-sux"/>
                                             <outlet property="userPicture" destination="mks-jh-AiZ" id="bxN-GB-VOx"/>
                                         </connections>
                                     </tableViewCell>

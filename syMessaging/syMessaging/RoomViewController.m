@@ -23,6 +23,9 @@
 #define ROOM_MESSAGE_CELL_BOTTOM_MARGIN 5
 #define INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT 20
 
+NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
+NSString *const kFailedEventId = @"failedEventId";
+
 // Table view cell
 @interface RoomMessageCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userPicture;
@@ -38,6 +41,7 @@
 @end
 
 @interface OutgoingMessageCell : RoomMessageCell
+@property (weak, nonatomic) IBOutlet UILabel *unsentLabel;
 @end
 @implementation OutgoingMessageCell
 @end
@@ -358,8 +362,9 @@
         }
     }
     
-    // Hide userName in incoming message if the previous message is from the same user
+    // Update incoming/outgoing message layout
     if (isIncomingMsg) {
+        // Hide userName in incoming message if the previous message is from the same user
         IncomingMessageCell* incomingMsgCell = (IncomingMessageCell*)cell;
         CGRect frame = incomingMsgCell.userNameLabel.frame;
         if (cell.userPicture.hidden) {
@@ -373,6 +378,20 @@
             incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"- %@", userName];
         }
         incomingMsgCell.userNameLabel.frame = frame;
+    } else {
+        // Hide unsent label by default
+        UILabel *unsentLabel = ((OutgoingMessageCell*)cell).unsentLabel;
+        unsentLabel.hidden = YES;
+        
+        // Set the right text color for outgoing messages
+        if ([mxEvent.event_id hasPrefix:kLocalEchoEventIdPrefix]) {
+            cell.messageTextView.textColor = [UIColor lightGrayColor];
+        } else if ([mxEvent.event_id hasPrefix:kFailedEventId]) {
+            cell.messageTextView.textColor = [UIColor redColor];
+            unsentLabel.hidden = NO;
+        } else {
+            cell.messageTextView.textColor = [UIColor blackColor];
+        }
     }
     
     cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
@@ -417,31 +436,57 @@
     return YES;
 }
 
-#pragma mark -
+#pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender {
     if (sender == _sendBtn) {
         NSString *msgTxt = self.messageTextField.text;
         
+        // Create a temporary event to displayed outgoing message (local echo)
+        NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
+        MXEvent *mxEvent = [[MXEvent alloc] init];
+        mxEvent.room_id = self.roomId;
+        mxEvent.event_id = localEventId;
+        mxEvent.eventType = MXEventTypeRoomMessage;
+        mxEvent.type = kMXEventTypeStringRoomMessage;
+        mxEvent.content = @{@"msgtype":@"m.text", @"body":msgTxt};
+        mxEvent.user_id = [MatrixHandler sharedHandler].userId;
+        // Update table sources
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+        [messages addObject:mxEvent];
+        // Refresh table display
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+        [self scrollToBottomAnimated:YES];
+        
         // Send message to the room
         [[[MatrixHandler sharedHandler] mxSession] postTextMessage:self.roomId text:msgTxt success:^(NSString *event_id) {
-            // Create a temporary event to displayed outgoing message
-            MXEvent *mxEvent = [[MXEvent alloc] init];
-            mxEvent.room_id = self.roomId;
-            mxEvent.event_id = event_id;
-            mxEvent.eventType = MXEventTypeRoomMessage;
-            mxEvent.type = kMXEventTypeStringRoomMessage;
-            mxEvent.content = @{@"msgtype":@"m.text", @"body":msgTxt};
-            mxEvent.user_id = [MatrixHandler sharedHandler].userId;
-            
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-            [messages addObject:mxEvent];
-            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-            [self scrollToBottomAnimated:YES];
+            // Update the temporary event with the actual event id
+            NSUInteger index = messages.count;
+            while (index--) {
+                MXEvent *mxEvent = [messages objectAtIndex:index];
+                if ([mxEvent.event_id isEqualToString:localEventId]) {
+                    mxEvent.event_id = event_id;
+                    // Refresh table display
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    break;
+                }
+            }
         } failure:^(NSError *error) {
             NSLog(@"Failed to send message (%@): %@", self.messageTextField.text, error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
+            // Update the temporary event with the failed event id
+            NSUInteger index = messages.count;
+            while (index--) {
+                MXEvent *mxEvent = [messages objectAtIndex:index];
+                if ([mxEvent.event_id isEqualToString:localEventId]) {
+                    mxEvent.event_id = kFailedEventId;
+                    // Refresh table display
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    [self scrollToBottomAnimated:YES];
+                    break;
+                }
+            }
         }];
         
         self.messageTextField.text = nil;
