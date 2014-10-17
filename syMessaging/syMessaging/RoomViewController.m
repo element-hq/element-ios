@@ -55,10 +55,15 @@ NSString *const kFailedEventId = @"failedEventId";
     
     NSMutableArray *messages;
     id registeredListener;
+    
+    // Members list
+    NSArray       *members;
+    UIView        *membersTableViewBackground;
+    UITableView   *membersTableView;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
@@ -75,6 +80,10 @@ NSString *const kFailedEventId = @"failedEventId";
     // Do any additional setup after loading the view, typically from a nib.
     isFirstDisplay = YES;
     
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
     _sendBtn.enabled = NO;
     _sendBtn.alpha = 0.5;
 }
@@ -86,6 +95,10 @@ NSString *const kFailedEventId = @"failedEventId";
         registeredListener = nil;
     }
     mxRoomData = nil;
+    
+    membersTableViewBackground = nil;
+    membersTableView = nil;
+    members = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -107,6 +120,9 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    // Hide members by default
+    [self hideRoomMembers];
     
     if (registeredListener) {
         [mxRoomData unregisterListener:registeredListener];
@@ -171,7 +187,7 @@ NSString *const kFailedEventId = @"failedEventId";
                         if ([mxEvent.event_id isEqualToString:event.event_id]) {
                             [messages replaceObjectAtIndex:index withObject:event];
                             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                             return;
                         }
                     }
@@ -179,7 +195,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 // Here a new event is added
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
                 [messages addObject:event];
-                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
                 [self scrollToBottomAnimated:YES];
             }
         }];
@@ -187,7 +203,7 @@ NSString *const kFailedEventId = @"failedEventId";
         mxRoomData = nil;
     }
     
-    [self.tableView reloadData];
+    [self.messagesTableView reloadData];
     
     // Update room title
     self.roomNavItem.title = mxRoomData.displayname;
@@ -197,7 +213,7 @@ NSString *const kFailedEventId = @"failedEventId";
     // Scroll table view to the bottom
     NSInteger rowNb = messages.count;
     if (rowNb) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+        [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
 }
 
@@ -219,27 +235,27 @@ NSString *const kFailedEventId = @"failedEventId";
                 for (NSUInteger index = 0; index < oldMessages.count; index++) {
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     [indexPaths addObject:indexPath];
-                    verticalOffset += [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
+                    verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
                 }
                 
                 // Disable animation during cells insertion to prevent flickering
                 [UIView setAnimationsEnabled:NO];
                 // Store the current content offset
-                CGPoint contentOffset = self.tableView.contentOffset;
-                [self.tableView beginUpdates];
-                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
+                CGPoint contentOffset = self.messagesTableView.contentOffset;
+                [self.messagesTableView beginUpdates];
+                [self.messagesTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                [self.messagesTableView endUpdates];
                 // Enable animation again
                 [UIView setAnimationsEnabled:YES];
                 // Fix vertical offset in order to prevent scrolling down
                 contentOffset.y += verticalOffset;
-                [self.tableView setContentOffset:contentOffset animated:NO];
+                [self.messagesTableView setContentOffset:contentOffset animated:NO];
                 
                 [_activityIndicator stopAnimating];
                 
                 // Move the current message at the middle of the visible area (dispatch this action in order to let table end its refresh)
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 });
             } else {
                 // Here there was no event related to the `messages` property
@@ -256,16 +272,66 @@ NSString *const kFailedEventId = @"failedEventId";
     }
 }
 
+- (void)showHideRoomMembers:(id)sender {
+    // Check whether the members list is displayed
+    if (members) {
+        [self hideRoomMembers];
+    } else {
+        [self showRoomMembers];
+    }
+}
+
+- (void)showRoomMembers {
+    members = [mxRoomData members];
+    
+    // define a table background
+    CGRect frame = [[UIScreen mainScreen] bounds];
+    UIEdgeInsets roomTableInset = self.messagesTableView.contentInset;
+    frame.origin.x += roomTableInset.left;
+    frame.origin.y += roomTableInset.top;
+    frame.size.width -= roomTableInset.left + roomTableInset.right;
+    frame.size.height -= roomTableInset.top + roomTableInset.bottom;
+    membersTableViewBackground = [[UIView alloc] initWithFrame:frame];
+    membersTableViewBackground.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+    
+    membersTableViewBackground.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers)];
+    [membersTableViewBackground addGestureRecognizer:tap];
+    
+    // compute table height (the table should not cover all the screen to let the user be able to dismiss the table)
+    CGFloat tableHeight = members.count * 44;
+    CGFloat tableHeightMax = membersTableViewBackground.frame.size.height - 50;
+    if (tableHeightMax < tableHeight)
+    {
+        tableHeight = tableHeightMax;
+    }
+    frame.size.height = tableHeight;
+    membersTableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    membersTableView.delegate = self;
+    membersTableView.dataSource = self;
+    
+    [self.view addSubview:membersTableViewBackground];
+    [self.view addSubview:membersTableView];
+}
+
+- (void)hideRoomMembers {
+    [membersTableView removeFromSuperview];
+    membersTableView = nil;
+    [membersTableViewBackground removeFromSuperview];
+    membersTableViewBackground = nil;
+    members = nil;
+}
+
 #pragma mark - keyboard handling
 
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
     
-    UIEdgeInsets insets = self.tableView.contentInset;
+    UIEdgeInsets insets = self.messagesTableView.contentInset;
     // Handle portrait/landscape mode
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
-    self.tableView.contentInset = insets;
+    self.messagesTableView.contentInset = insets;
     
     [self scrollToBottomAnimated:YES];
     
@@ -275,9 +341,9 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
-    UIEdgeInsets insets = self.tableView.contentInset;
+    UIEdgeInsets insets = self.messagesTableView.contentInset;
     insets.bottom = self.controlView.frame.size.height;
-    self.tableView.contentInset = insets;
+    self.messagesTableView.contentInset = insets;
     
     _controlViewBottomConstraint.constant = 0;
 }
@@ -294,10 +360,23 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Check whether members list is displayed
+    if (tableView == membersTableView)
+    {
+        return members.count;
+    }
+    
     return messages.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Check whether members list is displayed
+    if (tableView == membersTableView)
+    {
+        return 44;
+    }
+    
+    // Handle here room thread cells
     CGFloat rowHeight;
     // Get event related to this row
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -334,8 +413,29 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RoomMessageCell *cell;
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    // Check whether members list is displayed
+    if (tableView == membersTableView)
+    {
+        UITableViewCell *cell;
+        cell = [membersTableView dequeueReusableCellWithIdentifier:@"RoomMemberCell"];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RoomMemberCell"];
+            cell.imageView.image = [UIImage imageNamed:@"default-profile"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        if (indexPath.row < members.count) {
+            MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
+            cell.textLabel.text = [mxHandler displayNameFor:roomMember];
+        }
+        
+        return cell;
+    }
+    
+    // Handle here room thread cells
+    RoomMessageCell *cell;
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = NO;
     
@@ -407,7 +507,7 @@ NSString *const kFailedEventId = @"failedEventId";
 
 // Detect vertical bounce at the top of the tableview to trigger pagination
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    if (scrollView == self.tableView) {
+    if (scrollView == self.messagesTableView) {
         // paginate ?
         if ((scrollView.contentOffset.y < -64) && (_activityIndicator.isAnimating == NO))
         {
@@ -455,7 +555,7 @@ NSString *const kFailedEventId = @"failedEventId";
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
         [messages addObject:mxEvent];
         // Refresh table display
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+        [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
         [self scrollToBottomAnimated:YES];
         
         // Send message to the room
@@ -468,7 +568,7 @@ NSString *const kFailedEventId = @"failedEventId";
                     mxEvent.event_id = event_id;
                     // Refresh table display
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                     break;
                 }
             }
@@ -482,7 +582,7 @@ NSString *const kFailedEventId = @"failedEventId";
                     mxEvent.event_id = kFailedEventId;
                     // Refresh table display
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                     [self scrollToBottomAnimated:YES];
                     break;
                 }
@@ -494,7 +594,16 @@ NSString *const kFailedEventId = @"failedEventId";
         [self onTextFieldChange:nil];
     } else if (sender == _optionBtn) {
         [self dismissKeyboard];
-        //TODO: display option menu (Attachments...)
+        
+        //TODO: display action menu: Add attachments, Invite user...
+        
+
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Invite a user" message:nil preferredStyle:UIAlertControllerStyleAlert];
+//        or
+//        UIAlertView *plainTextInputAlert = [[UIAlertView alloc]initWithTitle:@"Invite a user" message:nil delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"ok", nil];
+//        // apply style
+//        plainTextInputAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        
     }
 }
 @end
