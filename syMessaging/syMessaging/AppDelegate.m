@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "RoomViewController.h"
 #import "MatrixHandler.h"
+#import "MediaManager.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -80,6 +81,9 @@
 #pragma mark -
 
 - (void)logout {
+    // Clear cache
+    [MediaManager clearCache];
+    // Logout Matrix
     [[MatrixHandler sharedHandler] logout];
     [self.masterTabBarController showLoginScreen];
     // By default the "Home" tab is focussed

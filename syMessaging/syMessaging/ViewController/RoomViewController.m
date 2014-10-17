@@ -15,6 +15,7 @@
  */
 
 #import "RoomViewController.h"
+#import "RoomMessageTableCell.h"
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
@@ -25,26 +26,6 @@
 
 NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
 NSString *const kFailedEventId = @"failedEventId";
-
-// Table view cell
-@interface RoomMessageCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *userPicture;
-@property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
-@end
-@implementation RoomMessageCell
-@end
-
-@interface IncomingMessageCell : RoomMessageCell
-@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
-@end
-@implementation IncomingMessageCell
-@end
-
-@interface OutgoingMessageCell : RoomMessageCell
-@property (weak, nonatomic) IBOutlet UILabel *unsentLabel;
-@end
-@implementation OutgoingMessageCell
-@end
 
 
 @interface RoomViewController ()
@@ -437,7 +418,7 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     
     // Handle here room thread cells
-    RoomMessageCell *cell;
+    RoomMessageTableCell *cell;
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = NO;
     
@@ -456,20 +437,25 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     
     // Hide user picture if the previous message is from the same user
-    cell.userPicture.hidden = NO;
+    cell.pictureView.hidden = NO;
     if (indexPath.row) {
         MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
         if ([previousMxEvent.user_id isEqualToString:mxEvent.user_id]) {
-            cell.userPicture.hidden = YES;
+            cell.pictureView.hidden = YES;
         }
+    }
+    // Set url for visible picture
+    if (!cell.pictureView.hidden) {
+        cell.placeholder = @"default-profile";
+        cell.pictureURL = [mxRoomData getMember:mxEvent.user_id].avatar_url;
     }
     
     // Update incoming/outgoing message layout
     if (isIncomingMsg) {
         // Hide userName in incoming message if the previous message is from the same user
-        IncomingMessageCell* incomingMsgCell = (IncomingMessageCell*)cell;
+        IncomingMessageTableCell* incomingMsgCell = (IncomingMessageTableCell*)cell;
         CGRect frame = incomingMsgCell.userNameLabel.frame;
-        if (cell.userPicture.hidden) {
+        if (cell.pictureView.hidden) {
             incomingMsgCell.userNameLabel.text = nil;
             frame.size.height = 0;
             incomingMsgCell.userNameLabel.hidden = YES;
@@ -482,7 +468,7 @@ NSString *const kFailedEventId = @"failedEventId";
         incomingMsgCell.userNameLabel.frame = frame;
     } else {
         // Hide unsent label by default
-        UILabel *unsentLabel = ((OutgoingMessageCell*)cell).unsentLabel;
+        UILabel *unsentLabel = ((OutgoingMessageTableCell*)cell).unsentLabel;
         unsentLabel.hidden = YES;
         
         // Set the right text color for outgoing messages
