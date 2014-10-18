@@ -15,12 +15,10 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "CustomTableViewCell.h"
 
-// Customize UITableViewCell in order to handle Table cell with UIImageView based on remote url
-@interface CustomTableViewCell : UITableViewCell <NSURLConnectionDataDelegate>
-@property (strong, nonatomic) IBOutlet UIImageView *pictureView;
-
-@property (strong, nonatomic) NSString *placeholder;
-@property (strong, nonatomic) NSString *pictureURL;
+// Room Member Table View Cell
+@interface RoomMemberTableCell : CustomTableViewCell
+@property (strong, nonatomic) UILabel *userLabel;
 @end
 

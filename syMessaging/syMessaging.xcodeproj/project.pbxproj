@@ -12,6 +12,7 @@
 		F01628C319E29C660071C473 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BE19E29C660071C473 /* logo.png */; };
 		F024098219E7D177006E741B /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F024098119E7D177006E741B /* tab_recents@2x.png */; };
 		F02D707319F1CE4A007B47D3 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707219F1CE4A007B47D3 /* CustomTableViewCell.m */; };
+		F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */; };
 		F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */; };
@@ -51,6 +52,8 @@
 		F024098119E7D177006E741B /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
 		F02D707119F1CE4A007B47D3 /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
 		F02D707219F1CE4A007B47D3 /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
+		F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTableCell.h; sourceTree = "<group>"; };
+		F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTableCell.m; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F03EF5EC19F171EB00A0EE52 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -158,6 +161,8 @@
 			children = (
 				F02D707119F1CE4A007B47D3 /* CustomTableViewCell.h */,
 				F02D707219F1CE4A007B47D3 /* CustomTableViewCell.m */,
+				F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */,
+				F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */,
 				F03EF5FD19F1762000A0EE52 /* RoomMessageTableCell.h */,
 				F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */,
 			);
@@ -382,6 +387,7 @@
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
+				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

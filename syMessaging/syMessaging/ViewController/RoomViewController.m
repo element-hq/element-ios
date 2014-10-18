@@ -16,6 +16,7 @@
 
 #import "RoomViewController.h"
 #import "RoomMessageTableCell.h"
+#import "RoomMemberTableCell.h"
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
@@ -282,7 +283,7 @@ NSString *const kFailedEventId = @"failedEventId";
     [membersTableViewBackground addGestureRecognizer:tap];
     
     // compute table height (the table should not cover all the screen to let the user be able to dismiss the table)
-    CGFloat tableHeight = members.count * 44;
+    CGFloat tableHeight = members.count * 50;
     CGFloat tableHeightMax = membersTableViewBackground.frame.size.height - 50;
     if (tableHeightMax < tableHeight)
     {
@@ -343,7 +344,7 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Check whether members list is displayed
+    // Check table view members vs messages
     if (tableView == membersTableView)
     {
         return members.count;
@@ -353,10 +354,10 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Check whether members list is displayed
+    // Check table view members vs messages
     if (tableView == membersTableView)
     {
-        return 44;
+        return 50;
     }
     
     // Handle here room thread cells
@@ -398,26 +399,31 @@ NSString *const kFailedEventId = @"failedEventId";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
-    // Check whether members list is displayed
+    // Check table view members vs messages
     if (tableView == membersTableView)
     {
-        UITableViewCell *cell;
-        cell = [membersTableView dequeueReusableCellWithIdentifier:@"RoomMemberCell"];
+        RoomMemberTableCell *cell = [membersTableView dequeueReusableCellWithIdentifier:@"RoomMemberCell"];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RoomMemberCell"];
-            cell.imageView.image = [UIImage imageNamed:@"default-profile"];
+            cell = [[RoomMemberTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RoomMemberCell"];
+            cell.frame = CGRectMake(0, 0, membersTableView.frame.size.width, 50);
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.pictureView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 5, 40, 40)];
+            cell.userLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 5, membersTableView.frame.size.width - 64, 40)];
+            [cell addSubview:cell.pictureView];
+            [cell addSubview:cell.userLabel];
         }
         
         if (indexPath.row < members.count) {
             MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-            cell.textLabel.text = [mxHandler displayNameFor:roomMember];
+            cell.userLabel.text = [mxHandler displayNameFor:roomMember];
+            cell.placeholder = @"default-profile";
+            cell.pictureURL = roomMember.avatar_url;
         }
         
         return cell;
     }
     
-    // Handle here room thread cells
+    // Handle here room message cells
     RoomMessageTableCell *cell;
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = NO;

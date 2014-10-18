@@ -14,13 +14,8 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "RoomMemberTableCell.h"
 
-// Customize UITableViewCell in order to handle Table cell with UIImageView based on remote url
-@interface CustomTableViewCell : UITableViewCell <NSURLConnectionDataDelegate>
-@property (strong, nonatomic) IBOutlet UIImageView *pictureView;
 
-@property (strong, nonatomic) NSString *placeholder;
-@property (strong, nonatomic) NSString *pictureURL;
+@implementation RoomMemberTableCell
 @end
-
