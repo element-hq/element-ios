@@ -260,7 +260,7 @@
         cell.roomTitle.font = [UIFont systemFontOfSize:19];
     }
     
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.ts/1000];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.origin_server_ts/1000];
     NSString *dateFormat =  @"MMM dd HH:mm";
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
