@@ -17,13 +17,22 @@
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
+// The callback blocks
+typedef void (^blockMediaManager_onImageReady)(UIImage *image);
+typedef void (^blockMediaManager_onError)(NSError *error);
+
 @interface MediaManager : NSObject
 
 + (id)sharedInstance;
 
-+ (NSString*)cachePictureWithData:(NSData*)imageData forURL:(NSString *)pictureURL;
+// Load a picture from the local cache or download it if it is not available yet.
+// In this second case a mediaLoader reference is returned in order to let the user cancel this action.
++ (id)loadPicture:(NSString*)pictureURL
+            success:(blockMediaManager_onImageReady)success
+            failure:(blockMediaManager_onError)failure;
++ (void)cancel:(id)mediaLoader;
 
-+ (UIImage*)loadCachePicture:(NSString*)pictureURL;
++ (NSString*)cachePictureWithData:(NSData*)imageData forURL:(NSString *)pictureURL;
 
 + (void)clearCache;
 

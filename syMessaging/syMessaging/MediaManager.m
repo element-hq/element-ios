@@ -21,6 +21,88 @@ static NSString *pictureDir        = @"picturecache";
 
 static MediaManager *sharedMediaManager = nil;
 
+@interface MediaLoader : NSObject <NSURLConnectionDataDelegate> {
+    NSString *mediaURL;
+    
+    blockMediaManager_onImageReady onImageReady;
+    blockMediaManager_onError onError;
+    
+    NSMutableData *downloadData;
+    NSURLConnection *downloadConnection;
+}
+@end
+
+@implementation MediaLoader
+
+- (void)downloadPicture:(NSString*)pictureURL
+             success:(blockMediaManager_onImageReady)success
+             failure:(blockMediaManager_onError)failure {
+    // Report provided params
+    mediaURL = pictureURL;
+    onImageReady = success;
+    onError = failure;
+    
+    // Start downloading the picture
+    NSURL *url = [NSURL URLWithString:pictureURL];
+    downloadData = [[NSMutableData alloc] init];
+    downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
+}
+
+- (void)cancel
+{
+    // Reset blocks
+    onImageReady = nil;
+    onError = nil;
+    // Cancel potential connection
+    if (downloadConnection) {
+        [downloadConnection cancel];
+        downloadConnection = nil;
+        downloadData = nil;
+    }
+}
+
+- (void)dealloc
+{
+    [self cancel];
+}
+
+#pragma mark - NSURLConnectionDelegate
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"ERROR: picture download failed: %@, %@", error, mediaURL);
+    if (onError) {
+        onError (error);
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    // Append data
+    [downloadData appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // CAUTION: Presently only picture are supported
+    // Set downloaded image
+    UIImage *image = [UIImage imageWithData:downloadData];
+    if (image) {
+        // Cache the downloaded data
+        [MediaManager cachePictureWithData:downloadData forURL:mediaURL];
+        // Call registered block
+        if (onImageReady) {
+            onImageReady(image);
+        }
+    } else if (onError){
+        onError(nil);
+    }
+    
+    downloadData = nil;
+    downloadConnection = nil;
+}
+
+@end
+
 @implementation MediaManager
 
 + (id)sharedInstance {
@@ -29,6 +111,33 @@ static MediaManager *sharedMediaManager = nil;
             sharedMediaManager = [[self alloc] init];
     }
     return sharedMediaManager;
+}
+
+// Load a picture from the local cache or download it if it is not available yet.
+// In this second case a mediaLoader reference is returned in order to let the user cancel this action.
++ (id)loadPicture:(NSString*)pictureURL
+          success:(blockMediaManager_onImageReady)success
+          failure:(blockMediaManager_onError)failure {
+    id ret = nil;
+    // Check cached pictures
+    UIImage *image = [MediaManager loadCachePicture:pictureURL];
+    if (image) {
+        if (success) {
+            // Reply synchronously
+            success (image);
+        }
+    }
+    else {
+        // Create a media loader to download picture
+        MediaLoader *mediaLoader = [[MediaLoader alloc] init];
+        [mediaLoader downloadPicture:pictureURL success:success failure:failure];
+        ret = mediaLoader;
+    }
+    return ret;
+}
+
++ (void)cancel:(id)mediaLoader {
+    [((MediaLoader*)mediaLoader) cancel];
 }
 
 #pragma mark - Cache handling

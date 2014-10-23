@@ -18,80 +18,44 @@
 #import "MediaManager.h"
 
 @interface CustomTableViewCell () {
-    NSMutableData *downloadData;
-    NSURLConnection *downloadConnection;
+    id mediaLoader;
 }
 @end
 
 @implementation CustomTableViewCell
 
 - (void)setPictureURL:(NSString *)pictureURL {
-    // Cancel current request (if any)
-    [downloadConnection cancel];
-    downloadConnection = nil;
-    downloadData = nil;
+    // Cancel media loader in progress (if any)
+    if (mediaLoader) {
+        [MediaManager cancel:mediaLoader];
+        mediaLoader = nil;
+    }
     
     _pictureURL = pictureURL;
     
-    // Update user picture
+    // Reset image view
     _pictureView.image = nil;
+    if (_placeholder) {
+        // Set picture placeholder
+        _pictureView.image = [UIImage imageNamed:_placeholder];
+    }
+    // Consider provided url to update image view
     if (pictureURL) {
-        // Check cache
-        _pictureView.image = [MediaManager loadCachePicture:pictureURL];
-        
-        if (!_pictureView.image) {
-            if (_placeholder) {
-                // Set picture placeholder
-                _pictureView.image = [UIImage imageNamed:_placeholder];
-            }
-            
-            // Download picture
-            NSURL *url = [NSURL URLWithString:pictureURL];
-            downloadData = [[NSMutableData alloc] init];
-            downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
-        }        
-    } else {
-        if (_placeholder) {
-            // Set picture placeholder
-            _pictureView.image = [UIImage imageNamed:_placeholder];
+        // Load picture
+        mediaLoader = [MediaManager loadPicture:pictureURL
+                                        success:^(UIImage *image) {
+            _pictureView.image = image;
         }
+                                        failure:nil];
     }
 }
 
 - (void)dealloc
 {
-    downloadData = nil;
-    downloadConnection = nil;
-}
-
-#pragma mark - NSURLConnectionDelegate
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    NSLog(@"ERROR: picture download failed: %@", error);
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    // Append data
-    [downloadData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    // Set the downloaded image
-    _pictureView.image = [UIImage imageWithData:downloadData];
-    if (_pictureView.image) {
-        // Cache the downloaded data
-        [MediaManager cachePictureWithData:downloadData forURL:_pictureURL];
-    } else {
-        if (_placeholder) {
-            // Set picture placeholder
-            _pictureView.image = [UIImage imageNamed:_placeholder];
-        }
+    if (mediaLoader) {
+        [MediaManager cancel:mediaLoader];
+        mediaLoader = nil;
     }
-    
-    downloadData = nil;
-    downloadConnection = nil;
 }
 
 @end
