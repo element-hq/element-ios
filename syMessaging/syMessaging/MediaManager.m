@@ -93,8 +93,11 @@ static MediaManager *sharedMediaManager = nil;
         if (onImageReady) {
             onImageReady(image);
         }
-    } else if (onError){
-        onError(nil);
+    } else {
+        NSLog(@"ERROR: picture download failed: %@", mediaURL);
+        if (onError){
+            onError(nil);
+        }
     }
     
     downloadData = nil;

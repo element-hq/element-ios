@@ -18,6 +18,7 @@
 
 @interface SettingsViewController : UITableViewController <UITextFieldDelegate>
 
+- (void)reset;
 
 @end
 

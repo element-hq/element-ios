@@ -21,6 +21,8 @@
 #import "MediaManager.h"
 
 @interface SettingsViewController () {
+    id imageLoader;
+    
     NSString *currentDisplayName;
     NSString *currentPictureURL;
 }
@@ -41,11 +43,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    [self reset];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    if (imageLoader) {
+        [MediaManager cancel:imageLoader];
+        imageLoader = nil;
+    }
+}
+
+- (void)dealloc {
+    // Cancel picture loader (if any)
+    if (imageLoader) {
+        [MediaManager cancel:imageLoader];
+        imageLoader = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,19 +83,30 @@
     
     // Get picture url
     [mxHandler.mxSession avatarUrl:mxHandler.mxSession.user_id success:^(NSString *avatar_url) {
-        currentPictureURL = avatar_url;
-        UIImage *image = nil;
-        if (currentPictureURL) {
-            // Read the picture from cache
-            image = [MediaManager loadCachePicture:currentPictureURL];
-            // TODO download the picture if it is not cache
+        if (currentPictureURL == nil || [currentPictureURL isEqualToString:avatar_url] == NO) {
+            // Cancel previous loader (if any)
+            if (imageLoader) {
+                [MediaManager cancel:imageLoader];
+                imageLoader = nil;
+            }
+
+            currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
+            if (currentPictureURL) {
+                // Load user's picture
+                imageLoader = [MediaManager loadPicture:currentPictureURL success:^(UIImage *image) {
+                    [self.userPicture setImage:image forState:UIControlStateNormal];
+                    [self.userPicture setImage:image forState:UIControlStateHighlighted];
+                } failure:^(NSError *error) {
+                    // Reset picture URL in order to try next time
+                    currentPictureURL = nil;
+                }];
+            } else {
+                // Set placeholder
+                UIImage *image = [UIImage imageNamed:@"default-profile"];
+                [self.userPicture setImage:image forState:UIControlStateNormal];
+                [self.userPicture setImage:image forState:UIControlStateHighlighted];
+            }
         }
-        if (image == nil)
-        {
-            image = [UIImage imageNamed:@"default-profile"];
-        }
-        [self.userPicture setImage:image forState:UIControlStateNormal];
-        [self.userPicture setImage:image forState:UIControlStateHighlighted];
     } failure:^(NSError *error) {
         NSLog(@"Get picture url failed: %@", error);
         //Alert user
@@ -88,7 +116,27 @@
 
 #pragma mark -
 
+- (void)reset {
+    // Cancel picture loader (if any)
+    if (imageLoader) {
+        [MediaManager cancel:imageLoader];
+        imageLoader = nil;
+    }
+    
+    currentPictureURL = nil;
+    UIImage *image = [UIImage imageNamed:@"default-profile"];
+    [self.userPicture setImage:image forState:UIControlStateNormal];
+    [self.userPicture setImage:image forState:UIControlStateHighlighted];
+    
+    currentDisplayName = nil;
+    self.userDisplayName.text = nil;
+}
+
+#pragma mark -
+
 - (IBAction)onButtonPressed:(id)sender {
+    [self dismissKeyboard];
+    
     if (sender == _userPicture) {
         // TODO open gallery
     } else if (sender == _saveBtn) {
@@ -106,6 +154,7 @@
         }
         // TODO check picture change
     } else if (sender == _logoutBtn) {
+        [self reset];
         [[AppDelegate theDelegate] logout];
     }
 }
