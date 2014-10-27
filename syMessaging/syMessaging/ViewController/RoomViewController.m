@@ -25,6 +25,15 @@
 #define ROOM_MESSAGE_CELL_BOTTOM_MARGIN 5
 #define INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT 20
 
+NSString *const kCmdChangeDisplayName = @"/nick";
+NSString *const kCmdEmote = @"/me";
+NSString *const kCmdJoinRoom = @"/join";
+NSString *const kCmdKickUser = @"/kick";
+NSString *const kCmdBanUser = @"/ban";
+NSString *const kCmdUnbanUser = @"/unban";
+NSString *const kCmdSetUserPowerLevel = @"/op";
+NSString *const kCmdResetUserPowerLevel = @"/deop";
+
 NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
 NSString *const kFailedEventId = @"failedEventId";
 
@@ -518,6 +527,8 @@ NSString *const kFailedEventId = @"failedEventId";
     if (msg.length) {
         _sendBtn.enabled = YES;
         _sendBtn.alpha = 1;
+        // Reset potential placeholder (used in case of wrong command usage)
+        _messageTextField.placeholder = nil;
     } else {
         _sendBtn.enabled = NO;
         _sendBtn.alpha = 0.5;
@@ -536,52 +547,10 @@ NSString *const kFailedEventId = @"failedEventId";
     if (sender == _sendBtn) {
         NSString *msgTxt = self.messageTextField.text;
         
-        // Create a temporary event to displayed outgoing message (local echo)
-        NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
-        MXEvent *mxEvent = [[MXEvent alloc] init];
-        mxEvent.room_id = self.roomId;
-        mxEvent.event_id = localEventId;
-        mxEvent.eventType = MXEventTypeRoomMessage;
-        mxEvent.type = kMXEventTypeStringRoomMessage;
-        mxEvent.content = @{@"msgtype":@"m.text", @"body":msgTxt};
-        mxEvent.user_id = [MatrixHandler sharedHandler].userId;
-        // Update table sources
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-        [messages addObject:mxEvent];
-        // Refresh table display
-        [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-        [self scrollToBottomAnimated:YES];
-        
-        // Send message to the room
-        [[[MatrixHandler sharedHandler] mxSession] postTextMessage:self.roomId text:msgTxt success:^(NSString *event_id) {
-            // Update the temporary event with the actual event id
-            NSUInteger index = messages.count;
-            while (index--) {
-                MXEvent *mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.event_id isEqualToString:localEventId]) {
-                    mxEvent.event_id = event_id;
-                    // Refresh table display
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                    break;
-                }
-            }
-        } failure:^(NSError *error) {
-            NSLog(@"Failed to send message (%@): %@", self.messageTextField.text, error);
-            // Update the temporary event with the failed event id
-            NSUInteger index = messages.count;
-            while (index--) {
-                MXEvent *mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.event_id isEqualToString:localEventId]) {
-                    mxEvent.event_id = kFailedEventId;
-                    // Refresh table display
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                    [self scrollToBottomAnimated:YES];
-                    break;
-                }
-            }
-        }];
+        // Handle potential commands in room chat
+        if ([self isIRCStyleCommand:msgTxt] == NO) {
+            [self postTextMessage:msgTxt];
+        }
         
         self.messageTextField.text = nil;
         // disable send button
@@ -599,5 +568,268 @@ NSString *const kFailedEventId = @"failedEventId";
 //        plainTextInputAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
         
     }
+}
+
+- (void)postTextMessage:(NSString*)msgTxt {
+    MXMessageType msgType = kMXMessageTypeText;
+    // Check whether the message is an emote
+    if ([msgTxt hasPrefix:@"/me "]) {
+        msgType = kMXMessageTypeEmote;
+        // Remove "/me " string
+        msgTxt = [msgTxt substringFromIndex:4];
+    }
+    
+    // Create a temporary event to displayed outgoing message (local echo)
+    NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
+    MXEvent *mxEvent = [[MXEvent alloc] init];
+    mxEvent.room_id = self.roomId;
+    mxEvent.event_id = localEventId;
+    mxEvent.eventType = MXEventTypeRoomMessage;
+    mxEvent.type = kMXEventTypeStringRoomMessage;
+    mxEvent.content = @{@"msgtype":msgType, @"body":msgTxt};
+    mxEvent.user_id = [MatrixHandler sharedHandler].userId;
+    // Update table sources
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+    [messages addObject:mxEvent];
+    // Refresh table display
+    [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    [self scrollToBottomAnimated:YES];
+    
+    // Send message to the room
+    [[[MatrixHandler sharedHandler] mxSession] postMessage:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
+        // Update the temporary event with the actual event id
+        NSUInteger index = messages.count;
+        while (index--) {
+            MXEvent *mxEvent = [messages objectAtIndex:index];
+            if ([mxEvent.event_id isEqualToString:localEventId]) {
+                mxEvent.event_id = event_id;
+                // Refresh table display
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                break;
+            }
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Failed to send message (%@): %@", self.messageTextField.text, error);
+        // Update the temporary event with the failed event id
+        NSUInteger index = messages.count;
+        while (index--) {
+            MXEvent *mxEvent = [messages objectAtIndex:index];
+            if ([mxEvent.event_id isEqualToString:localEventId]) {
+                mxEvent.event_id = kFailedEventId;
+                // Refresh table display
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self scrollToBottomAnimated:YES];
+                break;
+            }
+        }
+    }];
+}
+
+- (BOOL)isIRCStyleCommand:(NSString*)text{
+    // Check whether the provided text may be an IRC-style command
+    if ([text hasPrefix:@"/"] == NO || [text hasPrefix:@"//"] == YES) {
+        return NO;
+    }
+    
+    // Parse command line
+    NSArray *components = [text componentsSeparatedByString:@" "];
+    NSString *cmd = [components objectAtIndex:0];
+    NSUInteger index = 1;
+    
+    if ([cmd isEqualToString:kCmdEmote]) {
+        // post message as an emote
+        [self postTextMessage:text];
+    } else if ([text hasPrefix:kCmdChangeDisplayName]) {
+        // Change display name
+        NSString *displayName = [text substringFromIndex:kCmdChangeDisplayName.length + 1];
+        // Remove white space from both ends
+        displayName = [displayName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        if (displayName.length) {
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            [mxHandler.mxSession setDisplayName:displayName success:^{
+            } failure:^(NSError *error) {
+                NSLog(@"Set displayName failed: %@", error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /nick <display_name>";
+        }
+    } else if ([text hasPrefix:kCmdJoinRoom]) {
+        // Join a room
+        NSString *roomAlias = [text substringFromIndex:kCmdJoinRoom.length + 1];
+        // Remove white space from both ends
+        roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        // Check
+        if (roomAlias.length) {
+            // FIXME
+            NSLog(@"Join Alias is not supported yet (%@)", text);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/join is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /join <room_alias>";
+        }
+    } else if ([cmd isEqualToString:kCmdKickUser]) {
+        // Retrieve userId
+        NSString *userId = nil;
+        while (index < components.count) {
+            userId = [components objectAtIndex:index++];
+            if (userId.length) {
+                // done
+                break;
+            }
+            // reset
+            userId = nil;
+        }
+        
+        if (userId) {
+            // Retrieve potential reason
+            NSString *reason = nil;
+            while (index < components.count) {
+                if (reason) {
+                    reason = [NSString stringWithFormat:@"%@ %@", reason, [components objectAtIndex:index++]];
+                } else {
+                    reason = [components objectAtIndex:index++];
+                }
+            }
+            
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            [mxHandler.mxSession kickUser:userId fromRoom:self.roomId reason:reason success:^{
+            } failure:^(NSError *error) {
+                NSLog(@"Kick user (%@) failed: %@", userId, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /kick <userId> [<reason>]";
+        }
+    } else if ([cmd isEqualToString:kCmdBanUser]) {
+        // Retrieve userId
+        NSString *userId = nil;
+        while (index < components.count) {
+            userId = [components objectAtIndex:index++];
+            if (userId.length) {
+                // done
+                break;
+            }
+            // reset
+            userId = nil;
+        }
+        
+        if (userId) {
+            // Retrieve potential reason
+            NSString *reason = nil;
+            while (index < components.count) {
+                if (reason) {
+                    reason = [NSString stringWithFormat:@"%@ %@", reason, [components objectAtIndex:index++]];
+                } else {
+                    reason = [components objectAtIndex:index++];
+                }
+            }
+            
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            [mxHandler.mxSession banUser:userId inRoom:self.roomId reason:reason success:^{
+            } failure:^(NSError *error) {
+                NSLog(@"Ban user (%@) failed: %@", userId, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /ban <userId> [<reason>]";
+        }
+    } else if ([cmd isEqualToString:kCmdUnbanUser]) {
+        // Retrieve userId
+        NSString *userId = nil;
+        while (index < components.count) {
+            userId = [components objectAtIndex:index++];
+            if (userId.length) {
+                // done
+                break;
+            }
+            // reset
+            userId = nil;
+        }
+        
+        if (userId) {
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            [mxHandler.mxSession unbanUser:userId inRoom:self.roomId success:^{
+            } failure:^(NSError *error) {
+                NSLog(@"Unban user (%@) failed: %@", userId, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /unban <userId>";
+        }
+    } else if ([cmd isEqualToString:kCmdSetUserPowerLevel]) {
+        // Retrieve userId
+        NSString *userId = nil;
+        while (index < components.count) {
+            userId = [components objectAtIndex:index++];
+            if (userId.length) {
+                // done
+                break;
+            }
+            // reset
+            userId = nil;
+        }
+        
+        // Retrieve power level
+        NSString *powerLevel = nil;
+        while (index < components.count) {
+            powerLevel = [components objectAtIndex:index++];
+            if (powerLevel.length) {
+                // done
+                break;
+            }
+            // reset
+            powerLevel = nil;
+        }
+        
+        if (userId && powerLevel) {
+            // FIXME
+            NSLog(@"Set user power level (/op) is not supported yet (%@)", userId);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/op is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
+        }
+    } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
+        // Retrieve userId
+        NSString *userId = nil;
+        while (index < components.count) {
+            userId = [components objectAtIndex:index++];
+            if (userId.length) {
+                // done
+                break;
+            }
+            // reset
+            userId = nil;
+        }
+        
+        if (userId) {
+            // FIXME
+            NSLog(@"Reset user power level (/deop) is not supported yet (%@)", userId);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/deop is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        } else {
+            // Display cmd usage in text input as placeholder
+            self.messageTextField.placeholder = @"Usage: /deop <userId>";
+        }
+    } else {
+        NSLog(@"Unrecognised IRC-style command: %@", text);
+        self.messageTextField.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
+    }
+    return YES;
 }
 @end

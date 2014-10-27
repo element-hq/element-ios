@@ -188,10 +188,10 @@ static MatrixHandler *sharedHandler = nil;
 - (BOOL)isAttachment:(MXEvent*)message {
     if (message.eventType == MXEventTypeRoomMessage) {
         NSString *msgtype = message.content[@"msgtype"];
-        if ([msgtype isEqualToString:@"m.image"]
-            || [msgtype isEqualToString:@"m.audio"]
-            || [msgtype isEqualToString:@"m.video"]
-            || [msgtype isEqualToString:@"m.location"]) {
+        if ([msgtype isEqualToString:kMXMessageTypeImage]
+            || [msgtype isEqualToString:kMXMessageTypeAudio]
+            || [msgtype isEqualToString:kMXMessageTypeVideo]
+            || [msgtype isEqualToString:kMXMessageTypeLocation]) {
             return YES;
         }
     }
@@ -202,7 +202,7 @@ static MatrixHandler *sharedHandler = nil;
     // We consider as notification mxEvent which is not a text message or an attachment
     if (message.eventType == MXEventTypeRoomMessage) {
         NSString *msgtype = message.content[@"msgtype"];
-        if ([msgtype isEqualToString:@"m.emote"]) {
+        if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
             return YES;
         }
         return NO;
@@ -231,31 +231,49 @@ static MatrixHandler *sharedHandler = nil;
             break;
         }
         case MXEventTypeRoomMember: {
-            NSString* membership = message.content[@"membership"];
             
-            if ([membership isEqualToString:@"invite"]) {
-                displayText = [NSString stringWithFormat:@"%@ invited %@", userDisplayName, targetDisplayName];
-            } else if ([membership isEqualToString:@"join"]) {
-                displayText = [NSString stringWithFormat:@"%@ joined", userDisplayName];
-            } else if ([membership isEqualToString:@"leave"]) {
-                if ([message.user_id isEqualToString:message.state_key]) {
-                    displayText = [NSString stringWithFormat:@"%@ left", userDisplayName];
-                } else {
-                    NSString *prev = message.content[@"prev"];
-                    
-                    if ([prev isEqualToString:@"join"] || [prev isEqualToString:@"invite"]) {
-                        displayText = [NSString stringWithFormat:@"%@ kicked %@", userDisplayName, targetDisplayName];
-                        if (message.content[@"reason"]) {
-                            displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
-                        }
-                    } else if ([prev isEqualToString:@"ban"]) {
-                        displayText = [NSString stringWithFormat:@"%@ unbanned %@", userDisplayName, targetDisplayName];
-                    }
+            // Could be a membership change, display name change, etc.
+            // Presently only membership change and display name change are expected
+            
+            // Check whether this is a displayname change
+            if (message.prev_content) {
+                NSString *prevDisplayname =  message.prev_content[@"displayname"];
+                NSString *displayname = message.content[@"displayname"];
+                if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
+                    displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.user_id, prevDisplayname, displayname];
                 }
-            } else if ([membership isEqualToString:@"ban"]) {
-                displayText = [NSString stringWithFormat:@"%@ banned %@", userDisplayName, targetDisplayName];
-                if (message.content[@"reason"]) {
-                    displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
+            }
+            
+            if (displayText == nil) {
+                // Consider here a membership change by default
+                NSString* membership = message.content[@"membership"];
+                
+                if ([membership isEqualToString:@"invite"]) {
+                    displayText = [NSString stringWithFormat:@"%@ invited %@", userDisplayName, targetDisplayName];
+                } else if ([membership isEqualToString:@"join"]) {
+                    displayText = [NSString stringWithFormat:@"%@ joined", userDisplayName];
+                } else if ([membership isEqualToString:@"leave"]) {
+                    if ([message.user_id isEqualToString:message.state_key]) {
+                        displayText = [NSString stringWithFormat:@"%@ left", userDisplayName];
+                    } else {
+                        if (message.prev_content) {
+                            NSString *prev = message.prev_content[@"membership"];
+                            
+                            if ([prev isEqualToString:@"join"] || [prev isEqualToString:@"invite"]) {
+                                displayText = [NSString stringWithFormat:@"%@ kicked %@", userDisplayName, targetDisplayName];
+                                if (message.content[@"reason"]) {
+                                    displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
+                                }
+                            } else if ([prev isEqualToString:@"ban"]) {
+                                displayText = [NSString stringWithFormat:@"%@ unbanned %@", userDisplayName, targetDisplayName];
+                            }
+                        }
+                    }
+                } else if ([membership isEqualToString:@"ban"]) {
+                    displayText = [NSString stringWithFormat:@"%@ banned %@", userDisplayName, targetDisplayName];
+                    if (message.content[@"reason"]) {
+                        displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
+                    }
                 }
             }
             break;
@@ -276,22 +294,22 @@ static MatrixHandler *sharedHandler = nil;
             //            break;
         case MXEventTypeRoomMessage: {
             NSString *msgtype = message.content[@"msgtype"];
-            if ([msgtype isEqualToString:@"m.text"]) {
+            if ([msgtype isEqualToString:kMXMessageTypeText]) {
                 displayText = message.content[@"body"];
-            } else if ([msgtype isEqualToString:@"m.emote"]) {
+            } else if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
                 displayText = [NSString stringWithFormat:@"* %@ %@", userDisplayName, message.content[@"body"]];
-            } else if ([msgtype isEqualToString:@"m.image"]) {
+            } else if ([msgtype isEqualToString:kMXMessageTypeImage]) {
                 displayText = @"image attachment";
-            } else if ([msgtype isEqualToString:@"m.audio"]) {
+            } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                 displayText = @"audio attachment";
-            } else if ([msgtype isEqualToString:@"m.video"]) {
+            } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
                 displayText = @"video attachment";
-            } else if ([msgtype isEqualToString:@"m.location"]) {
+            } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
                 displayText = @"location attachment";
             }
             
             // Check whether the sender name has to be added
-            if (isSubtitle && [msgtype isEqualToString:@"m.emote"] == NO) {
+            if (isSubtitle && [msgtype isEqualToString:kMXMessageTypeEmote] == NO) {
                 displayText = [NSString stringWithFormat:@"%@: %@", userDisplayName, displayText];
             }
             
