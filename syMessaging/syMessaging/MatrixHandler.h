@@ -36,16 +36,16 @@
 
 - (void)logout;
 
-// ******************
+#define TEMPORARY_PATCH_INITIAL_SYNC 1
+#ifdef TEMPORARY_PATCH_INITIAL_SYNC
 // Presently the SDK is not able to handle correctly the context for the room recently joined
 // PATCH: we define temporarily a method to force initial sync
 // FIXME: this method should be removed when SDK will fix the issue
 - (void)forceInitialSync;
-// ******************
+#endif
 
 - (BOOL)isAttachment:(MXEvent*)message;
 - (BOOL)isNotification:(MXEvent*)message;
 - (NSString*)displayTextFor:(MXEvent*)message inSubtitleMode:(BOOL)isSubtitle;
-- (NSString*)displayNameFor:(MXRoomMember*)member;
 
 @end

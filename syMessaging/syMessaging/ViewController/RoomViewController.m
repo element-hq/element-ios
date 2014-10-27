@@ -41,6 +41,7 @@ NSString *const kFailedEventId = @"failedEventId";
 @interface RoomViewController ()
 {
     BOOL isFirstDisplay;
+    BOOL isJoinRequestInProgress;
     
     MXRoomData *mxRoomData;
     
@@ -80,6 +81,13 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)dealloc {
+#ifdef TEMPORARY_PATCH_INITIAL_SYNC
+    // FIXME: these lines should be removed when SDK will fix the initial sync issue
+    if (isJoinRequestInProgress) {
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
+    }
+#endif
+    
     messages = nil;
     if (registeredListener) {
         [mxRoomData unregisterListener:registeredListener];
@@ -144,14 +152,41 @@ NSString *const kFailedEventId = @"failedEventId";
     [self configureView];
     
     // Trigger a back pagination if messages number is low
-    if (messages.count < 10) {
+    if (messages && messages.count < 10) {
         [self triggerBackPagination];
     }
 }
 
+#ifdef TEMPORARY_PATCH_INITIAL_SYNC
+// FIXME: this method should be removed when SDK will fix the initial sync issue
+#pragma mark - KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"isInitialSyncDone" isEqualToString:keyPath])
+    {
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        if ([mxHandler isInitialSyncDone]) {
+            [_activityIndicator stopAnimating];
+            isJoinRequestInProgress = NO;
+            [mxHandler removeObserver:self forKeyPath:@"isInitialSyncDone"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self configureView];
+            });
+        }
+    }
+}
+#endif
+
 #pragma mark - Internal methods
 
 - (void)configureView {
+    // Check whether a request is in progress to join the room
+    if (isJoinRequestInProgress) {
+        // Busy - be sure that activity indicator is running
+        [_activityIndicator startAnimating];
+        return;
+    }
+    
     // Flush messages
     messages = nil;
     
@@ -165,8 +200,42 @@ NSString *const kFailedEventId = @"failedEventId";
     if (self.roomId) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         mxRoomData = [mxHandler.mxData getRoomData:self.roomId];
+        
+        // Update room title
+        self.roomNavItem.title = mxRoomData.displayname;
+        
+        // Join the room if the user is not already listed in room's members
+        if ([mxRoomData getMember:mxHandler.userId] == nil) {
+            isJoinRequestInProgress = YES;
+            [_activityIndicator startAnimating];
+            [mxHandler.mxSession joinRoom:self.roomId success:^{
+#ifdef TEMPORARY_PATCH_INITIAL_SYNC
+                // Presently the SDK is not able to handle correctly the context for the room recently joined
+                // PATCH: we force new initial sync
+                // FIXME: this new initial sync should be removed when SDK will fix the issue
+                [mxHandler addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [mxHandler forceInitialSync];
+                });
+#else
+                [_activityIndicator stopAnimating];
+                isJoinRequestInProgress = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self configureView];
+                });
+#endif
+            } failure:^(NSError *error) {
+                [_activityIndicator stopAnimating];
+                isJoinRequestInProgress = NO;
+                NSLog(@"Failed to join room (%@): %@", mxRoomData.displayname, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+            return;
+        }
+        
         messages = [NSMutableArray arrayWithArray:mxRoomData.messages];
-        // Register a listener for events that modify the `messages` property 
+        // Register a listener for events that modify the `messages` property
         registeredListener = [mxRoomData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
             // consider only live event
             if (isLive) {
@@ -192,12 +261,11 @@ NSString *const kFailedEventId = @"failedEventId";
         }];
     } else {
         mxRoomData = nil;
+        // Update room title
+        self.roomNavItem.title = nil;
     }
     
     [self.messagesTableView reloadData];
-    
-    // Update room title
-    self.roomNavItem.title = mxRoomData.displayname;
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
@@ -251,7 +319,7 @@ NSString *const kFailedEventId = @"failedEventId";
             } else {
                 // Here there was no event related to the `messages` property
                 [_activityIndicator stopAnimating];
-                // Trigger a new back pagination (if any)
+                // Trigger a new back pagination (if possible)
                 [self triggerBackPagination];
             }
         } failure:^(NSError *error) {
@@ -424,7 +492,7 @@ NSString *const kFailedEventId = @"failedEventId";
         
         if (indexPath.row < members.count) {
             MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-            cell.userLabel.text = [mxHandler displayNameFor:roomMember];
+            cell.userLabel.text = [mxRoomData memberName:roomMember.user_id];
             cell.placeholder = @"default-profile";
             cell.pictureURL = roomMember.avatar_url;
         }
@@ -477,7 +545,7 @@ NSString *const kFailedEventId = @"failedEventId";
         } else {
             frame.size.height = INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
             incomingMsgCell.userNameLabel.hidden = NO;
-            NSString *userName = [mxHandler displayNameFor:[mxRoomData getMember:mxEvent.user_id]];
+            NSString *userName = [mxRoomData memberName:mxEvent.user_id];
             incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"- %@", userName];
         }
         incomingMsgCell.userNameLabel.frame = frame;

@@ -108,7 +108,7 @@ static MatrixHandler *sharedHandler = nil;
     self.accessToken = nil;
 }
 
-// ******************
+#ifdef TEMPORARY_PATCH_INITIAL_SYNC
 // Presently the SDK is not able to handle correctly the context for the room recently joined
 // PATCH: we define temporarily a method to force initial sync
 // FIXME: this method should be removed when SDK will fix the issue
@@ -117,7 +117,7 @@ static MatrixHandler *sharedHandler = nil;
     notifyOpenSessionFailure = NO;
     [self openSession];
 }
-// ******************
+#endif
 
 - (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
@@ -215,10 +215,10 @@ static MatrixHandler *sharedHandler = nil;
     // Retrieve roomData related to the message
     MXRoomData *roomData = [self.mxData getRoomData:message.room_id];
     // Prepare display name for concerned users
-    NSString *userDisplayName = [self displayNameFor:[roomData getMember:message.user_id]];
+    NSString *userDisplayName = [roomData memberName:message.user_id];
     NSString *targetDisplayName = nil;
     if (message.state_key) {
-        targetDisplayName = [self displayNameFor:[roomData getMember:message.state_key]];
+        targetDisplayName = [roomData memberName:message.state_key];
     }
     
     switch (message.eventType) {
@@ -329,15 +329,6 @@ static MatrixHandler *sharedHandler = nil;
     }
     
     return displayText;
-}
-
-
-- (NSString*)displayNameFor:(MXRoomMember*)member {
-    // Check whether a display name is available. If none, use the user id
-    if (member.displayname.length) {
-        return member.displayname;
-    }
-    return member.user_id;
 }
 
 @end
