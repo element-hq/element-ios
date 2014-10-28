@@ -576,7 +576,13 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     
-    cell.messageTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+    NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+    if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
+        cell.messageTextView.textColor = [UIColor redColor];
+    } else {
+        cell.messageTextView.textColor = [UIColor blackColor];
+    }
+    cell.messageTextView.text = displayText;
     return cell;
 }
 

@@ -16,6 +16,8 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
+extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
+
 @interface MatrixHandler : NSObject
 
 @property (strong, nonatomic) MXHomeServer *mxHomeServer;

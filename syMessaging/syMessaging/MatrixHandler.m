@@ -17,6 +17,8 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
+NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
+
 static MatrixHandler *sharedHandler = nil;
 
 @interface MatrixHandler () {
@@ -325,7 +327,11 @@ static MatrixHandler *sharedHandler = nil;
     
     if (displayText == nil) {
         NSLog(@"ERROR: Unsupported message %@)", message.description);
-        displayText = @"";
+        if (isSubtitle) {
+            displayText = @"";
+        } else {
+            displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, message.description];
+        }
     }
     
     return displayText;
