@@ -20,5 +20,6 @@
 // Room Member Table View Cell
 @interface RoomMemberTableCell : CustomTableViewCell
 @property (strong, nonatomic) UILabel *userLabel;
+@property (strong, nonatomic) UIProgressView *userPowerLevel;
 @end
 

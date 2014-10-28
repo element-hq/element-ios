@@ -486,8 +486,10 @@ NSString *const kFailedEventId = @"failedEventId";
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.pictureView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 5, 40, 40)];
             cell.userLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 5, membersTableView.frame.size.width - 64, 40)];
+            cell.userPowerLevel = [[UIProgressView alloc] initWithFrame:CGRectMake(56, 45, 100, 5)];
             [cell addSubview:cell.pictureView];
             [cell addSubview:cell.userLabel];
+            [cell addSubview:cell.userPowerLevel];
         }
         
         if (indexPath.row < members.count) {
@@ -495,6 +497,8 @@ NSString *const kFailedEventId = @"failedEventId";
             cell.userLabel.text = [mxRoomData memberName:roomMember.user_id];
             cell.placeholder = @"default-profile";
             cell.pictureURL = roomMember.avatar_url;
+            // TODO: set actual power level when it will be available from SDK
+            cell.userPowerLevel.progress = 0;
         }
         
         return cell;
@@ -743,160 +747,116 @@ NSString *const kFailedEventId = @"failedEventId";
             // Display cmd usage in text input as placeholder
             self.messageTextField.placeholder = @"Usage: /join <room_alias>";
         }
-    } else if ([cmd isEqualToString:kCmdKickUser]) {
-        // Retrieve userId
-        NSString *userId = nil;
-        while (index < components.count) {
-            userId = [components objectAtIndex:index++];
-            if (userId.length) {
-                // done
-                break;
-            }
-            // reset
-            userId = nil;
-        }
-        
-        if (userId) {
-            // Retrieve potential reason
-            NSString *reason = nil;
-            while (index < components.count) {
-                if (reason) {
-                    reason = [NSString stringWithFormat:@"%@ %@", reason, [components objectAtIndex:index++]];
-                } else {
-                    reason = [components objectAtIndex:index++];
-                }
-            }
-            
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxSession kickUser:userId fromRoom:self.roomId reason:reason success:^{
-            } failure:^(NSError *error) {
-                NSLog(@"Kick user (%@) failed: %@", userId, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        } else {
-            // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /kick <userId> [<reason>]";
-        }
-    } else if ([cmd isEqualToString:kCmdBanUser]) {
-        // Retrieve userId
-        NSString *userId = nil;
-        while (index < components.count) {
-            userId = [components objectAtIndex:index++];
-            if (userId.length) {
-                // done
-                break;
-            }
-            // reset
-            userId = nil;
-        }
-        
-        if (userId) {
-            // Retrieve potential reason
-            NSString *reason = nil;
-            while (index < components.count) {
-                if (reason) {
-                    reason = [NSString stringWithFormat:@"%@ %@", reason, [components objectAtIndex:index++]];
-                } else {
-                    reason = [components objectAtIndex:index++];
-                }
-            }
-            
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxSession banUser:userId inRoom:self.roomId reason:reason success:^{
-            } failure:^(NSError *error) {
-                NSLog(@"Ban user (%@) failed: %@", userId, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        } else {
-            // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /ban <userId> [<reason>]";
-        }
-    } else if ([cmd isEqualToString:kCmdUnbanUser]) {
-        // Retrieve userId
-        NSString *userId = nil;
-        while (index < components.count) {
-            userId = [components objectAtIndex:index++];
-            if (userId.length) {
-                // done
-                break;
-            }
-            // reset
-            userId = nil;
-        }
-        
-        if (userId) {
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxSession unbanUser:userId inRoom:self.roomId success:^{
-            } failure:^(NSError *error) {
-                NSLog(@"Unban user (%@) failed: %@", userId, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        } else {
-            // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /unban <userId>";
-        }
-    } else if ([cmd isEqualToString:kCmdSetUserPowerLevel]) {
-        // Retrieve userId
-        NSString *userId = nil;
-        while (index < components.count) {
-            userId = [components objectAtIndex:index++];
-            if (userId.length) {
-                // done
-                break;
-            }
-            // reset
-            userId = nil;
-        }
-        
-        // Retrieve power level
-        NSString *powerLevel = nil;
-        while (index < components.count) {
-            powerLevel = [components objectAtIndex:index++];
-            if (powerLevel.length) {
-                // done
-                break;
-            }
-            // reset
-            powerLevel = nil;
-        }
-        
-        if (userId && powerLevel) {
-            // FIXME
-            NSLog(@"Set user power level (/op) is not supported yet (%@)", userId);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/op is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alert show];
-        } else {
-            // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
-        }
-    } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
-        // Retrieve userId
-        NSString *userId = nil;
-        while (index < components.count) {
-            userId = [components objectAtIndex:index++];
-            if (userId.length) {
-                // done
-                break;
-            }
-            // reset
-            userId = nil;
-        }
-        
-        if (userId) {
-            // FIXME
-            NSLog(@"Reset user power level (/deop) is not supported yet (%@)", userId);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/deop is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alert show];
-        } else {
-            // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /deop <userId>";
-        }
     } else {
-        NSLog(@"Unrecognised IRC-style command: %@", text);
-        self.messageTextField.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
+        // Retrieve userId
+        NSString *userId = nil;
+        while (index < components.count) {
+            userId = [components objectAtIndex:index++];
+            if (userId.length) {
+                // done
+                break;
+            }
+            // reset
+            userId = nil;
+        }
+        
+        if ([cmd isEqualToString:kCmdKickUser]) {
+            if (userId) {
+                // Retrieve potential reason
+                NSString *reason = nil;
+                while (index < components.count) {
+                    if (reason) {
+                        reason = [NSString stringWithFormat:@"%@ %@", reason, [components objectAtIndex:index++]];
+                    } else {
+                        reason = [components objectAtIndex:index++];
+                    }
+                }
+                // Kick the user
+                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                [mxHandler.mxSession kickUser:userId fromRoom:self.roomId reason:reason success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Kick user (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            } else {
+                // Display cmd usage in text input as placeholder
+                self.messageTextField.placeholder = @"Usage: /kick <userId> [<reason>]";
+            }
+        } else if ([cmd isEqualToString:kCmdBanUser]) {
+            if (userId) {
+                // Retrieve potential reason
+                NSString *reason = nil;
+                while (index < components.count) {
+                    if (reason) {
+                        reason = [NSString stringWithFormat:@"%@ %@", reason, [components objectAtIndex:index++]];
+                    } else {
+                        reason = [components objectAtIndex:index++];
+                    }
+                }
+                // Ban the user
+                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                [mxHandler.mxSession banUser:userId inRoom:self.roomId reason:reason success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Ban user (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            } else {
+                // Display cmd usage in text input as placeholder
+                self.messageTextField.placeholder = @"Usage: /ban <userId> [<reason>]";
+            }
+        } else if ([cmd isEqualToString:kCmdUnbanUser]) {
+            if (userId) {
+                // Unban the user
+                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                [mxHandler.mxSession unbanUser:userId inRoom:self.roomId success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Unban user (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            } else {
+                // Display cmd usage in text input as placeholder
+                self.messageTextField.placeholder = @"Usage: /unban <userId>";
+            }
+        } else if ([cmd isEqualToString:kCmdSetUserPowerLevel]) {
+            // Retrieve power level
+            NSString *powerLevel = nil;
+            while (index < components.count) {
+                powerLevel = [components objectAtIndex:index++];
+                if (powerLevel.length) {
+                    // done
+                    break;
+                }
+                // reset
+                powerLevel = nil;
+            }
+            // Set power level
+            if (userId && powerLevel) {
+                // FIXME
+                NSLog(@"Set user power level (/op) is not supported yet (%@)", userId);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/op is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            } else {
+                // Display cmd usage in text input as placeholder
+                self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
+            }
+        } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
+            if (userId) {
+                // Reset user power level
+                // FIXME
+                NSLog(@"Reset user power level (/deop) is not supported yet (%@)", userId);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/deop is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            } else {
+                // Display cmd usage in text input as placeholder
+                self.messageTextField.placeholder = @"Usage: /deop <userId>";
+            }
+        } else {
+            NSLog(@"Unrecognised IRC-style command: %@", text);
+            self.messageTextField.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
+        }
     }
     return YES;
 }
