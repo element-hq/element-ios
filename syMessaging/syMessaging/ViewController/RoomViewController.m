@@ -50,8 +50,6 @@ NSString *const kFailedEventId = @"failedEventId";
     
     // Members list
     NSArray       *members;
-    UIView        *membersTableViewBackground;
-    UITableView   *membersTableView;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -62,6 +60,8 @@ NSString *const kFailedEventId = @"failedEventId";
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIView *membersView;
+@property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 
 @end
 
@@ -95,8 +95,6 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     mxRoomData = nil;
     
-    membersTableViewBackground = nil;
-    membersTableView = nil;
     members = nil;
 }
 
@@ -341,45 +339,17 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)showRoomMembers {
+    // Dismiss keyboard
+    [self dismissKeyboard];
+    
     members = [mxRoomData members];
     
-    // define members table background
-    CGRect frame = self.messagesTableView.frame;
-    UIEdgeInsets roomTableInset = self.messagesTableView.contentInset;
-    frame.origin.x += roomTableInset.left;
-    frame.origin.y += roomTableInset.top;
-    frame.size.width -= roomTableInset.left + roomTableInset.right;
-    frame.size.height -= roomTableInset.top + roomTableInset.bottom;
-    // overlap the control view
-    frame.size.height += self.controlView.frame.size.height;
-    membersTableViewBackground = [[UIView alloc] initWithFrame:frame];
-    membersTableViewBackground.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
-    
-    membersTableViewBackground.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers)];
-    [membersTableViewBackground addGestureRecognizer:tap];
-    
-    // compute table height (the table should not cover all the screen to let the user be able to dismiss the table)
-    CGFloat tableHeight = members.count * 50;
-    CGFloat tableHeightMax = membersTableViewBackground.frame.size.height - 50;
-    if (tableHeightMax < tableHeight)
-    {
-        tableHeight = tableHeightMax;
-    }
-    frame.size.height = tableHeight;
-    membersTableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-    membersTableView.delegate = self;
-    membersTableView.dataSource = self;
-    
-    [self.view addSubview:membersTableViewBackground];
-    [self.view addSubview:membersTableView];
+    self.membersView.hidden = NO;
+    [self.membersTableView reloadData];
 }
 
 - (void)hideRoomMembers {
-    [membersTableView removeFromSuperview];
-    membersTableView = nil;
-    [membersTableViewBackground removeFromSuperview];
-    membersTableViewBackground = nil;
+    self.membersView.hidden = YES;
     members = nil;
 }
 
@@ -422,7 +392,7 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Check table view members vs messages
-    if (tableView == membersTableView)
+    if (tableView == self.membersTableView)
     {
         return members.count;
     }
@@ -432,7 +402,7 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
-    if (tableView == membersTableView)
+    if (tableView == self.membersTableView)
     {
         return 50;
     }
@@ -477,31 +447,22 @@ NSString *const kFailedEventId = @"failedEventId";
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Check table view members vs messages
-    if (tableView == membersTableView)
+    if (tableView == self.membersTableView)
     {
-        RoomMemberTableCell *cell = [membersTableView dequeueReusableCellWithIdentifier:@"RoomMemberCell"];
-        if (!cell) {
-            cell = [[RoomMemberTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RoomMemberCell"];
-            cell.frame = CGRectMake(0, 0, membersTableView.frame.size.width, 50);
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.pictureView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 5, 40, 40)];
-            cell.userLabel = [[UILabel alloc] initWithFrame:CGRectMake(56, 5, membersTableView.frame.size.width - 64, 40)];
-            cell.userPowerLevel = [[UIProgressView alloc] initWithFrame:CGRectMake(56, 45, 100, 5)];
-            [cell addSubview:cell.pictureView];
-            [cell addSubview:cell.userLabel];
-            [cell addSubview:cell.userPowerLevel];
-        }
-        
+        RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
             MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-            cell.userLabel.text = [mxRoomData memberName:roomMember.user_id];
-            cell.placeholder = @"default-profile";
-            cell.pictureURL = roomMember.avatar_url;
+            memberCell.userLabel.text = [mxRoomData memberName:roomMember.user_id];
+            memberCell.placeholder = @"default-profile";
+            memberCell.pictureURL = roomMember.avatar_url;
             // TODO: set actual power level when it will be available from SDK
-            cell.userPowerLevel.progress = 0;
+            memberCell.userPowerLevel.progress = 0;
+            memberCell.lastActiveAgoLabel.backgroundColor = [UIColor greenColor];
+            memberCell.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.last_active_ago];
+            memberCell.lastActiveAgoLabel.numberOfLines = 0;
         }
         
-        return cell;
+        return memberCell;
     }
     
     // Handle here room message cells
@@ -576,8 +537,10 @@ NSString *const kFailedEventId = @"failedEventId";
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Dismiss keyboard when user taps on table view content
-    [self dismissKeyboard];
+    if (tableView == self.messagesTableView) {
+        // Dismiss keyboard when user taps on messages table view content
+        [self dismissKeyboard];
+    }
 }
 
 // Detect vertical bounce at the top of the tableview to trigger pagination

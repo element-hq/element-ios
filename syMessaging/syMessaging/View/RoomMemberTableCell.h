@@ -19,7 +19,8 @@
 
 // Room Member Table View Cell
 @interface RoomMemberTableCell : CustomTableViewCell
-@property (strong, nonatomic) UILabel *userLabel;
-@property (strong, nonatomic) UIProgressView *userPowerLevel;
+@property (weak, nonatomic) IBOutlet UILabel *userLabel;
+@property (weak, nonatomic) IBOutlet UIProgressView *userPowerLevel;
+@property (weak, nonatomic) IBOutlet UILabel *lastActiveAgoLabel;
 @end
 
