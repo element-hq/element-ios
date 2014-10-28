@@ -46,10 +46,11 @@ NSString *const kFailedEventId = @"failedEventId";
     MXRoomData *mxRoomData;
     
     NSMutableArray *messages;
-    id registeredListener;
+    id messagesListener;
     
     // Members list
     NSArray       *members;
+    id membersListener;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -89,13 +90,17 @@ NSString *const kFailedEventId = @"failedEventId";
 #endif
     
     messages = nil;
-    if (registeredListener) {
-        [mxRoomData unregisterListener:registeredListener];
-        registeredListener = nil;
+    if (messagesListener) {
+        [mxRoomData unregisterListener:messagesListener];
+        messagesListener = nil;
     }
     mxRoomData = nil;
     
     members = nil;
+    if (membersListener) {
+        [mxRoomData unregisterListener:membersListener];
+        membersListener = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,9 +126,9 @@ NSString *const kFailedEventId = @"failedEventId";
     // Hide members by default
     [self hideRoomMembers];
     
-    if (registeredListener) {
-        [mxRoomData unregisterListener:registeredListener];
-        registeredListener = nil;
+    if (messagesListener) {
+        [mxRoomData unregisterListener:messagesListener];
+        messagesListener = nil;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -189,9 +194,9 @@ NSString *const kFailedEventId = @"failedEventId";
     messages = nil;
     
     // Remove potential roomData listener
-    if (registeredListener && mxRoomData) {
-        [mxRoomData unregisterListener:registeredListener];
-        registeredListener = nil;
+    if (messagesListener && mxRoomData) {
+        [mxRoomData unregisterListener:messagesListener];
+        messagesListener = nil;
     }
     
     // Update room data
@@ -234,7 +239,7 @@ NSString *const kFailedEventId = @"failedEventId";
         
         messages = [NSMutableArray arrayWithArray:mxRoomData.messages];
         // Register a listener for events that modify the `messages` property
-        registeredListener = [mxRoomData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
+        messagesListener = [mxRoomData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
             // consider only live event
             if (isLive) {
                 // For outgoing message, remove the temporary event
@@ -343,12 +348,30 @@ NSString *const kFailedEventId = @"failedEventId";
     [self dismissKeyboard];
     
     members = [mxRoomData members];
+    // Register a listener for events that concern room members
+    NSArray *mxMembersEvents = @[
+                                 kMXEventTypeStringRoomMember,
+                                 kMXEventTypeStringRoomPowerLevels,
+                                 kMXEventTypeStringPresence
+                                 ];
+    membersListener = [mxRoomData registerEventListenerForTypes:mxMembersEvents block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
+        // consider only live event
+        if (isLive) {
+            // Refresh members list
+            members = [mxRoomData members];
+            [self.membersTableView reloadData];
+        }
+    }];
     
     self.membersView.hidden = NO;
     [self.membersTableView reloadData];
 }
 
 - (void)hideRoomMembers {
+    if (membersListener) {
+        [mxRoomData unregisterListener:membersListener];
+        membersListener = nil;
+    }
     self.membersView.hidden = YES;
     members = nil;
 }
@@ -455,8 +478,31 @@ NSString *const kFailedEventId = @"failedEventId";
             memberCell.userLabel.text = [mxRoomData memberName:roomMember.user_id];
             memberCell.placeholder = @"default-profile";
             memberCell.pictureURL = roomMember.avatar_url;
-            // TODO: set actual power level when it will be available from SDK
-            memberCell.userPowerLevel.progress = 0;
+            
+            // Handle power level display
+            NSDictionary *powerLevels = mxRoomData.powerLevels;
+            if (powerLevels) {
+                int maxLevel = 0;
+                for (NSString *powerLevel in powerLevels.allValues) {
+                    int level = [powerLevel intValue];
+                    if (level > maxLevel) {
+                        maxLevel = level;
+                    }
+                }
+                NSString *userPowerLevel = [powerLevels objectForKey:roomMember.user_id]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
+                if (userPowerLevel == nil) {
+                    userPowerLevel = [powerLevels valueForKey:@"default"];
+                }
+                float userPowerLevelFloat = 0.0;
+                if (userPowerLevel) {
+                    userPowerLevelFloat = [userPowerLevel floatValue];
+                }
+                memberCell.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+            } else {
+                memberCell.userPowerLevel.progress = 0;
+            }
+            
+            // TODO: handle last_active_ago duration when it will be available from SDK
             memberCell.lastActiveAgoLabel.backgroundColor = [UIColor greenColor];
             memberCell.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.last_active_ago];
             memberCell.lastActiveAgoLabel.numberOfLines = 0;
