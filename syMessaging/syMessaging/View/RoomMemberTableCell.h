@@ -17,10 +17,15 @@
 #import <UIKit/UIKit.h>
 #import "CustomTableViewCell.h"
 
+@class MXRoomMember;
+@class MXRoomData;
+
 // Room Member Table View Cell
 @interface RoomMemberTableCell : CustomTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *userLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *userPowerLevel;
 @property (weak, nonatomic) IBOutlet UILabel *lastActiveAgoLabel;
+
+- (void)setRoomMember:(MXRoomMember *)roomMember withRoomData:(MXRoomData *)roomData;
 @end
 

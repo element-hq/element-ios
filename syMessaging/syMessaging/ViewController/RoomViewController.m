@@ -474,38 +474,7 @@ NSString *const kFailedEventId = @"failedEventId";
     {
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
-            MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-            memberCell.userLabel.text = [mxRoomData memberName:roomMember.user_id];
-            memberCell.placeholder = @"default-profile";
-            memberCell.pictureURL = roomMember.avatar_url;
-            
-            // Handle power level display
-            NSDictionary *powerLevels = mxRoomData.powerLevels;
-            if (powerLevels) {
-                int maxLevel = 0;
-                for (NSString *powerLevel in powerLevels.allValues) {
-                    int level = [powerLevel intValue];
-                    if (level > maxLevel) {
-                        maxLevel = level;
-                    }
-                }
-                NSString *userPowerLevel = [powerLevels objectForKey:roomMember.user_id]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
-                if (userPowerLevel == nil) {
-                    userPowerLevel = [powerLevels valueForKey:@"default"];
-                }
-                float userPowerLevelFloat = 0.0;
-                if (userPowerLevel) {
-                    userPowerLevelFloat = [userPowerLevel floatValue];
-                }
-                memberCell.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
-            } else {
-                memberCell.userPowerLevel.progress = 0;
-            }
-            
-            // TODO: handle last_active_ago duration when it will be available from SDK
-            memberCell.lastActiveAgoLabel.backgroundColor = [UIColor greenColor];
-            memberCell.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.last_active_ago];
-            memberCell.lastActiveAgoLabel.numberOfLines = 0;
+            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoomData:mxRoomData];
         }
         
         return memberCell;
