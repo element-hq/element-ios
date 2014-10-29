@@ -16,6 +16,7 @@
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
+#import "AppSettings.h"
 
 NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
 
@@ -67,6 +68,26 @@ static MatrixHandler *sharedHandler = nil;
     self.mxSession = [[MXSession alloc] initWithHomeServer:self.homeServerURL userId:self.userId accessToken:self.accessToken];
     if (self.mxSession) {
         self.mxData = [[MXData alloc] initWithMatrixSession:self.mxSession];
+        // Check here whether the app user wants to display all the events
+        if ([[AppSettings sharedSettings] displayAllEvents]) {
+            // Override events filter to retrieve all the events
+            self.mxData.eventsFilterForMessages = @[
+                                                    kMXEventTypeStringRoomName,
+                                                    kMXEventTypeStringRoomTopic,
+                                                    kMXEventTypeStringRoomMember,
+                                                    kMXEventTypeStringRoomCreate,
+                                                    kMXEventTypeStringRoomJoinRules,
+                                                    kMXEventTypeStringRoomPowerLevels,
+                                                    kMXEventTypeStringRoomAddStateLevel,
+                                                    kMXEventTypeStringRoomSendEventLevel,
+                                                    kMXEventTypeStringRoomOpsLevel,
+                                                    kMXEventTypeStringRoomAliases,
+                                                    kMXEventTypeStringRoomMessage,
+                                                    kMXEventTypeStringRoomMessageFeedback,
+                                                    kMXEventTypeStringPresence
+                                                    ];
+        }
+        // Launch mxData
         [self.mxData start:^{
             self.isInitialSyncDone = YES;
         } failure:^(NSError *error) {
@@ -110,16 +131,11 @@ static MatrixHandler *sharedHandler = nil;
     self.accessToken = nil;
 }
 
-#ifdef TEMPORARY_PATCH_INITIAL_SYNC
-// Presently the SDK is not able to handle correctly the context for the room recently joined
-// PATCH: we define temporarily a method to force initial sync
-// FIXME: this method should be removed when SDK will fix the issue
 - (void)forceInitialSync {
     [self closeSession];
     notifyOpenSessionFailure = NO;
     [self openSession];
 }
-#endif
 
 - (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
@@ -280,20 +296,55 @@ static MatrixHandler *sharedHandler = nil;
             }
             break;
         }
-            //        case MXEventTypeRoomCreate:
-            //            break;
-            //        case MXEventTypeRoomJoinRules:
-            //            break;
-            //        case MXEventTypeRoomPowerLevels:
-            //            break;
-            //        case MXEventTypeRoomAddStateLevel:
-            //            break;
-            //        case MXEventTypeRoomSendEventLevel:
-            //            break;
-            //        case MXEventTypeRoomOpsLevel:
-            //            break;
-            //        case MXEventTypeRoomAliases:
-            //            break;
+        case MXEventTypeRoomCreate: {
+            NSString *creatorId = message.content[@"creator"];
+            if (creatorId) {
+                displayText = [NSString stringWithFormat:@"%@ created the room", [roomData memberName:creatorId]];
+            }
+            break;
+        }
+        case MXEventTypeRoomJoinRules: {
+            NSString *joinRule = message.content[@"join_rule"];
+            if (joinRule) {
+                displayText = [NSString stringWithFormat:@"The join rule is: %@", joinRule];
+            }
+            break;
+        }
+        case MXEventTypeRoomPowerLevels: {
+            displayText = @"The power level of room members are:";
+            for (NSString *key in message.content.allKeys) {
+                displayText = [NSString stringWithFormat:@"%@\r\n%@:%@", displayText, key, [message.content objectForKey:key]];
+            }
+            break;
+        }
+        case MXEventTypeRoomAddStateLevel: {
+            NSString *minLevel = message.content[@"level"];
+            if (minLevel) {
+                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to add state is: %@", minLevel];
+            }
+            break;
+        }
+        case MXEventTypeRoomSendEventLevel: {
+            NSString *minLevel = message.content[@"level"];
+            if (minLevel) {
+                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to send an event is: %@", minLevel];
+            }
+            break;
+        }
+        case MXEventTypeRoomOpsLevel: {
+            displayText = @"The minimum power levels that a user must have before acting are:";
+            for (NSString *key in message.content.allKeys) {
+                displayText = [NSString stringWithFormat:@"%@\r\n%@:%@", displayText, key, [message.content objectForKey:key]];
+            }
+            break;
+        }
+        case MXEventTypeRoomAliases: {
+            NSArray *aliases = message.content[@"aliases"];
+            if (aliases) {
+                displayText = [NSString stringWithFormat:@"The room aliases are: %@", aliases];
+            }
+            break;
+        }
         case MXEventTypeRoomMessage: {
             NSString *msgtype = message.content[@"msgtype"];
             if ([msgtype isEqualToString:kMXMessageTypeText]) {
@@ -317,10 +368,16 @@ static MatrixHandler *sharedHandler = nil;
             
             break;
         }
-            //        case MXEventTypeRoomMessageFeedback:
-            //            break;
-            //        case MXEventTypeCustom:
-            //            break;
+        case MXEventTypeRoomMessageFeedback: {
+            NSString *type = message.content[@"type"];
+            NSString *eventId = message.content[@"target_event_id"];
+            if (type && eventId) {
+                displayText = [NSString stringWithFormat:@"Feedback event (id: %@): %@", eventId, type];
+            }
+            break;
+        }
+        case MXEventTypeCustom:
+            break;
         default:
             break;
     }

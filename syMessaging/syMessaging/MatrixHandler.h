@@ -16,6 +16,11 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
+// Presently the SDK is not able to handle correctly the context for the room recently joined
+// PATCH: we force initial sync if this is necessary (see TEMPORARY_PATCH_INITIAL_SYNC occurences)
+// FIXME: this compilation flag must be removed when SDK will fix the issue
+#define TEMPORARY_PATCH_INITIAL_SYNC 1
+
 extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 @interface MatrixHandler : NSObject
@@ -38,13 +43,8 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 - (void)logout;
 
-#define TEMPORARY_PATCH_INITIAL_SYNC 1
-#ifdef TEMPORARY_PATCH_INITIAL_SYNC
-// Presently the SDK is not able to handle correctly the context for the room recently joined
-// PATCH: we define temporarily a method to force initial sync
-// FIXME: this method should be removed when SDK will fix the issue
+// Flush and restore Matrix data
 - (void)forceInitialSync;
-#endif
 
 - (BOOL)isAttachment:(MXEvent*)message;
 - (BOOL)isNotification:(MXEvent*)message;

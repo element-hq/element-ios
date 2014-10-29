@@ -15,6 +15,7 @@
  */
 
 #import "AppSettings.h"
+#import "MatrixHandler.h"
 
 static AppSettings *sharedSettings = nil;
 
@@ -62,5 +63,7 @@ static AppSettings *sharedSettings = nil;
 
 - (void)setDisplayAllEvents:(BOOL)displayAllEvents {
     [[NSUserDefaults standardUserDefaults] setBool:displayAllEvents forKey:@"displayAllEvents"];
+    // Flush and restore Matrix data
+    [[MatrixHandler sharedHandler] forceInitialSync];
 }
 @end
