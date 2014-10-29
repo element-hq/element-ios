@@ -15,6 +15,7 @@
  */
 
 #import "AppDelegate.h"
+#import "AppSettings.h"
 #import "RoomViewController.h"
 #import "MatrixHandler.h"
 #import "MediaManager.h"
@@ -83,6 +84,8 @@
 - (void)logout {
     // Clear cache
     [MediaManager clearCache];
+    // Reset App settings
+    [[AppSettings sharedSettings] reset];
     // Logout Matrix
     [[MatrixHandler sharedHandler] logout];
     [self.masterTabBarController showLoginScreen];

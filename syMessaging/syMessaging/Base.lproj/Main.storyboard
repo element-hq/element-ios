@@ -740,33 +740,64 @@
                                 <constraint firstItem="8M9-ZM-efS" firstAttribute="leading" secondItem="5Dl-D7-ahX" secondAttribute="trailing" constant="10" id="hCS-JS-UW3"/>
                             </constraints>
                         </view>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="Der-gn-Efb" userLabel="TableFooterView">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isk-vI-TAp">
-                                    <rect key="frame" x="272" y="6" width="56" height="33"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                    <state key="normal" title="Logout">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="touchUpInside" id="BXE-sL-Ztk"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="centerY" secondItem="isk-vI-TAp" secondAttribute="centerY" id="ObY-th-ac2"/>
-                                <constraint firstAttribute="centerX" secondItem="isk-vI-TAp" secondAttribute="centerX" id="ynl-sA-uVu"/>
-                            </constraints>
-                        </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCell" id="XUG-wd-Xsh">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithSwitch" id="XUG-wd-Xsh" customClass="SettingsTableCellWithSwitch">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XUG-wd-Xsh" id="Rsx-dG-Pfj">
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l1h-g3-1Cr">
+                                            <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                            <connections>
+                                                <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="valueChanged" id="tOj-wD-WKn"/>
+                                            </connections>
+                                        </switch>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rbz-hR-ZX2">
+                                            <rect key="frame" x="8" y="11" width="527" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Rbz-hR-ZX2" firstAttribute="top" secondItem="Rsx-dG-Pfj" secondAttribute="top" constant="11" id="3uH-Vt-mLS"/>
+                                        <constraint firstAttribute="trailing" secondItem="l1h-g3-1Cr" secondAttribute="trailing" constant="8" id="IjW-eJ-gaN"/>
+                                        <constraint firstAttribute="bottom" secondItem="Rbz-hR-ZX2" secondAttribute="bottom" constant="11" id="KNs-SK-5ej"/>
+                                        <constraint firstItem="l1h-g3-1Cr" firstAttribute="top" secondItem="Rsx-dG-Pfj" secondAttribute="top" constant="6" id="Tyf-nr-Ajl"/>
+                                        <constraint firstItem="Rbz-hR-ZX2" firstAttribute="leading" secondItem="Rsx-dG-Pfj" secondAttribute="leading" constant="8" id="kDM-P4-qAP"/>
+                                        <constraint firstAttribute="bottom" secondItem="l1h-g3-1Cr" secondAttribute="bottom" constant="6" id="v5A-KU-HYQ"/>
+                                        <constraint firstItem="l1h-g3-1Cr" firstAttribute="leading" secondItem="Rbz-hR-ZX2" secondAttribute="trailing" constant="8" id="yH4-Vv-QGf"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="settingLabel" destination="Rbz-hR-ZX2" id="Rf1-HP-aYe"/>
+                                    <outlet property="settingSwitch" destination="l1h-g3-1Cr" id="trh-zz-dn2"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithTextView" id="YFJ-c6-8tp" customClass="SettingsTableCellWithTextView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YFJ-c6-8tp" id="A3V-Y7-p1i">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SAI-hV-Jai">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="SAI-hV-Jai" secondAttribute="bottom" id="4Oe-Dk-T3D"/>
+                                        <constraint firstAttribute="trailing" secondItem="SAI-hV-Jai" secondAttribute="trailing" id="Co5-ng-qtK"/>
+                                        <constraint firstItem="SAI-hV-Jai" firstAttribute="top" secondItem="A3V-Y7-p1i" secondAttribute="top" id="Gg9-ty-0Gr"/>
+                                        <constraint firstItem="SAI-hV-Jai" firstAttribute="leading" secondItem="A3V-Y7-p1i" secondAttribute="leading" id="LTO-yi-5ts"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="settingTextView" destination="SAI-hV-Jai" id="UL1-hb-UbE"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -776,9 +807,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="7NM-zW-wJT"/>
                     <connections>
-                        <outlet property="logoutBtn" destination="isk-vI-TAp" id="r80-vw-NHY"/>
                         <outlet property="saveBtn" destination="hjw-sm-lJ0" id="xN7-pc-PMD"/>
-                        <outlet property="tableFooter" destination="Der-gn-Efb" id="nen-wZ-GLy"/>
                         <outlet property="tableHeader" destination="ZP5-e3-ge9" id="nd0-lU-aW3"/>
                         <outlet property="tableView" destination="etG-ZU-b2r" id="5hz-jQ-qVT"/>
                         <outlet property="userDisplayName" destination="8M9-ZM-efS" id="rAQ-cX-3Ay"/>
@@ -787,7 +816,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKJ-22-Asy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="875" y="842"/>
+            <point key="canvasLocation" x="875" y="841"/>
         </scene>
         <!--SettingsNav-->
         <scene sceneID="b0q-mf-7ii">
