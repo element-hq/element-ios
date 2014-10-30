@@ -548,6 +548,8 @@ NSString *const kFailedEventId = @"failedEventId";
     NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
     if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
         cell.messageTextView.textColor = [UIColor redColor];
+    } else if (isIncomingMsg && ([displayText rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [displayText rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
+        cell.messageTextView.textColor = [UIColor blueColor];
     } else {
         cell.messageTextView.textColor = [UIColor blackColor];
     }

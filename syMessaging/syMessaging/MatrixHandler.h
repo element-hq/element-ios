@@ -36,6 +36,10 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *accessToken;
 
+// Matrix user's settings
+@property (strong, nonatomic) NSString *userDisplayName;
+@property (strong, nonatomic) NSString *userPictureURL;
+
 @property (nonatomic,readonly) BOOL isLogged;
 @property (nonatomic,readonly) BOOL isInitialSyncDone;
 

@@ -33,7 +33,7 @@
 
 @interface RecentsViewController () {
     NSMutableArray  *recents;
-    id               registeredListener;
+    id               recentsListener;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -67,9 +67,9 @@
 }
 
 - (void)dealloc {
-    if (registeredListener) {
-        [[MatrixHandler sharedHandler].mxData unregisterListener:registeredListener];
-        registeredListener = nil;
+    if (recentsListener) {
+        [[MatrixHandler sharedHandler].mxData unregisterListener:recentsListener];
+        recentsListener = nil;
     }
     recents = nil;
     _preSelectedRoomId = nil;
@@ -94,9 +94,9 @@
     // Leave potential editing mode
     [self setEditing:NO];
     
-    if (registeredListener) {
-        [[MatrixHandler sharedHandler].mxData unregisterListener:registeredListener];
-        registeredListener = nil;
+    if (recentsListener) {
+        [[MatrixHandler sharedHandler].mxData unregisterListener:recentsListener];
+        recentsListener = nil;
     }
     
     _preSelectedRoomId = nil;
@@ -147,9 +147,9 @@
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Remove potential listener
-    if (registeredListener && mxHandler.mxData) {
-        [mxHandler.mxData unregisterListener:registeredListener];
-        registeredListener = nil;
+    if (recentsListener && mxHandler.mxData) {
+        [mxHandler.mxData unregisterListener:recentsListener];
+        recentsListener = nil;
     }
     
     [_activityIndicator startAnimating];
@@ -159,7 +159,7 @@
         if (mxHandler.mxData) {
             recents = [NSMutableArray arrayWithArray:mxHandler.mxData.recents];
             // Register recent listener
-            registeredListener = [mxHandler.mxData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
+            recentsListener = [mxHandler.mxData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
                 // consider only live event
                 if (isLive) {
                     // Refresh the whole recents list

@@ -96,42 +96,23 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Update User information
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
-    // Get Display name
+    // Handle user's display name
+    currentDisplayName = mxHandler.userDisplayName;
+    self.userDisplayName.text = mxHandler.userDisplayName;
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
     [mxHandler.mxSession displayName:mxHandler.mxSession.user_id success:^(NSString *displayname) {
-        currentDisplayName = displayname;
-        self.userDisplayName.text = displayname;
+        mxHandler.userDisplayName = displayname;
     } failure:^(NSError *error) {
         NSLog(@"Get displayName failed: %@", error);
         //Alert user
         [[AppDelegate theDelegate] showErrorAsAlert:error];
     }];
     
-    // Get picture url
+    // Handle user's picture url
+    [self updateUserPicture:mxHandler.userPictureURL];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
     [mxHandler.mxSession avatarUrl:mxHandler.mxSession.user_id success:^(NSString *avatar_url) {
-        if (currentPictureURL == nil || [currentPictureURL isEqualToString:avatar_url] == NO) {
-            // Cancel previous loader (if any)
-            if (imageLoader) {
-                [MediaManager cancel:imageLoader];
-                imageLoader = nil;
-            }
-
-            currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
-            if (currentPictureURL) {
-                // Load user's picture
-                imageLoader = [MediaManager loadPicture:currentPictureURL success:^(UIImage *image) {
-                    [self.userPicture setImage:image forState:UIControlStateNormal];
-                    [self.userPicture setImage:image forState:UIControlStateHighlighted];
-                } failure:^(NSError *error) {
-                    // Reset picture URL in order to try next time
-                    currentPictureURL = nil;
-                }];
-            } else {
-                // Set placeholder
-                UIImage *image = [UIImage imageNamed:@"default-profile"];
-                [self.userPicture setImage:image forState:UIControlStateNormal];
-                [self.userPicture setImage:image forState:UIControlStateHighlighted];
-            }
-        }
+        mxHandler.userPictureURL = avatar_url;
     } failure:^(NSError *error) {
         NSLog(@"Get picture url failed: %@", error);
         //Alert user
@@ -142,7 +123,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self.tableView reloadData];
 }
 
-#pragma mark -
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userDisplayName"];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userPictureURL"];
+}
+
+#pragma mark - Internal methods
 
 - (void)reset {
     // Cancel picture loader (if any)
@@ -158,6 +146,52 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     currentDisplayName = nil;
     self.userDisplayName.text = nil;
+}
+
+- (void)updateUserPicture:(NSString *)avatar_url {
+    if (currentPictureURL == nil || [currentPictureURL isEqualToString:avatar_url] == NO) {
+        // Cancel previous loader (if any)
+        if (imageLoader) {
+            [MediaManager cancel:imageLoader];
+            imageLoader = nil;
+        }
+        
+        currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
+        if (currentPictureURL) {
+            // Load user's picture
+            imageLoader = [MediaManager loadPicture:currentPictureURL success:^(UIImage *image) {
+                [self.userPicture setImage:image forState:UIControlStateNormal];
+                [self.userPicture setImage:image forState:UIControlStateHighlighted];
+            } failure:^(NSError *error) {
+                // Reset picture URL in order to try next time
+                currentPictureURL = nil;
+            }];
+        } else {
+            // Set placeholder
+            UIImage *image = [UIImage imageNamed:@"default-profile"];
+            [self.userPicture setImage:image forState:UIControlStateNormal];
+            [self.userPicture setImage:image forState:UIControlStateHighlighted];
+        }
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"userDisplayName" isEqualToString:keyPath])
+    {
+        // Refresh user's display name
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        if ([currentDisplayName isEqualToString:mxHandler.userDisplayName] == NO) {
+            currentDisplayName = mxHandler.userDisplayName;
+            self.userDisplayName.text = mxHandler.userDisplayName;
+        }
+    } else if ([@"userPictureURL" isEqualToString:keyPath]) {
+        // Refresh user's picture
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [self updateUserPicture:mxHandler.userPictureURL];
+    }
 }
 
 #pragma mark - Actions
