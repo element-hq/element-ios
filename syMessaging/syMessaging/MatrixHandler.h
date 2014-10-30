@@ -29,7 +29,6 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (strong, nonatomic) MXSession *mxSession;
 @property (strong, nonatomic) MXData *mxData;
 
-
 @property (strong, nonatomic) NSString *homeServerURL;
 @property (strong, nonatomic) NSString *homeServer;
 @property (strong, nonatomic) NSString *userLogin;
@@ -49,6 +48,8 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 // Flush and restore Matrix data
 - (void)forceInitialSync;
+
+- (void)enableEventsNotifications:(BOOL)isEnabled;
 
 - (BOOL)isAttachment:(MXEvent*)message;
 - (BOOL)isNotification:(MXEvent*)message;

@@ -28,6 +28,8 @@
 
 @implementation MasterTabBarController
 
+@synthesize visibleRoomId;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -91,8 +93,10 @@
     // Switch on Recents Tab
     [self setSelectedIndex:TABBAR_RECENTS_INDEX];
     
-    // Select room to display its details
-    recentsViewController.preSelectedRoomId = roomId;
+    // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        recentsViewController.preSelectedRoomId = roomId;
+    });
 }
 
 @end

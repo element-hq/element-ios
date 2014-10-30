@@ -118,6 +118,9 @@ NSString *const kFailedEventId = @"failedEventId";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    // Set visible room id
+    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomId;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -134,6 +137,9 @@ NSString *const kFailedEventId = @"failedEventId";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    
+    // Reset visible room id
+    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

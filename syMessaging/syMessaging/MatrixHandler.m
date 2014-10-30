@@ -17,6 +17,7 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 #import "AppSettings.h"
+#import "CustomAlert.h"
 
 NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
 
@@ -28,11 +29,12 @@ static MatrixHandler *sharedHandler = nil;
     
     // Handle user's settings change
     id roomMembersListener;
-    // Handle new events notification
+    // Handle events notification
     id eventsListener;
 }
 
 @property (nonatomic,readwrite) BOOL isInitialSyncDone;
+@property (strong, nonatomic) CustomAlert *mxNotification;
 
 @end
 
@@ -70,6 +72,8 @@ static MatrixHandler *sharedHandler = nil;
         if (self.userDisplayName == nil) {
             self.userDisplayName = @"";
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
     return self;
 }
@@ -129,15 +133,9 @@ static MatrixHandler *sharedHandler = nil;
                 }
             }];
             
-            // Check here whether the app user wants notifications on new events
+            // Check whether the app user wants notifications on new events
             if ([[AppSettings sharedSettings] enableNotifications]) {
-                // Register events listener
-                eventsListener = [self.mxData registerEventListenerForTypes:self.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
-                    // Consider only live event
-                    if (isLive) {
-                        // TODO
-                    }
-                }];
+                [self enableEventsNotifications:YES];
             }
         } failure:^(NSError *error) {
             NSLog(@"Initial Sync failed: %@", error);
@@ -173,8 +171,23 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [self closeSession];
     self.mxHomeServer = nil;
+    
+    if (self.mxNotification) {
+        [self.mxNotification dismiss:NO];
+        self.mxNotification = nil;
+    }
+}
+
+- (void)onAppDidEnterBackground {
+    // Hide potential notification
+    if (self.mxNotification) {
+        [self.mxNotification dismiss:NO];
+        self.mxNotification = nil;
+    }
 }
 
 #pragma mark -
@@ -197,6 +210,61 @@ static MatrixHandler *sharedHandler = nil;
     notifyOpenSessionFailure = NO;
     [self openSession];
 }
+
+- (void)enableEventsNotifications:(BOOL)isEnabled {
+    if (isEnabled) {
+        // Register events listener
+        eventsListener = [self.mxData registerEventListenerForTypes:self.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
+            // Consider only live event
+            if (isLive) {
+                // If we are running on background, show a local notif
+                if (UIApplicationStateBackground == [UIApplication sharedApplication].applicationState)
+                {
+                    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+                    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
+                    localNotification.hasAction = YES;
+                    [localNotification setAlertBody:[self displayTextFor:event inSubtitleMode:YES]];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+                } else if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.room_id] == NO) {
+                    // The concerned room is not presently visible, we display a notification by removing existing one (if any)
+                    if (self.mxNotification) {
+                        [self.mxNotification dismiss:NO];
+                        self.mxNotification = nil;
+                    }
+                    
+                    self.mxNotification = [[CustomAlert alloc] initWithTitle:[self.mxData getRoomData:event.room_id].displayname
+                                                                     message:[self displayTextFor:event inSubtitleMode:YES]
+                                                                       style:CustomAlertStyleAlert];
+                    self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
+                                                                                              style:CustomAlertActionStyleDefault
+                                                                                            handler:^(CustomAlert *alert) {
+                                                                                                [MatrixHandler sharedHandler].mxNotification = nil;
+                                                                                            }];
+                    [self.mxNotification addActionWithTitle:@"View"
+                                                      style:CustomAlertActionStyleDefault
+                                                    handler:^(CustomAlert *alert) {
+                                                        [MatrixHandler sharedHandler].mxNotification = nil;
+                                                        // Show the room
+                                                        [[AppDelegate theDelegate].masterTabBarController showRoom:event.room_id];
+                                                    }];
+                    
+                    [self.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
+                }
+            }
+        }];
+    } else {
+        if (eventsListener) {
+            [self.mxData unregisterListener:eventsListener];
+            eventsListener = nil;
+        }
+        if (self.mxNotification) {
+            [self.mxNotification dismiss:NO];
+            self.mxNotification = nil;
+        }
+    }
+}
+
+#pragma mark - Properties
 
 - (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];

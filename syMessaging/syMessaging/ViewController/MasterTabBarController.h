@@ -27,5 +27,7 @@
 - (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId;
 
+@property (strong, nonatomic) NSString *visibleRoomId; // nil if no room is presently visible
+
 @end
 

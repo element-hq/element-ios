@@ -54,6 +54,7 @@ static AppSettings *sharedSettings = nil;
 }
 
 - (void)setEnableNotifications:(BOOL)notifications {
+    [[MatrixHandler sharedHandler] enableEventsNotifications:notifications];
     [[NSUserDefaults standardUserDefaults] setBool:notifications forKey:@"enableNotifications"];
 }
 
