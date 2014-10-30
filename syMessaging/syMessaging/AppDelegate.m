@@ -93,7 +93,7 @@
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (UIAlertView*)showErrorAsAlert:(NSError*)error {
+- (CustomAlert*)showErrorAsAlert:(NSError*)error {
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
     {
@@ -101,8 +101,9 @@
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [alert show];
+    CustomAlert *alert = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:nil];
+    [alert showInViewController:[self.masterTabBarController selectedViewController]];
     
     return alert;
 }

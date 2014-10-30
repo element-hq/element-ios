@@ -64,7 +64,9 @@
         UIAlertAction* action = [UIAlertAction actionWithTitle:title
                                                          style:(UIAlertActionStyle)style
                                                        handler:^(UIAlertAction * action) {
-                                                           handler(self);
+                                                           if (handler) {
+                                                               handler(self);
+                                                           }
                                                        }];
         
         [(UIAlertController *)alert addAction:action];

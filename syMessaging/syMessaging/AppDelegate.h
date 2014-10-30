@@ -17,6 +17,7 @@
 #import <UIKit/UIKit.h>
 
 #import "MasterTabBarController.h"
+#import "CustomAlert.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
@@ -27,7 +28,7 @@
 
 - (void)logout;
 
-- (UIAlertView*)showErrorAsAlert:(NSError*)error;
+- (CustomAlert*)showErrorAsAlert:(NSError*)error;
 
 @end
 
