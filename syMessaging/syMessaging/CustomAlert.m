@@ -31,9 +31,14 @@
 @implementation CustomAlert
 
 - (void)dealloc {
+    // iOS < 8
+    if ([alert isKindOfClass:[UIActionSheet class]] || [alert isKindOfClass:[UIAlertView class]]) {
+        // Dismiss here AlertView or ActionSheet (if any) because its delegate is deallocated
+        [self dismiss:NO];
+    }
+    
     alert = nil;
     parentViewController = nil;
-    
     actions = nil;
 }
 
@@ -157,6 +162,7 @@
     } else if ([alert isKindOfClass:[UIAlertView class]]) {
         [((UIAlertView *)alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
     }
+    alert = nil;
 }
 
 - (UITextField *)textFieldAtIndex:(NSInteger)textFieldIndex{
@@ -177,6 +183,7 @@
         // And call it
         block(self);
     }
+    alert = nil;
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
@@ -189,6 +196,7 @@
         // And call it
         block(self);
     }
+    alert = nil;
 }
 
 @end

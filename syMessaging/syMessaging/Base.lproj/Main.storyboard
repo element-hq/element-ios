@@ -729,12 +729,17 @@
                                         <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="touchUpInside" id="TBD-Nx-SxA"/>
                                     </connections>
                                 </button>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1H7-DG-oTV">
+                                    <rect key="frame" x="290" y="40" width="20" height="20"/>
+                                </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="hjw-sm-lJ0" secondAttribute="centerY" id="2GV-E9-6cd"/>
+                                <constraint firstAttribute="centerY" secondItem="1H7-DG-oTV" secondAttribute="centerY" id="3oK-Ie-SK8"/>
                                 <constraint firstAttribute="centerY" secondItem="5Dl-D7-ahX" secondAttribute="centerY" id="8v6-O8-Rbm"/>
                                 <constraint firstAttribute="trailing" secondItem="hjw-sm-lJ0" secondAttribute="trailing" constant="10" id="ABH-zI-08r"/>
+                                <constraint firstAttribute="centerX" secondItem="1H7-DG-oTV" secondAttribute="centerX" id="IUT-eC-9SL"/>
                                 <constraint firstAttribute="centerY" secondItem="8M9-ZM-efS" secondAttribute="centerY" id="M2X-FT-Qkb"/>
                                 <constraint firstItem="5Dl-D7-ahX" firstAttribute="leading" secondItem="ZP5-e3-ge9" secondAttribute="leading" constant="10" id="bFJ-3g-wBh"/>
                                 <constraint firstItem="8M9-ZM-efS" firstAttribute="leading" secondItem="5Dl-D7-ahX" secondAttribute="trailing" constant="10" id="hCS-JS-UW3"/>
@@ -807,6 +812,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="7NM-zW-wJT"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="1H7-DG-oTV" id="UEC-5U-M70"/>
                         <outlet property="saveBtn" destination="hjw-sm-lJ0" id="xN7-pc-PMD"/>
                         <outlet property="tableHeader" destination="ZP5-e3-ge9" id="nd0-lU-aW3"/>
                         <outlet property="tableView" destination="etG-ZU-b2r" id="5hz-jQ-qVT"/>
@@ -917,7 +923,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="4dn-O0-IJ0">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="4dn-O0-IJ0">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>

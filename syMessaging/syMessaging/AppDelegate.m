@@ -65,6 +65,11 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    if (self.errorNotification) {
+        [self.errorNotification dismiss:NO];
+        self.errorNotification = nil;
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -94,6 +99,10 @@
 }
 
 - (CustomAlert*)showErrorAsAlert:(NSError*)error {
+    if (self.errorNotification) {
+        [self.errorNotification dismiss:NO];
+    }
+    
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
     {
@@ -101,11 +110,11 @@
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    CustomAlert *alert = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
-    alert.cancelButtonIndex = [alert addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:nil];
-    [alert showInViewController:[self.masterTabBarController selectedViewController]];
+    self.errorNotification = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:nil];
+    [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
     
-    return alert;
+    return self.errorNotification;
 }
 
 #pragma mark - Split view

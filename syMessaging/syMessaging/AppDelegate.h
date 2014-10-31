@@ -24,6 +24,8 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MasterTabBarController *masterTabBarController;
 
+@property (strong, nonatomic) CustomAlert *errorNotification;
+
 + (AppDelegate*)theDelegate;
 
 - (void)logout;

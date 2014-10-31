@@ -229,7 +229,6 @@ static MatrixHandler *sharedHandler = nil;
                     // The concerned room is not presently visible, we display a notification by removing existing one (if any)
                     if (self.mxNotification) {
                         [self.mxNotification dismiss:NO];
-                        self.mxNotification = nil;
                     }
                     
                     self.mxNotification = [[CustomAlert alloc] initWithTitle:[self.mxData getRoomData:event.room_id].displayname
@@ -337,7 +336,7 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)setUserDisplayName:(NSString *)inUserDisplayName {
-    if (inUserDisplayName.length) {
+    if ([inUserDisplayName isEqual:[NSNull null]] == NO && inUserDisplayName.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inUserDisplayName forKey:@"userdisplayname"];
     } else {
         // the app will look for this display name in incoming messages, it must not be nil.
@@ -350,7 +349,7 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)setUserPictureURL:(NSString *)inUserPictureURL {
-    if (inUserPictureURL.length) {
+    if ([inUserPictureURL isEqual:[NSNull null]] == NO && inUserPictureURL.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inUserPictureURL forKey:@"userpictureurl"];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userpictureurl"];

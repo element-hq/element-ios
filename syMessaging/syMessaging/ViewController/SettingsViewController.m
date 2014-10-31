@@ -36,16 +36,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     NSString *currentDisplayName;
     NSString *currentPictureURL;
+    BOOL      shouldSavePicture;
     
     UIButton *logoutBtn;
     UISwitch *notificationsSwitch;
     UISwitch *allEventsSwitch;
+    
+    UIImagePickerController *imagePicker;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
 @property (weak, nonatomic) IBOutlet UIButton *userPicture;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)onButtonPressed:(id)sender;
 
@@ -93,44 +97,125 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Update User information
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    
-    // Handle user's display name
-    currentDisplayName = mxHandler.userDisplayName;
-    self.userDisplayName.text = mxHandler.userDisplayName;
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
-    [mxHandler.mxSession displayName:mxHandler.mxSession.user_id success:^(NSString *displayname) {
-        mxHandler.userDisplayName = displayname;
-    } failure:^(NSError *error) {
-        NSLog(@"Get displayName failed: %@", error);
-        //Alert user
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
-    }];
-    
-    // Handle user's picture url
-    [self updateUserPicture:mxHandler.userPictureURL];
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
-    [mxHandler.mxSession avatarUrl:mxHandler.mxSession.user_id success:^(NSString *avatar_url) {
-        mxHandler.userPictureURL = avatar_url;
-    } failure:^(NSError *error) {
-        NSLog(@"Get picture url failed: %@", error);
-        //Alert user
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
-    }];
-    
-    // Refresh settings
-    [self.tableView reloadData];
+    // Ignore viewWillAppear if it is related to the mediaPicker use
+    if (imagePicker == nil) {
+        // Update User information
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        
+        // Handle user's display name
+        currentDisplayName = mxHandler.userDisplayName;
+        self.userDisplayName.text = mxHandler.userDisplayName;
+        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
+        [mxHandler.mxSession displayName:mxHandler.mxSession.user_id success:^(NSString *displayname) {
+            mxHandler.userDisplayName = displayname;
+        } failure:^(NSError *error) {
+            NSLog(@"Get displayName failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+        
+        // Handle user's picture url
+        [self updateUserPicture:mxHandler.userPictureURL];
+        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
+        [mxHandler.mxSession avatarUrl:mxHandler.mxSession.user_id success:^(NSString *avatar_url) {
+            mxHandler.userPictureURL = avatar_url;
+        } failure:^(NSError *error) {
+            NSLog(@"Get picture url failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+        
+        // Refresh settings
+        [self.tableView reloadData];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userDisplayName"];
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userPictureURL"];
+    // Ignore viewWillDisappear if it is related to the mediaPicker use
+    if (imagePicker == nil) {
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userDisplayName"];
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userPictureURL"];
+        
+        shouldSavePicture = NO;
+    }
 }
 
 #pragma mark - Internal methods
+
+- (void)save {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    // Start saving
+    [_activityIndicator startAnimating];
+    _saveBtn.enabled = NO;
+    _saveBtn.alpha = 0.5;
+    
+    // Check whether the display name has been changed
+    NSString *displayname = self.userDisplayName.text;
+    if ([displayname isEqualToString:currentDisplayName] == NO) {
+        // Save display name
+        [mxHandler.mxSession setDisplayName:displayname success:^{
+            currentDisplayName = displayname;
+            // Loop to save other changes
+            [self save];
+        } failure:^(NSError *error) {
+            // Stop saving
+            [_activityIndicator stopAnimating];
+            _saveBtn.enabled = YES;
+            _saveBtn.alpha = 1;
+            
+            NSLog(@"Set displayName failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+        // Wait for the end of this request before pursuing the saving
+        return;
+    }
+    
+    // Check whether the picture has been changed
+    if (shouldSavePicture) {
+        [mxHandler.mxSession uploadContent:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5)
+                                  mimeType:@"image/jpeg"
+                                   timeout:30
+                                   success:^(NSString *url) {
+                                       [mxHandler.mxSession setAvatarUrl:url
+                                                                 success:^{
+                                                                     shouldSavePicture = NO;
+                                                                     [MatrixHandler sharedHandler].userPictureURL = url;
+                                                                     // Loop to save other changes
+                                                                     [self save];
+                                                                 } failure:^(NSError *error) {
+                                                                     // Stop saving
+                                                                     [_activityIndicator stopAnimating];
+                                                                     _saveBtn.enabled = YES;
+                                                                     _saveBtn.alpha = 1;
+                                                                     
+                                                                     NSLog(@"Set avatar url failed: %@", error);
+                                                                     //Alert user
+                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                 }];
+                                       
+                                   } failure:^(NSError *error) {
+                                       // Stop saving
+                                       [_activityIndicator stopAnimating];
+                                       _saveBtn.enabled = YES;
+                                       _saveBtn.alpha = 1;
+                                       
+                                       NSLog(@"Upload image failed: %@", error);
+                                       //Alert user
+                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                   }];
+        // Wait for the end of this request before pursuing the saving
+        return;
+    }
+    
+    // Stop saving
+    [_activityIndicator stopAnimating];
+    _saveBtn.enabled = YES;
+    _saveBtn.alpha = 1;
+}
 
 - (void)reset {
     // Cancel picture loader (if any)
@@ -177,10 +262,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"userDisplayName" isEqualToString:keyPath])
-    {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"userDisplayName" isEqualToString:keyPath]) {
         // Refresh user's display name
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         if ([currentDisplayName isEqualToString:mxHandler.userDisplayName] == NO) {
@@ -200,21 +283,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self dismissKeyboard];
     
     if (sender == _userPicture) {
-        // TODO open gallery
+        // Open picture gallery
+        imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePicker.allowsEditing = NO;
+        [self presentViewController:imagePicker animated:YES completion:nil];
     } else if (sender == _saveBtn) {
-        // Save Change (if any)
-        NSString *displayname = self.userDisplayName.text;
-        if ([displayname isEqualToString:currentDisplayName] == NO) {
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxSession setDisplayName:displayname success:^{
-                currentDisplayName = displayname;
-            } failure:^(NSError *error) {
-                NSLog(@"Set displayName failed: %@", error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        }
-        // TODO check picture change
+        [self save];
     } else if (sender == logoutBtn) {
         [self reset];
         [[AppDelegate theDelegate] logout];
@@ -341,6 +417,30 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     return cell;
+}
+
+# pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (selectedImage) {
+        [self.userPicture setImage:selectedImage forState:UIControlStateNormal];
+        [self.userPicture setImage:selectedImage forState:UIControlStateHighlighted];
+        shouldSavePicture = YES;
+    }
+    [self dismissMediaPicker];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissMediaPicker];
+}
+
+- (void)dismissMediaPicker {
+    if (imagePicker) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        imagePicker.delegate = nil;
+        imagePicker = nil;
+    }
 }
 
 @end
