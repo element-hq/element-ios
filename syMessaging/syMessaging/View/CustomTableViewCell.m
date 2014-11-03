@@ -18,7 +18,7 @@
 #import "MediaManager.h"
 
 @interface CustomTableViewCell () {
-    id mediaLoader;
+    id userPictureLoader;
 }
 @end
 
@@ -26,9 +26,9 @@
 
 - (void)setPictureURL:(NSString *)pictureURL {
     // Cancel media loader in progress (if any)
-    if (mediaLoader) {
-        [MediaManager cancel:mediaLoader];
-        mediaLoader = nil;
+    if (userPictureLoader) {
+        [MediaManager cancel:userPictureLoader];
+        userPictureLoader = nil;
     }
     
     _pictureURL = pictureURL;
@@ -42,7 +42,7 @@
     // Consider provided url to update image view
     if (pictureURL) {
         // Load picture
-        mediaLoader = [MediaManager loadPicture:pictureURL
+        userPictureLoader = [MediaManager loadPicture:pictureURL
                                         success:^(UIImage *image) {
             _pictureView.image = image;
         }
@@ -52,9 +52,9 @@
 
 - (void)dealloc
 {
-    if (mediaLoader) {
-        [MediaManager cancel:mediaLoader];
-        mediaLoader = nil;
+    if (userPictureLoader) {
+        [MediaManager cancel:userPictureLoader];
+        userPictureLoader = nil;
     }
 }
 

@@ -20,6 +20,9 @@
 // Room Message Table View Cell
 @interface RoomMessageTableCell : CustomTableViewCell
 @property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
+@property (strong, nonatomic) IBOutlet UIImageView *attachmentView;
+
+@property (strong, nonatomic) NSString *attachedImageURL;
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell

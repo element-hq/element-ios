@@ -15,9 +15,47 @@
  */
 
 #import "RoomMessageTableCell.h"
+#import "MediaManager.h"
 
+@interface RoomMessageTableCell () {
+    id attachmentLoader;
+}
+@end
 
 @implementation RoomMessageTableCell
+
+- (void)setAttachedImageURL:(NSString *)attachedImageURL {
+    // Cancel media loader in progress (if any)
+    if (attachmentLoader) {
+        [MediaManager cancel:attachmentLoader];
+        attachmentLoader = nil;
+    }
+    
+    _attachedImageURL = attachedImageURL;
+    
+    // Reset image view
+    _attachmentView.image = nil;
+    // Consider provided url to update image view
+    if (attachedImageURL) {
+        // Load picture
+        attachmentLoader = [MediaManager loadPicture:attachedImageURL
+                                              success:^(UIImage *image) {
+                                                  _attachmentView.image = image;
+                                              }
+                                              failure:^(NSError *error) {
+                                                  NSLog(@"Failed to download attachment (%@): %@", _attachedImageURL, error);
+                                              }];
+    }
+}
+
+- (void)dealloc
+{
+    if (attachmentLoader) {
+        [MediaManager cancel:attachmentLoader];
+        attachmentLoader = nil;
+    }
+}
+
 @end
 
 

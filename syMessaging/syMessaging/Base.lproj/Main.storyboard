@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -61,6 +60,12 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View">
+                                                    <rect key="frame" x="56" y="30" width="190" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="190" id="gVc-k2-DHn"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="egJ-aY-QVW">
                                                     <rect key="frame" x="51" y="5" width="200" height="20"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -77,6 +82,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="J5R-Mh-3hV" secondAttribute="bottom" constant="5" id="662-Ze-6ia"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="N8f-0n-ObR"/>
+                                                <constraint firstAttribute="bottom" secondItem="mvK-ez-meg" secondAttribute="bottom" constant="10" id="QDe-wv-ghR"/>
+                                                <constraint firstItem="mvK-ez-meg" firstAttribute="top" secondItem="egJ-aY-QVW" secondAttribute="bottom" constant="5" id="Ymi-fN-lGW"/>
+                                                <constraint firstItem="mvK-ez-meg" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="8" id="ZSk-GW-jSc"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="8" id="fNV-Tp-p31"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="qkW-ys-ckn"/>
@@ -86,6 +94,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="attachmentView" destination="mvK-ez-meg" id="Qjc-lo-eJS"/>
                                             <outlet property="messageTextView" destination="J5R-Mh-3hV" id="d45-NI-bod"/>
                                             <outlet property="pictureView" destination="uhu-R0-9NH" id="59O-If-m7H"/>
                                             <outlet property="userNameLabel" destination="egJ-aY-QVW" id="IWg-7t-5Vp"/>
@@ -107,6 +116,12 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QZT-V8-yqJ" userLabel="Attachment View">
+                                                    <rect key="frame" x="354" y="10" width="190" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="190" id="0gc-hU-Jtc"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ">
                                                     <rect key="frame" x="552" y="5" width="40" height="40"/>
                                                     <constraints>
@@ -132,12 +147,16 @@
                                                 <constraint firstItem="alD-cg-uMl" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="14" id="M1S-HJ-o3b"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="SSl-4u-03L"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="alD-cg-uMl" secondAttribute="trailing" constant="5" id="Vde-Q3-e8O"/>
+                                                <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="QZT-V8-yqJ" secondAttribute="trailing" constant="8" id="a1U-Ar-6ln"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="3" id="cCA-xk-XBe"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="eSd-gt-RQQ"/>
+                                                <constraint firstAttribute="bottom" secondItem="QZT-V8-yqJ" secondAttribute="bottom" constant="10" id="lEk-gQ-G3T"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="owD-KZ-snG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="attachmentView" destination="QZT-V8-yqJ" id="Xrj-e5-Yd9"/>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>
                                             <outlet property="unsentLabel" destination="alD-cg-uMl" id="UXm-mh-sux"/>

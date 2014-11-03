@@ -436,22 +436,32 @@ NSString *const kFailedEventId = @"failedEventId";
         return 50;
     }
     
-    // Handle here room thread cells
+    // Compute here height of message cells
     CGFloat rowHeight;
     // Get event related to this row
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = ([mxEvent.user_id isEqualToString:mxHandler.userId] == NO);
+    CGSize contentSize;
     
-    // Use a TextView template to compute cell height
-    UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, MAXFLOAT)];
-    dummyTextView.font = [UIFont systemFontOfSize:14];
-    dummyTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
-    CGSize contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+    if ([mxHandler isAttachment:mxEvent]) {
+        NSString *msgtype = mxEvent.content[@"msgtype"];
+        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+            contentSize = CGSizeMake(200, 200);
+        } else {
+            contentSize = CGSizeMake(40, 40);
+        }
+    } else {
+        // Use a TextView template to compute cell height
+        UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, MAXFLOAT)];
+        dummyTextView.font = [UIFont systemFontOfSize:14];
+        dummyTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+        contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+    }
     
     // Handle incoming / outgoing layout
     if (isIncomingMsg) {
-        // By default the user name is displayed above the message
+        // By default the user name is displayed above the message or attachment
         rowHeight = contentSize.height + ROOM_MESSAGE_CELL_TOP_MARGIN + INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT + ROOM_MESSAGE_CELL_BOTTOM_MARGIN;
         
         if (indexPath.row) {
@@ -551,15 +561,36 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     
-    NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
-    if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
-        cell.messageTextView.textColor = [UIColor redColor];
-    } else if (isIncomingMsg && ([displayText rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [displayText rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-        cell.messageTextView.textColor = [UIColor blueColor];
+    if ([mxHandler isAttachment:mxEvent]) {
+        cell.attachmentView.hidden = NO;
+        cell.messageTextView.text = nil; // Note: Text view is used to display attachment background
+        
+        NSString *msgtype = mxEvent.content[@"msgtype"];
+        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+            NSString *url = mxEvent.content[@"thumbnail_url"];
+            if (url == nil) {
+                url = mxEvent.content[@"url"];
+            }
+            cell.attachedImageURL = url;
+        } else {
+            cell.attachedImageURL = nil;
+        }
     } else {
-        cell.messageTextView.textColor = [UIColor blackColor];
+        cell.attachmentView.hidden = YES;
+        // cancel potential attachment loading
+        cell.attachedImageURL = nil;
+        
+        NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+        if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
+            cell.messageTextView.textColor = [UIColor redColor];
+        } else if (isIncomingMsg && ([displayText rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [displayText rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
+            cell.messageTextView.textColor = [UIColor blueColor];
+        } else {
+            cell.messageTextView.textColor = [UIColor blackColor];
+        }
+        cell.messageTextView.text = displayText;
     }
-    cell.messageTextView.text = displayText;
+    
     return cell;
 }
 
