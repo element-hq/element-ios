@@ -76,6 +76,11 @@
 #pragma mark -
 
 - (void)showLoginScreen {
+    // Force back to recents list if room details is displayed in Recents Tab
+    if (recentsViewController) {
+        [recentsNavigationController popToViewController:recentsViewController animated:NO];
+    }
+    
     [self performSegueWithIdentifier:@"showLogin" sender:self];
 }
 
