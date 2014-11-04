@@ -111,7 +111,9 @@
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     self.errorNotification = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:nil];
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [AppDelegate theDelegate].errorNotification = nil;
+    }];
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
     
     return self.errorNotification;

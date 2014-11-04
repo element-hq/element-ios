@@ -109,16 +109,20 @@
             // Add the first text fields
             alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
             
-            // Store the callback
-            UITextField *textField = [alertView textFieldAtIndex:0];
-            objc_setAssociatedObject(textField, "configurationHandler", [configurationHandler copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            if (configurationHandler) {
+                // Store the callback
+                UITextField *textField = [alertView textFieldAtIndex:0];
+                objc_setAssociatedObject(textField, "configurationHandler", [configurationHandler copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }
         } else if (alertView.alertViewStyle != UIAlertViewStyleLoginAndPasswordInput) {
             // Add a second text field
             alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             
-            // Store the callback
-            UITextField *textField = [alertView textFieldAtIndex:1];
-            objc_setAssociatedObject(textField, "configurationHandler", [configurationHandler copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            if (configurationHandler) {
+                // Store the callback
+                UITextField *textField = [alertView textFieldAtIndex:1];
+                objc_setAssociatedObject(textField, "configurationHandler", [configurationHandler copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }
         }
         // CAUTION 1: only 2 text fields are supported fro iOS < 8
         // CAUTION 2: alert style "UIAlertViewStyleSecureTextInput" is not supported, use the configurationHandler to handle secure text field
@@ -138,13 +142,13 @@
         if (alertView.alertViewStyle != UIAlertViewStyleDefault) {
             // Call here textField handlers
             UITextField *textField = [alertView textFieldAtIndex:0];
-            blockCustomAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(self, "configurationHandler");
+            blockCustomAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(textField, "configurationHandler");
             if (configurationHandler) {
                 configurationHandler (textField);
             }
             if (alertView.alertViewStyle == UIAlertViewStyleLoginAndPasswordInput) {
                 textField = [alertView textFieldAtIndex:1];
-                blockCustomAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(self, "configurationHandler");
+                blockCustomAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(textField, "configurationHandler");
                 if (configurationHandler) {
                     configurationHandler (textField);
                 }

@@ -22,6 +22,8 @@
 @interface MasterTabBarController () {
     UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
+    
+    UIImagePickerController *mediaPicker;
 }
 
 @end
@@ -71,15 +73,32 @@
 - (void)dealloc {
     recentsNavigationController = nil;
     recentsViewController = nil;
+    
+    [self dismissMediaPicker];
+}
+
+#pragma mark -
+
+- (void)restoreInitialDisplay {
+    // Dismiss potential media picker
+    if (mediaPicker) {
+        if (mediaPicker.delegate && [mediaPicker.delegate respondsToSelector:@selector(imagePickerControllerDidCancel:)]) {
+            [mediaPicker.delegate imagePickerControllerDidCancel:mediaPicker];
+        } else {
+            [self dismissMediaPicker];
+        }
+    }
+    
+    // Force back to recents list if room details is displayed in Recents Tab
+    if (recentsViewController) {
+        [recentsNavigationController popToViewController:recentsViewController animated:NO];
+    }
 }
 
 #pragma mark -
 
 - (void)showLoginScreen {
-    // Force back to recents list if room details is displayed in Recents Tab
-    if (recentsViewController) {
-        [recentsNavigationController popToViewController:recentsViewController animated:NO];
-    }
+    [self restoreInitialDisplay];
     
     [self performSegueWithIdentifier:@"showLogin" sender:self];
 }
@@ -90,10 +109,7 @@
 }
 
 - (void)showRoom:(NSString*)roomId {
-    // Force back to recents list if room details is displayed in Recents Tab
-    if (recentsViewController) {
-        [recentsNavigationController popToViewController:recentsViewController animated:NO];
-    }
+    [self restoreInitialDisplay];
     
     // Switch on Recents Tab
     [self setSelectedIndex:TABBAR_RECENTS_INDEX];
@@ -102,6 +118,20 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         recentsViewController.preSelectedRoomId = roomId;
     });
+}
+
+- (void)presentMediaPicker:(UIImagePickerController*)aMediaPicker {
+    [self dismissMediaPicker];
+    [self presentViewController:aMediaPicker animated:YES completion:^{
+        mediaPicker = aMediaPicker;
+    }];
+}
+- (void)dismissMediaPicker {
+    if (mediaPicker) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        mediaPicker.delegate = nil;
+        mediaPicker = nil;
+    }
 }
 
 @end

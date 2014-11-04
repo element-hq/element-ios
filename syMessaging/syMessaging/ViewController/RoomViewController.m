@@ -49,7 +49,7 @@ NSString *const kFailedEventId = @"failedEventId";
     id messagesListener;
     
     // Members list
-    NSArray       *members;
+    NSArray *members;
     id membersListener;
 }
 
@@ -64,6 +64,7 @@ NSString *const kFailedEventId = @"failedEventId";
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 
+@property (strong, nonatomic) CustomAlert *actionMenu;
 @end
 
 @implementation RoomViewController
@@ -101,6 +102,11 @@ NSString *const kFailedEventId = @"failedEventId";
         [mxRoomData unregisterListener:membersListener];
         membersListener = nil;
     }
+    
+    if (_actionMenu) {
+        [_actionMenu dismiss:NO];
+        _actionMenu = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,6 +131,12 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    // hide action
+    if (_actionMenu) {
+        [_actionMenu dismiss:NO];
+        _actionMenu = nil;
+    }
     
     // Hide members by default
     [self hideRoomMembers];
@@ -653,15 +665,115 @@ NSString *const kFailedEventId = @"failedEventId";
     } else if (sender == _optionBtn) {
         [self dismissKeyboard];
         
-        //TODO: display action menu: Add attachments, Invite user...
-        
+        // Display action menu: Add attachments, Invite user...
+        __weak typeof(self) weakSelf = self;
+        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+        [self.actionMenu addActionWithTitle:@"Attach" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            if (weakSelf) {
+                // Ask for attachment type
+                weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an attachment type:" message:nil style:CustomAlertStyleActionSheet];
+                [weakSelf.actionMenu addActionWithTitle:@"Media" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    if (weakSelf) {
+                        // Open picture gallery
+                        UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                        mediaPicker.delegate = weakSelf;
+                        mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                        mediaPicker.allowsEditing = NO;
+                        [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                    }
+                }];
+                weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    weakSelf.actionMenu = nil;
+                }];
+                [weakSelf.actionMenu showInViewController:weakSelf];
+            }
+        }];
+        [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            if (weakSelf) {
+                // Ask for userId to invite
+                weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"User ID:" message:nil style:CustomAlertStyleAlert];
+                weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    weakSelf.actionMenu = nil;
+                }];
+                [weakSelf.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                    textField.secureTextEntry = NO;
+                    textField.placeholder = @"ex: @bob:homeserver";
+                }];
+                [weakSelf.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    UITextField *textField = [alert textFieldAtIndex:0];
+                    NSString *userId = textField.text;
+                    weakSelf.actionMenu = nil;
+                    if (userId.length) {
+                        [[MatrixHandler sharedHandler].mxSession inviteUser:userId toRoom:weakSelf.roomId success:^{
+                            
+                        } failure:^(NSError *error) {
+                            NSLog(@"Invite %@ failed: %@", userId, error);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                }];
+                [weakSelf.actionMenu showInViewController:weakSelf];
+            }
+        }];
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+             weakSelf.actionMenu = nil;
+        }];
+        [self.actionMenu showInViewController:self];
+    }
+}
 
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Invite a user" message:nil preferredStyle:UIAlertControllerStyleAlert];
-//        or
-//        UIAlertView *plainTextInputAlert = [[UIAlertView alloc]initWithTitle:@"Invite a user" message:nil delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"ok", nil];
-//        // apply style
-//        plainTextInputAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+#pragma mark - Post messages
+
+- (void)postMessage:(NSDictionary*)msgContent {
+    MXMessageType msgType = msgContent[@"msgtype"];
+    if (msgType) {
+        // Create a temporary event to displayed outgoing message (local echo)
+        NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
+        MXEvent *mxEvent = [[MXEvent alloc] init];
+        mxEvent.room_id = self.roomId;
+        mxEvent.event_id = localEventId;
+        mxEvent.eventType = MXEventTypeRoomMessage;
+        mxEvent.type = kMXEventTypeStringRoomMessage;
+        mxEvent.content = msgContent;
+        mxEvent.user_id = [MatrixHandler sharedHandler].userId;
+        // Update table sources
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+        [messages addObject:mxEvent];
+        // Refresh table display
+        [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+        [self scrollToBottomAnimated:YES];
         
+        // Send message to the room
+        [[[MatrixHandler sharedHandler] mxSession] postMessage:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
+            // Update the temporary event with the actual event id
+            NSUInteger index = messages.count;
+            while (index--) {
+                MXEvent *mxEvent = [messages objectAtIndex:index];
+                if ([mxEvent.event_id isEqualToString:localEventId]) {
+                    mxEvent.event_id = event_id;
+                    // Refresh table display
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    break;
+                }
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"Failed to send message (%@): %@", mxEvent.description, error);
+            // Update the temporary event with the failed event id
+            NSUInteger index = messages.count;
+            while (index--) {
+                MXEvent *mxEvent = [messages objectAtIndex:index];
+                if ([mxEvent.event_id isEqualToString:localEventId]) {
+                    mxEvent.event_id = kFailedEventId;
+                    // Refresh table display
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    [self scrollToBottomAnimated:YES];
+                    break;
+                }
+            }
+        }];
     }
 }
 
@@ -674,52 +786,7 @@ NSString *const kFailedEventId = @"failedEventId";
         msgTxt = [msgTxt substringFromIndex:4];
     }
     
-    // Create a temporary event to displayed outgoing message (local echo)
-    NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
-    MXEvent *mxEvent = [[MXEvent alloc] init];
-    mxEvent.room_id = self.roomId;
-    mxEvent.event_id = localEventId;
-    mxEvent.eventType = MXEventTypeRoomMessage;
-    mxEvent.type = kMXEventTypeStringRoomMessage;
-    mxEvent.content = @{@"msgtype":msgType, @"body":msgTxt};
-    mxEvent.user_id = [MatrixHandler sharedHandler].userId;
-    // Update table sources
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-    [messages addObject:mxEvent];
-    // Refresh table display
-    [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-    [self scrollToBottomAnimated:YES];
-    
-    // Send message to the room
-    [[[MatrixHandler sharedHandler] mxSession] postMessage:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
-        // Update the temporary event with the actual event id
-        NSUInteger index = messages.count;
-        while (index--) {
-            MXEvent *mxEvent = [messages objectAtIndex:index];
-            if ([mxEvent.event_id isEqualToString:localEventId]) {
-                mxEvent.event_id = event_id;
-                // Refresh table display
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                break;
-            }
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"Failed to send message (%@): %@", self.messageTextField.text, error);
-        // Update the temporary event with the failed event id
-        NSUInteger index = messages.count;
-        while (index--) {
-            MXEvent *mxEvent = [messages objectAtIndex:index];
-            if ([mxEvent.event_id isEqualToString:localEventId]) {
-                mxEvent.event_id = kFailedEventId;
-                // Refresh table display
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                [self scrollToBottomAnimated:YES];
-                break;
-            }
-        }
-    }];
+    [self postMessage:@{@"msgtype":msgType, @"body":msgTxt}];
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
@@ -882,5 +949,32 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     return YES;
+}
+
+# pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (selectedImage) {
+        // Upload image and its thumbnail
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxSession uploadImage:selectedImage thumbnailSize:200 timeout:30 success:^(NSDictionary *imageMessage) {
+            // Send image
+            [self postMessage:imageMessage];
+        } failure:^(NSError *error) {
+            NSLog(@"Failed to upload image: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+    [self dismissMediaPicker];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissMediaPicker];
+}
+
+- (void)dismissMediaPicker {
+    [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
 }
 @end

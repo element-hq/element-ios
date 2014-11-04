@@ -27,6 +27,9 @@
 - (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId;
 
+- (void)presentMediaPicker:(UIImagePickerController*)mediaPicker;
+- (void)dismissMediaPicker;
+
 @property (strong, nonatomic) NSString *visibleRoomId; // nil if no room is presently visible
 
 @end
