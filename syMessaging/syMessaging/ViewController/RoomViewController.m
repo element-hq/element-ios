@@ -21,6 +21,7 @@
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
+#import "AppSettings.h"
 
 #define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
 #define ROOM_MESSAGE_CELL_TOP_MARGIN 5
@@ -364,20 +365,57 @@ NSString *const kFailedEventId = @"failedEventId";
     }
 }
 
+- (void)updateRoomMembers {
+     members = [[mxRoomData members] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+         MXRoomMember *member1 = (MXRoomMember*)obj1;
+         MXRoomMember *member2 = (MXRoomMember*)obj2;
+         
+         // Move banned and left members at the end of the list
+         if ([member1.membership isEqualToString:@"leave"] || [member1.membership isEqualToString:@"ban"]) {
+             if (![member2.membership isEqualToString:@"leave"] && ![member2.membership isEqualToString:@"ban"]) {
+                 return NSOrderedDescending;
+             }
+         } else if ([member2.membership isEqualToString:@"leave"] || [member2.membership isEqualToString:@"ban"]) {
+             return NSOrderedAscending;
+         }
+         
+         // Move invited members just before left and banned members
+         if ([member1.membership isEqualToString:@"invite"]) {
+             if (![member2.membership isEqualToString:@"invite"]) {
+                 return NSOrderedDescending;
+             }
+         } else if ([member2.membership isEqualToString:@"invite"]) {
+             return NSOrderedAscending;
+         }
+         
+         if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
+             // FIXME: handle last_active_ago duration and presence when they will be available from SDK
+             if (member1.last_active_ago < member2.last_active_ago) {
+                 return NSOrderedAscending;
+             } else if (member1.last_active_ago == member2.last_active_ago) {
+                 return [[mxRoomData memberName:member1.user_id] compare:[mxRoomData memberName:member2.user_id] options:NSCaseInsensitiveSearch];
+             }
+             return NSOrderedDescending;
+         } else {
+             // Move user without display name at the end (before invited users)
+             if (member1.displayname) {
+                 if (!member2.displayname) {
+                     return NSOrderedAscending;
+                 }
+             } else if (member2.displayname) {
+                 return NSOrderedDescending;
+             }
+             
+             return [[mxRoomData memberName:member1.user_id] compare:[mxRoomData memberName:member2.user_id] options:NSCaseInsensitiveSearch];
+         }
+     }];
+}
+
 - (void)showRoomMembers {
     // Dismiss keyboard
     [self dismissKeyboard];
     
-    members = [mxRoomData members];
-    // Ignore banned and kicked (leave) user
-//    NSMutableArray *filteredMembers = [[NSMutableArray alloc] initWithCapacity:members.count];
-//    for (MXRoomMember *roomMember in members) {
-//        if ([roomMember.membership isEqualToString:@"leave"] == NO && [roomMember.membership isEqualToString:@"ban"] == NO) {
-//            [filteredMembers addObject:roomMember];
-//        }
-//    }
-//    members = filteredMembers;
-    
+    [self updateRoomMembers];
     // Register a listener for events that concern room members
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
@@ -388,7 +426,7 @@ NSString *const kFailedEventId = @"failedEventId";
         // consider only live event
         if (isLive) {
             // Refresh members list
-            members = [mxRoomData members];
+            [self updateRoomMembers];
             [self.membersTableView reloadData];
         }
     }];

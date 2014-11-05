@@ -36,33 +36,51 @@
             }
         }
         
-        // Handle power level display
-        NSDictionary *powerLevels = roomData.powerLevels;
-        if (powerLevels) {
-            int maxLevel = 0;
-            for (NSString *powerLevel in powerLevels.allValues) {
-                int level = [powerLevel intValue];
-                if (level > maxLevel) {
-                    maxLevel = level;
-                }
-            }
-            NSString *userPowerLevel = [powerLevels objectForKey:roomMember.user_id]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
-            if (userPowerLevel == nil) {
-                userPowerLevel = [powerLevels valueForKey:@"default"];
-            }
-            float userPowerLevelFloat = 0.0;
-            if (userPowerLevel) {
-                userPowerLevelFloat = [userPowerLevel floatValue];
-            }
-            self.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+        // Customize banned and left (kicked) members
+        if ([roomMember.membership isEqualToString:@"leave"] || [roomMember.membership isEqualToString:@"ban"]) {
+            self.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+            
+            self.userPowerLevel.hidden = YES;
+            
+            self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
+            self.lastActiveAgoLabel.text = [roomMember.membership isEqualToString:@"leave"] ? @"left" : @"banned";
         } else {
-            self.userPowerLevel.progress = 0;
+            self.backgroundColor = [UIColor whiteColor];
+            
+            // Handle power level display
+             self.userPowerLevel.hidden = NO;
+            NSDictionary *powerLevels = roomData.powerLevels;
+            if (powerLevels) {
+                int maxLevel = 0;
+                for (NSString *powerLevel in powerLevels.allValues) {
+                    int level = [powerLevel intValue];
+                    if (level > maxLevel) {
+                        maxLevel = level;
+                    }
+                }
+                NSString *userPowerLevel = [powerLevels objectForKey:roomMember.user_id]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
+                if (userPowerLevel == nil) {
+                    userPowerLevel = [powerLevels valueForKey:@"default"];
+                }
+                float userPowerLevelFloat = 0.0;
+                if (userPowerLevel) {
+                    userPowerLevelFloat = [userPowerLevel floatValue];
+                }
+                self.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+            } else {
+                self.userPowerLevel.progress = 0;
+            }
+            
+            if ([roomMember.membership isEqualToString:@"invite"]) {
+                self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
+                self.lastActiveAgoLabel.text = @"invited";
+            } else {
+                // TODO: handle last_active_ago duration when it will be available from SDK
+                self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.last_active_ago];
+                self.lastActiveAgoLabel.numberOfLines = 0;
+            }
         }
-        
-        // TODO: handle last_active_ago duration when it will be available from SDK
-        self.lastActiveAgoLabel.backgroundColor = [UIColor greenColor];
-        self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.last_active_ago];
-        self.lastActiveAgoLabel.numberOfLines = 0;
     }
 }
 @end

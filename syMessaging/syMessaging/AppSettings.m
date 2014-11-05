@@ -45,6 +45,7 @@ static AppSettings *sharedSettings = nil;
 - (void)reset {
     self.enableNotifications = NO;
     self.displayAllEvents = NO;
+    self.sortMembersUsingLastSeenTime = NO;
 }
 
 #pragma mark -
@@ -67,4 +68,13 @@ static AppSettings *sharedSettings = nil;
     // Flush and restore Matrix data
     [[MatrixHandler sharedHandler] forceInitialSync];
 }
+
+- (BOOL)sortMembersUsingLastSeenTime {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"sortMembersUsingLastSeenTime"];
+}
+
+- (void)setSortMembersUsingLastSeenTime:(BOOL)sortMembersUsingLastSeen {
+    [[NSUserDefaults standardUserDefaults] setBool:sortMembersUsingLastSeen forKey:@"sortMembersUsingLastSeenTime"];
+}
+
 @end

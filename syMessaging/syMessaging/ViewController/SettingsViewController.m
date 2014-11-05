@@ -24,7 +24,7 @@
 #import "SettingsTableViewCell.h"
 
 #define SETTINGS_SECTION_NOTIFICATIONS_INDEX 0
-#define SETTINGS_SECTION_MESSAGES_INDEX      1
+#define SETTINGS_SECTION_ROOMS_INDEX         1
 #define SETTINGS_SECTION_CONFIGURATION_INDEX 2
 #define SETTINGS_SECTION_COMMANDS_INDEX      3
 
@@ -41,6 +41,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UIButton *logoutBtn;
     UISwitch *notificationsSwitch;
     UISwitch *allEventsSwitch;
+    UISwitch *sortMembersSwitch;
     
     UIImagePickerController *imagePicker;
 }
@@ -92,6 +93,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     logoutBtn = nil;
     notificationsSwitch = nil;
     allEventsSwitch = nil;
+    sortMembersSwitch = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -298,6 +300,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [AppSettings sharedSettings].enableNotifications = notificationsSwitch.on;
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
+    } else if (sender == sortMembersSwitch) {
+        [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
     }
 }
 
@@ -327,8 +331,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         return 1;
-    } else if (section == SETTINGS_SECTION_MESSAGES_INDEX) {
-        return 1;
+    } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
+        return 2;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         return 1;
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -341,7 +345,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         return 44;
-    } else if (indexPath.section == SETTINGS_SECTION_MESSAGES_INDEX) {
+    } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
@@ -378,8 +382,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         sectionHeader.text = @" Notifications";
-    } else if (section == SETTINGS_SECTION_MESSAGES_INDEX) {
-        sectionHeader.text = @" Messages";
+    } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
+        sectionHeader.text = @" Rooms";
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         sectionHeader.text = @" Configuration";
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -399,12 +403,18 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableNotifications];
         notificationsSwitch = notificationsCell.settingSwitch;
         cell = notificationsCell;
-    } else if (indexPath.section == SETTINGS_SECTION_MESSAGES_INDEX) {
-        SettingsTableCellWithSwitch *allEventsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
-        allEventsCell.settingLabel.text = @"Display all events";
-        allEventsCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
-        allEventsSwitch = allEventsCell.settingSwitch;
-        cell = allEventsCell;
+    } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
+        SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+        if (indexPath.row == 0) {
+            roomsSettingCell.settingLabel.text = @"Display all events";
+            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
+            allEventsSwitch = roomsSettingCell.settingSwitch;
+        } else {
+            roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
+            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] sortMembersUsingLastSeenTime];
+            sortMembersSwitch = roomsSettingCell.settingSwitch;
+        }
+        cell = roomsSettingCell;
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         SettingsTableCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
