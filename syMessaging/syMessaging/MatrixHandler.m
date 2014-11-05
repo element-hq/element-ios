@@ -405,8 +405,7 @@ static MatrixHandler *sharedHandler = nil;
         }
         case MXEventTypeRoomMember: {
             
-            // Could be a membership change, display name change, etc.
-            // Presently only membership change and display name change are expected
+            // Presently only membership change, display name change and avatar change are expected
             
             // Check whether this is a displayname change
             if (message.prev_content) {
@@ -414,6 +413,12 @@ static MatrixHandler *sharedHandler = nil;
                 NSString *displayname = message.content[@"displayname"];
                 if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
                     displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.user_id, prevDisplayname, displayname];
+                } else {
+                    NSString *prevAvatar =  message.prev_content[@"avatar_url"];
+                    NSString *avatar = message.content[@"avatar_url"];
+                    if (prevAvatar && avatar && [avatar isEqualToString:prevAvatar] == NO) {
+                        displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
+                    }
                 }
             }
             
