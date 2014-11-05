@@ -62,7 +62,7 @@ static MatrixHandler *sharedHandler = nil;
         
         // Read potential homeserver url in shared defaults object
         if (self.homeServerURL) {
-            self.mxHomeServer = [[MXHomeServer alloc] initWithHomeServer:self.homeServerURL];
+            self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:self.homeServerURL];
             
             if (self.accessToken) {
                 [self openSession];
@@ -79,10 +79,16 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)openSession {
-    self.mxSession = [[MXSession alloc] initWithHomeServer:self.homeServerURL userId:self.userId accessToken:self.accessToken];
-    if (self.mxSession) {
+    
+    MXCredentials *credentials = [[MXCredentials alloc] init];
+    credentials.homeServer = self.homeServerURL;
+    credentials.userId = self.userId;
+    credentials.accessToken = self.accessToken;
+    
+    self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
+    if (self.mxRestClient) {
         // Request user's display name
-        [self.mxSession displayName:self.userId success:^(NSString *displayname) {
+        [self.mxRestClient displayName:self.userId success:^(NSString *displayname) {
             self.userDisplayName = displayname;
         } failure:^(NSError *error) {
             NSLog(@"Get displayName failed: %@", error);
@@ -90,11 +96,11 @@ static MatrixHandler *sharedHandler = nil;
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
         
-        self.mxData = [[MXData alloc] initWithMatrixSession:self.mxSession];
+        self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient];
         // Check here whether the app user wants to display all the events
         if ([[AppSettings sharedSettings] displayAllEvents]) {
             // Override events filter to retrieve all the events
-            self.mxData.eventsFilterForMessages = @[
+            self.mxSession.eventsFilterForMessages = @[
                                                     kMXEventTypeStringRoomName,
                                                     kMXEventTypeStringRoomTopic,
                                                     kMXEventTypeStringRoomMember,
@@ -110,19 +116,19 @@ static MatrixHandler *sharedHandler = nil;
                                                     kMXEventTypeStringPresence
                                                     ];
         }
-        // Launch mxData
-        [self.mxData start:^{
+        // Launch mxSession
+        [self.mxSession start:^{
             self.isInitialSyncDone = YES;
             
             // Register room members listener
-            roomMembersListener = [self.mxData registerEventListenerForTypes:@[kMXEventTypeStringRoomMember] block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
+            roomMembersListener = [self.mxSession registerEventListenerForTypes:@[kMXEventTypeStringRoomMember] block:^(MXSession *mxSession, MXEvent *event, BOOL isLive) {
                 // Consider only live event
                 if (isLive) {
                     // Consider only event from app user
-                    if ([event.user_id isEqualToString:self.userId]) {
+                    if ([event.userId isEqualToString:self.userId]) {
                         // Check whether this is a displayname change
-                        if (event.prev_content) {
-                            NSString *prevDisplayname = event.prev_content[@"displayname"];
+                        if (event.prevContent) {
+                            NSString *prevDisplayname = event.prevContent[@"displayname"];
                             NSString *displayname = event.content[@"displayname"];
                             if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
                                 // Update local storage
@@ -155,17 +161,17 @@ static MatrixHandler *sharedHandler = nil;
 
 - (void)closeSession {
     if (eventsListener) {
-        [self.mxData unregisterListener:eventsListener];
+        [self.mxSession unregisterListener:eventsListener];
         eventsListener = nil;
     }
     if (roomMembersListener) {
-        [self.mxData unregisterListener:roomMembersListener];
+        [self.mxSession unregisterListener:roomMembersListener];
         roomMembersListener = nil;
     }
-    [self.mxData close];
-    self.mxData = nil;
     [self.mxSession close];
     self.mxSession = nil;
+    [self.mxRestClient close];
+    self.mxRestClient = nil;
     self.isInitialSyncDone = NO;
     notifyOpenSessionFailure = YES;
 }
@@ -174,7 +180,7 @@ static MatrixHandler *sharedHandler = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self closeSession];
-    self.mxHomeServer = nil;
+    self.mxSession = nil;
     
     if (self.mxNotification) {
         [self.mxNotification dismiss:NO];
@@ -214,7 +220,7 @@ static MatrixHandler *sharedHandler = nil;
 - (void)enableEventsNotifications:(BOOL)isEnabled {
     if (isEnabled) {
         // Register events listener
-        eventsListener = [self.mxData registerEventListenerForTypes:self.mxData.eventsFilterForMessages block:^(MXData *matrixData, MXEvent *event, BOOL isLive) {
+        eventsListener = [self.mxSession registerEventListenerForTypes:self.mxSession.eventsFilterForMessages block:^(MXSession *mxSession, MXEvent *event, BOOL isLive) {
             // Consider only live event
             if (isLive) {
                 // If we are running on background, show a local notif
@@ -225,13 +231,13 @@ static MatrixHandler *sharedHandler = nil;
                     localNotification.hasAction = YES;
                     [localNotification setAlertBody:[self displayTextFor:event inSubtitleMode:YES]];
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                } else if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.room_id] == NO) {
+                } else if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId] == NO) {
                     // The concerned room is not presently visible, we display a notification by removing existing one (if any)
                     if (self.mxNotification) {
                         [self.mxNotification dismiss:NO];
                     }
                     
-                    self.mxNotification = [[CustomAlert alloc] initWithTitle:[self.mxData getRoomData:event.room_id].displayname
+                    self.mxNotification = [[CustomAlert alloc] initWithTitle:[self.mxSession room:event.roomId].displayname
                                                                      message:[self displayTextFor:event inSubtitleMode:YES]
                                                                        style:CustomAlertStyleAlert];
                     self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
@@ -244,7 +250,7 @@ static MatrixHandler *sharedHandler = nil;
                                                     handler:^(CustomAlert *alert) {
                                                         [MatrixHandler sharedHandler].mxNotification = nil;
                                                         // Show the room
-                                                        [[AppDelegate theDelegate].masterTabBarController showRoom:event.room_id];
+                                                        [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
                                                     }];
                     
                     [self.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
@@ -253,7 +259,7 @@ static MatrixHandler *sharedHandler = nil;
         }];
     } else {
         if (eventsListener) {
-            [self.mxData unregisterListener:eventsListener];
+            [self.mxSession unregisterListener:eventsListener];
             eventsListener = nil;
         }
         if (self.mxNotification) {
@@ -272,10 +278,10 @@ static MatrixHandler *sharedHandler = nil;
 - (void)setHomeServerURL:(NSString *)inHomeserverURL {
     if (inHomeserverURL.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inHomeserverURL forKey:@"homeserverurl"];
-        self.mxHomeServer = [[MXHomeServer alloc] initWithHomeServer:inHomeserverURL];
+        self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:inHomeserverURL];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserverurl"];
-        self.mxHomeServer = nil;
+        self.mxSession = nil;
     }
 }
 
@@ -386,12 +392,12 @@ static MatrixHandler *sharedHandler = nil;
 - (NSString*)displayTextFor:(MXEvent*)message inSubtitleMode:(BOOL)isSubtitle {
     NSString *displayText = nil;
     // Retrieve roomData related to the message
-    MXRoomData *roomData = [self.mxData getRoomData:message.room_id];
+    MXRoom *room = [self.mxSession room:message.roomId];
     // Prepare display name for concerned users
-    NSString *memberDisplayName = [roomData memberName:message.user_id];
+    NSString *memberDisplayName = [room memberName:message.userId];
     NSString *targetDisplayName = nil;
-    if (message.state_key) {
-        targetDisplayName = [roomData memberName:message.state_key];
+    if (message.stateKey) {
+        targetDisplayName = [room memberName:message.stateKey];
     }
     
     switch (message.eventType) {
@@ -408,13 +414,13 @@ static MatrixHandler *sharedHandler = nil;
             // Presently only membership change, display name change and avatar change are expected
             
             // Check whether this is a displayname change
-            if (message.prev_content) {
-                NSString *prevDisplayname =  message.prev_content[@"displayname"];
+            if (message.prevContent) {
+                NSString *prevDisplayname =  message.prevContent[@"displayname"];
                 NSString *displayname = message.content[@"displayname"];
                 if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
-                    displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.user_id, prevDisplayname, displayname];
+                    displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.userId, prevDisplayname, displayname];
                 } else {
-                    NSString *prevAvatar =  message.prev_content[@"avatar_url"];
+                    NSString *prevAvatar =  message.prevContent[@"avatar_url"];
                     NSString *avatar = message.content[@"avatar_url"];
                     if (prevAvatar && avatar && [avatar isEqualToString:prevAvatar] == NO) {
                         displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
@@ -431,11 +437,11 @@ static MatrixHandler *sharedHandler = nil;
                 } else if ([membership isEqualToString:@"join"]) {
                     displayText = [NSString stringWithFormat:@"%@ joined", memberDisplayName];
                 } else if ([membership isEqualToString:@"leave"]) {
-                    if ([message.user_id isEqualToString:message.state_key]) {
+                    if ([message.userId isEqualToString:message.stateKey]) {
                         displayText = [NSString stringWithFormat:@"%@ left", memberDisplayName];
                     } else {
-                        if (message.prev_content) {
-                            NSString *prev = message.prev_content[@"membership"];
+                        if (message.prevContent) {
+                            NSString *prev = message.prevContent[@"membership"];
                             
                             if ([prev isEqualToString:@"join"] || [prev isEqualToString:@"invite"]) {
                                 displayText = [NSString stringWithFormat:@"%@ kicked %@", memberDisplayName, targetDisplayName];
@@ -459,7 +465,7 @@ static MatrixHandler *sharedHandler = nil;
         case MXEventTypeRoomCreate: {
             NSString *creatorId = message.content[@"creator"];
             if (creatorId) {
-                displayText = [NSString stringWithFormat:@"%@ created the room", [roomData memberName:creatorId]];
+                displayText = [NSString stringWithFormat:@"%@ created the room", [room memberName:creatorId]];
             }
             break;
         }

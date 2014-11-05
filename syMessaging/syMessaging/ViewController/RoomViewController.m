@@ -47,7 +47,7 @@ NSString *const kFailedEventId = @"failedEventId";
     BOOL isFirstDisplay;
     BOOL isJoinRequestInProgress;
     
-    MXRoomData *mxRoomData;
+    MXRoom *mxRoom;
     
     NSMutableArray *messages;
     id messagesListener;
@@ -96,14 +96,14 @@ NSString *const kFailedEventId = @"failedEventId";
     
     messages = nil;
     if (messagesListener) {
-        [mxRoomData unregisterListener:messagesListener];
+        [mxRoom unregisterListener:messagesListener];
         messagesListener = nil;
     }
-    mxRoomData = nil;
+    mxRoom = nil;
     
     members = nil;
     if (membersListener) {
-        [mxRoomData unregisterListener:membersListener];
+        [mxRoom unregisterListener:membersListener];
         membersListener = nil;
     }
     
@@ -146,7 +146,7 @@ NSString *const kFailedEventId = @"failedEventId";
     [self hideRoomMembers];
     
     if (messagesListener) {
-        [mxRoomData unregisterListener:messagesListener];
+        [mxRoom unregisterListener:messagesListener];
         messagesListener = nil;
     }
     
@@ -216,24 +216,24 @@ NSString *const kFailedEventId = @"failedEventId";
     messages = nil;
     
     // Remove potential roomData listener
-    if (messagesListener && mxRoomData) {
-        [mxRoomData unregisterListener:messagesListener];
+    if (messagesListener && mxRoom) {
+        [mxRoom unregisterListener:messagesListener];
         messagesListener = nil;
     }
     
     // Update room data
     if (self.roomId) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        mxRoomData = [mxHandler.mxData getRoomData:self.roomId];
+        mxRoom = [mxHandler.mxSession room:self.roomId];
         
         // Update room title
-        self.roomNavItem.title = mxRoomData.displayname;
+        self.roomNavItem.title = mxRoom.displayname;
         
         // Join the room if the user is not already listed in room's members
-        if ([mxRoomData getMember:mxHandler.userId] == nil) {
+        if ([mxRoom getMember:mxHandler.userId] == nil) {
             isJoinRequestInProgress = YES;
             [_activityIndicator startAnimating];
-            [mxHandler.mxSession joinRoom:self.roomId success:^{
+            [mxHandler.mxRestClient joinRoom:self.roomId success:^{
 #ifdef TEMPORARY_PATCH_INITIAL_SYNC
                 // Presently the SDK is not able to handle correctly the context for the room recently joined
                 // PATCH: we force new initial sync
@@ -252,24 +252,24 @@ NSString *const kFailedEventId = @"failedEventId";
             } failure:^(NSError *error) {
                 [_activityIndicator stopAnimating];
                 isJoinRequestInProgress = NO;
-                NSLog(@"Failed to join room (%@): %@", mxRoomData.displayname, error);
+                NSLog(@"Failed to join room (%@): %@", mxRoom.displayname, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
             return;
         }
         
-        messages = [NSMutableArray arrayWithArray:mxRoomData.messages];
+        messages = [NSMutableArray arrayWithArray:mxRoom.messages];
         // Register a listener for events that modify the `messages` property
-        messagesListener = [mxRoomData registerEventListenerForTypes:mxHandler.mxData.eventsFilterForMessages block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
+        messagesListener = [mxRoom registerEventListenerForTypes:mxHandler.mxSession.eventsFilterForMessages block:^(MXRoom *room, MXEvent *event, BOOL isLive) {
             // consider only live event
             if (isLive) {
                 // For outgoing message, remove the temporary event
-                if ([event.user_id isEqualToString:[MatrixHandler sharedHandler].userId]) {
+                if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId]) {
                     NSUInteger index = messages.count;
                     while (index--) {
                         MXEvent *mxEvent = [messages objectAtIndex:index];
-                        if ([mxEvent.event_id isEqualToString:event.event_id]) {
+                        if ([mxEvent.eventId isEqualToString:event.eventId]) {
                             [messages replaceObjectAtIndex:index withObject:event];
                             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                             [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -285,7 +285,7 @@ NSString *const kFailedEventId = @"failedEventId";
             }
         }];
     } else {
-        mxRoomData = nil;
+        mxRoom = nil;
         // Update room title
         self.roomNavItem.title = nil;
     }
@@ -302,11 +302,11 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)triggerBackPagination {
-    if (mxRoomData.canPaginate)
+    if (mxRoom.canPaginate)
     {
         [_activityIndicator startAnimating];
         
-        [mxRoomData paginateBackMessages:20 success:^(NSArray *oldMessages) {
+        [mxRoom paginateBackMessages:20 success:^(NSArray *oldMessages) {
             if (oldMessages.count)
             {
                 // Update table sources
@@ -366,7 +366,7 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)updateRoomMembers {
-     members = [[mxRoomData members] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+     members = [[mxRoom members] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
          MXRoomMember *member1 = (MXRoomMember*)obj1;
          MXRoomMember *member2 = (MXRoomMember*)obj2;
          
@@ -390,10 +390,10 @@ NSString *const kFailedEventId = @"failedEventId";
          
          if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
              // FIXME: handle last_active_ago duration and presence when they will be available from SDK
-             if (member1.last_active_ago < member2.last_active_ago) {
+             if (member1.lastActiveAgo < member2.lastActiveAgo) {
                  return NSOrderedAscending;
-             } else if (member1.last_active_ago == member2.last_active_ago) {
-                 return [[mxRoomData memberName:member1.user_id] compare:[mxRoomData memberName:member2.user_id] options:NSCaseInsensitiveSearch];
+             } else if (member1.lastActiveAgo == member2.lastActiveAgo) {
+                 return [[mxRoom memberName:member1.userId] compare:[mxRoom memberName:member2.userId] options:NSCaseInsensitiveSearch];
              }
              return NSOrderedDescending;
          } else {
@@ -406,7 +406,7 @@ NSString *const kFailedEventId = @"failedEventId";
                  return NSOrderedDescending;
              }
              
-             return [[mxRoomData memberName:member1.user_id] compare:[mxRoomData memberName:member2.user_id] options:NSCaseInsensitiveSearch];
+             return [[mxRoom memberName:member1.userId] compare:[mxRoom memberName:member2.userId] options:NSCaseInsensitiveSearch];
          }
      }];
 }
@@ -422,7 +422,7 @@ NSString *const kFailedEventId = @"failedEventId";
                                  kMXEventTypeStringRoomPowerLevels,
                                  kMXEventTypeStringPresence
                                  ];
-    membersListener = [mxRoomData registerEventListenerForTypes:mxMembersEvents block:^(MXRoomData *roomData, MXEvent *event, BOOL isLive) {
+    membersListener = [mxRoom registerEventListenerForTypes:mxMembersEvents block:^(MXRoom *room, MXEvent *event, BOOL isLive) {
         // consider only live event
         if (isLive) {
             // Refresh members list
@@ -437,7 +437,7 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (void)hideRoomMembers {
     if (membersListener) {
-        [mxRoomData unregisterListener:membersListener];
+        [mxRoom unregisterListener:membersListener];
         membersListener = nil;
     }
     self.membersView.hidden = YES;
@@ -503,7 +503,7 @@ NSString *const kFailedEventId = @"failedEventId";
     // Get event related to this row
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
-    BOOL isIncomingMsg = ([mxEvent.user_id isEqualToString:mxHandler.userId] == NO);
+    BOOL isIncomingMsg = ([mxEvent.userId isEqualToString:mxHandler.userId] == NO);
     CGSize contentSize;
     
     if ([mxHandler isAttachment:mxEvent]) {
@@ -524,7 +524,7 @@ NSString *const kFailedEventId = @"failedEventId";
         if (indexPath.row) {
             // This user name is hide if the previous message is from the same user
             MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
-            if ([previousMxEvent.user_id isEqualToString:mxEvent.user_id]) {
+            if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
                 rowHeight -= INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
             }
         }
@@ -547,7 +547,7 @@ NSString *const kFailedEventId = @"failedEventId";
     {
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
-            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoomData:mxRoomData];
+            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:mxRoom];
         }
         
         return memberCell;
@@ -558,7 +558,7 @@ NSString *const kFailedEventId = @"failedEventId";
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = NO;
     
-    if ([mxEvent.user_id isEqualToString:mxHandler.userId]) {
+    if ([mxEvent.userId isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
         cell.messageTextView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     } else {
@@ -576,14 +576,14 @@ NSString *const kFailedEventId = @"failedEventId";
     cell.pictureView.hidden = NO;
     if (indexPath.row) {
         MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMxEvent.user_id isEqualToString:mxEvent.user_id]) {
+        if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
             cell.pictureView.hidden = YES;
         }
     }
     // Set url for visible picture
     if (!cell.pictureView.hidden) {
         cell.placeholder = @"default-profile";
-        cell.pictureURL = [mxRoomData getMember:mxEvent.user_id].avatar_url;
+        cell.pictureURL = [mxRoom getMember:mxEvent.userId].avatarUrl;
     }
     
     // Update incoming/outgoing message layout
@@ -598,7 +598,7 @@ NSString *const kFailedEventId = @"failedEventId";
         } else {
             frame.size.height = INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
             incomingMsgCell.userNameLabel.hidden = NO;
-            NSString *userName = [mxRoomData memberName:mxEvent.user_id];
+            NSString *userName = [mxRoom memberName:mxEvent.userId];
             incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"- %@", userName];
         }
         incomingMsgCell.userNameLabel.frame = frame;
@@ -608,9 +608,9 @@ NSString *const kFailedEventId = @"failedEventId";
         unsentLabel.hidden = YES;
         
         // Set the right text color for outgoing messages
-        if ([mxEvent.event_id hasPrefix:kLocalEchoEventIdPrefix]) {
+        if ([mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
             cell.messageTextView.textColor = [UIColor lightGrayColor];
-        } else if ([mxEvent.event_id hasPrefix:kFailedEventId]) {
+        } else if ([mxEvent.eventId hasPrefix:kFailedEventId]) {
             cell.messageTextView.textColor = [UIColor redColor];
             unsentLabel.hidden = NO;
         } else {
@@ -787,7 +787,7 @@ NSString *const kFailedEventId = @"failedEventId";
                     NSString *userId = textField.text;
                     weakSelf.actionMenu = nil;
                     if (userId.length) {
-                        [[MatrixHandler sharedHandler].mxSession inviteUser:userId toRoom:weakSelf.roomId success:^{
+                        [[MatrixHandler sharedHandler].mxRestClient inviteUser:userId toRoom:weakSelf.roomId success:^{
                             
                         } failure:^(NSError *error) {
                             NSLog(@"Invite %@ failed: %@", userId, error);
@@ -814,12 +814,12 @@ NSString *const kFailedEventId = @"failedEventId";
         // Create a temporary event to displayed outgoing message (local echo)
         NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
         MXEvent *mxEvent = [[MXEvent alloc] init];
-        mxEvent.room_id = self.roomId;
-        mxEvent.event_id = localEventId;
+        mxEvent.roomId = self.roomId;
+        mxEvent.eventId = localEventId;
         mxEvent.eventType = MXEventTypeRoomMessage;
         mxEvent.type = kMXEventTypeStringRoomMessage;
         mxEvent.content = msgContent;
-        mxEvent.user_id = [MatrixHandler sharedHandler].userId;
+        mxEvent.userId = [MatrixHandler sharedHandler].userId;
         // Update table sources
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
         [messages addObject:mxEvent];
@@ -828,13 +828,13 @@ NSString *const kFailedEventId = @"failedEventId";
         [self scrollToBottomAnimated:YES];
         
         // Send message to the room
-        [[[MatrixHandler sharedHandler] mxSession] postMessage:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
+        [[[MatrixHandler sharedHandler] mxRestClient] postMessage:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
             // Update the temporary event with the actual event id
             NSUInteger index = messages.count;
             while (index--) {
                 MXEvent *mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.event_id isEqualToString:localEventId]) {
-                    mxEvent.event_id = event_id;
+                if ([mxEvent.eventId isEqualToString:localEventId]) {
+                    mxEvent.eventId = event_id;
                     // Refresh table display
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -847,8 +847,8 @@ NSString *const kFailedEventId = @"failedEventId";
             NSUInteger index = messages.count;
             while (index--) {
                 MXEvent *mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.event_id isEqualToString:localEventId]) {
-                    mxEvent.event_id = kFailedEventId;
+                if ([mxEvent.eventId isEqualToString:localEventId]) {
+                    mxEvent.eventId = kFailedEventId;
                     // Refresh table display
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -894,7 +894,7 @@ NSString *const kFailedEventId = @"failedEventId";
         
         if (displayName.length) {
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxSession setDisplayName:displayName success:^{
+            [mxHandler.mxRestClient setDisplayName:displayName success:^{
             } failure:^(NSError *error) {
                 NSLog(@"Set displayName failed: %@", error);
                 //Alert user
@@ -946,7 +946,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 }
                 // Kick the user
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                [mxHandler.mxSession kickUser:userId fromRoom:self.roomId reason:reason success:^{
+                [mxHandler.mxRestClient kickUser:userId fromRoom:self.roomId reason:reason success:^{
                 } failure:^(NSError *error) {
                     NSLog(@"Kick user (%@) failed: %@", userId, error);
                     //Alert user
@@ -969,7 +969,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 }
                 // Ban the user
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                [mxHandler.mxSession banUser:userId inRoom:self.roomId reason:reason success:^{
+                [mxHandler.mxRestClient banUser:userId inRoom:self.roomId reason:reason success:^{
                 } failure:^(NSError *error) {
                     NSLog(@"Ban user (%@) failed: %@", userId, error);
                     //Alert user
@@ -983,7 +983,7 @@ NSString *const kFailedEventId = @"failedEventId";
             if (userId) {
                 // Unban the user
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                [mxHandler.mxSession unbanUser:userId inRoom:self.roomId success:^{
+                [mxHandler.mxRestClient unbanUser:userId inRoom:self.roomId success:^{
                 } failure:^(NSError *error) {
                     NSLog(@"Unban user (%@) failed: %@", userId, error);
                     //Alert user
@@ -1044,7 +1044,7 @@ NSString *const kFailedEventId = @"failedEventId";
             // Upload image and its thumbnail
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             NSUInteger thumbnailSize = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH - 5 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
-            [mxHandler.mxSession uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
+            [mxHandler.mxRestClient uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
                 // Send image
                 [self postMessage:imageMessage];
             } failure:^(NSError *error) {

@@ -25,9 +25,8 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 @interface MatrixHandler : NSObject
 
-@property (strong, nonatomic) MXHomeServer *mxHomeServer;
+@property (strong, nonatomic) MXRestClient *mxRestClient;
 @property (strong, nonatomic) MXSession *mxSession;
-@property (strong, nonatomic) MXData *mxData;
 
 @property (strong, nonatomic) NSString *homeServerURL;
 @property (strong, nonatomic) NSString *homeServer;

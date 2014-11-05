@@ -19,11 +19,11 @@
 
 @implementation RoomMemberTableCell
 
-- (void)setRoomMember:(MXRoomMember *)roomMember withRoomData:(MXRoomData *)roomData {
-    if (roomData && roomMember) {
-        self.userLabel.text = [roomData memberName:roomMember.user_id];
+- (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
+    if (room && roomMember) {
+        self.userLabel.text = [room memberName:roomMember.userId];
         self.placeholder = @"default-profile";
-        self.pictureURL = roomMember.avatar_url;
+        self.pictureURL = roomMember.avatarUrl;
         
         // Shade invited users
         if ([roomMember.membership isEqualToString:@"invite"]) {
@@ -49,7 +49,7 @@
             
             // Handle power level display
              self.userPowerLevel.hidden = NO;
-            NSDictionary *powerLevels = roomData.powerLevels;
+            NSDictionary *powerLevels = room.powerLevels;
             if (powerLevels) {
                 int maxLevel = 0;
                 for (NSString *powerLevel in powerLevels.allValues) {
@@ -58,7 +58,7 @@
                         maxLevel = level;
                     }
                 }
-                NSString *userPowerLevel = [powerLevels objectForKey:roomMember.user_id]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
+                NSString *userPowerLevel = [powerLevels objectForKey:roomMember.userId]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
                 if (userPowerLevel == nil) {
                     userPowerLevel = [powerLevels valueForKey:@"default"];
                 }
@@ -77,7 +77,7 @@
             } else {
                 // TODO: handle last_active_ago duration when it will be available from SDK
                 self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.last_active_ago];
+                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.lastActiveAgo];
                 self.lastActiveAgoLabel.numberOfLines = 0;
             }
         }

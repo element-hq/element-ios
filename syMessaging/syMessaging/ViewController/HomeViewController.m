@@ -92,7 +92,7 @@
 
 - (void)refreshPublicRooms {
     // Retrieve public rooms
-    [[MatrixHandler sharedHandler].mxHomeServer publicRooms:^(NSArray *rooms){
+    [[MatrixHandler sharedHandler].mxRestClient publicRooms:^(NSArray *rooms){
         publicRooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
             
             MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
@@ -248,7 +248,7 @@
         
         // Create new room
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [mxHandler.mxSession createRoom:roomName
+        [mxHandler.mxRestClient createRoom:roomName
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
          room_alias_name:self.alias
          topic:nil
@@ -256,10 +256,10 @@
              // Check whether some users must be invited
              NSArray *invitedUsers = self.participantsList;
              for (NSString *userId in invitedUsers) {
-                 [mxHandler.mxSession inviteUser:userId toRoom:response.room_id success:^{
-                     NSLog(@"%@ has been invited (roomId: %@)", userId, response.room_id);
+                 [mxHandler.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
+                     NSLog(@"%@ has been invited (roomId: %@)", userId, response.roomId);
                  } failure:^(NSError *error) {
-                     NSLog(@"%@ invitation failed (roomId: %@): %@", userId, response.room_id, error);
+                     NSLog(@"%@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
                      //Alert user
                      [[AppDelegate theDelegate] showErrorAsAlert:error];
                  }];
@@ -270,7 +270,7 @@
              _roomAliasTextField.text = nil;
              _participantsTextField.text = nil;
              // Open created room
-             [[AppDelegate theDelegate].masterTabBarController showRoom:response.room_id];
+             [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
          } failure:^(NSError *error) {
              _createRoomBtn.enabled = YES;
              NSLog(@"Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
@@ -353,12 +353,12 @@
     
     // Check whether the user has already joined the selected public room
     MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    if ([mxHandler.mxData getRoomData:publicRoom.room_id]) {
+    if ([mxHandler.mxSession room:publicRoom.roomId]) {
         // Open selected room
-        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
+        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
     } else {
         // Join the selected room
-        [mxHandler.mxSession joinRoom:publicRoom.room_id success:^{
+        [mxHandler.mxRestClient joinRoom:publicRoom.roomId success:^{
 #ifdef TEMPORARY_PATCH_INITIAL_SYNC
             // Presently the SDK is not able to handle correctly the context for the room recently joined
             // PATCH: we force new initial sync
@@ -366,7 +366,7 @@
             [mxHandler forceInitialSync];
 #endif
             // Show joined room
-            [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.room_id];
+            [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
         } failure:^(NSError *error) {
             NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
             //Alert user

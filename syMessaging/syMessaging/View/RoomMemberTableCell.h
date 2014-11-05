@@ -18,7 +18,7 @@
 #import "CustomTableViewCell.h"
 
 @class MXRoomMember;
-@class MXRoomData;
+@class MXRoom;
 
 // Room Member Table View Cell
 @interface RoomMemberTableCell : CustomTableViewCell
@@ -26,6 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *userPowerLevel;
 @property (weak, nonatomic) IBOutlet UILabel *lastActiveAgoLabel;
 
-- (void)setRoomMember:(MXRoomMember *)roomMember withRoomData:(MXRoomData *)roomData;
+- (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
 @end
 

@@ -108,7 +108,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         currentDisplayName = mxHandler.userDisplayName;
         self.userDisplayName.text = mxHandler.userDisplayName;
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
-        [mxHandler.mxSession displayName:mxHandler.mxSession.user_id success:^(NSString *displayname) {
+        [mxHandler.mxRestClient displayName:mxHandler.mxRestClient.credentials.userId success:^(NSString *displayname) {
             mxHandler.userDisplayName = displayname;
         } failure:^(NSError *error) {
             NSLog(@"Get displayName failed: %@", error);
@@ -119,7 +119,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // Handle user's picture url
         [self updateUserPicture:mxHandler.userPictureURL];
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
-        [mxHandler.mxSession avatarUrl:mxHandler.mxSession.user_id success:^(NSString *avatar_url) {
+        [mxHandler.mxRestClient avatarUrl:mxHandler.mxRestClient.credentials.userId success:^(NSString *avatar_url) {
             mxHandler.userPictureURL = avatar_url;
         } failure:^(NSError *error) {
             NSLog(@"Get picture url failed: %@", error);
@@ -158,7 +158,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSString *displayname = self.userDisplayName.text;
     if ([displayname isEqualToString:currentDisplayName] == NO) {
         // Save display name
-        [mxHandler.mxSession setDisplayName:displayname success:^{
+        [mxHandler.mxRestClient setDisplayName:displayname success:^{
             currentDisplayName = displayname;
             // Loop to save other changes
             [self save];
@@ -178,11 +178,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Check whether the picture has been changed
     if (shouldSavePicture) {
-        [mxHandler.mxSession uploadContent:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5)
+        [mxHandler.mxRestClient uploadContent:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5)
                                   mimeType:@"image/jpeg"
                                    timeout:30
                                    success:^(NSString *url) {
-                                       [mxHandler.mxSession setAvatarUrl:url
+                                       [mxHandler.mxRestClient setAvatarUrl:url
                                                                  success:^{
                                                                      shouldSavePicture = NO;
                                                                      [MatrixHandler sharedHandler].userPictureURL = url;

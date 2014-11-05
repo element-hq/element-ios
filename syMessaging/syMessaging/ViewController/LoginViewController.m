@@ -189,20 +189,20 @@ NSString* const defaultHomeserver = @"http://matrix.org";
     if (sender == _loginBtn) {
         MatrixHandler *matrix = [MatrixHandler sharedHandler];
         
-        if (matrix.mxHomeServer)
+        if (matrix.mxRestClient)
         {
             // Disable login button to prevent multiple requests
             _loginBtn.enabled = NO;
             [_activityIndicator startAnimating];
             
-            [matrix.mxHomeServer loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
-                                     success:^(MXLoginResponse *credentials){
+            [matrix.mxRestClient loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
+                                     success:^(MXCredentials *credentials){
                                          [_activityIndicator stopAnimating];
                                          
                                          // Report credentials
-                                         [matrix setUserId:credentials.user_id];
-                                         [matrix setAccessToken:credentials.access_token];
-                                         [matrix setHomeServer:credentials.home_server];
+                                         [matrix setUserId:credentials.userId];
+                                         [matrix setAccessToken:credentials.accessToken];
+                                         [matrix setHomeServer:credentials.homeServer];
                                          
                                          [self dismissViewControllerAnimated:YES completion:nil];
                                      }
