@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "RoomViewController.h"
 #import "RoomMessageTableCell.h"
@@ -21,9 +22,11 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
+#define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
 #define ROOM_MESSAGE_CELL_TOP_MARGIN 5
 #define ROOM_MESSAGE_CELL_BOTTOM_MARGIN 5
 #define INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT 20
+#define ROOM_MESSAGE_CELL_IMAGE_MARGIN 5
 
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
@@ -366,6 +369,15 @@ NSString *const kFailedEventId = @"failedEventId";
     [self dismissKeyboard];
     
     members = [mxRoomData members];
+    // Ignore banned and kicked (leave) user
+//    NSMutableArray *filteredMembers = [[NSMutableArray alloc] initWithCapacity:members.count];
+//    for (MXRoomMember *roomMember in members) {
+//        if ([roomMember.membership isEqualToString:@"leave"] == NO && [roomMember.membership isEqualToString:@"ban"] == NO) {
+//            [filteredMembers addObject:roomMember];
+//        }
+//    }
+//    members = filteredMembers;
+    
     // Register a listener for events that concern room members
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
@@ -457,15 +469,10 @@ NSString *const kFailedEventId = @"failedEventId";
     CGSize contentSize;
     
     if ([mxHandler isAttachment:mxEvent]) {
-        NSString *msgtype = mxEvent.content[@"msgtype"];
-        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
-            contentSize = CGSizeMake(200, 200);
-        } else {
-            contentSize = CGSizeMake(40, 40);
-        }
+        contentSize = [self attachmentContentSize:mxEvent];
     } else {
         // Use a TextView template to compute cell height
-        UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 200, MAXFLOAT)];
+        UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
         dummyTextView.font = [UIFont systemFontOfSize:14];
         dummyTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
         contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
@@ -575,7 +582,10 @@ NSString *const kFailedEventId = @"failedEventId";
     
     if ([mxHandler isAttachment:mxEvent]) {
         cell.attachmentView.hidden = NO;
-        cell.messageTextView.text = nil; // Note: Text view is used to display attachment background
+        cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
+        CGSize contentSize = [self attachmentContentSize:mxEvent];
+        cell.msgTextViewWidthConstraint.constant = contentSize.width;
+        cell.attachmentViewWidthConstraint.constant = contentSize.width - 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
         
         NSString *msgtype = mxEvent.content[@"msgtype"];
         if ([msgtype isEqualToString:kMXMessageTypeImage]) {
@@ -588,9 +598,11 @@ NSString *const kFailedEventId = @"failedEventId";
             cell.attachedImageURL = nil;
         }
     } else {
-        cell.attachmentView.hidden = YES;
-        // cancel potential attachment loading
+        // Text message will be displayed in textView with max width
+        cell.msgTextViewWidthConstraint.constant = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+        // Cancel potential attachment loading
         cell.attachedImageURL = nil;
+        cell.attachmentView.hidden = YES;
         
         NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
         if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
@@ -604,6 +616,36 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     
     return cell;
+}
+
+- (CGSize)attachmentContentSize:(MXEvent*)mxEvent;
+{
+    CGSize contentSize;
+    NSString *msgtype = mxEvent.content[@"msgtype"];
+    if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+        CGFloat width, height;
+        width = height = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+        NSDictionary *thumbInfo = mxEvent.content[@"thumbnail_info"];
+        if (thumbInfo) {
+            width = [thumbInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
+            height = [thumbInfo[@"h"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
+            if (width > ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH || height > ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) {
+                if (width > height) {
+                    height = (height * ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) / width;
+                    height = floorf(height / 2) * 2;
+                    width = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+                } else {
+                    width = (width * ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) / height;
+                    width = floorf(width / 2) * 2;
+                    height = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+                }
+            }
+        }
+        contentSize = CGSizeMake(width, height);
+    } else {
+        contentSize = CGSizeMake(40, 40);
+    }
+    return contentSize;
 }
 
 #pragma mark - Table view delegate
@@ -668,6 +710,7 @@ NSString *const kFailedEventId = @"failedEventId";
         // Display action menu: Add attachments, Invite user...
         __weak typeof(self) weakSelf = self;
         self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+        // Attachments
         [self.actionMenu addActionWithTitle:@"Attach" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
             if (weakSelf) {
                 // Ask for attachment type
@@ -679,6 +722,7 @@ NSString *const kFailedEventId = @"failedEventId";
                         mediaPicker.delegate = weakSelf;
                         mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                         mediaPicker.allowsEditing = NO;
+                        mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
                         [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
                     }
                 }];
@@ -688,6 +732,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 [weakSelf.actionMenu showInViewController:weakSelf];
             }
         }];
+        // Invitation
         [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
             if (weakSelf) {
                 // Ask for userId to invite
@@ -954,19 +999,26 @@ NSString *const kFailedEventId = @"failedEventId";
 # pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    if (selectedImage) {
-        // Upload image and its thumbnail
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [mxHandler.mxSession uploadImage:selectedImage thumbnailSize:200 timeout:30 success:^(NSDictionary *imageMessage) {
-            // Send image
-            [self postMessage:imageMessage];
-        } failure:^(NSError *error) {
-            NSLog(@"Failed to upload image: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        if (selectedImage) {
+            // Upload image and its thumbnail
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            NSUInteger thumbnailSize = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH - 5 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
+            [mxHandler.mxSession uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
+                // Send image
+                [self postMessage:imageMessage];
+            } failure:^(NSError *error) {
+                NSLog(@"Failed to upload image: %@", error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+    } else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
+        //TODO
     }
+    
     [self dismissMediaPicker];
 }
 

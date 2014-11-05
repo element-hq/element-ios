@@ -95,7 +95,9 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="attachmentView" destination="mvK-ez-meg" id="Qjc-lo-eJS"/>
+                                            <outlet property="attachmentViewWidthConstraint" destination="gVc-k2-DHn" id="8M9-rf-XsY"/>
                                             <outlet property="messageTextView" destination="J5R-Mh-3hV" id="d45-NI-bod"/>
+                                            <outlet property="msgTextViewWidthConstraint" destination="rsq-bW-mGt" id="gt4-3A-412"/>
                                             <outlet property="pictureView" destination="uhu-R0-9NH" id="59O-If-m7H"/>
                                             <outlet property="userNameLabel" destination="egJ-aY-QVW" id="IWg-7t-5Vp"/>
                                         </connections>
@@ -157,7 +159,9 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="attachmentView" destination="QZT-V8-yqJ" id="Xrj-e5-Yd9"/>
+                                            <outlet property="attachmentViewWidthConstraint" destination="0gc-hU-Jtc" id="rpj-98-GpI"/>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>
+                                            <outlet property="msgTextViewWidthConstraint" destination="a6g-WS-jjN" id="aM9-xQ-hVM"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>
                                             <outlet property="unsentLabel" destination="alD-cg-uMl" id="UXm-mh-sux"/>
                                         </connections>
