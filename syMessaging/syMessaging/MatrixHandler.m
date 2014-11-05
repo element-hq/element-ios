@@ -413,15 +413,18 @@ static MatrixHandler *sharedHandler = nil;
             
             // Presently only membership change, display name change and avatar change are expected
             
+            MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:message.content];
+
             // Check whether this is a displayname change
             if (message.prevContent) {
-                NSString *prevDisplayname =  message.prevContent[@"displayname"];
-                NSString *displayname = message.content[@"displayname"];
+                MXRoomMemberEventContent *prevContent = [MXRoomMemberEventContent modelFromJSON:message.prevContent];
+                NSString *prevDisplayname =  prevContent.displayname;
+                NSString *displayname = content.displayname;
                 if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
                     displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.userId, prevDisplayname, displayname];
                 } else {
-                    NSString *prevAvatar =  message.prevContent[@"avatar_url"];
-                    NSString *avatar = message.content[@"avatar_url"];
+                    NSString *prevAvatar =  prevContent.avatarUrl;
+                    NSString *avatar = content.avatarUrl;
                     if (prevAvatar && avatar && [avatar isEqualToString:prevAvatar] == NO) {
                         displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
                     }
@@ -430,7 +433,7 @@ static MatrixHandler *sharedHandler = nil;
             
             if (displayText == nil) {
                 // Consider here a membership change by default
-                NSString* membership = message.content[@"membership"];
+                NSString* membership = content.membership;
                 
                 if ([membership isEqualToString:@"invite"]) {
                     displayText = [NSString stringWithFormat:@"%@ invited %@", memberDisplayName, targetDisplayName];
