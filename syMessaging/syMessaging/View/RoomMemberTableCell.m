@@ -26,7 +26,7 @@
         self.pictureURL = roomMember.avatarUrl;
         
         // Shade invited users
-        if ([roomMember.membership isEqualToString:@"invite"]) {
+        if (roomMember.membership == MXMembershipInvite) {
             for (UIView *view in self.subviews) {
                 view.alpha = 0.3;
             }
@@ -37,13 +37,13 @@
         }
         
         // Customize banned and left (kicked) members
-        if ([roomMember.membership isEqualToString:@"leave"] || [roomMember.membership isEqualToString:@"ban"]) {
+        if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
             self.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
             
             self.userPowerLevel.hidden = YES;
             
             self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
-            self.lastActiveAgoLabel.text = [roomMember.membership isEqualToString:@"leave"] ? @"left" : @"banned";
+            self.lastActiveAgoLabel.text = (roomMember.membership == MXMembershipLeave) ? @"left" : @"banned";
         } else {
             self.backgroundColor = [UIColor whiteColor];
             
@@ -71,13 +71,13 @@
                 self.userPowerLevel.progress = 0;
             }
             
-            if ([roomMember.membership isEqualToString:@"invite"]) {
+            if (roomMember.membership == MXMembershipInvite) {
                 self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
                 self.lastActiveAgoLabel.text = @"invited";
             } else {
                 // TODO: handle last_active_ago duration when it will be available from SDK
                 self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%ds ago", roomMember.lastActiveAgo];
+                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%lus ago", (unsigned long)roomMember.lastActiveAgo];
                 self.lastActiveAgoLabel.numberOfLines = 0;
             }
         }

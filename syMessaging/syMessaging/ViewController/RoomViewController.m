@@ -371,20 +371,20 @@ NSString *const kFailedEventId = @"failedEventId";
          MXRoomMember *member2 = (MXRoomMember*)obj2;
          
          // Move banned and left members at the end of the list
-         if ([member1.membership isEqualToString:@"leave"] || [member1.membership isEqualToString:@"ban"]) {
-             if (![member2.membership isEqualToString:@"leave"] && ![member2.membership isEqualToString:@"ban"]) {
+         if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
+             if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
                  return NSOrderedDescending;
              }
-         } else if ([member2.membership isEqualToString:@"leave"] || [member2.membership isEqualToString:@"ban"]) {
+         } else if (member2.membership == MXMembershipLeave || member2.membership == MXMembershipBan) {
              return NSOrderedAscending;
          }
          
          // Move invited members just before left and banned members
-         if ([member1.membership isEqualToString:@"invite"]) {
-             if (![member2.membership isEqualToString:@"invite"]) {
+         if (member1.membership == MXMembershipInvite) {
+             if (member2.membership != MXMembershipInvite) {
                  return NSOrderedDescending;
              }
-         } else if ([member2.membership isEqualToString:@"invite"]) {
+         } else if (member2.membership == MXMembershipInvite) {
              return NSOrderedAscending;
          }
          
