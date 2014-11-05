@@ -103,7 +103,6 @@ NSString *const kFailedEventId = @"failedEventId";
     
     members = nil;
     if (membersListener) {
-        [mxRoom unregisterListener:membersListener];
         membersListener = nil;
     }
     
