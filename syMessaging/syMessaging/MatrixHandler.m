@@ -128,10 +128,8 @@ static MatrixHandler *sharedHandler = nil;
                     if ([event.userId isEqualToString:self.userId]) {
                         // Check whether this is a displayname change
                         if (event.prevContent) {
-                            MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
-                            MXRoomMemberEventContent *prevContent = [MXRoomMemberEventContent modelFromJSON:event.prevContent];
-                            NSString *prevDisplayname = prevContent.displayname;
-                            NSString *displayname = content.displayname;
+                            NSString *prevDisplayname = event.prevContent[@"displayname"];
+                            NSString *displayname = event.content[@"displayname"];
                             if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
                                 // Update local storage
                                 self.userDisplayName = displayname;
@@ -414,19 +412,16 @@ static MatrixHandler *sharedHandler = nil;
         case MXEventTypeRoomMember: {
             
             // Presently only membership change, display name change and avatar change are expected
-            
-            MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:message.content];
 
             // Check whether this is a displayname change
             if (message.prevContent) {
-                MXRoomMemberEventContent *prevContent = [MXRoomMemberEventContent modelFromJSON:message.prevContent];
-                NSString *prevDisplayname =  prevContent.displayname;
-                NSString *displayname = content.displayname;
+                NSString *prevDisplayname =  message.prevContent[@"displayname"];
+                NSString *displayname = message.content[@"displayname"];
                 if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
                     displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.userId, prevDisplayname, displayname];
                 } else {
-                    NSString *prevAvatar =  prevContent.avatarUrl;
-                    NSString *avatar = content.avatarUrl;
+                    NSString *prevAvatar =  message.prevContent[@"avatar_url"];
+                    NSString *avatar = message.content[@"avatar_url"];
                     if (prevAvatar && avatar && [avatar isEqualToString:prevAvatar] == NO) {
                         displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
                     }
@@ -435,7 +430,7 @@ static MatrixHandler *sharedHandler = nil;
             
             if (displayText == nil) {
                 // Consider here a membership change by default
-                NSString* membership = content.membership;
+                NSString* membership = message.content[@"membership"];
                 
                 if ([membership isEqualToString:@"invite"]) {
                     displayText = [NSString stringWithFormat:@"%@ invited %@", memberDisplayName, targetDisplayName];
@@ -446,8 +441,7 @@ static MatrixHandler *sharedHandler = nil;
                         displayText = [NSString stringWithFormat:@"%@ left", memberDisplayName];
                     } else {
                         if (message.prevContent) {
-                            MXRoomMemberEventContent *prevContent = [MXRoomMemberEventContent modelFromJSON:message.prevContent];
-                            NSString *prev = prevContent.membership;
+                            NSString *prev = message.prevContent[@"membership"];
                             
                             if ([prev isEqualToString:@"join"] || [prev isEqualToString:@"invite"]) {
                                 displayText = [NSString stringWithFormat:@"%@ kicked %@", memberDisplayName, targetDisplayName];
