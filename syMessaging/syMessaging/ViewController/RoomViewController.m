@@ -542,8 +542,7 @@ NSString *const kFailedEventId = @"failedEventId";
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Check table view members vs messages
-    if (tableView == self.membersTableView)
-    {
+    if (tableView == self.membersTableView) {
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
             [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:mxRoom];
@@ -688,7 +687,141 @@ NSString *const kFailedEventId = @"failedEventId";
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == self.messagesTableView) {
+    // Check table view members vs messages
+    if (tableView == self.membersTableView) {
+        // List action(s) available on this member
+        // TODO: Check user's power level before allowing an action (kick, ban, ...)
+        MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        __weak typeof(self) weakSelf = self;
+        if (_actionMenu) {
+            [_actionMenu dismiss:NO];
+            _actionMenu = nil;
+        }
+        
+        // Consider the case of the user himself
+        if ([roomMember.userId isEqualToString:mxHandler.userId]) {
+            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+            [self.actionMenu addActionWithTitle:@"Leave" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                if (weakSelf) {
+                    weakSelf.actionMenu = nil;
+                    [[MatrixHandler sharedHandler].mxRestClient leaveRoom:weakSelf.roomId
+                                                                  success:^{
+                                                                      // Back to recents
+                                                                      [weakSelf.navigationController popViewControllerAnimated:YES];
+                                                                  }
+                                                                  failure:^(NSError *error) {
+                                                                      NSLog(@"Leave room %@ failed: %@", weakSelf.roomId, error);
+                                                                      //Alert user
+                                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                  }];
+                }
+            }];
+        } else {
+            // Consider membership of the selected member
+            switch (roomMember.membership) {
+                case MXMembershipInvite:
+                case MXMembershipJoin: {
+                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+                    [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                        if (weakSelf) {
+                            weakSelf.actionMenu = nil;
+                            [[MatrixHandler sharedHandler].mxRestClient kickUser:roomMember.userId
+                                                                        fromRoom:weakSelf.roomId
+                                                                          reason:nil
+                                                                         success:^{
+                                                                         }
+                                                                         failure:^(NSError *error) {
+                                                                             NSLog(@"Kick %@ failed: %@", roomMember.userId, error);
+                                                                             //Alert user
+                                                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                         }];
+                        }
+                    }];
+                    [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                        if (weakSelf) {
+                            weakSelf.actionMenu = nil;
+                            [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
+                                                                         inRoom:weakSelf.roomId
+                                                                         reason:nil
+                                                                        success:^{
+                                                                        }
+                                                                        failure:^(NSError *error) {
+                                                                            NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
+                                                                            //Alert user
+                                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                        }];
+                        }
+                    }];
+                    break;
+                }
+                case MXMembershipLeave: {
+                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+                    [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                        if (weakSelf) {
+                            weakSelf.actionMenu = nil;
+                            [[MatrixHandler sharedHandler].mxRestClient inviteUser:roomMember.userId
+                                                                            toRoom:weakSelf.roomId
+                                                                           success:^{
+                                                                           }
+                                                                           failure:^(NSError *error) {
+                                                                               NSLog(@"Invite %@ failed: %@", roomMember.userId, error);
+                                                                               //Alert user
+                                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                           }];
+                        }
+                    }];
+                    [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                        if (weakSelf) {
+                            weakSelf.actionMenu = nil;
+                            [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
+                                                                         inRoom:weakSelf.roomId
+                                                                         reason:nil
+                                                                        success:^{
+                                                                        }
+                                                                        failure:^(NSError *error) {
+                                                                            NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
+                                                                            //Alert user
+                                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                        }];
+                        }
+                    }];
+                    break;
+                }
+                case MXMembershipBan: {
+                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+                    [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                        if (weakSelf) {
+                            weakSelf.actionMenu = nil;
+                            [[MatrixHandler sharedHandler].mxRestClient unbanUser:roomMember.userId
+                                                                           inRoom:weakSelf.roomId
+                                                                          success:^{
+                                                                          }
+                                                                          failure:^(NSError *error) {
+                                                                              NSLog(@"Unban %@ failed: %@", roomMember.userId, error);
+                                                                              //Alert user
+                                                                              [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                          }];
+                        }
+                    }];
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        
+        // Display the action sheet (if any)
+        if (self.actionMenu) {
+            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu = nil;
+            }];
+            [self.actionMenu showInViewController:self];
+        }
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else if (tableView == self.messagesTableView) {
         // Dismiss keyboard when user taps on messages table view content
         [self dismissKeyboard];
     }
