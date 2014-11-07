@@ -170,8 +170,14 @@ static MatrixHandler *sharedHandler = nil;
     }
     [self.mxSession close];
     self.mxSession = nil;
+    
     [self.mxRestClient close];
-    self.mxRestClient = nil;
+    if (self.homeServerURL) {
+        self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:self.homeServerURL];
+    } else {
+        self.mxRestClient = nil;
+    }
+    
     self.isInitialSyncDone = NO;
     notifyOpenSessionFailure = YES;
 }
@@ -281,7 +287,8 @@ static MatrixHandler *sharedHandler = nil;
         self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:inHomeserverURL];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserverurl"];
-        self.mxSession = nil;
+        // Reinitialize matrix handler
+        [self logout];
     }
 }
 
@@ -410,28 +417,48 @@ static MatrixHandler *sharedHandler = nil;
             break;
         }
         case MXEventTypeRoomMember: {
+            // Presently only change on membership, display name and avatar are supported
             
-            // Presently only membership change, display name change and avatar change are expected
-
-            // Check whether this is a displayname change
+            // Retrieve membership
+            NSString* membership = message.content[@"membership"];
+            NSString *prevMembership = nil;
             if (message.prevContent) {
-                NSString *prevDisplayname =  message.prevContent[@"displayname"];
+                prevMembership = message.prevContent[@"membership"];
+            }
+            
+            // Check whether the membership is unchanged
+            if (prevMembership && membership && [membership isEqualToString:prevMembership]) {
+                // Retrieve display name
                 NSString *displayname = message.content[@"displayname"];
-                if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
+                NSString *prevDisplayname =  message.prevContent[@"displayname"];
+                if (!displayname.length) {
+                    displayname = nil;
+                }
+                if (!prevDisplayname.length) {
+                    prevDisplayname = nil;
+                }
+                
+                // Check whether the display name has been changed
+                if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
                     displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.userId, prevDisplayname, displayname];
                 } else {
-                    NSString *prevAvatar =  message.prevContent[@"avatar_url"];
+                    // Retrieve avatar url
                     NSString *avatar = message.content[@"avatar_url"];
-                    if (prevAvatar && avatar && [avatar isEqualToString:prevAvatar] == NO) {
+                    NSString *prevAvatar = message.prevContent[@"avatar_url"];
+                    if (!avatar.length) {
+                        avatar = nil;
+                    }
+                    if (!prevAvatar.length) {
+                        prevAvatar = nil;
+                    }
+                    
+                    // Check whether the avatar has been changed
+                    if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
                         displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
                     }
                 }
-            }
-            
-            if (displayText == nil) {
-                // Consider here a membership change by default
-                NSString* membership = message.content[@"membership"];
-                
+            } else {
+                // Consider here a membership change
                 if ([membership isEqualToString:@"invite"]) {
                     displayText = [NSString stringWithFormat:@"%@ invited %@", memberDisplayName, targetDisplayName];
                 } else if ([membership isEqualToString:@"join"]) {
@@ -439,18 +466,14 @@ static MatrixHandler *sharedHandler = nil;
                 } else if ([membership isEqualToString:@"leave"]) {
                     if ([message.userId isEqualToString:message.stateKey]) {
                         displayText = [NSString stringWithFormat:@"%@ left", memberDisplayName];
-                    } else {
-                        if (message.prevContent) {
-                            NSString *prev = message.prevContent[@"membership"];
-                            
-                            if ([prev isEqualToString:@"join"] || [prev isEqualToString:@"invite"]) {
-                                displayText = [NSString stringWithFormat:@"%@ kicked %@", memberDisplayName, targetDisplayName];
-                                if (message.content[@"reason"]) {
-                                    displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
-                                }
-                            } else if ([prev isEqualToString:@"ban"]) {
-                                displayText = [NSString stringWithFormat:@"%@ unbanned %@", memberDisplayName, targetDisplayName];
+                    } else if (prevMembership) {
+                        if ([prevMembership isEqualToString:@"join"] || [prevMembership isEqualToString:@"invite"]) {
+                            displayText = [NSString stringWithFormat:@"%@ kicked %@", memberDisplayName, targetDisplayName];
+                            if (message.content[@"reason"]) {
+                                displayText = [NSString stringWithFormat:@"%@: %@", displayText, message.content[@"reason"]];
                             }
+                        } else if ([prevMembership isEqualToString:@"ban"]) {
+                            displayText = [NSString stringWithFormat:@"%@ unbanned %@", memberDisplayName, targetDisplayName];
                         }
                     }
                 } else if ([membership isEqualToString:@"ban"]) {
