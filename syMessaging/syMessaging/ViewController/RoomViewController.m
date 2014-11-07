@@ -388,10 +388,15 @@ NSString *const kFailedEventId = @"failedEventId";
          }
          
          if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
-             // FIXME: handle last_active_ago duration and presence when they will be available from SDK
-             if (member1.lastActiveAgo < member2.lastActiveAgo) {
+             
+             // Get the users that correspond to these members
+             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+             MXUser *user1 = [mxHandler.mxSession user:member1.userId];
+             MXUser *user2 = [mxHandler.mxSession user:member2.userId];
+             
+             if (user1.lastActiveAgo < user2.lastActiveAgo) {
                  return NSOrderedAscending;
-             } else if (member1.lastActiveAgo == member2.lastActiveAgo) {
+             } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
                  return [[mxRoom memberName:member1.userId] compare:[mxRoom memberName:member2.userId] options:NSCaseInsensitiveSearch];
              }
              return NSOrderedDescending;

@@ -75,9 +75,12 @@
                 self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
                 self.lastActiveAgoLabel.text = @"invited";
             } else {
-                // TODO: handle last_active_ago duration when it will be available from SDK
+                // Get the user that corresponds to this member
+                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                MXUser *user = [mxHandler.mxSession user:roomMember.userId];
+                
                 self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%lus ago", (unsigned long)roomMember.lastActiveAgo];
+                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%lus ago", (unsigned long)user.lastActiveAgo];
                 self.lastActiveAgoLabel.numberOfLines = 0;
             }
         }
