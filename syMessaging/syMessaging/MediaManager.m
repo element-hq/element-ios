@@ -189,7 +189,7 @@ static MediaManager *sharedMediaManager = nil;
 
 + (NSString*)getCacheFileNameFor:(NSString*)pictureURL {
     NSString* baseFileName = [[MediaManager getCachePath] stringByAppendingPathComponent:@"ima"];
-    return [NSString stringWithFormat:@"%@%d.jpg", baseFileName, pictureURL.hash];
+    return [NSString stringWithFormat:@"%@%lu.jpg", baseFileName, (unsigned long)pictureURL.hash];
 }
 
 + (void)clearCache {
