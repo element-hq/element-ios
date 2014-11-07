@@ -16,6 +16,8 @@
 
 #import "MediaManager.h"
 
+NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
+
 static NSString* pictureCachePath  = nil;
 static NSString *pictureDir        = @"picturecache";
 
@@ -48,8 +50,7 @@ static MediaManager *sharedMediaManager = nil;
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
 
-- (void)cancel
-{
+- (void)cancel {
     // Reset blocks
     onImageReady = nil;
     onError = nil;
@@ -61,28 +62,25 @@ static MediaManager *sharedMediaManager = nil;
     }
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [self cancel];
 }
 
 #pragma mark - NSURLConnectionDelegate
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"ERROR: picture download failed: %@, %@", error, mediaURL);
     if (onError) {
         onError (error);
     }
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     // Append data
     [downloadData appendData:data];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     // CAUTION: Presently only picture are supported
     // Set downloaded image
     UIImage *image = [UIImage imageWithData:downloadData];
@@ -130,11 +128,16 @@ static MediaManager *sharedMediaManager = nil;
             success (image);
         }
     }
-    else {
+    else if ([pictureURL hasPrefix:kMediaManagerPrefixForDummyURL] == NO) {
         // Create a media loader to download picture
         MediaLoader *mediaLoader = [[MediaLoader alloc] init];
         [mediaLoader downloadPicture:pictureURL success:success failure:failure];
         ret = mediaLoader;
+    } else {
+        NSLog(@"Load tmp picture from cache failed: %@", pictureURL);
+        if (failure){
+            failure(nil);
+        }
     }
     return ret;
 }
@@ -142,8 +145,6 @@ static MediaManager *sharedMediaManager = nil;
 + (void)cancel:(id)mediaLoader {
     [((MediaLoader*)mediaLoader) cancel];
 }
-
-#pragma mark - Cache handling
 
 + (NSString*)cachePictureWithData:(NSData*)imageData forURL:(NSString *)pictureURL {
     NSString* filename = [MediaManager getCacheFileNameFor:pictureURL];
@@ -154,6 +155,39 @@ static MediaManager *sharedMediaManager = nil;
         return nil;
     }
 }
+
++ (void)clearCacheForURL:(NSString *)mediaURL {
+    NSString* filename = [MediaManager getCacheFileNameFor:mediaURL];
+    NSError *error = nil;
+    if (filename && [[NSFileManager defaultManager] fileExistsAtPath:filename]) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:filename error:&error]) {
+            NSLog(@"Fails to delete cached picture: %@", error);
+        }
+    }
+}
+
++ (void)clearCache {
+    NSError *error = nil;
+    
+    if (!pictureCachePath) {
+        // compute the path
+        pictureCachePath = [MediaManager getCachePath];
+    }
+    
+    if (pictureCachePath) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:pictureCachePath error:&error]) {
+            NSLog(@"Fails to delete picture cache dir : %@", error);
+        } else {
+            NSLog(@"Picture cache : deleted !");
+        }
+    } else {
+        NSLog(@"Picture cache does not exist");
+    }
+    
+    pictureCachePath = nil;
+}
+
+#pragma mark - Cache handling
 
 + (UIImage*)loadCachePicture:(NSString*)pictureURL {
     UIImage* res = nil;
@@ -190,27 +224,6 @@ static MediaManager *sharedMediaManager = nil;
 + (NSString*)getCacheFileNameFor:(NSString*)pictureURL {
     NSString* baseFileName = [[MediaManager getCachePath] stringByAppendingPathComponent:@"ima"];
     return [NSString stringWithFormat:@"%@%lu.jpg", baseFileName, (unsigned long)pictureURL.hash];
-}
-
-+ (void)clearCache {
-    NSError *error = nil;
-    
-    if (!pictureCachePath) {
-        // compute the path
-        pictureCachePath = [MediaManager getCachePath];
-    }
-    
-    if (pictureCachePath) {
-        if (![[NSFileManager defaultManager] removeItemAtPath:pictureCachePath error:&error]) {
-            NSLog(@"Fails to delete picture cache dir : %@", error);
-        } else {
-            NSLog(@"Picture cache : deleted !");
-        }
-    } else {
-        NSLog(@"Picture cache does not exist");
-    }
-    
-    pictureCachePath = nil;
 }
 
 @end

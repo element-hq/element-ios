@@ -125,6 +125,9 @@
                                                         <constraint firstAttribute="width" constant="190" id="0gc-hU-Jtc"/>
                                                     </constraints>
                                                 </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Pq8-lB-cZM">
+                                                    <rect key="frame" x="439" y="15" width="20" height="20"/>
+                                                </activityIndicatorView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ">
                                                     <rect key="frame" x="552" y="5" width="40" height="40"/>
                                                     <constraints>
@@ -150,15 +153,18 @@
                                                 <constraint firstItem="alD-cg-uMl" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="14" id="M1S-HJ-o3b"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="SSl-4u-03L"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="alD-cg-uMl" secondAttribute="trailing" constant="5" id="Vde-Q3-e8O"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerX" secondItem="Pq8-lB-cZM" secondAttribute="centerX" id="a0M-9u-hMC"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="QZT-V8-yqJ" secondAttribute="trailing" constant="8" id="a1U-Ar-6ln"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="3" id="cCA-xk-XBe"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="eSd-gt-RQQ"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerY" secondItem="Pq8-lB-cZM" secondAttribute="centerY" id="ej0-OC-3hJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="QZT-V8-yqJ" secondAttribute="bottom" constant="10" id="lEk-gQ-G3T"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="owD-KZ-snG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="Pq8-lB-cZM" id="YBm-xk-m7t"/>
                                             <outlet property="attachmentView" destination="QZT-V8-yqJ" id="Xrj-e5-Yd9"/>
                                             <outlet property="attachmentViewWidthConstraint" destination="0gc-hU-Jtc" id="rpj-98-GpI"/>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>

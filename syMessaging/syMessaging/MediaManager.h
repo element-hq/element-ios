@@ -17,6 +17,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
+extern NSString *const kMediaManagerPrefixForDummyURL;
+
 // The callback blocks
 typedef void (^blockMediaManager_onImageReady)(UIImage *image);
 typedef void (^blockMediaManager_onError)(NSError *error);
@@ -34,6 +36,7 @@ typedef void (^blockMediaManager_onError)(NSError *error);
 
 + (NSString*)cachePictureWithData:(NSData*)imageData forURL:(NSString *)pictureURL;
 
++ (void)clearCacheForURL:(NSString *)mediaURL;
 + (void)clearCache;
 
 @end
