@@ -133,6 +133,10 @@
     if ([alert isKindOfClass:[UIAlertController class]]) {
         if (viewController) {
             parentViewController = viewController;
+            if (self.sourceView) {
+                [alert popoverPresentationController].sourceView = self.sourceView;
+                [alert popoverPresentationController].sourceRect = self.sourceView.bounds;
+            }
             [viewController presentViewController:(UIAlertController *)alert animated:YES completion:nil];
         }
     } else if ([alert isKindOfClass:[UIActionSheet class]]) {

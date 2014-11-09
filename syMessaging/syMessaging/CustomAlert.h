@@ -37,6 +37,7 @@ typedef void (^blockCustomAlert_onClick)(CustomAlert *alert);
 typedef void (^blockCustomAlert_textFieldHandler)(UITextField *textField);
 
 @property(nonatomic) NSInteger cancelButtonIndex; // required to dismiss cusmtomAlert on iOS < 8 (default is -1).
+@property(nonatomic, weak) UIView *sourceView;
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message style:(CustomAlertStyle)style;
 // adds a button with the title. returns the index (0 based) of where it was added.

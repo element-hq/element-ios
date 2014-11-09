@@ -953,6 +953,7 @@ NSString *const kFailedEventId = @"failedEventId";
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
              weakSelf.actionMenu = nil;
         }];
+        weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
         [self.actionMenu showInViewController:self];
     }
 }
