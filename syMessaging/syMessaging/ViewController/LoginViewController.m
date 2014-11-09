@@ -18,6 +18,7 @@
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
+#import "CustomAlert.h"
 
 NSString* const defaultHomeserver = @"http://matrix.org";
 
@@ -212,7 +213,9 @@ NSString* const defaultHomeserver = @"http://matrix.org";
                                          
                                          NSLog(@"Login failed: %@", error);
                                          //Alert user
-                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                         CustomAlert *alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:@"Invalid username/password" style:CustomAlertStyleAlert];
+                                         [alert addActionWithTitle:@"Dismiss" style:CustomAlertActionStyleCancel handler:^(CustomAlert *alert) {}];
+                                         [alert showInViewController:self];
                                      }];
         }
     } else if (sender == _createAccountBtn){
