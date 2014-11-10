@@ -595,10 +595,11 @@ NSString *const kFailedEventId = @"failedEventId";
     
     // Update incoming/outgoing message layout
     if (isIncomingMsg) {
-        // Hide userName in incoming message if the previous message is from the same user
+        // Hide userName in incoming message when the previous message is from the same user or
+        // when the user's name is displayed in text (see notifications)
         IncomingMessageTableCell* incomingMsgCell = (IncomingMessageTableCell*)cell;
         CGRect frame = incomingMsgCell.userNameLabel.frame;
-        if (cell.pictureView.hidden) {
+        if (cell.pictureView.hidden || [mxHandler isNotification:mxEvent]) {
             incomingMsgCell.userNameLabel.text = nil;
             frame.size.height = 0;
             incomingMsgCell.userNameLabel.hidden = YES;
@@ -606,7 +607,7 @@ NSString *const kFailedEventId = @"failedEventId";
             frame.size.height = INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
             incomingMsgCell.userNameLabel.hidden = NO;
             NSString *userName = [mxRoom memberName:mxEvent.userId];
-            incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"- %@", userName];
+            incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"%@", userName];
         }
         incomingMsgCell.userNameLabel.frame = frame;
         
@@ -905,7 +906,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an attachment type:" message:nil style:CustomAlertStyleActionSheet];
                 [weakSelf.actionMenu addActionWithTitle:@"Media" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     if (weakSelf) {
-                        // Open picture gallery
+                        // Open media gallery
                         UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
                         mediaPicker.delegate = weakSelf;
                         mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
