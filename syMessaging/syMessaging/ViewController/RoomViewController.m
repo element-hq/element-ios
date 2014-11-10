@@ -633,7 +633,6 @@ NSString *const kFailedEventId = @"failedEventId";
         cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
         CGSize contentSize = [self attachmentContentSize:mxEvent];
         cell.msgTextViewWidthConstraint.constant = contentSize.width;
-        cell.attachmentViewWidthConstraint.constant = contentSize.width - 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
         
         // Fade attachments during upload
         if (isIncomingMsg == NO && [mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {

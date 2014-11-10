@@ -63,9 +63,6 @@
                                                 </textView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View">
                                                     <rect key="frame" x="56" y="30" width="190" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="190" id="gVc-k2-DHn"/>
-                                                    </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="egJ-aY-QVW">
                                                     <rect key="frame" x="51" y="5" width="200" height="20"/>
@@ -82,10 +79,11 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="J5R-Mh-3hV" secondAttribute="bottom" constant="5" id="662-Ze-6ia"/>
+                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="mvK-ez-meg" secondAttribute="leading" constant="-5" id="Cbe-us-CeX"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="N8f-0n-ObR"/>
-                                                <constraint firstAttribute="bottom" secondItem="mvK-ez-meg" secondAttribute="bottom" constant="10" id="QDe-wv-ghR"/>
-                                                <constraint firstItem="mvK-ez-meg" firstAttribute="top" secondItem="egJ-aY-QVW" secondAttribute="bottom" constant="5" id="Ymi-fN-lGW"/>
-                                                <constraint firstItem="mvK-ez-meg" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="8" id="ZSk-GW-jSc"/>
+                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="trailing" secondItem="mvK-ez-meg" secondAttribute="trailing" constant="5" id="Zdd-F0-OAU"/>
+                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="mvK-ez-meg" secondAttribute="top" constant="-5" id="d5n-ha-SuV"/>
+                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="bottom" secondItem="mvK-ez-meg" secondAttribute="bottom" constant="5" id="eaa-XD-uyr"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="8" id="fNV-Tp-p31"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="qkW-ys-ckn"/>
@@ -96,7 +94,6 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="attachmentView" destination="mvK-ez-meg" id="Qjc-lo-eJS"/>
-                                            <outlet property="attachmentViewWidthConstraint" destination="gVc-k2-DHn" id="8M9-rf-XsY"/>
                                             <outlet property="messageTextView" destination="J5R-Mh-3hV" id="d45-NI-bod"/>
                                             <outlet property="msgTextViewWidthConstraint" destination="rsq-bW-mGt" id="gt4-3A-412"/>
                                             <outlet property="pictureView" destination="uhu-R0-9NH" id="59O-If-m7H"/>
@@ -121,9 +118,6 @@
                                                 </textView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QZT-V8-yqJ" userLabel="Attachment View">
                                                     <rect key="frame" x="354" y="10" width="190" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="190" id="0gc-hU-Jtc"/>
-                                                    </constraints>
                                                 </imageView>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Pq8-lB-cZM">
                                                     <rect key="frame" x="439" y="15" width="20" height="20"/>
@@ -149,24 +143,24 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="mks-jh-AiZ" secondAttribute="trailing" constant="8" id="1Fh-Wx-A41"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="leading" constant="5" id="IVl-I8-Dzq"/>
                                                 <constraint firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" constant="5" id="KPt-Vo-ntg"/>
                                                 <constraint firstItem="alD-cg-uMl" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="14" id="M1S-HJ-o3b"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="SSl-4u-03L"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="top" secondItem="7qn-gi-w7s" secondAttribute="top" constant="5" id="U4f-kJ-Kgb"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="alD-cg-uMl" secondAttribute="trailing" constant="5" id="Vde-Q3-e8O"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerX" secondItem="Pq8-lB-cZM" secondAttribute="centerX" id="a0M-9u-hMC"/>
-                                                <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="QZT-V8-yqJ" secondAttribute="trailing" constant="8" id="a1U-Ar-6ln"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="3" id="cCA-xk-XBe"/>
-                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="eSd-gt-RQQ"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerY" secondItem="Pq8-lB-cZM" secondAttribute="centerY" id="ej0-OC-3hJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="QZT-V8-yqJ" secondAttribute="bottom" constant="10" id="lEk-gQ-G3T"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="5" id="owD-KZ-snG"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" constant="-5" id="q4h-EM-X4Z"/>
+                                                <constraint firstItem="QZT-V8-yqJ" firstAttribute="trailing" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="-5" id="tgM-eJ-BEk"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="Pq8-lB-cZM" id="YBm-xk-m7t"/>
                                             <outlet property="attachmentView" destination="QZT-V8-yqJ" id="Xrj-e5-Yd9"/>
-                                            <outlet property="attachmentViewWidthConstraint" destination="0gc-hU-Jtc" id="rpj-98-GpI"/>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>
                                             <outlet property="msgTextViewWidthConstraint" destination="a6g-WS-jjN" id="aM9-xQ-hVM"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>

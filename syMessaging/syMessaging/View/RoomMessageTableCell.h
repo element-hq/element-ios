@@ -22,7 +22,6 @@
 @property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
 @property (strong, nonatomic) IBOutlet UIImageView *attachmentView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachmentViewWidthConstraint;
 
 @property (strong, nonatomic) NSString *attachedImageURL;
 @end
