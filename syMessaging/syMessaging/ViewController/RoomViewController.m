@@ -44,8 +44,7 @@ NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
 NSString *const kFailedEventId = @"failedEventId";
 
 
-@interface RoomViewController ()
-{
+@interface RoomViewController () {
     BOOL isFirstDisplay;
     BOOL isJoinRequestInProgress;
     
@@ -74,6 +73,7 @@ NSString *const kFailedEventId = @"failedEventId";
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 
 @property (strong, nonatomic) CustomAlert *actionMenu;
+@property (nonatomic) BOOL isHiddenByMediaPicker;
 @end
 
 @implementation RoomViewController
@@ -117,9 +117,9 @@ NSString *const kFailedEventId = @"failedEventId";
         membersListener = nil;
     }
     
-    if (_actionMenu) {
-        [_actionMenu dismiss:NO];
-        _actionMenu = nil;
+    if (self.actionMenu) {
+        [self.actionMenu dismiss:NO];
+        self.actionMenu = nil;
     }
 }
 
@@ -130,6 +130,15 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // Check whether the view was hidden by the media picker
+    if (_isHiddenByMediaPicker) {
+        _isHiddenByMediaPicker = NO;
+        // We don't reload room data in order to keep data related to local echo
+    } else {
+        // Load room data
+        [self configureView];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -144,13 +153,19 @@ NSString *const kFailedEventId = @"failedEventId";
     [super viewWillDisappear:animated];
     
     // hide action
-    if (_actionMenu) {
-        [_actionMenu dismiss:NO];
-        _actionMenu = nil;
+    if (self.actionMenu) {
+        [self.actionMenu dismiss:NO];
+        self.actionMenu = nil;
     }
     
     // Hide members by default
     [self hideRoomMembers];
+    
+    // Release message listener except if the view is hidden by the media picker
+    if (messagesListener && (_isHiddenByMediaPicker == NO)) {
+        [mxRoom unregisterListener:messagesListener];
+        messagesListener = nil;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -173,14 +188,13 @@ NSString *const kFailedEventId = @"failedEventId";
 #pragma mark -
 
 - (void)setRoomId:(NSString *)roomId {
-    _roomId = roomId;
-    
-    // Load room data
-    [self configureView];
-    
-    // Trigger a back pagination if messages number is low
-    if (messages && messages.count < 10) {
-        [self triggerBackPagination];
+    if (self.roomId == nil) {
+        // Room data will be loaded when view will appear
+        _roomId = roomId;
+    } else if ([self.roomId isEqualToString:roomId] == NO) {
+        _roomId = roomId;
+        // Reload room data here
+        [self configureView];
     }
 }
 
@@ -286,6 +300,11 @@ NSString *const kFailedEventId = @"failedEventId";
                 [self scrollToBottomAnimated:YES];
             }
         }];
+        
+        // Trigger a back pagination if messages number is low
+        if (messages && messages.count < 10) {
+            [self triggerBackPagination];
+        }
     } else {
         mxRoom = nil;
         // Update room title
@@ -713,9 +732,9 @@ NSString *const kFailedEventId = @"failedEventId";
         MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         __weak typeof(self) weakSelf = self;
-        if (_actionMenu) {
-            [_actionMenu dismiss:NO];
-            _actionMenu = nil;
+        if (self.actionMenu) {
+            [self.actionMenu dismiss:NO];
+            self.actionMenu = nil;
         }
         
         // Consider the case of the user himself
@@ -912,6 +931,7 @@ NSString *const kFailedEventId = @"failedEventId";
                         mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                         mediaPicker.allowsEditing = NO;
                         mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                        weakSelf.isHiddenByMediaPicker = YES;
                         [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
                     }
                 }];
