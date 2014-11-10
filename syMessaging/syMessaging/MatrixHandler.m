@@ -135,7 +135,7 @@ static MatrixHandler *sharedHandler = nil;
                     // Consider only event from app user
                     if ([event.userId isEqualToString:self.userId]) {
                         if (event.prevContent) {
-                            // Retrieve display name
+                            // Check whether the display name has been changed
                             NSString *prevDisplayname = event.prevContent[@"displayname"];
                             NSString *displayname = event.content[@"displayname"];
                             if (!displayname.length) {
@@ -144,26 +144,23 @@ static MatrixHandler *sharedHandler = nil;
                             if (!prevDisplayname.length) {
                                 prevDisplayname = nil;
                             }
-                            // Check whether the display name has been changed
                             if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
                                 // Update local storage
                                 self.userDisplayName = displayname;
-                            } else {
-                                // Retrieve avatar url
-                                NSString *avatar = event.content[@"avatar_url"];
-                                NSString *prevAvatar = event.prevContent[@"avatar_url"];
-                                if (!avatar.length) {
-                                    avatar = nil;
-                                }
-                                if (!prevAvatar.length) {
-                                    prevAvatar = nil;
-                                }
-                                
-                                // Check whether the avatar has been changed
-                                if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
-                                    // Update local storage
-                                    self.userPictureURL = avatar;
-                                }
+                            }
+                            
+                            // Check whether the avatar has been changed
+                            NSString *avatar = event.content[@"avatar_url"];
+                            NSString *prevAvatar = event.prevContent[@"avatar_url"];
+                            if (!avatar.length) {
+                                avatar = nil;
+                            }
+                            if (!prevAvatar.length) {
+                                prevAvatar = nil;
+                            }
+                            if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
+                                // Update local storage
+                                self.userPictureURL = avatar;
                             }
                         }
                     }
@@ -468,7 +465,7 @@ static MatrixHandler *sharedHandler = nil;
             
             // Check whether the membership is unchanged
             if (prevMembership && membership && [membership isEqualToString:prevMembership]) {
-                // Retrieve display name
+                // Check whether the display name has been changed
                 NSString *displayname = message.content[@"displayname"];
                 NSString *prevDisplayname =  message.prevContent[@"displayname"];
                 if (!displayname.length) {
@@ -477,23 +474,23 @@ static MatrixHandler *sharedHandler = nil;
                 if (!prevDisplayname.length) {
                     prevDisplayname = nil;
                 }
-                
-                // Check whether the display name has been changed
                 if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
                     displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", message.userId, prevDisplayname, displayname];
-                } else {
-                    // Retrieve avatar url
-                    NSString *avatar = message.content[@"avatar_url"];
-                    NSString *prevAvatar = message.prevContent[@"avatar_url"];
-                    if (!avatar.length) {
-                        avatar = nil;
-                    }
-                    if (!prevAvatar.length) {
-                        prevAvatar = nil;
-                    }
-                    
-                    // Check whether the avatar has been changed
-                    if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
+                }
+                
+                // Check whether the avatar has been changed
+                NSString *avatar = message.content[@"avatar_url"];
+                NSString *prevAvatar = message.prevContent[@"avatar_url"];
+                if (!avatar.length) {
+                    avatar = nil;
+                }
+                if (!prevAvatar.length) {
+                    prevAvatar = nil;
+                }
+                if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
+                    if (displayText) {
+                        displayText = [NSString stringWithFormat:@"%@ (picture profile was changed too)", displayText];
+                    } else {
                         displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
                     }
                 }
