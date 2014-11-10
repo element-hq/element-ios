@@ -36,20 +36,19 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     NSString *currentDisplayName;
     NSString *currentPictureURL;
-    BOOL      shouldSavePicture;
+    NSString *uploadedPictureURL;
+    
+    NSMutableArray *errorAlerts;
     
     UIButton *logoutBtn;
     UISwitch *notificationsSwitch;
     UISwitch *allEventsSwitch;
     UISwitch *sortMembersSwitch;
-    
-    UIImagePickerController *imagePicker;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
 @property (weak, nonatomic) IBOutlet UIButton *userPicture;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
-@property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)onButtonPressed:(id)sender;
@@ -70,7 +69,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [logoutBtn addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutBtn];
     
-    [self reset];
+    errorAlerts = [NSMutableArray array];
+    
+    [self startViewConfiguration];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -84,11 +85,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)dealloc {
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userDisplayName"];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userPictureURL"];
+    
     // Cancel picture loader (if any)
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
         imageLoader = nil;
     }
+    
+    // Cancel potential error alerts
+    for (CustomAlert *alert in errorAlerts){
+        [alert dismiss:NO];
+    }
+    errorAlerts = nil;
     
     logoutBtn = nil;
     notificationsSwitch = nil;
@@ -98,126 +108,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    // Ignore viewWillAppear if it is related to the mediaPicker use
-    if (imagePicker == nil) {
-        // Update User information
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        
-        // Handle user's display name
-        currentDisplayName = mxHandler.userDisplayName;
-        self.userDisplayName.text = mxHandler.userDisplayName;
-        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
-        [mxHandler.mxRestClient displayName:mxHandler.mxRestClient.credentials.userId success:^(NSString *displayname) {
-            mxHandler.userDisplayName = displayname;
-        } failure:^(NSError *error) {
-            NSLog(@"Get displayName failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-        
-        // Handle user's picture url
-        [self updateUserPicture:mxHandler.userPictureURL];
-        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
-        [mxHandler.mxRestClient avatarUrl:mxHandler.mxRestClient.credentials.userId success:^(NSString *avatar_url) {
-            mxHandler.userPictureURL = avatar_url;
-        } failure:^(NSError *error) {
-            NSLog(@"Get picture url failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-        
-        // Refresh settings
-        [self.tableView reloadData];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-    // Ignore viewWillDisappear if it is related to the mediaPicker use
-    if (imagePicker == nil) {
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userDisplayName"];
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userPictureURL"];
-        
-        shouldSavePicture = NO;
-    }
 }
 
 #pragma mark - Internal methods
-
-- (void)save {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    
-    // Start saving
-    [_activityIndicator startAnimating];
-    _saveBtn.enabled = NO;
-    _saveBtn.alpha = 0.5;
-    
-    // Check whether the display name has been changed
-    NSString *displayname = self.userDisplayName.text;
-    if ([displayname isEqualToString:currentDisplayName] == NO) {
-        // Save display name
-        [mxHandler.mxRestClient setDisplayName:displayname success:^{
-            currentDisplayName = displayname;
-            // Loop to save other changes
-            [self save];
-        } failure:^(NSError *error) {
-            // Stop saving
-            [_activityIndicator stopAnimating];
-            _saveBtn.enabled = YES;
-            _saveBtn.alpha = 1;
-            
-            NSLog(@"Set displayName failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-        // Wait for the end of this request before pursuing the saving
-        return;
-    }
-    
-    // Check whether the picture has been changed
-    if (shouldSavePicture) {
-        [mxHandler.mxRestClient uploadContent:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5)
-                                  mimeType:@"image/jpeg"
-                                   timeout:30
-                                   success:^(NSString *url) {
-                                       [mxHandler.mxRestClient setAvatarUrl:url
-                                                                 success:^{
-                                                                     shouldSavePicture = NO;
-                                                                     [MatrixHandler sharedHandler].userPictureURL = url;
-                                                                     // Loop to save other changes
-                                                                     [self save];
-                                                                 } failure:^(NSError *error) {
-                                                                     // Stop saving
-                                                                     [_activityIndicator stopAnimating];
-                                                                     _saveBtn.enabled = YES;
-                                                                     _saveBtn.alpha = 1;
-                                                                     
-                                                                     NSLog(@"Set avatar url failed: %@", error);
-                                                                     //Alert user
-                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                 }];
-                                       
-                                   } failure:^(NSError *error) {
-                                       // Stop saving
-                                       [_activityIndicator stopAnimating];
-                                       _saveBtn.enabled = YES;
-                                       _saveBtn.alpha = 1;
-                                       
-                                       NSLog(@"Upload image failed: %@", error);
-                                       //Alert user
-                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                   }];
-        // Wait for the end of this request before pursuing the saving
-        return;
-    }
-    
-    // Stop saving
-    [_activityIndicator stopAnimating];
-    _saveBtn.enabled = YES;
-    _saveBtn.alpha = 1;
-}
 
 - (void)reset {
     // Cancel picture loader (if any)
@@ -226,13 +123,171 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         imageLoader = nil;
     }
     
+    // Cancel potential error alerts
+    for (CustomAlert *alert in errorAlerts){
+        [alert dismiss:NO];
+    }
+    
     currentPictureURL = nil;
+    uploadedPictureURL = nil;
     UIImage *image = [UIImage imageNamed:@"default-profile"];
     [self.userPicture setImage:image forState:UIControlStateNormal];
     [self.userPicture setImage:image forState:UIControlStateHighlighted];
     
     currentDisplayName = nil;
     self.userDisplayName.text = nil;
+}
+
+- (void)startViewConfiguration {
+    // Initialize
+    [self reset];
+    
+    // Set current user's information and add observers
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    [_activityIndicator startAnimating];
+    // Disable user's interactions
+    _userPicture.enabled = NO;
+    _userDisplayName.enabled = NO;
+    
+    // Set user's display name
+    currentDisplayName = mxHandler.userDisplayName;
+    self.userDisplayName.text = mxHandler.userDisplayName;
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
+    [mxHandler.mxRestClient displayName:mxHandler.userId success:^(NSString *displayname) {
+        mxHandler.userDisplayName = displayname;
+        
+        // Set user's picture url
+        [self updateUserPicture:mxHandler.userPictureURL];
+        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
+        [mxHandler.mxRestClient avatarUrl:mxHandler.userId success:^(NSString *avatar_url) {
+            mxHandler.userPictureURL = avatar_url;
+            [self endViewConfiguration];
+            
+        } failure:^(NSError *error) {
+            NSLog(@"Get picture url failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+            [self endViewConfiguration];
+        }];
+    } failure:^(NSError *error) {
+        NSLog(@"Get displayName failed: %@", error);
+        //Alert user
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        [self endViewConfiguration];
+    }];
+}
+
+- (void)endViewConfiguration {
+    [_activityIndicator stopAnimating];
+    
+    _userPicture.enabled = YES;
+    _userDisplayName.enabled = YES;
+    
+    [self.tableView reloadData];
+}
+
+- (void)saveDisplayName {
+    // Check whether the display name has been changed
+    NSString *displayname = self.userDisplayName.text;
+    if ([displayname isEqualToString:currentDisplayName] == NO) {
+        // Save display name
+        [_activityIndicator startAnimating];
+        _userDisplayName.enabled = NO;
+
+         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxRestClient setDisplayName:displayname success:^{
+            currentDisplayName = displayname;
+            
+            [_activityIndicator stopAnimating];
+            _userDisplayName.enabled = YES;
+        } failure:^(NSError *error) {
+            NSLog(@"Set displayName failed: %@", error);
+            [_activityIndicator stopAnimating];
+            _userDisplayName.enabled = YES;
+            
+            //Alert user
+            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+            if (!title) {
+                title = @"Display name change failed";
+            }
+            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+            
+            CustomAlert *alert = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
+            [errorAlerts addObject:alert];
+            alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                [errorAlerts removeObject:alert];
+                // Remove change
+                self.userDisplayName.text = currentDisplayName;
+            }];
+            [alert addActionWithTitle:@"Retry" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                [errorAlerts removeObject:alert];
+                [self saveDisplayName];
+            }];
+            [alert showInViewController:self];
+        }];
+    }
+}
+
+- (void)savePicture {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    // Save picture
+    [_activityIndicator startAnimating];
+    _userPicture.enabled = NO;
+    
+    if (uploadedPictureURL == nil) {
+        // Upload picture
+        [mxHandler.mxRestClient uploadContent:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5)
+                                     mimeType:@"image/jpeg"
+                                      timeout:30
+                                      success:^(NSString *url) {
+                                          // Store uploaded picture url and trigger picture saving
+                                          uploadedPictureURL = url;
+                                          [self savePicture];
+                                      } failure:^(NSError *error) {
+                                          NSLog(@"Upload image failed: %@", error);
+                                          [_activityIndicator stopAnimating];
+                                          _userPicture.enabled = YES;
+                                          [self handleErrorDuringPictureSaving:error];
+                                      }];
+    } else {
+        [mxHandler.mxRestClient setAvatarUrl:uploadedPictureURL
+                                     success:^{
+                                         [MatrixHandler sharedHandler].userPictureURL = uploadedPictureURL;
+                                         uploadedPictureURL = nil;
+                                         
+                                         [_activityIndicator stopAnimating];
+                                         _userPicture.enabled = YES;
+                                     } failure:^(NSError *error) {
+                                         NSLog(@"Set avatar url failed: %@", error);
+                                         [_activityIndicator stopAnimating];
+                                         _userPicture.enabled = YES;
+                                         [self handleErrorDuringPictureSaving:error];
+                                     }];
+    }
+}
+
+- (void)handleErrorDuringPictureSaving:(NSError*)error {
+    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    if (!title) {
+        title = @"Picture change failed";
+    }
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    
+    CustomAlert *alert = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
+    [errorAlerts addObject:alert];
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [errorAlerts removeObject:alert];
+        // Remove change
+        uploadedPictureURL = nil;
+        [self updateUserPicture:[MatrixHandler sharedHandler].userPictureURL];
+    }];
+    [alert addActionWithTitle:@"Retry" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [errorAlerts removeObject:alert];
+        [self savePicture];
+    }];
+    
+    [alert showInViewController:self];
 }
 
 - (void)updateUserPicture:(NSString *)avatar_url {
@@ -286,13 +341,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (sender == _userPicture) {
         // Open picture gallery
-        imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePicker.allowsEditing = NO;
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    } else if (sender == _saveBtn) {
-        [self save];
+        UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+        mediaPicker.delegate = self;
+        mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        mediaPicker.allowsEditing = NO;
+        [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
     } else if (sender == logoutBtn) {
         [self reset];
         [[AppDelegate theDelegate] logout];
@@ -311,6 +364,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 {
     // Hide the keyboard
     [_userDisplayName resignFirstResponder];
+    // Save display name change (if any)
+    [self saveDisplayName];
 }
 
 #pragma mark - UITextField delegate
@@ -318,7 +373,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (BOOL)textFieldShouldReturn:(UITextField*) textField
 {
     // "Done" key has been pressed
-    [textField resignFirstResponder];
+    [self dismissKeyboard];
     return YES;
 }
 
@@ -436,7 +491,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if (selectedImage) {
         [self.userPicture setImage:selectedImage forState:UIControlStateNormal];
         [self.userPicture setImage:selectedImage forState:UIControlStateHighlighted];
-        shouldSavePicture = YES;
+        [self savePicture];
     }
     [self dismissMediaPicker];
 }
@@ -446,11 +501,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)dismissMediaPicker {
-    if (imagePicker) {
-        [self dismissViewControllerAnimated:NO completion:nil];
-        imagePicker.delegate = nil;
-        imagePicker = nil;
-    }
+    [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
 }
 
 @end

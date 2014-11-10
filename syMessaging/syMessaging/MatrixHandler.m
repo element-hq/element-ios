@@ -95,6 +95,14 @@ static MatrixHandler *sharedHandler = nil;
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
+        // Request user's avatar
+        [self.mxRestClient avatarUrl:self.userId success:^(NSString *avatar_url) {
+            self.userPictureURL = avatar_url;
+        } failure:^(NSError *error) {
+            NSLog(@"Get picture url failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
         
         self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient];
         // Check here whether the app user wants to display all the events
@@ -126,13 +134,36 @@ static MatrixHandler *sharedHandler = nil;
                 if (isLive) {
                     // Consider only event from app user
                     if ([event.userId isEqualToString:self.userId]) {
-                        // Check whether this is a displayname change
                         if (event.prevContent) {
+                            // Retrieve display name
                             NSString *prevDisplayname = event.prevContent[@"displayname"];
                             NSString *displayname = event.content[@"displayname"];
-                            if (prevDisplayname && displayname && [displayname isEqualToString:prevDisplayname] == NO) {
+                            if (!displayname.length) {
+                                displayname = nil;
+                            }
+                            if (!prevDisplayname.length) {
+                                prevDisplayname = nil;
+                            }
+                            // Check whether the display name has been changed
+                            if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
                                 // Update local storage
                                 self.userDisplayName = displayname;
+                            } else {
+                                // Retrieve avatar url
+                                NSString *avatar = event.content[@"avatar_url"];
+                                NSString *prevAvatar = event.prevContent[@"avatar_url"];
+                                if (!avatar.length) {
+                                    avatar = nil;
+                                }
+                                if (!prevAvatar.length) {
+                                    prevAvatar = nil;
+                                }
+                                
+                                // Check whether the avatar has been changed
+                                if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
+                                    // Update local storage
+                                    self.userPictureURL = avatar;
+                                }
                             }
                         }
                     }
@@ -220,7 +251,9 @@ static MatrixHandler *sharedHandler = nil;
 - (void)forceInitialSync {
     [self closeSession];
     notifyOpenSessionFailure = NO;
-    [self openSession];
+    if (self.accessToken) {
+        [self openSession];
+    }
 }
 
 - (void)enableEventsNotifications:(BOOL)isEnabled {
@@ -290,6 +323,7 @@ static MatrixHandler *sharedHandler = nil;
         // Reinitialize matrix handler
         [self logout];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)homeServer {
@@ -302,6 +336,7 @@ static MatrixHandler *sharedHandler = nil;
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserver"];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)userLogin {
@@ -314,6 +349,7 @@ static MatrixHandler *sharedHandler = nil;
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userlogin"];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)userId {
@@ -326,6 +362,7 @@ static MatrixHandler *sharedHandler = nil;
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userid"];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)accessToken {
@@ -340,6 +377,7 @@ static MatrixHandler *sharedHandler = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
         [self closeSession];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Matrix user's settings
@@ -355,6 +393,7 @@ static MatrixHandler *sharedHandler = nil;
         // the app will look for this display name in incoming messages, it must not be nil.
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"userdisplayname"];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *)userPictureURL {
@@ -367,6 +406,7 @@ static MatrixHandler *sharedHandler = nil;
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userpictureurl"];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - messages handler
