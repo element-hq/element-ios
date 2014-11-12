@@ -33,7 +33,7 @@
 - (void)dealloc {
     // iOS < 8
     if ([alert isKindOfClass:[UIActionSheet class]] || [alert isKindOfClass:[UIAlertView class]]) {
-        // Dismiss here AlertView or ActionSheet (if any) because its delegate is deallocated
+        // Dismiss here AlertView or ActionSheet (if any) because its delegate is released
         [self dismiss:NO];
     }
     
@@ -185,26 +185,27 @@
 #pragma mark - UIAlertViewDelegate (iOS < 8)
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // Release alert reference
+    alert = nil;
     // Retrieve the callback
     blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
     if ([block isEqual:[NSNull null]] == NO) {
         // And call it
         block(self);
     }
-    alert = nil;
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // Release alert reference
+    alert = nil;
     // Retrieve the callback
     blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
     if ([block isEqual:[NSNull null]] == NO) {
         // And call it
         block(self);
     }
-    alert = nil;
 }
 
 @end
