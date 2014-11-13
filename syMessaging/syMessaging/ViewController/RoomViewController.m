@@ -473,6 +473,11 @@ NSString *const kFailedEventId = @"failedEventId";
     membersListener = [mxRoom registerEventListenerForTypes:mxMembersEvents block:^(MXRoom *room, MXEvent *event, BOOL isLive) {
         // consider only live event
         if (isLive) {
+            // Hide potential action sheet
+            if (self.actionMenu) {
+                [self.actionMenu dismiss:NO];
+                self.actionMenu = nil;
+            }
             // Refresh members list
             [self updateRoomMembers];
             [self.membersTableView reloadData];
