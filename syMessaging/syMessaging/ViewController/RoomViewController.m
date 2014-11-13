@@ -28,7 +28,8 @@
 #define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
 
 #define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT 10
-#define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL (-5)
+#define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK (-5)
+#define ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK
 #define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT 0
 #define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL (-5)
 
@@ -59,6 +60,9 @@ NSString *const kFailedEventId = @"failedEventId";
     // Members list
     NSArray *members;
     id membersListener;
+    
+    // Date formatter (nil if dateTimeLabel is hidden)
+    NSDateFormatter *dateFormatter;
     
     // Cache
     NSMutableArray *tmpCachedAttachments;
@@ -123,6 +127,10 @@ NSString *const kFailedEventId = @"failedEventId";
     if (self.actionMenu) {
         [self.actionMenu dismiss:NO];
         self.actionMenu = nil;
+    }
+    
+    if (dateFormatter) {
+        dateFormatter = nil;
     }
 }
 
@@ -572,7 +580,7 @@ NSString *const kFailedEventId = @"failedEventId";
         rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
     } else {
         // Inside chunk the height of the cell is reduced in order to reduce padding between messages
-        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
+        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK;
     }
     
     // Check whether the message is the last message of the current chunk
@@ -654,10 +662,10 @@ NSString *const kFailedEventId = @"failedEventId";
         cell.pictureView.hidden = YES;
         // The height of this cell has been reduced in order to reduce padding between messages of the same chunk
         // We define here a negative constant for the top space between textView and its superview to display correctly the message text.
-        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
-        // Shift to the top the displayed message to reduce padding between messages of the same chunk
+        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK;
+        // Shift to the top the displayed message to reduce space with the previous messages
         UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
-        edgeInsets.top = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
+        edgeInsets.top = ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
         cell.messageTextView.contentInset = edgeInsets;
         
         // Check whether the next message belongs to the same chunk in order to define bottom space between textView and its superview
@@ -694,7 +702,8 @@ NSString *const kFailedEventId = @"failedEventId";
         } else if ([mxEvent.eventId hasPrefix:kFailedEventId]) {
             cell.messageTextView.textColor = [UIColor redColor];
             outgoingMsgCell.unsentLabel.hidden = NO;
-            outgoingMsgCell.unsentLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
+            // Align unsent label with the textView
+            outgoingMsgCell.unsentLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
         } else {
             cell.messageTextView.textColor = [UIColor blackColor];
         }
@@ -739,6 +748,17 @@ NSString *const kFailedEventId = @"failedEventId";
             cell.messageTextView.textColor = [UIColor blueColor];
         }
         cell.messageTextView.text = displayText;
+    }
+    
+    // Handle timestamp display
+    if (dateFormatter && mxEvent.originServerTs) {
+        cell.dateTimeLabel.hidden = NO;
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.originServerTs/1000];
+        cell.dateTimeLabel.text = [dateFormatter stringFromDate:date];
+        // Align dateTime label with the textView
+        cell.dateTimeLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
+    } else {
+        cell.dateTimeLabel.hidden = YES;
     }
     
     return cell;
@@ -1028,6 +1048,23 @@ NSString *const kFailedEventId = @"failedEventId";
         weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
         [self.actionMenu showInViewController:self];
     }
+}
+
+- (IBAction)showHideDateTime:(id)sender {
+    if (dateFormatter) {
+        // dateTime will be hidden
+        dateFormatter = nil;
+    } else {
+        // dateTime will be visible
+        NSString *dateFormat =  @"MMM dd HH:mm";
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
+        [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+        [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+        [dateFormatter setDateFormat:dateFormat];
+    }
+    
+    [self.messagesTableView reloadData];
 }
 
 #pragma mark - Post messages
