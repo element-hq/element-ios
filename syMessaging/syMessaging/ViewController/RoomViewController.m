@@ -299,8 +299,19 @@ NSString *const kFailedEventId = @"failedEventId";
                 // Here a new event is added
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
                 [messages addObject:event];
-                [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-                [self scrollToBottomAnimated:YES];
+                
+                // Refresh table display (Disable animation during cells insertion to prevent flickering)
+                [UIView setAnimationsEnabled:NO];
+                [self.messagesTableView beginUpdates];
+                if (indexPath.row > 0) {
+                    NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+                }
+                [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.messagesTableView endUpdates];
+                [UIView setAnimationsEnabled:YES];
+                
+                [self scrollToBottomAnimated:NO];
             }
         }];
         
@@ -564,7 +575,7 @@ NSString *const kFailedEventId = @"failedEventId";
         rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
     }
     
-    // Check whether the next message belongs to the same chunk
+    // Check whether the message is the last message of the current chunk
     BOOL isChunkEnd = YES;
     if (indexPath.row < messages.count - 1) {
         MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
@@ -572,10 +583,16 @@ NSString *const kFailedEventId = @"failedEventId";
             isChunkEnd = NO;
         }
     }
-    if (isChunkEnd == NO) {
+    
+    if (!isNewChunk && !isChunkEnd) {
         // Reduce again cell height to reduce space with the next cell
         rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
-    } else if (isNewChunk) {
+    } else {
+        // The cell is the first cell of the chunk or the last one
+        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
+    }
+    
+    if (isNewChunk && isChunkEnd) {
         // When the chunk is composed by only one message, we consider the minimun cell height (50) in order to display correctly user's picture
         if (rowHeight < 50) {
             rowHeight = 50;
@@ -626,6 +643,7 @@ NSString *const kFailedEventId = @"failedEventId";
         // Adjust display of the first message of a chunk
         cell.pictureView.hidden = NO;
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+        cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
         cell.messageTextView.contentInset = UIEdgeInsetsZero;
         
         // Set user's picture
@@ -641,14 +659,14 @@ NSString *const kFailedEventId = @"failedEventId";
         UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
         edgeInsets.top = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
         cell.messageTextView.contentInset = edgeInsets;
-    }
-    
-    // Check whether the next message belongs to the same chunk in order to define bottom space between textView and its superview
-    cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
-    if (indexPath.row < messages.count - 1) {
-        MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
-        if ([nextMxEvent.userId isEqualToString:mxEvent.userId]) {
-            cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
+        
+        // Check whether the next message belongs to the same chunk in order to define bottom space between textView and its superview
+        cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
+        if (indexPath.row < messages.count - 1) {
+            MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
+            if ([nextMxEvent.userId isEqualToString:mxEvent.userId]) {
+                cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
+            }
         }
     }
     
@@ -1044,9 +1062,18 @@ NSString *const kFailedEventId = @"failedEventId";
             // Update table sources
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
             [messages addObject:mxEvent];
-            // Refresh table display
-            [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-            [self scrollToBottomAnimated:YES];
+            // Refresh table display (Disable animation during cells insertion to prevent flickering)
+            [UIView setAnimationsEnabled:NO];
+            [self.messagesTableView beginUpdates];
+            if (indexPath.row > 0) {
+                NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.messagesTableView endUpdates];
+            [UIView setAnimationsEnabled:YES];
+            
+            [self scrollToBottomAnimated:NO];
         }
         
         // Send message to the room
@@ -1289,9 +1316,19 @@ NSString *const kFailedEventId = @"failedEventId";
             // Update table sources
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
             [messages addObject:mxEvent];
-            // Refresh table display
-            [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-            [self scrollToBottomAnimated:YES];
+            
+            // Refresh table display (Disable animation during cells insertion to prevent flickering)
+            [UIView setAnimationsEnabled:NO];
+            [self.messagesTableView beginUpdates];
+            if (indexPath.row > 0) {
+                NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.messagesTableView endUpdates];
+            [UIView setAnimationsEnabled:YES];
+            
+            [self scrollToBottomAnimated:NO];
             
             // Upload image and its thumbnail
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
