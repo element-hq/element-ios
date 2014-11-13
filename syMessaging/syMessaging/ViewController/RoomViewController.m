@@ -684,16 +684,17 @@ NSString *const kFailedEventId = @"failedEventId";
         // Reset text color
         cell.messageTextView.textColor = [UIColor blackColor];
     } else {
+        OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
         // Hide unsent label by default
-        UILabel *unsentLabel = ((OutgoingMessageTableCell*)cell).unsentLabel;
-        unsentLabel.hidden = YES;
+        outgoingMsgCell.unsentLabel.hidden = YES;
         
         // Set the right text color for outgoing messages
         if ([mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
             cell.messageTextView.textColor = [UIColor lightGrayColor];
         } else if ([mxEvent.eventId hasPrefix:kFailedEventId]) {
             cell.messageTextView.textColor = [UIColor redColor];
-            unsentLabel.hidden = NO;
+            outgoingMsgCell.unsentLabel.hidden = NO;
+            outgoingMsgCell.unsentLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
         } else {
             cell.messageTextView.textColor = [UIColor blackColor];
         }

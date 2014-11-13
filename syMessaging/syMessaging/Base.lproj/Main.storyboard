@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -169,6 +169,7 @@
                                             <outlet property="msgTextViewWidthConstraint" destination="a6g-WS-jjN" id="aM9-xQ-hVM"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>
                                             <outlet property="unsentLabel" destination="alD-cg-uMl" id="UXm-mh-sux"/>
+                                            <outlet property="unsentLabelTopConstraint" destination="M1S-HJ-o3b" id="Geo-hs-Ils"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
