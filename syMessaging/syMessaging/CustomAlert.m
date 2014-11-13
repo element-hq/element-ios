@@ -20,24 +20,23 @@
 
 @interface CustomAlert()
 {
-    // alert is kind of UIAlertController for IOS 8 and later, in other cases it's kind of UIAlertView or UIActionSheet.
-    id alert;
     UIViewController* parentViewController;
-    
     NSMutableArray *actions; // use only for iOS < 8
 }
+
+@property(nonatomic, strong) id alert; // alert is kind of UIAlertController for IOS 8 and later, in other cases it's kind of UIAlertView or UIActionSheet.
 @end
 
 @implementation CustomAlert
 
 - (void)dealloc {
     // iOS < 8
-    if ([alert isKindOfClass:[UIActionSheet class]] || [alert isKindOfClass:[UIAlertView class]]) {
+    if ([_alert isKindOfClass:[UIActionSheet class]] || [_alert isKindOfClass:[UIAlertView class]]) {
         // Dismiss here AlertView or ActionSheet (if any) because its delegate is released
         [self dismiss:NO];
     }
     
-    alert = nil;
+    _alert = nil;
     parentViewController = nil;
     actions = nil;
 }
@@ -46,13 +45,13 @@
     if (self = [super init]) {
         // Check iOS version
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8) {
-            alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:(UIAlertControllerStyle)style];
+            _alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:(UIAlertControllerStyle)style];
         } else {
             // Use legacy objects
             if (style == CustomAlertStyleActionSheet) {
-                alert = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+                _alert = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
             } else {
-                alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+                _alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
             }
             
             self.cancelButtonIndex = -1;
@@ -64,8 +63,8 @@
 
 - (NSInteger)addActionWithTitle:(NSString *)title style:(CustomAlertActionStyle)style handler:(blockCustomAlert_onClick)handler {
     NSInteger index = 0;
-    if ([alert isKindOfClass:[UIAlertController class]]) {
-        index = [(UIAlertController *)alert actions].count;
+    if ([_alert isKindOfClass:[UIAlertController class]]) {
+        index = [(UIAlertController *)_alert actions].count;
         UIAlertAction* action = [UIAlertAction actionWithTitle:title
                                                          style:(UIAlertActionStyle)style
                                                        handler:^(UIAlertAction * action) {
@@ -74,22 +73,22 @@
                                                            }
                                                        }];
         
-        [(UIAlertController *)alert addAction:action];
-    } else if ([alert isKindOfClass:[UIActionSheet class]]) {
+        [(UIAlertController *)_alert addAction:action];
+    } else if ([_alert isKindOfClass:[UIActionSheet class]]) {
         if (actions == nil) {
             actions = [NSMutableArray array];
         }
-        index = [(UIActionSheet *)alert addButtonWithTitle:title];
+        index = [(UIActionSheet *)_alert addButtonWithTitle:title];
         if (handler) {
             [actions addObject:handler];
         } else {
             [actions addObject:[NSNull null]];
         }
-    } else if ([alert isKindOfClass:[UIAlertView class]]) {
+    } else if ([_alert isKindOfClass:[UIAlertView class]]) {
         if (actions == nil) {
             actions = [NSMutableArray array];
         }
-        index = [(UIAlertView *)alert addButtonWithTitle:title];
+        index = [(UIAlertView *)_alert addButtonWithTitle:title];
         if (handler) {
             [actions addObject:handler];
         } else {
@@ -100,10 +99,10 @@
 }
 
 - (void)addTextFieldWithConfigurationHandler:(blockCustomAlert_textFieldHandler)configurationHandler {
-    if ([alert isKindOfClass:[UIAlertController class]]) {
-        [(UIAlertController *)alert addTextFieldWithConfigurationHandler:configurationHandler];
-    } else if ([alert isKindOfClass:[UIAlertView class]]) {
-        UIAlertView *alertView = (UIAlertView *)alert;
+    if ([_alert isKindOfClass:[UIAlertController class]]) {
+        [(UIAlertController *)_alert addTextFieldWithConfigurationHandler:configurationHandler];
+    } else if ([_alert isKindOfClass:[UIAlertView class]]) {
+        UIAlertView *alertView = (UIAlertView *)_alert;
         // Check the current style
         if (alertView.alertViewStyle == UIAlertViewStyleDefault) {
             // Add the first text fields
@@ -130,19 +129,19 @@
 }
 
 - (void)showInViewController:(UIViewController*)viewController {
-    if ([alert isKindOfClass:[UIAlertController class]]) {
+    if ([_alert isKindOfClass:[UIAlertController class]]) {
         if (viewController) {
             parentViewController = viewController;
             if (self.sourceView) {
-                [alert popoverPresentationController].sourceView = self.sourceView;
-                [alert popoverPresentationController].sourceRect = self.sourceView.bounds;
+                [_alert popoverPresentationController].sourceView = self.sourceView;
+                [_alert popoverPresentationController].sourceRect = self.sourceView.bounds;
             }
-            [viewController presentViewController:(UIAlertController *)alert animated:YES completion:nil];
+            [viewController presentViewController:(UIAlertController *)_alert animated:YES completion:nil];
         }
-    } else if ([alert isKindOfClass:[UIActionSheet class]]) {
-        [(UIActionSheet *)alert showInView:[[UIApplication sharedApplication] keyWindow]];
-    } else if ([alert isKindOfClass:[UIAlertView class]]) {
-        UIAlertView *alertView = (UIAlertView *)alert;
+    } else if ([_alert isKindOfClass:[UIActionSheet class]]) {
+        [(UIActionSheet *)_alert showInView:[[UIApplication sharedApplication] keyWindow]];
+    } else if ([_alert isKindOfClass:[UIAlertView class]]) {
+        UIAlertView *alertView = (UIAlertView *)_alert;
         if (alertView.alertViewStyle != UIAlertViewStyleDefault) {
             // Call here textField handlers
             UITextField *textField = [alertView textFieldAtIndex:0];
@@ -163,21 +162,21 @@
 }
 
 - (void)dismiss:(BOOL)animated {
-    if ([alert isKindOfClass:[UIAlertController class]]) {
+    if ([_alert isKindOfClass:[UIAlertController class]]) {
         [parentViewController dismissViewControllerAnimated:animated completion:nil];
-    } else if ([alert isKindOfClass:[UIActionSheet class]]) {
-        [((UIActionSheet *)alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
-    } else if ([alert isKindOfClass:[UIAlertView class]]) {
-        [((UIAlertView *)alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
+    } else if ([_alert isKindOfClass:[UIActionSheet class]]) {
+        [((UIActionSheet *)_alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
+    } else if ([_alert isKindOfClass:[UIAlertView class]]) {
+        [((UIAlertView *)_alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
     }
-    alert = nil;
+    _alert = nil;
 }
 
 - (UITextField *)textFieldAtIndex:(NSInteger)textFieldIndex{
-    if ([alert isKindOfClass:[UIAlertController class]]) {
-        return [((UIAlertController*)alert).textFields objectAtIndex:textFieldIndex];
-    } else if ([alert isKindOfClass:[UIAlertView class]]) {
-        return [((UIAlertView*)alert) textFieldAtIndex:textFieldIndex];
+    if ([_alert isKindOfClass:[UIAlertController class]]) {
+        return [((UIAlertController*)_alert).textFields objectAtIndex:textFieldIndex];
+    } else if ([_alert isKindOfClass:[UIAlertView class]]) {
+        return [((UIAlertView*)_alert) textFieldAtIndex:textFieldIndex];
     }
     return nil;
 }
@@ -185,27 +184,27 @@
 #pragma mark - UIAlertViewDelegate (iOS < 8)
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Release alert reference
-    alert = nil;
     // Retrieve the callback
     blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
     if ([block isEqual:[NSNull null]] == NO) {
         // And call it
         block(self);
     }
+    // Release alert reference
+    _alert = nil;
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Release alert reference
-    alert = nil;
     // Retrieve the callback
     blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
     if ([block isEqual:[NSNull null]] == NO) {
         // And call it
         block(self);
     }
+    // Release _alert reference
+    _alert = nil;
 }
 
 @end
