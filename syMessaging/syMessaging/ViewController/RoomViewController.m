@@ -26,9 +26,12 @@
 #import "MediaManager.h"
 
 #define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
-#define ROOM_MESSAGE_CELL_TOP_MARGIN 5
-#define ROOM_MESSAGE_CELL_BOTTOM_MARGIN 5
-#define INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT 20
+
+#define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT 10
+#define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL (-5)
+#define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT 0
+#define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL (-5)
+
 #define ROOM_MESSAGE_CELL_IMAGE_MARGIN 5
 
 NSString *const kCmdChangeDisplayName = @"/nick";
@@ -529,9 +532,7 @@ NSString *const kFailedEventId = @"failedEventId";
     // Get event related to this row
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
-    BOOL isIncomingMsg = ([mxEvent.userId isEqualToString:mxHandler.userId] == NO);
     CGSize contentSize;
-    
     if ([mxHandler isAttachment:mxEvent]) {
         contentSize = [self attachmentContentSize:mxEvent];
     } else {
@@ -542,26 +543,45 @@ NSString *const kFailedEventId = @"failedEventId";
         contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
     }
     
-    // Handle incoming / outgoing layout
-    if (isIncomingMsg) {
-        // By default the user name is displayed above the message or attachment
-        rowHeight = contentSize.height + ROOM_MESSAGE_CELL_TOP_MARGIN + INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT + ROOM_MESSAGE_CELL_BOTTOM_MARGIN;
-        
-        if (indexPath.row) {
-            // This user name is hide if the previous message is from the same user
-            MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
-            if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
-                rowHeight -= INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
-            }
+    // Check whether the previous message has been sent by the same user.
+    // We group together messages from the same user. The user's picture and name are displayed only for the first message.
+    // We consider a new chunk when the user is different from the previous message's one.
+    BOOL isNewChunk = YES;
+    if (indexPath.row) {
+        MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
+        if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
+            isNewChunk = NO;
         }
-    } else {
-        rowHeight = contentSize.height + ROOM_MESSAGE_CELL_TOP_MARGIN + ROOM_MESSAGE_CELL_BOTTOM_MARGIN;
     }
     
-    // Force minimum height: 50
-    if (rowHeight < 50) {
-        rowHeight = 50;
-    }    
+    // Adjust cell height inside chunk
+    rowHeight = contentSize.height;
+    if (isNewChunk) {
+        // The cell is the first cell of the chunk
+        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+    } else {
+        // Inside chunk the height of the cell is reduced in order to reduce padding between messages
+        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
+    }
+    
+    // Check whether the next message belongs to the same chunk
+    BOOL isChunkEnd = YES;
+    if (indexPath.row < messages.count - 1) {
+        MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
+        if ([nextMxEvent.userId isEqualToString:mxEvent.userId]) {
+            isChunkEnd = NO;
+        }
+    }
+    if (isChunkEnd == NO) {
+        // Reduce again cell height to reduce space with the next cell
+        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
+    } else if (isNewChunk) {
+        // When the chunk is composed by only one message, we consider the minimun cell height (50) in order to display correctly user's picture
+        if (rowHeight < 50) {
+            rowHeight = 50;
+        }
+    }
+    
     return rowHeight;
 }
 
@@ -585,50 +605,63 @@ NSString *const kFailedEventId = @"failedEventId";
     
     if ([mxEvent.userId isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
-        cell.messageTextView.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [((OutgoingMessageTableCell*)cell).activityIndicator stopAnimating];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
-        cell.messageTextView.backgroundColor = [UIColor lightGrayColor];
         isIncomingMsg = YES;
     }
     
-    // Clear background for notifications (We consider as notification mxEvent which is not a text message or an attachment)
-    if ([mxHandler isNotification:mxEvent]) {
-        cell.messageTextView.backgroundColor = [UIColor clearColor];
-    }
-    
-    // Hide user picture if the previous message is from the same user
-    cell.pictureView.hidden = NO;
+    // Check whether the previous message has been sent by the same user.
+    // We group together messages from the same user. The user's picture and name are displayed only for the first message.
+    // We consider a new chunk when the user is different from the previous message's one.
+    BOOL isNewChunk = YES;
     if (indexPath.row) {
         MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
         if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
-            cell.pictureView.hidden = YES;
+            isNewChunk = NO;
         }
     }
-    // Set url for visible picture
-    if (!cell.pictureView.hidden) {
+    
+    if (isNewChunk) {
+        // Adjust display of the first message of a chunk
+        cell.pictureView.hidden = NO;
+        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+        cell.messageTextView.contentInset = UIEdgeInsetsZero;
+        
+        // Set user's picture
         cell.placeholder = @"default-profile";
         cell.pictureURL = [mxRoom getMember:mxEvent.userId].avatarUrl;
+    } else {
+        // Adjust display of other messages of the chunk
+        cell.pictureView.hidden = YES;
+        // The height of this cell has been reduced in order to reduce padding between messages of the same chunk
+        // We define here a negative constant for the top space between textView and its superview to display correctly the message text.
+        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
+        // Shift to the top the displayed message to reduce padding between messages of the same chunk
+        UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
+        edgeInsets.top = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_GROUPED_CELL;
+        cell.messageTextView.contentInset = edgeInsets;
+    }
+    
+    // Check whether the next message belongs to the same chunk in order to define bottom space between textView and its superview
+    cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
+    if (indexPath.row < messages.count - 1) {
+        MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
+        if ([nextMxEvent.userId isEqualToString:mxEvent.userId]) {
+            cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
+        }
     }
     
     // Update incoming/outgoing message layout
     if (isIncomingMsg) {
-        // Hide userName in incoming message when the previous message is from the same user or
-        // when the user's name is displayed in text (see notifications)
         IncomingMessageTableCell* incomingMsgCell = (IncomingMessageTableCell*)cell;
-        CGRect frame = incomingMsgCell.userNameLabel.frame;
-        if (cell.pictureView.hidden || [mxHandler isNotification:mxEvent]) {
-            incomingMsgCell.userNameLabel.text = nil;
-            frame.size.height = 0;
-            incomingMsgCell.userNameLabel.hidden = YES;
-        } else {
-            frame.size.height = INCOMING_MESSAGE_CELL_USER_LABEL_HEIGHT;
+        // Display user's display name for the first meesage of a chunk, except if the name appears in the displayed text (see emote and membership event)
+        if (isNewChunk && [mxHandler isNotification:mxEvent] == NO) {
             incomingMsgCell.userNameLabel.hidden = NO;
-            NSString *userName = [mxRoom memberName:mxEvent.userId];
-            incomingMsgCell.userNameLabel.text = [NSString stringWithFormat:@"%@", userName];
+            incomingMsgCell.userNameLabel.text = [mxRoom memberName:mxEvent.userId];
+        } else {
+            incomingMsgCell.userNameLabel.hidden = YES;
         }
-        incomingMsgCell.userNameLabel.frame = frame;
         
         // Reset text color
         cell.messageTextView.textColor = [UIColor blackColor];

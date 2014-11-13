@@ -48,6 +48,10 @@
         }
                                         failure:nil];
     }
+    
+    // Round image view
+    [_pictureView.layer setCornerRadius:_pictureView.frame.size.width / 2];
+    _pictureView.clipsToBounds = YES;
 }
 
 - (void)dealloc
