@@ -249,7 +249,7 @@ NSString *const kFailedEventId = @"failedEventId";
         self.roomNavItem.title = mxRoom.state.displayname;
         
         // Join the room if the user is not already listed in room's members
-        if ([mxRoom.state getMember:mxHandler.userId] == nil) {
+        if ([mxRoom.state memberWithUserId:mxHandler.userId] == nil) {
             isJoinRequestInProgress = YES;
             [_activityIndicator startAnimating];
             [mxHandler.mxRestClient joinRoom:self.roomId success:^{
@@ -648,7 +648,7 @@ NSString *const kFailedEventId = @"failedEventId";
         
         // Set user's picture
         cell.placeholder = @"default-profile";
-        cell.pictureURL = [mxRoom.state getMember:mxEvent.userId].avatarUrl;
+        cell.pictureURL = [mxRoom.state memberWithUserId:mxEvent.userId].avatarUrl;
     } else {
         // Adjust display of other messages of the chunk
         cell.pictureView.hidden = YES;
