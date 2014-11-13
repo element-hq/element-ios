@@ -104,8 +104,8 @@
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="3" id="N8f-0n-ObR"/>
                                                 <constraint firstItem="Ttt-0P-dQW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="Ptt-qa-Cg4"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="trailing" secondItem="mvK-ez-meg" secondAttribute="trailing" constant="5" id="Zdd-F0-OAU"/>
-                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="mvK-ez-meg" secondAttribute="top" constant="-5" id="d5n-ha-SuV"/>
-                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="bottom" secondItem="mvK-ez-meg" secondAttribute="bottom" constant="5" id="eaa-XD-uyr"/>
+                                                <constraint firstItem="mvK-ez-meg" firstAttribute="top" secondItem="J5R-Mh-3hV" secondAttribute="top" constant="5" id="d5n-ha-SuV"/>
+                                                <constraint firstItem="mvK-ez-meg" firstAttribute="bottom" secondItem="J5R-Mh-3hV" secondAttribute="bottom" constant="-5" id="eaa-XD-uyr"/>
                                                 <constraint firstItem="yRH-kt-si3" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="25" id="epA-UD-55M"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="8" id="fNV-Tp-p31"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ttt-0P-dQW" secondAttribute="trailing" id="mJg-Df-CWQ"/>
@@ -119,6 +119,8 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="attachmentView" destination="mvK-ez-meg" id="Qjc-lo-eJS"/>
+                                            <outlet property="attachmentViewBottomAlignmentConstraint" destination="eaa-XD-uyr" id="rfK-uw-FzW"/>
+                                            <outlet property="attachmentViewTopAlignmentConstraint" destination="d5n-ha-SuV" id="FaQ-jH-5C4"/>
                                             <outlet property="dateTimeLabel" destination="yRH-kt-si3" id="udF-ai-dIs"/>
                                             <outlet property="dateTimeLabelTopConstraint" destination="epA-UD-55M" id="QAB-r7-aT6"/>
                                             <outlet property="messageTextView" destination="J5R-Mh-3hV" id="d45-NI-bod"/>
@@ -215,6 +217,8 @@
                                         <connections>
                                             <outlet property="activityIndicator" destination="Pq8-lB-cZM" id="YBm-xk-m7t"/>
                                             <outlet property="attachmentView" destination="QZT-V8-yqJ" id="Xrj-e5-Yd9"/>
+                                            <outlet property="attachmentViewBottomAlignmentConstraint" destination="q4h-EM-X4Z" id="yFu-TN-JOr"/>
+                                            <outlet property="attachmentViewTopAlignmentConstraint" destination="U4f-kJ-Kgb" id="OSr-ds-pmD"/>
                                             <outlet property="dateTimeLabel" destination="2lD-F0-Haf" id="8Lb-qZ-9vJ"/>
                                             <outlet property="dateTimeLabelTopConstraint" destination="7Ee-H6-Wsd" id="BFa-Sf-lzF"/>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>

@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateTimeLabelTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachmentViewTopAlignmentConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachmentViewBottomAlignmentConstraint;
 
 @property (strong, nonatomic) NSString *attachedImageURL;
 @end
