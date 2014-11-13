@@ -250,11 +250,11 @@
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXRoom *mxRoom = [mxHandler.mxSession room:mxEvent.roomId];
     
-    cell.roomTitle.text = [mxRoom displayname];
+    cell.roomTitle.text = [mxRoom.state displayname];
     cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:YES];
     
     // Set in bold public room name
-    if (mxRoom.isPublic) {
+    if (mxRoom.state.isPublic) {
         cell.roomTitle.font = [UIFont boldSystemFontOfSize:20];
     } else {
         cell.roomTitle.font = [UIFont systemFontOfSize:19];

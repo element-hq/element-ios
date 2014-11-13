@@ -273,7 +273,7 @@ static MatrixHandler *sharedHandler = nil;
                         [self.mxNotification dismiss:NO];
                     }
                     
-                    self.mxNotification = [[CustomAlert alloc] initWithTitle:[self.mxSession room:event.roomId].displayname
+                    self.mxNotification = [[CustomAlert alloc] initWithTitle:[self.mxSession room:event.roomId].state.displayname
                                                                      message:[self displayTextFor:event inSubtitleMode:YES]
                                                                        style:CustomAlertStyleAlert];
                     self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
@@ -438,10 +438,10 @@ static MatrixHandler *sharedHandler = nil;
     // Retrieve roomData related to the message
     MXRoom *room = [self.mxSession room:message.roomId];
     // Prepare display name for concerned users
-    NSString *memberDisplayName = [room memberName:message.userId];
+    NSString *memberDisplayName = [room.state memberName:message.userId];
     NSString *targetDisplayName = nil;
     if (message.stateKey) {
-        targetDisplayName = [room memberName:message.stateKey];
+        targetDisplayName = [room.state memberName:message.stateKey];
     }
     
     switch (message.eventType) {
@@ -525,7 +525,7 @@ static MatrixHandler *sharedHandler = nil;
         case MXEventTypeRoomCreate: {
             NSString *creatorId = message.content[@"creator"];
             if (creatorId) {
-                displayText = [NSString stringWithFormat:@"%@ created the room", [room memberName:creatorId]];
+                displayText = [NSString stringWithFormat:@"%@ created the room", [room.state memberName:creatorId]];
             }
             break;
         }

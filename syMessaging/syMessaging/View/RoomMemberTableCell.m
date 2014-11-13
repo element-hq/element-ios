@@ -21,7 +21,7 @@
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
     if (room && roomMember) {
-        self.userLabel.text = [room memberName:roomMember.userId];
+        self.userLabel.text = [room.state memberName:roomMember.userId];
         self.placeholder = @"default-profile";
         self.pictureURL = roomMember.avatarUrl;
         
@@ -49,7 +49,7 @@
             
             // Handle power level display
              self.userPowerLevel.hidden = NO;
-            NSDictionary *powerLevels = room.powerLevels;
+            NSDictionary *powerLevels = room.state.powerLevels;
             if (powerLevels) {
                 int maxLevel = 0;
                 for (NSString *powerLevel in powerLevels.allValues) {

@@ -246,10 +246,10 @@ NSString *const kFailedEventId = @"failedEventId";
         mxRoom = [mxHandler.mxSession room:self.roomId];
         
         // Update room title
-        self.roomNavItem.title = mxRoom.displayname;
+        self.roomNavItem.title = mxRoom.state.displayname;
         
         // Join the room if the user is not already listed in room's members
-        if ([mxRoom getMember:mxHandler.userId] == nil) {
+        if ([mxRoom.state getMember:mxHandler.userId] == nil) {
             isJoinRequestInProgress = YES;
             [_activityIndicator startAnimating];
             [mxHandler.mxRestClient joinRoom:self.roomId success:^{
@@ -271,7 +271,7 @@ NSString *const kFailedEventId = @"failedEventId";
             } failure:^(NSError *error) {
                 [_activityIndicator stopAnimating];
                 isJoinRequestInProgress = NO;
-                NSLog(@"Failed to join room (%@): %@", mxRoom.displayname, error);
+                NSLog(@"Failed to join room (%@): %@", mxRoom.state.displayname, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -401,7 +401,7 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)updateRoomMembers {
-     members = [[mxRoom members] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+     members = [[mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
          MXRoomMember *member1 = (MXRoomMember*)obj1;
          MXRoomMember *member2 = (MXRoomMember*)obj2;
          
@@ -433,7 +433,7 @@ NSString *const kFailedEventId = @"failedEventId";
              if (user1.lastActiveAgo < user2.lastActiveAgo) {
                  return NSOrderedAscending;
              } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
-                 return [[mxRoom memberName:member1.userId] compare:[mxRoom memberName:member2.userId] options:NSCaseInsensitiveSearch];
+                 return [[mxRoom.state memberName:member1.userId] compare:[mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
              }
              return NSOrderedDescending;
          } else {
@@ -446,7 +446,7 @@ NSString *const kFailedEventId = @"failedEventId";
                  return NSOrderedDescending;
              }
              
-             return [[mxRoom memberName:member1.userId] compare:[mxRoom memberName:member2.userId] options:NSCaseInsensitiveSearch];
+             return [[mxRoom.state memberName:member1.userId] compare:[mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
          }
      }];
 }
@@ -648,7 +648,7 @@ NSString *const kFailedEventId = @"failedEventId";
         
         // Set user's picture
         cell.placeholder = @"default-profile";
-        cell.pictureURL = [mxRoom getMember:mxEvent.userId].avatarUrl;
+        cell.pictureURL = [mxRoom.state getMember:mxEvent.userId].avatarUrl;
     } else {
         // Adjust display of other messages of the chunk
         cell.pictureView.hidden = YES;
@@ -676,7 +676,7 @@ NSString *const kFailedEventId = @"failedEventId";
         // Display user's display name for the first meesage of a chunk, except if the name appears in the displayed text (see emote and membership event)
         if (isNewChunk && [mxHandler isNotification:mxEvent] == NO) {
             incomingMsgCell.userNameLabel.hidden = NO;
-            incomingMsgCell.userNameLabel.text = [mxRoom memberName:mxEvent.userId];
+            incomingMsgCell.userNameLabel.text = [mxRoom.state memberName:mxEvent.userId];
         } else {
             incomingMsgCell.userNameLabel.hidden = YES;
         }
