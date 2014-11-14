@@ -153,13 +153,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     currentDisplayName = mxHandler.userDisplayName;
     self.userDisplayName.text = mxHandler.userDisplayName;
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
-    [mxHandler.mxRestClient displayName:mxHandler.userId success:^(NSString *displayname) {
+    [mxHandler.mxRestClient displayNameForUser:mxHandler.userId success:^(NSString *displayname) {
         mxHandler.userDisplayName = displayname;
         
         // Set user's picture url
         [self updateUserPicture:mxHandler.userPictureURL];
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
-        [mxHandler.mxRestClient avatarUrl:mxHandler.userId success:^(NSString *avatar_url) {
+        [mxHandler.mxRestClient avatarUrlForUser:mxHandler.userId success:^(NSString *avatar_url) {
             mxHandler.userPictureURL = avatar_url;
             [self endViewConfiguration];
             

@@ -88,7 +88,7 @@ static MatrixHandler *sharedHandler = nil;
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
         // Request user's display name
-        [self.mxRestClient displayName:self.userId success:^(NSString *displayname) {
+        [self.mxRestClient displayNameForUser:self.userId success:^(NSString *displayname) {
             self.userDisplayName = displayname;
         } failure:^(NSError *error) {
             NSLog(@"Get displayName failed: %@", error);
@@ -96,7 +96,7 @@ static MatrixHandler *sharedHandler = nil;
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
         // Request user's avatar
-        [self.mxRestClient avatarUrl:self.userId success:^(NSString *avatar_url) {
+        [self.mxRestClient avatarUrlForUser:self.userId success:^(NSString *avatar_url) {
             self.userPictureURL = avatar_url;
         } failure:^(NSError *error) {
             NSLog(@"Get picture url failed: %@", error);

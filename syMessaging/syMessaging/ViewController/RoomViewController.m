@@ -1123,7 +1123,7 @@ NSString *const kFailedEventId = @"failedEventId";
         }
         
         // Send message to the room
-        [[[MatrixHandler sharedHandler] mxRestClient] postMessage:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
+        [[[MatrixHandler sharedHandler] mxRestClient] postMessageToRoom:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
             // Update the temporary event with the actual event id
             NSUInteger index = messages.count;
             while (index--) {
