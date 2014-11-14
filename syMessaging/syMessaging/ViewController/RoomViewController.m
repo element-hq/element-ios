@@ -579,14 +579,23 @@ NSString *const kFailedEventId = @"failedEventId";
     // Get event related to this row
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
+    
+    // Check whether the cell will display an attachment or a text message
     CGSize contentSize;
+    NSString *displayText = nil;
     if ([mxHandler isAttachment:mxEvent]) {
         contentSize = [self attachmentContentSize:mxEvent];
+        if (!contentSize.width || !contentSize.height) {
+            displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
+        }
     } else {
+        displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+    }
+    if (displayText) {
         // Use a TextView template to compute cell height
         UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
         dummyTextView.font = [UIFont systemFontOfSize:14];
-        dummyTextView.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+        dummyTextView.text = displayText;
         contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
     }
     
@@ -758,28 +767,37 @@ NSString *const kFailedEventId = @"failedEventId";
         cell.attachmentView.hidden = NO;
         cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
         CGSize contentSize = [self attachmentContentSize:mxEvent];
-        cell.msgTextViewWidthConstraint.constant = contentSize.width;
-        // Align attachment inside text view by considering text view edge inset
-        cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
-        cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
-        
-        // Fade attachments during upload
-        if (isIncomingMsg == NO && [mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
-            cell.attachmentView.alpha = 0.5;
-            [((OutgoingMessageTableCell*)cell).activityIndicator startAnimating];
+        if (!contentSize.width || !contentSize.height) {
+            NSLog(@"ERROR: Unsupported message %@", mxEvent.description);
+            // Display an error message
+            cell.attachmentView.hidden = YES;
+            cell.messageTextView.text = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
+            cell.messageTextView.textColor = [UIColor redColor];
+            enableLinkDetection = NO;
         } else {
-            cell.attachmentView.alpha = 1;
-        }
-        
-        NSString *msgtype = mxEvent.content[@"msgtype"];
-        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
-            NSString *url = mxEvent.content[@"thumbnail_url"];
-            if (url == nil) {
-                url = mxEvent.content[@"url"];
+            cell.msgTextViewWidthConstraint.constant = contentSize.width;
+            // Align attachment inside text view by considering text view edge inset
+            cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
+            cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
+            
+            // Fade attachments during upload
+            if (isIncomingMsg == NO && [mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
+                cell.attachmentView.alpha = 0.5;
+                [((OutgoingMessageTableCell*)cell).activityIndicator startAnimating];
+            } else {
+                cell.attachmentView.alpha = 1;
             }
-            cell.attachedImageURL = url;
-        } else {
-            cell.attachedImageURL = nil;
+            
+            NSString *msgtype = mxEvent.content[@"msgtype"];
+            if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+                NSString *url = mxEvent.content[@"thumbnail_url"];
+                if (url == nil) {
+                    url = mxEvent.content[@"url"];
+                }
+                cell.attachedImageURL = url;
+            } else {
+                cell.attachedImageURL = nil;
+            }
         }
     } else {
         // Text message will be displayed in textView with max width
@@ -796,11 +814,12 @@ NSString *const kFailedEventId = @"failedEventId";
         } else if (isIncomingMsg && ([displayText rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [displayText rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
             cell.messageTextView.textColor = [UIColor blueColor];
         }
-        // Turn on link detection only when it is usefull
-        if (enableLinkDetection) {
-            cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeLink;
-        }
         cell.messageTextView.text = displayText;
+    }
+    
+    // Turn on link detection only when it is usefull
+    if (enableLinkDetection) {
+        cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeLink;
     }
     
     // Handle timestamp display
@@ -822,7 +841,7 @@ NSString *const kFailedEventId = @"failedEventId";
     NSString *msgtype = mxEvent.content[@"msgtype"];
     if ([msgtype isEqualToString:kMXMessageTypeImage]) {
         CGFloat width, height;
-        width = height = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+        width = height = 0;
         NSDictionary *thumbInfo = mxEvent.content[@"thumbnail_info"];
         if (thumbInfo) {
             width = [thumbInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
