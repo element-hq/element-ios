@@ -64,6 +64,10 @@ NSString *const kFailedEventId = @"failedEventId";
     // Date formatter (nil if dateTimeLabel is hidden)
     NSDateFormatter *dateFormatter;
     
+    // Text view settings
+    NSAttributedString *initialAttributedStringForOutgoingMessage;
+    NSAttributedString *initialAttributedStringForIncomingMessage;
+    
     // Cache
     NSMutableArray *tmpCachedAttachments;
 }
@@ -132,6 +136,9 @@ NSString *const kFailedEventId = @"failedEventId";
     if (dateFormatter) {
         dateFormatter = nil;
     }
+    
+    initialAttributedStringForOutgoingMessage = nil;
+    initialAttributedStringForIncomingMessage = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -632,13 +639,28 @@ NSString *const kFailedEventId = @"failedEventId";
     RoomMessageTableCell *cell;
     MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = NO;
+    BOOL enableLinkDetection = YES;
     
     if ([mxEvent.userId isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
         [((OutgoingMessageTableCell*)cell).activityIndicator stopAnimating];
+        // Restore initial settings in text view
+        if (initialAttributedStringForOutgoingMessage == nil) {
+            initialAttributedStringForOutgoingMessage = cell.messageTextView.attributedText;
+        } else {
+            cell.messageTextView.attributedText = initialAttributedStringForOutgoingMessage;
+            cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeNone;
+        }
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
         isIncomingMsg = YES;
+        // Restore initial settings in text view
+        if (initialAttributedStringForIncomingMessage == nil) {
+            initialAttributedStringForIncomingMessage = cell.messageTextView.attributedText;
+        } else {
+            cell.messageTextView.attributedText = initialAttributedStringForIncomingMessage;
+            cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeNone;
+        }
     }
     
     // Check whether the previous message has been sent by the same user.
@@ -704,8 +726,10 @@ NSString *const kFailedEventId = @"failedEventId";
         // Set the right text color for outgoing messages
         if ([mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
             cell.messageTextView.textColor = [UIColor lightGrayColor];
+            enableLinkDetection = NO;
         } else if ([mxEvent.eventId hasPrefix:kFailedEventId]) {
             cell.messageTextView.textColor = [UIColor redColor];
+            enableLinkDetection = NO;
             outgoingMsgCell.unsentLabel.hidden = NO;
             // Align unsent label with the textView
             outgoingMsgCell.unsentLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
@@ -719,7 +743,7 @@ NSString *const kFailedEventId = @"failedEventId";
         cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
         CGSize contentSize = [self attachmentContentSize:mxEvent];
         cell.msgTextViewWidthConstraint.constant = contentSize.width;
-        // Adjust attachment alignment by considering text view edge inset
+        // Align attachment inside text view by considering text view edge inset
         cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
         cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
         
@@ -752,8 +776,13 @@ NSString *const kFailedEventId = @"failedEventId";
         // Update text color according to text content
         if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
             cell.messageTextView.textColor = [UIColor redColor];
+            enableLinkDetection = NO;
         } else if (isIncomingMsg && ([displayText rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [displayText rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
             cell.messageTextView.textColor = [UIColor blueColor];
+        }
+        // Turn on link detection only when it is usefull
+        if (enableLinkDetection) {
+            cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeLink;
         }
         cell.messageTextView.text = displayText;
     }
@@ -772,8 +801,7 @@ NSString *const kFailedEventId = @"failedEventId";
     return cell;
 }
 
-- (CGSize)attachmentContentSize:(MXEvent*)mxEvent;
-{
+- (CGSize)attachmentContentSize:(MXEvent*)mxEvent {
     CGSize contentSize;
     NSString *msgtype = mxEvent.content[@"msgtype"];
     if ([msgtype isEqualToString:kMXMessageTypeImage]) {
