@@ -49,7 +49,7 @@ NSString *const kFailedEventId = @"failedEventId";
 
 
 @interface RoomViewController () {
-    BOOL isFirstDisplay;
+    BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
     
     MXRoom *mxRoom;
@@ -92,7 +92,7 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    isFirstDisplay = YES;
+    forceScrollToBottomOnViewDidAppear = YES;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
@@ -196,10 +196,10 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (isFirstDisplay) {
+    if (forceScrollToBottomOnViewDidAppear) {
         // Scroll to the bottom
         [self scrollToBottomAnimated:animated];
-        isFirstDisplay = NO;
+        forceScrollToBottomOnViewDidAppear = NO;
     }
 }
 
@@ -246,8 +246,14 @@ NSString *const kFailedEventId = @"failedEventId";
         return;
     }
     
-    // Flush messages
-    messages = nil;
+    // We will store timestamp of the last known event (if any) in order to scroll to bottom if new events have been received for this room
+    uint64_t lastTimestamp = 0;
+    if (messages) {
+        MXEvent *lastEvent = [messages lastObject];
+        lastTimestamp = lastEvent.originServerTs;
+        // flush messages
+        messages = nil;
+    }
     
     // Remove potential roomData listener
     if (messagesListener && mxRoom) {
@@ -326,13 +332,23 @@ NSString *const kFailedEventId = @"failedEventId";
                 [self.messagesTableView endUpdates];
                 [UIView setAnimationsEnabled:YES];
                 
-                [self scrollToBottomAnimated:NO];
+                [self scrollToBottomAnimated:YES];
             }
         }];
         
-        // Trigger a back pagination if messages number is low
-        if (messages && messages.count < 10) {
-            [self triggerBackPagination];
+        
+        if (messages) {
+            // Check whether scrollToBottom should be applied
+            MXEvent *lastEvent = [messages lastObject];
+            if (lastTimestamp < lastEvent.originServerTs) {
+                // Some new events have been received for this room, scroll to bottom to focus on them
+                forceScrollToBottomOnViewDidAppear = YES;
+            }
+            
+            if (messages.count < 10) {
+                // Trigger a back pagination if messages number is low
+                [self triggerBackPagination];
+            }
         }
     } else {
         mxRoom = nil;
