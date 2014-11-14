@@ -3,14 +3,14 @@
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "syMessaging" do
+target "matrixConsole" do
 
 # Points to SDK local sources file
 pod 'MatrixSDK', :path => '../../MatrixSDK.podspec'
 
 end
 
-target "syMessagingTests" do
+target "matrixConsole" do
 
 end
 
