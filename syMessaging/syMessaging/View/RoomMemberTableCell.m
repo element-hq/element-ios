@@ -79,9 +79,56 @@
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
                 MXUser *user = [mxHandler.mxSession user:roomMember.userId];
                 
-                self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-                self.lastActiveAgoLabel.text = [NSString stringWithFormat:@"%lus ago", (unsigned long)user.lastActiveAgo];
-                self.lastActiveAgoLabel.numberOfLines = 0;
+                // Prepare last active ago string
+                NSUInteger lastActiveAgoInSec = user.lastActiveAgo / 1000;
+                NSString *lastActive;
+                if (lastActiveAgoInSec < 60) {
+                    lastActive = [NSString stringWithFormat:@"%ds ago", lastActiveAgoInSec];
+                } else if (lastActiveAgoInSec < 3600) {
+                    lastActive = [NSString stringWithFormat:@"%dm ago", (lastActiveAgoInSec / 60)];
+                } else if (lastActiveAgoInSec < 86400) {
+                    lastActive = [NSString stringWithFormat:@"%dh ago", (lastActiveAgoInSec / 3600)];
+                } else {
+                    lastActive = [NSString stringWithFormat:@"%dd ago", (lastActiveAgoInSec / 86400)];
+                }
+                
+                // Check presence
+                switch (user.presence) {
+                    case MXPresenceUnknown: {
+                        self.lastActiveAgoLabel.backgroundColor = [UIColor clearColor];
+                        self.lastActiveAgoLabel.text = nil;//@"unknown";
+                        break;
+                    }
+                    case MXPresenceOnline: {
+                        self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+                        self.lastActiveAgoLabel.text = lastActive;
+                        self.lastActiveAgoLabel.numberOfLines = 0;
+                        break;
+                    }
+                    case MXPresenceUnavailable: {
+                        self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
+                        self.lastActiveAgoLabel.text = lastActive;
+                        self.lastActiveAgoLabel.numberOfLines = 0;
+                        break;
+                    }
+                    case MXPresenceOffline: {
+                        self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
+                        self.lastActiveAgoLabel.text = @"offline";
+                        break;
+                    }
+                    case MXPresenceFreeForChat: {
+                        self.lastActiveAgoLabel.backgroundColor = [UIColor clearColor];
+                        self.lastActiveAgoLabel.text = nil;//@"free for chat";
+                        break;
+                    }
+                    case MXPresenceHidden: {
+                        self.lastActiveAgoLabel.backgroundColor = [UIColor clearColor];
+                        self.lastActiveAgoLabel.text = nil;//@"hidden";
+                        break;
+                    }
+                    default:
+                        break;
+                }
             }
         }
     }

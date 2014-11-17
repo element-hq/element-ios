@@ -473,11 +473,11 @@ NSString *const kFailedEventId = @"failedEventId";
              return NSOrderedDescending;
          } else {
              // Move user without display name at the end (before invited users)
-             if (member1.displayname) {
-                 if (!member2.displayname) {
+             if (member1.displayname.length) {
+                 if (!member2.displayname.length) {
                      return NSOrderedAscending;
                  }
-             } else if (member2.displayname) {
+             } else if (member2.displayname.length) {
                  return NSOrderedDescending;
              }
              
