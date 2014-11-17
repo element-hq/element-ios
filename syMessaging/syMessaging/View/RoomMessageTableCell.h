@@ -21,6 +21,7 @@
 @interface RoomMessageTableCell : CustomTableViewCell
 @property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
 @property (strong, nonatomic) IBOutlet UIImageView *attachmentView;
+@property (strong, nonatomic) IBOutlet UIImageView *playIconView;
 @property (weak, nonatomic) IBOutlet UILabel *dateTimeLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewTopConstraint;

@@ -34,6 +34,8 @@ static MediaManager *sharedMediaManager = nil;
 }
 @end
 
+#pragma mark - MediaLoader
+
 @implementation MediaLoader
 
 - (void)downloadPicture:(NSString*)pictureURL
@@ -66,7 +68,7 @@ static MediaManager *sharedMediaManager = nil;
     [self cancel];
 }
 
-#pragma mark - NSURLConnectionDelegate
+#pragma mark -
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"ERROR: picture download failed: %@, %@", error, mediaURL);
@@ -104,6 +106,8 @@ static MediaManager *sharedMediaManager = nil;
 
 @end
 
+#pragma mark - MediaManager
+
 @implementation MediaManager
 
 + (id)sharedInstance {
@@ -112,6 +116,44 @@ static MediaManager *sharedMediaManager = nil;
             sharedMediaManager = [[self alloc] init];
     }
     return sharedMediaManager;
+}
+
++ (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size {
+    UIImage *resizedImage = image;
+    
+    // Check whether resize is required
+    if (size.width && size.height) {
+        CGFloat width = image.size.width;
+        CGFloat height = image.size.height;
+        
+        if (width > size.width) {
+            height = (height * size.width) / width;
+            height = floorf(height / 2) * 2;
+            width = size.width;
+        }
+        if (height > size.height) {
+            width = (width * size.height) / height;
+            width = floorf(width / 2) * 2;
+            height = size.height;
+        }
+        
+        if (width != image.size.width || height != image.size.height) {
+            // Create the thumbnail
+            CGSize imageSize = CGSizeMake(width, height);
+            UIGraphicsBeginImageContext(imageSize);
+            
+            CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
+            thumbnailRect.origin = CGPointMake(0.0,0.0);
+            thumbnailRect.size.width  = imageSize.width;
+            thumbnailRect.size.height = imageSize.height;
+            
+            [image drawInRect:thumbnailRect];
+            resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+        }
+    }
+    
+    return resizedImage;
 }
 
 // Load a picture from the local cache or download it if it is not available yet.

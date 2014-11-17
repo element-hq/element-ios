@@ -15,6 +15,8 @@
  */
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "RoomViewController.h"
 #import "RoomMessageTableCell.h"
 #import "RoomMemberTableCell.h"
@@ -25,6 +27,8 @@
 
 #import "MediaManager.h"
 
+#define UPLOAD_FILE_SIZE 5000000
+
 #define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
 
 #define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT 10
@@ -33,7 +37,7 @@
 #define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT 0
 #define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL (-5)
 
-#define ROOM_MESSAGE_CELL_IMAGE_MARGIN 5
+#define ROOM_MESSAGE_CELL_IMAGE_MARGIN 8
 
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
@@ -770,6 +774,7 @@ NSString *const kFailedEventId = @"failedEventId";
     
     if ([mxHandler isAttachment:mxEvent]) {
         cell.attachmentView.hidden = NO;
+        cell.playIconView.hidden = YES;
         cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
         CGSize contentSize = [self attachmentContentSize:mxEvent];
         if (!contentSize.width || !contentSize.height) {
@@ -797,12 +802,16 @@ NSString *const kFailedEventId = @"failedEventId";
             }
             
             NSString *msgtype = mxEvent.content[@"msgtype"];
-            if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+            if ([msgtype isEqualToString:kMXMessageTypeImage] || [msgtype isEqualToString:kMXMessageTypeVideo]) {
                 NSString *url = mxEvent.content[@"thumbnail_url"];
                 if (url == nil) {
                     url = mxEvent.content[@"url"];
                 }
                 cell.attachedImageURL = url;
+                
+                if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+                    cell.playIconView.hidden = NO;
+                }
             } else {
                 cell.attachedImageURL = nil;
             }
@@ -813,6 +822,7 @@ NSString *const kFailedEventId = @"failedEventId";
         // Cancel potential attachment loading
         cell.attachedImageURL = nil;
         cell.attachmentView.hidden = YES;
+        cell.playIconView.hidden = YES;
         
         NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
         // Update text color according to text content
@@ -847,7 +857,7 @@ NSString *const kFailedEventId = @"failedEventId";
 - (CGSize)attachmentContentSize:(MXEvent*)mxEvent {
     CGSize contentSize;
     NSString *msgtype = mxEvent.content[@"msgtype"];
-    if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+    if ([msgtype isEqualToString:kMXMessageTypeImage] || [msgtype isEqualToString:kMXMessageTypeVideo]) {
         CGFloat width, height;
         width = height = 0;
         NSDictionary *thumbInfo = mxEvent.content[@"thumbnail_info"];
@@ -1208,20 +1218,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 }
             }
         } failure:^(NSError *error) {
-            NSLog(@"Failed to send message (%@): %@", mxEvent.description, error);
-            // Update the temporary event with the failed event id
-            NSUInteger index = messages.count;
-            while (index--) {
-                MXEvent *mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.eventId isEqualToString:localEventId]) {
-                    mxEvent.eventId = kFailedEventId;
-                    // Refresh table display
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                    [self scrollToBottomAnimated:YES];
-                    break;
-                }
-            }
+            [self handleError:error forLocalEventId:localEventId];
         }];
     }
 }
@@ -1236,6 +1233,72 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     
     [self postMessage:@{@"msgtype":msgType, @"body":msgTxt} withLocalEventId:nil];
+}
+
+- (NSString*)addLocalEventForAttachedImage:(UIImage*)image {
+    // Create a temporary event to displayed outgoing message (local echo)
+    NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
+    MXEvent *mxEvent = [[MXEvent alloc] init];
+    mxEvent.roomId = self.roomId;
+    mxEvent.eventId = localEventId;
+    mxEvent.eventType = MXEventTypeRoomMessage;
+    mxEvent.type = kMXEventTypeStringRoomMessage;
+    // We store temporarily the image in cache, use the localId to build temporary url
+    NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEventId];
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+    [MediaManager cachePictureWithData:imageData forURL:dummyURL];
+    if (tmpCachedAttachments == nil) {
+        tmpCachedAttachments = [NSMutableArray array];
+    }
+    [tmpCachedAttachments addObject:dummyURL];
+    NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
+    [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
+    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
+    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
+    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
+    mxEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL};
+    mxEvent.userId = [MatrixHandler sharedHandler].userId;
+    
+    // Update table sources
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+    [messages addObject:mxEvent];
+    
+    // Refresh table display (Disable animation during cells insertion to prevent flickering)
+    [UIView setAnimationsEnabled:NO];
+    [self.messagesTableView beginUpdates];
+    if (indexPath.row > 0) {
+        NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+        [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.messagesTableView endUpdates];
+    [UIView setAnimationsEnabled:YES];
+    
+    [self scrollToBottomAnimated:NO];
+    return localEventId;
+}
+
+- (void)handleError:(NSError *)error forLocalEventId:(NSString *)localEventId {
+    NSLog(@"Post message failed: %@", error);
+    if (error) {
+        // Alert user
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+    }
+    
+    // Update the temporary event with this local event id
+    NSUInteger index = messages.count;
+    while (index--) {
+        MXEvent *mxEvent = [messages objectAtIndex:index];
+        if ([mxEvent.eventId isEqualToString:localEventId]) {
+            NSLog(@"Posted event: %@", mxEvent.description);
+            mxEvent.eventId = kFailedEventId;
+            // Refresh table display
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self scrollToBottomAnimated:YES];
+            break;
+        }
+    }
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
@@ -1407,75 +1470,129 @@ NSString *const kFailedEventId = @"failedEventId";
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         if (selectedImage) {
-            // Create a temporary event to displayed outgoing message (local echo)
-            NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
-            MXEvent *mxEvent = [[MXEvent alloc] init];
-            mxEvent.roomId = self.roomId;
-            mxEvent.eventId = localEventId;
-            mxEvent.eventType = MXEventTypeRoomMessage;
-            mxEvent.type = kMXEventTypeStringRoomMessage;
-            // We store temporarily the selected image in cache, use the localId to build temporary url
-            NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEventId];
-            NSData *selectedImageData = UIImageJPEGRepresentation(selectedImage, 0.5);
-            [MediaManager cachePictureWithData:selectedImageData forURL:dummyURL];
-            if (tmpCachedAttachments == nil) {
-                tmpCachedAttachments = [NSMutableArray array];
-            }
-            [tmpCachedAttachments addObject:dummyURL];
-            NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
-            [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
-            [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)selectedImage.size.width] forKey:@"w"];
-            [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)selectedImage.size.height] forKey:@"h"];
-            [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:selectedImageData.length] forKey:@"size"];
-            mxEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL};
-            mxEvent.userId = [MatrixHandler sharedHandler].userId;
-            
-            // Update table sources
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-            [messages addObject:mxEvent];
-            
-            // Refresh table display (Disable animation during cells insertion to prevent flickering)
-            [UIView setAnimationsEnabled:NO];
-            [self.messagesTableView beginUpdates];
-            if (indexPath.row > 0) {
-                NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            }
-            [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.messagesTableView endUpdates];
-            [UIView setAnimationsEnabled:YES];
-            
-            [self scrollToBottomAnimated:NO];
-            
+            NSString * localEventId = [self addLocalEventForAttachedImage:selectedImage];
             // Upload image and its thumbnail
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            NSUInteger thumbnailSize = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH - 5 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
+            NSUInteger thumbnailSize = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH - 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
             [mxHandler.mxRestClient uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
                 // Send image
                 [self postMessage:imageMessage withLocalEventId:localEventId];
             } failure:^(NSError *error) {
-                NSLog(@"Failed to upload image: %@", error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                // Update the temporary event with the failed event id
-                NSUInteger index = messages.count;
-                while (index--) {
-                    MXEvent *mxEvent = [messages objectAtIndex:index];
-                    if ([mxEvent.eventId isEqualToString:localEventId]) {
-                        mxEvent.eventId = kFailedEventId;
-                        // Refresh table display
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                        [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        [self scrollToBottomAnimated:YES];
-                        break;
-                    }
-                }
+                [self handleError:error forLocalEventId:localEventId];
             }];
         }
     } else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
-        //TODO
+        NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
+        if (selectedVideo) {
+            // Create video thumbnail
+            MPMoviePlayerController* moviePlayerController = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideo];
+            if (moviePlayerController) {
+                [moviePlayerController setShouldAutoplay:NO];
+                UIImage* videoThumbnail = [moviePlayerController thumbnailImageAtTime:(NSTimeInterval)1 timeOption:MPMovieTimeOptionNearestKeyFrame];
+                [moviePlayerController stop];
+                moviePlayerController = nil;
+                
+                if (videoThumbnail) {
+                    // Prepare video thumbnail description
+                    NSUInteger thumbnailSize = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH - 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
+                    UIImage *thumbnail = [MediaManager resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
+                    NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
+                    [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
+                    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.width] forKey:@"w"];
+                    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.height] forKey:@"h"];
+                    NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.9);
+                    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
+                    
+                    // Create the local event displayed during uploading
+                    NSString * localEventId = [self addLocalEventForAttachedImage:thumbnail];
+                    
+                    // Upload thumbnail
+                    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                    [mxHandler.mxRestClient uploadContent:thumbnailData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
+                        // Prepare content of attached video
+                        NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
+                        [videoContent setValue:@"m.video" forKey:@"msgtype"];
+                        [videoContent setValue:url forKey:@"thumbnail_url"];
+                        [videoContent setValue:thumbnailInfo forKey:@"thumbnail_info"];
+                        
+                        // Convert video container to mp4
+                        AVURLAsset* videoAsset = [AVURLAsset URLAssetWithURL:selectedVideo options:nil];
+                        AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:videoAsset presetName:AVAssetExportPresetMediumQuality];
+                        // Set output URL
+                        NSString * outputFileName = [NSString stringWithFormat:@"%.0f.mp4",[[NSDate date] timeIntervalSince1970]];
+                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+                        NSString *cacheRoot = [paths objectAtIndex:0];
+                        NSURL *tmpVideoLocation = [NSURL fileURLWithPath:[cacheRoot stringByAppendingPathComponent:outputFileName]];
+                        exportSession.outputURL = tmpVideoLocation;
+                        // Check supported output file type
+                        NSArray *supportedFileTypes = exportSession.supportedFileTypes;
+                        if ([supportedFileTypes containsObject:AVFileTypeMPEG4]) {
+                            exportSession.outputFileType = AVFileTypeMPEG4;
+                            [videoContent setValue:@"video/mp4" forKey:@"mimetype"];
+                        } else {
+                            NSLog(@"Unexpected case: MPEG-4 file format is not supported");
+                            // we send QuickTime movie file by default
+                            exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+                            [videoContent setValue:@"video/quicktime" forKey:@"mimetype"];
+                        }
+                        // Export video file and send it
+                        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+                            // Check status
+                            if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
+                                AVURLAsset* asset = [AVURLAsset URLAssetWithURL:tmpVideoLocation
+                                                                        options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                                 [NSNumber numberWithBool:YES],
+                                                                                 AVURLAssetPreferPreciseDurationAndTimingKey,
+                                                                                 nil]
+                                                     ];
+                                
+                                [videoContent setValue:[NSNumber numberWithDouble:(1000 * CMTimeGetSeconds(asset.duration))] forKey:@"duration"];
+                                NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+                                if (videoTracks.count > 0) {
+                                    AVAssetTrack *videoTrack = [videoTracks objectAtIndex:0];
+                                    CGSize videoSize = videoTrack.naturalSize;
+                                    [videoContent setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.width] forKey:@"w"];
+                                    [videoContent setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.height] forKey:@"h"];
+                                }
+                                
+                                // Upload the video
+                                NSData *videoData = [NSData dataWithContentsOfURL:tmpVideoLocation];
+                                [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
+                                if (videoData) {
+                                    if (videoData.length < UPLOAD_FILE_SIZE) {
+                                        [videoContent setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
+                                        [mxHandler.mxRestClient uploadContent:videoData mimeType:videoContent[@"mimetype"] timeout:30 success:^(NSString *url) {
+                                            [videoContent setValue:url forKey:@"url"];
+                                            [videoContent setValue:@"Video" forKey:@"body"];
+                                            [self postMessage:videoContent withLocalEventId:localEventId];
+                                        } failure:^(NSError *error) {
+                                            [self handleError:error forLocalEventId:localEventId];
+                                        }];
+                                    } else {
+                                        NSLog(@"Video is too large");
+                                        [self handleError:nil forLocalEventId:localEventId];
+                                    }
+                                } else {
+                                    NSLog(@"Attach video failed: no data");
+                                    [self handleError:nil forLocalEventId:localEventId];
+                                }
+                            }
+                            else {
+                                NSLog(@"Video export failed: %d", [exportSession status]);
+                                // remove tmp file (if any)
+                                [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
+                                [self handleError:nil forLocalEventId:localEventId];
+                            }
+                        }];
+                    } failure:^(NSError *error) {
+                        NSLog(@"Video thumbnail upload failed");
+                        [self handleError:error forLocalEventId:localEventId];
+                    }];
+                }
+            }
+        }
     }
-    
+
     [self dismissMediaPicker];
 }
 

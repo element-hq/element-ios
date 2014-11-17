@@ -27,14 +27,16 @@ typedef void (^blockMediaManager_onError)(NSError *error);
 
 + (id)sharedInstance;
 
++ (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
+
 // Load a picture from the local cache or download it if it is not available yet.
 // In this second case a mediaLoader reference is returned in order to let the user cancel this action.
-+ (id)loadPicture:(NSString*)pictureURL
++ (id)loadPicture:(NSString *)pictureURL
             success:(blockMediaManager_onImageReady)success
             failure:(blockMediaManager_onError)failure;
 + (void)cancel:(id)mediaLoader;
 
-+ (NSString*)cachePictureWithData:(NSData*)imageData forURL:(NSString *)pictureURL;
++ (NSString *)cachePictureWithData:(NSData *)imageData forURL:(NSString *)pictureURL;
 
 + (void)clearCacheForURL:(NSString *)mediaURL;
 + (void)clearCache;
