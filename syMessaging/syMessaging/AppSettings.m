@@ -45,6 +45,7 @@ static AppSettings *sharedSettings = nil;
 - (void)reset {
     self.enableNotifications = NO;
     self.displayAllEvents = NO;
+    self.hideUnsupportedMessages = NO;
     self.sortMembersUsingLastSeenTime = NO;
 }
 
@@ -67,6 +68,14 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] setBool:displayAllEvents forKey:@"displayAllEvents"];
     // Flush and restore Matrix data
     [[MatrixHandler sharedHandler] forceInitialSync];
+}
+
+- (BOOL)hideUnsupportedMessages {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hideUnsupportedMessages"];
+}
+
+- (void)setHideUnsupportedMessages:(BOOL)hideUnsupportedMessages {
+    [[NSUserDefaults standardUserDefaults] setBool:hideUnsupportedMessages forKey:@"hideUnsupportedMessages"];
 }
 
 - (BOOL)sortMembersUsingLastSeenTime {

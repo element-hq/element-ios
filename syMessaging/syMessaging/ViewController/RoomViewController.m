@@ -586,7 +586,12 @@ NSString *const kFailedEventId = @"failedEventId";
     if ([mxHandler isAttachment:mxEvent]) {
         contentSize = [self attachmentContentSize:mxEvent];
         if (!contentSize.width || !contentSize.height) {
-            displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
+            // Check whether unsupported/unexpected messages should be exposed
+            if ([AppSettings sharedSettings].hideUnsupportedMessages) {
+                displayText = @"";
+            } else {
+                displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
+            }
         }
     } else {
         displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
@@ -769,11 +774,14 @@ NSString *const kFailedEventId = @"failedEventId";
         CGSize contentSize = [self attachmentContentSize:mxEvent];
         if (!contentSize.width || !contentSize.height) {
             NSLog(@"ERROR: Unsupported message %@", mxEvent.description);
-            // Display an error message
             cell.attachmentView.hidden = YES;
-            cell.messageTextView.text = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
-            cell.messageTextView.textColor = [UIColor redColor];
-            enableLinkDetection = NO;
+            // Check whether unsupported/unexpected messages should be exposed
+            if ([AppSettings sharedSettings].hideUnsupportedMessages == NO) {
+                // Display event content as unsupported message
+                cell.messageTextView.text = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
+                cell.messageTextView.textColor = [UIColor redColor];
+                enableLinkDetection = NO;
+            }
         } else {
             cell.msgTextViewWidthConstraint.constant = contentSize.width;
             // Align attachment inside text view by considering text view edge inset

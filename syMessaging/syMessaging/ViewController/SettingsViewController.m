@@ -43,6 +43,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UIButton *logoutBtn;
     UISwitch *notificationsSwitch;
     UISwitch *allEventsSwitch;
+    UISwitch *unsupportedMsgSwitch;
     UISwitch *sortMembersSwitch;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -103,6 +104,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     logoutBtn = nil;
     notificationsSwitch = nil;
     allEventsSwitch = nil;
+    unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
 }
 
@@ -353,6 +355,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [AppSettings sharedSettings].enableNotifications = notificationsSwitch.on;
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
+    } else if (sender == unsupportedMsgSwitch) {
+        [AppSettings sharedSettings].hideUnsupportedMessages = unsupportedMsgSwitch.on;
     } else if (sender == sortMembersSwitch) {
         [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
     }
@@ -387,7 +391,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         return 1;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
-        return 2;
+        return 3;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         return 1;
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -464,6 +468,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             roomsSettingCell.settingLabel.text = @"Display all events";
             roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
             allEventsSwitch = roomsSettingCell.settingSwitch;
+        } else if (indexPath.row == 1) {
+            roomsSettingCell.settingLabel.text = @"Hide unsupported messages";
+            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedMessages];
+            unsupportedMsgSwitch = roomsSettingCell.settingSwitch;
         } else {
             roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
             roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] sortMembersUsingLastSeenTime];

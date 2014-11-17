@@ -610,9 +610,10 @@ static MatrixHandler *sharedHandler = nil;
     
     if (displayText == nil) {
         NSLog(@"ERROR: Unsupported message %@)", message.description);
-        if (isSubtitle) {
+        if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
             displayText = @"";
         } else {
+            // Return event content as unsupported message
             displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, message.description];
         }
     }
