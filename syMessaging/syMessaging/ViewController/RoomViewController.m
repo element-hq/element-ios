@@ -436,10 +436,7 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)updateRoomMembers {
-     members = [[mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-         MXRoomMember *member1 = (MXRoomMember*)obj1;
-         MXRoomMember *member2 = (MXRoomMember*)obj2;
-         
+     members = [[mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
          // Move banned and left members at the end of the list
          if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
              if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
@@ -459,12 +456,32 @@ NSString *const kFailedEventId = @"failedEventId";
          }
          
          if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
-             
              // Get the users that correspond to these members
              MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
              MXUser *user1 = [mxHandler.mxSession user:member1.userId];
              MXUser *user2 = [mxHandler.mxSession user:member2.userId];
              
+             // Move users who are not online or unavailable at the end (before invited users)
+             if ((user1.presence == MXPresenceOnline) || (user1.presence == MXPresenceUnavailable)) {
+                 if ((user2.presence != MXPresenceOnline) && (user2.presence != MXPresenceUnavailable)) {
+                     return NSOrderedAscending;
+                 }
+             } else if ((user2.presence == MXPresenceOnline) || (user2.presence == MXPresenceUnavailable)) {
+                 return NSOrderedDescending;
+             } else {
+                 // Here both users are neither online nor unavailable (the lastActive ago is useless)
+                 // We will sort them according to their display, by keeping in front the offline users
+                 if (user1.presence == MXPresenceOffline) {
+                     if (user2.presence != MXPresenceOffline) {
+                         return NSOrderedAscending;
+                     }
+                 } else if (user2.presence == MXPresenceOffline) {
+                     return NSOrderedDescending;
+                 }
+                 return [[mxRoom.state memberName:member1.userId] compare:[mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+             }
+             
+             // Consider user's lastActive ago value
              if (user1.lastActiveAgo < user2.lastActiveAgo) {
                  return NSOrderedAscending;
              } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
@@ -492,14 +509,21 @@ NSString *const kFailedEventId = @"failedEventId";
     
     [self updateRoomMembers];
     // Register a listener for events that concern room members
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
                                  kMXEventTypeStringRoomPowerLevels,
                                  kMXEventTypeStringPresence
                                  ];
-    membersListener = [mxRoom registerEventListenerForTypes:mxMembersEvents block:^(MXRoom *room, MXEvent *event, BOOL isLive) {
+    membersListener = [mxHandler.mxSession registerEventListenerForTypes:mxMembersEvents block:^(MXSession *matrixSession, MXEvent *event, BOOL isLive) {
         // consider only live event
         if (isLive) {
+            // Check the room Id (if any)
+            if (event.roomId && [event.roomId isEqualToString:self.roomId] == NO) {
+                // This event does not concern the current room members
+                return;
+            }
+            
             // Hide potential action sheet
             if (self.actionMenu) {
                 [self.actionMenu dismiss:NO];
@@ -517,7 +541,8 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (void)hideRoomMembers {
     if (membersListener) {
-        [mxRoom unregisterListener:membersListener];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxSession unregisterListener:membersListener];
         membersListener = nil;
     }
     self.membersView.hidden = YES;
