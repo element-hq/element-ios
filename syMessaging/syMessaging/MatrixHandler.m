@@ -257,8 +257,8 @@ static MatrixHandler *sharedHandler = nil;
     if (isEnabled) {
         // Register events listener
         eventsListener = [self.mxSession registerEventListenerForTypes:self.mxSession.eventsFilterForMessages block:^(MXSession *mxSession, MXEvent *event, BOOL isLive) {
-            // Consider only live event
-            if (isLive) {
+            // Consider only live event (Ignore presence event)
+            if (isLive && (event.eventType != MXEventTypePresence)) {
                 // If we are running on background, show a local notif
                 if (UIApplicationStateBackground == [UIApplication sharedApplication].applicationState)
                 {
