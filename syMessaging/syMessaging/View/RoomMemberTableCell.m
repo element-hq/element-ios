@@ -49,7 +49,16 @@
             
             // Handle power level display
              self.userPowerLevel.hidden = NO;
-            NSDictionary *powerLevels = room.state.powerLevels;
+            NSDictionary *powerLevels;
+            if (room.state.powerLevels[@"users"]){
+                // In Matrix 0.5, users power levels are listed under the `users` dictionnary
+                powerLevels = room.state.powerLevels[@"users"];
+            }
+            else {
+                // @TODO: Remove this backward compatibility
+                powerLevels = room.state.powerLevels;
+            }
+            
             if (powerLevels) {
                 int maxLevel = 0;
                 for (NSString *powerLevel in powerLevels.allValues) {
