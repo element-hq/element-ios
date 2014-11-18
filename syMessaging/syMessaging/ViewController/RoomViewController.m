@@ -102,6 +102,13 @@ NSString *const kFailedEventId = @"failedEventId";
     [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     
+    // Add tap detection on members view in order to hide members when the user taps outside members list
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.membersView addGestureRecognizer:tap];
+    
     _sendBtn.enabled = NO;
     _sendBtn.alpha = 0.5;
 }
@@ -239,6 +246,21 @@ NSString *const kFailedEventId = @"failedEventId";
     }
 }
 #endif
+
+#pragma mark - UIGestureRecognizer delegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.view == self.membersView) {
+        // Compute actual frame of the displayed members list
+        CGRect frame = self.membersTableView.frame;
+        if (self.membersTableView.tableFooterView.frame.origin.y < frame.size.height) {
+            frame.size.height = self.membersTableView.tableFooterView.frame.origin.y;
+        }
+        // gestureRecognizer should begin only if tap is outside members list
+        return !CGRectContainsPoint(frame, [gestureRecognizer locationInView:self.membersView]);
+    }
+    return NO;
+}
 
 #pragma mark - Internal methods
 
@@ -580,7 +602,7 @@ NSString *const kFailedEventId = @"failedEventId";
     [_messageTextField resignFirstResponder];
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -908,7 +930,7 @@ NSString *const kFailedEventId = @"failedEventId";
     return contentSize;
 }
 
-#pragma mark - Table view delegate
+#pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
