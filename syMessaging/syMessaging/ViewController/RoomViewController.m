@@ -354,6 +354,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 // Here a new event is added
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
                 [messages addObject:event];
+                BOOL shouldScrollToBottom = (self.messagesTableView.contentOffset.y + self.messagesTableView.frame.size.height >= self.messagesTableView.contentSize.height);
                 
                 // Refresh table display (Disable animation during cells insertion to prevent flickering)
                 [UIView setAnimationsEnabled:NO];
@@ -366,7 +367,9 @@ NSString *const kFailedEventId = @"failedEventId";
                 [self.messagesTableView endUpdates];
                 [UIView setAnimationsEnabled:YES];
                 
-                [self scrollToBottomAnimated:YES];
+                if (shouldScrollToBottom) {
+                    [self scrollToBottomAnimated:YES];
+                }
             }
         }];
         
@@ -770,11 +773,7 @@ NSString *const kFailedEventId = @"failedEventId";
         displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
     }
     if (displayText) {
-        // Use a TextView template to compute cell height
-        UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
-        dummyTextView.font = [UIFont systemFontOfSize:14];
-        dummyTextView.text = displayText;
-        contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+        contentSize = [self textContentSize:displayText];
     }
     
     // Check whether the previous message has been sent by the same user.
@@ -1008,8 +1007,6 @@ NSString *const kFailedEventId = @"failedEventId";
             }
         }
     } else {
-        // Text message will be displayed in textView with max width
-        cell.msgTextViewWidthConstraint.constant = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
         // Cancel potential attachment loading
         cell.attachmentView.imageURL = nil;
         cell.attachmentView.hidden = YES;
@@ -1024,6 +1021,8 @@ NSString *const kFailedEventId = @"failedEventId";
             cell.messageTextView.textColor = [UIColor blueColor];
         }
         cell.messageTextView.text = displayText;
+        // Adjust textView width constraint
+        cell.msgTextViewWidthConstraint.constant = [self textContentSize:displayText].width;
     }
     
     // Turn on link detection only when it is usefull
@@ -1043,6 +1042,14 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     
     return cell;
+}
+
+- (CGSize)textContentSize:(NSString*)textMsg {
+    // Use a TextView template to compute cell height
+    UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
+    dummyTextView.font = [UIFont systemFontOfSize:14];
+    dummyTextView.text = textMsg;
+    return [dummyTextView sizeThatFits:dummyTextView.frame.size];
 }
 
 - (CGSize)attachmentContentSize:(MXEvent*)mxEvent {
@@ -1497,7 +1504,6 @@ NSString *const kFailedEventId = @"failedEventId";
             // Refresh table display
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
             [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self scrollToBottomAnimated:YES];
             break;
         }
     }
