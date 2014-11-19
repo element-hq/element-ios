@@ -588,6 +588,7 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (void)showAttachmentView:(UIGestureRecognizer *)gestureRecognizer {
     CustomImageView *attachment = (CustomImageView*)gestureRecognizer.view;
+    [self dismissKeyboard];
     
     // Retrieve attachment information
     NSDictionary *content = attachment.mediaInfo;
@@ -846,7 +847,7 @@ NSString *const kFailedEventId = @"failedEventId";
     if ([mxEvent.userId isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
         [((OutgoingMessageTableCell*)cell).activityIndicator stopAnimating];
-        // Restore initial settings in text view
+        // Restore initial settings of text view
         if (initialAttributedStringForOutgoingMessage == nil) {
             initialAttributedStringForOutgoingMessage = cell.messageTextView.attributedText;
         } else {
@@ -856,7 +857,7 @@ NSString *const kFailedEventId = @"failedEventId";
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
         isIncomingMsg = YES;
-        // Restore initial settings in text view
+        // Restore initial settings of text view
         if (initialAttributedStringForIncomingMessage == nil) {
             initialAttributedStringForIncomingMessage = cell.messageTextView.attributedText;
         } else {
@@ -865,10 +866,16 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     
+    // Restore initial settings of attachment ImageView
+    cell.attachmentView.imageURL = nil; // Cancel potential attachment loading
+    cell.attachmentView.hidden = YES;
+    cell.playIconView.hidden = YES;
     // Remove all gesture recognizer
     while (cell.attachmentView.gestureRecognizers.count) {
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
     }
+    cell.attachmentViewTopAlignmentConstraint.constant = 0;
+    cell.attachmentViewBottomAlignmentConstraint.constant = 0;
     
     // Check whether the previous message has been sent by the same user.
     // We group together messages from the same user. The user's picture and name are displayed only for the first message.
@@ -948,13 +955,10 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     
     if ([mxHandler isAttachment:mxEvent]) {
-        cell.attachmentView.hidden = NO;
-        cell.playIconView.hidden = YES;
         cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
         CGSize contentSize = [self attachmentContentSize:mxEvent];
         if (!contentSize.width || !contentSize.height) {
             NSLog(@"ERROR: Unsupported message %@", mxEvent.description);
-            cell.attachmentView.hidden = YES;
             // Check whether unsupported/unexpected messages should be exposed
             if ([AppSettings sharedSettings].hideUnsupportedMessages == NO) {
                 // Display event content as unsupported message
@@ -962,13 +966,10 @@ NSString *const kFailedEventId = @"failedEventId";
                 cell.messageTextView.textColor = [UIColor redColor];
                 enableLinkDetection = NO;
             }
-        } else {
             // Adjust constraint constant
-            cell.msgTextViewWidthConstraint.constant = contentSize.width;
-            // Align attachment inside text view by considering text view edge inset
-            cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
-            cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
-            
+            cell.msgTextViewWidthConstraint.constant = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+        } else {
+            cell.attachmentView.hidden = NO;
             // Fade attachments during upload
             if (isIncomingMsg == NO && [mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
                 cell.attachmentView.alpha = 0.5;
@@ -1005,13 +1006,14 @@ NSString *const kFailedEventId = @"failedEventId";
             } else {
                 cell.attachmentView.imageURL = nil;
             }
+            
+            // Adjust constraint constant
+            cell.msgTextViewWidthConstraint.constant = contentSize.width;
+            // Align attachment inside text view by considering text view edge inset
+            cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
+            cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
         }
     } else {
-        // Cancel potential attachment loading
-        cell.attachmentView.imageURL = nil;
-        cell.attachmentView.hidden = YES;
-        cell.playIconView.hidden = YES;
-        
         NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
         // Update text color according to text content
         if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
