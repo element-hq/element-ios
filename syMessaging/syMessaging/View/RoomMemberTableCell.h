@@ -15,13 +15,14 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CustomTableViewCell.h"
+#import "CustomImageView.h"
 
 @class MXRoomMember;
 @class MXRoom;
 
 // Room Member Table View Cell
-@interface RoomMemberTableCell : CustomTableViewCell
+@interface RoomMemberTableCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UILabel *userLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *userPowerLevel;
 @property (weak, nonatomic) IBOutlet UILabel *lastActiveAgoLabel;

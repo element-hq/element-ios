@@ -18,15 +18,16 @@
 
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
 
-static NSString* pictureCachePath  = nil;
-static NSString *pictureDir        = @"picturecache";
+static NSString* mediaCachePath  = nil;
+static NSString *mediaDir        = @"mediacache";
 
 static MediaManager *sharedMediaManager = nil;
 
 @interface MediaLoader : NSObject <NSURLConnectionDataDelegate> {
     NSString *mediaURL;
+    NSString *mimeType;
     
-    blockMediaManager_onImageReady onImageReady;
+    blockMediaManager_onMediaReady onMediaReady;
     blockMediaManager_onError onError;
     
     NSMutableData *downloadData;
@@ -41,20 +42,46 @@ static MediaManager *sharedMediaManager = nil;
 - (void)downloadPicture:(NSString*)pictureURL
              success:(blockMediaManager_onImageReady)success
              failure:(blockMediaManager_onError)failure {
+    // Download picture content
+    [self downloadMedia:pictureURL mimeType:@"image/jpeg" success:^(NSString *cacheFilePath) {
+        if (success) {
+            NSData* imageContent = [NSData dataWithContentsOfFile:cacheFilePath options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
+            if (imageContent) {
+                UIImage *image = [UIImage imageWithData:imageContent];
+                if (image) {
+                    success(image);
+                } else {
+                    NSLog(@"ERROR: picture download failed: %@", pictureURL);
+                    if (failure){
+                        failure(nil);
+                    }
+                }
+            }
+        }
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+- (void)downloadMedia:(NSString*)aMediaURL
+             mimeType:(NSString *)aMimeType
+                success:(blockMediaManager_onMediaReady)success
+                failure:(blockMediaManager_onError)failure {
     // Report provided params
-    mediaURL = pictureURL;
-    onImageReady = success;
+    mediaURL = aMediaURL;
+    mimeType = aMimeType;
+    onMediaReady = success;
     onError = failure;
     
-    // Start downloading the picture
-    NSURL *url = [NSURL URLWithString:pictureURL];
+    // Start downloading
+    NSURL *url = [NSURL URLWithString:aMediaURL];
     downloadData = [[NSMutableData alloc] init];
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
 
 - (void)cancel {
     // Reset blocks
-    onImageReady = nil;
+    onMediaReady = nil;
     onError = nil;
     // Cancel potential connection
     if (downloadConnection) {
@@ -71,7 +98,7 @@ static MediaManager *sharedMediaManager = nil;
 #pragma mark -
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"ERROR: picture download failed: %@, %@", error, mediaURL);
+    NSLog(@"ERROR: media download failed: %@, %@", error, mediaURL);
     if (onError) {
         onError (error);
     }
@@ -83,18 +110,15 @@ static MediaManager *sharedMediaManager = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    // CAUTION: Presently only picture are supported
-    // Set downloaded image
-    UIImage *image = [UIImage imageWithData:downloadData];
-    if (image) {
+    if (downloadData.length) {
         // Cache the downloaded data
-        [MediaManager cachePictureWithData:downloadData forURL:mediaURL];
+        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL mimeType:mimeType];
         // Call registered block
-        if (onImageReady) {
-            onImageReady(image);
+        if (onMediaReady) {
+            onMediaReady(cacheFilePath);
         }
     } else {
-        NSLog(@"ERROR: picture download failed: %@", mediaURL);
+        NSLog(@"ERROR: media download failed: %@", mediaURL);
         if (onError){
             onError(nil);
         }
@@ -184,56 +208,73 @@ static MediaManager *sharedMediaManager = nil;
     return ret;
 }
 
++ (id)prepareMedia:(NSString *)mediaURL
+          mimeType:(NSString *)mimeType
+           success:(blockMediaManager_onMediaReady)success
+           failure:(blockMediaManager_onError)failure {
+    id ret = nil;
+    // Check cache
+    NSString* filename = [MediaManager getCacheFileNameFor:mediaURL mimeType:mimeType];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filename]) {
+        if (success) {
+            // Reply synchronously
+            success (filename);
+        }
+    }
+    else if ([mediaURL hasPrefix:kMediaManagerPrefixForDummyURL] == NO) {
+        // Create a media loader to download media content
+        MediaLoader *mediaLoader = [[MediaLoader alloc] init];
+        [mediaLoader downloadMedia:mediaURL mimeType:mimeType success:success failure:failure];
+        ret = mediaLoader;
+    } else {
+        NSLog(@"Load tmp media from cache failed: %@", mediaURL);
+        if (failure){
+            failure(nil);
+        }
+    }
+    return ret;
+}
+
 + (void)cancel:(id)mediaLoader {
     [((MediaLoader*)mediaLoader) cancel];
 }
 
-+ (NSString*)cachePictureWithData:(NSData*)imageData forURL:(NSString *)pictureURL {
-    NSString* filename = [MediaManager getCacheFileNameFor:pictureURL];
++ (NSString*)cacheMediaData:(NSData*)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType {
+    NSString* filename = [MediaManager getCacheFileNameFor:mediaURL mimeType:mimeType];
     
-    if ([imageData writeToFile:filename atomically:YES]) {
+    if ([mediaData writeToFile:filename atomically:YES]) {
         return filename;
     } else {
         return nil;
     }
 }
 
-+ (void)clearCacheForURL:(NSString *)mediaURL {
-    NSString* filename = [MediaManager getCacheFileNameFor:mediaURL];
-    NSError *error = nil;
-    if (filename && [[NSFileManager defaultManager] fileExistsAtPath:filename]) {
-        if (![[NSFileManager defaultManager] removeItemAtPath:filename error:&error]) {
-            NSLog(@"Fails to delete cached picture: %@", error);
-        }
-    }
-}
-
 + (void)clearCache {
     NSError *error = nil;
     
-    if (!pictureCachePath) {
+    if (!mediaCachePath) {
         // compute the path
-        pictureCachePath = [MediaManager getCachePath];
+        mediaCachePath = [MediaManager getCachePath];
     }
     
-    if (pictureCachePath) {
-        if (![[NSFileManager defaultManager] removeItemAtPath:pictureCachePath error:&error]) {
-            NSLog(@"Fails to delete picture cache dir : %@", error);
+    if (mediaCachePath) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:mediaCachePath error:&error]) {
+            NSLog(@"Fails to delete media cache dir : %@", error);
         } else {
-            NSLog(@"Picture cache : deleted !");
+            NSLog(@"Media cache : deleted !");
         }
     } else {
-        NSLog(@"Picture cache does not exist");
+        NSLog(@"Media cache does not exist");
     }
     
-    pictureCachePath = nil;
+    mediaCachePath = nil;
 }
 
 #pragma mark - Cache handling
 
 + (UIImage*)loadCachePicture:(NSString*)pictureURL {
     UIImage* res = nil;
-    NSString* filename = [MediaManager getCacheFileNameFor:pictureURL];
+    NSString* filename = [MediaManager getCacheFileNameFor:pictureURL mimeType:@"image/jpeg"];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:filename]) {
         NSData* imageContent = [NSData dataWithContentsOfFile:filename options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
@@ -246,26 +287,41 @@ static MediaManager *sharedMediaManager = nil;
 }
 
 + (NSString*)getCachePath {
-    NSString *mediaCachePath = nil;
+    NSString *cachePath = nil;
     
-    if (!pictureCachePath) {
+    if (!mediaCachePath) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *cacheRoot = [paths objectAtIndex:0];
         
-        pictureCachePath = [cacheRoot stringByAppendingPathComponent:pictureDir];
+        mediaCachePath = [cacheRoot stringByAppendingPathComponent:mediaDir];
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:pictureCachePath]) {
-            [[NSFileManager defaultManager] createDirectoryAtPath:pictureCachePath withIntermediateDirectories:NO attributes:nil error:nil];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:mediaCachePath]) {
+            [[NSFileManager defaultManager] createDirectoryAtPath:mediaCachePath withIntermediateDirectories:NO attributes:nil error:nil];
         }
     }
-    mediaCachePath = pictureCachePath;
+    cachePath = mediaCachePath;
     
-    return mediaCachePath;
+    return cachePath;
 }
 
-+ (NSString*)getCacheFileNameFor:(NSString*)pictureURL {
-    NSString* baseFileName = [[MediaManager getCachePath] stringByAppendingPathComponent:@"ima"];
-    return [NSString stringWithFormat:@"%@%lu.jpg", baseFileName, (unsigned long)pictureURL.hash];
++ (NSString*)getCacheFileNameFor:(NSString*)mediaURL mimeType:(NSString *)mimeType {
+    NSString *fileName;
+    if ([mimeType isEqualToString:@"image/jpeg"]) {
+        fileName = [NSString stringWithFormat:@"ima%lu.jpg", (unsigned long)mediaURL.hash];
+    } else if ([mimeType isEqualToString:@"video/mp4"]) {
+        fileName = [NSString stringWithFormat:@"video%lu.mp4", (unsigned long)mediaURL.hash];
+    } else if ([mimeType isEqualToString:@"video/quicktime"]) {
+        fileName = [NSString stringWithFormat:@"video%lu.mov", (unsigned long)mediaURL.hash];
+    } else {
+        NSString *extension = @"";
+        NSArray *components = [mediaURL componentsSeparatedByString:@"."];
+        if (components && components.count > 1) {
+            extension = [components lastObject];
+        }
+        fileName = [NSString stringWithFormat:@"%lu.%@", (unsigned long)mediaURL.hash, extension];
+    }
+    
+    return [[MediaManager getCachePath] stringByAppendingPathComponent:fileName];
 }
 
 @end

@@ -16,11 +16,12 @@
 
 #import <UIKit/UIKit.h>
 
-// Customize UITableViewCell in order to handle Table cell with UIImageView based on remote url
-@interface CustomTableViewCell : UITableViewCell
-@property (strong, nonatomic) IBOutlet UIImageView *pictureView;
+// Customize UIImageView in order to let UIImageView handle automatically remote url
+@interface CustomImageView : UIImageView
 
 @property (strong, nonatomic) NSString *placeholder;
-@property (strong, nonatomic) NSString *pictureURL;
+@property (strong, nonatomic) NSString *imageURL;
+// Information about the media represented by this image (image, video...)
+@property (strong, nonatomic) NSDictionary *mediaInfo;
 @end
 

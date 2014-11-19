@@ -65,6 +65,11 @@ NSString *const kFailedEventId = @"failedEventId";
     NSArray *members;
     id membersListener;
     
+    // Attachment handling
+    CustomImageView *highResImage;
+    NSString *AVAudioSessionCategory;
+    MPMoviePlayerController *videoPlayer;
+    
     // Date formatter (nil if dateTimeLabel is hidden)
     NSDateFormatter *dateFormatter;
     
@@ -122,10 +127,15 @@ NSString *const kFailedEventId = @"failedEventId";
 #endif
     // Clear temporary cached attachments (used for local echo)
     NSUInteger index = tmpCachedAttachments.count;
+    NSError *error = nil;
     while (index--) {
-        [MediaManager clearCacheForURL:[tmpCachedAttachments objectAtIndex:index]];
+        if (![[NSFileManager defaultManager] removeItemAtPath:[tmpCachedAttachments objectAtIndex:index] error:&error]) {
+            NSLog(@"Fail to delete cached media: %@", error);
+        }
     }
     tmpCachedAttachments = nil;
+    
+    [self hideAttachmentView];
     
     messages = nil;
     if (messagesListener) {
@@ -230,10 +240,8 @@ NSString *const kFailedEventId = @"failedEventId";
 #ifdef TEMPORARY_PATCH_INITIAL_SYNC
 // FIXME: this method should be removed when SDK will fix the initial sync issue
 #pragma mark - KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"isInitialSyncDone" isEqualToString:keyPath])
-    {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         if ([mxHandler isInitialSyncDone]) {
             [_activityIndicator stopAnimating];
@@ -259,7 +267,7 @@ NSString *const kFailedEventId = @"failedEventId";
         // gestureRecognizer should begin only if tap is outside members list
         return !CGRectContainsPoint(frame, [gestureRecognizer locationInView:self.membersView]);
     }
-    return NO;
+    return YES;
 }
 
 #pragma mark - Internal methods
@@ -448,6 +456,8 @@ NSString *const kFailedEventId = @"failedEventId";
     }
 }
 
+# pragma mark - Room members
+
 - (void)showHideRoomMembers:(id)sender {
     // Check whether the members list is displayed
     if (members) {
@@ -571,7 +581,119 @@ NSString *const kFailedEventId = @"failedEventId";
     members = nil;
 }
 
-#pragma mark - keyboard handling
+# pragma mark - Attachment handling
+
+- (void)showAttachmentView:(UIGestureRecognizer *)gestureRecognizer {
+    CustomImageView *attachment = (CustomImageView*)gestureRecognizer.view;
+    
+    // Retrieve attachment information
+    NSDictionary *content = attachment.mediaInfo;
+    NSString *msgtype = content[@"msgtype"];
+    if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+        NSString *url =content[@"url"];
+        if (url.length) {
+            highResImage = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+            highResImage.contentMode = UIViewContentModeScaleAspectFit;
+            highResImage.backgroundColor = [UIColor blackColor];
+            highResImage.imageURL = url;
+            [self.view addSubview:highResImage];
+            
+            // Add tap recognizer to hide attachment
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAttachmentView)];
+            [tap setNumberOfTouchesRequired:1];
+            [tap setNumberOfTapsRequired:1];
+            [highResImage addGestureRecognizer:tap];
+            highResImage.userInteractionEnabled = YES;
+        }
+    } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+        NSString *url =content[@"url"];
+        if (url.length) {
+            NSString *mimetype = nil;
+            if (content[@"info"]) {
+                mimetype = content[@"info"][@"mimetype"];
+            }
+            AVAudioSessionCategory = [[AVAudioSession sharedInstance] category];
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+            videoPlayer = [[MPMoviePlayerController alloc] init];
+            if (videoPlayer != nil) {
+                videoPlayer.scalingMode = MPMovieScalingModeAspectFit;
+                [self.view addSubview:videoPlayer.view];
+                [videoPlayer setFullscreen:YES animated:NO];
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(moviePlayerPlaybackDidFinishNotification:)
+                                                             name:MPMoviePlayerPlaybackDidFinishNotification
+                                                           object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(moviePlayerWillExitFullscreen:)
+                                                             name:MPMoviePlayerWillExitFullscreenNotification
+                                                           object:videoPlayer];
+                [MediaManager prepareMedia:url mimeType:mimetype success:^(NSString *cacheFilePath) {
+                    if (cacheFilePath) {
+                        if (tmpCachedAttachments == nil) {
+                            tmpCachedAttachments = [NSMutableArray array];
+                        }
+                        if ([tmpCachedAttachments indexOfObject:cacheFilePath]) {
+                            [tmpCachedAttachments addObject:cacheFilePath];
+                        }
+                    }
+                    videoPlayer.contentURL = [NSURL fileURLWithPath:cacheFilePath];
+                    [videoPlayer play];
+                } failure:^(NSError *error) {
+                    [self hideAttachmentView];
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            }
+        }
+    } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
+    } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
+    }
+}
+
+- (void)hideAttachmentView {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerWillExitFullscreenNotification object:nil];
+    
+    if (highResImage) {
+        [highResImage removeFromSuperview];
+        highResImage = nil;
+    }
+    // Restore audio category
+    if (AVAudioSessionCategory) {
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategory error:nil];
+    }
+    if (videoPlayer) {
+        [videoPlayer stop];
+        [videoPlayer setFullscreen:NO];
+        [videoPlayer.view removeFromSuperview];
+        videoPlayer = nil;
+    }
+}
+
+- (void)moviePlayerWillExitFullscreen:(NSNotification*)notification {
+    if (notification.object == videoPlayer) {
+        [self hideAttachmentView];
+    }
+}
+
+- (void)moviePlayerPlaybackDidFinishNotification:(NSNotification *)notification {
+    NSDictionary *notificationUserInfo = [notification userInfo];
+    NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+    MPMovieFinishReason reason = [resultValue intValue];
+    
+    // error cases
+    if (reason == MPMovieFinishReasonPlaybackError) {
+        NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
+        if (mediaPlayerError) {
+            NSLog(@"Playback failed with error description: %@", [mediaPlayerError localizedDescription]);
+            [self hideAttachmentView];
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:mediaPlayerError];
+        }
+    }
+}
+
+#pragma mark - Keyboard handling
 
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
@@ -744,6 +866,11 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     
+    // Remove all gesture recognizer
+    while (cell.attachmentView.gestureRecognizers.count) {
+        [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
+    }
+    
     // Check whether the previous message has been sent by the same user.
     // We group together messages from the same user. The user's picture and name are displayed only for the first message.
     // We consider a new chunk when the user is different from the previous message's one.
@@ -763,8 +890,10 @@ NSString *const kFailedEventId = @"failedEventId";
         cell.messageTextView.contentInset = UIEdgeInsetsZero;
         
         // Set user's picture
-        cell.placeholder = @"default-profile";
-        cell.pictureURL = [mxRoom.state memberWithUserId:mxEvent.userId].avatarUrl;
+        cell.pictureView.placeholder = @"default-profile";
+        cell.pictureView.imageURL = [mxRoom.state memberWithUserId:mxEvent.userId].avatarUrl;
+        [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
+        cell.pictureView.clipsToBounds = YES;
     } else {
         // Adjust display of other messages of the chunk
         cell.pictureView.hidden = YES;
@@ -835,6 +964,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 enableLinkDetection = NO;
             }
         } else {
+            // Adjust constraint constant
             cell.msgTextViewWidthConstraint.constant = contentSize.width;
             // Align attachment inside text view by considering text view edge inset
             cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
@@ -850,24 +980,38 @@ NSString *const kFailedEventId = @"failedEventId";
             
             NSString *msgtype = mxEvent.content[@"msgtype"];
             if ([msgtype isEqualToString:kMXMessageTypeImage] || [msgtype isEqualToString:kMXMessageTypeVideo]) {
-                NSString *url = mxEvent.content[@"thumbnail_url"];
+                NSString *url = nil;
+                if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+                    cell.playIconView.hidden = NO;
+                    if (mxEvent.content[@"info"]) {
+                        url = mxEvent.content[@"info"][@"thumbnail_url"];
+                    }
+                } else {
+                    url = mxEvent.content[@"thumbnail_url"];
+                }
+                
                 if (url == nil) {
                     url = mxEvent.content[@"url"];
                 }
-                cell.attachedImageURL = url;
+                cell.attachmentView.imageURL = url;
                 
-                if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
-                    cell.playIconView.hidden = NO;
-                }
+                // Add tap recognizer to open attachment
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAttachmentView:)];
+                [tap setNumberOfTouchesRequired:1];
+                [tap setNumberOfTapsRequired:1];
+                [tap setDelegate:self];
+                [cell.attachmentView addGestureRecognizer:tap];
+                // Store attachment content description used in showAttachmentView:
+                cell.attachmentView.mediaInfo = mxEvent.content;
             } else {
-                cell.attachedImageURL = nil;
+                cell.attachmentView.imageURL = nil;
             }
         }
     } else {
         // Text message will be displayed in textView with max width
         cell.msgTextViewWidthConstraint.constant = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
         // Cancel potential attachment loading
-        cell.attachedImageURL = nil;
+        cell.attachmentView.imageURL = nil;
         cell.attachmentView.hidden = YES;
         cell.playIconView.hidden = YES;
         
@@ -907,7 +1051,16 @@ NSString *const kFailedEventId = @"failedEventId";
     if ([msgtype isEqualToString:kMXMessageTypeImage] || [msgtype isEqualToString:kMXMessageTypeVideo]) {
         CGFloat width, height;
         width = height = 0;
-        NSDictionary *thumbInfo = mxEvent.content[@"thumbnail_info"];
+        
+        NSDictionary *thumbInfo = nil;
+        if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+            if (mxEvent.content[@"info"]) {
+                thumbInfo = mxEvent.content[@"info"][@"thumbnail_info"];
+            }
+        } else {
+            thumbInfo = mxEvent.content[@"thumbnail_info"];
+        }
+        
         if (thumbInfo) {
             width = [thumbInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
             height = [thumbInfo[@"h"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
@@ -1192,7 +1345,7 @@ NSString *const kFailedEventId = @"failedEventId";
         dateFormatter = nil;
     } else {
         // dateTime will be visible
-        NSString *dateFormat =  @"MMM dd HH:mm";
+        NSString *dateFormat = @"MMM dd HH:mm";
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
         [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -1293,11 +1446,13 @@ NSString *const kFailedEventId = @"failedEventId";
     // We store temporarily the image in cache, use the localId to build temporary url
     NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEventId];
     NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-    [MediaManager cachePictureWithData:imageData forURL:dummyURL];
-    if (tmpCachedAttachments == nil) {
-        tmpCachedAttachments = [NSMutableArray array];
+    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:dummyURL mimeType:@"image/jpeg"];
+    if (cacheFilePath) {
+        if (tmpCachedAttachments == nil) {
+            tmpCachedAttachments = [NSMutableArray array];
+        }
+        [tmpCachedAttachments addObject:cacheFilePath];
     }
-    [tmpCachedAttachments addObject:dummyURL];
     NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
     [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
@@ -1558,9 +1713,10 @@ NSString *const kFailedEventId = @"failedEventId";
                     [mxHandler.mxRestClient uploadContent:thumbnailData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
                         // Prepare content of attached video
                         NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
+                        NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
                         [videoContent setValue:@"m.video" forKey:@"msgtype"];
-                        [videoContent setValue:url forKey:@"thumbnail_url"];
-                        [videoContent setValue:thumbnailInfo forKey:@"thumbnail_info"];
+                        [videoInfo setValue:url forKey:@"thumbnail_url"];
+                        [videoInfo setValue:thumbnailInfo forKey:@"thumbnail_info"];
                         
                         // Convert video container to mp4
                         AVURLAsset* videoAsset = [AVURLAsset URLAssetWithURL:selectedVideo options:nil];
@@ -1575,12 +1731,12 @@ NSString *const kFailedEventId = @"failedEventId";
                         NSArray *supportedFileTypes = exportSession.supportedFileTypes;
                         if ([supportedFileTypes containsObject:AVFileTypeMPEG4]) {
                             exportSession.outputFileType = AVFileTypeMPEG4;
-                            [videoContent setValue:@"video/mp4" forKey:@"mimetype"];
+                            [videoInfo setValue:@"video/mp4" forKey:@"mimetype"];
                         } else {
                             NSLog(@"Unexpected case: MPEG-4 file format is not supported");
                             // we send QuickTime movie file by default
                             exportSession.outputFileType = AVFileTypeQuickTimeMovie;
-                            [videoContent setValue:@"video/quicktime" forKey:@"mimetype"];
+                            [videoInfo setValue:@"video/quicktime" forKey:@"mimetype"];
                         }
                         // Export video file and send it
                         [exportSession exportAsynchronouslyWithCompletionHandler:^{
@@ -1593,13 +1749,13 @@ NSString *const kFailedEventId = @"failedEventId";
                                                                                  nil]
                                                      ];
                                 
-                                [videoContent setValue:[NSNumber numberWithDouble:(1000 * CMTimeGetSeconds(asset.duration))] forKey:@"duration"];
+                                [videoInfo setValue:[NSNumber numberWithDouble:(1000 * CMTimeGetSeconds(asset.duration))] forKey:@"duration"];
                                 NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
                                 if (videoTracks.count > 0) {
                                     AVAssetTrack *videoTrack = [videoTracks objectAtIndex:0];
                                     CGSize videoSize = videoTrack.naturalSize;
-                                    [videoContent setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.width] forKey:@"w"];
-                                    [videoContent setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.height] forKey:@"h"];
+                                    [videoInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.width] forKey:@"w"];
+                                    [videoInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.height] forKey:@"h"];
                                 }
                                 
                                 // Upload the video
@@ -1607,9 +1763,10 @@ NSString *const kFailedEventId = @"failedEventId";
                                 [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
                                 if (videoData) {
                                     if (videoData.length < UPLOAD_FILE_SIZE) {
-                                        [videoContent setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
-                                        [mxHandler.mxRestClient uploadContent:videoData mimeType:videoContent[@"mimetype"] timeout:30 success:^(NSString *url) {
+                                        [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
+                                        [mxHandler.mxRestClient uploadContent:videoData mimeType:videoInfo[@"mimetype"] timeout:30 success:^(NSString *url) {
                                             [videoContent setValue:url forKey:@"url"];
+                                            [videoContent setValue:videoInfo forKey:@"info"];
                                             [videoContent setValue:@"Video" forKey:@"body"];
                                             [self postMessage:videoContent withLocalEventId:localEventId];
                                         } failure:^(NSError *error) {

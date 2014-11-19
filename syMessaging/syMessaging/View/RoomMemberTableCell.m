@@ -22,8 +22,11 @@
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
     if (room && roomMember) {
         self.userLabel.text = [room.state memberName:roomMember.userId];
-        self.placeholder = @"default-profile";
-        self.pictureURL = roomMember.avatarUrl;
+        self.pictureView.placeholder = @"default-profile";
+        self.pictureView.imageURL = roomMember.avatarUrl;
+        // Round image view
+        [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];
+        self.pictureView.clipsToBounds = YES;
         
         // Shade invited users
         if (roomMember.membership == MXMembershipInvite) {

@@ -21,6 +21,7 @@ extern NSString *const kMediaManagerPrefixForDummyURL;
 
 // The callback blocks
 typedef void (^blockMediaManager_onImageReady)(UIImage *image);
+typedef void (^blockMediaManager_onMediaReady)(NSString *cacheFilePath);
 typedef void (^blockMediaManager_onError)(NSError *error);
 
 @interface MediaManager : NSObject
@@ -32,13 +33,18 @@ typedef void (^blockMediaManager_onError)(NSError *error);
 // Load a picture from the local cache or download it if it is not available yet.
 // In this second case a mediaLoader reference is returned in order to let the user cancel this action.
 + (id)loadPicture:(NSString *)pictureURL
-            success:(blockMediaManager_onImageReady)success
-            failure:(blockMediaManager_onError)failure;
+          success:(blockMediaManager_onImageReady)success
+          failure:(blockMediaManager_onError)failure;
+// Prepare a media from the local cache or download it if it is not available yet.
+// In this second case a mediaLoader reference is returned in order to let the user cancel this action.
++ (id)prepareMedia:(NSString *)mediaURL
+          mimeType:(NSString *)mimeType
+           success:(blockMediaManager_onMediaReady)success
+        failure:(blockMediaManager_onError)failure;
 + (void)cancel:(id)mediaLoader;
 
-+ (NSString *)cachePictureWithData:(NSData *)imageData forURL:(NSString *)pictureURL;
++ (NSString *)cacheMediaData:(NSData *)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType;
 
-+ (void)clearCacheForURL:(NSString *)mediaURL;
 + (void)clearCache;
 
 @end
