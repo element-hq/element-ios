@@ -1293,6 +1293,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an attachment type:" message:nil style:CustomAlertStyleActionSheet];
                 [weakSelf.actionMenu addActionWithTitle:@"Media" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     if (weakSelf) {
+                        weakSelf.actionMenu = nil;
                         // Open media gallery
                         UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
                         mediaPicker.delegate = weakSelf;
