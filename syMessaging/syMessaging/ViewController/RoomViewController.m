@@ -466,6 +466,7 @@ NSString *const kFailedEventId = @"failedEventId";
     if (members) {
         [self hideRoomMembers];
     } else {
+        [self hideAttachmentView];
         [self showRoomMembers];
     }
 }
