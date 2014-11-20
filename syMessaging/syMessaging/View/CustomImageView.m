@@ -42,14 +42,20 @@
     }
     // Consider provided url to update image view
     if (imageURL) {
-        // Load picture
+        // Start loading animation
         if (loadingWheel == nil) {
-            loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-            loadingWheel.center = self.center;
+            loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+            loadingWheel.center = center;
             [self addSubview:loadingWheel];
         }
-        
+        if ([self.backgroundColor isEqual:[UIColor blackColor]]) {
+            loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+        } else {
+            loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        }
         [loadingWheel startAnimating];
+        // Load picture
         imageLoader = [MediaManager loadPicture:imageURL
                                         success:^(UIImage *image) {
                                             [loadingWheel stopAnimating];
