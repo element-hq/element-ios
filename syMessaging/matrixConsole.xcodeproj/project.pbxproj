@@ -30,6 +30,7 @@
 		F07A80E619DD9DE700B621A1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E519DD9DE700B621A1 /* Images.xcassets */; };
 		F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E719DD9DE700B621A1 /* LaunchScreen.xib */; };
 		F07A80F519DD9DE700B621A1 /* syMessagingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80F419DD9DE700B621A1 /* syMessagingTests.m */; };
+		F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */; };
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
 		F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AC19E6895E00E47915 /* logoHighRes.png */; };
 		F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AD19E6895E00E47915 /* tab_recents.png */; };
@@ -91,6 +92,7 @@
 		F07A80EE19DD9DE700B621A1 /* matrixConsoleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = matrixConsoleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F07A80F319DD9DE700B621A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F07A80F419DD9DE700B621A1 /* syMessagingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = syMessagingTests.m; sourceTree = "<group>"; };
+		F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrixConsole.jpg; sourceTree = "<group>"; };
 		F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F0CEA5AC19E6895E00E47915 /* logoHighRes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoHighRes.png; sourceTree = "<group>"; };
 		F0CEA5AD19E6895E00E47915 /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */,
 				F02BCE221A1A5A2B00543B47 /* play.png */,
 				F024098119E7D177006E741B /* tab_recents@2x.png */,
 				F0CEA5B019E6898800E47915 /* tab_home.ico */,
@@ -349,6 +352,7 @@
 				F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */,
 				F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */,
 				F07A80E619DD9DE700B621A1 /* Images.xcassets in Resources */,
+				F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
