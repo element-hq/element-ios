@@ -110,6 +110,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // Refresh displayed settings
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

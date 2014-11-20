@@ -538,32 +538,59 @@ static MatrixHandler *sharedHandler = nil;
         }
         case MXEventTypeRoomPowerLevels: {
             displayText = @"The power level of room members are:";
-            for (NSString *key in message.content.allKeys) {
-                displayText = [NSString stringWithFormat:@"%@\r\n%@:%@", displayText, key, [message.content objectForKey:key]];
+            NSDictionary *users = message.content[@"users"];
+            for (NSString *key in users.allKeys) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 %@: %@", displayText, key, [users objectForKey:key]];
+            }
+            if (message.content[@"users_default"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 %@: %@", displayText, @"default", message.content[@"users_default"]];
+            }
+            
+            displayText = [NSString stringWithFormat:@"%@\r\nThe minimum power levels that a user must have before acting are:", displayText];
+            if (message.content[@"ban"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 ban: %@", displayText, message.content[@"ban"]];
+            }
+            if (message.content[@"kick"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 kick: %@", displayText, message.content[@"kick"]];
+            }
+            if (message.content[@"redact"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 redact: %@", displayText, message.content[@"redact"]];
+            }
+            
+            displayText = [NSString stringWithFormat:@"%@\r\nThe minimum power levels related to events are:", displayText];
+            NSDictionary *events = message.content[@"events"];
+            for (NSString *key in events.allKeys) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 %@: %@", displayText, key, [events objectForKey:key]];
+            }
+            if (message.content[@"events_default"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 %@: %@", displayText, @"events_default", message.content[@"events_default"]];
+            }
+            if (message.content[@"state_default"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 %@: %@", displayText, @"state_default", message.content[@"state_default"]];
             }
             break;
         }
-        case MXEventTypeRoomAddStateLevel: {
-            NSString *minLevel = message.content[@"level"];
-            if (minLevel) {
-                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to add state is: %@", minLevel];
-            }
-            break;
-        }
-        case MXEventTypeRoomSendEventLevel: {
-            NSString *minLevel = message.content[@"level"];
-            if (minLevel) {
-                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to send an event is: %@", minLevel];
-            }
-            break;
-        }
-        case MXEventTypeRoomOpsLevel: {
-            displayText = @"The minimum power levels that a user must have before acting are:";
-            for (NSString *key in message.content.allKeys) {
-                displayText = [NSString stringWithFormat:@"%@\r\n%@:%@", displayText, key, [message.content objectForKey:key]];
-            }
-            break;
-        }
+//        case MXEventTypeRoomAddStateLevel: {
+//            NSString *minLevel = message.content[@"level"];
+//            if (minLevel) {
+//                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to add state is: %@", minLevel];
+//            }
+//            break;
+//        }
+//        case MXEventTypeRoomSendEventLevel: {
+//            NSString *minLevel = message.content[@"level"];
+//            if (minLevel) {
+//                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to send an event is: %@", minLevel];
+//            }
+//            break;
+//        }
+//        case MXEventTypeRoomOpsLevel: {
+//            displayText = @"The minimum power levels that a user must have before acting are:";
+//            for (NSString *key in message.content.allKeys) {
+//                displayText = [NSString stringWithFormat:@"%@\r\n%@:%@", displayText, key, [message.content objectForKey:key]];
+//            }
+//            break;
+//        }
         case MXEventTypeRoomAliases: {
             NSArray *aliases = message.content[@"aliases"];
             if (aliases) {
