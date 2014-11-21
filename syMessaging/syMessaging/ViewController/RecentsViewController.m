@@ -304,7 +304,8 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Leave the selected room
         MXEvent *mxEvent = recents[indexPath.row];
-        [[MatrixHandler sharedHandler].mxRestClient leaveRoom:mxEvent.roomId success:^{
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession room:mxEvent.roomId];
+        [mxRoom leave:^{
             // Refresh table display
             [recents removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

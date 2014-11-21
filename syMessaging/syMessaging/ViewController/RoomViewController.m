@@ -1086,16 +1086,15 @@ NSString *const kFailedEventId = @"failedEventId";
             [self.actionMenu addActionWithTitle:@"Leave" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                 if (weakSelf) {
                     weakSelf.actionMenu = nil;
-                    [[MatrixHandler sharedHandler].mxRestClient leaveRoom:weakSelf.roomId
-                                                                  success:^{
-                                                                      // Back to recents
-                                                                      [weakSelf.navigationController popViewControllerAnimated:YES];
-                                                                  }
-                                                                  failure:^(NSError *error) {
-                                                                      NSLog(@"Leave room %@ failed: %@", weakSelf.roomId, error);
-                                                                      //Alert user
-                                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                  }];
+                    MXRoom *currentRoom = [[MatrixHandler sharedHandler].mxSession room:weakSelf.roomId];
+                    [currentRoom leave:^{
+                        // Back to recents
+                        [weakSelf.navigationController popViewControllerAnimated:YES];
+                    } failure:^(NSError *error) {
+                        NSLog(@"Leave room %@ failed: %@", weakSelf.roomId, error);
+                        //Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
                 }
             }];
         } else {
