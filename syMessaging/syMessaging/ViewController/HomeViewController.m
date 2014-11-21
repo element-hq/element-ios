@@ -358,12 +358,24 @@
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
     } else {
         // Join the selected room
+        UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        if (selectedCell) {
+            CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
+            loadingWheel.center = center;
+            [selectedCell addSubview:loadingWheel];
+        }
+        [loadingWheel startAnimating];
         [mxHandler.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
             // Show joined room
+            [loadingWheel stopAnimating];
+            [loadingWheel removeFromSuperview];
             [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
         } failure:^(NSError *error) {
             NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
             //Alert user
+            [loadingWheel stopAnimating];
+            [loadingWheel removeFromSuperview];
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
     }
