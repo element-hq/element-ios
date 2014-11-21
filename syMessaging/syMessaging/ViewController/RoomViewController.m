@@ -88,6 +88,7 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
+@property (weak, nonatomic) IBOutlet UITextField *roomNameTextField;
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
@@ -273,6 +274,8 @@ NSString *const kFailedEventId = @"failedEventId";
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
+    // Disable room title edition
+    self.roomNameTextField.enabled = NO;
     
     // Update room data
     if (self.roomId) {
@@ -280,7 +283,7 @@ NSString *const kFailedEventId = @"failedEventId";
         mxRoom = [mxHandler.mxSession room:self.roomId];
         
         // Update room title
-        self.roomNavItem.title = mxRoom.state.displayname;
+        self.roomNameTextField.text = mxRoom.state.displayname;
         
         // Check first whether we have to join the room
         if (mxRoom.state.membership == MXMembershipInvite) {
@@ -301,6 +304,9 @@ NSString *const kFailedEventId = @"failedEventId";
             }];
             return;
         }
+        
+        // Enable room title edition
+        self.roomNameTextField.enabled = YES;
         
         messages = [NSMutableArray array];
         // Register a listener to handle messages
@@ -355,7 +361,7 @@ NSString *const kFailedEventId = @"failedEventId";
     } else {
         mxRoom = nil;
         // Update room title
-        self.roomNavItem.title = nil;
+        self.roomNameTextField.text = nil;
     }
     
     [self.messagesTableView reloadData];
@@ -699,6 +705,7 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)dismissKeyboard {
     // Hide the keyboard
     [_messageTextField resignFirstResponder];
+    [_roomNameTextField resignFirstResponder];
 }
 
 #pragma mark - UITableView data source
@@ -1234,9 +1241,46 @@ NSString *const kFailedEventId = @"failedEventId";
     }
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == self.roomNameTextField) {
+        self.roomNameTextField.borderStyle = UITextBorderStyleRoundedRect;
+        self.roomNameTextField.backgroundColor = [UIColor whiteColor];
+    }
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (textField == self.roomNameTextField) {
+        self.roomNameTextField.borderStyle = UITextBorderStyleNone;
+        self.roomNameTextField.backgroundColor = [UIColor clearColor];
+    }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField*) textField {
     // "Done" key has been pressed
     [textField resignFirstResponder];
+    
+    if (textField == self.roomNameTextField) {
+        NSString *roomName = self.roomNameTextField.text;
+        if ([roomName isEqualToString:mxRoom.state.name] == NO) {
+            [self.activityIndicator startAnimating];
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            [mxHandler.mxRestClient setRoomName:self.roomId name:roomName success:^{
+                if (isBackPaginationInProgress == NO) {
+                    [self.activityIndicator stopAnimating];
+                }
+            } failure:^(NSError *error) {
+                if (isBackPaginationInProgress == NO) {
+                    [self.activityIndicator stopAnimating];
+                }
+                // Revert change
+                self.roomNameTextField.text = mxRoom.state.displayname;
+                NSLog(@"Rename room failed: %@", error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+    }
     return YES;
 }
 
