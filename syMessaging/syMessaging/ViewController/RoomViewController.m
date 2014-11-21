@@ -61,6 +61,11 @@ NSString *const kFailedEventId = @"failedEventId";
     NSMutableArray *messages;
     id messagesListener;
     
+    // Back pagination
+    BOOL isBackPaginationInProgress;
+    NSUInteger backPaginationAddedItemsNb;
+    NSString *backPaginationMostRecentEventId;
+    
     // Members list
     NSArray *members;
     id membersListener;
@@ -139,7 +144,7 @@ NSString *const kFailedEventId = @"failedEventId";
     
     messages = nil;
     if (messagesListener) {
-        [mxRoom unregisterListener:messagesListener];
+        [mxRoom removeListener:messagesListener];
         messagesListener = nil;
     }
     mxRoom = nil;
@@ -202,7 +207,7 @@ NSString *const kFailedEventId = @"failedEventId";
     
     // Release message listener except if the view is hidden by the media picker
     if (messagesListener && (_isHiddenByMediaPicker == NO)) {
-        [mxRoom unregisterListener:messagesListener];
+        [mxRoom removeListener:messagesListener];
         messagesListener = nil;
     }
     
@@ -280,19 +285,19 @@ NSString *const kFailedEventId = @"failedEventId";
         return;
     }
     
-    // We will store timestamp of the last known event (if any) in order to scroll to bottom if new events have been received for this room
-    uint64_t lastTimestamp = 0;
-    if (messages) {
-        MXEvent *lastEvent = [messages lastObject];
-        lastTimestamp = lastEvent.originServerTs;
-        // flush messages
-        messages = nil;
+    // Remove potential listener
+    if (messagesListener && mxRoom) {
+        [mxRoom removeListener:messagesListener];
+        messagesListener = nil;
     }
     
-    // Remove potential roomData listener
-    if (messagesListener && mxRoom) {
-        [mxRoom unregisterListener:messagesListener];
-        messagesListener = nil;
+    // The whole room history is flushed here to rebuild it from the current instant (live)
+    // We store the eventID of the last known event (if any) in order to scroll to bottom if new events have been received for this room
+    if (messages) {
+        MXEvent *lastEvent = [messages lastObject];
+        backPaginationMostRecentEventId = lastEvent.eventId;
+        // flush messages
+        messages = nil;
     }
     
     // Update room data
@@ -333,11 +338,13 @@ NSString *const kFailedEventId = @"failedEventId";
             return;
         }
         
-        messages = [NSMutableArray arrayWithArray:mxRoom.messages];
-        // Register a listener for events that modify the `messages` property
-        messagesListener = [mxRoom registerEventListenerForTypes:mxHandler.mxSession.eventsFilterForMessages block:^(MXRoom *room, MXEvent *event, BOOL isLive) {
-            // consider only live event
-            if (isLive) {
+        messages = [NSMutableArray array];
+        // Register a listener to handle messages
+        messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+            BOOL shouldScrollToBottom = NO;
+            
+            // Handle first live events
+            if (direction == MXEventDirectionForwards) {
                 // For outgoing message, remove the temporary event
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId]) {
                     NSUInteger index = messages.count;
@@ -354,7 +361,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 // Here a new event is added
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
                 [messages addObject:event];
-                BOOL shouldScrollToBottom = (self.messagesTableView.contentOffset.y + self.messagesTableView.frame.size.height >= self.messagesTableView.contentSize.height);
+                shouldScrollToBottom = (self.messagesTableView.contentOffset.y + self.messagesTableView.frame.size.height >= self.messagesTableView.contentSize.height);
                 
                 // Refresh table display (Disable animation during cells insertion to prevent flickering)
                 [UIView setAnimationsEnabled:NO];
@@ -366,27 +373,29 @@ NSString *const kFailedEventId = @"failedEventId";
                 [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 [self.messagesTableView endUpdates];
                 [UIView setAnimationsEnabled:YES];
+            } else if (isBackPaginationInProgress && direction == MXEventDirectionBackwards) {
+                // Back pagination is in progress, we add an old event at the beginning of messages
+                [messages insertObject:event atIndex:0];
+                backPaginationAddedItemsNb++;
                 
-                if (shouldScrollToBottom) {
-                    [self scrollToBottomAnimated:YES];
+                if (backPaginationMostRecentEventId) {
+                    if ([event.eventId isEqualToString:backPaginationMostRecentEventId] == NO) {
+                        // Some new events have been received for this room, scroll to bottom to focus on them
+                        shouldScrollToBottom = YES;
+                    }
+                    backPaginationMostRecentEventId = nil;
                 }
+                // Display is refreshed at the end of back pagination (see onComplete block)
+            }
+            
+            if (shouldScrollToBottom) {
+                [self scrollToBottomAnimated:YES];
             }
         }];
         
-        
-        if (messages) {
-            // Check whether scrollToBottom should be applied
-            MXEvent *lastEvent = [messages lastObject];
-            if (lastTimestamp < lastEvent.originServerTs) {
-                // Some new events have been received for this room, scroll to bottom to focus on them
-                forceScrollToBottomOnViewDidAppear = YES;
-            }
-            
-            if (messages.count < 10) {
-                // Trigger a back pagination if messages number is low
-                [self triggerBackPagination];
-            }
-        }
+        // Trigger a back pagination by reseting first backState to get room history from live
+        [mxRoom resetBackState];
+        [self triggerBackPagination];
     } else {
         mxRoom = nil;
         // Update room title
@@ -405,22 +414,24 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)triggerBackPagination {
-    if (mxRoom.canPaginate)
-    {
+    // Check whether a back pagination is already in progress
+    if (isBackPaginationInProgress) {
+        return;
+    }
+    
+    if (mxRoom.canPaginate) {
         [_activityIndicator startAnimating];
+        isBackPaginationInProgress = YES;
+        backPaginationAddedItemsNb = 0;
         
-        [mxRoom paginateBackMessages:20 success:^(NSArray *oldMessages) {
-            if (oldMessages.count)
-            {
-                // Update table sources
-                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldMessages.count)];
-                [messages insertObjects:oldMessages atIndexes:indexSet];
-                
+        [mxRoom paginateBackMessages:20 complete:^{
+            if (backPaginationAddedItemsNb) {
                 // Prepare insertion of new rows at the top of the table (compute cumulative height of added cells)
-                NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:oldMessages.count];
+                NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:backPaginationAddedItemsNb];
+                NSIndexPath *indexPath;
                 CGFloat verticalOffset = 0;
-                for (NSUInteger index = 0; index < oldMessages.count; index++) {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                for (NSUInteger index = 0; index < backPaginationAddedItemsNb; index++) {
+                    indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     [indexPaths addObject:indexPath];
                     verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
                 }
@@ -437,21 +448,26 @@ NSString *const kFailedEventId = @"failedEventId";
                 // Fix vertical offset in order to prevent scrolling down
                 contentOffset.y += verticalOffset;
                 [self.messagesTableView setContentOffset:contentOffset animated:NO];
-                
                 [_activityIndicator stopAnimating];
+                isBackPaginationInProgress = NO;
                 
                 // Move the current message at the middle of the visible area (dispatch this action in order to let table end its refresh)
+                indexPath = [NSIndexPath indexPathForRow:(backPaginationAddedItemsNb - 1) inSection:0];
+                backPaginationAddedItemsNb = 0;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(oldMessages.count - 1) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    [self.messagesTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 });
             } else {
                 // Here there was no event related to the `messages` property
                 [_activityIndicator stopAnimating];
+                isBackPaginationInProgress = NO;
                 // Trigger a new back pagination (if possible)
                 [self triggerBackPagination];
             }
         } failure:^(NSError *error) {
             [_activityIndicator stopAnimating];
+            isBackPaginationInProgress = NO;
+            backPaginationAddedItemsNb = 0;
             NSLog(@"Failed to paginate back: %@", error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -551,9 +567,9 @@ NSString *const kFailedEventId = @"failedEventId";
                                  kMXEventTypeStringRoomPowerLevels,
                                  kMXEventTypeStringPresence
                                  ];
-    membersListener = [mxHandler.mxSession registerEventListenerForTypes:mxMembersEvents block:^(MXSession *matrixSession, MXEvent *event, BOOL isLive) {
+    membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
         // consider only live event
-        if (isLive) {
+        if (direction == MXEventDirectionForwards) {
             // Check the room Id (if any)
             if (event.roomId && [event.roomId isEqualToString:self.roomId] == NO) {
                 // This event does not concern the current room members
@@ -578,7 +594,7 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)hideRoomMembers {
     if (membersListener) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [mxHandler.mxSession unregisterListener:membersListener];
+        [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
     self.membersView.hidden = YES;
@@ -1240,7 +1256,7 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if (scrollView == self.messagesTableView) {
         // paginate ?
-        if ((scrollView.contentOffset.y < -64) && (_activityIndicator.isAnimating == NO))
+        if (scrollView.contentOffset.y < -64)
         {
             [self triggerBackPagination];
         }

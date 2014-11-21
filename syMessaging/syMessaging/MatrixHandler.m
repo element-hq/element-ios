@@ -128,40 +128,18 @@ static MatrixHandler *sharedHandler = nil;
         [self.mxSession start:^{
             self.isInitialSyncDone = YES;
             
-            // Register room members listener
-            roomMembersListener = [self.mxSession registerEventListenerForTypes:@[kMXEventTypeStringRoomMember] block:^(MXSession *mxSession, MXEvent *event, BOOL isLive) {
-                // Consider only live event
-                if (isLive) {
-                    // Consider only event from app user
+            // Register listener to update user's information
+            roomMembersListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringPresence] onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                // Consider only live events
+                if (direction == MXEventDirectionForwards) {
+                    // Consider only events from app user
                     if ([event.userId isEqualToString:self.userId]) {
-                        if (event.prevContent) {
-                            // Check whether the display name has been changed
-                            NSString *prevDisplayname = event.prevContent[@"displayname"];
-                            NSString *displayname = event.content[@"displayname"];
-                            if (!displayname.length) {
-                                displayname = nil;
-                            }
-                            if (!prevDisplayname.length) {
-                                prevDisplayname = nil;
-                            }
-                            if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
-                                // Update local storage
-                                self.userDisplayName = displayname;
-                            }
-                            
-                            // Check whether the avatar has been changed
-                            NSString *avatar = event.content[@"avatar_url"];
-                            NSString *prevAvatar = event.prevContent[@"avatar_url"];
-                            if (!avatar.length) {
-                                avatar = nil;
-                            }
-                            if (!prevAvatar.length) {
-                                prevAvatar = nil;
-                            }
-                            if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
-                                // Update local storage
-                                self.userPictureURL = avatar;
-                            }
+                        // Update local storage
+                        if (![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
+                            self.userDisplayName = event.content[@"displayname"];
+                        }
+                        if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
+                            self.userPictureURL = event.content[@"avatar_url"];
                         }
                     }
                 }
@@ -189,11 +167,11 @@ static MatrixHandler *sharedHandler = nil;
 
 - (void)closeSession {
     if (eventsListener) {
-        [self.mxSession unregisterListener:eventsListener];
+        [self.mxSession removeListener:eventsListener];
         eventsListener = nil;
     }
     if (roomMembersListener) {
-        [self.mxSession unregisterListener:roomMembersListener];
+        [self.mxSession removeListener:roomMembersListener];
         roomMembersListener = nil;
     }
     [self.mxSession close];
@@ -256,9 +234,9 @@ static MatrixHandler *sharedHandler = nil;
 - (void)enableEventsNotifications:(BOOL)isEnabled {
     if (isEnabled) {
         // Register events listener
-        eventsListener = [self.mxSession registerEventListenerForTypes:self.mxSession.eventsFilterForMessages block:^(MXSession *mxSession, MXEvent *event, BOOL isLive) {
+        eventsListener = [self.mxSession listenToEventsOfTypes:self.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
             // Consider only live event (Ignore presence event)
-            if (isLive && (event.eventType != MXEventTypePresence)) {
+            if (direction == MXEventDirectionForwards && (event.eventType != MXEventTypePresence)) {
                 // If we are running on background, show a local notif
                 if (UIApplicationStateBackground == [UIApplication sharedApplication].applicationState)
                 {
@@ -295,7 +273,7 @@ static MatrixHandler *sharedHandler = nil;
         }];
     } else {
         if (eventsListener) {
-            [self.mxSession unregisterListener:eventsListener];
+            [self.mxSession removeListener:eventsListener];
             eventsListener = nil;
         }
         if (self.mxNotification) {

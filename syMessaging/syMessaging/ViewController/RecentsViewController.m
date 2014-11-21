@@ -68,7 +68,7 @@
 
 - (void)dealloc {
     if (recentsListener) {
-        [[MatrixHandler sharedHandler].mxSession unregisterListener:recentsListener];
+        [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
         recentsListener = nil;
     }
     recents = nil;
@@ -95,7 +95,7 @@
     [self setEditing:NO];
     
     if (recentsListener) {
-        [[MatrixHandler sharedHandler].mxSession unregisterListener:recentsListener];
+        [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
         recentsListener = nil;
     }
     
@@ -148,7 +148,7 @@
     
     // Remove potential listener
     if (recentsListener && mxHandler.mxSession) {
-        [mxHandler.mxSession unregisterListener:recentsListener];
+        [mxHandler.mxSession removeListener:recentsListener];
         recentsListener = nil;
     }
     
@@ -159,9 +159,9 @@
         if (mxHandler.mxSession) {
             recents = [NSMutableArray arrayWithArray:mxHandler.mxSession.recents];
             // Register recent listener
-            recentsListener = [mxHandler.mxSession registerEventListenerForTypes:mxHandler.mxSession.eventsFilterForMessages block:^(MXSession *matrixSession, MXEvent *event, BOOL isLive) {
+            recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
                 // consider only live event
-                if (isLive) {
+                if (direction == MXEventDirectionForwards) {
                     // Refresh the whole recents list
                     recents = [NSMutableArray arrayWithArray:mxHandler.mxSession.recents];
                     // Reload table
