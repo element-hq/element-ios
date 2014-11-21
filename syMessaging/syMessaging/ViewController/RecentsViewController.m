@@ -35,6 +35,9 @@
     NSMutableArray  *recents;
     id               recentsListener;
     
+    // Date formatter
+    NSDateFormatter *dateFormatter;
+    
     RoomViewController *currentRoomViewController;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -66,6 +69,13 @@
     
     // Initialisation
     recents = nil;
+    
+    NSString *dateFormat =  @"MMM dd HH:mm";
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
+    [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    [dateFormatter setDateFormat:dateFormat];
 }
 
 - (void)dealloc {
@@ -78,6 +88,10 @@
     }
     recents = nil;
     _preSelectedRoomId = nil;
+    
+    if (dateFormatter) {
+        dateFormatter = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -272,15 +286,12 @@
         cell.roomTitle.font = [UIFont systemFontOfSize:19];
     }
     
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.originServerTs/1000];
-    NSString *dateFormat =  @"MMM dd HH:mm";
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
-    [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    [dateFormatter setDateFormat:dateFormat];
-    cell.recentDate.text = [dateFormatter stringFromDate:date];
-    
+    if (mxEvent.originServerTs != kMXUndefinedTimestamp) {
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.originServerTs/1000];
+        cell.recentDate.text = [dateFormatter stringFromDate:date];
+    } else {
+        cell.recentDate.text = nil;
+    }    
     return cell;
 }
 
