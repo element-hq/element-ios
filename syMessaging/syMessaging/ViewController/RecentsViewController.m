@@ -34,6 +34,8 @@
 @interface RecentsViewController () {
     NSMutableArray  *recents;
     id               recentsListener;
+    
+    RoomViewController *currentRoomViewController;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -67,6 +69,9 @@
 }
 
 - (void)dealloc {
+    if (currentRoomViewController) {
+        currentRoomViewController.roomId = nil;
+    }
     if (recentsListener) {
         [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
         recentsListener = nil;
@@ -220,7 +225,14 @@
         }
         
         if ([controller isKindOfClass:[RoomViewController class]]) {
-            [(RoomViewController *)controller setRoomId:mxEvent.roomId];
+            if (currentRoomViewController) {
+                if ((currentRoomViewController != controller) || (![currentRoomViewController.roomId isEqualToString:mxEvent.roomId])) {
+                    // Release the current one
+                    currentRoomViewController.roomId = nil;
+                }
+            }
+            currentRoomViewController = (RoomViewController *)controller;
+            currentRoomViewController.roomId = mxEvent.roomId;
         }
         
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;

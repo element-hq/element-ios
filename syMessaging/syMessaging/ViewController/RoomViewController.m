@@ -57,14 +57,15 @@ NSString *const kFailedEventId = @"failedEventId";
     BOOL isJoinRequestInProgress;
     
     MXRoom *mxRoom;
-    
+
+    // Messages
     NSMutableArray *messages;
     id messagesListener;
+    NSString *mostRecentEventIdOnViewWillDisappear;
     
     // Back pagination
     BOOL isBackPaginationInProgress;
     NSUInteger backPaginationAddedItemsNb;
-    NSString *backPaginationMostRecentEventId;
     
     // Members list
     NSArray *members;
@@ -98,7 +99,6 @@ NSString *const kFailedEventId = @"failedEventId";
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 
 @property (strong, nonatomic) CustomAlert *actionMenu;
-@property (nonatomic) BOOL isHiddenByMediaPicker;
 @end
 
 @implementation RoomViewController
@@ -107,6 +107,7 @@ NSString *const kFailedEventId = @"failedEventId";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     forceScrollToBottomOnViewDidAppear = YES;
+    mostRecentEventIdOnViewWillDisappear = nil;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
@@ -124,12 +125,6 @@ NSString *const kFailedEventId = @"failedEventId";
 }
 
 - (void)dealloc {
-#ifdef TEMPORARY_PATCH_INITIAL_SYNC
-    // FIXME: these lines should be removed when SDK will fix the initial sync issue
-    if (isJoinRequestInProgress) {
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
-    }
-#endif
     // Clear temporary cached attachments (used for local echo)
     NSUInteger index = tmpCachedAttachments.count;
     NSError *error = nil;
@@ -175,13 +170,20 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Check whether the view was hidden by the media picker
-    if (_isHiddenByMediaPicker) {
-        _isHiddenByMediaPicker = NO;
-        // We don't reload room data in order to keep data related to local echo
-    } else {
-        // Load room data
-        [self configureView];
+    if (isBackPaginationInProgress) {
+        // Busy - be sure that activity indicator is running
+        [_activityIndicator startAnimating];
+    }
+    
+    if (mostRecentEventIdOnViewWillDisappear) {
+        if (messages) {
+            MXEvent *mxEvent = [messages lastObject];
+            if ([mxEvent.eventId isEqualToString:mostRecentEventIdOnViewWillDisappear] == NO) {
+                // Some new events have been received for this room, scroll to bottom to focus on them
+                forceScrollToBottomOnViewDidAppear = YES;
+            }
+        }
+        mostRecentEventIdOnViewWillDisappear = nil;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -205,15 +207,15 @@ NSString *const kFailedEventId = @"failedEventId";
     // Hide members by default
     [self hideRoomMembers];
     
-    // Release message listener except if the view is hidden by the media picker
-    if (messagesListener && (_isHiddenByMediaPicker == NO)) {
-        [mxRoom removeListener:messagesListener];
-        messagesListener = nil;
-    }
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    
+    // We store the eventID of the last known event (if any) in order to scroll to bottom when view will appear, if new events have been received
+    if (messages) {
+        MXEvent *mxEvent = [messages lastObject];
+        mostRecentEventIdOnViewWillDisappear = mxEvent.eventId;
+    }
     
     // Reset visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
@@ -229,36 +231,15 @@ NSString *const kFailedEventId = @"failedEventId";
     }
 }
 
-#pragma mark -
+#pragma mark - room ID
 
 - (void)setRoomId:(NSString *)roomId {
-    if (self.roomId == nil) {
-        // Room data will be loaded when view will appear
-        _roomId = roomId;
-    } else if ([self.roomId isEqualToString:roomId] == NO) {
+    if ([self.roomId isEqualToString:roomId] == NO) {
         _roomId = roomId;
         // Reload room data here
         [self configureView];
     }
 }
-
-#ifdef TEMPORARY_PATCH_INITIAL_SYNC
-// FIXME: this method should be removed when SDK will fix the initial sync issue
-#pragma mark - KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        if ([mxHandler isInitialSyncDone]) {
-            [_activityIndicator stopAnimating];
-            isJoinRequestInProgress = NO;
-            [mxHandler removeObserver:self forKeyPath:@"isInitialSyncDone"];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self configureView];
-            });
-        }
-    }
-}
-#endif
 
 #pragma mark - UIGestureRecognizer delegate
 
@@ -290,15 +271,8 @@ NSString *const kFailedEventId = @"failedEventId";
         [mxRoom removeListener:messagesListener];
         messagesListener = nil;
     }
-    
     // The whole room history is flushed here to rebuild it from the current instant (live)
-    // We store the eventID of the last known event (if any) in order to scroll to bottom if new events have been received for this room
-    if (messages) {
-        MXEvent *lastEvent = [messages lastObject];
-        backPaginationMostRecentEventId = lastEvent.eventId;
-        // flush messages
-        messages = nil;
-    }
+    messages = nil;
     
     // Update room data
     if (self.roomId) {
@@ -312,22 +286,12 @@ NSString *const kFailedEventId = @"failedEventId";
         if ([mxRoom.state memberWithUserId:mxHandler.userId] == nil) {
             isJoinRequestInProgress = YES;
             [_activityIndicator startAnimating];
-            [mxHandler.mxRestClient joinRoom:self.roomId success:^{
-#ifdef TEMPORARY_PATCH_INITIAL_SYNC
-                // Presently the SDK is not able to handle correctly the context for the room recently joined
-                // PATCH: we force new initial sync
-                // FIXME: this new initial sync should be removed when SDK will fix the issue
-                [mxHandler addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [mxHandler forceInitialSync];
-                });
-#else
+            [mxRoom join:^{
                 [_activityIndicator stopAnimating];
                 isJoinRequestInProgress = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self configureView];
                 });
-#endif
             } failure:^(NSError *error) {
                 [_activityIndicator stopAnimating];
                 isJoinRequestInProgress = NO;
@@ -377,14 +341,6 @@ NSString *const kFailedEventId = @"failedEventId";
                 // Back pagination is in progress, we add an old event at the beginning of messages
                 [messages insertObject:event atIndex:0];
                 backPaginationAddedItemsNb++;
-                
-                if (backPaginationMostRecentEventId) {
-                    if ([event.eventId isEqualToString:backPaginationMostRecentEventId] == NO) {
-                        // Some new events have been received for this room, scroll to bottom to focus on them
-                        shouldScrollToBottom = YES;
-                    }
-                    backPaginationMostRecentEventId = nil;
-                }
                 // Display is refreshed at the end of back pagination (see onComplete block)
             }
             
@@ -1319,7 +1275,6 @@ NSString *const kFailedEventId = @"failedEventId";
                         mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                         mediaPicker.allowsEditing = NO;
                         mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
-                        weakSelf.isHiddenByMediaPicker = YES;
                         [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
                     }
                 }];
