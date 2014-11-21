@@ -170,7 +170,7 @@ NSString *const kFailedEventId = @"failedEventId";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (isBackPaginationInProgress) {
+    if (isBackPaginationInProgress || isJoinRequestInProgress) {
         // Busy - be sure that activity indicator is running
         [_activityIndicator startAnimating];
     }
@@ -282,8 +282,8 @@ NSString *const kFailedEventId = @"failedEventId";
         // Update room title
         self.roomNavItem.title = mxRoom.state.displayname;
         
-        // Join the room if the user is not already listed in room's members
-        if ([mxRoom.state memberWithUserId:mxHandler.userId] == nil) {
+        // Check first whether we have to join the room
+        if (mxRoom.state.membership == MXMembershipInvite) {
             isJoinRequestInProgress = YES;
             [_activityIndicator startAnimating];
             [mxRoom join:^{
