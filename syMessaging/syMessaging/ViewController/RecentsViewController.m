@@ -17,19 +17,10 @@
 #import "RecentsViewController.h"
 #import "RoomViewController.h"
 
+#import "RecentsTableViewCell.h"
+
 #import "AppDelegate.h"
 #import "MatrixHandler.h"
-
-@interface RecentsTableViewCell : UITableViewCell
-
-@property (weak, nonatomic) IBOutlet UILabel *roomTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lastEventDescription;
-@property (weak, nonatomic) IBOutlet UILabel *recentDate;
-
-@end
-
-@implementation RecentsTableViewCell
-@end
 
 @interface RecentsViewController () {
     NSMutableArray  *recents;

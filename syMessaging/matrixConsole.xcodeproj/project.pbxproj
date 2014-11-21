@@ -37,6 +37,7 @@
 		F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5B019E6898800E47915 /* tab_home.ico */; };
 		F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3C30B1A011EF10000D49E /* AppSettings.m */; };
 		F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */; };
+		F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,8 @@
 		F0D3C30B1A011EF10000D49E /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		F0D3C30D1A01330F0000D49E /* SettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewCell.h; sourceTree = "<group>"; };
 		F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewCell.m; sourceTree = "<group>"; };
+		F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsTableViewCell.h; sourceTree = "<group>"; };
+		F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +183,8 @@
 			children = (
 				F00B5DB71A1B9BCE00EA1C8D /* CustomImageView.h */,
 				F00B5DB81A1B9BCE00EA1C8D /* CustomImageView.m */,
+				F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */,
+				F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */,
 				F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */,
 				F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */,
 				F03EF5FD19F1762000A0EE52 /* RoomMessageTableCell.h */,
@@ -414,6 +419,7 @@
 				F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				F03C47111A02952800E445AB /* CustomAlert.m in Sources */,
+				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
 				F00B5DB91A1B9BCE00EA1C8D /* CustomImageView.m in Sources */,
 				F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */,
