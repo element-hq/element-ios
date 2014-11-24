@@ -29,7 +29,7 @@
 		F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E219DD9DE700B621A1 /* Main.storyboard */; };
 		F07A80E619DD9DE700B621A1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E519DD9DE700B621A1 /* Images.xcassets */; };
 		F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E719DD9DE700B621A1 /* LaunchScreen.xib */; };
-		F07A80F519DD9DE700B621A1 /* syMessagingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80F419DD9DE700B621A1 /* syMessagingTests.m */; };
+		F07A80F519DD9DE700B621A1 /* matrixConsoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */; };
 		F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */; };
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
 		F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AC19E6895E00E47915 /* logoHighRes.png */; };
@@ -46,7 +46,7 @@
 			containerPortal = F07A80CA19DD9DE700B621A1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F07A80D119DD9DE700B621A1;
-			remoteInfo = syMessaging;
+			remoteInfo = matrixConsole;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -92,7 +92,7 @@
 		F07A80E819DD9DE700B621A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F07A80EE19DD9DE700B621A1 /* matrixConsoleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = matrixConsoleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F07A80F319DD9DE700B621A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F07A80F419DD9DE700B621A1 /* syMessagingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = syMessagingTests.m; sourceTree = "<group>"; };
+		F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = matrixConsoleTests.m; sourceTree = "<group>"; };
 		F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrixConsole.jpg; sourceTree = "<group>"; };
 		F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F0CEA5AC19E6895E00E47915 /* logoHighRes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoHighRes.png; sourceTree = "<group>"; };
@@ -198,8 +198,8 @@
 		F07A80C919DD9DE700B621A1 = {
 			isa = PBXGroup;
 			children = (
-				F07A80D419DD9DE700B621A1 /* syMessaging */,
-				F07A80F119DD9DE700B621A1 /* syMessagingTests */,
+				F07A80D419DD9DE700B621A1 /* matrixConsole */,
+				F07A80F119DD9DE700B621A1 /* matrixConsoleTests */,
 				F07A80D319DD9DE700B621A1 /* Products */,
 				B18A10A9FB884DD357EBD414 /* Pods */,
 				EAA71E3C2B16D1D86B3F5100 /* Frameworks */,
@@ -215,7 +215,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F07A80D419DD9DE700B621A1 /* syMessaging */ = {
+		F07A80D419DD9DE700B621A1 /* matrixConsole */ = {
 			isa = PBXGroup;
 			children = (
 				F03EF5FC19F1762000A0EE52 /* View */,
@@ -236,7 +236,7 @@
 				F01628B519E298710071C473 /* Assets */,
 				F07A80D519DD9DE700B621A1 /* Supporting Files */,
 			);
-			path = syMessaging;
+			path = matrixConsole;
 			sourceTree = "<group>";
 		};
 		F07A80D519DD9DE700B621A1 /* Supporting Files */ = {
@@ -248,13 +248,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F07A80F119DD9DE700B621A1 /* syMessagingTests */ = {
+		F07A80F119DD9DE700B621A1 /* matrixConsoleTests */ = {
 			isa = PBXGroup;
 			children = (
-				F07A80F419DD9DE700B621A1 /* syMessagingTests.m */,
+				F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */,
 				F07A80F219DD9DE700B621A1 /* Supporting Files */,
 			);
-			path = syMessagingTests;
+			path = matrixConsoleTests;
 			sourceTree = "<group>";
 		};
 		F07A80F219DD9DE700B621A1 /* Supporting Files */ = {
@@ -283,7 +283,7 @@
 			dependencies = (
 			);
 			name = matrixConsole;
-			productName = syMessaging;
+			productName = matrixConsole;
 			productReference = F07A80D219DD9DE700B621A1 /* matrixConsole.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -301,7 +301,7 @@
 				F07A80F019DD9DE700B621A1 /* PBXTargetDependency */,
 			);
 			name = matrixConsoleTests;
-			productName = syMessagingTests;
+			productName = matrixConsoleTests;
 			productReference = F07A80EE19DD9DE700B621A1 /* matrixConsoleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -432,7 +432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F07A80F519DD9DE700B621A1 /* syMessagingTests.m in Sources */,
+				F07A80F519DD9DE700B621A1 /* matrixConsoleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,7 +550,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = syMessaging/Info.plist;
+				INFOPLIST_FILE = matrixConsole/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = matrixConsole;
@@ -563,7 +563,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = syMessaging/Info.plist;
+				INFOPLIST_FILE = matrixConsole/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = matrixConsole;
@@ -582,7 +582,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = syMessagingTests/Info.plist;
+				INFOPLIST_FILE = matrixConsoleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = matrixConsoleTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/matrixConsole.app/matrixConsole";
@@ -597,7 +597,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = syMessagingTests/Info.plist;
+				INFOPLIST_FILE = matrixConsoleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = matrixConsoleTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/matrixConsole.app/matrixConsole";
