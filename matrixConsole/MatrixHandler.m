@@ -80,10 +80,9 @@ static MatrixHandler *sharedHandler = nil;
 
 - (void)openSession {
     
-    MXCredentials *credentials = [[MXCredentials alloc] init];
-    credentials.homeServer = self.homeServerURL;
-    credentials.userId = self.userId;
-    credentials.accessToken = self.accessToken;
+    MXCredentials *credentials = [[MXCredentials alloc] initWithHomeServer:self.homeServerURL
+                                                                    userId:self.userId
+                                                               accessToken:self.accessToken];
     
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
