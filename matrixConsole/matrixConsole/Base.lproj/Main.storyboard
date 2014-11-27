@@ -52,19 +52,20 @@
                                                     </constraints>
                                                 </imageView>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="J5R-Mh-3hV">
-                                                    <rect key="frame" x="51" y="20" width="200" height="30"/>
+                                                    <rect key="frame" x="51" y="10" width="200" height="40"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="rsq-bW-mGt"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 </textView>
                                                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View" customClass="CustomImageView">
-                                                    <rect key="frame" x="59" y="28" width="184" height="14"/>
+                                                    <rect key="frame" x="59" y="18" width="184" height="24"/>
                                                 </imageView>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play.png" translatesAutoresizingMaskIntoConstraints="NO" id="vF4-rq-4Rn">
-                                                    <rect key="frame" x="135" y="19" width="32" height="32"/>
+                                                    <rect key="frame" x="135" y="14" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="JvT-k9-GoK"/>
                                                         <constraint firstAttribute="width" constant="32" id="sTU-9e-QiN"/>
@@ -119,7 +120,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="Ttt-0P-dQW" secondAttribute="trailing" id="mJg-Df-CWQ"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="qkW-ys-ckn"/>
-                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="20" id="rJt-w3-D8g"/>
+                                                <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="10" id="rJt-w3-D8g"/>
                                                 <constraint firstAttribute="trailing" secondItem="yRH-kt-si3" secondAttribute="trailing" constant="8" id="vh8-ds-cqA"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="wym-In-Raa"/>
                                             </constraints>
@@ -147,26 +148,27 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="7qn-gi-w7s">
-                                                    <rect key="frame" x="349" y="20" width="200" height="30"/>
+                                                    <rect key="frame" x="349" y="10" width="200" height="40"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="a6g-WS-jjN"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 </textView>
                                                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QZT-V8-yqJ" userLabel="Attachment View" customClass="CustomImageView">
-                                                    <rect key="frame" x="357" y="28" width="184" height="14"/>
+                                                    <rect key="frame" x="357" y="18" width="184" height="24"/>
                                                 </imageView>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play.png" translatesAutoresizingMaskIntoConstraints="NO" id="0Bl-Sv-Q2H">
-                                                    <rect key="frame" x="433" y="19" width="32" height="32"/>
+                                                    <rect key="frame" x="433" y="14" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="VbS-GC-vtz"/>
                                                         <constraint firstAttribute="width" constant="32" id="faJ-bg-xPV"/>
                                                     </constraints>
                                                 </imageView>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Pq8-lB-cZM">
-                                                    <rect key="frame" x="439" y="25" width="20" height="20"/>
+                                                    <rect key="frame" x="439" y="20" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ" customClass="CustomImageView">
                                                     <rect key="frame" x="552" y="5" width="40" height="40"/>
@@ -223,7 +225,7 @@
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerY" secondItem="0Bl-Sv-Q2H" secondAttribute="centerY" id="aUE-Bv-XF2"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="3" id="cCA-xk-XBe"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerY" secondItem="Pq8-lB-cZM" secondAttribute="centerY" id="ej0-OC-3hJ"/>
-                                                <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="20" id="owD-KZ-snG"/>
+                                                <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="owD-KZ-snG"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" constant="-8" id="q4h-EM-X4Z"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="2lD-F0-Haf" secondAttribute="trailing" id="q5r-bz-qP7"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="trailing" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="-8" id="tgM-eJ-BEk"/>

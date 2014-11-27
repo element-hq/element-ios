@@ -95,13 +95,13 @@
                 NSUInteger lastActiveAgoInSec = user.lastActiveAgo / 1000;
                 NSString *lastActive;
                 if (lastActiveAgoInSec < 60) {
-                    lastActive = [NSString stringWithFormat:@"%ds ago", lastActiveAgoInSec];
+                    lastActive = [NSString stringWithFormat:@"%lus ago", (unsigned long)lastActiveAgoInSec];
                 } else if (lastActiveAgoInSec < 3600) {
-                    lastActive = [NSString stringWithFormat:@"%dm ago", (lastActiveAgoInSec / 60)];
+                    lastActive = [NSString stringWithFormat:@"%lum ago", (unsigned long)(lastActiveAgoInSec / 60)];
                 } else if (lastActiveAgoInSec < 86400) {
-                    lastActive = [NSString stringWithFormat:@"%dh ago", (lastActiveAgoInSec / 3600)];
+                    lastActive = [NSString stringWithFormat:@"%luh ago", (unsigned long)(lastActiveAgoInSec / 3600)];
                 } else {
-                    lastActive = [NSString stringWithFormat:@"%dd ago", (lastActiveAgoInSec / 86400)];
+                    lastActive = [NSString stringWithFormat:@"%lud ago", (unsigned long)(lastActiveAgoInSec / 86400)];
                 }
                 
                 // Check presence

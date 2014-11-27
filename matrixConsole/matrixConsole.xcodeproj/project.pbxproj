@@ -23,6 +23,7 @@
 		F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F519F171EB00A0EE52 /* SettingsViewController.m */; };
 		F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */; };
 		F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF60119F19E7C00A0EE52 /* MediaManager.m */; };
+		F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0465AF91A251F85003639F9 /* RoomMessage.m */; };
 		F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955E19DEED8A008761B0 /* MatrixHandler.m */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
 		F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80DA19DD9DE700B621A1 /* AppDelegate.m */; };
@@ -80,6 +81,8 @@
 		F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessageTableCell.m; sourceTree = "<group>"; };
 		F03EF60019F19E7C00A0EE52 /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
 		F03EF60119F19E7C00A0EE52 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
+		F0465AF81A251F85003639F9 /* RoomMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessage.h; sourceTree = "<group>"; };
+		F0465AF91A251F85003639F9 /* RoomMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessage.m; sourceTree = "<group>"; };
 		F05B955D19DEED8A008761B0 /* MatrixHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixHandler.h; sourceTree = "<group>"; };
 		F05B955E19DEED8A008761B0 /* MatrixHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixHandler.m; sourceTree = "<group>"; };
 		F07A80D219DD9DE700B621A1 /* matrixConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matrixConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,6 +198,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		F0465AF71A251F85003639F9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F0465AF81A251F85003639F9 /* RoomMessage.h */,
+				F0465AF91A251F85003639F9 /* RoomMessage.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		F07A80C919DD9DE700B621A1 = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +230,7 @@
 		F07A80D419DD9DE700B621A1 /* matrixConsole */ = {
 			isa = PBXGroup;
 			children = (
+				F0465AF71A251F85003639F9 /* Model */,
 				F03EF5FC19F1762000A0EE52 /* View */,
 				F03EF5E919F171EB00A0EE52 /* ViewController */,
 				F07A80D919DD9DE700B621A1 /* AppDelegate.h */,
@@ -418,6 +431,7 @@
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
+				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
 				F03C47111A02952800E445AB /* CustomAlert.m in Sources */,
 				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
