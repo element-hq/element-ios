@@ -268,7 +268,7 @@
     MXRoom *mxRoom = [mxHandler.mxSession room:mxEvent.roomId];
     
     cell.roomTitle.text = [mxRoom.state displayname];
-    cell.lastEventDescription.text = [mxHandler displayTextFor:mxEvent inSubtitleMode:YES];
+    cell.lastEventDescription.text = [mxHandler displayTextForEvent:mxEvent withRoomState:mxRoom.state inSubtitleMode:YES];
     
     // Set in bold public room name
     if (mxRoom.state.isPublic) {

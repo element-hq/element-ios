@@ -45,8 +45,8 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 - (void)enableEventsNotifications:(BOOL)isEnabled;
 
-- (BOOL)isAttachment:(MXEvent*)message;
-- (BOOL)isNotification:(MXEvent*)message;
-- (NSString*)displayTextFor:(MXEvent*)message inSubtitleMode:(BOOL)isSubtitle;
+- (BOOL)isSupportedAttachment:(MXEvent*)event;
+- (BOOL)isEmote:(MXEvent*)event;
+- (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
 
 @end

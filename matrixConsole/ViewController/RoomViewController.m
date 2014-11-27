@@ -18,6 +18,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "RoomViewController.h"
+#import "RoomMessage.h"
 #import "RoomMessageTableCell.h"
 #import "RoomMemberTableCell.h"
 
@@ -29,15 +30,8 @@
 
 #define UPLOAD_FILE_SIZE 5000000
 
-#define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
-
 #define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT 10
-#define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK (-5)
-#define ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK
 #define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT 0
-#define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL (-5)
-
-#define ROOM_MESSAGE_CELL_IMAGE_MARGIN 8
 
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
@@ -47,9 +41,6 @@ NSString *const kCmdBanUser = @"/ban";
 NSString *const kCmdUnbanUser = @"/unban";
 NSString *const kCmdSetUserPowerLevel = @"/op";
 NSString *const kCmdResetUserPowerLevel = @"/deop";
-
-NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
-NSString *const kFailedEventId = @"failedEventId";
 
 
 @interface RoomViewController () {
@@ -61,7 +52,6 @@ NSString *const kFailedEventId = @"failedEventId";
     // Messages
     NSMutableArray *messages;
     id messagesListener;
-    NSString *mostRecentEventIdOnViewWillDisappear;
     
     // Back pagination
     BOOL isBackPaginationInProgress;
@@ -78,10 +68,6 @@ NSString *const kFailedEventId = @"failedEventId";
     
     // Date formatter (nil if dateTimeLabel is hidden)
     NSDateFormatter *dateFormatter;
-    
-    // Text view settings
-    NSAttributedString *initialAttributedStringForOutgoingMessage;
-    NSAttributedString *initialAttributedStringForIncomingMessage;
     
     // Cache
     NSMutableArray *tmpCachedAttachments;
@@ -108,7 +94,6 @@ NSString *const kFailedEventId = @"failedEventId";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     forceScrollToBottomOnViewDidAppear = YES;
-    mostRecentEventIdOnViewWillDisappear = nil;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
@@ -158,9 +143,6 @@ NSString *const kFailedEventId = @"failedEventId";
     if (dateFormatter) {
         dateFormatter = nil;
     }
-    
-    initialAttributedStringForOutgoingMessage = nil;
-    initialAttributedStringForIncomingMessage = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -174,17 +156,6 @@ NSString *const kFailedEventId = @"failedEventId";
     if (isBackPaginationInProgress || isJoinRequestInProgress) {
         // Busy - be sure that activity indicator is running
         [_activityIndicator startAnimating];
-    }
-    
-    if (mostRecentEventIdOnViewWillDisappear) {
-        if (messages) {
-            MXEvent *mxEvent = [messages lastObject];
-            if ([mxEvent.eventId isEqualToString:mostRecentEventIdOnViewWillDisappear] == NO) {
-                // Some new events have been received for this room, scroll to bottom to focus on them
-                forceScrollToBottomOnViewDidAppear = YES;
-            }
-        }
-        mostRecentEventIdOnViewWillDisappear = nil;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -211,12 +182,6 @@ NSString *const kFailedEventId = @"failedEventId";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-    
-    // We store the eventID of the last known event (if any) in order to scroll to bottom when view will appear, if new events have been received
-    if (messages) {
-        MXEvent *mxEvent = [messages lastObject];
-        mostRecentEventIdOnViewWillDisappear = mxEvent.eventId;
-    }
     
     // Reset visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
@@ -315,38 +280,126 @@ NSString *const kFailedEventId = @"failedEventId";
             
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
+                shouldScrollToBottom = (self.messagesTableView.contentOffset.y + self.messagesTableView.frame.size.height >= self.messagesTableView.contentSize.height);
+                
+                NSIndexPath *indexPathForInsertedRow = nil;
+                NSIndexPath *indexPathForDeletedRow = nil;
+                NSMutableArray *indexPathsForUpdatedRows = [NSMutableArray array];
+                BOOL isComplete = NO;
                 // For outgoing message, remove the temporary event
-                if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId]) {
-                    NSUInteger index = messages.count;
-                    while (index--) {
-                        MXEvent *mxEvent = [messages objectAtIndex:index];
-                        if ([mxEvent.eventId isEqualToString:event.eventId]) {
-                            [messages replaceObjectAtIndex:index withObject:event];
-                            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                            return;
+                if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
+                    // Consider first the last message
+                    RoomMessage *message = [messages lastObject];
+                    NSUInteger index = messages.count - 1;
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    if ([message containsEventId:event.eventId]) {
+                        if (message.messageType == RoomMessageTypeText) {
+                            // Removing temporary event (local echo)
+                            [message removeEvent:event.eventId];
+                            // Update message with the received event
+                            isComplete = [message addEvent:event withRoomState:roomState];
+                            if (message.attributedTextMessage.length) {
+                                [indexPathsForUpdatedRows addObject:indexPath];
+                            } else {
+                                [messages removeObjectAtIndex:index];
+                                indexPathForDeletedRow = indexPath;
+                            }
+                        } else {
+                            // Create a new message to handle attachment
+                            message = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
+                            if (!message) {
+                                // Ignore unsupported/unexpected events
+                                [messages removeObjectAtIndex:index];
+                                indexPathForDeletedRow = indexPath;
+                            } else {
+                                [messages replaceObjectAtIndex:index withObject:message];
+                                [indexPathsForUpdatedRows addObject:indexPath];
+                            }
+                            isComplete = YES;
+                        }
+                    } else {
+                        while (index--) {
+                            message = [messages objectAtIndex:index];
+                            indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                            if ([message containsEventId:event.eventId]) {
+                                if (message.messageType == RoomMessageTypeText) {
+                                    // Removing temporary event (local echo)
+                                    [message removeEvent:event.eventId];
+                                    if (message.attributedTextMessage.length) {
+                                        [indexPathsForUpdatedRows addObject:indexPath];
+                                    } else {
+                                        [messages removeObjectAtIndex:index];
+                                        indexPathForDeletedRow = indexPath;
+                                    }
+                                } else {
+                                    // Remove the local event (a new one will be added to messages)
+                                    [messages removeObjectAtIndex:index];
+                                    indexPathForDeletedRow = indexPath;
+                                }
+                                break;
+                            }
                         }
                     }
                 }
-                // Here a new event is added
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-                [messages addObject:event];
-                shouldScrollToBottom = (self.messagesTableView.contentOffset.y + self.messagesTableView.frame.size.height >= self.messagesTableView.contentSize.height);
                 
-                // Refresh table display (Disable animation during cells insertion to prevent flickering)
+                if (isComplete == NO) {
+                    // Check whether the event may be grouped with last message
+                    RoomMessage *lastMessage = [messages lastObject];
+                    if (lastMessage && [lastMessage addEvent:event withRoomState:roomState]) {
+                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(messages.count - 1) inSection:0];
+                        [indexPathsForUpdatedRows addObject:indexPath];
+                    } else {
+                        lastMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
+                        if (lastMessage) {
+                            indexPathForInsertedRow = [NSIndexPath indexPathForRow:messages.count inSection:0];
+                            [messages addObject:lastMessage];
+                        } // else ignore unsupported/unexpected events
+                    }
+                }
+                
+                // Refresh table display
+                BOOL isModified = NO;
                 [UIView setAnimationsEnabled:NO];
                 [self.messagesTableView beginUpdates];
-                if (indexPath.row > 0) {
-                    NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+                if (indexPathForDeletedRow) {
+                    if (indexPathForInsertedRow) {
+                        [indexPathsForUpdatedRows removeAllObjects];
+                        NSUInteger index = indexPathForDeletedRow.row;
+                        for (; index < messages.count; index++) {
+                            [indexPathsForUpdatedRows addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+                        }
+                    } else {
+                        [self.messagesTableView deleteRowsAtIndexPaths:@[indexPathForDeletedRow] withRowAnimation:UITableViewRowAnimationNone];
+                        isModified = YES;
+                    }
+                } else if (indexPathForInsertedRow) {
+                    [self.messagesTableView insertRowsAtIndexPaths:@[indexPathForInsertedRow] withRowAnimation:UITableViewRowAnimationNone];
+                    isModified = YES;
                 }
-                [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                if (indexPathsForUpdatedRows.count) {
+                    [self.messagesTableView reloadRowsAtIndexPaths:indexPathsForUpdatedRows withRowAnimation:UITableViewRowAnimationNone];
+                    isModified = YES;
+                }
                 [self.messagesTableView endUpdates];
                 [UIView setAnimationsEnabled:YES];
+                
+                if (isModified) {
+                    if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
+                        // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
+                        forceScrollToBottomOnViewDidAppear = YES;
+                    }
+                }
             } else if (isBackPaginationInProgress && direction == MXEventDirectionBackwards) {
                 // Back pagination is in progress, we add an old event at the beginning of messages
-                [messages insertObject:event atIndex:0];
-                backPaginationAddedItemsNb++;
+                RoomMessage *firstMessage = [messages firstObject];
+                if (!firstMessage || [firstMessage addEvent:event withRoomState:roomState] == NO) {
+                    firstMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
+                    if (firstMessage) {
+                        [messages insertObject:firstMessage atIndex:0];
+                        backPaginationAddedItemsNb++;
+                    }
+                    // Ignore unsupported/unexpected events
+                }
                 // Display is refreshed at the end of back pagination (see onComplete block)
             }
             
@@ -420,7 +473,7 @@ NSString *const kFailedEventId = @"failedEventId";
                     [self.messagesTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 });
             } else {
-                // Here there was no event related to the `messages` property
+                // Here there was no event related to the listened types
                 [_activityIndicator stopAnimating];
                 isBackPaginationInProgress = NO;
                 // Trigger a new back pagination (if possible)
@@ -571,9 +624,9 @@ NSString *const kFailedEventId = @"failedEventId";
     
     // Retrieve attachment information
     NSDictionary *content = attachment.mediaInfo;
-    NSString *msgtype = content[@"msgtype"];
-    if ([msgtype isEqualToString:kMXMessageTypeImage]) {
-        NSString *url =content[@"url"];
+    NSUInteger msgtype = ((NSNumber*)content[@"msgtype"]).unsignedIntValue;
+    if (msgtype == RoomMessageTypeImage) {
+        NSString *url = content[@"url"];
         if (url.length) {
             highResImage = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
             highResImage.contentMode = UIViewContentModeScaleAspectFit;
@@ -588,7 +641,7 @@ NSString *const kFailedEventId = @"failedEventId";
             [highResImage addGestureRecognizer:tap];
             highResImage.userInteractionEnabled = YES;
         }
-    } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+    } else if (msgtype == RoomMessageTypeVideo) {
         NSString *url =content[@"url"];
         if (url.length) {
             NSString *mimetype = nil;
@@ -628,8 +681,8 @@ NSString *const kFailedEventId = @"failedEventId";
                 }];
             }
         }
-    } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
-    } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
+    } else if (msgtype == RoomMessageTypeAudio) {
+    } else if (msgtype == RoomMessageTypeLocation) {
     }
 }
 
@@ -726,82 +779,23 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
-    if (tableView == self.membersTableView)
-    {
+    if (tableView == self.membersTableView) {
         return 50;
     }
     
     // Compute here height of message cells
     CGFloat rowHeight;
-    // Get event related to this row
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
+    // Get message related to this row
+    RoomMessage* message = [messages objectAtIndex:indexPath.row];
+    // Consider message content height
+    rowHeight = message.contentSize.height;
+    rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+    rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
     
-    // Check whether the cell will display an attachment or a text message
-    CGSize contentSize;
-    NSString *displayText = nil;
-    if ([mxHandler isAttachment:mxEvent]) {
-        contentSize = [self attachmentContentSize:mxEvent];
-        if (!contentSize.width || !contentSize.height) {
-            // Check whether unsupported/unexpected messages should be exposed
-            if ([AppSettings sharedSettings].hideUnsupportedMessages) {
-                displayText = @"";
-            } else {
-                displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
-            }
-        }
-    } else {
-        displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
+    // We consider the minimun cell height (50) in order to display correctly user's picture
+    if (rowHeight < 50) {
+        rowHeight = 50;
     }
-    if (displayText) {
-        contentSize = [self textContentSize:displayText];
-    }
-    
-    // Check whether the previous message has been sent by the same user.
-    // We group together messages from the same user. The user's picture and name are displayed only for the first message.
-    // We consider a new chunk when the user is different from the previous message's one.
-    BOOL isNewChunk = YES;
-    if (indexPath.row) {
-        MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
-            isNewChunk = NO;
-        }
-    }
-    
-    // Adjust cell height inside chunk
-    rowHeight = contentSize.height;
-    if (isNewChunk) {
-        // The cell is the first cell of the chunk
-        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
-    } else {
-        // Inside chunk the height of the cell is reduced in order to reduce padding between messages
-        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK;
-    }
-    
-    // Check whether the message is the last message of the current chunk
-    BOOL isChunkEnd = YES;
-    if (indexPath.row < messages.count - 1) {
-        MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
-        if ([nextMxEvent.userId isEqualToString:mxEvent.userId]) {
-            isChunkEnd = NO;
-        }
-    }
-    
-    if (!isNewChunk && !isChunkEnd) {
-        // Reduce again cell height to reduce space with the next cell
-        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
-    } else {
-        // The cell is the first cell of the chunk or the last one
-        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
-    }
-    
-    if (isNewChunk && isChunkEnd) {
-        // When the chunk is composed by only one message, we consider the minimun cell height (50) in order to display correctly user's picture
-        if (rowHeight < 50) {
-            rowHeight = 50;
-        }
-    }
-    
     return rowHeight;
 }
 
@@ -814,36 +808,20 @@ NSString *const kFailedEventId = @"failedEventId";
         if (indexPath.row < members.count) {
             [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:mxRoom];
         }
-        
         return memberCell;
     }
     
     // Handle here room message cells
     RoomMessageTableCell *cell;
-    MXEvent *mxEvent = [messages objectAtIndex:indexPath.row];
+    RoomMessage *message = [messages objectAtIndex:indexPath.row];
     BOOL isIncomingMsg = NO;
-    BOOL enableLinkDetection = YES;
     
-    if ([mxEvent.userId isEqualToString:mxHandler.userId]) {
+    if ([message.senderId isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
         [((OutgoingMessageTableCell*)cell).activityIndicator stopAnimating];
-        // Restore initial settings of text view
-        if (initialAttributedStringForOutgoingMessage == nil) {
-            initialAttributedStringForOutgoingMessage = cell.messageTextView.attributedText;
-        } else {
-            cell.messageTextView.attributedText = initialAttributedStringForOutgoingMessage;
-            cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeNone;
-        }
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
         isIncomingMsg = YES;
-        // Restore initial settings of text view
-        if (initialAttributedStringForIncomingMessage == nil) {
-            initialAttributedStringForIncomingMessage = cell.messageTextView.attributedText;
-        } else {
-            cell.messageTextView.attributedText = initialAttributedStringForIncomingMessage;
-            cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeNone;
-        }
     }
     
     // Restore initial settings of attachment ImageView
@@ -858,218 +836,88 @@ NSString *const kFailedEventId = @"failedEventId";
     cell.attachmentViewBottomAlignmentConstraint.constant = 0;
     
     // Check whether the previous message has been sent by the same user.
-    // We group together messages from the same user. The user's picture and name are displayed only for the first message.
-    // We consider a new chunk when the user is different from the previous message's one.
-    BOOL isNewChunk = YES;
+    // The user's picture and name are displayed only for the first message.
+    BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
-        MXEvent *previousMxEvent = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMxEvent.userId isEqualToString:mxEvent.userId]) {
-            isNewChunk = NO;
+        RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
+        if ([previousMessage.senderId isEqualToString:message.senderId]
+            && [previousMessage.senderName isEqualToString:message.senderName]
+            && [previousMessage.senderAvatarUrl isEqualToString:message.senderAvatarUrl]) {
+            shouldHideSenderInfo = YES;
         }
     }
     
-    if (isNewChunk) {
-        // Adjust display of the first message of a chunk
-        cell.pictureView.hidden = NO;
-        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
-        cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
-        cell.messageTextView.contentInset = UIEdgeInsetsZero;
-        
-        // Set user's picture
+    // Adjust display
+    cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+    cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
+    
+    // Handle user's picture
+    cell.pictureView.hidden = shouldHideSenderInfo;
+    if (!shouldHideSenderInfo) {
         cell.pictureView.placeholder = @"default-profile";
-        cell.pictureView.imageURL = [mxRoom.state memberWithUserId:mxEvent.userId].avatarUrl;
+        cell.pictureView.imageURL = message.senderAvatarUrl;
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
         cell.pictureView.clipsToBounds = YES;
-    } else {
-        // Adjust display of other messages of the chunk
-        cell.pictureView.hidden = YES;
-        // The height of this cell has been reduced in order to reduce padding between messages of the same chunk
-        // We define here a negative constant for the top space between textView and its superview to display correctly the message text.
-        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_IN_CHUNK;
-        // Shift to the top the displayed message to reduce space with the previous messages
-        UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
-        edgeInsets.top = ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
-        cell.messageTextView.contentInset = edgeInsets;
-        
-        // Check whether the next message belongs to the same chunk in order to define bottom space between textView and its superview
-        cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
-        if (indexPath.row < messages.count - 1) {
-            MXEvent *nextMxEvent = [messages objectAtIndex:indexPath.row + 1];
-            if ([nextMxEvent.userId isEqualToString:mxEvent.userId]) {
-                cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_GROUPED_CELL;
-            }
-        }
     }
     
     // Update incoming/outgoing message layout
     if (isIncomingMsg) {
         IncomingMessageTableCell* incomingMsgCell = (IncomingMessageTableCell*)cell;
-        // Display user's display name for the first meesage of a chunk, except if the name appears in the displayed text (see emote and membership event)
-        if (isNewChunk && [mxHandler isNotification:mxEvent] == NO) {
-            incomingMsgCell.userNameLabel.hidden = NO;
-            incomingMsgCell.userNameLabel.text = [mxRoom.state memberName:mxEvent.userId];
-        } else {
-            incomingMsgCell.userNameLabel.hidden = YES;
-        }
-        
-        // Reset text color
-        cell.messageTextView.textColor = [UIColor blackColor];
+        // Display user's display name except if the name appears in the displayed text (see emote and membership event)
+        incomingMsgCell.userNameLabel.hidden = (shouldHideSenderInfo || message.startsWithSenderName);
+        incomingMsgCell.userNameLabel.text = message.senderName;
     } else {
         OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
         // Hide unsent label by default
-        outgoingMsgCell.unsentLabel.hidden = YES;
+        outgoingMsgCell.unsentLabel.hidden = YES; // TODO handle unsentLabel display
+    }
+    CGSize contentSize = message.contentSize;
+    if (message.messageType != RoomMessageTypeText) {
+        cell.messageTextView.attributedText = nil; // Note: Text view is used as attachment background view
+        cell.attachmentView.hidden = NO;
+        // Fade attachments during upload
+        if (message.isUploadInProgress) {
+            cell.attachmentView.alpha = 0.5;
+            [((OutgoingMessageTableCell*)cell).activityIndicator startAnimating];
+        } else {
+            cell.attachmentView.alpha = 1;
+        }
+        NSString *url = message.thumbnailURL;
+        if (!url && message.messageType == RoomMessageTypeImage) {
+            url = message.attachmentURL;
+        }
+        if (message.messageType == RoomMessageTypeVideo) {
+            cell.playIconView.hidden = NO;
+        }
         
-        // Set the right text color for outgoing messages
-        if ([mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
-            cell.messageTextView.textColor = [UIColor lightGrayColor];
-            enableLinkDetection = NO;
-        } else if ([mxEvent.eventId hasPrefix:kFailedEventId]) {
-            cell.messageTextView.textColor = [UIColor redColor];
-            enableLinkDetection = NO;
-            outgoingMsgCell.unsentLabel.hidden = NO;
-            // Align unsent label with the textView
-            outgoingMsgCell.unsentLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
-        } else {
-            cell.messageTextView.textColor = [UIColor blackColor];
+        cell.attachmentView.imageURL = url;
+        if (url && message.attachmentURL && message.attachmentInfo) {
+            // Add tap recognizer to open attachment
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAttachmentView:)];
+            [tap setNumberOfTouchesRequired:1];
+            [tap setNumberOfTapsRequired:1];
+            [tap setDelegate:self];
+            [cell.attachmentView addGestureRecognizer:tap];
+            // Store attachment content description used in showAttachmentView:
+            cell.attachmentView.mediaInfo = @{@"msgtype" : [NSNumber numberWithUnsignedInt:message.messageType],
+                                              @"url" : message.attachmentURL,
+                                              @"info" : message.attachmentInfo};
         }
-    }
-    
-    if ([mxHandler isAttachment:mxEvent]) {
-        cell.messageTextView.text = nil; // Note: Text view is used as attachment background view
-        CGSize contentSize = [self attachmentContentSize:mxEvent];
-        if (!contentSize.width || !contentSize.height) {
-            NSLog(@"ERROR: Unsupported message %@", mxEvent.description);
-            // Check whether unsupported/unexpected messages should be exposed
-            if ([AppSettings sharedSettings].hideUnsupportedMessages == NO) {
-                // Display event content as unsupported message
-                cell.messageTextView.text = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, mxEvent.description];
-                cell.messageTextView.textColor = [UIColor redColor];
-                enableLinkDetection = NO;
-            }
-            // Adjust constraint constant
-            cell.msgTextViewWidthConstraint.constant = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
-        } else {
-            cell.attachmentView.hidden = NO;
-            // Fade attachments during upload
-            if (isIncomingMsg == NO && [mxEvent.eventId hasPrefix:kLocalEchoEventIdPrefix]) {
-                cell.attachmentView.alpha = 0.5;
-                [((OutgoingMessageTableCell*)cell).activityIndicator startAnimating];
-            } else {
-                cell.attachmentView.alpha = 1;
-            }
-            
-            NSString *msgtype = mxEvent.content[@"msgtype"];
-            if ([msgtype isEqualToString:kMXMessageTypeImage] || [msgtype isEqualToString:kMXMessageTypeVideo]) {
-                NSString *url = nil;
-                if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
-                    cell.playIconView.hidden = NO;
-                    if (mxEvent.content[@"info"]) {
-                        url = mxEvent.content[@"info"][@"thumbnail_url"];
-                    }
-                } else {
-                    url = mxEvent.content[@"thumbnail_url"];
-                }
-                
-                if (url == nil) {
-                    url = mxEvent.content[@"url"];
-                }
-                cell.attachmentView.imageURL = url;
-                
-                // Add tap recognizer to open attachment
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAttachmentView:)];
-                [tap setNumberOfTouchesRequired:1];
-                [tap setNumberOfTapsRequired:1];
-                [tap setDelegate:self];
-                [cell.attachmentView addGestureRecognizer:tap];
-                // Store attachment content description used in showAttachmentView:
-                cell.attachmentView.mediaInfo = mxEvent.content;
-            } else {
-                cell.attachmentView.imageURL = nil;
-            }
-            
-            // Adjust constraint constant
-            cell.msgTextViewWidthConstraint.constant = contentSize.width;
-            // Align attachment inside text view by considering text view edge inset
-            cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
-            cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN + cell.messageTextView.contentInset.top;
-        }
+        
+        // Adjust constraint constant
+        cell.msgTextViewWidthConstraint.constant = contentSize.width;
+        cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_CELL_IMAGE_MARGIN;
+        cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_CELL_IMAGE_MARGIN;
     } else {
-        NSString *displayText = [mxHandler displayTextFor:mxEvent inSubtitleMode:NO];
-        // Update text color according to text content
-        if ([displayText hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
-            cell.messageTextView.textColor = [UIColor redColor];
-            enableLinkDetection = NO;
-        } else if (isIncomingMsg && ([displayText rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [displayText rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-            cell.messageTextView.textColor = [UIColor blueColor];
-        }
-        cell.messageTextView.text = displayText;
+        cell.messageTextView.attributedText = message.attributedTextMessage;
         // Adjust textView width constraint
-        cell.msgTextViewWidthConstraint.constant = [self textContentSize:displayText].width;
+        cell.msgTextViewWidthConstraint.constant = contentSize.width;
     }
     
-    // Turn on link detection only when it is usefull
-    if (enableLinkDetection) {
-        cell.messageTextView.dataDetectorTypes = UIDataDetectorTypeLink;
-    }
-    
-    // Handle timestamp display
-    if (dateFormatter && mxEvent.originServerTs) {
-        cell.dateTimeLabel.hidden = NO;
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.originServerTs/1000];
-        cell.dateTimeLabel.text = [dateFormatter stringFromDate:date];
-        // Align dateTime label with the textView
-        cell.dateTimeLabelTopConstraint.constant = cell.msgTextViewTopConstraint.constant + cell.messageTextView.contentInset.top - ROOM_MESSAGE_CELL_TEXTVIEW_EDGE_INSET_TOP_IN_CHUNK;
-    } else {
-        cell.dateTimeLabel.hidden = YES;
-    }
+    // TODO Handle timestamp display
+    cell.dateTimeLabel.hidden = YES;
     
     return cell;
-}
-
-- (CGSize)textContentSize:(NSString*)textMsg {
-    // Use a TextView template to compute cell height
-    UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
-    dummyTextView.font = [UIFont systemFontOfSize:14];
-    dummyTextView.text = textMsg;
-    return [dummyTextView sizeThatFits:dummyTextView.frame.size];
-}
-
-- (CGSize)attachmentContentSize:(MXEvent*)mxEvent {
-    CGSize contentSize;
-    NSString *msgtype = mxEvent.content[@"msgtype"];
-    if ([msgtype isEqualToString:kMXMessageTypeImage] || [msgtype isEqualToString:kMXMessageTypeVideo]) {
-        CGFloat width, height;
-        width = height = 0;
-        
-        NSDictionary *thumbInfo = nil;
-        if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
-            if (mxEvent.content[@"info"]) {
-                thumbInfo = mxEvent.content[@"info"][@"thumbnail_info"];
-            }
-        } else {
-            thumbInfo = mxEvent.content[@"thumbnail_info"];
-        }
-        
-        if (thumbInfo) {
-            width = [thumbInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
-            height = [thumbInfo[@"h"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
-            if (width > ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH || height > ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) {
-                if (width > height) {
-                    height = (height * ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) / width;
-                    height = floorf(height / 2) * 2;
-                    width = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
-                } else {
-                    width = (width * ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) / height;
-                    width = floorf(width / 2) * 2;
-                    height = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
-                }
-            }
-        }
-        contentSize = CGSizeMake(width, height);
-    } else {
-        contentSize = CGSizeMake(40, 40);
-    }
-    return contentSize;
 }
 
 #pragma mark - UITableView delegate
@@ -1383,67 +1231,126 @@ NSString *const kFailedEventId = @"failedEventId";
 
 #pragma mark - Post messages
 
-- (void)postMessage:(NSDictionary*)msgContent withLocalEventId:(NSString*)localEventId {
+- (void)postMessage:(NSDictionary*)msgContent withLocalEvent:(MXEvent*)localEvent {
     MXMessageType msgType = msgContent[@"msgtype"];
     if (msgType) {
         // Check whether a temporary event has already been added for local echo (this happens on attachments)
-        MXEvent *mxEvent = nil;
-        if (localEventId) {
+        RoomMessage *message = nil;
+        if (localEvent) {
             // Update the temporary event with the actual msg content
             NSUInteger index = messages.count;
             while (index--) {
-                mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.eventId isEqualToString:localEventId]) {
-                    mxEvent.content = msgContent;
-                    // Refresh table display
+                message = [messages objectAtIndex:index];
+                if ([message containsEventId:localEvent.eventId]) {
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    localEvent.content = msgContent;
+                    if (message.messageType == RoomMessageTypeText) {
+                        [message removeEvent:localEvent.eventId];
+                        [message addEvent:localEvent withRoomState:mxRoom.state];
+                        if (message.attributedTextMessage.length) {
+                            // Refresh table display
+                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        } else {
+                            [messages removeObjectAtIndex:index];
+                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        }
+                    } else {
+                        // Create a new message
+                        message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                        if (message) {
+                            // Refresh table display
+                            [messages replaceObjectAtIndex:index withObject:message];
+                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        } else {
+                            [messages removeObjectAtIndex:index];
+                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        }
+                    }
                     break;
                 }
             }
         } else {
             // Create a temporary event to displayed outgoing message (local echo)
-            localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
-            mxEvent = [[MXEvent alloc] init];
-            mxEvent.roomId = self.roomId;
-            mxEvent.eventId = localEventId;
-            mxEvent.eventType = MXEventTypeRoomMessage;
-            mxEvent.type = kMXEventTypeStringRoomMessage;
-            mxEvent.content = msgContent;
-            mxEvent.userId = [MatrixHandler sharedHandler].userId;
-            // Update table sources
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-            [messages addObject:mxEvent];
-            // Refresh table display (Disable animation during cells insertion to prevent flickering)
-            [UIView setAnimationsEnabled:NO];
-            [self.messagesTableView beginUpdates];
-            if (indexPath.row > 0) {
-                NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-                [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            NSString* localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
+            localEvent = [[MXEvent alloc] init];
+            localEvent.roomId = self.roomId;
+            localEvent.eventId = localEventId;
+            localEvent.eventType = MXEventTypeRoomMessage;
+            localEvent.type = kMXEventTypeStringRoomMessage;
+            localEvent.content = msgContent;
+            localEvent.userId = [MatrixHandler sharedHandler].userId;
+            localEvent.originServerTs = kMXUndefinedTimestamp;
+            // Check whether this new event may be grouped with last message
+            RoomMessage *lastMessage = [messages lastObject];
+            if (lastMessage && [lastMessage addEvent:localEvent withRoomState:mxRoom.state]) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(messages.count - 1) inSection:0];
+                [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            } else {
+                lastMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                if (lastMessage) {
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+                    [messages addObject:lastMessage];
+                    [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                } else {
+                    NSLog(@"ERROR: Unable to add local event: %@", localEvent.description);
+                }
             }
-            [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.messagesTableView endUpdates];
-            [UIView setAnimationsEnabled:YES];
-            
             [self scrollToBottomAnimated:NO];
         }
         
         // Send message to the room
-        [[[MatrixHandler sharedHandler] mxRestClient] postMessageToRoom:self.roomId msgType:msgType content:mxEvent.content success:^(NSString *event_id) {
-            // Update the temporary event with the actual event id
+        [[[MatrixHandler sharedHandler] mxRestClient] postMessageToRoom:self.roomId msgType:msgType content:localEvent.content success:^(NSString *event_id) {
+            // Check whether this event has already been received from events listener
+            BOOL isEventAlreadyAddedToRoom = NO;
             NSUInteger index = messages.count;
             while (index--) {
-                MXEvent *mxEvent = [messages objectAtIndex:index];
-                if ([mxEvent.eventId isEqualToString:localEventId]) {
-                    mxEvent.eventId = event_id;
-                    // Refresh table display
+                RoomMessage *message = [messages objectAtIndex:index];
+                if ([message containsEventId:event_id]) {
+                    isEventAlreadyAddedToRoom = YES;
+                    break;
+                }
+            }
+            // Remove or update the temporary event
+            index = messages.count;
+            while (index--) {
+                RoomMessage *message = [messages objectAtIndex:index];
+                if ([message containsEventId:localEvent.eventId]) {
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    if (message.messageType == RoomMessageTypeText) {
+                        [message removeEvent:localEvent.eventId];
+                        if (isEventAlreadyAddedToRoom == NO) {
+                            // Update the temporary event with the actual event id
+                            localEvent.eventId = event_id;
+                            [message addEvent:localEvent withRoomState:mxRoom.state];
+                        }
+                        if (message.attributedTextMessage.length) {
+                            // Refresh table display
+                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        } else {
+                            [messages removeObjectAtIndex:index];
+                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        }
+                    } else {
+                        message = nil;
+                        if (isEventAlreadyAddedToRoom == NO) {
+                            // Create a new message
+                            localEvent.eventId = event_id;
+                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                        }
+                        if (message) {
+                            // Refresh table display
+                            [messages replaceObjectAtIndex:index withObject:message];
+                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        } else {
+                            [messages removeObjectAtIndex:index];
+                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        }
+                    }
                     break;
                 }
             }
         } failure:^(NSError *error) {
-            [self handleError:error forLocalEventId:localEventId];
+            [self handleError:error forLocalEvent:localEvent];
         }];
     }
 }
@@ -1457,10 +1364,10 @@ NSString *const kFailedEventId = @"failedEventId";
         msgTxt = [msgTxt substringFromIndex:4];
     }
     
-    [self postMessage:@{@"msgtype":msgType, @"body":msgTxt} withLocalEventId:nil];
+    [self postMessage:@{@"msgtype":msgType, @"body":msgTxt} withLocalEvent:nil];
 }
 
-- (NSString*)addLocalEventForAttachedImage:(UIImage*)image {
+- (MXEvent*)addLocalEventForAttachedImage:(UIImage*)image {
     // Create a temporary event to displayed outgoing message (local echo)
     NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
     MXEvent *mxEvent = [[MXEvent alloc] init];
@@ -1468,6 +1375,7 @@ NSString *const kFailedEventId = @"failedEventId";
     mxEvent.eventId = localEventId;
     mxEvent.eventType = MXEventTypeRoomMessage;
     mxEvent.type = kMXEventTypeStringRoomMessage;
+    mxEvent.originServerTs = kMXUndefinedTimestamp;
     // We store temporarily the image in cache, use the localId to build temporary url
     NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEventId];
     NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
@@ -1483,29 +1391,24 @@ NSString *const kFailedEventId = @"failedEventId";
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
-    mxEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL};
+    mxEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL, @"url":dummyURL, @"info":thumbnailInfo};
     mxEvent.userId = [MatrixHandler sharedHandler].userId;
     
     // Update table sources
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
-    [messages addObject:mxEvent];
-    
-    // Refresh table display (Disable animation during cells insertion to prevent flickering)
-    [UIView setAnimationsEnabled:NO];
-    [self.messagesTableView beginUpdates];
-    if (indexPath.row > 0) {
-        NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-        [self.messagesTableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    RoomMessage *message = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:mxRoom.state];
+    if (message) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
+        [messages addObject:message];
+        [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    } else {
+        NSLog(@"ERROR: Unable to add local event for attachment: %@", mxEvent.description);
     }
-    [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.messagesTableView endUpdates];
-    [UIView setAnimationsEnabled:YES];
     
     [self scrollToBottomAnimated:NO];
-    return localEventId;
+    return mxEvent;
 }
 
-- (void)handleError:(NSError *)error forLocalEventId:(NSString *)localEventId {
+- (void)handleError:(NSError *)error forLocalEvent:(MXEvent *)localEvent {
     NSLog(@"Post message failed: %@", error);
     if (error) {
         // Alert user
@@ -1515,13 +1418,34 @@ NSString *const kFailedEventId = @"failedEventId";
     // Update the temporary event with this local event id
     NSUInteger index = messages.count;
     while (index--) {
-        MXEvent *mxEvent = [messages objectAtIndex:index];
-        if ([mxEvent.eventId isEqualToString:localEventId]) {
-            NSLog(@"Posted event: %@", mxEvent.description);
-            mxEvent.eventId = kFailedEventId;
-            // Refresh table display
+        RoomMessage *message = [messages objectAtIndex:index];
+        if ([message containsEventId:localEvent.eventId]) {
+            NSLog(@"Posted event: %@", localEvent.description);
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            if (message.messageType == RoomMessageTypeText) {
+                [message removeEvent:localEvent.eventId];
+                localEvent.eventId = kFailedEventId;
+                [message addEvent:localEvent withRoomState:mxRoom.state];
+                if (message.attributedTextMessage.length) {
+                    // Refresh table display
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                } else {
+                    [messages removeObjectAtIndex:index];
+                    [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                }
+            } else {
+                // Create a new message
+                localEvent.eventId = kFailedEventId;
+                message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                if (message) {
+                    // Refresh table display
+                    [messages replaceObjectAtIndex:index withObject:message];
+                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                } else {
+                    [messages removeObjectAtIndex:index];
+                    [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                }
+            }
             break;
         }
     }
@@ -1696,15 +1620,15 @@ NSString *const kFailedEventId = @"failedEventId";
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         if (selectedImage) {
-            NSString * localEventId = [self addLocalEventForAttachedImage:selectedImage];
+            MXEvent *localEvent = [self addLocalEventForAttachedImage:selectedImage];
             // Upload image and its thumbnail
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             NSUInteger thumbnailSize = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH - 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
             [mxHandler.mxRestClient uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
                 // Send image
-                [self postMessage:imageMessage withLocalEventId:localEventId];
+                [self postMessage:imageMessage withLocalEvent:localEvent];
             } failure:^(NSError *error) {
-                [self handleError:error forLocalEventId:localEventId];
+                [self handleError:error forLocalEvent:localEvent];
             }];
         }
     } else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
@@ -1730,7 +1654,7 @@ NSString *const kFailedEventId = @"failedEventId";
                     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
                     
                     // Create the local event displayed during uploading
-                    NSString * localEventId = [self addLocalEventForAttachedImage:thumbnail];
+                    MXEvent *localEvent = [self addLocalEventForAttachedImage:thumbnail];
                     
                     // Upload thumbnail
                     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -1792,29 +1716,29 @@ NSString *const kFailedEventId = @"failedEventId";
                                             [videoContent setValue:url forKey:@"url"];
                                             [videoContent setValue:videoInfo forKey:@"info"];
                                             [videoContent setValue:@"Video" forKey:@"body"];
-                                            [self postMessage:videoContent withLocalEventId:localEventId];
+                                            [self postMessage:videoContent withLocalEvent:localEvent];
                                         } failure:^(NSError *error) {
-                                            [self handleError:error forLocalEventId:localEventId];
+                                            [self handleError:error forLocalEvent:localEvent];
                                         }];
                                     } else {
                                         NSLog(@"Video is too large");
-                                        [self handleError:nil forLocalEventId:localEventId];
+                                        [self handleError:nil forLocalEvent:localEvent];
                                     }
                                 } else {
                                     NSLog(@"Attach video failed: no data");
-                                    [self handleError:nil forLocalEventId:localEventId];
+                                    [self handleError:nil forLocalEvent:localEvent];
                                 }
                             }
                             else {
-                                NSLog(@"Video export failed: %d", [exportSession status]);
+                                NSLog(@"Video export failed: %d", (int)[exportSession status]);
                                 // remove tmp file (if any)
                                 [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
-                                [self handleError:nil forLocalEventId:localEventId];
+                                [self handleError:nil forLocalEvent:localEvent];
                             }
                         }];
                     } failure:^(NSError *error) {
                         NSLog(@"Video thumbnail upload failed");
-                        [self handleError:error forLocalEventId:localEventId];
+                        [self handleError:error forLocalEvent:localEvent];
                     }];
                 }
             }
