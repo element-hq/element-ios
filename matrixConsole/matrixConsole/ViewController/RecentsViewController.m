@@ -196,6 +196,9 @@
         if (_preSelectedRoomId) {
             self.preSelectedRoomId = _preSelectedRoomId;
         }
+    } else {
+        recents = nil;
+        [self.tableView reloadData];
     }
 }
 
@@ -205,10 +208,8 @@
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"isInitialSyncDone" isEqualToString:keyPath])
-    {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });

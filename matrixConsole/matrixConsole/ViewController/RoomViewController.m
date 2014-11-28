@@ -127,6 +127,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (messagesListener) {
         [mxRoom removeListener:messagesListener];
         messagesListener = nil;
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
     }
     mxRoom = nil;
     
@@ -236,6 +237,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (messagesListener && mxRoom) {
         [mxRoom removeListener:messagesListener];
         messagesListener = nil;
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
@@ -274,6 +276,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.roomNameTextField.enabled = YES;
         
         messages = [NSMutableArray array];
+        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             BOOL shouldScrollToBottom = NO;
@@ -487,6 +490,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configureView];
+        });
     }
 }
 
