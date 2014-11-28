@@ -203,7 +203,13 @@ NSString* const defaultHomeserver = @"http://matrix.org";
                                          // Report credentials
                                          [matrix setUserId:credentials.userId];
                                          [matrix setAccessToken:credentials.accessToken];
-                                         [matrix setHomeServer:credentials.homeServer];
+                                         // Extract homeServer name from userId
+                                         NSArray *components = [credentials.userId componentsSeparatedByString:@":"];
+                                         if (components.count == 2) {
+                                             [matrix setHomeServer:[components lastObject]];
+                                         } else {
+                                             NSLog(@"Unexpected error: the userId is not correctly formatted: %@", credentials.userId);
+                                         }
                                          
                                          [self dismissViewControllerAnimated:YES completion:nil];
                                      }
