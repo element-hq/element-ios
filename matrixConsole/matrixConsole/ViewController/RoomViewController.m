@@ -999,11 +999,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                                                    attribute:NSLayoutAttributeTrailing
                                                                                   multiplier:1.0
                                                                                     constant:0];
+                // Vertical constraints are required for iOS > 8
+                NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
+                                                                                 attribute:NSLayoutAttributeTop
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:cell.dateTimeView
+                                                                                 attribute:NSLayoutAttributeTop
+                                                                                multiplier:1.0
+                                                                                  constant:yPosition];
+                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
+                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:nil
+                                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                                   multiplier:1.0
+                                                                                     constant:20];
                 if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)]) {
-                    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint]];
+                    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
                 } else {
                     [cell.dateTimeView addConstraint:leftConstraint];
                     [cell.dateTimeView addConstraint:rightConstraint];
+                    [cell.dateTimeView addConstraint:topConstraint];
+                    [dateTimeLabel addConstraint:heightConstraint];
                 }
             }
             yPosition += component.height;
