@@ -89,11 +89,11 @@
 - (void)logout {
     // Clear cache
     [MediaManager clearCache];
-    // Reset App settings
-    [[AppSettings sharedSettings] reset];
     // Logout Matrix
     [[MatrixHandler sharedHandler] logout];
     [self.masterTabBarController showLoginScreen];
+    // Reset App settings
+    [[AppSettings sharedSettings] reset];
     // By default the "Home" tab is focussed
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }
