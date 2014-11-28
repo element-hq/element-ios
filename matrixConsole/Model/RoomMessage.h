@@ -14,16 +14,16 @@
  limitations under the License.
  */
 
-#import <MatrixSDK/MatrixSDK.h>
+#import "RoomMessageComponent.h"
 
-#define ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH 200
-#define ROOM_MESSAGE_CELL_IMAGE_MARGIN 8
-
-extern NSString *const kLocalEchoEventIdPrefix;
-extern NSString *const kFailedEventId;
+#define ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH 200
+#define ROOM_MESSAGE_TEXTVIEW_MARGIN 5
+#define ROOM_MESSAGE_IMAGE_MARGIN 8
 
 typedef enum : NSUInteger {
+    // Text type
     RoomMessageTypeText,
+    // Attachment type
     RoomMessageTypeImage,
     RoomMessageTypeAudio,
     RoomMessageTypeVideo,
@@ -39,9 +39,11 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSString *senderAvatarUrl;
 
 // The message content size depends on its type:
-// - RoomMessageTypeText: returns suitable content size of a text view to display the whole text message
-// - Others: returns suitable content size for an image view in order to display attachment thumbnail or icon.
+// - Text (RoomMessageTypeText): returns suitable content size of a text view to display the whole text message
+// - Attachment: returns suitable content size for an image view in order to display attachment thumbnail or icon.
 @property (nonatomic) CGSize contentSize;
+// Returns message components (Note: only one component is supported for attachment [messageType != RoomMessageTypeText])
+@property (nonatomic) NSArray *components;
 
 // The body of the message, or kind of content description in case of attachment (e.g. "image attachment")
 @property (nonatomic) NSAttributedString *attributedTextMessage;

@@ -19,42 +19,17 @@
 #import "MatrixHandler.h"
 #import "AppSettings.h"
 
-NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
-NSString *const kFailedEventId = @"failedEventId";
-
-static NSDateFormatter *dateFormatter = nil;
-static NSAttributedString *messageItemsSeparator = nil;
-
-typedef enum : NSUInteger {
-    RoomMessageItemDisplayModeDefault,
-    RoomMessageItemDisplayModeHighlighted,
-    RoomMessageItemDisplayModeLocalEcho,
-    RoomMessageItemDisplayModeFailure,
-    RoomMessageItemDisplayModeError
-} RoomMessageItemDisplayMode;
-
-@interface RoomMessageItem : NSObject
-@property (nonatomic) NSString *textMessage;
-@property (nonatomic) NSString *eventId;
-@property (nonatomic) NSDate   *date;
-@property (nonatomic) RoomMessageItemDisplayMode displayMode;
-@property (nonatomic) NSUInteger height;
-// True if text message starts with the sender name (see membership events, emote ...)
-@property (nonatomic) BOOL startsWithSenderName;
-
-- (id)initWithTextMessage:(NSString*)textMessage andEvent:(MXEvent*)event;
-@end
-
-#pragma mark -
+static NSAttributedString *messageSeparator = nil;
 
 @interface RoomMessage() {
-    // Array of RoomMessageItem
-    NSMutableArray *messageItems;
+    // Array of RoomMessageComponent
+    NSMutableArray *messageComponents;
+    // Current text message reset at each component change (see attributedTextMessage property)
+    NSMutableAttributedString *currentAttributedTextMsg;
 }
 
-+ (NSDateFormatter *)dateFormatter;
-+ (NSAttributedString *)messageItemsSeparator;
-+ (NSDictionary*)stringAttributesForDisplayMode:(RoomMessageItemDisplayMode)displayMode;
++ (NSAttributedString *)messageSeparator;
++ (NSDictionary *)stringAttributesForComponentStatus:(RoomMessageComponentStatus)status;
 
 @end
 
@@ -62,18 +37,15 @@ typedef enum : NSUInteger {
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        
         _senderId = event.userId;
         _senderName = [roomState memberName:event.userId];
         _senderAvatarUrl = [roomState memberWithUserId:event.userId].avatarUrl;
         _contentSize = CGSizeZero;
+        currentAttributedTextMsg = nil;
         
-        // Build text message from event
-        NSString* textMessage = [mxHandler displayTextForEvent:event withRoomState:roomState inSubtitleMode:NO];
-        
-        // Set the message type (use Text by default), and check attachment if any
+        // Set message type (consider text by default), and check attachment if any
         _messageType = RoomMessageTypeText;
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         if ([mxHandler isSupportedAttachment:event]) {
             // Note: event.eventType is equal here to MXEventTypeRoomMessage
             NSString *msgtype =  event.content[@"msgtype"];
@@ -101,15 +73,14 @@ typedef enum : NSUInteger {
             }
         }
         
-        if (textMessage) {
-            // Create first message item
-            RoomMessageItem *msgItem = [[RoomMessageItem alloc] initWithTextMessage:textMessage andEvent:event];
-            msgItem.startsWithSenderName = ([textMessage hasPrefix:_senderName] || [mxHandler isEmote:event]);
-            messageItems = [NSMutableArray array];
-            [messageItems addObject:msgItem];
-            msgItem.height = self.contentSize.height;
-        }
-        else {
+        // Set first component of the current message
+        RoomMessageComponent *msgComponent = [[RoomMessageComponent alloc] initWithEvent:event andRoomState:roomState];
+        if (msgComponent) {
+            messageComponents = [NSMutableArray array];
+            [messageComponents addObject:msgComponent];
+            // Store the actual height of the text by removing textview margin from content height
+            msgComponent.height = self.contentSize.height - (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+        } else {
             // Ignore this event
             self = nil;
         }
@@ -118,7 +89,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)dealloc {
-    messageItems = nil;
+    messageComponents = nil;
 }
 
 - (BOOL)addEvent:(MXEvent *)event withRoomState:(MXRoomState*)roomState {
@@ -140,43 +111,38 @@ typedef enum : NSUInteger {
             return NO;
         }
         
-        NSString* textMessage = [mxHandler displayTextForEvent:event withRoomState:roomState inSubtitleMode:NO];
-        if (textMessage) {
-            // Create new message item
-            RoomMessageItem *addedItem = [[RoomMessageItem alloc] initWithTextMessage:textMessage andEvent:event];
-            addedItem.startsWithSenderName = ([textMessage hasPrefix:_senderName] || [mxHandler isEmote:event]);
-            // Insert the new item according to its date
-            NSUInteger index = messageItems.count;
-            NSMutableArray *savedMessageItems = [NSMutableArray arrayWithCapacity:index];
-            RoomMessageItem* msgItem;
-            if (addedItem.date) {
+        // Create new message component
+        RoomMessageComponent *addedComponent = [[RoomMessageComponent alloc] initWithEvent:event andRoomState:roomState];
+        if (addedComponent) {
+            // Insert the new component according to its date
+            NSUInteger index = messageComponents.count;
+            NSMutableArray *savedComponents = [NSMutableArray arrayWithCapacity:index];
+            RoomMessageComponent* msgComponent;
+            if (addedComponent.date) {
                 while (index--) {
-                    msgItem = [messageItems lastObject];
-                    if (!msgItem.date || [msgItem.date compare:addedItem.date] == NSOrderedDescending) {
-                        [savedMessageItems insertObject:msgItem atIndex:0];
-                        [messageItems removeLastObject];
+                    msgComponent = [messageComponents lastObject];
+                    if (!msgComponent.date || [msgComponent.date compare:addedComponent.date] == NSOrderedDescending) {
+                        [savedComponents insertObject:msgComponent atIndex:0];
+                        [messageComponents removeLastObject];
                     } else {
                         break;
                     }
                 }
             }
-            // Force content size refresh
-            _attributedTextMessage = nil;
-            _contentSize = CGSizeZero;
-            CGFloat previousHeight = self.contentSize.height;
-            [messageItems addObject:addedItem];
-            // Force content size refresh after adding new item in order to compute its height
-            _attributedTextMessage = nil;
-            _contentSize = CGSizeZero;
-            addedItem.height = self.contentSize.height - previousHeight;
-            // Re-add existing message items (later in time than the new one)
-            for (msgItem in savedMessageItems) {
-                previousHeight = self.contentSize.height;
-                [messageItems addObject:msgItem];
-                // Force content size refresh after adding new item in order to compute its height
-                _attributedTextMessage = nil;
-                _contentSize = CGSizeZero;
-                msgItem.height = self.contentSize.height - previousHeight;
+            // Force text message refresh
+            self.attributedTextMessage = nil;
+            CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+            [messageComponents addObject:addedComponent];
+            // Force text message refresh after adding new component in order to compute its height
+            self.attributedTextMessage = nil;
+            addedComponent.height = self.contentSize.height - previousTextViewHeight;
+            // Re-add existing message components (later in time than the new one)
+            for (msgComponent in savedComponents) {
+                previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+                [messageComponents addObject:msgComponent];
+                // Force text message refresh
+                self.attributedTextMessage = nil;
+                msgComponent.height = self.contentSize.height - previousTextViewHeight;
             }
         }
         // else the event is ignored, we consider it as handled
@@ -187,39 +153,37 @@ typedef enum : NSUInteger {
 
 - (BOOL)removeEvent:(NSString *)eventId {
     if (_messageType == RoomMessageTypeText) {
-        NSUInteger index = messageItems.count;
-        NSMutableArray *savedMessageItems = [NSMutableArray arrayWithCapacity:index];
-        RoomMessageItem* msgItem;
+        NSUInteger index = messageComponents.count;
+        NSMutableArray *savedComponents = [NSMutableArray arrayWithCapacity:index];
+        RoomMessageComponent* msgComponent;
         while (index--) {
-            msgItem = [messageItems lastObject];
-            if ([msgItem.eventId isEqualToString:eventId] == NO) {
-                [savedMessageItems insertObject:msgItem atIndex:0];
-                [messageItems removeLastObject];
+            msgComponent = [messageComponents lastObject];
+            if ([msgComponent.eventId isEqualToString:eventId] == NO) {
+                [savedComponents insertObject:msgComponent atIndex:0];
+                [messageComponents removeLastObject];
             } else {
-                [messageItems removeLastObject];
-                _attributedTextMessage = nil;
-                _contentSize = CGSizeZero;
-                for (msgItem in savedMessageItems) {
-                    // Re-add message items
-                    CGFloat previousHeight = self.contentSize.height;
-                    [messageItems addObject:msgItem];
-                    // Force content size refresh after adding new item in order to compute its height
-                    _attributedTextMessage = nil;
-                    _contentSize = CGSizeZero;
-                    msgItem.height = self.contentSize.height - previousHeight;
+                [messageComponents removeLastObject];
+                // Force text message refresh
+                self.attributedTextMessage = nil;
+                for (msgComponent in savedComponents) {
+                    // Re-add message components
+                    CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+                    [messageComponents addObject:msgComponent];
+                    self.attributedTextMessage = nil;
+                    msgComponent.height = self.contentSize.height - previousTextViewHeight;
                 }
                 return YES;
             }
         }
-        // here the provided eventId has not been found, restore message Items and return
-        messageItems = savedMessageItems;
+        // here the provided eventId has not been found, restore message components and return
+        messageComponents = savedComponents;
     }
     return NO;
 }
 
 - (BOOL)containsEventId:(NSString *)eventId {
-    for (RoomMessageItem* msgItem in messageItems) {
-        if ([msgItem.eventId isEqualToString:eventId]) {
+    for (RoomMessageComponent* msgComponent in messageComponents) {
+        if ([msgComponent.eventId isEqualToString:eventId]) {
             return YES;
         }
     }
@@ -233,7 +197,7 @@ typedef enum : NSUInteger {
         if (_messageType == RoomMessageTypeText) {
             if (self.attributedTextMessage.length) {
                 // Use a TextView template to compute cell height
-                UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
+                UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
                 dummyTextView.attributedText = self.attributedTextMessage;
                 _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
             }
@@ -241,17 +205,17 @@ typedef enum : NSUInteger {
             CGFloat width, height;
             width = height = 40;
             if (_thumbnailInfo) {
-                width = [_thumbnailInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
-                height = [_thumbnailInfo[@"h"] integerValue] + 2 * ROOM_MESSAGE_CELL_IMAGE_MARGIN;
-                if (width > ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH || height > ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) {
+                width = [_thumbnailInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_IMAGE_MARGIN;
+                height = [_thumbnailInfo[@"h"] integerValue] + 2 * ROOM_MESSAGE_IMAGE_MARGIN;
+                if (width > ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH || height > ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH) {
                     if (width > height) {
-                        height = (height * ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) / width;
+                        height = (height * ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH) / width;
                         height = floorf(height / 2) * 2;
-                        width = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+                        width = ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH;
                     } else {
-                        width = (width * ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH) / height;
+                        width = (width * ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH) / height;
                         width = floorf(width / 2) * 2;
-                        height = ROOM_MESSAGE_CELL_MAX_TEXTVIEW_WIDTH;
+                        height = ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH;
                     }
                 }
             }
@@ -263,31 +227,42 @@ typedef enum : NSUInteger {
     return _contentSize;
 }
 
+- (NSArray*)components {
+    return [messageComponents copy];
+}
+
+- (void)setAttributedTextMessage:(NSAttributedString *)inAttributedTextMessage {
+    if (!inAttributedTextMessage.length) {
+        currentAttributedTextMsg = nil;
+    } else {
+        currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:inAttributedTextMessage];
+    }
+    // Reset content size
+    _contentSize = CGSizeZero;
+}
+
 - (NSAttributedString*)attributedTextMessage {
-    if (!_attributedTextMessage && messageItems.count) {
+    if (!currentAttributedTextMsg && messageComponents.count) {
         // Create attributed string
-        NSMutableAttributedString *mutableAttributedString = nil;
-        for (RoomMessageItem* msgItem in messageItems) {
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgItem.textMessage attributes:[RoomMessage stringAttributesForDisplayMode:msgItem.displayMode]];
-            if (!mutableAttributedString) {
-                mutableAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+        for (RoomMessageComponent* msgComponent in messageComponents) {
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[RoomMessage stringAttributesForComponentStatus:msgComponent.status]];
+            if (!currentAttributedTextMsg) {
+                currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
             } else {
                 // Append attributed text
-                [mutableAttributedString appendAttributedString:[RoomMessage messageItemsSeparator]];
-                [mutableAttributedString appendAttributedString:attributedString];
+                [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
+                [currentAttributedTextMsg appendAttributedString:attributedString];
             }
         }
-        
-        _attributedTextMessage = mutableAttributedString;
     }
-    return _attributedTextMessage;
+    return currentAttributedTextMsg;
 }
 
 - (BOOL)startsWithSenderName {
     if (_messageType == RoomMessageTypeText) {
-        if (messageItems.count) {
-            RoomMessageItem *msgItem = [messageItems firstObject];
-            return msgItem.startsWithSenderName;
+        if (messageComponents.count) {
+            RoomMessageComponent *msgComponent = [messageComponents firstObject];
+            return msgComponent.startsWithSenderName;
         }
     }
     return NO;
@@ -295,9 +270,9 @@ typedef enum : NSUInteger {
 
 - (BOOL)isUploadInProgress {
     if (_messageType != RoomMessageTypeText) {
-        if (messageItems.count) {
-            RoomMessageItem *msgItem = [messageItems firstObject];
-            return (msgItem.displayMode == RoomMessageItemDisplayModeLocalEcho);
+        if (messageComponents.count) {
+            RoomMessageComponent *msgComponent = [messageComponents firstObject];
+            return (msgComponent.status == RoomMessageComponentStatusInProgress);
         }
     }
     return NO;
@@ -305,44 +280,30 @@ typedef enum : NSUInteger {
 
 #pragma mark -
 
-+ (NSDateFormatter *)dateFormatter {
++ (NSAttributedString *)messageSeparator {
     @synchronized(self) {
-        if(dateFormatter == nil) {
-            NSString *dateFormat = @"MMM dd HH:mm";
-            dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
-            [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-            [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-            [dateFormatter setDateFormat:dateFormat];
-        }
-    }
-    return dateFormatter;
-}
-
-+ (NSAttributedString *)messageItemsSeparator {
-    @synchronized(self) {
-        if(messageItemsSeparator == nil) {
-            messageItemsSeparator = [[NSAttributedString alloc] initWithString:@"\r\n\r\n" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor],
+        if(messageSeparator == nil) {
+            messageSeparator = [[NSAttributedString alloc] initWithString:@"\r\n\r\n" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor],
                                                                                                     NSFontAttributeName: [UIFont systemFontOfSize:4]}];
         }
     }
-    return messageItemsSeparator;
+    return messageSeparator;
 }
 
-+ (NSDictionary*)stringAttributesForDisplayMode:(RoomMessageItemDisplayMode)displayMode {
++ (NSDictionary*)stringAttributesForComponentStatus:(RoomMessageComponentStatus)status {
     UIColor *textColor;
-    switch (displayMode) {
-        case RoomMessageItemDisplayModeDefault:
+    switch (status) {
+        case RoomMessageComponentStatusNormal:
             textColor = [UIColor blackColor];
             break;
-        case RoomMessageItemDisplayModeHighlighted:
+        case RoomMessageComponentStatusHighlighted:
             textColor = [UIColor blueColor];
             break;
-        case RoomMessageItemDisplayModeLocalEcho:
+        case RoomMessageComponentStatusInProgress:
             textColor = [UIColor lightGrayColor];
             break;
-        case RoomMessageItemDisplayModeFailure:
-        case RoomMessageItemDisplayModeError:
+        case RoomMessageComponentStatusFailed:
+        case RoomMessageComponentStatusUnsupported:
             textColor = [UIColor redColor];
             break;
         default:
@@ -357,41 +318,3 @@ typedef enum : NSUInteger {
 }
 
 @end
-
-# pragma mark -
-
-@implementation RoomMessageItem
-
-- (id)initWithTextMessage:(NSString*)textMessage andEvent:(MXEvent*)event {
-    if (self = [super init]) {
-        _textMessage = textMessage;
-        _eventId = event.eventId;
-        _height = 0;
-        
-        // Set date time text label
-        if (event.originServerTs != kMXUndefinedTimestamp) {
-            _date = [NSDate dateWithTimeIntervalSince1970:event.originServerTs/1000];
-//            NSString* dateTime = [[RoomMessage dateFormatter] stringFromDate:_date];
-        } else {
-            _date = nil;
-        }
-        
-        // Set display mode
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
-        if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
-            _displayMode = RoomMessageItemDisplayModeError;
-        } else if ([_eventId hasPrefix:kFailedEventId]) {
-            _displayMode = RoomMessageItemDisplayModeFailure;
-        } else if (isIncomingMsg && ([textMessage rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [textMessage rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-            _displayMode = RoomMessageItemDisplayModeHighlighted;
-        } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
-            _displayMode = RoomMessageItemDisplayModeLocalEcho;
-        } else {
-            _displayMode = RoomMessageItemDisplayModeDefault;
-        }
-    }
-    return self;
-}
-@end
-
