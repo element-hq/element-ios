@@ -26,9 +26,8 @@
 @property (weak, nonatomic) IBOutlet UIView *dateTimeView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewBottomConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachmentViewTopAlignmentConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachmentViewBottomAlignmentConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell
