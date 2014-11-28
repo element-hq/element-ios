@@ -31,7 +31,7 @@
 #define UPLOAD_FILE_SIZE 5000000
 
 #define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT 10
-#define ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT 0
+#define ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TOP_CONST_DEFAULT 18
 
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
@@ -802,8 +802,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     RoomMessage* message = [messages objectAtIndex:indexPath.row];
     // Consider message content height
     rowHeight = message.contentSize.height;
-    rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
-    rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
+    // Add top margin
+    if (message.messageType == RoomMessageTypeText) {
+        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+    } else {
+        rowHeight += ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TOP_CONST_DEFAULT;
+    }
     
     // We consider the minimun cell height (50) in order to display correctly user's picture
     if (rowHeight < 50) {
@@ -844,7 +848,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isIncomingMsg = YES;
     }
     
-    // Restore initial settings of attachment ImageView
+    // Restore initial settings
+    cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+    cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TOP_CONST_DEFAULT;
     cell.attachmentView.imageURL = nil; // Cancel potential attachment loading
     cell.attachmentView.hidden = YES;
     cell.playIconView.hidden = YES;
@@ -852,8 +858,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     while (cell.attachmentView.gestureRecognizers.count) {
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
     }
-    cell.attachmentViewTopAlignmentConstraint.constant = 0;
-    cell.attachmentViewBottomAlignmentConstraint.constant = 0;
     // Remove potential dateTime label(s)
     if (cell.dateTimeView.constraints.count) {
         if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
@@ -877,10 +881,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             shouldHideSenderInfo = YES;
         }
     }
-    
-    // Adjust display
-    cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
-    cell.msgTextViewBottomConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_BOTTOM_CONST_DEFAULT;
     
     // Handle user's picture
     cell.pictureView.hidden = shouldHideSenderInfo;
@@ -916,7 +916,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     CGSize contentSize = message.contentSize;
     if (message.messageType != RoomMessageTypeText) {
-        cell.messageTextView.attributedText = nil; // Note: Text view is used as attachment background view
+        cell.messageTextView.hidden = YES;
         cell.attachmentView.hidden = NO;
         // Update image view frame in order to center loading wheel (if any)
         CGRect frame = cell.attachmentView.frame;
@@ -954,11 +954,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                               @"info" : message.attachmentInfo};
         }
         
-        // Adjust constraint constant
-        cell.msgTextViewWidthConstraint.constant = contentSize.width;
-        cell.attachmentViewTopAlignmentConstraint.constant = ROOM_MESSAGE_IMAGE_MARGIN;
-        cell.attachmentViewBottomAlignmentConstraint.constant = -ROOM_MESSAGE_IMAGE_MARGIN;
+        // Adjust Attachment width constant
+        cell.attachViewWidthConstraint.constant = contentSize.width;
     } else {
+        cell.messageTextView.hidden = NO;
         cell.messageTextView.attributedText = message.attributedTextMessage;
         // Adjust textView width constraint
         cell.msgTextViewWidthConstraint.constant = contentSize.width;
@@ -1734,7 +1733,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             MXEvent *localEvent = [self addLocalEventForAttachedImage:selectedImage];
             // Upload image and its thumbnail
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH - 2 * ROOM_MESSAGE_IMAGE_MARGIN;
+            NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
             [mxHandler.mxRestClient uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
                 // Send image
                 [self postMessage:imageMessage withLocalEvent:localEvent];
@@ -1755,7 +1754,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 if (videoThumbnail) {
                     // Prepare video thumbnail description
-                    NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH - 2 * ROOM_MESSAGE_IMAGE_MARGIN;
+                    NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
                     UIImage *thumbnail = [MediaManager resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
                     NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
                     [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];

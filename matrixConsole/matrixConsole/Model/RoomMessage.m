@@ -205,17 +205,17 @@ static NSAttributedString *messageSeparator = nil;
             CGFloat width, height;
             width = height = 40;
             if (_thumbnailInfo) {
-                width = [_thumbnailInfo[@"w"] integerValue] + 2 * ROOM_MESSAGE_IMAGE_MARGIN;
-                height = [_thumbnailInfo[@"h"] integerValue] + 2 * ROOM_MESSAGE_IMAGE_MARGIN;
-                if (width > ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH || height > ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH) {
+                width = [_thumbnailInfo[@"w"] integerValue];
+                height = [_thumbnailInfo[@"h"] integerValue];
+                if (width > ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH || height > ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) {
                     if (width > height) {
-                        height = (height * ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH) / width;
+                        height = (height * ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) / width;
                         height = floorf(height / 2) * 2;
-                        width = ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH;
+                        width = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
                     } else {
-                        width = (width * ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH) / height;
+                        width = (width * ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) / height;
                         width = floorf(width / 2) * 2;
-                        height = ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH;
+                        height = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
                     }
                 }
             }

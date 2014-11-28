@@ -17,8 +17,8 @@
 #import "RoomMessageComponent.h"
 
 #define ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH 200
+#define ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH 192
 #define ROOM_MESSAGE_TEXTVIEW_MARGIN 5
-#define ROOM_MESSAGE_IMAGE_MARGIN 8
 
 typedef enum : NSUInteger {
     // Text type
