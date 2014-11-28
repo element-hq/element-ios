@@ -858,9 +858,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
         // Hide potential loading wheel
         [outgoingMsgCell.activityIndicator stopAnimating];
-        // Hide unsent view by default, and remove potential unsent label(s)
-        outgoingMsgCell.unsentView.hidden = YES;
-        for (UIView *view in outgoingMsgCell.unsentView.subviews) {
+        // Hide unsent container by default, and remove potential unsent label(s)
+        outgoingMsgCell.unsentLabelContainer.hidden = YES;
+        for (UIView *view in outgoingMsgCell.unsentLabelContainer.subviews) {
             [view removeFromSuperview];
         }
     } else {
@@ -877,13 +877,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
     }
     // Remove potential dateTime label(s)
-    if (cell.dateTimeView.constraints.count) {
+    if (cell.dateTimeLabelContainer.constraints.count) {
         if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
-            [NSLayoutConstraint deactivateConstraints:cell.dateTimeView.constraints];
+            [NSLayoutConstraint deactivateConstraints:cell.dateTimeLabelContainer.constraints];
         } else {
-            [cell.dateTimeView removeConstraints:cell.dateTimeView.constraints];
+            [cell.dateTimeLabelContainer removeConstraints:cell.dateTimeLabelContainer.constraints];
         }
-        for (UIView *view in cell.dateTimeView.subviews) {
+        for (UIView *view in cell.dateTimeLabelContainer.subviews) {
             [view removeFromSuperview];
         }
     }
@@ -927,22 +927,22 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Adjust top constraint constant for unsent labels container
         CGFloat yPosition;
         if (message.messageType == RoomMessageTypeText) {
-            outgoingMsgCell.unsentViewTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
+            outgoingMsgCell.unsentLabelContainerTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
             yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
         } else {
-            outgoingMsgCell.unsentViewTopConstraint.constant = cell.attachViewTopConstraint.constant;
+            outgoingMsgCell.unsentLabelContainerTopConstraint.constant = cell.attachViewTopConstraint.constant;
             yPosition = -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         }
         // Add unsent label for failed components
         for (RoomMessageComponent *component in message.components) {
             if (component.status == RoomMessageComponentStatusFailed) {
-                UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, outgoingMsgCell.unsentView.frame.size.width , 20)];
+                UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, outgoingMsgCell.unsentLabelContainer.frame.size.width , 20)];
                 unsentLabel.text = @"Unsent";
                 unsentLabel.textAlignment = NSTextAlignmentCenter;
                 unsentLabel.textColor = [UIColor redColor];
                 unsentLabel.font = [UIFont systemFontOfSize:14];
-                [outgoingMsgCell.unsentView addSubview:unsentLabel];
-                outgoingMsgCell.unsentView.hidden = NO;
+                [outgoingMsgCell.unsentLabelContainer addSubview:unsentLabel];
+                outgoingMsgCell.unsentLabelContainer.hidden = NO;
             }
             yPosition += component.height;
         }
@@ -998,20 +998,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Handle timestamp display
     if (dateFormatter) {
-        cell.dateTimeView.hidden = NO;
+        cell.dateTimeLabelContainer.hidden = NO;
         CGFloat yPosition;
         // Adjust top constraint constant
         if (message.messageType == RoomMessageTypeText) {
-            cell.dateTimeViewTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
+            cell.dateTimeLabelContainerTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
             yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
         } else {
-            cell.dateTimeViewTopConstraint.constant = cell.attachViewTopConstraint.constant;
+            cell.dateTimeLabelContainerTopConstraint.constant = cell.attachViewTopConstraint.constant;
             yPosition = -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         }
         // Add datetime label for each component
         for (RoomMessageComponent *component in message.components) {
             if (component.date) {
-                UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeView.frame.size.width , 20)];
+                UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
                 dateTimeLabel.text = [dateFormatter stringFromDate:component.date];
                 if (isIncomingMsg) {
                     dateTimeLabel.textAlignment = NSTextAlignmentRight;
@@ -1023,19 +1023,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 dateTimeLabel.adjustsFontSizeToFitWidth = YES;
                 dateTimeLabel.minimumScaleFactor = 0.6;
                 [dateTimeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-                [cell.dateTimeView addSubview:dateTimeLabel];
+                [cell.dateTimeLabelContainer addSubview:dateTimeLabel];
                 // Force dateTimeLabel in full width (to handle auto-layout in case of screen rotation)
                 NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
                                                                                   attribute:NSLayoutAttributeLeading
                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:cell.dateTimeView
+                                                                                     toItem:cell.dateTimeLabelContainer
                                                                                   attribute:NSLayoutAttributeLeading
                                                                                  multiplier:1.0
                                                                                    constant:0];
                 NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
                                                                                    attribute:NSLayoutAttributeTrailing
                                                                                    relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:cell.dateTimeView
+                                                                                      toItem:cell.dateTimeLabelContainer
                                                                                    attribute:NSLayoutAttributeTrailing
                                                                                   multiplier:1.0
                                                                                     constant:0];
@@ -1043,7 +1043,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
                                                                                  attribute:NSLayoutAttributeTop
                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:cell.dateTimeView
+                                                                                    toItem:cell.dateTimeLabelContainer
                                                                                  attribute:NSLayoutAttributeTop
                                                                                 multiplier:1.0
                                                                                   constant:yPosition];
@@ -1057,16 +1057,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)]) {
                     [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
                 } else {
-                    [cell.dateTimeView addConstraint:leftConstraint];
-                    [cell.dateTimeView addConstraint:rightConstraint];
-                    [cell.dateTimeView addConstraint:topConstraint];
+                    [cell.dateTimeLabelContainer addConstraint:leftConstraint];
+                    [cell.dateTimeLabelContainer addConstraint:rightConstraint];
+                    [cell.dateTimeLabelContainer addConstraint:topConstraint];
                     [dateTimeLabel addConstraint:heightConstraint];
                 }
             }
             yPosition += component.height;
         }
     } else {
-        cell.dateTimeView.hidden = YES;
+        cell.dateTimeLabelContainer.hidden = YES;
     }
     return cell;
 }

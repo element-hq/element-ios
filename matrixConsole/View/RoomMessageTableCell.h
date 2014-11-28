@@ -23,12 +23,12 @@
 @property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
 @property (strong, nonatomic) IBOutlet CustomImageView *attachmentView;
 @property (strong, nonatomic) IBOutlet UIImageView *playIconView;
-@property (weak, nonatomic) IBOutlet UIView *dateTimeView;
+@property (weak, nonatomic) IBOutlet UIView *dateTimeLabelContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateTimeViewTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateTimeLabelContainerTopConstraint;
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell
@@ -36,8 +36,8 @@
 @end
 
 @interface OutgoingMessageTableCell : RoomMessageTableCell
-@property (weak, nonatomic) IBOutlet UIView *unsentView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *unsentViewTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *unsentLabelContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *unsentLabelContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
