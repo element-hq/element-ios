@@ -25,6 +25,54 @@
 
 @implementation CustomImageView
 
+- (void)dealloc {
+    if (imageLoader) {
+        [MediaManager cancel:imageLoader];
+        imageLoader = nil;
+    }
+    if (loadingWheel) {
+        [loadingWheel removeFromSuperview];
+        loadingWheel = nil;
+    }
+}
+
+- (void)startActivityIndicator {
+    // Add activity indicator if none
+    if (loadingWheel == nil) {
+        loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self addSubview:loadingWheel];
+    }
+    // Adjust position
+    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    loadingWheel.center = center;
+    // Adjust color
+    if ([self.backgroundColor isEqual:[UIColor blackColor]]) {
+        loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    } else {
+        loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    }
+    // Start
+    [loadingWheel startAnimating];
+}
+
+- (void)stopActivityIndicator {
+    if (loadingWheel) {
+        [loadingWheel stopAnimating];
+    }
+}
+
+#pragma mark -
+
+- (void)setHideActivityIndicator:(BOOL)hideActivityIndicator {
+    _hideActivityIndicator = hideActivityIndicator;
+    if (hideActivityIndicator) {
+        [self stopActivityIndicator];
+    } else if (imageLoader) {
+        // Loading is in progress, start activity indicator
+        [self startActivityIndicator];
+    }
+}
+
 - (void)setImageURL:(NSString *)imageURL {
     // Cancel media loader in progress (if any)
     if (imageLoader) {
@@ -42,40 +90,19 @@
     }
     // Consider provided url to update image view
     if (imageURL) {
-        // Start loading animation
-        if (loadingWheel == nil) {
-            loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-            loadingWheel.center = center;
-            [self addSubview:loadingWheel];
-        }
-        if ([self.backgroundColor isEqual:[UIColor blackColor]]) {
-            loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-        } else {
-            loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        }
-        [loadingWheel startAnimating];
         // Load picture
+        if (!_hideActivityIndicator) {
+            [self startActivityIndicator];
+        }
         imageLoader = [MediaManager loadPicture:imageURL
                                         success:^(UIImage *image) {
-                                            [loadingWheel stopAnimating];
+                                            [self stopActivityIndicator];
                                             self.image = image;
                                         }
                                         failure:^(NSError *error) {
-                                            [loadingWheel stopAnimating];
+                                            [self stopActivityIndicator];
                                             NSLog(@"Failed to download image (%@): %@", imageURL, error);
                                         }];
-    }
-}
-
-- (void)dealloc {
-    if (imageLoader) {
-        [MediaManager cancel:imageLoader];
-        imageLoader = nil;
-    }
-    if (loadingWheel) {
-        [loadingWheel removeFromSuperview];
-        loadingWheel = nil;
     }
 }
 

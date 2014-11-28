@@ -21,7 +21,12 @@
 
 @property (strong, nonatomic) NSString *placeholder;
 @property (strong, nonatomic) NSString *imageURL;
+
+// Use this boolean to hide activity indicator during image downloading
+@property (nonatomic) BOOL hideActivityIndicator;
+
 // Information about the media represented by this image (image, video...)
 @property (strong, nonatomic) NSDictionary *mediaInfo;
+
 @end
 

@@ -918,12 +918,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (message.messageType != RoomMessageTypeText) {
         cell.messageTextView.attributedText = nil; // Note: Text view is used as attachment background view
         cell.attachmentView.hidden = NO;
+        // Update image view frame in order to center loading wheel (if any)
+        CGRect frame = cell.attachmentView.frame;
+        frame.size.width = contentSize.width;
+        frame.size.height = contentSize.height;
+        cell.attachmentView.frame = frame;
         // Fade attachments during upload
         if (message.isUploadInProgress) {
             cell.attachmentView.alpha = 0.5;
             [((OutgoingMessageTableCell*)cell).activityIndicator startAnimating];
+            cell.attachmentView.hideActivityIndicator = YES;
         } else {
             cell.attachmentView.alpha = 1;
+            cell.attachmentView.hideActivityIndicator = NO;
         }
         NSString *url = message.thumbnailURL;
         if (!url && message.messageType == RoomMessageTypeImage) {
