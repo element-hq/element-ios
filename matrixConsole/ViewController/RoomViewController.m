@@ -30,8 +30,10 @@
 
 #define UPLOAD_FILE_SIZE 5000000
 
-#define ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT 10
-#define ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TOP_CONST_DEFAULT 18
+#define ROOM_MESSAGE_CELL_DEFAULT_HEIGHT 50
+#define ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST 10
+#define ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST 18
+#define ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN -10
 
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
@@ -793,7 +795,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
-        return 50;
+        // Use the same default height than message cell
+        return ROOM_MESSAGE_CELL_DEFAULT_HEIGHT;
     }
     
     // Compute here height of message cells
@@ -804,14 +807,31 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     rowHeight = message.contentSize.height;
     // Add top margin
     if (message.messageType == RoomMessageTypeText) {
-        rowHeight += ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
+        rowHeight += ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
     } else {
-        rowHeight += ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TOP_CONST_DEFAULT;
+        rowHeight += ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST;
     }
     
-    // We consider the minimun cell height (50) in order to display correctly user's picture
-    if (rowHeight < 50) {
-        rowHeight = 50;
+    // Check whether the previous message has been sent by the same user.
+    // The user's picture and name are displayed only for the first message.
+    BOOL shouldHideSenderInfo = NO;
+    if (indexPath.row) {
+        RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
+        if ([previousMessage.senderId isEqualToString:message.senderId]
+            && [previousMessage.senderName isEqualToString:message.senderName]
+            && [previousMessage.senderAvatarUrl isEqualToString:message.senderAvatarUrl]) {
+            shouldHideSenderInfo = YES;
+        }
+    }
+    
+    if (shouldHideSenderInfo) {
+        // Reduce top margin -> row height reduction
+        rowHeight += ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
+    } else {
+        // We consider a minimun cell height in order to display correctly user's picture
+        if (rowHeight < ROOM_MESSAGE_CELL_DEFAULT_HEIGHT) {
+            rowHeight = ROOM_MESSAGE_CELL_DEFAULT_HEIGHT;
+        }
     }
     return rowHeight;
 }
@@ -849,8 +869,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Restore initial settings
-    cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_TEXTVIEW_TOP_CONST_DEFAULT;
-    cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TOP_CONST_DEFAULT;
     cell.attachmentView.imageURL = nil; // Cancel potential attachment loading
     cell.attachmentView.hidden = YES;
     cell.playIconView.hidden = YES;
@@ -882,9 +900,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     
-    // Handle user's picture
-    cell.pictureView.hidden = shouldHideSenderInfo;
-    if (!shouldHideSenderInfo) {
+    if (shouldHideSenderInfo) {
+        cell.pictureView.hidden = YES;
+        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST + ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
+        cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST + ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
+        
+    } else {
+        cell.pictureView.hidden = NO;
+        cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
+        cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST;
+        // Handle user's picture
         cell.pictureView.placeholder = @"default-profile";
         cell.pictureView.imageURL = message.senderAvatarUrl;
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
@@ -899,8 +924,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         incomingMsgCell.userNameLabel.text = message.senderName;
     } else {
         OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
+        // Adjust top constraint constant for unsent labels container
+        CGFloat yPosition;
+        if (message.messageType == RoomMessageTypeText) {
+            outgoingMsgCell.unsentViewTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
+            yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
+        } else {
+            outgoingMsgCell.unsentViewTopConstraint.constant = cell.attachViewTopConstraint.constant;
+            yPosition = -ROOM_MESSAGE_TEXTVIEW_MARGIN;
+        }
         // Add unsent label for failed components
-        CGFloat yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
             if (component.status == RoomMessageComponentStatusFailed) {
                 UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, outgoingMsgCell.unsentView.frame.size.width , 20)];
@@ -966,8 +999,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Handle timestamp display
     if (dateFormatter) {
         cell.dateTimeView.hidden = NO;
+        CGFloat yPosition;
+        // Adjust top constraint constant
+        if (message.messageType == RoomMessageTypeText) {
+            cell.dateTimeViewTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
+            yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
+        } else {
+            cell.dateTimeViewTopConstraint.constant = cell.attachViewTopConstraint.constant;
+            yPosition = -ROOM_MESSAGE_TEXTVIEW_MARGIN;
+        }
         // Add datetime label for each component
-        CGFloat yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
             if (component.date) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeView.frame.size.width , 20)];

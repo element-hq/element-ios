@@ -130,6 +130,7 @@
                                             <outlet property="attachViewWidthConstraint" destination="Ui5-gH-5Oe" id="d2f-b0-V0B"/>
                                             <outlet property="attachmentView" destination="mvK-ez-meg" id="Qjc-lo-eJS"/>
                                             <outlet property="dateTimeView" destination="ds0-yH-8Uu" id="9X2-Wi-VOS"/>
+                                            <outlet property="dateTimeViewTopConstraint" destination="998-YZ-TJ4" id="73v-40-VAJ"/>
                                             <outlet property="messageTextView" destination="J5R-Mh-3hV" id="d45-NI-bod"/>
                                             <outlet property="msgTextViewTopConstraint" destination="rJt-w3-D8g" id="6Um-o1-J08"/>
                                             <outlet property="msgTextViewWidthConstraint" destination="rsq-bW-mGt" id="gt4-3A-412"/>
@@ -232,12 +233,14 @@
                                             <outlet property="attachViewWidthConstraint" destination="GvD-tV-Uc3" id="Odn-zz-zp7"/>
                                             <outlet property="attachmentView" destination="QZT-V8-yqJ" id="Xrj-e5-Yd9"/>
                                             <outlet property="dateTimeView" destination="Glo-Wx-mP6" id="12R-NA-lfr"/>
+                                            <outlet property="dateTimeViewTopConstraint" destination="KAT-n3-5vl" id="Pxt-bq-VSi"/>
                                             <outlet property="messageTextView" destination="7qn-gi-w7s" id="0b2-5P-dqR"/>
                                             <outlet property="msgTextViewTopConstraint" destination="owD-KZ-snG" id="oqc-0f-05O"/>
                                             <outlet property="msgTextViewWidthConstraint" destination="a6g-WS-jjN" id="aM9-xQ-hVM"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>
                                             <outlet property="playIconView" destination="0Bl-Sv-Q2H" id="VNa-J3-NuO"/>
                                             <outlet property="unsentView" destination="07b-tV-EBC" id="OET-EF-u1S"/>
+                                            <outlet property="unsentViewTopConstraint" destination="fF0-vc-51U" id="iW0-VG-KZb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
