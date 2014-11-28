@@ -187,7 +187,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == _roomAliasTextField) {
-        // Compute the new phone number with this string change
+        // Compute the new alias with this string change
         NSString * alias = textField.text;
         if (alias.length) {
             // add homeserver as suffix
@@ -213,7 +213,9 @@
                 participants = [participants stringByAppendingString:@" @"];
             } else if ([string isEqualToString:@":"]) {
                 // Add homeserver
-                participants = [participants stringByAppendingString:[MatrixHandler sharedHandler].homeServer];
+                if ([MatrixHandler sharedHandler].homeServer) {
+                    participants = [participants stringByAppendingString:[MatrixHandler sharedHandler].homeServer];
+                }
             }
             
             textField.text = participants;
