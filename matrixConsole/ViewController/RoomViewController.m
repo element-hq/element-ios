@@ -285,8 +285,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
-                shouldScrollToBottom = (self.messagesTableView.contentOffset.y + self.messagesTableView.frame.size.height >= self.messagesTableView.contentSize.height);
-                
+                // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+                CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                // Update Table
                 NSIndexPath *indexPathForInsertedRow = nil;
                 NSIndexPath *indexPathForDeletedRow = nil;
                 NSMutableArray *indexPathsForUpdatedRows = [NSMutableArray array];
@@ -427,14 +429,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
     // Scroll table view to the bottom
-    UIEdgeInsets insets = self.messagesTableView.contentInset;
-    CGFloat yOffset = self.messagesTableView.contentSize.height - (self.messagesTableView.frame.size.height - insets.bottom);
-    if (yOffset < -insets.top) {
-        yOffset = -insets.top;
+    NSInteger rowNb = messages.count;
+    // Check whether there is some data and whether the table has already been loaded
+    if (rowNb && self.messagesTableView.contentSize.height) {
+        [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
-    [UIView setAnimationsEnabled:animated];
-    self.messagesTableView.contentOffset = CGPointMake(0, yOffset);
-    [UIView setAnimationsEnabled:YES];
 }
 
 - (void)triggerBackPagination {
