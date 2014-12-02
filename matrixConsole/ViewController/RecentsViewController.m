@@ -26,6 +26,11 @@
     NSMutableArray  *recents;
     id               recentsListener;
     
+    // Search
+    UISearchBar     *recentsSearchBar;
+    NSMutableArray  *filteredRecents;
+    BOOL             searchBarShouldEndEditing;
+    
     // Date formatter
     NSDateFormatter *dateFormatter;
     
@@ -50,8 +55,9 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    self.navigationItem.rightBarButtonItems = @[searchButton, addButton];
     
     // Add activity indicator
     [self.view addSubview:_activityIndicator];
@@ -60,6 +66,7 @@
     
     // Initialisation
     recents = nil;
+    filteredRecents = nil;
     
     NSString *dateFormat =  @"MMM dd HH:mm";
     dateFormatter = [[NSDateFormatter alloc] init];
@@ -79,6 +86,8 @@
     }
     recents = nil;
     _preSelectedRoomId = nil;
+    recentsSearchBar = nil;
+    filteredRecents = nil;
     
     if (dateFormatter) {
         dateFormatter = nil;
@@ -103,6 +112,10 @@
     
     // Leave potential editing mode
     [self setEditing:NO];
+    // Leave potential search session
+    if (recentsSearchBar) {
+        [self searchBarCancelButtonClicked:recentsSearchBar];
+    }
     
     if (recentsListener) {
         [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
@@ -206,6 +219,25 @@
     [[AppDelegate theDelegate].masterTabBarController showRoomCreationForm];
 }
 
+- (void)search:(id)sender {
+    if (!recentsSearchBar) {
+        // Check whether there are data in which search
+        if (recents.count) {
+            // Create search bar
+            recentsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+            recentsSearchBar.showsCancelButton = YES;
+            recentsSearchBar.returnKeyType = UIReturnKeyDone;
+            recentsSearchBar.delegate = self;
+            searchBarShouldEndEditing = NO;
+            [recentsSearchBar becomeFirstResponder];
+            // Reload table in order to display search bar as section header
+            [self.tableView reloadData];
+        }
+    } else {
+        [self searchBarCancelButtonClicked: recentsSearchBar];
+    }
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -221,7 +253,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        MXEvent *mxEvent = recents[indexPath.row];
+        MXEvent *mxEvent;
+        if (filteredRecents) {
+            mxEvent = filteredRecents[indexPath.row];
+        } else {
+            mxEvent = recents[indexPath.row];
+        }
         
         UIViewController *controller;
         if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]]) {
@@ -253,18 +290,37 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (filteredRecents) {
+        return filteredRecents.count;
+    }
     return recents.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (recentsSearchBar) {
+        return recentsSearchBar.frame.size.height;
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return recentsSearchBar;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RecentsTableViewCell *cell = (RecentsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"RecentsCell" forIndexPath:indexPath];
 
-    MXEvent *mxEvent = recents[indexPath.row];
+    MXEvent *mxEvent;
+    if (filteredRecents) {
+        mxEvent = filteredRecents[indexPath.row];
+    } else {
+        mxEvent = recents[indexPath.row];
+    }
+    
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
     
@@ -295,11 +351,20 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Leave the selected room
-        MXEvent *mxEvent = recents[indexPath.row];
+        MXEvent *mxEvent;
+        if (filteredRecents) {
+            mxEvent = filteredRecents[indexPath.row];
+        } else {
+            mxEvent = recents[indexPath.row];
+        }
         MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:mxEvent.roomId];
         [mxRoom leave:^{
             // Refresh table display
-            [recents removeObjectAtIndex:indexPath.row];
+            if (filteredRecents) {
+                [filteredRecents removeObjectAtIndex:indexPath.row];
+            } else {
+                [recents removeObjectAtIndex:indexPath.row];
+            }
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         } failure:^(NSError *error) {
             NSLog(@"Failed to leave room (%@) failed: %@", mxEvent.roomId, error);
@@ -307,6 +372,52 @@
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
     }
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    return searchBarShouldEndEditing;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    // Update filtered list
+    if (searchText.length) {
+        if (filteredRecents) {
+            [filteredRecents removeAllObjects];
+        } else {
+            filteredRecents = [NSMutableArray arrayWithCapacity:recents.count];
+        }
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        for (MXEvent *mxEvent in recents) {
+            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+            if ([[mxRoom.state displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                [filteredRecents addObject:mxEvent];
+            }
+        }
+    } else {
+        filteredRecents = nil;
+    }
+    // Refresh display
+    [self.tableView reloadData];
+    if (filteredRecents.count) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    // "Done" key has been pressed
+    searchBarShouldEndEditing = YES;
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    // Leave search
+    searchBarShouldEndEditing = YES;
+    [searchBar resignFirstResponder];
+    recentsSearchBar = nil;
+    filteredRecents = nil;
+    [self.tableView reloadData];
 }
 
 @end
