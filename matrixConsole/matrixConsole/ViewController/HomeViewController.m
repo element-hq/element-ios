@@ -355,7 +355,7 @@
     
     // Check whether the user has already joined the selected public room
     MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    if ([mxHandler.mxSession room:publicRoom.roomId]) {
+    if ([mxHandler.mxSession roomWithRoomId:publicRoom.roomId]) {
         // Open selected room
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
     } else {

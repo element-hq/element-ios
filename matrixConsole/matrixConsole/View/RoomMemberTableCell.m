@@ -89,7 +89,7 @@
             } else {
                 // Get the user that corresponds to this member
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                MXUser *user = [mxHandler.mxSession user:roomMember.userId];
+                MXUser *user = [mxHandler.mxSession userWithUserId:roomMember.userId];
                 
                 // Prepare last active ago string
                 NSUInteger lastActiveAgoInSec = user.lastActiveAgo / 1000;
