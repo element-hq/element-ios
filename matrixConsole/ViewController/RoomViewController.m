@@ -784,11 +784,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Check table view members vs messages
-    if (tableView == self.membersTableView)
-    {
+    if (tableView == self.membersTableView) {
         return members.count;
     }
-    
+    // Reset here back pagination counter to prevent insertion of existing rows at the end of pagination
+    backPaginationAddedItemsNb = 0;
     return messages.count;
 }
 
@@ -1789,6 +1789,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             MPMoviePlayerController* moviePlayerController = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideo];
             if (moviePlayerController) {
                 [moviePlayerController setShouldAutoplay:NO];
+                // TODO requestThumbnailImagesAtTimes
                 UIImage* videoThumbnail = [moviePlayerController thumbnailImageAtTime:(NSTimeInterval)1 timeOption:MPMovieTimeOptionNearestKeyFrame];
                 [moviePlayerController stop];
                 moviePlayerController = nil;
