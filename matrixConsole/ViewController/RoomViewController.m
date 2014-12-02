@@ -935,7 +935,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         // Add unsent label for failed components
         for (RoomMessageComponent *component in message.components) {
-            if (component.status == RoomMessageComponentStatusFailed) {
+            if (component.style == RoomMessageComponentStyleFailed) {
                 UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, outgoingMsgCell.unsentLabelContainer.frame.size.width , 20)];
                 unsentLabel.text = @"Unsent";
                 unsentLabel.textAlignment = NSTextAlignmentCenter;
