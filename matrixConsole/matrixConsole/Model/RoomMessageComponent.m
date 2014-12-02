@@ -43,25 +43,62 @@ NSString *const kFailedEventId = @"failedEventId";
                 _date = nil;
             }
             
-            // Set display mode
+            // Set style
             BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
-                _status = RoomMessageComponentStatusUnsupported;
+                _style = RoomMessageComponentStyleUnsupported;
             } else if ([_eventId hasPrefix:kFailedEventId]) {
-                _status = RoomMessageComponentStatusFailed;
+                _style = RoomMessageComponentStyleFailed;
             } else if (isIncomingMsg && ([textMessage rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [textMessage rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-                _status = RoomMessageComponentStatusHighlighted;
+                _style = RoomMessageComponentStyleHighlighted;
             } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
-                _status = RoomMessageComponentStatusInProgress;
+                _style = RoomMessageComponentStyleInProgress;
             } else {
-                _status = RoomMessageComponentStatusNormal;
+                _style = RoomMessageComponentStyleDefault;
             }
+            
+            _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
         } else {
             // Ignore this event
             self = nil;
         }
     }
     return self;
+}
+
+- (NSDictionary*)stringAttributes {
+    UIColor *textColor;
+    UIFont *font;
+    
+    switch (_style) {
+        case RoomMessageComponentStyleDefault:
+            textColor = [UIColor blackColor];
+            break;
+        case RoomMessageComponentStyleHighlighted:
+            textColor = [UIColor blueColor];
+            break;
+        case RoomMessageComponentStyleInProgress:
+            textColor = [UIColor lightGrayColor];
+            break;
+        case RoomMessageComponentStyleFailed:
+        case RoomMessageComponentStyleUnsupported:
+            textColor = [UIColor redColor];
+            break;
+        default:
+            textColor = [UIColor blackColor];
+            break;
+    }
+    
+    if (_isStateEvent) {
+        font = [UIFont italicSystemFontOfSize:14];
+    } else {
+        font = [UIFont systemFontOfSize:14];
+    }
+    
+    return @{
+             NSForegroundColorAttributeName : textColor,
+             NSFontAttributeName: font
+             };
 }
 @end
 

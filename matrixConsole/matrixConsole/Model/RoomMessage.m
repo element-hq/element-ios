@@ -29,7 +29,6 @@ static NSAttributedString *messageSeparator = nil;
 }
 
 + (NSAttributedString *)messageSeparator;
-+ (NSDictionary *)stringAttributesForComponentStatus:(RoomMessageComponentStatus)status;
 
 @end
 
@@ -245,7 +244,7 @@ static NSAttributedString *messageSeparator = nil;
     if (!currentAttributedTextMsg && messageComponents.count) {
         // Create attributed string
         for (RoomMessageComponent* msgComponent in messageComponents) {
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[RoomMessage stringAttributesForComponentStatus:msgComponent.status]];
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
             if (!currentAttributedTextMsg) {
                 currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
             } else {
@@ -272,7 +271,7 @@ static NSAttributedString *messageSeparator = nil;
     if (_messageType != RoomMessageTypeText) {
         if (messageComponents.count) {
             RoomMessageComponent *msgComponent = [messageComponents firstObject];
-            return (msgComponent.status == RoomMessageComponentStatusInProgress);
+            return (msgComponent.style == RoomMessageComponentStyleInProgress);
         }
     }
     return NO;
@@ -288,33 +287,6 @@ static NSAttributedString *messageSeparator = nil;
         }
     }
     return messageSeparator;
-}
-
-+ (NSDictionary*)stringAttributesForComponentStatus:(RoomMessageComponentStatus)status {
-    UIColor *textColor;
-    switch (status) {
-        case RoomMessageComponentStatusNormal:
-            textColor = [UIColor blackColor];
-            break;
-        case RoomMessageComponentStatusHighlighted:
-            textColor = [UIColor blueColor];
-            break;
-        case RoomMessageComponentStatusInProgress:
-            textColor = [UIColor lightGrayColor];
-            break;
-        case RoomMessageComponentStatusFailed:
-        case RoomMessageComponentStatusUnsupported:
-            textColor = [UIColor redColor];
-            break;
-        default:
-            textColor = [UIColor blackColor];
-            break;
-    }
-    
-    return @{
-             NSForegroundColorAttributeName : textColor,
-             NSFontAttributeName: [UIFont systemFontOfSize:14]
-             };
 }
 
 @end

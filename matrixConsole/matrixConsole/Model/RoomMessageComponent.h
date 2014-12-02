@@ -20,24 +20,26 @@ extern NSString *const kLocalEchoEventIdPrefix;
 extern NSString *const kFailedEventId;
 
 typedef enum : NSUInteger {
-    RoomMessageComponentStatusNormal,
-    RoomMessageComponentStatusHighlighted,
-    RoomMessageComponentStatusInProgress,
-    RoomMessageComponentStatusFailed,
-    RoomMessageComponentStatusUnsupported
-} RoomMessageComponentStatus;
+    RoomMessageComponentStyleDefault,
+    RoomMessageComponentStyleHighlighted,
+    RoomMessageComponentStyleInProgress,
+    RoomMessageComponentStyleFailed,
+    RoomMessageComponentStyleUnsupported
+} RoomMessageComponentStyle;
 
 @interface RoomMessageComponent : NSObject
 
 @property (nonatomic) NSString *textMessage;
 @property (nonatomic) NSString *eventId;
 @property (nonatomic) NSDate   *date;
-@property (nonatomic) RoomMessageComponentStatus status;
+@property (nonatomic) RoomMessageComponentStyle style;
+@property (nonatomic) BOOL isStateEvent;
 @property (nonatomic) CGFloat height;
 
 // True if text message starts with the sender name (see membership events, emote ...)
 @property (nonatomic) BOOL startsWithSenderName;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState;
+- (NSDictionary *)stringAttributes;
 
 @end
