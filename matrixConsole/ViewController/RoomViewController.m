@@ -249,7 +249,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Update room data
     if (self.roomId) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        mxRoom = [mxHandler.mxSession room:self.roomId];
+        mxRoom = [mxHandler.mxSession roomWithRoomId:self.roomId];
         
         // Update room title
         self.roomNameTextField.text = mxRoom.state.displayname;
@@ -540,8 +540,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
          if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
              // Get the users that correspond to these members
              MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-             MXUser *user1 = [mxHandler.mxSession user:member1.userId];
-             MXUser *user2 = [mxHandler.mxSession user:member2.userId];
+             MXUser *user1 = [mxHandler.mxSession userWithUserId:member1.userId];
+             MXUser *user2 = [mxHandler.mxSession userWithUserId:member2.userId];
              
              // Move users who are not online or unavailable at the end (before invited users)
              if ((user1.presence == MXPresenceOnline) || (user1.presence == MXPresenceUnavailable)) {
@@ -1092,7 +1092,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self.actionMenu addActionWithTitle:@"Leave" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                 if (weakSelf) {
                     weakSelf.actionMenu = nil;
-                    MXRoom *currentRoom = [[MatrixHandler sharedHandler].mxSession room:weakSelf.roomId];
+                    MXRoom *currentRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:weakSelf.roomId];
                     [currentRoom leave:^{
                         // Back to recents
                         [weakSelf.navigationController popViewControllerAnimated:YES];

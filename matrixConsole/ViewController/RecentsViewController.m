@@ -266,7 +266,7 @@
 
     MXEvent *mxEvent = recents[indexPath.row];
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    MXRoom *mxRoom = [mxHandler.mxSession room:mxEvent.roomId];
+    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
     
     cell.roomTitle.text = [mxRoom.state displayname];
     cell.lastEventDescription.text = [mxHandler displayTextForEvent:mxEvent withRoomState:mxRoom.state inSubtitleMode:YES];
@@ -296,7 +296,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Leave the selected room
         MXEvent *mxEvent = recents[indexPath.row];
-        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession room:mxEvent.roomId];
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:mxEvent.roomId];
         [mxRoom leave:^{
             // Refresh table display
             [recents removeObjectAtIndex:indexPath.row];
