@@ -427,10 +427,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
     // Scroll table view to the bottom
-    NSInteger rowNb = messages.count;
-    if (rowNb) {
-        [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    UIEdgeInsets insets = self.messagesTableView.contentInset;
+    CGFloat yOffset = self.messagesTableView.contentSize.height - (self.messagesTableView.frame.size.height - insets.bottom);
+    if (yOffset < -insets.top) {
+        yOffset = -insets.top;
     }
+    [UIView setAnimationsEnabled:animated];
+    self.messagesTableView.contentOffset = CGPointMake(0, yOffset);
+    [UIView setAnimationsEnabled:YES];
 }
 
 - (void)triggerBackPagination {
@@ -455,6 +459,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     [indexPaths addObject:indexPath];
                     verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
                 }
+                // Here indexPath corresponds to the first added message (We will reuse it at the end of table update to make it visible)
+                // Reset count to enable tableView update
+                backPaginationAddedItemsNb = 0;
                 
                 // Disable animation during cells insertion to prevent flickering
                 [UIView setAnimationsEnabled:NO];
@@ -471,11 +478,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [_activityIndicator stopAnimating];
                 isBackPaginationInProgress = NO;
                 
-                // Move the current message at the middle of the visible area (dispatch this action in order to let table end its refresh)
-                indexPath = [NSIndexPath indexPathForRow:(backPaginationAddedItemsNb - 1) inSection:0];
-                backPaginationAddedItemsNb = 0;
+                // Scroll tableView in order to make visible the first added message (dispatch this action in order to let table end its refresh)
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.messagesTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    if (indexPath.row == messages.count - 1) {
+                        [self scrollToBottomAnimated:NO];
+                    } else {
+                        [self.messagesTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                    }
                 });
             } else {
                 // Here there was no event related to the listened types
@@ -787,8 +796,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (tableView == self.membersTableView) {
         return members.count;
     }
-    // Reset here back pagination counter to prevent insertion of existing rows at the end of pagination
-    backPaginationAddedItemsNb = 0;
+    
+    if (backPaginationAddedItemsNb) {
+        // Here some old messages have been added to messages during back pagination.
+        // Stop table refreshing, the table will be refreshed at the end of pagination
+        return 0;
+    }
     return messages.count;
 }
 
