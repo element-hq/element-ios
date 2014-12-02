@@ -29,6 +29,9 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) NSString *accessToken;
 
+// The type of events to display
+@property (strong, nonatomic) NSArray *eventsFilterForMessages;
+
 // Matrix user's settings
 @property (strong, nonatomic) NSString *userDisplayName;
 @property (strong, nonatomic) NSString *userPictureURL;

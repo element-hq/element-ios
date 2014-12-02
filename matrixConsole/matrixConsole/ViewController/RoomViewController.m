@@ -280,7 +280,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
         // Register a listener to handle messages
-        messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+        messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             BOOL shouldScrollToBottom = NO;
             
             // Handle first live events
