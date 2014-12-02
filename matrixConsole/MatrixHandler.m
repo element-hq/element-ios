@@ -102,27 +102,40 @@ static MatrixHandler *sharedHandler = nil;
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
+
+        // Use MXMemoryStore as MXStore to not loose message
+        MXMemoryStore *store = [[MXMemoryStore alloc] init];
         
-        self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient];
+        self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:store];
         // Check here whether the app user wants to display all the events
         if ([[AppSettings sharedSettings] displayAllEvents]) {
-            // Override events filter to retrieve all the events
-            self.mxSession.eventsFilterForMessages = @[
-                                                    kMXEventTypeStringRoomName,
-                                                    kMXEventTypeStringRoomTopic,
-                                                    kMXEventTypeStringRoomMember,
-                                                    kMXEventTypeStringRoomCreate,
-                                                    kMXEventTypeStringRoomJoinRules,
-                                                    kMXEventTypeStringRoomPowerLevels,
-                                                    kMXEventTypeStringRoomAddStateLevel,
-                                                    kMXEventTypeStringRoomSendEventLevel,
-                                                    kMXEventTypeStringRoomOpsLevel,
-                                                    kMXEventTypeStringRoomAliases,
-                                                    kMXEventTypeStringRoomMessage,
-                                                    kMXEventTypeStringRoomMessageFeedback,
-                                                    kMXEventTypeStringPresence
-                                                    ];
+            // Use a filter to retrieve all the events
+            self.eventsFilterForMessages = @[
+                                             kMXEventTypeStringRoomName,
+                                             kMXEventTypeStringRoomTopic,
+                                             kMXEventTypeStringRoomMember,
+                                             kMXEventTypeStringRoomCreate,
+                                             kMXEventTypeStringRoomJoinRules,
+                                             kMXEventTypeStringRoomPowerLevels,
+                                             kMXEventTypeStringRoomAddStateLevel,
+                                             kMXEventTypeStringRoomSendEventLevel,
+                                             kMXEventTypeStringRoomOpsLevel,
+                                             kMXEventTypeStringRoomAliases,
+                                             kMXEventTypeStringRoomMessage,
+                                             kMXEventTypeStringRoomMessageFeedback,
+                                             kMXEventTypeStringPresence
+                                             ];
         }
+        else {
+            // Display only a subset of events
+            self.eventsFilterForMessages = @[
+                                             kMXEventTypeStringRoomName,
+                                             kMXEventTypeStringRoomTopic,
+                                             kMXEventTypeStringRoomMember,
+                                             kMXEventTypeStringRoomMessage
+                                             ];
+        }
+
         // Launch mxSession
         [self.mxSession start:^{
             self.isInitialSyncDone = YES;
@@ -233,7 +246,7 @@ static MatrixHandler *sharedHandler = nil;
 - (void)enableEventsNotifications:(BOOL)isEnabled {
     if (isEnabled) {
         // Register events listener
-        eventsListener = [self.mxSession listenToEventsOfTypes:self.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+        eventsListener = [self.mxSession listenToEventsOfTypes:self.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
             // Consider only live event (Ignore presence event)
             if (direction == MXEventDirectionForwards && (event.eventType != MXEventTypePresence)) {
                 MXRoomState* roomState = (MXRoomState*)customObject;

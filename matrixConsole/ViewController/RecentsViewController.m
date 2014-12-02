@@ -167,13 +167,13 @@
     if ([mxHandler isInitialSyncDone] || [mxHandler isLogged] == NO) {
         // Update recents
         if (mxHandler.mxSession) {
-            recents = [NSMutableArray arrayWithArray:mxHandler.mxSession.recents];
+            recents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
             // Register recent listener
-            recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.mxSession.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+            recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
                 // consider only live event
                 if (direction == MXEventDirectionForwards) {
                     // Refresh the whole recents list
-                    recents = [NSMutableArray arrayWithArray:mxHandler.mxSession.recents];
+                    recents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
                     // Reload table
                     [self.tableView reloadData];
                     [_activityIndicator stopAnimating];
