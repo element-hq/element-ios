@@ -448,6 +448,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         backPaginationAddedItemsNb = 0;
         
         [mxRoom paginateBackMessages:20 complete:^{
+            // Sanity check: check whether the view controller has not been released while back pagination was running
+            if (self.roomId == nil) {
+                return;
+            }
             if (backPaginationAddedItemsNb) {
                 // Prepare insertion of new rows at the top of the table (compute cumulative height of added cells)
                 NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:backPaginationAddedItemsNb];
