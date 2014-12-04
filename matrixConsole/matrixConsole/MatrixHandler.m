@@ -550,6 +550,9 @@ static MatrixHandler *sharedHandler = nil;
             if (event.content[@"redact"]) {
                 displayText = [NSString stringWithFormat:@"%@\r\n\u2022 redact: %@", displayText, event.content[@"redact"]];
             }
+            if (event.content[@"invite"]) {
+                displayText = [NSString stringWithFormat:@"%@\r\n\u2022 invite: %@", displayText, event.content[@"invite"]];
+            }
             
             displayText = [NSString stringWithFormat:@"%@\r\nThe minimum power levels related to events are:", displayText];
             NSDictionary *events = event.content[@"events"];
