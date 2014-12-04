@@ -117,9 +117,6 @@ static MatrixHandler *sharedHandler = nil;
                                              kMXEventTypeStringRoomCreate,
                                              kMXEventTypeStringRoomJoinRules,
                                              kMXEventTypeStringRoomPowerLevels,
-                                             kMXEventTypeStringRoomAddStateLevel,
-                                             kMXEventTypeStringRoomSendEventLevel,
-                                             kMXEventTypeStringRoomOpsLevel,
                                              kMXEventTypeStringRoomAliases,
                                              kMXEventTypeStringRoomMessage,
                                              kMXEventTypeStringRoomMessageFeedback,
@@ -573,27 +570,6 @@ static MatrixHandler *sharedHandler = nil;
             }
             break;
         }
-//        case MXEventTypeRoomAddStateLevel: {
-//            NSString *minLevel = event.content[@"level"];
-//            if (minLevel) {
-//                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to add state is: %@", minLevel];
-//            }
-//            break;
-//        }
-//        case MXEventTypeRoomSendEventLevel: {
-//            NSString *minLevel = event.content[@"level"];
-//            if (minLevel) {
-//                displayText = [NSString stringWithFormat:@"The minimum power level a user needs to send an event is: %@", minLevel];
-//            }
-//            break;
-//        }
-//        case MXEventTypeRoomOpsLevel: {
-//            displayText = @"The minimum power levels that a user must have before acting are:";
-//            for (NSString *key in event.content.allKeys) {
-//                displayText = [NSString stringWithFormat:@"%@\r\n%@:%@", displayText, key, [event.content objectForKey:key]];
-//            }
-//            break;
-//        }
         case MXEventTypeRoomAliases: {
             NSArray *aliases = event.content[@"aliases"];
             if (aliases) {
