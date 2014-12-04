@@ -28,7 +28,8 @@
 
 #import "MediaManager.h"
 
-#define UPLOAD_FILE_SIZE 5000000
+#define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
+#define ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE 20
 
 #define ROOM_MESSAGE_CELL_DEFAULT_HEIGHT 50
 #define ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST 10
@@ -57,7 +58,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Back pagination
     BOOL isBackPaginationInProgress;
-    NSUInteger backPaginationAddedItemsNb;
+    NSUInteger backPaginationAddedMsgNb;
     
     // Members list
     NSArray *members;
@@ -371,7 +372,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     firstMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
                     if (firstMessage) {
                         [messages insertObject:firstMessage atIndex:0];
-                        backPaginationAddedItemsNb++;
+                        backPaginationAddedMsgNb++;
                     }
                     // Ignore unsupported/unexpected events
                 }
@@ -413,59 +414,72 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (mxRoom.canPaginate) {
         [_activityIndicator startAnimating];
         isBackPaginationInProgress = YES;
-        backPaginationAddedItemsNb = 0;
+        backPaginationAddedMsgNb = 0;
         
-        [mxRoom paginateBackMessages:20 complete:^{
-            // Sanity check: check whether the view controller has not been released while back pagination was running
-            if (self.roomId == nil) {
-                return;
-            }
-            if (backPaginationAddedItemsNb) {
-                // We will scroll to bottom when table is loaded for the first time
-                BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
-                CGFloat verticalOffset = 0;
-                if (shouldScrollToBottom == NO) {
-                    // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
-                    NSIndexPath *indexPath;
-                    // Compute the cumulative height of the added messages
-                    for (NSUInteger index = 0; index < backPaginationAddedItemsNb; index++) {
-                        indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                        verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
-                    }
-                    // Deduce the vertical offset from this height
-                    verticalOffset -= 100;
-                }
-                // Reset count to enable tableView update
-                backPaginationAddedItemsNb = 0;
-                // Store the current content offset
-                CGPoint contentOffset = self.messagesTableView.contentOffset;
-                // Reload
-                [self.messagesTableView reloadData];
-                if (shouldScrollToBottom) {
-                    [self scrollToBottomAnimated:NO];
-                } else if (verticalOffset > 0) {
-                    // Adjust vertical offset in order to limit scrolling down
-                    contentOffset.y += verticalOffset;
-                    [self.messagesTableView setContentOffset:contentOffset animated:NO];
-                }
-                [_activityIndicator stopAnimating];
-                isBackPaginationInProgress = NO;
-            } else {
-                // Here there was no event related to the listened types
-                [_activityIndicator stopAnimating];
-                isBackPaginationInProgress = NO;
-                // Trigger a new back pagination (if possible)
-                [self triggerBackPagination];
-            }
-        } failure:^(NSError *error) {
-            [_activityIndicator stopAnimating];
-            isBackPaginationInProgress = NO;
-            backPaginationAddedItemsNb = 0;
-            NSLog(@"Failed to paginate back: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
+        [self paginateBackMessages:ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE];
     }
+}
+
+- (void)paginateBackMessages:(NSUInteger)requestedItemsNb {
+    [mxRoom paginateBackMessages:requestedItemsNb complete:^{
+        // Sanity check: check whether the view controller has not been released while back pagination was running
+        if (self.roomId == nil) {
+            return;
+        }
+        // Compute number of received items
+        NSUInteger itemsCount = 0;
+        for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
+            RoomMessage *message = [messages objectAtIndex:index];
+            itemsCount += message.components.count;
+        }
+        // Check whether we got enough items
+        if (itemsCount < requestedItemsNb && mxRoom.canPaginate) {
+            // Ask more items
+            [self paginateBackMessages:(requestedItemsNb - itemsCount)];
+        } else {
+            [self onBackPaginationComplete];
+        }
+    } failure:^(NSError *error) {
+        [self onBackPaginationComplete];
+        NSLog(@"Failed to paginate back: %@", error);
+        //Alert user
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+    }];
+}
+
+- (void)onBackPaginationComplete {
+    if (backPaginationAddedMsgNb) {
+        // We scroll to bottom when table is loaded for the first time
+        BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
+        
+        CGFloat verticalOffset = 0;
+        if (shouldScrollToBottom == NO) {
+            // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
+            NSIndexPath *indexPath;
+            // Compute the cumulative height of the added messages
+            for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
+                indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+            }
+            // Deduce the vertical offset from this height
+            verticalOffset -= 100;
+        }
+        // Reset count to enable tableView update
+        backPaginationAddedMsgNb = 0;
+        // Reload
+        [self.messagesTableView reloadData];
+        // Adjust vertical content offset
+        if (shouldScrollToBottom) {
+            [self scrollToBottomAnimated:NO];
+        } else if (verticalOffset > 0) {
+            // Adjust vertical offset in order to limit scrolling down
+            CGPoint contentOffset = self.messagesTableView.contentOffset;
+            contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
+            [self.messagesTableView setContentOffset:contentOffset animated:NO];
+        }
+    }
+    [_activityIndicator stopAnimating];
+    isBackPaginationInProgress = NO;
 }
 
 #pragma mark - KVO
@@ -761,7 +775,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return members.count;
     }
     
-    if (backPaginationAddedItemsNb) {
+    if (backPaginationAddedMsgNb) {
         // Here some old messages have been added to messages during back pagination.
         // Stop table refreshing, the table will be refreshed at the end of pagination
         return 0;
@@ -1196,7 +1210,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // paginate ?
         if (scrollView.contentOffset.y < -64)
         {
-            [self triggerBackPagination];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self triggerBackPagination];
+            });
         }
     }
 }
@@ -1816,7 +1832,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 NSData *videoData = [NSData dataWithContentsOfURL:tmpVideoLocation];
                                 [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
                                 if (videoData) {
-                                    if (videoData.length < UPLOAD_FILE_SIZE) {
+                                    if (videoData.length < ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE) {
                                         [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
                                         [mxHandler.mxRestClient uploadContent:videoData mimeType:videoInfo[@"mimetype"] timeout:30 success:^(NSString *url) {
                                             [videoContent setValue:url forKey:@"url"];
