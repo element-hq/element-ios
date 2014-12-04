@@ -96,6 +96,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     forceScrollToBottomOnViewDidAppear = YES;
+    // Hide messages table by default in order to hide initial scrolling to the bottom
+    self.messagesTableView.hidden = YES;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
     [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
@@ -197,6 +199,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Scroll to the bottom
         [self scrollToBottomAnimated:animated];
         forceScrollToBottomOnViewDidAppear = NO;
+        self.messagesTableView.hidden = NO;
     }
 }
 
@@ -288,28 +291,22 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
                 CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
                 shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                
                 // Update Table
-                NSIndexPath *indexPathForInsertedRow = nil;
-                NSIndexPath *indexPathForDeletedRow = nil;
-                NSMutableArray *indexPathsForUpdatedRows = [NSMutableArray array];
-                BOOL isComplete = NO;
+                BOOL isHandled = NO;
                 // For outgoing message, remove the temporary event
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
                     // Consider first the last message
                     RoomMessage *message = [messages lastObject];
                     NSUInteger index = messages.count - 1;
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     if ([message containsEventId:event.eventId]) {
                         if (message.messageType == RoomMessageTypeText) {
                             // Removing temporary event (local echo)
                             [message removeEvent:event.eventId];
                             // Update message with the received event
-                            isComplete = [message addEvent:event withRoomState:roomState];
-                            if (message.attributedTextMessage.length) {
-                                [indexPathsForUpdatedRows addObject:indexPath];
-                            } else {
+                            isHandled = [message addEvent:event withRoomState:roomState];
+                            if (! message.attributedTextMessage.length) {
                                 [messages removeObjectAtIndex:index];
-                                indexPathForDeletedRow = indexPath;
                             }
                         } else {
                             // Create a new message to handle attachment
@@ -317,31 +314,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             if (!message) {
                                 // Ignore unsupported/unexpected events
                                 [messages removeObjectAtIndex:index];
-                                indexPathForDeletedRow = indexPath;
                             } else {
                                 [messages replaceObjectAtIndex:index withObject:message];
-                                [indexPathsForUpdatedRows addObject:indexPath];
                             }
-                            isComplete = YES;
+                            isHandled = YES;
                         }
                     } else {
                         while (index--) {
                             message = [messages objectAtIndex:index];
-                            indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                             if ([message containsEventId:event.eventId]) {
                                 if (message.messageType == RoomMessageTypeText) {
                                     // Removing temporary event (local echo)
                                     [message removeEvent:event.eventId];
-                                    if (message.attributedTextMessage.length) {
-                                        [indexPathsForUpdatedRows addObject:indexPath];
-                                    } else {
+                                    if (!message.attributedTextMessage.length) {
                                         [messages removeObjectAtIndex:index];
-                                        indexPathForDeletedRow = indexPath;
                                     }
                                 } else {
                                     // Remove the local event (a new one will be added to messages)
                                     [messages removeObjectAtIndex:index];
-                                    indexPathForDeletedRow = indexPath;
                                 }
                                 break;
                             }
@@ -349,51 +339,29 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                 }
                 
-                if (isComplete == NO) {
+                if (isHandled == NO) {
                     // Check whether the event may be grouped with last message
                     RoomMessage *lastMessage = [messages lastObject];
                     if (lastMessage && [lastMessage addEvent:event withRoomState:roomState]) {
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(messages.count - 1) inSection:0];
-                        [indexPathsForUpdatedRows addObject:indexPath];
+                        isHandled = YES;
                     } else {
+                        // Create a new item
                         lastMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
                         if (lastMessage) {
-                            indexPathForInsertedRow = [NSIndexPath indexPathForRow:messages.count inSection:0];
                             [messages addObject:lastMessage];
+                            isHandled = YES;
                         } // else ignore unsupported/unexpected events
                     }
                 }
                 
-                // Refresh table display
-                BOOL isModified = NO;
-                [UIView setAnimationsEnabled:NO];
-                [self.messagesTableView beginUpdates];
-                if (indexPathForDeletedRow) {
-                    if (indexPathForInsertedRow) {
-                        [indexPathsForUpdatedRows removeAllObjects];
-                        NSUInteger index = indexPathForDeletedRow.row;
-                        for (; index < messages.count; index++) {
-                            [indexPathsForUpdatedRows addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+                // Refresh table display except if a back pagination is in progress
+                if (!isBackPaginationInProgress) {
+                    [self.messagesTableView reloadData];
+                    if (isHandled) {
+                        if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
+                            // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
+                            forceScrollToBottomOnViewDidAppear = YES;
                         }
-                    } else {
-                        [self.messagesTableView deleteRowsAtIndexPaths:@[indexPathForDeletedRow] withRowAnimation:UITableViewRowAnimationNone];
-                        isModified = YES;
-                    }
-                } else if (indexPathForInsertedRow) {
-                    [self.messagesTableView insertRowsAtIndexPaths:@[indexPathForInsertedRow] withRowAnimation:UITableViewRowAnimationNone];
-                    isModified = YES;
-                }
-                if (indexPathsForUpdatedRows.count) {
-                    [self.messagesTableView reloadRowsAtIndexPaths:indexPathsForUpdatedRows withRowAnimation:UITableViewRowAnimationNone];
-                    isModified = YES;
-                }
-                [self.messagesTableView endUpdates];
-                [UIView setAnimationsEnabled:YES];
-                
-                if (isModified) {
-                    if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
-                        // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
-                        forceScrollToBottomOnViewDidAppear = YES;
                     }
                 }
             } else if (isBackPaginationInProgress && direction == MXEventDirectionBackwards) {
@@ -453,42 +421,35 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 return;
             }
             if (backPaginationAddedItemsNb) {
-                // Prepare insertion of new rows at the top of the table (compute cumulative height of added cells)
-                NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:backPaginationAddedItemsNb];
-                NSIndexPath *indexPath;
+                // We will scroll to bottom when table is loaded for the first time
+                BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
                 CGFloat verticalOffset = 0;
-                for (NSUInteger index = 0; index < backPaginationAddedItemsNb; index++) {
-                    indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [indexPaths addObject:indexPath];
-                    verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+                if (shouldScrollToBottom == NO) {
+                    // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
+                    NSIndexPath *indexPath;
+                    // Compute the cumulative height of the added messages
+                    for (NSUInteger index = 0; index < backPaginationAddedItemsNb; index++) {
+                        indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                        verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+                    }
+                    // Deduce the vertical offset from this height
+                    verticalOffset -= 100;
                 }
-                // Here indexPath corresponds to the first added message (We will reuse it at the end of table update to make it visible)
                 // Reset count to enable tableView update
                 backPaginationAddedItemsNb = 0;
-                
-                // Disable animation during cells insertion to prevent flickering
-                [UIView setAnimationsEnabled:NO];
                 // Store the current content offset
                 CGPoint contentOffset = self.messagesTableView.contentOffset;
-                [self.messagesTableView beginUpdates];
-                [self.messagesTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-                [self.messagesTableView endUpdates];
-                // Enable animation again
-                [UIView setAnimationsEnabled:YES];
-                // Fix vertical offset in order to prevent scrolling down
-                contentOffset.y += verticalOffset;
-                [self.messagesTableView setContentOffset:contentOffset animated:NO];
+                // Reload
+                [self.messagesTableView reloadData];
+                if (shouldScrollToBottom) {
+                    [self scrollToBottomAnimated:NO];
+                } else if (verticalOffset > 0) {
+                    // Adjust vertical offset in order to limit scrolling down
+                    contentOffset.y += verticalOffset;
+                    [self.messagesTableView setContentOffset:contentOffset animated:NO];
+                }
                 [_activityIndicator stopAnimating];
                 isBackPaginationInProgress = NO;
-                
-                // Scroll tableView in order to make visible the first added message (dispatch this action in order to let table end its refresh)
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (indexPath.row == messages.count - 1) {
-                        [self scrollToBottomAnimated:NO];
-                    } else {
-                        [self.messagesTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                    }
-                });
             } else {
                 // Here there was no event related to the listened types
                 [_activityIndicator stopAnimating];
@@ -1409,17 +1370,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             while (index--) {
                 message = [messages objectAtIndex:index];
                 if ([message containsEventId:localEvent.eventId]) {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     localEvent.content = msgContent;
                     if (message.messageType == RoomMessageTypeText) {
                         [message removeEvent:localEvent.eventId];
                         [message addEvent:localEvent withRoomState:mxRoom.state];
-                        if (message.attributedTextMessage.length) {
-                            // Refresh table display
-                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        } else {
+                        if (!message.attributedTextMessage.length) {
                             [messages removeObjectAtIndex:index];
-                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         }
                     } else {
                         // Create a new message
@@ -1427,15 +1383,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         if (message) {
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
-                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         } else {
                             [messages removeObjectAtIndex:index];
-                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         }
                     }
                     break;
                 }
             }
+            [self.messagesTableView reloadData];
         } else {
             // Create a temporary event to displayed outgoing message (local echo)
             NSString* localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
@@ -1449,19 +1404,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             localEvent.originServerTs = kMXUndefinedTimestamp;
             // Check whether this new event may be grouped with last message
             RoomMessage *lastMessage = [messages lastObject];
-            if (lastMessage && [lastMessage addEvent:localEvent withRoomState:mxRoom.state]) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(messages.count - 1) inSection:0];
-                [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            } else {
+            if (lastMessage == nil || [lastMessage addEvent:localEvent withRoomState:mxRoom.state] == NO) {
+                // Create a new item
                 lastMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
                 if (lastMessage) {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
                     [messages addObject:lastMessage];
-                    [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 } else {
                     NSLog(@"ERROR: Unable to add local event: %@", localEvent.description);
                 }
             }
+            [self.messagesTableView reloadData];
             [self scrollToBottomAnimated:NO];
         }
         
@@ -1482,7 +1434,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             while (index--) {
                 RoomMessage *message = [messages objectAtIndex:index];
                 if ([message containsEventId:localEvent.eventId]) {
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                     if (message.messageType == RoomMessageTypeText) {
                         [message removeEvent:localEvent.eventId];
                         if (isEventAlreadyAddedToRoom == NO) {
@@ -1490,12 +1441,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             localEvent.eventId = event_id;
                             [message addEvent:localEvent withRoomState:mxRoom.state];
                         }
-                        if (message.attributedTextMessage.length) {
-                            // Refresh table display
-                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        } else {
+                        if (! message.attributedTextMessage.length) {
                             [messages removeObjectAtIndex:index];
-                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         }
                     } else {
                         message = nil;
@@ -1507,15 +1454,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         if (message) {
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
-                            [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         } else {
                             [messages removeObjectAtIndex:index];
-                            [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                         }
                     }
                     break;
                 }
             }
+            [self.messagesTableView reloadData];
         } failure:^(NSError *error) {
             [self handleError:error forLocalEvent:localEvent];
         }];
@@ -1564,13 +1510,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Update table sources
     RoomMessage *message = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:mxRoom.state];
     if (message) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:messages.count inSection:0];
         [messages addObject:message];
-        [self.messagesTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     } else {
         NSLog(@"ERROR: Unable to add local event for attachment: %@", mxEvent.description);
     }
-    
+    [self.messagesTableView reloadData];
     [self scrollToBottomAnimated:NO];
     return mxEvent;
 }
@@ -1588,17 +1532,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         RoomMessage *message = [messages objectAtIndex:index];
         if ([message containsEventId:localEvent.eventId]) {
             NSLog(@"Posted event: %@", localEvent.description);
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
             if (message.messageType == RoomMessageTypeText) {
                 [message removeEvent:localEvent.eventId];
                 localEvent.eventId = kFailedEventId;
                 [message addEvent:localEvent withRoomState:mxRoom.state];
-                if (message.attributedTextMessage.length) {
-                    // Refresh table display
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                } else {
+                if (!message.attributedTextMessage.length) {
                     [messages removeObjectAtIndex:index];
-                    [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
             } else {
                 // Create a new message
@@ -1607,15 +1546,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 if (message) {
                     // Refresh table display
                     [messages replaceObjectAtIndex:index withObject:message];
-                    [self.messagesTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 } else {
                     [messages removeObjectAtIndex:index];
-                    [self.messagesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
             }
             break;
         }
     }
+    [self.messagesTableView reloadData];
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
