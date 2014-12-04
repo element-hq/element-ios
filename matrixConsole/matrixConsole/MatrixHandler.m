@@ -28,7 +28,7 @@ static MatrixHandler *sharedHandler = nil;
     BOOL notifyOpenSessionFailure;
     
     // Handle user's settings change
-    id roomMembersListener;
+    id userUpdateListener;
     // Handle events notification
     id eventsListener;
 }
@@ -138,19 +138,13 @@ static MatrixHandler *sharedHandler = nil;
             self.isInitialSyncDone = YES;
             
             // Register listener to update user's information
-            roomMembersListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringPresence] onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                // Consider only live events
-                if (direction == MXEventDirectionForwards) {
-                    // Consider only events from app user
-                    if ([event.userId isEqualToString:self.userId]) {
-                        // Update local storage
-                        if (![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
-                            self.userDisplayName = event.content[@"displayname"];
-                        }
-                        if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
-                            self.userPictureURL = event.content[@"avatar_url"];
-                        }
-                    }
+            userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
+                // Update local storage
+                if (![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
+                    self.userDisplayName = event.content[@"displayname"];
+                }
+                if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
+                    self.userPictureURL = event.content[@"avatar_url"];
                 }
             }];
             
@@ -179,9 +173,9 @@ static MatrixHandler *sharedHandler = nil;
         [self.mxSession removeListener:eventsListener];
         eventsListener = nil;
     }
-    if (roomMembersListener) {
-        [self.mxSession removeListener:roomMembersListener];
-        roomMembersListener = nil;
+    if (userUpdateListener) {
+        [self.mxSession.myUser removeListener:userUpdateListener];
+        userUpdateListener = nil;
     }
     [self.mxSession close];
     self.mxSession = nil;
