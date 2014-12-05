@@ -34,6 +34,7 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 @property (nonatomic,readwrite) BOOL isInitialSyncDone;
+@property (nonatomic,readwrite) BOOL isResumeDone;
 @property (strong, nonatomic) CustomAlert *mxNotification;
 
 @end
@@ -58,6 +59,7 @@ static MatrixHandler *sharedHandler = nil;
 -(MatrixHandler *)init {
     if (self = [super init]) {
         _isInitialSyncDone = NO;
+        _isResumeDone = NO;
         notifyOpenSessionFailure = YES;
         
         // Read potential homeserver url in shared defaults object
@@ -136,6 +138,7 @@ static MatrixHandler *sharedHandler = nil;
         // Launch mxSession
         [self.mxSession start:^{
             self.isInitialSyncDone = YES;
+            _isResumeDone = YES;
             
             // Register listener to update user's information
             userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
@@ -188,6 +191,7 @@ static MatrixHandler *sharedHandler = nil;
     }
     
     self.isInitialSyncDone = NO;
+    _isResumeDone = NO;
     notifyOpenSessionFailure = YES;
 }
 
@@ -215,6 +219,21 @@ static MatrixHandler *sharedHandler = nil;
 
 - (BOOL)isLogged {
     return (self.accessToken != nil);
+}
+
+- (void)pause {
+    if (self.mxSession) {
+        [self.mxSession pause];
+        self.isResumeDone = NO;
+    }
+}
+
+- (void)resume {
+    if (self.mxSession) {
+        [self.mxSession resume:^{
+            self.isResumeDone = YES;
+        }];
+    }
 }
 
 - (void)logout {
