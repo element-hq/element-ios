@@ -39,6 +39,7 @@
 		F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5B019E6898800E47915 /* tab_home.ico */; };
 		F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3C30B1A011EF10000D49E /* AppSettings.m */; };
 		F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */; };
+		F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D942F51A31F3A300826CC1 /* RecentRoom.m */; };
 		F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +109,8 @@
 		F0D3C30B1A011EF10000D49E /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		F0D3C30D1A01330F0000D49E /* SettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewCell.h; sourceTree = "<group>"; };
 		F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewCell.m; sourceTree = "<group>"; };
+		F0D942F41A31F3A300826CC1 /* RecentRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentRoom.h; sourceTree = "<group>"; };
+		F0D942F51A31F3A300826CC1 /* RecentRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentRoom.m; sourceTree = "<group>"; };
 		F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsTableViewCell.h; sourceTree = "<group>"; };
 		F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +207,8 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F0D942F41A31F3A300826CC1 /* RecentRoom.h */,
+				F0D942F51A31F3A300826CC1 /* RecentRoom.m */,
 				F0465AF81A251F85003639F9 /* RoomMessage.h */,
 				F0465AF91A251F85003639F9 /* RoomMessage.m */,
 				F01A0FF11A27314B009FAE2F /* RoomMessageComponent.h */,
@@ -435,6 +440,7 @@
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
+				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,

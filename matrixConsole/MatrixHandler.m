@@ -111,7 +111,7 @@ static MatrixHandler *sharedHandler = nil;
         self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:store];
         // Check here whether the app user wants to display all the events
         if ([[AppSettings sharedSettings] displayAllEvents]) {
-            // Use a filter to retrieve all the events
+            // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
             self.eventsFilterForMessages = @[
                                              kMXEventTypeStringRoomName,
                                              kMXEventTypeStringRoomTopic,
@@ -121,8 +121,7 @@ static MatrixHandler *sharedHandler = nil;
                                              kMXEventTypeStringRoomPowerLevels,
                                              kMXEventTypeStringRoomAliases,
                                              kMXEventTypeStringRoomMessage,
-                                             kMXEventTypeStringRoomMessageFeedback,
-                                             kMXEventTypeStringPresence
+                                             kMXEventTypeStringRoomMessageFeedback
                                              ];
         }
         else {
@@ -257,8 +256,8 @@ static MatrixHandler *sharedHandler = nil;
     if (isEnabled) {
         // Register events listener
         eventsListener = [self.mxSession listenToEventsOfTypes:self.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-            // Consider only live event (Ignore presence event)
-            if (direction == MXEventDirectionForwards && (event.eventType != MXEventTypePresence)) {
+            // Consider only live event
+            if (direction == MXEventDirectionForwards) {
                 MXRoomState* roomState = (MXRoomState*)customObject;
                 // If we are running on background, show a local notif
                 if (UIApplicationStateBackground == [UIApplication sharedApplication].applicationState)
@@ -268,8 +267,10 @@ static MatrixHandler *sharedHandler = nil;
                     localNotification.hasAction = YES;
                     [localNotification setAlertBody:[self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES]];
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                } else if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId] == NO) {
-                    // The concerned room is not presently visible, we display a notification by removing existing one (if any)
+                } else if (![event.userId isEqualToString:self.userId]
+                           && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]) {
+                    // The sender is not the user and the concerned room is not presently visible,
+                    // we display a notification by removing existing one (if any)
                     if (self.mxNotification) {
                         [self.mxNotification dismiss:NO];
                     }
