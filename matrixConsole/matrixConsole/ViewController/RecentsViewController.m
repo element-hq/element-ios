@@ -105,6 +105,7 @@
     // Refresh recents table
     [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -124,6 +125,7 @@
     
     _preSelectedRoomId = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
 }
 
 #pragma mark -
@@ -189,8 +191,9 @@
                     recents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
                     // Reload table
                     [self.tableView reloadData];
-                    [_activityIndicator stopAnimating];
-                    
+                    if ([mxHandler isResumeDone]) {
+                        [_activityIndicator stopAnimating];
+                    }
                     // Check whether a room is preselected
                     if (_preSelectedRoomId) {
                         self.preSelectedRoomId = _preSelectedRoomId;
@@ -203,7 +206,9 @@
         
         // Reload table
         [self.tableView reloadData];
-        [_activityIndicator stopAnimating];
+        if ([mxHandler isResumeDone]) {
+            [_activityIndicator stopAnimating];
+        }
         
         // Check whether a room is preselected
         if (_preSelectedRoomId) {
@@ -245,6 +250,12 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
+    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
+        if ([[MatrixHandler sharedHandler] isResumeDone]) {
+            [_activityIndicator stopAnimating];
+        } else {
+            [_activityIndicator startAnimating];
+        }
     }
 }
 

@@ -38,9 +38,12 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 @property (nonatomic,readonly) BOOL isLogged;
 @property (nonatomic,readonly) BOOL isInitialSyncDone;
+@property (nonatomic,readonly) BOOL isResumeDone;
 
 + (MatrixHandler *)sharedHandler;
 
+- (void)pause;
+- (void)resume;
 - (void)logout;
 
 // Flush and restore Matrix data
