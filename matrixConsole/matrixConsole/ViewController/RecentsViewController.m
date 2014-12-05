@@ -17,12 +17,14 @@
 #import "RecentsViewController.h"
 #import "RoomViewController.h"
 
+#import "RecentRoom.h"
 #import "RecentsTableViewCell.h"
 
 #import "AppDelegate.h"
 #import "MatrixHandler.h"
 
 @interface RecentsViewController () {
+    // Array of RecentRooms
     NSMutableArray  *recents;
     id               recentsListener;
     
@@ -71,7 +73,7 @@
     recents = nil;
     filteredRecents = nil;
     
-    NSString *dateFormat =  @"MMM dd HH:mm";
+    NSString *dateFormat = @"MMM dd HH:mm";
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
     [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -105,7 +107,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Refresh recents table
+    // Refresh display
     [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
@@ -122,11 +124,6 @@
     }
     // Hide activity indicator
     [self stopActivityIndicator];
-    
-    if (recentsListener) {
-        [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
-        recentsListener = nil;
-    }
     
     _preSelectedRoomId = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
@@ -149,8 +146,8 @@
         // Look for the room index in recents list
         NSIndexPath *indexPath = nil;
         for (NSUInteger index = 0; index < recents.count; index++) {
-            MXEvent *mxEvent = [recents objectAtIndex:index];
-            if ([roomId isEqualToString:mxEvent.roomId]) {
+            RecentRoom *recentRoom = [recents objectAtIndex:index];
+            if ([roomId isEqualToString:recentRoom.roomId]) {
                 indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                 break;
             }
@@ -176,35 +173,55 @@
 - (void)configureView {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
-    // Remove potential listener
-    if (recentsListener && mxHandler.mxSession) {
-        [mxHandler.mxSession removeListener:recentsListener];
-        recentsListener = nil;
-    }
-    
     [self startActivityIndicator];
     
     if ([mxHandler isInitialSyncDone] || [mxHandler isLogged] == NO) {
-        // Update recents
+        // Create/Update recents
         if (mxHandler.mxSession) {
-            recents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
-            // Register recent listener
-            recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                // consider only live event
-                if (direction == MXEventDirectionForwards) {
-                    // Refresh the whole recents list
-                    recents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
-                    // Reload table
-                    [self.tableView reloadData];
-                    if ([mxHandler isResumeDone]) {
-                        [self stopActivityIndicator];
-                    }
-                    // Check whether a room is preselected
-                    if (_preSelectedRoomId) {
-                        self.preSelectedRoomId = _preSelectedRoomId;
+            if (!recents) {
+                NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
+                recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
+                for (MXEvent *mxEvent in recentEvents) {
+                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andMarkAsUnread:NO];
+                    if (recentRoom) {
+                        [recents addObject:recentRoom];
                     }
                 }
-            }];
+                
+                // Register recent listener
+                recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                    // consider only live event
+                    if (direction == MXEventDirectionForwards) {
+                        // Consider this new event as unread only if the sender is not the user and if the room is not visible
+                        BOOL isUnread = (![event.userId isEqualToString:mxHandler.userId]
+                                         && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]);
+                        // Look for the room
+                        BOOL isFound = NO;
+                        for (NSUInteger index = 0; index < recents.count; index++) {
+                            RecentRoom *recentRoom = [recents objectAtIndex:index];
+                            if ([event.roomId isEqualToString:recentRoom.roomId]) {
+                                isFound = YES;
+                                [recentRoom updateWithLastEvent:event andMarkAsUnread:isUnread];
+                                // Move this room at first position
+                                [recents removeObjectAtIndex:index];
+                                [recents insertObject:recentRoom atIndex:0];
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            // Insert in first position this new room
+                            RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andMarkAsUnread:isUnread];
+                            if (recentRoom) {
+                                [recents insertObject:recentRoom atIndex:0];
+                            }
+                        }
+                        
+                        // Reload table
+                        [self.tableView reloadData];
+                    }
+                }];
+            }
+            // else nothing to do
         } else {
             recents = nil;
         }
@@ -222,6 +239,14 @@
     } else {
         recents = nil;
         [self.tableView reloadData];
+    }
+    
+    if (!recents) {
+        // Remove potential listener
+        if (recentsListener && mxHandler.mxSession) {
+            [mxHandler.mxSession removeListener:recentsListener];
+            recentsListener = nil;
+        }
     }
 }
 
@@ -250,7 +275,7 @@
 
 - (void)startActivityIndicator {
     // Add the spinner on main screen in order to ignore potential table scrolling
-    _activityIndicator.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2 - 10);
+    _activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.x);
     [[AppDelegate theDelegate].window addSubview:_activityIndicator];
     [_activityIndicator startAnimating];
 }
@@ -281,11 +306,11 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        MXEvent *mxEvent;
+        RecentRoom *recentRoom;
         if (filteredRecents) {
-            mxEvent = filteredRecents[indexPath.row];
+            recentRoom = filteredRecents[indexPath.row];
         } else {
-            mxEvent = recents[indexPath.row];
+            recentRoom = recents[indexPath.row];
         }
         
         UIViewController *controller;
@@ -297,17 +322,24 @@
         
         if ([controller isKindOfClass:[RoomViewController class]]) {
             if (currentRoomViewController) {
-                if ((currentRoomViewController != controller) || (![currentRoomViewController.roomId isEqualToString:mxEvent.roomId])) {
+                if ((currentRoomViewController != controller) || (![currentRoomViewController.roomId isEqualToString:recentRoom.roomId])) {
                     // Release the current one
                     currentRoomViewController.roomId = nil;
                 }
             }
             currentRoomViewController = (RoomViewController *)controller;
-            currentRoomViewController.roomId = mxEvent.roomId;
+            currentRoomViewController.roomId = recentRoom.roomId;
         }
         
-        controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-        controller.navigationItem.leftItemsSupplementBackButton = YES;
+        // Reset unread count for this room
+        [recentRoom resetUnreadCount];
+        
+        if (self.splitViewController) {
+            // Refresh display (required in case of splitViewController)
+            [self.tableView reloadData];
+            controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            controller.navigationItem.leftItemsSupplementBackButton = YES;
+        }
     }
 }
 
@@ -342,18 +374,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RecentsTableViewCell *cell = (RecentsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"RecentsCell" forIndexPath:indexPath];
 
-    MXEvent *mxEvent;
+    RecentRoom *recentRoom;
     if (filteredRecents) {
-        mxEvent = filteredRecents[indexPath.row];
+        recentRoom = filteredRecents[indexPath.row];
     } else {
-        mxEvent = recents[indexPath.row];
+        recentRoom = recents[indexPath.row];
     }
     
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
     
     cell.roomTitle.text = [mxRoom.state displayname];
-    cell.lastEventDescription.text = [mxHandler displayTextForEvent:mxEvent withRoomState:mxRoom.state inSubtitleMode:YES];
+    cell.lastEventDescription.text = [mxHandler displayTextForEvent:recentRoom.lastEvent withRoomState:mxRoom.state inSubtitleMode:YES];
     
     // Set in bold public room name
     if (mxRoom.state.isPublic) {
@@ -362,12 +394,20 @@
         cell.roomTitle.font = [UIFont systemFontOfSize:19];
     }
     
-    if (mxEvent.originServerTs != kMXUndefinedTimestamp) {
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:mxEvent.originServerTs/1000];
+    if (recentRoom.lastEvent.originServerTs != kMXUndefinedTimestamp) {
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:recentRoom.lastEvent.originServerTs/1000];
         cell.recentDate.text = [dateFormatter stringFromDate:date];
     } else {
         cell.recentDate.text = nil;
-    }    
+    }
+    
+    // set background color
+    if (recentRoom.unreadCount) {
+        cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
+        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%d)", cell.roomTitle.text, recentRoom.unreadCount];
+    } else {
+        cell.backgroundColor = [UIColor clearColor];
+    }
     return cell;
 }
 
@@ -379,13 +419,13 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Leave the selected room
-        MXEvent *mxEvent;
+        RecentRoom *recentRoom;
         if (filteredRecents) {
-            mxEvent = filteredRecents[indexPath.row];
+            recentRoom = filteredRecents[indexPath.row];
         } else {
-            mxEvent = recents[indexPath.row];
+            recentRoom = recents[indexPath.row];
         }
-        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:mxEvent.roomId];
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:recentRoom.roomId];
         [mxRoom leave:^{
             // Refresh table display
             if (filteredRecents) {
@@ -395,7 +435,7 @@
             }
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         } failure:^(NSError *error) {
-            NSLog(@"Failed to leave room (%@) failed: %@", mxEvent.roomId, error);
+            NSLog(@"Failed to leave room (%@) failed: %@", recentRoom.roomId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
@@ -417,10 +457,10 @@
             filteredRecents = [NSMutableArray arrayWithCapacity:recents.count];
         }
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        for (MXEvent *mxEvent in recents) {
-            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+        for (RecentRoom *recentRoom in recents) {
+            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
             if ([[mxRoom.state displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                [filteredRecents addObject:mxEvent];
+                [filteredRecents addObject:recentRoom];
             }
         }
     } else {
