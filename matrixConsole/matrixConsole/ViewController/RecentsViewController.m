@@ -59,10 +59,13 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
     self.navigationItem.rightBarButtonItems = @[searchButton, addButton];
     
-    // Add activity indicator
-    [self.view addSubview:_activityIndicator];
-    _activityIndicator.center = CGPointMake(self.view.center.x, 100);
-    [self.view bringSubviewToFront:_activityIndicator];
+    // Add background to activity indicator
+    CGRect frame = _activityIndicator.frame;
+    frame.size.width += 30;
+    frame.size.height += 30;
+    _activityIndicator.bounds = frame;
+    _activityIndicator.backgroundColor = [UIColor darkGrayColor];
+    [_activityIndicator.layer setCornerRadius:5];
     
     // Initialisation
     recents = nil;
@@ -117,6 +120,8 @@
     if (recentsSearchBar) {
         [self searchBarCancelButtonClicked:recentsSearchBar];
     }
+    // Hide activity indicator
+    [self stopActivityIndicator];
     
     if (recentsListener) {
         [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
@@ -161,7 +166,7 @@
             // Postpone room details display. We run activity indicator until recents are updated
             _preSelectedRoomId = roomId;
             // Start activity indicator
-            [_activityIndicator startAnimating];
+            [self startActivityIndicator];
         }
     }
 }
@@ -177,7 +182,7 @@
         recentsListener = nil;
     }
     
-    [_activityIndicator startAnimating];
+    [self startActivityIndicator];
     
     if ([mxHandler isInitialSyncDone] || [mxHandler isLogged] == NO) {
         // Update recents
@@ -192,7 +197,7 @@
                     // Reload table
                     [self.tableView reloadData];
                     if ([mxHandler isResumeDone]) {
-                        [_activityIndicator stopAnimating];
+                        [self stopActivityIndicator];
                     }
                     // Check whether a room is preselected
                     if (_preSelectedRoomId) {
@@ -207,7 +212,7 @@
         // Reload table
         [self.tableView reloadData];
         if ([mxHandler isResumeDone]) {
-            [_activityIndicator stopAnimating];
+            [self stopActivityIndicator];
         }
         
         // Check whether a room is preselected
@@ -243,6 +248,18 @@
     }
 }
 
+- (void)startActivityIndicator {
+    // Add the spinner on main screen in order to ignore potential table scrolling
+    _activityIndicator.center = CGPointMake( [UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2 - 10);
+    [[AppDelegate theDelegate].window addSubview:_activityIndicator];
+    [_activityIndicator startAnimating];
+}
+
+- (void)stopActivityIndicator {
+    [_activityIndicator stopAnimating];
+    [_activityIndicator removeFromSuperview];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -252,9 +269,9 @@
         });
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
         if ([[MatrixHandler sharedHandler] isResumeDone]) {
-            [_activityIndicator stopAnimating];
+            [self stopActivityIndicator];
         } else {
-            [_activityIndicator startAnimating];
+            [self startActivityIndicator];
         }
     }
 }
