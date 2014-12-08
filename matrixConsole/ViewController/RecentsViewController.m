@@ -444,6 +444,11 @@
 
 #pragma mark - UISearchBarDelegate
 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    searchBarShouldEndEditing = NO;
+    return YES;
+}
+
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     return searchBarShouldEndEditing;
 }

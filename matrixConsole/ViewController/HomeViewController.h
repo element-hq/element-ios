@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : UITableViewController <UITextFieldDelegate>
+@interface HomeViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate>
 
 @end
 
