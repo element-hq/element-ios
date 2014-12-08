@@ -84,6 +84,7 @@
 - (void)dealloc {
     if (currentRoomViewController) {
         currentRoomViewController.roomId = nil;
+        currentRoomViewController = nil;
     }
     if (recentsListener) {
         [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
@@ -106,6 +107,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // Release potential Room ViewController
+    if (currentRoomViewController) {
+        currentRoomViewController.roomId = nil;
+        currentRoomViewController = nil;
+    }
     
     // Refresh display
     [self configureView];
@@ -336,12 +343,6 @@
         }
         
         if ([controller isKindOfClass:[RoomViewController class]]) {
-            if (currentRoomViewController) {
-                if ((currentRoomViewController != controller) || (![currentRoomViewController.roomId isEqualToString:recentRoom.roomId])) {
-                    // Release the current one
-                    currentRoomViewController.roomId = nil;
-                }
-            }
             currentRoomViewController = (RoomViewController *)controller;
             currentRoomViewController.roomId = recentRoom.roomId;
         }
