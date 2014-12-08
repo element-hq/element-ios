@@ -1068,7 +1068,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
         // List action(s) available on this member
-        // TODO: Check user's power level before allowing an action (kick, ban, ...)
         MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         __weak typeof(self) weakSelf = self;
@@ -1095,92 +1094,117 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
             }];
         } else {
+            // Check user's power level before allowing an action (kick, ban, ...)
+            MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+            NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
+            NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
             // Consider membership of the selected member
             switch (roomMember.membership) {
                 case MXMembershipInvite:
                 case MXMembershipJoin: {
-                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                    [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                        if (weakSelf) {
-                            weakSelf.actionMenu = nil;
-                            [[MatrixHandler sharedHandler].mxRestClient kickUser:roomMember.userId
-                                                                        fromRoom:weakSelf.roomId
-                                                                          reason:nil
-                                                                         success:^{
-                                                                         }
-                                                                         failure:^(NSError *error) {
-                                                                             NSLog(@"Kick %@ failed: %@", roomMember.userId, error);
-                                                                             //Alert user
-                                                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                         }];
+                    // Check conditions to be able to kick someone
+                    if (userPowerLevel >= [powerLevels kick] && userPowerLevel >= memberPowerLevel) {
+                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+                        [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            if (weakSelf) {
+                                weakSelf.actionMenu = nil;
+                                [[MatrixHandler sharedHandler].mxRestClient kickUser:roomMember.userId
+                                                                            fromRoom:weakSelf.roomId
+                                                                              reason:nil
+                                                                             success:^{
+                                                                             }
+                                                                             failure:^(NSError *error) {
+                                                                                 NSLog(@"Kick %@ failed: %@", roomMember.userId, error);
+                                                                                 //Alert user
+                                                                                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                             }];
+                            }
+                        }];
+                    }
+                    // Check conditions to be able to ban someone
+                    if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
+                        if (!self.actionMenu) {
+                            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         }
-                    }];
-                    [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                        if (weakSelf) {
-                            weakSelf.actionMenu = nil;
-                            [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
-                                                                         inRoom:weakSelf.roomId
-                                                                         reason:nil
-                                                                        success:^{
-                                                                        }
-                                                                        failure:^(NSError *error) {
-                                                                            NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
-                                                                            //Alert user
-                                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                        }];
-                        }
-                    }];
+                        [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            if (weakSelf) {
+                                weakSelf.actionMenu = nil;
+                                [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
+                                                                             inRoom:weakSelf.roomId
+                                                                             reason:nil
+                                                                            success:^{
+                                                                            }
+                                                                            failure:^(NSError *error) {
+                                                                                NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
+                                                                                //Alert user
+                                                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                            }];
+                            }
+                        }];
+                    }
                     break;
                 }
                 case MXMembershipLeave: {
-                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                    [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                        if (weakSelf) {
-                            weakSelf.actionMenu = nil;
-                            [[MatrixHandler sharedHandler].mxRestClient inviteUser:roomMember.userId
-                                                                            toRoom:weakSelf.roomId
-                                                                           success:^{
-                                                                           }
-                                                                           failure:^(NSError *error) {
-                                                                               NSLog(@"Invite %@ failed: %@", roomMember.userId, error);
-                                                                               //Alert user
-                                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                           }];
+                    // Check conditions to be able to invite someone
+                    if (userPowerLevel >= [powerLevels invite]) {
+                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+                        [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            if (weakSelf) {
+                                weakSelf.actionMenu = nil;
+                                [[MatrixHandler sharedHandler].mxRestClient inviteUser:roomMember.userId
+                                                                                toRoom:weakSelf.roomId
+                                                                               success:^{
+                                                                               }
+                                                                               failure:^(NSError *error) {
+                                                                                   NSLog(@"Invite %@ failed: %@", roomMember.userId, error);
+                                                                                   //Alert user
+                                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                               }];
+                            }
+                        }];
+                    }
+                    // Check conditions to be able to ban someone
+                    if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
+                        if (!self.actionMenu) {
+                            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         }
-                    }];
-                    [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                        if (weakSelf) {
-                            weakSelf.actionMenu = nil;
-                            [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
-                                                                         inRoom:weakSelf.roomId
-                                                                         reason:nil
-                                                                        success:^{
-                                                                        }
-                                                                        failure:^(NSError *error) {
-                                                                            NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
-                                                                            //Alert user
-                                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                        }];
-                        }
-                    }];
+                        [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            if (weakSelf) {
+                                weakSelf.actionMenu = nil;
+                                [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
+                                                                             inRoom:weakSelf.roomId
+                                                                             reason:nil
+                                                                            success:^{
+                                                                            }
+                                                                            failure:^(NSError *error) {
+                                                                                NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
+                                                                                //Alert user
+                                                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                            }];
+                            }
+                        }];
+                    }
                     break;
                 }
                 case MXMembershipBan: {
-                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                    [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                        if (weakSelf) {
-                            weakSelf.actionMenu = nil;
-                            [[MatrixHandler sharedHandler].mxRestClient unbanUser:roomMember.userId
-                                                                           inRoom:weakSelf.roomId
-                                                                          success:^{
-                                                                          }
-                                                                          failure:^(NSError *error) {
-                                                                              NSLog(@"Unban %@ failed: %@", roomMember.userId, error);
-                                                                              //Alert user
-                                                                              [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                          }];
-                        }
-                    }];
+                    // Check conditions to be able to unban someone
+                    if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
+                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+                        [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            if (weakSelf) {
+                                weakSelf.actionMenu = nil;
+                                [[MatrixHandler sharedHandler].mxRestClient unbanUser:roomMember.userId
+                                                                               inRoom:weakSelf.roomId
+                                                                              success:^{
+                                                                              }
+                                                                              failure:^(NSError *error) {
+                                                                                  NSLog(@"Unban %@ failed: %@", roomMember.userId, error);
+                                                                                  //Alert user
+                                                                                  [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                              }];
+                            }
+                        }];
+                    }
                     break;
                 }
                 default: {
@@ -1189,14 +1213,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
         }
         
-        // Display the action sheet (if any)
+        // Notify user when his power is too weak
+        if (!self.actionMenu) {
+            self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"You are not authorized to change the status of this member" style:CustomAlertStyleAlert];
+        }
+        
+        // Display the action sheet (or the alert)
         if (self.actionMenu) {
             self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                 weakSelf.actionMenu = nil;
             }];
             [self.actionMenu showInViewController:self];
         }
-        
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if (tableView == self.messagesTableView) {
         // Dismiss keyboard when user taps on messages table view content
