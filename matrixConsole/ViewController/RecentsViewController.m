@@ -190,25 +190,40 @@
                 
                 // Register recent listener
                 recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                    // consider only live event
+                    // Consider only live event
                     if (direction == MXEventDirectionForwards) {
+                        // Check user's membership (We will remove left rooms from recents)
+                        BOOL isLeft = NO;
+                        if ([customObject isKindOfClass:[MXRoomState class]]) {
+                            MXRoomState *roomState = (MXRoomState*)customObject;
+                            if (roomState.membership == MXMembershipLeave || roomState.membership == MXMembershipBan) {
+                                isLeft = YES;
+                            }
+                        }
+                        
                         // Consider this new event as unread only if the sender is not the user and if the room is not visible
                         BOOL isUnread = (![event.userId isEqualToString:mxHandler.userId]
                                          && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]);
+                        
                         // Look for the room
                         BOOL isFound = NO;
                         for (NSUInteger index = 0; index < recents.count; index++) {
                             RecentRoom *recentRoom = [recents objectAtIndex:index];
                             if ([event.roomId isEqualToString:recentRoom.roomId]) {
                                 isFound = YES;
-                                [recentRoom updateWithLastEvent:event andMarkAsUnread:isUnread];
-                                // Move this room at first position
-                                [recents removeObjectAtIndex:index];
-                                [recents insertObject:recentRoom atIndex:0];
+                                if (isLeft) {
+                                    // Remove left room
+                                    [recents removeObjectAtIndex:index];
+                                } else {
+                                    [recentRoom updateWithLastEvent:event andMarkAsUnread:isUnread];
+                                    // Move this room at first position
+                                    [recents removeObjectAtIndex:index];
+                                    [recents insertObject:recentRoom atIndex:0];
+                                }
                                 break;
                             }
                         }
-                        if (!isFound) {
+                        if (!isFound && !isLeft) {
                             // Insert in first position this new room
                             RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andMarkAsUnread:isUnread];
                             if (recentRoom) {
