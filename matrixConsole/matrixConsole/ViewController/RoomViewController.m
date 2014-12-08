@@ -133,6 +133,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
     }
     mxRoom = nil;
     
@@ -244,6 +245,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
@@ -285,6 +287,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
+        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"displayAllEvents" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             BOOL shouldScrollToBottom = NO;
@@ -486,7 +489,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
+    if ([@"displayAllEvents" isEqualToString:keyPath]) {
+        // Back to recents (Room details are not available until the end of initial sync)
+        [self.navigationController popViewControllerAnimated:NO];
+    } else if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
