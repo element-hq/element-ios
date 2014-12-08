@@ -1276,8 +1276,26 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if (textField == self.roomNameTextField) {
-        self.roomNameTextField.borderStyle = UITextBorderStyleRoundedRect;
-        self.roomNameTextField.backgroundColor = [UIColor whiteColor];
+        // Check whether the user has enough power to rename the room
+        MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
+        if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomName]) {
+            self.roomNameTextField.borderStyle = UITextBorderStyleRoundedRect;
+            self.roomNameTextField.backgroundColor = [UIColor whiteColor];
+            return YES;
+        } else {
+            // Alert user
+            __weak typeof(self) weakSelf = self;
+            if (self.actionMenu) {
+                [self.actionMenu dismiss:NO];
+            }
+            self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"You are not authorized to edit this room name" style:CustomAlertStyleAlert];
+            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu = nil;
+            }];
+            [self.actionMenu showInViewController:self];
+        }
+        return NO;
     }
     return YES;
 }
@@ -1286,14 +1304,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (textField == self.roomNameTextField) {
         self.roomNameTextField.borderStyle = UITextBorderStyleNone;
         self.roomNameTextField.backgroundColor = [UIColor clearColor];
-    }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField*) textField {
-    // "Done" key has been pressed
-    [textField resignFirstResponder];
-    
-    if (textField == self.roomNameTextField) {
+        
         NSString *roomName = self.roomNameTextField.text;
         if ([roomName isEqualToString:mxRoom.state.name] == NO) {
             [self.activityIndicator startAnimating];
@@ -1314,6 +1325,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         }
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField*) textField {
+    // "Done" key has been pressed
+    [textField resignFirstResponder];
     return YES;
 }
 
