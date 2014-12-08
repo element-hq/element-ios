@@ -199,14 +199,9 @@
                 recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
                     // Consider only live event
                     if (direction == MXEventDirectionForwards) {
-                        // Check user's membership (We will remove left rooms from recents)
-                        BOOL isLeft = NO;
-                        if ([customObject isKindOfClass:[MXRoomState class]]) {
-                            MXRoomState *roomState = (MXRoomState*)customObject;
-                            if (roomState.membership == MXMembershipLeave || roomState.membership == MXMembershipBan) {
-                                isLeft = YES;
-                            }
-                        }
+                        // Check user's membership in live room state (We will remove left rooms from recents)
+                        MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:event.roomId];
+                        BOOL isLeft = (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan);
                         
                         // Consider this new event as unread only if the sender is not the user and if the room is not visible
                         BOOL isUnread = (![event.userId isEqualToString:mxHandler.userId]

@@ -294,6 +294,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
+                // Check user's membership in live room state (Indeed we have to go back on recents when user leaves, or is kicked/banned)
+                if (mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
+                    [self.navigationController popViewControllerAnimated:NO];
+                    return;
+                }
+                
                 // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
                 CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
                 shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
