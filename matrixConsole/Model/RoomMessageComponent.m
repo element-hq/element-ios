@@ -52,9 +52,7 @@ NSString *const kFailedEventId = @"failedEventId";
                 _style = RoomMessageComponentStyleUnsupported;
             } else if ([_eventId hasPrefix:kFailedEventId]) {
                 _style = RoomMessageComponentStyleFailed;
-            } else if (isIncomingMsg && !_isStateEvent
-                       && ([textMessage rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound
-                           || (mxHandler.localPartFromUserId && [textMessage rangeOfString:mxHandler.localPartFromUserId options:NSCaseInsensitiveSearch].location != NSNotFound))) {
+            } else if (isIncomingMsg && !_isStateEvent && [self containsBingWord]) {
                 _style = RoomMessageComponentStyleBing;
             } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
                 _style = RoomMessageComponentStyleInProgress;
@@ -67,6 +65,19 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     return self;
+}
+
+- (BOOL)containsBingWord {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    NSString *pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.userDisplayName];
+    if (mxHandler.localPartFromUserId) {
+        pattern = [NSString stringWithFormat:@"(%@|\\b%@\\b)", pattern, mxHandler.localPartFromUserId];
+    }
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
+    if ([regex numberOfMatchesInString:_textMessage options:0 range:NSMakeRange(0, [_textMessage length])]) {
+        return YES;
+    }
+    return NO;
 }
 
 - (NSDictionary*)stringAttributes {
