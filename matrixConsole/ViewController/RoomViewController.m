@@ -251,10 +251,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     self.roomNameTextField.enabled = NO;
     
     // Update room data
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    mxRoom = nil;
     if (self.roomId) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         mxRoom = [mxHandler.mxSession roomWithRoomId:self.roomId];
-        
+    }
+    if (mxRoom) {
         // Update room title
         self.roomNameTextField.text = mxRoom.state.displayname;
         
@@ -388,7 +390,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [mxRoom resetBackState];
         [self triggerBackPagination];
     } else {
-        mxRoom = nil;
         // Update room title
         self.roomNameTextField.text = nil;
     }
