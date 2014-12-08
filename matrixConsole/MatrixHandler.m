@@ -238,6 +238,7 @@ static MatrixHandler *sharedHandler = nil;
 - (void)logout {
     // Reset access token (mxSession is closed by setter)
     self.accessToken = nil;
+    self.userId = nil;
     
     // Reset local storage of user's settings
     self.userDisplayName = @"";
@@ -358,10 +359,26 @@ static MatrixHandler *sharedHandler = nil;
 - (void)setUserId:(NSString *)inUserId {
     if (inUserId.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inUserId forKey:@"userid"];
+        
+        // Deduce local userid
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"localuserid"];
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@(.*):\\w+" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *match = [regex firstMatchInString:inUserId options:0 range:NSMakeRange(0, [inUserId length])];
+        if (match.numberOfRanges == 2) {
+            NSString* localId = [inUserId substringWithRange:[match rangeAtIndex:1]];
+            if (localId) {
+                [[NSUserDefaults standardUserDefaults] setObject:localId forKey:@"localuserid"];
+            }
+        }
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userid"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"localuserid"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)localPartFromUserId {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"localuserid"];
 }
 
 - (NSString *)accessToken {
