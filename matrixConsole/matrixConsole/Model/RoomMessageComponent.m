@@ -43,21 +43,24 @@ NSString *const kFailedEventId = @"failedEventId";
                 _date = nil;
             }
             
+            // Set state event flag
+            _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
+            
             // Set style
             BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
                 _style = RoomMessageComponentStyleUnsupported;
             } else if ([_eventId hasPrefix:kFailedEventId]) {
                 _style = RoomMessageComponentStyleFailed;
-            } else if (isIncomingMsg && ([textMessage rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [textMessage rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-                _style = RoomMessageComponentStyleHighlighted;
+            } else if (isIncomingMsg && !_isStateEvent
+                       && ([textMessage rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound
+                           || (mxHandler.localPartFromUserId && [textMessage rangeOfString:mxHandler.localPartFromUserId options:NSCaseInsensitiveSearch].location != NSNotFound))) {
+                _style = RoomMessageComponentStyleBing;
             } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
                 _style = RoomMessageComponentStyleInProgress;
             } else {
                 _style = RoomMessageComponentStyleDefault;
             }
-            
-            _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
         } else {
             // Ignore this event
             self = nil;
@@ -74,7 +77,7 @@ NSString *const kFailedEventId = @"failedEventId";
         case RoomMessageComponentStyleDefault:
             textColor = [UIColor blackColor];
             break;
-        case RoomMessageComponentStyleHighlighted:
+        case RoomMessageComponentStyleBing:
             textColor = [UIColor blueColor];
             break;
         case RoomMessageComponentStyleInProgress:

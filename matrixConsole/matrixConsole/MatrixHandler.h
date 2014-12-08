@@ -27,6 +27,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (strong, nonatomic) NSString *homeServer;
 @property (strong, nonatomic) NSString *userLogin;
 @property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic, readonly) NSString *localPartFromUserId;
 @property (strong, nonatomic) NSString *accessToken;
 
 // The type of events to display
