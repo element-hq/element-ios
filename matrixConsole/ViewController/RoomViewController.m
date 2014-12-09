@@ -398,7 +398,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             
             if (shouldScrollToBottom) {
-                [self scrollToBottomAnimated:YES];
+                // Delay the scrolling.
+                // If there is a bunch of incoming events, scroll once for all of them
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self scrollToBottomAnimated:YES];
+                });
             }
         }];
         
