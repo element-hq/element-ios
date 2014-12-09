@@ -108,12 +108,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Release potential Room ViewController
-    if (currentRoomViewController) {
-        currentRoomViewController.roomId = nil;
-        currentRoomViewController = nil;
-    }
-    
     // Refresh display
     [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
@@ -135,6 +129,16 @@
     _preSelectedRoomId = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Release potential Room ViewController if none is visible (Note: check on room visibility is required to handle correctly splitViewController)
+    if ([AppDelegate theDelegate].masterTabBarController.visibleRoomId == nil && currentRoomViewController) {
+        currentRoomViewController.roomId = nil;
+        currentRoomViewController = nil;
+    }
 }
 
 #pragma mark -
@@ -338,6 +342,11 @@
         }
         
         if ([controller isKindOfClass:[RoomViewController class]]) {
+            // Release potential Room ViewController
+            if (currentRoomViewController) {
+                currentRoomViewController.roomId = nil;
+                currentRoomViewController = nil;
+            }
             currentRoomViewController = (RoomViewController *)controller;
             currentRoomViewController.roomId = recentRoom.roomId;
         }
@@ -415,7 +424,7 @@
     // set background color
     if (recentRoom.unreadCount) {
         cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
-        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%d)", cell.roomTitle.text, recentRoom.unreadCount];
+        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%lu)", cell.roomTitle.text, (unsigned long)recentRoom.unreadCount];
     } else {
         cell.backgroundColor = [UIColor clearColor];
     }
