@@ -33,7 +33,7 @@ NSString *const kFailedEventId = @"failedEventId";
             _eventId = event.eventId;
             _height = 0;
             
-            NSString *senderName = [roomState memberName:event.userId];
+            NSString *senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
             _startsWithSenderName = ([textMessage hasPrefix:senderName] || [mxHandler isEmote:event]);
             
             // Set date time text label
@@ -43,27 +43,51 @@ NSString *const kFailedEventId = @"failedEventId";
                 _date = nil;
             }
             
+            // Set state event flag
+            _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
+            
             // Set style
             BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
                 _style = RoomMessageComponentStyleUnsupported;
             } else if ([_eventId hasPrefix:kFailedEventId]) {
                 _style = RoomMessageComponentStyleFailed;
-            } else if (isIncomingMsg && ([textMessage rangeOfString:mxHandler.userDisplayName options:NSCaseInsensitiveSearch].location != NSNotFound || [textMessage rangeOfString:mxHandler.userId options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-                _style = RoomMessageComponentStyleHighlighted;
+            } else if (isIncomingMsg && !_isStateEvent && [self containsBingWord]) {
+                _style = RoomMessageComponentStyleBing;
             } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
                 _style = RoomMessageComponentStyleInProgress;
             } else {
                 _style = RoomMessageComponentStyleDefault;
             }
-            
-            _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
         } else {
             // Ignore this event
             self = nil;
         }
     }
     return self;
+}
+
+- (BOOL)containsBingWord {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    NSString *pattern = nil;
+    if (mxHandler.userDisplayName.length) {
+        pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.userDisplayName];
+    }
+    if (mxHandler.localPartFromUserId.length) {
+        if (pattern) {
+            pattern = [NSString stringWithFormat:@"(%@|\\b%@\\b)", pattern, mxHandler.localPartFromUserId];
+        } else {
+            pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.localPartFromUserId];
+        }
+    }
+    
+    if (pattern) {
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
+        if ([regex numberOfMatchesInString:_textMessage options:0 range:NSMakeRange(0, [_textMessage length])]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (NSDictionary*)stringAttributes {
@@ -74,7 +98,7 @@ NSString *const kFailedEventId = @"failedEventId";
         case RoomMessageComponentStyleDefault:
             textColor = [UIColor blackColor];
             break;
-        case RoomMessageComponentStyleHighlighted:
+        case RoomMessageComponentStyleBing:
             textColor = [UIColor blueColor];
             break;
         case RoomMessageComponentStyleInProgress:

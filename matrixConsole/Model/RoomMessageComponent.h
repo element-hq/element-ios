@@ -21,7 +21,7 @@ extern NSString *const kFailedEventId;
 
 typedef enum : NSUInteger {
     RoomMessageComponentStyleDefault,
-    RoomMessageComponentStyleHighlighted,
+    RoomMessageComponentStyleBing,
     RoomMessageComponentStyleInProgress,
     RoomMessageComponentStyleFailed,
     RoomMessageComponentStyleUnsupported

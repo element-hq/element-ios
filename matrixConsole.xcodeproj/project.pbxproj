@@ -39,7 +39,10 @@
 		F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5B019E6898800E47915 /* tab_home.ico */; };
 		F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3C30B1A011EF10000D49E /* AppSettings.m */; };
 		F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */; };
+		F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D942F51A31F3A300826CC1 /* RecentRoom.m */; };
 		F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */; };
+		F0F90C691A32596700455977 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F90C681A32596700455977 /* icon_search.png */; };
+		F0F90C6B1A325ABF00455977 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F90C6A1A325ABF00455977 /* icon_search@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,8 +111,12 @@
 		F0D3C30B1A011EF10000D49E /* AppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettings.m; sourceTree = "<group>"; };
 		F0D3C30D1A01330F0000D49E /* SettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewCell.h; sourceTree = "<group>"; };
 		F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewCell.m; sourceTree = "<group>"; };
+		F0D942F41A31F3A300826CC1 /* RecentRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentRoom.h; sourceTree = "<group>"; };
+		F0D942F51A31F3A300826CC1 /* RecentRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentRoom.m; sourceTree = "<group>"; };
 		F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsTableViewCell.h; sourceTree = "<group>"; };
 		F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsTableViewCell.m; sourceTree = "<group>"; };
+		F0F90C681A32596700455977 /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
+		F0F90C6A1A325ABF00455977 /* icon_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +160,8 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F0F90C6A1A325ABF00455977 /* icon_search@2x.png */,
+				F0F90C681A32596700455977 /* icon_search.png */,
 				F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */,
 				F02BCE221A1A5A2B00543B47 /* play.png */,
 				F024098119E7D177006E741B /* tab_recents@2x.png */,
@@ -204,6 +213,8 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F0D942F41A31F3A300826CC1 /* RecentRoom.h */,
+				F0D942F51A31F3A300826CC1 /* RecentRoom.m */,
 				F0465AF81A251F85003639F9 /* RoomMessage.h */,
 				F0465AF91A251F85003639F9 /* RoomMessage.m */,
 				F01A0FF11A27314B009FAE2F /* RoomMessageComponent.h */,
@@ -372,7 +383,9 @@
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
 				F01628C319E29C660071C473 /* logo.png in Resources */,
 				F01628C119E29C660071C473 /* default-profile.png in Resources */,
+				F0F90C6B1A325ABF00455977 /* icon_search@2x.png in Resources */,
 				F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */,
+				F0F90C691A32596700455977 /* icon_search.png in Resources */,
 				F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */,
 				F07A80E619DD9DE700B621A1 /* Images.xcassets in Resources */,
 				F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */,
@@ -435,6 +448,7 @@
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
+				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,

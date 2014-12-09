@@ -13,10 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixSDK/MatrixSDK.h>
 
-#import <UIKit/UIKit.h>
+@interface RecentRoom : NSObject
 
-@interface HomeViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate>
+@property (nonatomic, readonly) NSString *roomId;
+@property (nonatomic, readonly) MXEvent  *lastEvent;
+@property (nonatomic, readonly) NSUInteger unreadCount;
+
+- (id)initWithLastEvent:(MXEvent*)event andMarkAsUnread:(BOOL)isUnread;
+- (void)updateWithLastEvent:(MXEvent*)event andMarkAsUnread:(BOOL)isUnread;
+- (void)resetUnreadCount;
 
 @end
-
