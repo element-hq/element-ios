@@ -38,7 +38,7 @@ NSString *const kFailedEventId = @"failedEventId";
             
             // Set date time text label
             if (event.originServerTs != kMXUndefinedTimestamp) {
-                _date = [NSDate dateWithTimeIntervalSince1970:event.originServerTs/1000];
+                _date = [NSDate dateWithTimeIntervalSince1970:(double)event.originServerTs/1000];
             } else {
                 _date = nil;
             }
