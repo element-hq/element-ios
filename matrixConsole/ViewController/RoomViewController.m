@@ -309,6 +309,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
                 CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+                maxPositionY += 30;
                 shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
                 
                 // Update Table
