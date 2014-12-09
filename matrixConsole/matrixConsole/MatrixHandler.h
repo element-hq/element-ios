@@ -36,6 +36,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 // Matrix user's settings
 @property (strong, nonatomic) NSString *userDisplayName;
 @property (strong, nonatomic) NSString *userPictureURL;
+@property (nonatomic) MXPresence userPresence;
 
 @property (nonatomic,readonly) BOOL isLogged;
 @property (nonatomic,readonly) BOOL isInitialSyncDone;
@@ -43,7 +44,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 + (MatrixHandler *)sharedHandler;
 
-- (void)pause;
+- (void)pauseInBackgroundTask;
 - (void)resume;
 - (void)logout;
 

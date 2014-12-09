@@ -19,6 +19,8 @@
 #import "AppSettings.h"
 #import "CustomAlert.h"
 
+#import "MXTools.h"
+
 NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
 
 static MatrixHandler *sharedHandler = nil;
@@ -36,7 +38,7 @@ static MatrixHandler *sharedHandler = nil;
 @property (nonatomic,readwrite) BOOL isInitialSyncDone;
 @property (nonatomic,readwrite) BOOL isResumeDone;
 @property (strong, nonatomic) CustomAlert *mxNotification;
-
+@property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 @end
 
 @implementation MatrixHandler
@@ -60,6 +62,7 @@ static MatrixHandler *sharedHandler = nil;
     if (self = [super init]) {
         _isInitialSyncDone = NO;
         _isResumeDone = NO;
+        _userPresence = MXPresenceUnknown;
         notifyOpenSessionFailure = YES;
         
         // Read potential homeserver url in shared defaults object
@@ -81,7 +84,6 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)openSession {
-    
     MXCredentials *credentials = [[MXCredentials alloc] initWithHomeServer:self.homeServerURL
                                                                     userId:self.userId
                                                                accessToken:self.accessToken];
@@ -137,6 +139,7 @@ static MatrixHandler *sharedHandler = nil;
         // Launch mxSession
         [self.mxSession start:^{
             self.isInitialSyncDone = YES;
+            [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
             _isResumeDone = YES;
             
             // Register listener to update user's information
@@ -147,6 +150,25 @@ static MatrixHandler *sharedHandler = nil;
                 }
                 if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
                     self.userPictureURL = event.content[@"avatar_url"];
+                }
+                // Check presence
+                MXPresence presence = [MXTools presence:event.content[@"presence"]];
+                if (self.userPresence != presence) {
+                    // Handle user presence on multiple devices (keep the more pertinent)
+                    if (self.userPresence == MXPresenceOnline) {
+                        if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
+                            // Force the local presence to overwrite the user presence on server side
+                            [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                            return;
+                        }
+                    } else if (self.userPresence == MXPresenceUnavailable) {
+                        if (presence == MXPresenceOffline) {
+                            // Force the local presence to overwrite the user presence on server side
+                            [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                            return;
+                        }
+                    }
+                    self.userPresence = presence;
                 }
             }];
             
@@ -220,22 +242,52 @@ static MatrixHandler *sharedHandler = nil;
     return (self.accessToken != nil);
 }
 
-- (void)pause {
+- (void)pauseInBackgroundTask {
     if (self.mxSession) {
+        _bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
+            _bgTask = UIBackgroundTaskInvalid;
+            
+            NSLog(@"pauseInBackgroundTask : %08lX expired", (unsigned long)_bgTask);
+        }];
+        
+        NSLog(@"pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
+        // Pause SDK
         [self.mxSession pause];
         self.isResumeDone = NO;
-    }
-}
-
-- (void)resume {
-    if (self.mxSession) {
-        [self.mxSession resume:^{
-            self.isResumeDone = YES;
+        // Update user presence
+        __weak typeof(self) weakSelf = self;
+        [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
+            NSLog(@"pauseInBackgroundTask : %08lX ends", (unsigned long)weakSelf.bgTask);
+            [[UIApplication sharedApplication] endBackgroundTask:weakSelf.bgTask];
+            weakSelf.bgTask = UIBackgroundTaskInvalid;
+            NSLog(@">>>>> background pause task finished");
         }];
     }
 }
 
+- (void)resume {
+    if (self.mxSession && self.isInitialSyncDone) {
+        if (!self.isResumeDone) {
+            // Resume SDK and update user presence
+            [self.mxSession resume:^{
+                [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
+                self.isResumeDone = YES;
+            }];
+        }
+        
+        if (_bgTask) {
+            // Cancel background task
+            [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
+            _bgTask = UIBackgroundTaskInvalid;
+            NSLog(@"pauseInBackgroundTask : %08lX cancelled", (unsigned long)_bgTask);
+        }
+    }
+}
+
 - (void)logout {
+    //[self setUserPresence:MXPresenceOffline andStatusMessage:nil completion:nil];
+    
     // Reset access token (mxSession is closed by setter)
     self.accessToken = nil;
     self.userId = nil;
@@ -423,6 +475,19 @@ static MatrixHandler *sharedHandler = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userpictureurl"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setUserPresence:(MXPresence)userPresence andStatusMessage:(NSString *)statusMessage completion:(void (^)(void))completion {
+    self.userPresence = userPresence;
+    // Update user presence on server side
+    [self.mxSession.myUser setPresence:userPresence andStatusMessage:statusMessage success:^{
+        NSLog(@"Set user presence (%lu) succeeded", (unsigned long)userPresence);
+        if (completion) {
+            completion();
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Set user presence (%lu) failed: %@", (unsigned long)userPresence, error);
+    }];
 }
 
 #pragma mark - events handler
