@@ -33,7 +33,7 @@ NSString *const kFailedEventId = @"failedEventId";
             _eventId = event.eventId;
             _height = 0;
             
-            NSString *senderName = [roomState memberName:event.userId];
+            NSString *senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
             _startsWithSenderName = ([textMessage hasPrefix:senderName] || [mxHandler isEmote:event]);
             
             // Set date time text label
@@ -69,13 +69,23 @@ NSString *const kFailedEventId = @"failedEventId";
 
 - (BOOL)containsBingWord {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    NSString *pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.userDisplayName];
-    if (mxHandler.localPartFromUserId) {
-        pattern = [NSString stringWithFormat:@"(%@|\\b%@\\b)", pattern, mxHandler.localPartFromUserId];
+    NSString *pattern = nil;
+    if (mxHandler.userDisplayName.length) {
+        pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.userDisplayName];
     }
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
-    if ([regex numberOfMatchesInString:_textMessage options:0 range:NSMakeRange(0, [_textMessage length])]) {
-        return YES;
+    if (mxHandler.localPartFromUserId.length) {
+        if (pattern) {
+            pattern = [NSString stringWithFormat:@"(%@|\\b%@\\b)", pattern, mxHandler.localPartFromUserId];
+        } else {
+            pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.localPartFromUserId];
+        }
+    }
+    
+    if (pattern) {
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
+        if ([regex numberOfMatchesInString:_textMessage options:0 range:NSMakeRange(0, [_textMessage length])]) {
+            return YES;
+        }
     }
     return NO;
 }

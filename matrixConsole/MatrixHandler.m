@@ -466,10 +466,32 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 
+- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState {
+    // Consider first the current display name defined in provided room state (Note: this room state is supposed to not take the new event into account)
+    NSString *senderDisplayName = [roomState memberName:event.userId];
+    // Check whether this sender name is updated by the current event (This happens in case of new joined member)
+    if ([event.content[@"displayname"] length]) {
+        // Use the actual display name
+        senderDisplayName = event.content[@"displayname"];
+    }
+    return senderDisplayName;
+}
+
+- (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState {
+    // Consider first the avatar url defined in provided room state (Note: this room state is supposed to not take the new event into account)
+    NSString *senderAvatarUrl = [roomState memberWithUserId:event.userId].avatarUrl;
+    // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
+    if ([event.content[@"avatar_url"] length]) {
+        // Use the actual display name
+        senderAvatarUrl = event.content[@"avatar_url"];
+    }
+    return senderAvatarUrl;
+}
+
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle {
     NSString *displayText = nil;
     // Prepare display name for concerned users
-    NSString *memberDisplayName = [roomState memberName:event.userId];
+    NSString *senderDisplayName = [self senderDisplayNameForEvent:event withRoomState:roomState];
     NSString *targetDisplayName = nil;
     if (event.stateKey) {
         targetDisplayName = [roomState memberName:event.stateKey];
@@ -477,11 +499,11 @@ static MatrixHandler *sharedHandler = nil;
     
     switch (event.eventType) {
         case MXEventTypeRoomName: {
-            displayText = [NSString stringWithFormat:@"%@ changed the room name to: %@", memberDisplayName, event.content[@"name"]];
+            displayText = [NSString stringWithFormat:@"%@ changed the room name to: %@", senderDisplayName, event.content[@"name"]];
             break;
         }
         case MXEventTypeRoomTopic: {
-            displayText = [NSString stringWithFormat:@"%@ changed the topic to: %@", memberDisplayName, event.content[@"topic"]];
+            displayText = [NSString stringWithFormat:@"%@ changed the topic to: %@", senderDisplayName, event.content[@"topic"]];
             break;
         }
         case MXEventTypeRoomMember: {
@@ -522,30 +544,30 @@ static MatrixHandler *sharedHandler = nil;
                     if (displayText) {
                         displayText = [NSString stringWithFormat:@"%@ (picture profile was changed too)", displayText];
                     } else {
-                        displayText = [NSString stringWithFormat:@"%@ changed their picture profile", memberDisplayName];
+                        displayText = [NSString stringWithFormat:@"%@ changed their picture profile", senderDisplayName];
                     }
                 }
             } else {
                 // Consider here a membership change
                 if ([membership isEqualToString:@"invite"]) {
-                    displayText = [NSString stringWithFormat:@"%@ invited %@", memberDisplayName, targetDisplayName];
+                    displayText = [NSString stringWithFormat:@"%@ invited %@", senderDisplayName, targetDisplayName];
                 } else if ([membership isEqualToString:@"join"]) {
-                    displayText = [NSString stringWithFormat:@"%@ joined", memberDisplayName];
+                    displayText = [NSString stringWithFormat:@"%@ joined", senderDisplayName];
                 } else if ([membership isEqualToString:@"leave"]) {
                     if ([event.userId isEqualToString:event.stateKey]) {
-                        displayText = [NSString stringWithFormat:@"%@ left", memberDisplayName];
+                        displayText = [NSString stringWithFormat:@"%@ left", senderDisplayName];
                     } else if (prevMembership) {
                         if ([prevMembership isEqualToString:@"join"] || [prevMembership isEqualToString:@"invite"]) {
-                            displayText = [NSString stringWithFormat:@"%@ kicked %@", memberDisplayName, targetDisplayName];
+                            displayText = [NSString stringWithFormat:@"%@ kicked %@", senderDisplayName, targetDisplayName];
                             if (event.content[@"reason"]) {
                                 displayText = [NSString stringWithFormat:@"%@: %@", displayText, event.content[@"reason"]];
                             }
                         } else if ([prevMembership isEqualToString:@"ban"]) {
-                            displayText = [NSString stringWithFormat:@"%@ unbanned %@", memberDisplayName, targetDisplayName];
+                            displayText = [NSString stringWithFormat:@"%@ unbanned %@", senderDisplayName, targetDisplayName];
                         }
                     }
                 } else if ([membership isEqualToString:@"ban"]) {
-                    displayText = [NSString stringWithFormat:@"%@ banned %@", memberDisplayName, targetDisplayName];
+                    displayText = [NSString stringWithFormat:@"%@ banned %@", senderDisplayName, targetDisplayName];
                     if (event.content[@"reason"]) {
                         displayText = [NSString stringWithFormat:@"%@: %@", displayText, event.content[@"reason"]];
                     }
@@ -616,7 +638,7 @@ static MatrixHandler *sharedHandler = nil;
             displayText = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
             
             if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
-                displayText = [NSString stringWithFormat:@"* %@ %@", memberDisplayName, displayText];
+                displayText = [NSString stringWithFormat:@"* %@ %@", senderDisplayName, displayText];
             } else if ([msgtype isEqualToString:kMXMessageTypeImage]) {
                 displayText = displayText? displayText : @"image attachment";
                 // Check attachment validity
@@ -664,7 +686,7 @@ static MatrixHandler *sharedHandler = nil;
             
             // Check whether the sender name has to be added
             if (isSubtitle && [msgtype isEqualToString:kMXMessageTypeEmote] == NO) {
-                displayText = [NSString stringWithFormat:@"%@: %@", memberDisplayName, displayText];
+                displayText = [NSString stringWithFormat:@"%@: %@", senderDisplayName, displayText];
             }
             
             break;
