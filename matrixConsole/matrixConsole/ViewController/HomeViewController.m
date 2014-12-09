@@ -19,12 +19,17 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 
-
-
 @interface HomeViewController () {
     NSArray *publicRooms;
+    
     // List of public room names to highlight in displayed list
     NSArray* highlightedPublicRooms;
+    
+    // Search in public room
+    UISearchBar     *recentsSearchBar;
+    NSMutableArray  *filteredPublicRooms;
+    BOOL             searchBarShouldEndEditing;
+    UIView          *savedTableHeaderView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
@@ -64,6 +69,10 @@
 - (void)dealloc{
     publicRooms = nil;
     highlightedPublicRooms = nil;
+    
+    recentsSearchBar = nil;
+    filteredPublicRooms = nil;
+    savedTableHeaderView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -84,6 +93,10 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    // Leave potential search session
+    if (recentsSearchBar) {
+        [self searchBarCancelButtonClicked:recentsSearchBar];
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -108,6 +121,29 @@
                                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                     }];
     
+}
+
+- (void)search:(id)sender {
+    if (!recentsSearchBar) {
+        // Check whether there are data in which search
+        if (publicRooms.count) {
+            // Create search bar
+            recentsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+            recentsSearchBar.showsCancelButton = YES;
+            recentsSearchBar.returnKeyType = UIReturnKeyDone;
+            recentsSearchBar.delegate = self;
+            [recentsSearchBar becomeFirstResponder];
+            // Hide table header during search session
+            savedTableHeaderView = self.tableView.tableHeaderView;
+            self.tableView.tableHeaderView = nil;
+            // Reload table in order to display search bar as section header
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [self.tableView reloadData];
+            
+        }
+    } else {
+        [self searchBarCancelButtonClicked: recentsSearchBar];
+    }
 }
 
 - (void)dismissKeyboard {
@@ -289,32 +325,64 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (filteredPublicRooms) {
+        return filteredPublicRooms.count;
+    }
     return publicRooms.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (recentsSearchBar) {
+        return (recentsSearchBar.frame.size.height + 40);
+    }
+    return 40;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *sectionHeader = [[UILabel alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.font = [UIFont boldSystemFontOfSize:16];
+    UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, sectionHeader.frame.size.width, 40)];
+    sectionLabel.font = [UIFont boldSystemFontOfSize:16];
+    sectionLabel.backgroundColor = [UIColor clearColor];
+    [sectionHeader addSubview:sectionLabel];
     
     if (publicRooms) {
         NSString *homeserver = [MatrixHandler sharedHandler].homeServerURL;
         if (homeserver.length) {
-            sectionHeader.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
+            sectionLabel.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
         } else {
-            sectionHeader.text = @" Public Rooms:";
+            sectionLabel.text = @" Public Rooms:";
+        }
+        
+        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [searchButton setImage:[UIImage imageNamed:@"icon_search"] forState:UIControlStateNormal];
+        [searchButton setImage:[UIImage imageNamed:@"icon_search"] forState:UIControlStateHighlighted];
+        [searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
+        searchButton.frame = CGRectMake(sectionLabel.frame.size.width - 45, 0, 40, 40);
+        [sectionHeader addSubview:searchButton];
+        sectionHeader.userInteractionEnabled = YES;
+        if (recentsSearchBar) {
+            CGRect frame = recentsSearchBar.frame;
+            frame.origin.y = 40;
+            recentsSearchBar.frame = frame;
+            [sectionHeader addSubview:recentsSearchBar];
         }
     } else {
-        sectionHeader.text = @" No Public Rooms";
+        sectionLabel.text = @" No Public Rooms";
     }
     
     return sectionHeader;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Cell is larger for public room with topic
-    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    MXPublicRoom *publicRoom;
+    if (filteredPublicRooms) {
+        publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
+    } else {
+        publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    }
+    
     if (publicRoom.topic) {
         return 60;
     }
@@ -322,8 +390,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
     UITableViewCell *cell;
+    MXPublicRoom *publicRoom;
+    if (filteredPublicRooms) {
+        publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
+    } else {
+        publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    }
     
     // Check whether this public room has topic
     if (publicRoom.topic) {
@@ -351,10 +424,15 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MXPublicRoom *publicRoom;
+    if (filteredPublicRooms) {
+        publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
+    } else {
+        publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    }
     
     // Check whether the user has already joined the selected public room
-    MXPublicRoom *publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     if ([mxHandler.mxSession roomWithRoomId:publicRoom.roomId]) {
         // Open selected room
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
@@ -383,6 +461,57 @@
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    searchBarShouldEndEditing = NO;
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    return searchBarShouldEndEditing;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    // Update filtered list
+    if (searchText.length) {
+        if (filteredPublicRooms) {
+            [filteredPublicRooms removeAllObjects];
+        } else {
+            filteredPublicRooms = [NSMutableArray arrayWithCapacity:publicRooms.count];
+        }
+        for (MXPublicRoom *publicRoom in publicRooms) {
+            if ([[publicRoom displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                [filteredPublicRooms addObject:publicRoom];
+            }
+        }
+    } else {
+        filteredPublicRooms = nil;
+    }
+    // Refresh display
+    [self.tableView reloadData];
+    if (filteredPublicRooms.count) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    // "Done" key has been pressed
+    searchBarShouldEndEditing = YES;
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    // Leave search
+    searchBarShouldEndEditing = YES;
+    [searchBar resignFirstResponder];
+    recentsSearchBar = nil;
+    filteredPublicRooms = nil;
+    // Restore table header and refresh table display
+    self.tableView.tableHeaderView = savedTableHeaderView;
+    [self.tableView reloadData];
 }
 
 @end

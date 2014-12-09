@@ -27,6 +27,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (strong, nonatomic) NSString *homeServer;
 @property (strong, nonatomic) NSString *userLogin;
 @property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic, readonly) NSString *localPartFromUserId;
 @property (strong, nonatomic) NSString *accessToken;
 
 // The type of events to display
@@ -38,9 +39,12 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 @property (nonatomic,readonly) BOOL isLogged;
 @property (nonatomic,readonly) BOOL isInitialSyncDone;
+@property (nonatomic,readonly) BOOL isResumeDone;
 
 + (MatrixHandler *)sharedHandler;
 
+- (void)pause;
+- (void)resume;
 - (void)logout;
 
 // Flush and restore Matrix data
@@ -50,6 +54,10 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 - (BOOL)isSupportedAttachment:(MXEvent*)event;
 - (BOOL)isEmote:(MXEvent*)event;
+
+// Note: the room state expected by the 3 following methods is the room state right before handling the event
+- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
+- (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
 
 @end

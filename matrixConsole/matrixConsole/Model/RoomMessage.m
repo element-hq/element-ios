@@ -36,15 +36,16 @@ static NSAttributedString *messageSeparator = nil;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        
         _senderId = event.userId;
-        _senderName = [roomState memberName:event.userId];
-        _senderAvatarUrl = [roomState memberWithUserId:event.userId].avatarUrl;
+        _senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
+        _senderAvatarUrl = [mxHandler senderAvatarUrlForEvent:event withRoomState:roomState];
         _contentSize = CGSizeZero;
         currentAttributedTextMsg = nil;
         
         // Set message type (consider text by default), and check attachment if any
         _messageType = RoomMessageTypeText;
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         if ([mxHandler isSupportedAttachment:event]) {
             // Note: event.eventType is equal here to MXEventTypeRoomMessage
             NSString *msgtype =  event.content[@"msgtype"];
@@ -101,12 +102,14 @@ static NSAttributedString *messageSeparator = nil;
         }
         
         // Check sender information
-        if ((_senderName || [roomState memberName:event.userId]) &&
-            ([_senderName isEqualToString:[roomState memberName:event.userId]] == NO)) {
+        NSString *eventSenderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
+        NSString *eventSenderAvatar = [mxHandler senderAvatarUrlForEvent:event withRoomState:roomState];
+        if ((_senderName || eventSenderName) &&
+            ([_senderName isEqualToString:eventSenderName] == NO)) {
             return NO;
         }
-        if ((_senderAvatarUrl || [roomState memberWithUserId:event.userId].avatarUrl) &&
-            ([_senderAvatarUrl isEqualToString:[roomState memberWithUserId:event.userId].avatarUrl] == NO)) {
+        if ((_senderAvatarUrl || eventSenderAvatar) &&
+            ([_senderAvatarUrl isEqualToString:eventSenderAvatar] == NO)) {
             return NO;
         }
         

@@ -51,38 +51,23 @@
             self.backgroundColor = [UIColor whiteColor];
             
             // Handle power level display
-             self.userPowerLevel.hidden = NO;
-            NSDictionary *powerLevels;
-            if (room.state.powerLevels[@"users"]){
-                // In Matrix 0.5, users power levels are listed under the `users` dictionnary
-                powerLevels = room.state.powerLevels[@"users"];
-            }
-            else {
-                // @TODO: Remove this backward compatibility
-                powerLevels = room.state.powerLevels;
-            }
-            
-            if (powerLevels) {
-                int maxLevel = 0;
-                for (NSString *powerLevel in powerLevels.allValues) {
-                    int level = [powerLevel intValue];
-                    if (level > maxLevel) {
-                        maxLevel = level;
-                    }
+            self.userPowerLevel.hidden = NO;
+            MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
+
+            int maxLevel = 0;
+            for (NSString *powerLevel in roomPowerLevels.users.allValues) {
+                int level = [powerLevel intValue];
+                if (level > maxLevel) {
+                    maxLevel = level;
                 }
-                NSString *userPowerLevel = [powerLevels objectForKey:roomMember.userId]; // CAUTION: we invoke objectForKey here because user_id starts with an '@' character
-                if (userPowerLevel == nil) {
-                    userPowerLevel = [powerLevels valueForKey:@"default"];
-                }
-                float userPowerLevelFloat = 0.0;
-                if (userPowerLevel) {
-                    userPowerLevelFloat = [userPowerLevel floatValue];
-                }
-                self.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
-            } else {
-                self.userPowerLevel.progress = 0;
             }
-            
+            NSUInteger userPowerLevel = [roomPowerLevels powerLevelOfUserWithUserID:roomMember.userId];
+            float userPowerLevelFloat = 0.0;
+            if (userPowerLevel) {
+                userPowerLevelFloat = userPowerLevel;
+            }
+            self.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+
             if (roomMember.membership == MXMembershipInvite) {
                 self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
                 self.lastActiveAgoLabel.text = @"invited";

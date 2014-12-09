@@ -14,9 +14,37 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "RecentRoom.h"
 
-@interface HomeViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate>
+@implementation RecentRoom
+
+- (id)initWithLastEvent:(MXEvent*)event andMarkAsUnread:(BOOL)isUnread {
+    if (self = [super init]) {
+        _lastEvent = event;
+        _unreadCount = isUnread ? 1 : 0;
+    }
+    return self;
+}
+
+- (void)updateWithLastEvent:(MXEvent*)event andMarkAsUnread:(BOOL)isUnread {
+    _lastEvent = event;
+    if (isUnread) {
+        _unreadCount ++;
+    }
+}
+
+- (void)resetUnreadCount {
+    _unreadCount = 0;
+}
+
+- (void)dealloc {
+    _lastEvent = nil;
+}
+
+#pragma mark -
+
+- (NSString*)roomId {
+    return _lastEvent.roomId;
+}
 
 @end
-
