@@ -134,6 +134,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     mxRoom = nil;
     
@@ -162,7 +163,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     if (isBackPaginationInProgress || isJoinRequestInProgress) {
         // Busy - be sure that activity indicator is running
-        [_activityIndicator startAnimating];
+        [self startActivityIndicator];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -240,7 +241,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Check whether a request is in progress to join the room
     if (isJoinRequestInProgress) {
         // Busy - be sure that activity indicator is running
-        [_activityIndicator startAnimating];
+        [self startActivityIndicator];
         return;
     }
     
@@ -250,6 +251,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
@@ -269,15 +271,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Check first whether we have to join the room
         if (mxRoom.state.membership == MXMembershipInvite) {
             isJoinRequestInProgress = YES;
-            [_activityIndicator startAnimating];
+            [self startActivityIndicator];
             [mxRoom join:^{
-                [_activityIndicator stopAnimating];
+                [self stopActivityIndicator];
                 isJoinRequestInProgress = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self configureView];
                 });
             } failure:^(NSError *error) {
-                [_activityIndicator stopAnimating];
+                [self stopActivityIndicator];
                 isJoinRequestInProgress = NO;
                 NSLog(@"Failed to join room (%@): %@", mxRoom.state.displayname, error);
                 //Alert user
@@ -292,6 +294,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"displayAllEvents" options:0 context:nil];
+        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             BOOL shouldScrollToBottom = NO;
@@ -426,7 +429,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     if (mxRoom.canPaginate) {
-        [_activityIndicator startAnimating];
+        [self startActivityIndicator];
         isBackPaginationInProgress = YES;
         backPaginationAddedMsgNb = 0;
         
@@ -492,8 +495,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self.messagesTableView setContentOffset:contentOffset animated:NO];
         }
     }
-    [_activityIndicator stopAnimating];
     isBackPaginationInProgress = NO;
+    [self stopActivityIndicator];
+}
+
+- (void)startActivityIndicator {
+    [_activityIndicator startAnimating];
+}
+
+- (void)stopActivityIndicator {
+    // Check whether all conditions are satisfied before stopping loading wheel
+    if ([[MatrixHandler sharedHandler] isResumeDone] && !isBackPaginationInProgress && !isJoinRequestInProgress) {
+        [_activityIndicator stopAnimating];
+    }
 }
 
 #pragma mark - KVO
@@ -506,6 +520,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
+    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
+        if ([[MatrixHandler sharedHandler] isResumeDone]) {
+            [self stopActivityIndicator];
+        } else {
+            [self startActivityIndicator];
+        }
     }
 }
 
@@ -1311,16 +1331,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         NSString *roomName = self.roomNameTextField.text;
         if ([roomName isEqualToString:mxRoom.state.name] == NO) {
-            [self.activityIndicator startAnimating];
+            [self startActivityIndicator];
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             [mxHandler.mxRestClient setRoomName:self.roomId name:roomName success:^{
-                if (isBackPaginationInProgress == NO) {
-                    [self.activityIndicator stopAnimating];
-                }
+                [self stopActivityIndicator];
             } failure:^(NSError *error) {
-                if (isBackPaginationInProgress == NO) {
-                    [self.activityIndicator stopAnimating];
-                }
+                [self stopActivityIndicator];
                 // Revert change
                 self.roomNameTextField.text = mxRoom.state.displayname;
                 NSLog(@"Rename room failed: %@", error);
