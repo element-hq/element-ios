@@ -16,7 +16,7 @@
 
 #import "RoomMessageComponent.h"
 
-#define ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH 200
+#define ROOM_MESSAGE_DEFAULT_MAX_TEXTVIEW_WIDTH 200
 #define ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH 192
 #define ROOM_MESSAGE_TEXTVIEW_MARGIN 5
 
@@ -38,8 +38,11 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSString *senderName;
 @property (nonatomic) NSString *senderAvatarUrl;
 
+// The max width of the text view used to display the text message (relevant only when type = RoomMessageTypeText)
+@property (nonatomic) CGFloat maxTextViewWidth;
+
 // The message content size depends on its type:
-// - Text (RoomMessageTypeText): returns suitable content size of a text view to display the whole text message
+// - Text (RoomMessageTypeText): returns suitable content size of a text view to display the whole text message (respecting maxTextViewWidth)
 // - Attachment: returns suitable content size for an image view in order to display attachment thumbnail or icon.
 @property (nonatomic) CGSize contentSize;
 // Returns message components (Note: only one component is supported for attachment [messageType != RoomMessageTypeText])
