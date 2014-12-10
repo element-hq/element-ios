@@ -24,7 +24,6 @@
 @property (strong, nonatomic) IBOutlet CustomImageView *attachmentView;
 @property (strong, nonatomic) IBOutlet UIImageView *playIconView;
 @property (weak, nonatomic) IBOutlet UIView *dateTimeLabelContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *msgTextViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;

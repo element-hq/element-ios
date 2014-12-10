@@ -36,6 +36,8 @@
 #define ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST 18
 #define ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN -10
 
+#define ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW 120 // (51 + 69)
+
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
 NSString *const kCmdJoinRoom = @"/join";
@@ -832,12 +834,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return ROOM_MESSAGE_CELL_DEFAULT_HEIGHT;
     }
     
-    // Compute here height of message cells
+    // Compute here height of message cell
     CGFloat rowHeight;
-    // Get message related to this row
+    // Compute first height of message content (The maximum width available for the textview must be updated dynamically)
     RoomMessage* message = [messages objectAtIndex:indexPath.row];
-    // Consider message content height
+    message.maxTextViewWidth = self.messagesTableView.frame.size.width - ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW;
     rowHeight = message.contentSize.height;
+    
     // Add top margin
     if (message.messageType == RoomMessageTypeText) {
         rowHeight += ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
@@ -974,6 +977,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             yPosition += component.height;
         }
     }
+    
+    // Set message content
+    message.maxTextViewWidth = self.messagesTableView.frame.size.width - ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW;
     CGSize contentSize = message.contentSize;
     if (message.messageType != RoomMessageTypeText) {
         cell.messageTextView.hidden = YES;
@@ -1018,9 +1024,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.attachViewWidthConstraint.constant = contentSize.width;
     } else {
         cell.messageTextView.hidden = NO;
+        if (!isIncomingMsg) {
+            // Adjust horizontal position for outgoing messages (text is left aligned, but the textView should be right aligned)
+            CGFloat leftInset = message.maxTextViewWidth - contentSize.width;
+            cell.messageTextView.contentInset = UIEdgeInsetsMake(0, leftInset, 0, -leftInset);
+        }
         cell.messageTextView.attributedText = message.attributedTextMessage;
-        // Adjust textView width constraint
-        cell.msgTextViewWidthConstraint.constant = contentSize.width;
     }
     
     // Handle timestamp display

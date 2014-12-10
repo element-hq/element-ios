@@ -41,6 +41,7 @@ static NSAttributedString *messageSeparator = nil;
         _senderId = event.userId;
         _senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
         _senderAvatarUrl = [mxHandler senderAvatarUrlForEvent:event withRoomState:roomState];
+        _maxTextViewWidth = ROOM_MESSAGE_DEFAULT_MAX_TEXTVIEW_WIDTH;
         _contentSize = CGSizeZero;
         currentAttributedTextMsg = nil;
         
@@ -116,36 +117,24 @@ static NSAttributedString *messageSeparator = nil;
         // Create new message component
         RoomMessageComponent *addedComponent = [[RoomMessageComponent alloc] initWithEvent:event andRoomState:roomState];
         if (addedComponent) {
-            // Insert the new component according to its date
-            NSUInteger index = messageComponents.count;
-            NSMutableArray *savedComponents = [NSMutableArray arrayWithCapacity:index];
-            RoomMessageComponent* msgComponent;
-            if (addedComponent.date) {
-                while (index--) {
-                    msgComponent = [messageComponents lastObject];
-                    if (!msgComponent.date || [msgComponent.date compare:addedComponent.date] == NSOrderedDescending) {
-                        [savedComponents insertObject:msgComponent atIndex:0];
-                        [messageComponents removeLastObject];
-                    } else {
-                        break;
-                    }
-                }
-            }
-            // Force text message refresh
-            self.attributedTextMessage = nil;
-            CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
             [messageComponents addObject:addedComponent];
-            // Force text message refresh after adding new component in order to compute its height
-            self.attributedTextMessage = nil;
-            addedComponent.height = self.contentSize.height - previousTextViewHeight;
-            // Re-add existing message components (later in time than the new one)
-            for (msgComponent in savedComponents) {
-                previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
-                [messageComponents addObject:msgComponent];
-                // Force text message refresh
-                self.attributedTextMessage = nil;
-                msgComponent.height = self.contentSize.height - previousTextViewHeight;
-            }
+            
+            // Sort components according to their date
+            [messageComponents sortUsingComparator:^NSComparisonResult(RoomMessageComponent *obj1, RoomMessageComponent *obj2) {
+                if (obj1.date) {
+                    if (obj2.date) {
+                        return [obj1.date compare:obj2.date];
+                    } else {
+                        return NSOrderedAscending;
+                    }
+                } else if (obj2.date) {
+                    return NSOrderedDescending;
+                }
+                return NSOrderedSame;
+            }];
+            
+            // Force text message refresh after sorting
+            [self refreshMessageComponentsHeight];
         }
         // else the event is ignored, we consider it as handled
         return YES;
@@ -156,29 +145,16 @@ static NSAttributedString *messageSeparator = nil;
 - (BOOL)removeEvent:(NSString *)eventId {
     if (_messageType == RoomMessageTypeText) {
         NSUInteger index = messageComponents.count;
-        NSMutableArray *savedComponents = [NSMutableArray arrayWithCapacity:index];
-        RoomMessageComponent* msgComponent;
         while (index--) {
-            msgComponent = [messageComponents lastObject];
-            if ([msgComponent.eventId isEqualToString:eventId] == NO) {
-                [savedComponents insertObject:msgComponent atIndex:0];
-                [messageComponents removeLastObject];
-            } else {
-                [messageComponents removeLastObject];
+            RoomMessageComponent* msgComponent = [messageComponents objectAtIndex:index];
+            if ([msgComponent.eventId isEqualToString:eventId]) {
+                [messageComponents removeObjectAtIndex:index];
                 // Force text message refresh
-                self.attributedTextMessage = nil;
-                for (msgComponent in savedComponents) {
-                    // Re-add message components
-                    CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
-                    [messageComponents addObject:msgComponent];
-                    self.attributedTextMessage = nil;
-                    msgComponent.height = self.contentSize.height - previousTextViewHeight;
-                }
+                [self refreshMessageComponentsHeight];
                 return YES;
             }
         }
-        // here the provided eventId has not been found, restore message components and return
-        messageComponents = savedComponents;
+        // here the provided eventId has not been found
     }
     return NO;
 }
@@ -192,14 +168,38 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
+- (void)refreshMessageComponentsHeight {
+    NSMutableArray *components = messageComponents;
+    messageComponents = [NSMutableArray arrayWithCapacity:components.count];
+    self.attributedTextMessage = nil;
+    for (RoomMessageComponent *msgComponent in components) {
+        CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+        [messageComponents addObject:msgComponent];
+        // Force text message refresh
+        self.attributedTextMessage = nil;
+        msgComponent.height = self.contentSize.height - previousTextViewHeight;
+    }
+}
+
 #pragma mark -
+
+- (void)setMaxTextViewWidth:(CGFloat)maxTextViewWidth {
+    if (_messageType == RoomMessageTypeText) {
+        // Check change
+        if (_maxTextViewWidth != maxTextViewWidth) {
+            _maxTextViewWidth = maxTextViewWidth;
+            // Refresh height for all message components
+            [self refreshMessageComponentsHeight];
+        }
+    }
+}
 
 - (CGSize)contentSize {
     if (CGSizeEqualToSize(_contentSize, CGSizeZero)) {
         if (_messageType == RoomMessageTypeText) {
             if (self.attributedTextMessage.length) {
                 // Use a TextView template to compute cell height
-                UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, ROOM_MESSAGE_MAX_TEXTVIEW_WIDTH, MAXFLOAT)];
+                UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT)];
                 dummyTextView.attributedText = self.attributedTextMessage;
                 _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
             }
