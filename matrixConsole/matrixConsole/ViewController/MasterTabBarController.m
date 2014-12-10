@@ -89,10 +89,7 @@
         }
     }
     
-    // Force back to recents list if room details is displayed in Recents Tab
-    if (recentsViewController) {
-        [recentsNavigationController popToViewController:recentsViewController animated:NO];
-    }
+    [self popRoomViewControllerAnimated:NO];
 }
 
 #pragma mark -
@@ -118,6 +115,13 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         recentsViewController.preSelectedRoomId = roomId;
     });
+}
+
+- (void)popRoomViewControllerAnimated:(BOOL)animated {
+    // Force back to recents list if room details is displayed in Recents Tab
+    if (recentsViewController) {
+        [recentsNavigationController popToViewController:recentsViewController animated:animated];
+    }
 }
 
 - (void)presentMediaPicker:(UIImagePickerController*)aMediaPicker {
