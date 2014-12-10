@@ -891,11 +891,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
         // Hide potential loading wheel
         [outgoingMsgCell.activityIndicator stopAnimating];
-        // Hide unsent container by default, and remove potential unsent label(s)
-        outgoingMsgCell.unsentLabelContainer.hidden = YES;
-        for (UIView *view in outgoingMsgCell.unsentLabelContainer.subviews) {
-            [view removeFromSuperview];
-        }
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
         isIncomingMsg = YES;
@@ -909,7 +904,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     while (cell.attachmentView.gestureRecognizers.count) {
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
     }
-    // Remove potential dateTime label(s)
+    // Remove potential dateTime (or unsent) label(s)
     if (cell.dateTimeLabelContainer.constraints.count) {
         if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
             [NSLayoutConstraint deactivateConstraints:cell.dateTimeLabelContainer.constraints];
@@ -932,7 +927,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             shouldHideSenderInfo = YES;
         }
     }
-    
+    // Handle sender's picture and adjust view's constraints
     if (shouldHideSenderInfo) {
         cell.pictureView.hidden = YES;
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST + ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
@@ -949,6 +944,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.pictureView.clipsToBounds = YES;
     }
     
+    // Adjust top constraint constant for dateTime labels container, and hide it by default
+    if (message.messageType == RoomMessageTypeText) {
+        cell.dateTimeLabelContainerTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
+    } else {
+        cell.dateTimeLabelContainerTopConstraint.constant = cell.attachViewTopConstraint.constant;
+    }
+    cell.dateTimeLabelContainer.hidden = YES;
+    
     // Update incoming/outgoing message layout
     if (isIncomingMsg) {
         IncomingMessageTableCell* incomingMsgCell = (IncomingMessageTableCell*)cell;
@@ -956,26 +959,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         incomingMsgCell.userNameLabel.hidden = (shouldHideSenderInfo || message.startsWithSenderName);
         incomingMsgCell.userNameLabel.text = message.senderName;
     } else {
-        OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
-        // Adjust top constraint constant for unsent labels container
-        CGFloat yPosition;
-        if (message.messageType == RoomMessageTypeText) {
-            outgoingMsgCell.unsentLabelContainerTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
-            yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
-        } else {
-            outgoingMsgCell.unsentLabelContainerTopConstraint.constant = cell.attachViewTopConstraint.constant;
-            yPosition = -ROOM_MESSAGE_TEXTVIEW_MARGIN;
-        }
         // Add unsent label for failed components
+        CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
             if (component.style == RoomMessageComponentStyleFailed) {
-                UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, outgoingMsgCell.unsentLabelContainer.frame.size.width , 20)];
+                UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, 58 , 20)];
                 unsentLabel.text = @"Unsent";
                 unsentLabel.textAlignment = NSTextAlignmentCenter;
                 unsentLabel.textColor = [UIColor redColor];
                 unsentLabel.font = [UIFont systemFontOfSize:14];
-                [outgoingMsgCell.unsentLabelContainer addSubview:unsentLabel];
-                outgoingMsgCell.unsentLabelContainer.hidden = NO;
+                [cell.dateTimeLabelContainer addSubview:unsentLabel];
+                cell.dateTimeLabelContainer.hidden = NO;
             }
             yPosition += component.height;
         }
@@ -1031,17 +1025,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Handle timestamp display
     if (dateFormatter) {
-        cell.dateTimeLabelContainer.hidden = NO;
-        CGFloat yPosition;
-        // Adjust top constraint constant
-        if (message.messageType == RoomMessageTypeText) {
-            cell.dateTimeLabelContainerTopConstraint.constant = cell.msgTextViewTopConstraint.constant;
-            yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
-        } else {
-            cell.dateTimeLabelContainerTopConstraint.constant = cell.attachViewTopConstraint.constant;
-            yPosition = -ROOM_MESSAGE_TEXTVIEW_MARGIN;
-        }
         // Add datetime label for each component
+        cell.dateTimeLabelContainer.hidden = NO;
+        CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
             if (component.date) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
@@ -1098,8 +1084,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             yPosition += component.height;
         }
-    } else {
-        cell.dateTimeLabelContainer.hidden = YES;
     }
     return cell;
 }

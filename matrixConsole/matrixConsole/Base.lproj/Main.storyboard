@@ -178,13 +178,6 @@
                                                         <constraint firstAttribute="width" constant="40" id="tbf-QO-jKR"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07b-tV-EBC" userLabel="UnsentLabelContainer">
-                                                    <rect key="frame" x="286" y="10" width="58" height="40"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="58" id="g8G-uj-8gf"/>
-                                                    </constraints>
-                                                </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNQ-DX-U8F" userLabel="showHideDateTime">
                                                     <rect key="frame" x="0.0" y="0.0" width="349" height="50"/>
                                                     <state key="normal">
@@ -205,8 +198,6 @@
                                                 <constraint firstAttribute="trailing" secondItem="mks-jh-AiZ" secondAttribute="trailing" constant="8" id="1Fh-Wx-A41"/>
                                                 <constraint firstAttribute="bottom" secondItem="Glo-Wx-mP6" secondAttribute="bottom" id="23i-Iz-P2P"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="fNQ-DX-U8F" secondAttribute="trailing" id="AH0-j0-oAW"/>
-                                                <constraint firstAttribute="bottom" secondItem="07b-tV-EBC" secondAttribute="bottom" id="B5s-6H-lbt"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="07b-tV-EBC" secondAttribute="trailing" constant="248" id="G9X-vw-Q3y"/>
                                                 <constraint firstItem="Glo-Wx-mP6" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leading" constant="8" id="HbL-hO-OE7"/>
                                                 <constraint firstItem="Glo-Wx-mP6" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="KAT-n3-5vl"/>
                                                 <constraint firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" id="KPt-Vo-ntg"/>
@@ -221,7 +212,6 @@
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerY" secondItem="0Bl-Sv-Q2H" secondAttribute="centerY" id="aUE-Bv-XF2"/>
                                                 <constraint firstItem="mks-jh-AiZ" firstAttribute="leading" secondItem="7qn-gi-w7s" secondAttribute="trailing" constant="3" id="cCA-xk-XBe"/>
                                                 <constraint firstItem="QZT-V8-yqJ" firstAttribute="centerY" secondItem="Pq8-lB-cZM" secondAttribute="centerY" id="ej0-OC-3hJ"/>
-                                                <constraint firstItem="07b-tV-EBC" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="fF0-vc-51U"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="owD-KZ-snG"/>
                                                 <constraint firstItem="fNQ-DX-U8F" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" id="wb3-8X-eQH"/>
                                             </constraints>
@@ -239,8 +229,6 @@
                                             <outlet property="msgTextViewWidthConstraint" destination="a6g-WS-jjN" id="aM9-xQ-hVM"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>
                                             <outlet property="playIconView" destination="0Bl-Sv-Q2H" id="VNa-J3-NuO"/>
-                                            <outlet property="unsentLabelContainer" destination="07b-tV-EBC" id="oye-Cz-bXa"/>
-                                            <outlet property="unsentLabelContainerTopConstraint" destination="fF0-vc-51U" id="zS7-F9-d1K"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
