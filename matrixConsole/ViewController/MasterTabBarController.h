@@ -27,6 +27,8 @@
 - (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId;
 
+- (void)popRoomViewControllerAnimated:(BOOL)animated;
+
 - (void)presentMediaPicker:(UIImagePickerController*)mediaPicker;
 - (void)dismissMediaPicker;
 

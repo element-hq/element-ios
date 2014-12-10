@@ -303,7 +303,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             if (direction == MXEventDirectionForwards) {
                 // Check user's membership in live room state (Indeed we have to go back on recents when user leaves, or is kicked/banned)
                 if (mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
-                    [self.navigationController popViewControllerAnimated:NO];
+                    [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
                     return;
                 }
                 
@@ -521,7 +521,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([@"displayAllEvents" isEqualToString:keyPath]) {
         // Back to recents (Room details are not available until the end of initial sync)
-        [self.navigationController popViewControllerAnimated:NO];
+        [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
     } else if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
@@ -1128,7 +1128,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     MXRoom *currentRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:weakSelf.roomId];
                     [currentRoom leave:^{
                         // Back to recents
-                        [weakSelf.navigationController popViewControllerAnimated:YES];
+                        [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
                     } failure:^(NSError *error) {
                         NSLog(@"Leave room %@ failed: %@", weakSelf.roomId, error);
                         //Alert user
