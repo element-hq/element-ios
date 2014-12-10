@@ -147,10 +147,10 @@ static MatrixHandler *sharedHandler = nil;
                 // Consider only events related to user's presence
                 if (event.eventType == MXEventTypePresence) {
                     // Update local storage
-                    if (![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
+                    if (event.content[@"displayname"] && ![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
                         self.userDisplayName = event.content[@"displayname"];
                     }
-                    if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
+                    if (event.content[@"avatar_url"] && ![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
                         self.userPictureURL = event.content[@"avatar_url"];
                     }
                     // Check presence
