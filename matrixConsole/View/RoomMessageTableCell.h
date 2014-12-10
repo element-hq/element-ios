@@ -36,8 +36,6 @@
 @end
 
 @interface OutgoingMessageTableCell : RoomMessageTableCell
-@property (weak, nonatomic) IBOutlet UIView *unsentLabelContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *unsentLabelContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
