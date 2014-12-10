@@ -144,31 +144,34 @@ static MatrixHandler *sharedHandler = nil;
             
             // Register listener to update user's information
             userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
-                // Update local storage
-                if (![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
-                    self.userDisplayName = event.content[@"displayname"];
-                }
-                if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
-                    self.userPictureURL = event.content[@"avatar_url"];
-                }
-                // Check presence
-                MXPresence presence = [MXTools presence:event.content[@"presence"]];
-                if (self.userPresence != presence) {
-                    // Handle user presence on multiple devices (keep the more pertinent)
-                    if (self.userPresence == MXPresenceOnline) {
-                        if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
-                            // Force the local presence to overwrite the user presence on server side
-                            [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
-                            return;
-                        }
-                    } else if (self.userPresence == MXPresenceUnavailable) {
-                        if (presence == MXPresenceOffline) {
-                            // Force the local presence to overwrite the user presence on server side
-                            [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
-                            return;
-                        }
+                // Consider only events related to user's presence
+                if (event.eventType == MXEventTypePresence) {
+                    // Update local storage
+                    if (![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
+                        self.userDisplayName = event.content[@"displayname"];
                     }
-                    self.userPresence = presence;
+                    if (![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
+                        self.userPictureURL = event.content[@"avatar_url"];
+                    }
+                    // Check presence
+                    MXPresence presence = [MXTools presence:event.content[@"presence"]];
+                    if (self.userPresence != presence) {
+                        // Handle user presence on multiple devices (keep the more pertinent)
+                        if (self.userPresence == MXPresenceOnline) {
+                            if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
+                                // Force the local presence to overwrite the user presence on server side
+                                [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                                return;
+                            }
+                        } else if (self.userPresence == MXPresenceUnavailable) {
+                            if (presence == MXPresenceOffline) {
+                                // Force the local presence to overwrite the user presence on server side
+                                [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                                return;
+                            }
+                        }
+                        self.userPresence = presence;
+                    }
                 }
             }];
             
