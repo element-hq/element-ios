@@ -301,10 +301,12 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)forceInitialSync {
-    [self closeSession];
-    notifyOpenSessionFailure = NO;
-    if (self.accessToken) {
-        [self openSession];
+    if (self.isInitialSyncDone) {
+        [self closeSession];
+        notifyOpenSessionFailure = NO;
+        if (self.accessToken) {
+            [self openSession];
+        }
     }
 }
 
