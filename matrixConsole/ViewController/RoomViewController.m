@@ -400,11 +400,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             
             if (shouldScrollToBottom) {
-                // Delay the scrolling.
-                // If there is a bunch of incoming events, scroll once for all of them
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self scrollToBottomAnimated:YES];
-                });
+                [self scrollToBottomAnimated:YES];
             }
         }];
         
@@ -420,12 +416,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-    // Scroll table view to the bottom
-    NSInteger rowNb = messages.count;
-    // Check whether there is some data and whether the table has already been loaded
-    if (rowNb && self.messagesTableView.contentSize.height) {
-        [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
-    }
+    // Delay the scrolling to handle correctly bunch of added events
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Scroll table view to the bottom
+        NSInteger rowNb = messages.count;
+        // Check whether there is some data and whether the table has already been loaded
+        if (rowNb && self.messagesTableView.contentSize.height) {
+            [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+        }
+    });
 }
 
 - (void)triggerBackPagination {
