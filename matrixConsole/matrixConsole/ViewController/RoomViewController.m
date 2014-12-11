@@ -70,6 +70,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     CustomImageView *highResImage;
     NSString *AVAudioSessionCategory;
     MPMoviePlayerController *videoPlayer;
+    MPMoviePlayerController *tmpVideoPlayer;
     
     // Date formatter (nil if dateTime info is hidden)
     NSDateFormatter *dateFormatter;
@@ -773,6 +774,116 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [[AppDelegate theDelegate] showErrorAsAlert:mediaPlayerError];
         }
     }
+}
+
+- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification {
+    // Finalize video attachment
+    UIImage* videoThumbnail = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
+    NSURL* selectedVideo = [tmpVideoPlayer contentURL];
+    [tmpVideoPlayer stop];
+    tmpVideoPlayer = nil;
+    
+    if (videoThumbnail && selectedVideo) {
+        // Prepare video thumbnail description
+        NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
+        UIImage *thumbnail = [MediaManager resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
+        NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
+        [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
+        [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.width] forKey:@"w"];
+        [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.height] forKey:@"h"];
+        NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.9);
+        [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
+        
+        // Create the local event displayed during uploading
+        MXEvent *localEvent = [self addLocalEventForAttachedImage:thumbnail];
+        
+        // Upload thumbnail
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxRestClient uploadContent:thumbnailData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
+            // Prepare content of attached video
+            NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
+            [videoContent setValue:@"m.video" forKey:@"msgtype"];
+            [videoInfo setValue:url forKey:@"thumbnail_url"];
+            [videoInfo setValue:thumbnailInfo forKey:@"thumbnail_info"];
+            
+            // Convert video container to mp4
+            AVURLAsset* videoAsset = [AVURLAsset URLAssetWithURL:selectedVideo options:nil];
+            AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:videoAsset presetName:AVAssetExportPresetMediumQuality];
+            // Set output URL
+            NSString * outputFileName = [NSString stringWithFormat:@"%.0f.mp4",[[NSDate date] timeIntervalSince1970]];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+            NSString *cacheRoot = [paths objectAtIndex:0];
+            NSURL *tmpVideoLocation = [NSURL fileURLWithPath:[cacheRoot stringByAppendingPathComponent:outputFileName]];
+            exportSession.outputURL = tmpVideoLocation;
+            // Check supported output file type
+            NSArray *supportedFileTypes = exportSession.supportedFileTypes;
+            if ([supportedFileTypes containsObject:AVFileTypeMPEG4]) {
+                exportSession.outputFileType = AVFileTypeMPEG4;
+                [videoInfo setValue:@"video/mp4" forKey:@"mimetype"];
+            } else {
+                NSLog(@"Unexpected case: MPEG-4 file format is not supported");
+                // we send QuickTime movie file by default
+                exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+                [videoInfo setValue:@"video/quicktime" forKey:@"mimetype"];
+            }
+            // Export video file and send it
+            [exportSession exportAsynchronouslyWithCompletionHandler:^{
+                // Check status
+                if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
+                    AVURLAsset* asset = [AVURLAsset URLAssetWithURL:tmpVideoLocation
+                                                            options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                     [NSNumber numberWithBool:YES],
+                                                                     AVURLAssetPreferPreciseDurationAndTimingKey,
+                                                                     nil]
+                                         ];
+                    
+                    [videoInfo setValue:[NSNumber numberWithDouble:(1000 * CMTimeGetSeconds(asset.duration))] forKey:@"duration"];
+                    NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+                    if (videoTracks.count > 0) {
+                        AVAssetTrack *videoTrack = [videoTracks objectAtIndex:0];
+                        CGSize videoSize = videoTrack.naturalSize;
+                        [videoInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.width] forKey:@"w"];
+                        [videoInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.height] forKey:@"h"];
+                    }
+                    
+                    // Upload the video
+                    NSData *videoData = [NSData dataWithContentsOfURL:tmpVideoLocation];
+                    [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
+                    if (videoData) {
+                        if (videoData.length < ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE) {
+                            [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
+                            [mxHandler.mxRestClient uploadContent:videoData mimeType:videoInfo[@"mimetype"] timeout:30 success:^(NSString *url) {
+                                [videoContent setValue:url forKey:@"url"];
+                                [videoContent setValue:videoInfo forKey:@"info"];
+                                [videoContent setValue:@"Video" forKey:@"body"];
+                                [self postMessage:videoContent withLocalEvent:localEvent];
+                            } failure:^(NSError *error) {
+                                [self handleError:error forLocalEvent:localEvent];
+                            }];
+                        } else {
+                            NSLog(@"Video is too large");
+                            [self handleError:nil forLocalEvent:localEvent];
+                        }
+                    } else {
+                        NSLog(@"Attach video failed: no data");
+                        [self handleError:nil forLocalEvent:localEvent];
+                    }
+                }
+                else {
+                    NSLog(@"Video export failed: %d", (int)[exportSession status]);
+                    // remove tmp file (if any)
+                    [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
+                    [self handleError:nil forLocalEvent:localEvent];
+                }
+            }];
+        } failure:^(NSError *error) {
+            NSLog(@"Video thumbnail upload failed");
+            [self handleError:error forLocalEvent:localEvent];
+        }];
+    }
+    
+    [self dismissMediaPicker];
 }
 
 #pragma mark - Keyboard handling
@@ -1829,115 +1940,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     } else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
-        if (selectedVideo) {
+        // Check the selected video, and ignore multiple calls (observed when user pressed several time Choose button)
+        if (selectedVideo && !tmpVideoPlayer) {
             // Create video thumbnail
-            MPMoviePlayerController* moviePlayerController = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideo];
-            if (moviePlayerController) {
-                [moviePlayerController setShouldAutoplay:NO];
-                // TODO requestThumbnailImagesAtTimes
-                UIImage* videoThumbnail = [moviePlayerController thumbnailImageAtTime:(NSTimeInterval)1 timeOption:MPMovieTimeOptionNearestKeyFrame];
-                [moviePlayerController stop];
-                moviePlayerController = nil;
-                
-                if (videoThumbnail) {
-                    // Prepare video thumbnail description
-                    NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
-                    UIImage *thumbnail = [MediaManager resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
-                    NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
-                    [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
-                    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.width] forKey:@"w"];
-                    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.height] forKey:@"h"];
-                    NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.9);
-                    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
-                    
-                    // Create the local event displayed during uploading
-                    MXEvent *localEvent = [self addLocalEventForAttachedImage:thumbnail];
-                    
-                    // Upload thumbnail
-                    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                    [mxHandler.mxRestClient uploadContent:thumbnailData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
-                        // Prepare content of attached video
-                        NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
-                        NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
-                        [videoContent setValue:@"m.video" forKey:@"msgtype"];
-                        [videoInfo setValue:url forKey:@"thumbnail_url"];
-                        [videoInfo setValue:thumbnailInfo forKey:@"thumbnail_info"];
-                        
-                        // Convert video container to mp4
-                        AVURLAsset* videoAsset = [AVURLAsset URLAssetWithURL:selectedVideo options:nil];
-                        AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:videoAsset presetName:AVAssetExportPresetMediumQuality];
-                        // Set output URL
-                        NSString * outputFileName = [NSString stringWithFormat:@"%.0f.mp4",[[NSDate date] timeIntervalSince1970]];
-                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-                        NSString *cacheRoot = [paths objectAtIndex:0];
-                        NSURL *tmpVideoLocation = [NSURL fileURLWithPath:[cacheRoot stringByAppendingPathComponent:outputFileName]];
-                        exportSession.outputURL = tmpVideoLocation;
-                        // Check supported output file type
-                        NSArray *supportedFileTypes = exportSession.supportedFileTypes;
-                        if ([supportedFileTypes containsObject:AVFileTypeMPEG4]) {
-                            exportSession.outputFileType = AVFileTypeMPEG4;
-                            [videoInfo setValue:@"video/mp4" forKey:@"mimetype"];
-                        } else {
-                            NSLog(@"Unexpected case: MPEG-4 file format is not supported");
-                            // we send QuickTime movie file by default
-                            exportSession.outputFileType = AVFileTypeQuickTimeMovie;
-                            [videoInfo setValue:@"video/quicktime" forKey:@"mimetype"];
-                        }
-                        // Export video file and send it
-                        [exportSession exportAsynchronouslyWithCompletionHandler:^{
-                            // Check status
-                            if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
-                                AVURLAsset* asset = [AVURLAsset URLAssetWithURL:tmpVideoLocation
-                                                                        options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                                 [NSNumber numberWithBool:YES],
-                                                                                 AVURLAssetPreferPreciseDurationAndTimingKey,
-                                                                                 nil]
-                                                     ];
-                                
-                                [videoInfo setValue:[NSNumber numberWithDouble:(1000 * CMTimeGetSeconds(asset.duration))] forKey:@"duration"];
-                                NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-                                if (videoTracks.count > 0) {
-                                    AVAssetTrack *videoTrack = [videoTracks objectAtIndex:0];
-                                    CGSize videoSize = videoTrack.naturalSize;
-                                    [videoInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.width] forKey:@"w"];
-                                    [videoInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)videoSize.height] forKey:@"h"];
-                                }
-                                
-                                // Upload the video
-                                NSData *videoData = [NSData dataWithContentsOfURL:tmpVideoLocation];
-                                [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
-                                if (videoData) {
-                                    if (videoData.length < ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE) {
-                                        [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
-                                        [mxHandler.mxRestClient uploadContent:videoData mimeType:videoInfo[@"mimetype"] timeout:30 success:^(NSString *url) {
-                                            [videoContent setValue:url forKey:@"url"];
-                                            [videoContent setValue:videoInfo forKey:@"info"];
-                                            [videoContent setValue:@"Video" forKey:@"body"];
-                                            [self postMessage:videoContent withLocalEvent:localEvent];
-                                        } failure:^(NSError *error) {
-                                            [self handleError:error forLocalEvent:localEvent];
-                                        }];
-                                    } else {
-                                        NSLog(@"Video is too large");
-                                        [self handleError:nil forLocalEvent:localEvent];
-                                    }
-                                } else {
-                                    NSLog(@"Attach video failed: no data");
-                                    [self handleError:nil forLocalEvent:localEvent];
-                                }
-                            }
-                            else {
-                                NSLog(@"Video export failed: %d", (int)[exportSession status]);
-                                // remove tmp file (if any)
-                                [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
-                                [self handleError:nil forLocalEvent:localEvent];
-                            }
-                        }];
-                    } failure:^(NSError *error) {
-                        NSLog(@"Video thumbnail upload failed");
-                        [self handleError:error forLocalEvent:localEvent];
-                    }];
-                }
+            tmpVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideo];
+            if (tmpVideoPlayer) {
+                [tmpVideoPlayer setShouldAutoplay:NO];
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
+                                                             name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
+                                                           object:nil];
+                [tmpVideoPlayer requestThumbnailImagesAtTimes:@[@1.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
+                // We will finalize video attachment when thumbnail will be available (see movie player callback)
+                return;
             }
         }
     }
