@@ -70,8 +70,8 @@ NSString *const kFailedEventId = @"failedEventId";
 - (BOOL)containsBingWord {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     NSString *pattern = nil;
-    if (mxHandler.userDisplayName.length) {
-        pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.userDisplayName];
+    if (mxHandler.mxSession.myUser.displayname.length) {
+        pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.mxSession.myUser.displayname];
     }
     if (mxHandler.localPartFromUserId.length) {
         if (pattern) {

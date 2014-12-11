@@ -44,7 +44,6 @@ static MatrixHandler *sharedHandler = nil;
 @implementation MatrixHandler
 
 @synthesize homeServerURL, homeServer, userLogin, userId, accessToken;
-@synthesize userDisplayName, userPictureURL;
 
 + (MatrixHandler *)sharedHandler {
     @synchronized(self) {
@@ -73,10 +72,6 @@ static MatrixHandler *sharedHandler = nil;
                 [self openSession];
             }
         }
-        // The app will look for user's display name in incoming messages, it must not be nil.
-        if (self.userDisplayName == nil) {
-            self.userDisplayName = @"";
-        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
@@ -90,23 +85,6 @@ static MatrixHandler *sharedHandler = nil;
     
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
-        // Request user's display name
-        [self.mxRestClient displayNameForUser:self.userId success:^(NSString *displayname) {
-            self.userDisplayName = displayname;
-        } failure:^(NSError *error) {
-            NSLog(@"Get displayName failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-        // Request user's avatar
-        [self.mxRestClient avatarUrlForUser:self.userId success:^(NSString *avatar_url) {
-            self.userPictureURL = avatar_url;
-        } failure:^(NSError *error) {
-            NSLog(@"Get picture url failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-
         // Use MXMemoryStore as MXStore to not loose message
         MXMemoryStore *store = [[MXMemoryStore alloc] init];
         
@@ -146,14 +124,6 @@ static MatrixHandler *sharedHandler = nil;
             userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
                 // Consider only events related to user's presence
                 if (event.eventType == MXEventTypePresence) {
-                    // Update local storage
-                    if (event.content[@"displayname"] && ![self.userDisplayName isEqualToString:event.content[@"displayname"]]) {
-                        self.userDisplayName = event.content[@"displayname"];
-                    }
-                    if (event.content[@"avatar_url"] && ![self.userPictureURL isEqualToString:event.content[@"avatar_url"]]) {
-                        self.userPictureURL = event.content[@"avatar_url"];
-                    }
-                    // Check presence
                     MXPresence presence = [MXTools presence:event.content[@"presence"]];
                     if (self.userPresence != presence) {
                         // Handle user presence on multiple devices (keep the more pertinent)
@@ -294,10 +264,6 @@ static MatrixHandler *sharedHandler = nil;
     // Reset access token (mxSession is closed by setter)
     self.accessToken = nil;
     self.userId = nil;
-    
-    // Reset local storage of user's settings
-    self.userDisplayName = @"";
-    self.userPictureURL = nil;
 }
 
 - (void)forceInitialSync {
@@ -454,33 +420,6 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 #pragma mark - Matrix user's settings
-
-- (NSString *)userDisplayName {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"userdisplayname"];
-}
-
-- (void)setUserDisplayName:(NSString *)inUserDisplayName {
-    if ([inUserDisplayName isEqual:[NSNull null]] == NO && inUserDisplayName.length) {
-        [[NSUserDefaults standardUserDefaults] setObject:inUserDisplayName forKey:@"userdisplayname"];
-    } else {
-        // the app will look for this display name in incoming messages, it must not be nil.
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"userdisplayname"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (NSString *)userPictureURL {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"userpictureurl"];
-}
-
-- (void)setUserPictureURL:(NSString *)inUserPictureURL {
-    if ([inUserPictureURL isEqual:[NSNull null]] == NO && inUserPictureURL.length) {
-        [[NSUserDefaults standardUserDefaults] setObject:inUserPictureURL forKey:@"userpictureurl"];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userpictureurl"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
 - (void)setUserPresence:(MXPresence)userPresence andStatusMessage:(NSString *)statusMessage completion:(void (^)(void))completion {
     self.userPresence = userPresence;

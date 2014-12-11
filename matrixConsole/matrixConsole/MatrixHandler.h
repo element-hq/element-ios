@@ -34,8 +34,6 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (strong, nonatomic) NSArray *eventsFilterForMessages;
 
 // Matrix user's settings
-@property (strong, nonatomic) NSString *userDisplayName;
-@property (strong, nonatomic) NSString *userPictureURL;
 @property (nonatomic) MXPresence userPresence;
 
 @property (nonatomic,readonly) BOOL isLogged;
