@@ -1614,7 +1614,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         // Send message to the room
-        [[[MatrixHandler sharedHandler] mxRestClient] postMessageToRoom:self.roomId msgType:msgType content:localEvent.content success:^(NSString *event_id) {
+        [self.mxRoom postMessageOfType:msgType content:localEvent.content success:^(NSString *event_id) {
             // Check whether this event has already been received from events listener
             BOOL isEventAlreadyAddedToRoom = NO;
             NSUInteger index = messages.count;
