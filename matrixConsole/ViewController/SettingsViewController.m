@@ -38,6 +38,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSString *currentPictureURL;
     NSString *uploadedPictureURL;
     
+    // Listen user's settings change
+    id userUpdateListener;
+    
     NSMutableArray *errorAlerts;
     
     UIButton *logoutBtn;
@@ -71,8 +74,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutBtn];
     
     errorAlerts = [NSMutableArray array];
-    
-    [self startViewConfiguration];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,19 +88,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)dealloc {
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userDisplayName"];
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"userPictureURL"];
+    [self reset];
     
-    // Cancel picture loader (if any)
-    if (imageLoader) {
-        [MediaManager cancel:imageLoader];
-        imageLoader = nil;
-    }
-    
-    // Cancel potential error alerts
-    for (CustomAlert *alert in errorAlerts){
-        [alert dismiss:NO];
-    }
     errorAlerts = nil;
     
     logoutBtn = nil;
@@ -106,16 +97,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     allEventsSwitch = nil;
     unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    // Refresh displayed settings
-    [self.tableView reloadData];
+    
+    // Refresh display
+    [self configureView];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
 }
 
 #pragma mark - Internal methods
@@ -132,6 +127,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [alert dismiss:NO];
     }
     
+    // Remove listener
+    if (userUpdateListener) {
+        [[MatrixHandler sharedHandler].mxSession.myUser removeListener:userUpdateListener];
+        userUpdateListener = nil;
+    }
+    
     currentPictureURL = nil;
     uploadedPictureURL = nil;
     UIImage *image = [UIImage imageNamed:@"default-profile"];
@@ -142,51 +143,42 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     self.userDisplayName.text = nil;
 }
 
-- (void)startViewConfiguration {
-    // Initialize
-    [self reset];
-    
-    // Set current user's information and add observers
+- (void)configureView {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
     [_activityIndicator startAnimating];
     // Disable user's interactions
     _userPicture.enabled = NO;
     _userDisplayName.enabled = NO;
     
-    // Set user's display name
-    currentDisplayName = mxHandler.userDisplayName;
-    self.userDisplayName.text = mxHandler.userDisplayName;
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userDisplayName" options:0 context:nil];
-    [mxHandler.mxRestClient displayNameForUser:mxHandler.userId success:^(NSString *displayname) {
-        mxHandler.userDisplayName = displayname;
-        
-        // Set user's picture url
-        [self updateUserPicture:mxHandler.userPictureURL];
-        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"userPictureURL" options:0 context:nil];
-        [mxHandler.mxRestClient avatarUrlForUser:mxHandler.userId success:^(NSString *avatar_url) {
-            mxHandler.userPictureURL = avatar_url;
-            [self endViewConfiguration];
+    if ([mxHandler isInitialSyncDone]) {
+        if (!userUpdateListener) {
+            // Set current user's information and add observers
+            [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
+            currentDisplayName = mxHandler.mxSession.myUser.displayname;
+            self.userDisplayName.text = currentDisplayName;
             
-        } failure:^(NSError *error) {
-            NSLog(@"Get picture url failed: %@", error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-            [self endViewConfiguration];
-        }];
-    } failure:^(NSError *error) {
-        NSLog(@"Get displayName failed: %@", error);
-        //Alert user
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
-        [self endViewConfiguration];
-    }];
-}
-
-- (void)endViewConfiguration {
-    [_activityIndicator stopAnimating];
+            // Register listener to update user's information
+            userUpdateListener = [mxHandler.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
+                // Update displayName
+                if (![currentDisplayName isEqualToString:mxHandler.mxSession.myUser.displayname]) {
+                    currentDisplayName = mxHandler.mxSession.myUser.displayname;
+                    self.userDisplayName.text = mxHandler.mxSession.myUser.displayname;
+                }
+                // Update user's avatar
+                [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
+                // TODO display user's presence
+            }];
+        }
+    } else {
+        [self reset];
+    }
     
-    _userPicture.enabled = YES;
-    _userDisplayName.enabled = YES;
-    
+    if ([mxHandler isResumeDone]) {
+        [_activityIndicator stopAnimating];
+        _userPicture.enabled = YES;
+        _userDisplayName.enabled = YES;
+    }
     [self.tableView reloadData];
 }
 
@@ -199,9 +191,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         _userDisplayName.enabled = NO;
 
          MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [mxHandler.mxRestClient setDisplayName:displayname success:^{
+        [mxHandler.mxSession.myUser setDisplayName:displayname success:^{
             currentDisplayName = displayname;
-            
             [_activityIndicator stopAnimating];
             _userDisplayName.enabled = YES;
         } failure:^(NSError *error) {
@@ -255,11 +246,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                           [self handleErrorDuringPictureSaving:error];
                                       }];
     } else {
-        [mxHandler.mxRestClient setAvatarUrl:uploadedPictureURL
+        [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
                                      success:^{
-                                         [MatrixHandler sharedHandler].userPictureURL = uploadedPictureURL;
+                                         [self updateUserPicture:uploadedPictureURL];
                                          uploadedPictureURL = nil;
-                                         
                                          [_activityIndicator stopAnimating];
                                          _userPicture.enabled = YES;
                                      } failure:^(NSError *error) {
@@ -284,7 +274,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [errorAlerts removeObject:alert];
         // Remove change
         uploadedPictureURL = nil;
-        [self updateUserPicture:[MatrixHandler sharedHandler].userPictureURL];
+        [self updateUserPicture:[MatrixHandler sharedHandler].mxSession.myUser.avatarUrl];
     }];
     [alert addActionWithTitle:@"Retry" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
         [errorAlerts removeObject:alert];
@@ -324,17 +314,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"userDisplayName" isEqualToString:keyPath]) {
-        // Refresh user's display name
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        if ([currentDisplayName isEqualToString:mxHandler.userDisplayName] == NO) {
-            currentDisplayName = mxHandler.userDisplayName;
-            self.userDisplayName.text = mxHandler.userDisplayName;
+    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configureView];
+        });
+    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
+        if ([[MatrixHandler sharedHandler] isResumeDone]) {
+            [_activityIndicator stopAnimating];
+            _userPicture.enabled = YES;
+            _userDisplayName.enabled = YES;
+        } else {
+            [_activityIndicator startAnimating];
+            _userPicture.enabled = NO;
+            _userDisplayName.enabled = NO;
         }
-    } else if ([@"userPictureURL" isEqualToString:keyPath]) {
-        // Refresh user's picture
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [self updateUserPicture:mxHandler.userPictureURL];
     }
 }
 
@@ -351,7 +344,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         mediaPicker.allowsEditing = NO;
         [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
     } else if (sender == logoutBtn) {
-        [self reset];
         [[AppDelegate theDelegate] logout];
     } else if (sender == notificationsSwitch) {
         [AppSettings sharedSettings].enableNotifications = notificationsSwitch.on;
