@@ -51,8 +51,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @interface RoomViewController () {
     BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
-    
-    MXRoom *mxRoom;
 
     // Messages
     NSMutableArray *messages;
@@ -91,6 +89,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 
+@property (strong, nonatomic) MXRoom *mxRoom;
 @property (strong, nonatomic) CustomAlert *actionMenu;
 @end
 
@@ -133,13 +132,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     messages = nil;
     if (messagesListener) {
-        [mxRoom removeListener:messagesListener];
+        [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
         [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
-    mxRoom = nil;
+    self.mxRoom = nil;
     
     members = nil;
     if (membersListener) {
@@ -249,8 +248,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Remove potential listener
-    if (messagesListener && mxRoom) {
-        [mxRoom removeListener:messagesListener];
+    if (messagesListener && self.mxRoom) {
+        [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
@@ -263,19 +262,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Update room data
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    mxRoom = nil;
+    self.mxRoom = nil;
     if (self.roomId) {
-        mxRoom = [mxHandler.mxSession roomWithRoomId:self.roomId];
+        self.mxRoom = [mxHandler.mxSession roomWithRoomId:self.roomId];
     }
-    if (mxRoom) {
+    if (self.mxRoom) {
         // Update room title
-        self.roomNameTextField.text = mxRoom.state.displayname;
+        self.roomNameTextField.text = self.mxRoom.state.displayname;
         
         // Check first whether we have to join the room
-        if (mxRoom.state.membership == MXMembershipInvite) {
+        if (self.mxRoom.state.membership == MXMembershipInvite) {
             isJoinRequestInProgress = YES;
             [self startActivityIndicator];
-            [mxRoom join:^{
+            [self.mxRoom join:^{
                 [self stopActivityIndicator];
                 isJoinRequestInProgress = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -284,7 +283,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
                 isJoinRequestInProgress = NO;
-                NSLog(@"Failed to join room (%@): %@", mxRoom.state.displayname, error);
+                NSLog(@"Failed to join room (%@): %@", self.mxRoom.state.displayname, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -299,13 +298,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"displayAllEvents" options:0 context:nil];
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
-        messagesListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+        messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             BOOL shouldScrollToBottom = NO;
             
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
                 // Check user's membership in live room state (Indeed we have to go back on recents when user leaves, or is kicked/banned)
-                if (mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
+                if (self.mxRoom.state.membership == MXMembershipLeave || self.mxRoom.state.membership == MXMembershipBan) {
                     [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
                     return;
                 }
@@ -408,7 +407,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }];
         
         // Trigger a back pagination by reseting first backState to get room history from live
-        [mxRoom resetBackState];
+        [self.mxRoom resetBackState];
         [self triggerBackPagination];
     } else {
         // Update room title
@@ -436,7 +435,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
-    if (mxRoom.canPaginate) {
+    if (self.mxRoom.canPaginate) {
         [self startActivityIndicator];
         isBackPaginationInProgress = YES;
         backPaginationAddedMsgNb = 0;
@@ -446,7 +445,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)paginateBackMessages:(NSUInteger)requestedItemsNb {
-    [mxRoom paginateBackMessages:requestedItemsNb complete:^{
+    [self.mxRoom paginateBackMessages:requestedItemsNb complete:^{
         // Sanity check: check whether the view controller has not been released while back pagination was running
         if (self.roomId == nil) {
             return;
@@ -458,7 +457,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             itemsCount += message.components.count;
         }
         // Check whether we got enough items
-        if (itemsCount < requestedItemsNb && mxRoom.canPaginate) {
+        if (itemsCount < requestedItemsNb && self.mxRoom.canPaginate) {
             // Ask more items
             [self paginateBackMessages:(requestedItemsNb - itemsCount)];
         } else {
@@ -550,7 +549,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)updateRoomMembers {
-     members = [[mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
+     members = [[self.mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
          // Move banned and left members at the end of the list
          if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
              if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
@@ -592,14 +591,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                  } else if (user2.presence == MXPresenceOffline) {
                      return NSOrderedDescending;
                  }
-                 return [[mxRoom.state memberName:member1.userId] compare:[mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+                 return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
              }
              
              // Consider user's lastActive ago value
              if (user1.lastActiveAgo < user2.lastActiveAgo) {
                  return NSOrderedAscending;
              } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
-                 return [[mxRoom.state memberName:member1.userId] compare:[mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+                 return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
              }
              return NSOrderedDescending;
          } else {
@@ -612,7 +611,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                  return NSOrderedDescending;
              }
              
-             return [[mxRoom.state memberName:member1.userId] compare:[mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+             return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
          }
      }];
 }
@@ -990,7 +989,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (tableView == self.membersTableView) {
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
-            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:mxRoom];
+            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:self.mxRoom];
         }
         return memberCell;
     }
@@ -1241,7 +1240,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } else {
             // Check user's power level before allowing an action (kick, ban, ...)
-            MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
             NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
             NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
             // Consider membership of the selected member
@@ -1254,16 +1253,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
-                                [[MatrixHandler sharedHandler].mxRestClient kickUser:roomMember.userId
-                                                                            fromRoom:weakSelf.roomId
-                                                                              reason:nil
-                                                                             success:^{
-                                                                             }
-                                                                             failure:^(NSError *error) {
-                                                                                 NSLog(@"Kick %@ failed: %@", roomMember.userId, error);
-                                                                                 //Alert user
-                                                                                 [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                             }];
+                                [weakSelf.mxRoom kickUser:roomMember.userId
+                                                   reason:nil
+                                                  success:^{
+                                                  }
+                                                  failure:^(NSError *error) {
+                                                      NSLog(@"Kick %@ failed: %@", roomMember.userId, error);
+                                                      //Alert user
+                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                  }];
                             }
                         }];
                     }
@@ -1275,16 +1273,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
-                                [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
-                                                                             inRoom:weakSelf.roomId
-                                                                             reason:nil
-                                                                            success:^{
-                                                                            }
-                                                                            failure:^(NSError *error) {
-                                                                                NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
-                                                                                //Alert user
-                                                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                            }];
+                                [weakSelf.mxRoom banUser:roomMember.userId
+                                                  reason:nil
+                                                 success:^{
+                                                 }
+                                                 failure:^(NSError *error) {
+                                                     NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
+                                                     //Alert user
+                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                 }];
                             }
                         }];
                     }
@@ -1297,15 +1294,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
-                                [[MatrixHandler sharedHandler].mxRestClient inviteUser:roomMember.userId
-                                                                                toRoom:weakSelf.roomId
-                                                                               success:^{
-                                                                               }
-                                                                               failure:^(NSError *error) {
-                                                                                   NSLog(@"Invite %@ failed: %@", roomMember.userId, error);
-                                                                                   //Alert user
-                                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                               }];
+                                [weakSelf.mxRoom inviteUser:roomMember.userId
+                                                    success:^{
+                                                    }
+                                                    failure:^(NSError *error) {
+                                                        NSLog(@"Invite %@ failed: %@", roomMember.userId, error);
+                                                        //Alert user
+                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                    }];
                             }
                         }];
                     }
@@ -1317,16 +1313,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
-                                [[MatrixHandler sharedHandler].mxRestClient banUser:roomMember.userId
-                                                                             inRoom:weakSelf.roomId
-                                                                             reason:nil
-                                                                            success:^{
-                                                                            }
-                                                                            failure:^(NSError *error) {
-                                                                                NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
-                                                                                //Alert user
-                                                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                            }];
+                                [weakSelf.mxRoom banUser:roomMember.userId
+                                                  reason:nil
+                                                 success:^{
+                                                 }
+                                                 failure:^(NSError *error) {
+                                                     NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
+                                                     //Alert user
+                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                 }];
                             }
                         }];
                     }
@@ -1339,15 +1334,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
-                                [[MatrixHandler sharedHandler].mxRestClient unbanUser:roomMember.userId
-                                                                               inRoom:weakSelf.roomId
-                                                                              success:^{
-                                                                              }
-                                                                              failure:^(NSError *error) {
-                                                                                  NSLog(@"Unban %@ failed: %@", roomMember.userId, error);
-                                                                                  //Alert user
-                                                                                  [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                              }];
+                                [weakSelf.mxRoom unbanUser:roomMember.userId
+                                                   success:^{
+                                                   }
+                                                   failure:^(NSError *error) {
+                                                       NSLog(@"Unban %@ failed: %@", roomMember.userId, error);
+                                                       //Alert user
+                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                   }];
                             }
                         }];
                     }
@@ -1410,7 +1404,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if (textField == self.roomNameTextField) {
         // Check whether the user has enough power to rename the room
-        MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomName]) {
             self.roomNameTextField.borderStyle = UITextBorderStyleRoundedRect;
@@ -1439,7 +1433,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.roomNameTextField.backgroundColor = [UIColor clearColor];
         
         NSString *roomName = self.roomNameTextField.text;
-        if ([roomName isEqualToString:mxRoom.state.name] == NO) {
+        if ([roomName isEqualToString:self.mxRoom.state.name] == NO) {
             [self startActivityIndicator];
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             [mxHandler.mxRestClient setRoomName:self.roomId name:roomName success:^{
@@ -1447,7 +1441,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
                 // Revert change
-                self.roomNameTextField.text = mxRoom.state.displayname;
+                self.roomNameTextField.text = self.mxRoom.state.displayname;
                 NSLog(@"Rename room failed: %@", error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -1522,7 +1516,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     NSString *userId = textField.text;
                     weakSelf.actionMenu = nil;
                     if (userId.length) {
-                        [[MatrixHandler sharedHandler].mxRestClient inviteUser:userId toRoom:weakSelf.roomId success:^{
+                        [weakSelf.mxRoom inviteUser:userId success:^{
                             
                         } failure:^(NSError *error) {
                             NSLog(@"Invite %@ failed: %@", userId, error);
@@ -1575,13 +1569,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     localEvent.content = msgContent;
                     if (message.messageType == RoomMessageTypeText) {
                         [message removeEvent:localEvent.eventId];
-                        [message addEvent:localEvent withRoomState:mxRoom.state];
+                        [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         if (!message.attributedTextMessage.length) {
                             [messages removeObjectAtIndex:index];
                         }
                     } else {
                         // Create a new message
-                        message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                        message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                         if (message) {
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
@@ -1606,9 +1600,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             localEvent.originServerTs = kMXUndefinedTimestamp;
             // Check whether this new event may be grouped with last message
             RoomMessage *lastMessage = [messages lastObject];
-            if (lastMessage == nil || [lastMessage addEvent:localEvent withRoomState:mxRoom.state] == NO) {
+            if (lastMessage == nil || [lastMessage addEvent:localEvent withRoomState:self.mxRoom.state] == NO) {
                 // Create a new item
-                lastMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                lastMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                 if (lastMessage) {
                     [messages addObject:lastMessage];
                 } else {
@@ -1641,7 +1635,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         if (isEventAlreadyAddedToRoom == NO) {
                             // Update the temporary event with the actual event id
                             localEvent.eventId = event_id;
-                            [message addEvent:localEvent withRoomState:mxRoom.state];
+                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         }
                         if (! message.attributedTextMessage.length) {
                             [messages removeObjectAtIndex:index];
@@ -1651,7 +1645,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         if (isEventAlreadyAddedToRoom == NO) {
                             // Create a new message
                             localEvent.eventId = event_id;
-                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                         }
                         if (message) {
                             // Refresh table display
@@ -1710,7 +1704,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     mxEvent.userId = [MatrixHandler sharedHandler].userId;
     
     // Update table sources
-    RoomMessage *message = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:mxRoom.state];
+    RoomMessage *message = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:self.mxRoom.state];
     if (message) {
         [messages addObject:message];
     } else {
@@ -1737,14 +1731,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             if (message.messageType == RoomMessageTypeText) {
                 [message removeEvent:localEvent.eventId];
                 localEvent.eventId = kFailedEventId;
-                [message addEvent:localEvent withRoomState:mxRoom.state];
+                [message addEvent:localEvent withRoomState:self.mxRoom.state];
                 if (!message.attributedTextMessage.length) {
                     [messages removeObjectAtIndex:index];
                 }
             } else {
                 // Create a new message
                 localEvent.eventId = kFailedEventId;
-                message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:mxRoom.state];
+                message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                 if (message) {
                     // Refresh table display
                     [messages replaceObjectAtIndex:index withObject:message];
@@ -1831,8 +1825,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                 }
                 // Kick the user
-                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                [mxHandler.mxRestClient kickUser:userId fromRoom:self.roomId reason:reason success:^{
+                [self.mxRoom kickUser:userId reason:reason success:^{
                 } failure:^(NSError *error) {
                     NSLog(@"Kick user (%@) failed: %@", userId, error);
                     //Alert user
@@ -1854,8 +1847,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                 }
                 // Ban the user
-                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                [mxHandler.mxRestClient banUser:userId inRoom:self.roomId reason:reason success:^{
+                [self.mxRoom banUser:userId reason:reason success:^{
                 } failure:^(NSError *error) {
                     NSLog(@"Ban user (%@) failed: %@", userId, error);
                     //Alert user
@@ -1868,8 +1860,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         } else if ([cmd isEqualToString:kCmdUnbanUser]) {
             if (userId) {
                 // Unban the user
-                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                [mxHandler.mxRestClient unbanUser:userId inRoom:self.roomId success:^{
+                [self.mxRoom unbanUser:userId success:^{
                 } failure:^(NSError *error) {
                     NSLog(@"Unban user (%@) failed: %@", userId, error);
                     //Alert user
