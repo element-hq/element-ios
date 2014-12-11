@@ -270,11 +270,6 @@
             recentsListener = nil;
         }
     }
-    
-    // Hide the loading wheel on login screen
-    if ([mxHandler isLogged] == NO) {
-        [self stopActivityIndicator];
-    }
 }
 
 - (void)createNewRoom:(id)sender {
@@ -318,6 +313,10 @@
     if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
+            // Hide the activity indicator when Recents is not the current tab
+            if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX) {
+                [self stopActivityIndicator];
+            }
         });
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
         if ([[MatrixHandler sharedHandler] isResumeDone]) {
