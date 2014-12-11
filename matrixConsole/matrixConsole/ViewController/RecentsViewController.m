@@ -79,6 +79,8 @@
     [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     [dateFormatter setDateFormat:dateFormat];
+    
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
 }
 
 - (void)dealloc {
@@ -98,6 +100,7 @@
     if (dateFormatter) {
         dateFormatter = nil;
     }
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -110,7 +113,6 @@
     
     // Refresh display
     [self configureView];
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
 }
 
@@ -127,7 +129,6 @@
     [self stopActivityIndicator];
     
     _preSelectedRoomId = nil;
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
 }
 
@@ -186,7 +187,7 @@
     
     [self startActivityIndicator];
     
-    if ([mxHandler isInitialSyncDone] || [mxHandler isLogged] == NO) {
+    if ([mxHandler isInitialSyncDone]) {
         // Create/Update recents
         if (mxHandler.mxSession) {
             if (!recents) {
@@ -268,6 +269,11 @@
             [mxHandler.mxSession removeListener:recentsListener];
             recentsListener = nil;
         }
+    }
+    
+    // Hide the loading wheel on login screen
+    if ([mxHandler isLogged] == NO) {
+        [self stopActivityIndicator];
     }
 }
 
