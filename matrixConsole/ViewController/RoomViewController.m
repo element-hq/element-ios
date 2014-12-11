@@ -1435,13 +1435,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSString *roomName = self.roomNameTextField.text;
         if ([roomName isEqualToString:self.mxRoom.state.name] == NO) {
             [self startActivityIndicator];
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxRestClient setRoomName:self.roomId name:roomName success:^{
-                [self stopActivityIndicator];
+            __weak typeof(self) weakSelf = self;
+            [self.mxRoom setName:roomName success:^{
+                [weakSelf stopActivityIndicator];
             } failure:^(NSError *error) {
-                [self stopActivityIndicator];
+                [weakSelf stopActivityIndicator];
                 // Revert change
-                self.roomNameTextField.text = self.mxRoom.state.displayname;
+                weakSelf.roomNameTextField.text = weakSelf.mxRoom.state.displayname;
                 NSLog(@"Rename room failed: %@", error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
