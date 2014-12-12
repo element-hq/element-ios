@@ -17,7 +17,7 @@
 
 @interface AppSettings : NSObject
 
-@property (nonatomic) BOOL enableNotifications;
+@property (nonatomic) BOOL enableInAppNotifications;
 @property (nonatomic) BOOL displayAllEvents;
 @property (nonatomic) BOOL hideUnsupportedMessages;
 @property (nonatomic) BOOL sortMembersUsingLastSeenTime;

@@ -43,7 +43,7 @@ static AppSettings *sharedSettings = nil;
 }
 
 - (void)reset {
-    self.enableNotifications = NO;
+    self.enableInAppNotifications = NO;
     self.displayAllEvents = NO;
     self.hideUnsupportedMessages = NO;
     self.sortMembersUsingLastSeenTime = NO;
@@ -51,13 +51,13 @@ static AppSettings *sharedSettings = nil;
 
 #pragma mark -
 
-- (BOOL)enableNotifications {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"enableNotifications"];
+- (BOOL)enableInAppNotifications {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"enableInAppNotifications"];
 }
 
-- (void)setEnableNotifications:(BOOL)notifications {
-    [[MatrixHandler sharedHandler] enableEventsNotifications:notifications];
-    [[NSUserDefaults standardUserDefaults] setBool:notifications forKey:@"enableNotifications"];
+- (void)setEnableInAppNotifications:(BOOL)notifications {
+    [[MatrixHandler sharedHandler] enableInAppNotifications:notifications];
+    [[NSUserDefaults standardUserDefaults] setBool:notifications forKey:@"enableInAppNotifications"];
 }
 
 - (BOOL)displayAllEvents {

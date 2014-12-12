@@ -126,7 +126,6 @@
         apnsHandler.isActive = YES;
     }
     isAPNSRegistered = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {

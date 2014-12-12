@@ -49,7 +49,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 // Flush and restore Matrix data
 - (void)forceInitialSync;
 
-- (void)enableEventsNotifications:(BOOL)isEnabled;
+- (void)enableInAppNotifications:(BOOL)isEnabled;
 
 - (BOOL)isSupportedAttachment:(MXEvent*)event;
 - (BOOL)isEmote:(MXEvent*)event;
