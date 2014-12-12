@@ -146,8 +146,8 @@ static MatrixHandler *sharedHandler = nil;
             }];
             
             // Check whether the app user wants notifications on new events
-            if ([[AppSettings sharedSettings] enableNotifications]) {
-                [self enableEventsNotifications:YES];
+            if ([[AppSettings sharedSettings] enableInAppNotifications]) {
+                [self enableInAppNotifications:YES];
             }
         } failure:^(NSError *error) {
             NSLog(@"Initial Sync failed: %@", error);
@@ -276,7 +276,7 @@ static MatrixHandler *sharedHandler = nil;
     }
 }
 
-- (void)enableEventsNotifications:(BOOL)isEnabled {
+- (void)enableInAppNotifications:(BOOL)isEnabled {
     if (isEnabled) {
         // Register events listener
         eventsListener = [self.mxSession listenToEventsOfTypes:self.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {

@@ -18,6 +18,7 @@
 
 #import "AppDelegate.h"
 #import "AppSettings.h"
+#import "APNSHandler.h"
 #import "MatrixHandler.h"
 #import "MediaManager.h"
 
@@ -44,7 +45,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSMutableArray *errorAlerts;
     
     UIButton *logoutBtn;
-    UISwitch *notificationsSwitch;
+    UISwitch *apnsNotificationsSwitch;
+    UISwitch *inAppNotificationsSwitch;
     UISwitch *allEventsSwitch;
     UISwitch *unsupportedMsgSwitch;
     UISwitch *sortMembersSwitch;
@@ -93,7 +95,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     errorAlerts = nil;
     
     logoutBtn = nil;
-    notificationsSwitch = nil;
+    apnsNotificationsSwitch = nil;
+    inAppNotificationsSwitch = nil;
     allEventsSwitch = nil;
     unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
@@ -106,14 +109,22 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Refresh display
     [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 #pragma mark - Internal methods
+
+- (void)onAPNSHandlerHasBeenUpdated {
+    // Force table reload to update notifications section
+    apnsNotificationsSwitch = nil;
+    [self.tableView reloadData];
+}
 
 - (void)reset {
     // Cancel picture loader (if any)
@@ -345,8 +356,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
     } else if (sender == logoutBtn) {
         [[AppDelegate theDelegate] logout];
-    } else if (sender == notificationsSwitch) {
-        [AppSettings sharedSettings].enableNotifications = notificationsSwitch.on;
+    } else if (sender == apnsNotificationsSwitch) {
+        [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
+    } else if (sender == inAppNotificationsSwitch) {
+        [AppSettings sharedSettings].enableInAppNotifications = inAppNotificationsSwitch.on;
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
     } else if (sender == unsupportedMsgSwitch) {
@@ -383,6 +396,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+        if ([APNSHandler sharedHandler].isAvailable) {
+            return 2;
+        }
         return 1;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
         return 3;
@@ -418,17 +434,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     return 44;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 30;
 }
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 1;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UILabel *sectionHeader = [[UILabel alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
     sectionHeader.font = [UIFont boldSystemFontOfSize:16];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
@@ -452,9 +465,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         SettingsTableCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
-        notificationsCell.settingLabel.text = @"Enable notifications";
-        notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableNotifications];
-        notificationsSwitch = notificationsCell.settingSwitch;
+        if (indexPath.row == 0) {
+            notificationsCell.settingLabel.text = @"Enable In-App notifications";
+            notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
+            inAppNotificationsSwitch = notificationsCell.settingSwitch;
+        } else {
+            notificationsCell.settingLabel.text = @"Enable push notifications";
+            notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
+            apnsNotificationsSwitch = notificationsCell.settingSwitch;
+        }
         cell = notificationsCell;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];

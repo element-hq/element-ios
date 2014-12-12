@@ -69,6 +69,8 @@ static APNSHandler *sharedHandler = nil;
             self.isActive = YES;
         }
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 - (BOOL)isAvailable {
