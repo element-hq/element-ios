@@ -15,6 +15,7 @@
  */
 
 #import "AppDelegate.h"
+#import "APNSHandler.h"
 #import "AppSettings.h"
 #import "RoomViewController.h"
 #import "MatrixHandler.h"
@@ -53,6 +54,10 @@
             // Patch missing image in tabBarItem for iOS < 8.0
             recents.tabBarItem.image = [[UIImage imageNamed:@"tab_recents"] imageWithRenderingMode:UIImageRenderingModeAutomatic];
         }
+        
+        if ([[MatrixHandler sharedHandler] isLogged]) {
+            [self registerUserNotificationSettings];
+        }
     }
     return YES;
 }
@@ -88,9 +93,63 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - APNS methods
+
+- (void)registerUserNotificationSettings {
+    if (!isAPNSRegistered) {
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+            // Registration on iOS 8 and later
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+                                                                                                 |UIRemoteNotificationTypeSound
+                                                                                                 |UIRemoteNotificationTypeAlert) categories:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            
+        } else {
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
+        }
+    }
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    [application registerForRemoteNotifications];
+}
+
+- (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
+    NSLog(@"Got APNS token!");
+    
+    APNSHandler* apnsHandler = [APNSHandler sharedHandler];
+    [apnsHandler setDeviceToken:deviceToken];
+    
+    // force send the push token once per app start
+    if (!isAPNSRegistered) {
+        apnsHandler.isActive = YES;
+    }
+    isAPNSRegistered = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
+}
+
+- (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+    NSLog(@"Failed to register for APNS: %@", error);
+}
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+#ifdef DEBUG
+    // log the full userInfo only in DEBUG
+    NSLog(@"APNS: %@", userInfo);
+#endif
+    
+    // FIXME implement remote notifications handling
+    
+    completionHandler(UIBackgroundFetchResultNoData);
+}
+
 #pragma mark -
 
 - (void)logout {
+    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+    [[APNSHandler sharedHandler] reset];
+    isAPNSRegistered = NO;
     // Clear cache
     [MediaManager clearCache];
     // Logout Matrix

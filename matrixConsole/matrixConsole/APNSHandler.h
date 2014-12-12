@@ -16,25 +16,18 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MasterTabBarController.h"
-#import "CustomAlert.h"
+extern NSString *const kAPNSHandlerHasBeenUpdated;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate> {
-    BOOL isAPNSRegistered;
+@interface APNSHandler : NSObject {
+    BOOL transientActivity;
 }
 
-@property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) MasterTabBarController *masterTabBarController;
+@property (nonatomic, copy) NSData *deviceToken;
+@property (nonatomic) BOOL isAvailable; // true when app is registered for remote notif, and devive token is known
+@property (nonatomic) BOOL isActive; // true when APNS is turned on (locally available and synced with server)
 
-@property (strong, nonatomic) CustomAlert *errorNotification;
++ (APNSHandler *)sharedHandler;
 
-+ (AppDelegate*)theDelegate;
-
-- (void)registerUserNotificationSettings;
-
-- (void)logout;
-
-- (CustomAlert*)showErrorAsAlert:(NSError*)error;
+- (void)reset;
 
 @end
-
