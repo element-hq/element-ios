@@ -411,6 +411,7 @@ static MatrixHandler *sharedHandler = nil;
 - (void)setAccessToken:(NSString *)inAccessToken {
     if (inAccessToken.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
+        [[AppDelegate theDelegate] registerUserNotificationSettings];
         [self openSession];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
