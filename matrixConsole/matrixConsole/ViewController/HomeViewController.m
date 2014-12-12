@@ -288,7 +288,7 @@
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         [mxHandler.mxRestClient createRoom:roomName
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
-         room_alias_name:self.alias
+         roomAlias:self.alias
          topic:nil
          success:^(MXCreateRoomResponse *response) {
              // Check whether some users must be invited
