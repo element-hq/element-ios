@@ -1407,6 +1407,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomName]) {
+            // Only the room name is edited here, update the text field with the room name
+            self.roomNameTextField.text = self.mxRoom.state.name;
             self.roomNameTextField.borderStyle = UITextBorderStyleRoundedRect;
             self.roomNameTextField.backgroundColor = [UIColor whiteColor];
             return YES;
@@ -1438,6 +1440,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             __weak typeof(self) weakSelf = self;
             [self.mxRoom setName:roomName success:^{
                 [weakSelf stopActivityIndicator];
+                // Refresh title with room displayName
+                weakSelf.roomNameTextField.text = weakSelf.mxRoom.state.displayname;
             } failure:^(NSError *error) {
                 [weakSelf stopActivityIndicator];
                 // Revert change
@@ -1446,6 +1450,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
+        } else {
+            // No change on room name, restore title with room displayName
+            self.roomNameTextField.text = self.mxRoom.state.displayname;
         }
     }
 }
