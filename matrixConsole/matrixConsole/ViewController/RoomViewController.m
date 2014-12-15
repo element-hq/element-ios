@@ -103,9 +103,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Hide messages table by default in order to hide initial scrolling to the bottom
     self.messagesTableView.hidden = YES;
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [button addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIButton *membersButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [membersButton setImage:[UIImage imageNamed:@"icon_users"] forState:UIControlStateNormal];
+    [membersButton setImage:[UIImage imageNamed:@"icon_users"] forState:UIControlStateHighlighted];
+    membersButton.frame = CGRectMake(0, 0, 44, 44);
+    [membersButton addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:membersButton];
     
     // Add tap detection on members view in order to hide members when the user taps outside members list
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers)];
