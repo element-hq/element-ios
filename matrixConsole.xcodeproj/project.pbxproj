@@ -28,6 +28,8 @@
 		F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */; };
 		F04EE51F1A3A01D500C64930 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F04EE51E1A3A01D500C64930 /* APNSHandler.m */; };
 		F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955E19DEED8A008761B0 /* MatrixHandler.m */; };
+		F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3C1A3F3D7F002B698E /* icon_users.png */; };
+		F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
 		F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80DA19DD9DE700B621A1 /* AppDelegate.m */; };
 		F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E219DD9DE700B621A1 /* Main.storyboard */; };
@@ -97,6 +99,8 @@
 		F04EE51E1A3A01D500C64930 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
 		F05B955D19DEED8A008761B0 /* MatrixHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixHandler.h; sourceTree = "<group>"; };
 		F05B955E19DEED8A008761B0 /* MatrixHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixHandler.m; sourceTree = "<group>"; };
+		F05C3A3C1A3F3D7F002B698E /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
+		F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_users@2x.png"; sourceTree = "<group>"; };
 		F07A80D219DD9DE700B621A1 /* matrixConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matrixConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F07A80D619DD9DE700B621A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F07A80D719DD9DE700B621A1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -166,6 +170,8 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F05C3A3C1A3F3D7F002B698E /* icon_users.png */,
+				F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */,
 				F0F90C6A1A325ABF00455977 /* icon_search@2x.png */,
 				F0F90C681A32596700455977 /* icon_search.png */,
 				F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */,
@@ -391,8 +397,10 @@
 				F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */,
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
+				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
 				F01628C319E29C660071C473 /* logo.png in Resources */,
 				F01628C119E29C660071C473 /* default-profile.png in Resources */,
+				F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */,
 				F0F90C6B1A325ABF00455977 /* icon_search@2x.png in Resources */,
 				F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */,
 				F0F90C691A32596700455977 /* icon_search.png in Resources */,
