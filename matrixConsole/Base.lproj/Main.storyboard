@@ -383,16 +383,44 @@
                     </view>
                     <navigationItem key="navigationItem" id="3Zt-Wl-J6o">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Room Title" placeholder="Room name" textAlignment="center" minimumFontSize="14" id="8bR-7U-1G4">
-                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                        <view key="titleView" contentMode="scaleToFill" id="aas-th-FW1" customClass="RoomTitleView">
+                            <rect key="frame" x="50" y="0.0" width="500" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Title" placeholder="Room Name" textAlignment="center" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="cgT-4X-MVd">
+                                    <rect key="frame" x="0.0" y="2" width="500" height="21"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="msb-ol-2LB" id="hXw-w3-BuK"/>
+                                    </connections>
+                                </textField>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Topic" placeholder="Topic" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="svo-vI-b3l">
+                                    <rect key="frame" x="0.0" y="23" width="500" height="16"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="msb-ol-2LB" id="vte-jg-kCv"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="cgT-4X-MVd" secondAttribute="trailing" id="2V9-sa-Imt"/>
+                                <constraint firstItem="cgT-4X-MVd" firstAttribute="leading" secondItem="aas-th-FW1" secondAttribute="leading" id="8zX-XF-bBW"/>
+                                <constraint firstItem="svo-vI-b3l" firstAttribute="leading" secondItem="aas-th-FW1" secondAttribute="leading" id="Env-wR-t6E"/>
+                                <constraint firstAttribute="bottom" secondItem="svo-vI-b3l" secondAttribute="bottom" constant="5" id="qCe-Xd-NSC"/>
+                                <constraint firstItem="cgT-4X-MVd" firstAttribute="top" secondItem="aas-th-FW1" secondAttribute="top" constant="2" id="rK0-1V-HON"/>
+                                <constraint firstAttribute="trailing" secondItem="svo-vI-b3l" secondAttribute="trailing" id="uZH-P1-Tue"/>
+                            </constraints>
                             <connections>
-                                <outlet property="delegate" destination="msb-ol-2LB" id="MeZ-PN-EJ8"/>
+                                <outlet property="displayNameTextField" destination="cgT-4X-MVd" id="wTC-Ar-86F"/>
+                                <outlet property="displayNameTextFieldTopConstraint" destination="rK0-1V-HON" id="iBY-ih-yUM"/>
+                                <outlet property="topicTextField" destination="svo-vI-b3l" id="Mmx-uw-dhk"/>
                             </connections>
-                        </textField>
+                        </view>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="dvT-c5-Ymf" id="F6h-Al-Vw6"/>
@@ -403,14 +431,14 @@
                         <outlet property="messageTextField" destination="k2m-aY-U73" id="fSA-Eg-duj"/>
                         <outlet property="messagesTableView" destination="meV-kn-sxo" id="W1n-q0-ml7"/>
                         <outlet property="optionBtn" destination="cfF-YG-Cvg" id="Ppb-dg-Tub"/>
-                        <outlet property="roomNameTextField" destination="8bR-7U-1G4" id="7Il-Zj-m8p"/>
                         <outlet property="roomNavItem" destination="3Zt-Wl-J6o" id="gjB-fs-Whw"/>
+                        <outlet property="roomTitleView" destination="aas-th-FW1" id="nN7-6S-FR3"/>
                         <outlet property="sendBtn" destination="Icg-kc-a2c" id="Tr0-1e-QJp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1665" y="75"/>
+            <point key="canvasLocation" x="1595" y="75"/>
         </scene>
         <!--Home-->
         <scene sceneID="3rt-8o-eGh">

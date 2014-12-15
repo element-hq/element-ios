@@ -21,6 +21,7 @@
 #import "RoomMessage.h"
 #import "RoomMessageTableCell.h"
 #import "RoomMemberTableCell.h"
+#import "RoomTitleView.h"
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
@@ -78,7 +79,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
-@property (weak, nonatomic) IBOutlet UITextField *roomNameTextField;
+@property (weak, nonatomic) IBOutlet RoomTitleView *roomTitleView;
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
@@ -258,7 +259,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
     // Disable room title edition
-    self.roomNameTextField.enabled = NO;
+    self.roomTitleView.editable = NO;
     
     // Update room data
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -267,9 +268,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.mxRoom = [mxHandler.mxSession roomWithRoomId:self.roomId];
     }
     if (self.mxRoom) {
-        // Update room title
-        self.roomNameTextField.text = self.mxRoom.state.displayname;
-        
         // Check first whether we have to join the room
         if (self.mxRoom.state.membership == MXMembershipInvite) {
             isJoinRequestInProgress = YES;
@@ -291,7 +289,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         // Enable room title edition
-        self.roomNameTextField.enabled = YES;
+        self.roomTitleView.editable = YES;
         
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
@@ -409,10 +407,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Trigger a back pagination by reseting first backState to get room history from live
         [self.mxRoom resetBackState];
         [self triggerBackPagination];
-    } else {
-        // Update room title
-        self.roomNameTextField.text = nil;
     }
+    
+    self.roomTitleView.mxRoom = self.mxRoom;
     
     [self.messagesTableView reloadData];
 }
@@ -914,7 +911,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)dismissKeyboard {
     // Hide the keyboard
     [_messageTextField resignFirstResponder];
-    [_roomNameTextField resignFirstResponder];
+    [_roomTitleView dismissKeyboard];
 }
 
 #pragma mark - UITableView data source
@@ -1387,79 +1384,134 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - UITextField delegate
 
-- (void)onTextFieldChange:(NSNotification *)notif {
-    NSString *msg = _messageTextField.text;
-    
-    if (msg.length) {
-        _sendBtn.enabled = YES;
-        _sendBtn.alpha = 1;
-        // Reset potential placeholder (used in case of wrong command usage)
-        _messageTextField.placeholder = nil;
-    } else {
-        _sendBtn.enabled = NO;
-        _sendBtn.alpha = 0.5;
+- (void)onTextFieldChange:(NSNotification *)notification {
+    if (notification.object == _messageTextField) {
+        NSString *msg = _messageTextField.text;
+        if (msg.length) {
+            _sendBtn.enabled = YES;
+            _sendBtn.alpha = 1;
+            // Reset potential placeholder (used in case of wrong command usage)
+            _messageTextField.placeholder = nil;
+        } else {
+            _sendBtn.enabled = NO;
+            _sendBtn.alpha = 0.5;
+        }
     }
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if (textField == self.roomNameTextField) {
+    NSString *alertMsg = nil;
+    
+    if (textField == _roomTitleView.displayNameTextField) {
         // Check whether the user has enough power to rename the room
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomName]) {
             // Only the room name is edited here, update the text field with the room name
-            self.roomNameTextField.text = self.mxRoom.state.name;
-            self.roomNameTextField.borderStyle = UITextBorderStyleRoundedRect;
-            self.roomNameTextField.backgroundColor = [UIColor whiteColor];
-            return YES;
+            textField.text = self.mxRoom.state.name;
+            textField.backgroundColor = [UIColor whiteColor];
         } else {
-            // Alert user
-            __weak typeof(self) weakSelf = self;
-            if (self.actionMenu) {
-                [self.actionMenu dismiss:NO];
-            }
-            self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"You are not authorized to edit this room name" style:CustomAlertStyleAlert];
-            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                weakSelf.actionMenu = nil;
-            }];
-            [self.actionMenu showInViewController:self];
+            alertMsg = @"You are not authorized to edit this room name";
         }
+        
+        // Check whether the user is allowed to change room topic
+        if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
+            // Show topic text field even if the current value is nil
+            _roomTitleView.hiddenTopic = NO;
+            if (alertMsg) {
+                // Here the user can only update the room topic, switch on room topic field (without displaying alert)
+                alertMsg = nil;
+                [_roomTitleView.topicTextField becomeFirstResponder];
+                return NO;
+            }
+        }
+    } else if (textField == _roomTitleView.topicTextField) {
+        // Check whether the user has enough power to edit room topic
+        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
+        if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
+            textField.backgroundColor = [UIColor whiteColor];
+        } else {
+            alertMsg = @"You are not authorized to edit this room topic";
+        }
+    }
+    
+    if (alertMsg) {
+        // Alert user
+        __weak typeof(self) weakSelf = self;
+        if (self.actionMenu) {
+            [self.actionMenu dismiss:NO];
+        }
+        self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:alertMsg style:CustomAlertStyleAlert];
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            weakSelf.actionMenu = nil;
+        }];
+        [self.actionMenu showInViewController:self];
         return NO;
     }
     return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField == self.roomNameTextField) {
-        self.roomNameTextField.borderStyle = UITextBorderStyleNone;
-        self.roomNameTextField.backgroundColor = [UIColor clearColor];
+    if (textField == _roomTitleView.displayNameTextField) {
+        textField.backgroundColor = [UIColor clearColor];
         
-        NSString *roomName = self.roomNameTextField.text;
-        if ([roomName isEqualToString:self.mxRoom.state.name] == NO) {
+        NSString *roomName = textField.text;
+        if ((roomName.length || self.mxRoom.state.name.length) && [roomName isEqualToString:self.mxRoom.state.name] == NO) {
             [self startActivityIndicator];
             __weak typeof(self) weakSelf = self;
             [self.mxRoom setName:roomName success:^{
                 [weakSelf stopActivityIndicator];
-                // Refresh title with room displayName
-                weakSelf.roomNameTextField.text = weakSelf.mxRoom.state.displayname;
+                // Refresh title display
+                textField.text = weakSelf.mxRoom.state.displayname;
             } failure:^(NSError *error) {
                 [weakSelf stopActivityIndicator];
                 // Revert change
-                weakSelf.roomNameTextField.text = weakSelf.mxRoom.state.displayname;
+                textField.text = weakSelf.mxRoom.state.displayname;
                 NSLog(@"Rename room failed: %@", error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
         } else {
             // No change on room name, restore title with room displayName
-            self.roomNameTextField.text = self.mxRoom.state.displayname;
+            textField.text = self.mxRoom.state.displayname;
+        }
+    } else if (textField == _roomTitleView.topicTextField) {
+        textField.backgroundColor = [UIColor clearColor];
+        
+        NSString *topic = textField.text;
+        if ((topic.length || self.mxRoom.state.topic.length) && [topic isEqualToString:self.mxRoom.state.topic] == NO) {
+            [self startActivityIndicator];
+            __weak typeof(self) weakSelf = self;
+            [self.mxRoom setTopic:topic success:^{
+                [weakSelf stopActivityIndicator];
+                // Hide topic field if empty
+                weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
+            } failure:^(NSError *error) {
+                [weakSelf stopActivityIndicator];
+                // Revert change
+                textField.text = weakSelf.mxRoom.state.topic;
+                // Hide topic field if empty
+                weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
+                NSLog(@"Topic room change failed: %@", error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        } else {
+            // Hide topic field if empty
+            _roomTitleView.hiddenTopic = !topic.length;
         }
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*) textField {
-    // "Done" key has been pressed
-    [textField resignFirstResponder];
+    if (textField == _roomTitleView.displayNameTextField) {
+        // "Next" key has been pressed
+        [_roomTitleView.topicTextField becomeFirstResponder];
+    } else {
+        // "Done" key has been pressed
+        [textField resignFirstResponder];
+    }
     return YES;
 }
 

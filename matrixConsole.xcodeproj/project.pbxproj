@@ -25,6 +25,7 @@
 		F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */; };
 		F03EF60219F19E7C00A0EE52 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF60119F19E7C00A0EE52 /* MediaManager.m */; };
 		F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0465AF91A251F85003639F9 /* RoomMessage.m */; };
+		F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */; };
 		F04EE51F1A3A01D500C64930 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F04EE51E1A3A01D500C64930 /* APNSHandler.m */; };
 		F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955E19DEED8A008761B0 /* MatrixHandler.m */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
@@ -90,6 +91,8 @@
 		F03EF60119F19E7C00A0EE52 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		F0465AF81A251F85003639F9 /* RoomMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessage.h; sourceTree = "<group>"; };
 		F0465AF91A251F85003639F9 /* RoomMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessage.m; sourceTree = "<group>"; };
+		F04A8AD61A3B3DF4008AC915 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTitleView.h; sourceTree = "<group>"; };
+		F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTitleView.m; sourceTree = "<group>"; };
 		F04EE51D1A3A01D500C64930 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
 		F04EE51E1A3A01D500C64930 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
 		F05B955D19DEED8A008761B0 /* MatrixHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixHandler.h; sourceTree = "<group>"; };
@@ -207,6 +210,8 @@
 				F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */,
 				F03EF5FD19F1762000A0EE52 /* RoomMessageTableCell.h */,
 				F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */,
+				F04A8AD61A3B3DF4008AC915 /* RoomTitleView.h */,
+				F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */,
 				F0D3C30D1A01330F0000D49E /* SettingsTableViewCell.h */,
 				F0D3C30E1A01330F0000D49E /* SettingsTableViewCell.m */,
 			);
@@ -444,6 +449,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,

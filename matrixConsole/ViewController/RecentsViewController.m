@@ -365,6 +365,9 @@
             controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
+        
+        // Hide back button title
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
