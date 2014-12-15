@@ -1621,13 +1621,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         // Send message to the room
-        [self.mxRoom postMessageOfType:msgType content:localEvent.content success:^(NSString *event_id) {
+        [self.mxRoom postMessageOfType:msgType content:localEvent.content success:^(NSString *eventId) {
             // Check whether this event has already been received from events listener
             BOOL isEventAlreadyAddedToRoom = NO;
             NSUInteger index = messages.count;
             while (index--) {
                 RoomMessage *message = [messages objectAtIndex:index];
-                if ([message containsEventId:event_id]) {
+                if ([message containsEventId:eventId]) {
                     isEventAlreadyAddedToRoom = YES;
                     break;
                 }
@@ -1641,7 +1641,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [message removeEvent:localEvent.eventId];
                         if (isEventAlreadyAddedToRoom == NO) {
                             // Update the temporary event with the actual event id
-                            localEvent.eventId = event_id;
+                            localEvent.eventId = eventId;
                             [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         }
                         if (! message.attributedTextMessage.length) {
@@ -1651,7 +1651,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         message = nil;
                         if (isEventAlreadyAddedToRoom == NO) {
                             // Create a new message
-                            localEvent.eventId = event_id;
+                            localEvent.eventId = eventId;
                             message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                         }
                         if (message) {
