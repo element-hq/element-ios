@@ -96,18 +96,20 @@
 #pragma mark - APNS methods
 
 - (void)registerUserNotificationSettings {
-    if (!isAPNSRegistered) {
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-            // Registration on iOS 8 and later
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-                                                                                                 |UIRemoteNotificationTypeSound
-                                                                                                 |UIRemoteNotificationTypeAlert) categories:nil];
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-            
-        } else {
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
-        }
-    }
+    
+    // FIXME: We will prompt user about notifications settings only when APNS will be actually available
+    
+//    if (!isAPNSRegistered) {
+//        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+//            // Registration on iOS 8 and later
+//            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+//                                                                                                 |UIRemoteNotificationTypeSound
+//                                                                                                 |UIRemoteNotificationTypeAlert) categories:nil];
+//            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+//        } else {
+//            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
+//        }
+//    }
 }
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
