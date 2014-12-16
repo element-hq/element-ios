@@ -202,8 +202,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomId;
     
     if (forceScrollToBottomOnViewDidAppear) {
-        // Scroll to the bottom
-        [self scrollToBottomAnimated:animated];
+        dispatch_async(dispatch_get_main_queue(), ^{
+           // Scroll to the bottom
+            [self scrollToBottomAnimated:animated];
+        });
         forceScrollToBottomOnViewDidAppear = NO;
         self.messagesTableView.hidden = NO;
     }
@@ -403,7 +405,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             
             if (shouldScrollToBottom) {
-                [self scrollToBottomAnimated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self scrollToBottomAnimated:YES];
+                });
             }
         }];
         
@@ -418,15 +422,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-    // Delay the scrolling to handle correctly bunch of added events
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Scroll table view to the bottom
-        NSInteger rowNb = messages.count;
-        // Check whether there is some data and whether the table has already been loaded
-        if (rowNb && self.messagesTableView.contentSize.height) {
-            [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
-        }
-    });
+    // Scroll table view to the bottom
+    NSInteger rowNb = messages.count;
+    // Check whether there is some data and whether the table has already been loaded
+    if (rowNb && self.messagesTableView.contentSize.height) {
+        [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
 }
 
 - (void)triggerBackPagination {
@@ -494,7 +495,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.messagesTableView reloadData];
         // Adjust vertical content offset
         if (shouldScrollToBottom) {
-            [self scrollToBottomAnimated:NO];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self scrollToBottomAnimated:NO];
+            });
         } else if (verticalOffset > 0) {
             // Adjust vertical offset in order to limit scrolling down
             CGPoint contentOffset = self.messagesTableView.contentOffset;
@@ -896,6 +899,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
 
     // bottom view offset
+    // Don't forget the offset related to tabBar
     CGFloat nextBottomViewContanst = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
     
     // get the animation info
@@ -904,9 +908,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // the duration is ignored but it is better to define it
     double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    NSInteger rowNb = messages.count;
-    BOOL scrollToBottom = (rowNb && self.messagesTableView.contentSize.height);
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         
@@ -917,10 +918,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // reduce the tableview height
         self.messagesTableView.contentInset = insets;
         
-        if (scrollToBottom)
-        {
-            [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-        }
+        // scroll the tableview content
+        [self scrollToBottomAnimated:NO];
         
         // force to redraw the layout (else _controlViewBottomConstraint.constant will not be animated)
         [self.view layoutIfNeeded];
@@ -1713,7 +1712,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
             }
             [self.messagesTableView reloadData];
-            [self scrollToBottomAnimated:NO];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self scrollToBottomAnimated:NO];
+            });
         }
         
         // Send message to the room
@@ -1814,7 +1816,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSLog(@"ERROR: Unable to add local event for attachment: %@", mxEvent.description);
     }
     [self.messagesTableView reloadData];
-    [self scrollToBottomAnimated:NO];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self scrollToBottomAnimated:NO];
+    });
+    
     return mxEvent;
 }
 
