@@ -320,7 +320,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // Update Table
                 BOOL isHandled = NO;
-                // For outgoing message, remove the temporary event
+                BOOL shouldBeHidden = NO;
+                // For outgoing message, remove the temporary event (local echo)
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
                     // Consider first the last message
                     RoomMessage *message = [messages lastObject];
@@ -331,7 +332,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [message removeEvent:event.eventId];
                             // Update message with the received event
                             isHandled = [message addEvent:event withRoomState:roomState];
-                            if (! message.attributedTextMessage.length) {
+                            if (!message.components.count) {
                                 [messages removeObjectAtIndex:index];
                             }
                         } else {
@@ -346,19 +347,22 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             isHandled = YES;
                         }
                     } else {
+                        // Look for the local echo among other messages, if it is not found (possible when our PUT is not returned yet), the added message will be hidden.
+                        shouldBeHidden = YES;
                         while (index--) {
                             message = [messages objectAtIndex:index];
                             if ([message containsEventId:event.eventId]) {
                                 if (message.messageType == RoomMessageTypeText) {
                                     // Removing temporary event (local echo)
                                     [message removeEvent:event.eventId];
-                                    if (!message.attributedTextMessage.length) {
+                                    if (!message.components.count) {
                                         [messages removeObjectAtIndex:index];
                                     }
                                 } else {
                                     // Remove the local event (a new one will be added to messages)
                                     [messages removeObjectAtIndex:index];
                                 }
+                                shouldBeHidden = NO;
                                 break;
                             }
                         }
@@ -377,6 +381,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [messages addObject:lastMessage];
                             isHandled = YES;
                         } // else ignore unsupported/unexpected events
+                    }
+                    
+                    if (isHandled && shouldBeHidden) {
+                        [lastMessage hideComponent:YES withEventId:event.eventId];
                     }
                 }
                 
@@ -986,8 +994,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Compute here height of message cell
     CGFloat rowHeight;
-    // Compute first height of message content (The maximum width available for the textview must be updated dynamically)
     RoomMessage* message = [messages objectAtIndex:indexPath.row];
+    // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
+    if (message.messageType == RoomMessageTypeText && !message.attributedTextMessage.length) {
+        return 0;
+    }
+    // Else compute height of message content (The maximum width available for the textview must be updated dynamically)
     message.maxTextViewWidth = self.messagesTableView.frame.size.width - ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW;
     rowHeight = message.contentSize.height;
     
@@ -1188,7 +1200,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.dateTimeLabelContainer.hidden = NO;
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
-            if (component.date) {
+            if (component.date && !component.isHidden) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
                 dateTimeLabel.text = [dateFormatter stringFromDate:component.date];
                 if (isIncomingMsg) {
@@ -1672,7 +1684,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (message.messageType == RoomMessageTypeText) {
                         [message removeEvent:localEvent.eventId];
                         [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                        if (!message.attributedTextMessage.length) {
+                        if (!message.components.count) {
                             [messages removeObjectAtIndex:index];
                         }
                     } else {
@@ -1727,6 +1739,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 RoomMessage *message = [messages objectAtIndex:index];
                 if ([message containsEventId:eventId]) {
                     isEventAlreadyAddedToRoom = YES;
+                    // Remove hidden flag for this component into message
+                    [message hideComponent:NO withEventId:eventId];
                     break;
                 }
             }
@@ -1742,7 +1756,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             localEvent.eventId = eventId;
                             [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         }
-                        if (! message.attributedTextMessage.length) {
+                        if (!message.components.count) {
                             [messages removeObjectAtIndex:index];
                         }
                     } else {
@@ -1841,7 +1855,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [message removeEvent:localEvent.eventId];
                 localEvent.eventId = kFailedEventId;
                 [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                if (!message.attributedTextMessage.length) {
+                if (!message.components.count) {
                     [messages removeObjectAtIndex:index];
                 }
             } else {
