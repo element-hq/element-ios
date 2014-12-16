@@ -280,12 +280,13 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)startsWithSenderName {
     if (_messageType == RoomMessageTypeText) {
-        NSUInteger index = messageComponents.count;
-        while (index--) {
+        NSUInteger index = 0;
+        while (index < messageComponents.count) {
             RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:index];
             if (!msgComponent.isHidden) {
                 return msgComponent.startsWithSenderName;
             }
+            index++;
         }
     }
     return NO;
