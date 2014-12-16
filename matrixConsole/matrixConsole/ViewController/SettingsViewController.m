@@ -75,6 +75,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [logoutBtn addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutBtn];
     
+    // keep the aspect ratio of the contact thumbnail
+    [[self.userPicture imageView] setContentMode: UIViewContentModeScaleAspectFill];
+    [[self.userPicture imageView] setClipsToBounds:YES];
+    
     errorAlerts = [NSMutableArray array];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
 }
