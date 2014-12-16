@@ -285,7 +285,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="pLY-I9-ghF" userLabel="MembersTableView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="437"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <view key="tableFooterView" contentMode="scaleToFill" id="fdb-ra-p9Z" userLabel="fakeTableFooterView">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -360,7 +360,7 @@
                                     <constraint firstItem="pLY-I9-ghF" firstAttribute="leading" secondItem="OWi-J8-sFZ" secondAttribute="leading" id="3h3-MI-LXi"/>
                                     <constraint firstAttribute="trailing" secondItem="pLY-I9-ghF" secondAttribute="trailing" id="JAb-Eo-6OC"/>
                                     <constraint firstItem="pLY-I9-ghF" firstAttribute="top" secondItem="OWi-J8-sFZ" secondAttribute="top" id="Tgu-no-t2P"/>
-                                    <constraint firstAttribute="bottom" secondItem="pLY-I9-ghF" secondAttribute="bottom" constant="50" id="lMV-nK-DVn"/>
+                                    <constraint firstAttribute="bottom" secondItem="pLY-I9-ghF" secondAttribute="bottom" id="lMV-nK-DVn"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -384,11 +384,11 @@
                     <navigationItem key="navigationItem" id="3Zt-Wl-J6o">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="aas-th-FW1" customClass="RoomTitleView">
-                            <rect key="frame" x="50" y="0.0" width="500" height="44"/>
+                            <rect key="frame" x="60" y="0.0" width="480" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Title" placeholder="Room Name" textAlignment="center" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="cgT-4X-MVd">
-                                    <rect key="frame" x="0.0" y="2" width="500" height="21"/>
+                                    <rect key="frame" x="0.0" y="2" width="480" height="21"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -397,7 +397,7 @@
                                     </connections>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Topic" placeholder="Topic" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="svo-vI-b3l">
-                                    <rect key="frame" x="0.0" y="23" width="500" height="16"/>
+                                    <rect key="frame" x="0.0" y="23" width="480" height="16"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -421,6 +421,12 @@
                                 <outlet property="topicTextField" destination="svo-vI-b3l" id="Mmx-uw-dhk"/>
                             </connections>
                         </view>
+                        <barButtonItem key="rightBarButtonItem" image="icon_users.png" id="3d6-ln-ICU">
+                            <inset key="imageInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
+                            <connections>
+                                <action selector="showHideRoomMembers:" destination="msb-ol-2LB" id="5kH-bV-uAY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="dvT-c5-Ymf" id="F6h-Al-Vw6"/>
@@ -1058,6 +1064,7 @@
     </scenes>
     <resources>
         <image name="default-profile.png" width="160" height="160"/>
+        <image name="icon_users.png" width="35" height="25"/>
         <image name="logoHighRes.png" width="480" height="204"/>
         <image name="play.png" width="64" height="64"/>
         <image name="tab_home.ico" width="16" height="16"/>
