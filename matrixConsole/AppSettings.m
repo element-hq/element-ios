@@ -43,10 +43,11 @@ static AppSettings *sharedSettings = nil;
 }
 
 - (void)reset {
-    self.enableInAppNotifications = NO;
-    self.displayAllEvents = NO;
-    self.hideUnsupportedMessages = NO;
-    self.sortMembersUsingLastSeenTime = NO;
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"enableInAppNotifications"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayAllEvents"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedMessages"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark -

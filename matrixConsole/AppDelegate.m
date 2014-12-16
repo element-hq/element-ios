@@ -60,6 +60,13 @@
             recents.tabBarItem.image = [[UIImage imageNamed:@"tab_recents"] imageWithRenderingMode:UIImageRenderingModeAutomatic];
         }
         
+        // Retrieve custom configuration
+        NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
+        NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
+        NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         if ([[MatrixHandler sharedHandler] isLogged]) {
             [self registerUserNotificationSettings];
         }

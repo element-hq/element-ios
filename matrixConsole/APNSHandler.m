@@ -36,8 +36,9 @@ static APNSHandler *sharedHandler = nil;
 #pragma mark - reset
 
 - (void)reset {
-    self.isActive = NO;
-    self.deviceToken = nil;
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"apnsIsActive"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"apnsDeviceToken"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark -

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */; };
 		F00B5DB91A1B9BCE00EA1C8D /* CustomImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B5DB81A1B9BCE00EA1C8D /* CustomImageView.m */; };
+		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
 		F01628C119E29C660071C473 /* default-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BC19E29C660071C473 /* default-profile.png */; };
 		F01628C319E29C660071C473 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BE19E29C660071C473 /* logo.png */; };
 		F01A0FF31A27314B009FAE2F /* RoomMessageComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F01A0FF21A27314B009FAE2F /* RoomMessageComponent.m */; };
@@ -65,6 +66,7 @@
 		B7EC7E45C718BF2BBCE0CF48 /* Pods-matrixConsole.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.debug.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.debug.xcconfig"; sourceTree = "<group>"; };
 		F00B5DB71A1B9BCE00EA1C8D /* CustomImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomImageView.h; sourceTree = "<group>"; };
 		F00B5DB81A1B9BCE00EA1C8D /* CustomImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomImageView.m; sourceTree = "<group>"; };
+		F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "matrixConsole-Defaults.plist"; sourceTree = "<group>"; };
 		F01628BC19E29C660071C473 /* default-profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-profile.png"; sourceTree = "<group>"; };
 		F01628BE19E29C660071C473 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		F01A0FF11A27314B009FAE2F /* RoomMessageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessageComponent.h; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 		F07A80D519DD9DE700B621A1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */,
 				F07A80D619DD9DE700B621A1 /* Info.plist */,
 				F07A80D719DD9DE700B621A1 /* main.m */,
 			);
@@ -395,6 +398,7 @@
 				F024098219E7D177006E741B /* tab_recents@2x.png in Resources */,
 				F02BCE231A1A5A2B00543B47 /* play.png in Resources */,
 				F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */,
+				F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */,
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
