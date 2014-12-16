@@ -32,6 +32,7 @@ NSString *const kFailedEventId = @"failedEventId";
             _textMessage = textMessage;
             _eventId = event.eventId;
             _height = 0;
+            _hidden = NO;
             
             NSString *senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
             _startsWithSenderName = ([textMessage hasPrefix:senderName] || [mxHandler isEmote:event]);
