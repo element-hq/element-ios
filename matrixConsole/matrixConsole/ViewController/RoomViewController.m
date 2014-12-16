@@ -59,7 +59,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Back pagination
     BOOL isBackPaginationInProgress;
+    BOOL isFirstPagination;
     NSUInteger backPaginationAddedMsgNb;
+    NSUInteger backPaginationHandledEventsNb;
     
     // Members list
     NSArray *members;
@@ -423,10 +425,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     firstMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
                     if (firstMessage) {
                         [messages insertObject:firstMessage atIndex:0];
-                        backPaginationAddedMsgNb++;
+                        backPaginationAddedMsgNb ++;
+                        backPaginationHandledEventsNb ++;
                     }
                     // Ignore unsupported/unexpected events
+                } else {
+                    backPaginationHandledEventsNb ++;
                 }
+                
                 // Display is refreshed at the end of back pagination (see onComplete block)
             }
         }];
@@ -470,33 +476,51 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     if (self.mxRoom.canPaginate) {
+        NSUInteger requestedItemsNb = ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE;
+        // In case of first pagination, we will request only messages from the store to speed up the room display
+        if (!messages.count) {
+            isFirstPagination = YES;
+            requestedItemsNb = self.mxRoom.remainingMessagesForPaginationInStore;
+            if (!requestedItemsNb || ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE < requestedItemsNb) {
+                requestedItemsNb = ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE;
+            }
+        }
+        
         [self startActivityIndicator];
         isBackPaginationInProgress = YES;
         backPaginationAddedMsgNb = 0;
         
-        [self paginateBackMessages:ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE];
+        [self paginateBackMessages:requestedItemsNb];
     }
 }
 
 - (void)paginateBackMessages:(NSUInteger)requestedItemsNb {
+    backPaginationHandledEventsNb = 0;
     [self.mxRoom paginateBackMessages:requestedItemsNb complete:^{
         // Sanity check: check whether the view controller has not been released while back pagination was running
         if (self.roomId == nil) {
             return;
         }
-        // Compute number of received items
-        NSUInteger itemsCount = 0;
-        for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
-            RoomMessage *message = [messages objectAtIndex:index];
-            itemsCount += message.components.count;
+        
+        // Check whether we received less items than expected, and check condition to be able to ask more
+        BOOL shouldLoop = ((backPaginationHandledEventsNb < requestedItemsNb) && self.mxRoom.canPaginate);
+        if (shouldLoop) {
+            NSUInteger missingItemsNb = requestedItemsNb - backPaginationHandledEventsNb;
+            // About first pagination, we will loop only if the store has more items (except if none item has been handled, in this case loop is required)
+            if (isFirstPagination && backPaginationHandledEventsNb) {
+                if (self.mxRoom.remainingMessagesForPaginationInStore < missingItemsNb) {
+                    missingItemsNb = self.mxRoom.remainingMessagesForPaginationInStore;
+                }
+            }
+            
+            if (missingItemsNb) {
+                // Ask more items
+                [self paginateBackMessages:missingItemsNb];
+                return;
+            }
         }
-        // Check whether we got enough items
-        if (itemsCount < requestedItemsNb && self.mxRoom.canPaginate) {
-            // Ask more items
-            [self paginateBackMessages:(requestedItemsNb - itemsCount)];
-        } else {
-            [self onBackPaginationComplete];
-        }
+        // Here we are done
+        [self onBackPaginationComplete];
     } failure:^(NSError *error) {
         [self onBackPaginationComplete];
         NSLog(@"Failed to paginate back: %@", error);
@@ -538,6 +562,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self.messagesTableView setContentOffset:contentOffset animated:NO];
         }
     }
+    isFirstPagination = NO;
     isBackPaginationInProgress = NO;
     [self stopActivityIndicator];
 }
