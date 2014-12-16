@@ -362,7 +362,13 @@
         if (self.splitViewController) {
             // Refresh display (required in case of splitViewController)
             [self.tableView reloadData];
-            controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            
+            // IOS >= 8
+            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
+                controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            }
+            
+            //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
         

@@ -48,7 +48,12 @@
         if ([recents isKindOfClass:[UISplitViewController class]]) {
             UISplitViewController *splitViewController = (UISplitViewController *)recents;
             UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
-            navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+            
+            // IOS >= 8
+            if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
+                navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+            }
+            
             splitViewController.delegate = self;
         } else {
             // Patch missing image in tabBarItem for iOS < 8.0
