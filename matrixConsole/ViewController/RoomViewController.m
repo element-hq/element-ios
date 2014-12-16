@@ -322,8 +322,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
-            BOOL shouldScrollToBottom = NO;
-            
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
                 // Check user's membership in live room state (Indeed we have to go back on recents when user leaves, or is kicked/banned)
@@ -332,15 +330,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     return;
                 }
                 
-                // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-                CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-                // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-                maxPositionY += 30;
-                shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
-                
                 // Update Table
                 BOOL isHandled = NO;
-                // For outgoing message, remove the temporary event
+                BOOL shouldBeHidden = NO;
+                // For outgoing message, remove the temporary event (local echo)
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
                     // Consider first the last message
                     RoomMessage *message = [messages lastObject];
@@ -351,34 +344,37 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [message removeEvent:event.eventId];
                             // Update message with the received event
                             isHandled = [message addEvent:event withRoomState:roomState];
-                            if (! message.attributedTextMessage.length) {
-                                [messages removeObjectAtIndex:index];
+                            if (!message.components.count) {
+                                [self removeMessageAtIndex:index];
                             }
                         } else {
                             // Create a new message to handle attachment
                             message = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
                             if (!message) {
                                 // Ignore unsupported/unexpected events
-                                [messages removeObjectAtIndex:index];
+                                [self removeMessageAtIndex:index];
                             } else {
                                 [messages replaceObjectAtIndex:index withObject:message];
                             }
                             isHandled = YES;
                         }
                     } else {
+                        // Look for the local echo among other messages, if it is not found (possible when our PUT is not returned yet), the added message will be hidden.
+                        shouldBeHidden = YES;
                         while (index--) {
                             message = [messages objectAtIndex:index];
                             if ([message containsEventId:event.eventId]) {
                                 if (message.messageType == RoomMessageTypeText) {
                                     // Removing temporary event (local echo)
                                     [message removeEvent:event.eventId];
-                                    if (!message.attributedTextMessage.length) {
-                                        [messages removeObjectAtIndex:index];
+                                    if (!message.components.count) {
+                                        [self removeMessageAtIndex:index];
                                     }
                                 } else {
                                     // Remove the local event (a new one will be added to messages)
-                                    [messages removeObjectAtIndex:index];
+                                    [self removeMessageAtIndex:index];
                                 }
+                                shouldBeHidden = NO;
                                 break;
                             }
                         }
@@ -398,11 +394,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             isHandled = YES;
                         } // else ignore unsupported/unexpected events
                     }
+                    
+                    if (isHandled && shouldBeHidden) {
+                        [lastMessage hideComponent:YES withEventId:event.eventId];
+                    }
                 }
                 
                 // Refresh table display except if a back pagination is in progress
                 if (!isBackPaginationInProgress) {
+                    // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+                    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                    // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+                    maxPositionY += 30;
+                    BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                    // Refresh tableView
                     [self.messagesTableView reloadData];
+                    
+                    if (shouldScrollToBottom) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self scrollToBottomAnimated:YES];
+                        });
+                    }
+                    
                     if (isHandled) {
                         if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
                             // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
@@ -423,12 +436,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
                 // Display is refreshed at the end of back pagination (see onComplete block)
             }
-            
-            if (shouldScrollToBottom) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self scrollToBottomAnimated:YES];
-                });
-            }
         }];
         
         // Trigger a back pagination by reseting first backState to get room history from live
@@ -447,6 +454,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Check whether there is some data and whether the table has already been loaded
     if (rowNb && self.messagesTableView.contentSize.height) {
         [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+}
+
+- (void)removeMessageAtIndex:(NSUInteger)index {
+    [messages removeObjectAtIndex:index];
+    // Check whether the removed message was neither the first nor the last one
+    if (index && index < messages.count) {
+        RoomMessage *previousMessage = [messages objectAtIndex:index - 1];
+        RoomMessage *nextMessage = [messages objectAtIndex:index];
+        // Check whether both messages can merge
+        if ([previousMessage mergeWithRoomMessage:nextMessage]) {
+            [self removeMessageAtIndex:index];
+        }
     }
 }
 
@@ -932,6 +952,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 #pragma mark - Keyboard handling
+
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     // get the keyboard size
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
@@ -1046,8 +1067,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Compute here height of message cell
     CGFloat rowHeight;
-    // Compute first height of message content (The maximum width available for the textview must be updated dynamically)
     RoomMessage* message = [messages objectAtIndex:indexPath.row];
+    // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
+    if (message.messageType == RoomMessageTypeText && !message.attributedTextMessage.length) {
+        return 0;
+    }
+    // Else compute height of message content (The maximum width available for the textview must be updated dynamically)
     message.maxTextViewWidth = self.messagesTableView.frame.size.width - ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW;
     rowHeight = message.contentSize.height;
     
@@ -1063,11 +1088,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
         RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMessage.senderId isEqualToString:message.senderId]
-            && [previousMessage.senderName isEqualToString:message.senderName]
-            && [previousMessage.senderAvatarUrl isEqualToString:message.senderAvatarUrl]) {
-            shouldHideSenderInfo = YES;
-        }
+        shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
     }
     
     if (shouldHideSenderInfo) {
@@ -1095,8 +1116,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Handle here room message cells
-    RoomMessageTableCell *cell;
     RoomMessage *message = [messages objectAtIndex:indexPath.row];
+    // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
+    if (message.messageType == RoomMessageTypeText && !message.attributedTextMessage.length) {
+        return [[UITableViewCell alloc] initWithFrame:CGRectZero];
+    }
+    // Else prepare the message cell
+    RoomMessageTableCell *cell;
     BOOL isIncomingMsg = NO;
     
     if ([message.senderId isEqualToString:mxHandler.userId]) {
@@ -1134,11 +1160,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
         RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMessage.senderId isEqualToString:message.senderId]
-            && [previousMessage.senderName isEqualToString:message.senderName]
-            && [previousMessage.senderAvatarUrl isEqualToString:message.senderAvatarUrl]) {
-            shouldHideSenderInfo = YES;
-        }
+        shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
     }
     // Handle sender's picture and adjust view's constraints
     if (shouldHideSenderInfo) {
@@ -1248,7 +1270,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.dateTimeLabelContainer.hidden = NO;
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
-            if (component.date) {
+            if (component.date && !component.isHidden) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
                 dateTimeLabel.text = [dateFormatter stringFromDate:component.date];
                 if (isIncomingMsg) {
@@ -1476,8 +1498,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if (scrollView == self.messagesTableView) {
         // paginate ?
-        if (scrollView.contentOffset.y < -64)
-        {
+        if (scrollView.contentOffset.y < -64) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self triggerBackPagination];
             });
@@ -1732,8 +1753,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (message.messageType == RoomMessageTypeText) {
                         [message removeEvent:localEvent.eventId];
                         [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                        if (!message.attributedTextMessage.length) {
-                            [messages removeObjectAtIndex:index];
+                        if (!message.components.count) {
+                            [self removeMessageAtIndex:index];
                         }
                     } else {
                         // Create a new message
@@ -1742,7 +1763,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
                         } else {
-                            [messages removeObjectAtIndex:index];
+                            [self removeMessageAtIndex:index];
                         }
                     }
                     break;
@@ -1787,6 +1808,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 RoomMessage *message = [messages objectAtIndex:index];
                 if ([message containsEventId:eventId]) {
                     isEventAlreadyAddedToRoom = YES;
+                    // Remove hidden flag for this component into message
+                    [message hideComponent:NO withEventId:eventId];
                     break;
                 }
             }
@@ -1802,8 +1825,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             localEvent.eventId = eventId;
                             [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         }
-                        if (! message.attributedTextMessage.length) {
-                            [messages removeObjectAtIndex:index];
+                        if (!message.components.count) {
+                            [self removeMessageAtIndex:index];
                         }
                     } else {
                         message = nil;
@@ -1816,13 +1839,27 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
                         } else {
-                            [messages removeObjectAtIndex:index];
+                            [self removeMessageAtIndex:index];
                         }
                     }
                     break;
                 }
             }
+            
+            // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+            // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+            maxPositionY += 30;
+            BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+            
+            // Refresh tableView
             [self.messagesTableView reloadData];
+            
+            if (shouldScrollToBottom) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self scrollToBottomAnimated:YES];
+                });
+            }
         } failure:^(NSError *error) {
             [self handleError:error forLocalEvent:localEvent];
         }];
@@ -1901,8 +1938,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [message removeEvent:localEvent.eventId];
                 localEvent.eventId = kFailedEventId;
                 [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                if (!message.attributedTextMessage.length) {
-                    [messages removeObjectAtIndex:index];
+                if (!message.components.count) {
+                    [self removeMessageAtIndex:index];
                 }
             } else {
                 // Create a new message
@@ -1912,7 +1949,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     // Refresh table display
                     [messages replaceObjectAtIndex:index withObject:message];
                 } else {
-                    [messages removeObjectAtIndex:index];
+                    [self removeMessageAtIndex:index];
                 }
             }
             break;

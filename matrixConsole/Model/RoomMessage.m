@@ -118,23 +118,8 @@ static NSAttributedString *messageSeparator = nil;
         RoomMessageComponent *addedComponent = [[RoomMessageComponent alloc] initWithEvent:event andRoomState:roomState];
         if (addedComponent) {
             [messageComponents addObject:addedComponent];
-            
-            // Sort components according to their date
-            [messageComponents sortUsingComparator:^NSComparisonResult(RoomMessageComponent *obj1, RoomMessageComponent *obj2) {
-                if (obj1.date) {
-                    if (obj2.date) {
-                        return [obj1.date compare:obj2.date];
-                    } else {
-                        return NSOrderedAscending;
-                    }
-                } else if (obj2.date) {
-                    return NSOrderedDescending;
-                }
-                return NSOrderedSame;
-            }];
-            
-            // Force text message refresh after sorting
-            [self refreshMessageComponentsHeight];
+            // Sort components and update resulting text message
+            [self sortComponents];
         }
         // else the event is ignored, we consider it as handled
         return YES;
@@ -168,20 +153,51 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
-- (void)refreshMessageComponentsHeight {
-    NSMutableArray *components = messageComponents;
-    messageComponents = [NSMutableArray arrayWithCapacity:components.count];
-    self.attributedTextMessage = nil;
-    for (RoomMessageComponent *msgComponent in components) {
-        CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
-        [messageComponents addObject:msgComponent];
-        // Force text message refresh
-        self.attributedTextMessage = nil;
-        msgComponent.height = self.contentSize.height - previousTextViewHeight;
+- (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId {
+    for (RoomMessageComponent *msgComponent in messageComponents) {
+        if ([msgComponent.eventId isEqualToString:eventId]) {
+            msgComponent.hidden = isHidden;
+            // Force attributed string refresh
+            [self refreshMessageComponentsHeight];
+            break;
+        }
     }
 }
 
-#pragma mark -
+- (BOOL)hasSameSenderAsRoomMessage:(RoomMessage*)roomMessage {
+    // NOTE: same sender means here same id, same name and same avatar
+    // Check first user id
+    if ([_senderId isEqualToString:roomMessage.senderId] == NO) {
+        return NO;
+    }
+    // Check sender name
+    if ((_senderName.length || roomMessage.senderName.length) && ([_senderName isEqualToString:roomMessage.senderName] == NO)) {
+        return NO;
+    }
+    // Check avatar url
+    if ((_senderAvatarUrl.length || roomMessage.senderAvatarUrl.length) && ([_senderAvatarUrl isEqualToString:roomMessage.senderAvatarUrl] == NO)) {
+        return NO;
+    }
+        
+    return YES;
+}
+
+- (BOOL)mergeWithRoomMessage:(RoomMessage*)roomMessage {
+    if ([self hasSameSenderAsRoomMessage:roomMessage]) {
+        if ((_messageType == RoomMessageTypeText) && (roomMessage.messageType == RoomMessageTypeText)) {
+            // Add all components of the provided message
+            for (RoomMessageComponent* msgComponent in roomMessage.components) {
+                [messageComponents addObject:msgComponent];
+            }
+            // Sort components and update resulting text message
+            [self sortComponents];
+            return YES;
+        }
+    }
+    return NO;
+}
+
+#pragma mark - Properties
 
 - (void)setMaxTextViewWidth:(CGFloat)maxTextViewWidth {
     if (_messageType == RoomMessageTypeText) {
@@ -247,13 +263,15 @@ static NSAttributedString *messageSeparator = nil;
     if (!currentAttributedTextMsg && messageComponents.count) {
         // Create attributed string
         for (RoomMessageComponent* msgComponent in messageComponents) {
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
-            if (!currentAttributedTextMsg) {
-                currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-            } else {
-                // Append attributed text
-                [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
-                [currentAttributedTextMsg appendAttributedString:attributedString];
+            if (!msgComponent.isHidden) {
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
+                if (!currentAttributedTextMsg) {
+                    currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+                } else {
+                    // Append attributed text
+                    [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
+                    [currentAttributedTextMsg appendAttributedString:attributedString];
+                }
             }
         }
     }
@@ -262,9 +280,12 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)startsWithSenderName {
     if (_messageType == RoomMessageTypeText) {
-        if (messageComponents.count) {
-            RoomMessageComponent *msgComponent = [messageComponents firstObject];
-            return msgComponent.startsWithSenderName;
+        NSUInteger index = messageComponents.count;
+        while (index--) {
+            RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:index];
+            if (!msgComponent.isHidden) {
+                return msgComponent.startsWithSenderName;
+            }
         }
     }
     return NO;
@@ -281,6 +302,42 @@ static NSAttributedString *messageSeparator = nil;
 }
 
 #pragma mark -
+
+- (void)sortComponents {
+    // Sort components according to their date
+    [messageComponents sortUsingComparator:^NSComparisonResult(RoomMessageComponent *obj1, RoomMessageComponent *obj2) {
+        if (obj1.date) {
+            if (obj2.date) {
+                return [obj1.date compare:obj2.date];
+            } else {
+                return NSOrderedAscending;
+            }
+        } else if (obj2.date) {
+            return NSOrderedDescending;
+        }
+        return NSOrderedSame;
+    }];
+    
+    // Force text message refresh after sorting
+    [self refreshMessageComponentsHeight];
+}
+
+- (void)refreshMessageComponentsHeight {
+    NSMutableArray *components = messageComponents;
+    messageComponents = [NSMutableArray arrayWithCapacity:components.count];
+    self.attributedTextMessage = nil;
+    for (RoomMessageComponent *msgComponent in components) {
+        CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+        [messageComponents addObject:msgComponent];
+        if (msgComponent.isHidden) {
+            msgComponent.height = 0;
+        } else {
+            // Force text message refresh
+            self.attributedTextMessage = nil;
+            msgComponent.height = self.contentSize.height - previousTextViewHeight;
+        }
+    }
+}
 
 + (NSAttributedString *)messageSeparator {
     @synchronized(self) {
