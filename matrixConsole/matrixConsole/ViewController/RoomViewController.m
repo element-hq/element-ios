@@ -577,10 +577,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             CGFloat screenHeight = 0;
             CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+
+            UIViewController* rootViewController = self;
             
+            // get the root view controller to extract the application size
+            while (rootViewController.parentViewController && ![rootViewController isKindOfClass:[UISplitViewController class]]) {
+                rootViewController = rootViewController.parentViewController;
+            }
+            
+            // IOS 6 ?
             // IOS 7 always gives the screen size in portrait
             // IOS 8 takes care about the orientation
-            if (self.view.frame.size.width > self.view.frame.size.height) {
+            if (rootViewController.view.frame.size.width > rootViewController.view.frame.size.height) {
                 screenHeight = MIN(screenSize.width, screenSize.height);
             }
             else {
