@@ -581,23 +581,35 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // if the keyboard is displayed, check if the keyboard is hiding with a slide animation
         if (inputAccessoryView && inputAccessoryView.superview) {
             UIEdgeInsets insets = self.messagesTableView.contentInset;
-            insets.bottom = [[UIScreen mainScreen] bounds].size.height - inputAccessoryView.superview.frame.origin.y;
             
-            // Move up control view
-            // Don't forget the offset related to tabBar
-            _controlViewBottomConstraint.constant = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+            CGFloat screenHeight = 0;
+            CGSize screenSize = [[UIScreen mainScreen] bounds].size;
             
-            if (_controlViewBottomConstraint.constant >= 0) {
-                // reduce the tableview height
-                self.messagesTableView.contentInset = insets;
+            // IOS 7 always gives the screen size in portrait
+            // IOS 8 takes care about the orientation
+            if (self.view.frame.size.width > self.view.frame.size.height) {
+                screenHeight = MIN(screenSize.width, screenSize.height);
             }
             else {
-                _controlViewBottomConstraint.constant = 0;
-                
-                [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
-                [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
-                isKeyboardObserver = NO;
+                screenHeight = MAX(screenSize.width, screenSize.height);
             }
+            
+            insets.bottom = screenHeight - inputAccessoryView.superview.frame.origin.y;
+            
+            // Move the control view
+            // Don't forget the offset related to tabBar
+            CGFloat newConstant = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+            
+            // draw over the bound
+            if ((_controlViewBottomConstraint.constant < 0) || (insets.bottom < self.controlView.frame.size.height)) {
+                
+                newConstant = 0;
+                insets.bottom = self.controlView.frame.size.height;
+            }
+            
+            // update the table the tableview height
+            self.messagesTableView.contentInset = insets;
+            _controlViewBottomConstraint.constant = newConstant;
         }
     }
 }
@@ -1018,11 +1030,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // the duration is ignored but it is better to define it
     double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
+    UIEdgeInsets insets = self.messagesTableView.contentInset;
+    insets.bottom = self.controlView.frame.size.height;
+    
     // animate the keyboard closing
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
-        UIEdgeInsets insets = self.messagesTableView.contentInset;
-        insets.bottom = self.controlView.frame.size.height;
-
         self.messagesTableView.contentInset = insets;
     
         _controlViewBottomConstraint.constant = 0;
