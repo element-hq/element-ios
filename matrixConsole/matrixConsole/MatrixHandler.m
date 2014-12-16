@@ -264,6 +264,8 @@ static MatrixHandler *sharedHandler = nil;
     // Reset access token (mxSession is closed by setter)
     self.accessToken = nil;
     self.userId = nil;
+    self.homeServer = nil;
+    // Keep userLogin, homeServerUrl
 }
 
 - (void)forceInitialSync {

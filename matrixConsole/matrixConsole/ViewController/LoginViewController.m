@@ -20,8 +20,6 @@
 #import "AppDelegate.h"
 #import "CustomAlert.h"
 
-NSString* const defaultHomeserver = @"http://matrix.org";
-
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewBottomConstraint;
 
@@ -70,10 +68,6 @@ NSString* const defaultHomeserver = @"http://matrix.org";
     // Prefill text field
     _userLoginTextField.text = [[MatrixHandler sharedHandler] userLogin];
     _homeServerTextField.text = [[MatrixHandler sharedHandler] homeServerURL];
-    if (! _homeServerTextField.text.length) {
-        [[MatrixHandler sharedHandler] setHomeServerURL:defaultHomeserver];
-        self.homeServerTextField.text = defaultHomeserver;
-    }
     _passWordTextField.text = nil;
     _loginBtn.enabled = NO;
     _loginBtn.alpha = 0.5;
@@ -125,8 +119,7 @@ NSString* const defaultHomeserver = @"http://matrix.org";
     self.scrollView.contentInset = insets;
 }
 
-- (void)dismissKeyboard
-{
+- (void)dismissKeyboard {
     // Hide the keyboard
     [_userLoginTextField resignFirstResponder];
     [_passWordTextField resignFirstResponder];
@@ -149,8 +142,7 @@ NSString* const defaultHomeserver = @"http://matrix.org";
     }
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     MatrixHandler *matrix = [MatrixHandler sharedHandler];
     
     if (textField == _userLoginTextField) {
@@ -158,11 +150,14 @@ NSString* const defaultHomeserver = @"http://matrix.org";
     }
     else if (textField == _homeServerTextField) {
         [matrix setHomeServerURL:textField.text];
+        if (!textField.text.length) {
+            // Force refresh with default value
+            textField.text = [[MatrixHandler sharedHandler] homeServerURL];
+        }
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*) textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField*) textField {
     if (textField == _userLoginTextField) {
         // "Next" key has been pressed
         [_passWordTextField becomeFirstResponder];
@@ -171,8 +166,7 @@ NSString* const defaultHomeserver = @"http://matrix.org";
         // "Done" key has been pressed
         [textField resignFirstResponder];
         
-        if (_loginBtn.isEnabled)
-        {
+        if (_loginBtn.isEnabled) {
             // Launch authentication now
             [self onButtonPressed:_loginBtn];
         }
@@ -183,8 +177,7 @@ NSString* const defaultHomeserver = @"http://matrix.org";
 
 #pragma mark -
 
-- (IBAction)onButtonPressed:(id)sender
-{
+- (IBAction)onButtonPressed:(id)sender {
     [self dismissKeyboard];
     
     if (sender == _loginBtn) {
