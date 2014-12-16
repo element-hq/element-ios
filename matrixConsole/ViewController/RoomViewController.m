@@ -302,8 +302,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
-            BOOL shouldScrollToBottom = NO;
-            
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
                 // Check user's membership in live room state (Indeed we have to go back on recents when user leaves, or is kicked/banned)
@@ -311,12 +309,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
                     return;
                 }
-                
-                // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-                CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-                // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-                maxPositionY += 30;
-                shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
                 
                 // Update Table
                 BOOL isHandled = NO;
@@ -390,7 +382,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // Refresh table display except if a back pagination is in progress
                 if (!isBackPaginationInProgress) {
+                    // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+                    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                    // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+                    maxPositionY += 30;
+                    BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                    // Refresh tableView
                     [self.messagesTableView reloadData];
+                    
+                    if (shouldScrollToBottom) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self scrollToBottomAnimated:YES];
+                        });
+                    }
+                    
                     if (isHandled) {
                         if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
                             // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
@@ -410,12 +415,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     // Ignore unsupported/unexpected events
                 }
                 // Display is refreshed at the end of back pagination (see onComplete block)
-            }
-            
-            if (shouldScrollToBottom) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self scrollToBottomAnimated:YES];
-                });
             }
         }];
         
@@ -1428,8 +1427,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if (scrollView == self.messagesTableView) {
         // paginate ?
-        if (scrollView.contentOffset.y < -64)
-        {
+        if (scrollView.contentOffset.y < -64) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self triggerBackPagination];
             });
@@ -1776,7 +1774,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     break;
                 }
             }
+            
+            // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+            // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+            maxPositionY += 30;
+            BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+            
+            // Refresh tableView
             [self.messagesTableView reloadData];
+            
+            if (shouldScrollToBottom) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self scrollToBottomAnimated:YES];
+                });
+            }
         } failure:^(NSError *error) {
             [self handleError:error forLocalEvent:localEvent];
         }];
