@@ -886,29 +886,70 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 #pragma mark - Keyboard handling
-
 - (void)onKeyboardWillShow:(NSNotification *)notif {
+    // get the keyboard size
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
     
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     // Handle portrait/landscape mode
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
-    self.messagesTableView.contentInset = insets;
+
+    // bottom view offset
+    CGFloat nextBottomViewContanst = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
     
-    [self scrollToBottomAnimated:YES];
+    // get the animation info
+    NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
     
-    // Move up control view
-    // Don't forget the offset related to tabBar
-    _controlViewBottomConstraint.constant = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+    // the duration is ignored but it is better to define it
+    double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    NSInteger rowNb = messages.count;
+    BOOL scrollToBottom = (rowNb && self.messagesTableView.contentSize.height);
+    
+    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
+        
+        // Move up control view
+        // Don't forget the offset related to tabBar
+        _controlViewBottomConstraint.constant = nextBottomViewContanst;
+        
+        // reduce the tableview height
+        self.messagesTableView.contentInset = insets;
+        
+        if (scrollToBottom)
+        {
+            [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        }
+        
+        // force to redraw the layout (else _controlViewBottomConstraint.constant will not be animated)
+        [self.view layoutIfNeeded];
+        
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
-    UIEdgeInsets insets = self.messagesTableView.contentInset;
-    insets.bottom = self.controlView.frame.size.height;
-    self.messagesTableView.contentInset = insets;
     
-    _controlViewBottomConstraint.constant = 0;
+    // get the animation info
+    NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    // the duration is ignored but it is better to define it
+    double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    // ani
+    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
+        UIEdgeInsets insets = self.messagesTableView.contentInset;
+        insets.bottom = self.controlView.frame.size.height;
+
+        self.messagesTableView.contentInset = insets;
+    
+        _controlViewBottomConstraint.constant = 0;
+        [self.view layoutIfNeeded];
+        
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (void)dismissKeyboard {
