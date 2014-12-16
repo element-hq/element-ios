@@ -285,7 +285,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="pLY-I9-ghF" userLabel="MembersTableView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="437"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <view key="tableFooterView" contentMode="scaleToFill" id="fdb-ra-p9Z" userLabel="fakeTableFooterView">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -360,7 +360,7 @@
                                     <constraint firstItem="pLY-I9-ghF" firstAttribute="leading" secondItem="OWi-J8-sFZ" secondAttribute="leading" id="3h3-MI-LXi"/>
                                     <constraint firstAttribute="trailing" secondItem="pLY-I9-ghF" secondAttribute="trailing" id="JAb-Eo-6OC"/>
                                     <constraint firstItem="pLY-I9-ghF" firstAttribute="top" secondItem="OWi-J8-sFZ" secondAttribute="top" id="Tgu-no-t2P"/>
-                                    <constraint firstAttribute="bottom" secondItem="pLY-I9-ghF" secondAttribute="bottom" constant="50" id="lMV-nK-DVn"/>
+                                    <constraint firstAttribute="bottom" secondItem="pLY-I9-ghF" secondAttribute="bottom" id="lMV-nK-DVn"/>
                                 </constraints>
                             </view>
                         </subviews>
