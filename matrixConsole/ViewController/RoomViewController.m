@@ -71,6 +71,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     MPMoviePlayerController *videoPlayer;
     MPMoviePlayerController *tmpVideoPlayer;
     
+    // used to trap the slide to close the keyboard
+    UIView* inputAccessoryView;
+    BOOL isKeyboardObserver;
+    
     // Date formatter (nil if dateTime info is hidden)
     NSDateFormatter *dateFormatter;
     
@@ -117,8 +121,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [tap setDelegate:self];
     [self.membersView addGestureRecognizer:tap];
     
+    isKeyboardObserver = NO;
+    
     _sendBtn.enabled = NO;
     _sendBtn.alpha = 0.5;
+    
+    
+    // add an input to check if the keyboard is hiding with sliding it
+    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.messageTextField.inputAccessoryView = inputAccessoryView;
 }
 
 - (void)dealloc {
@@ -157,6 +168,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (dateFormatter) {
         dateFormatter = nil;
     }
+    
+    self.messageTextField.inputAccessoryView = inputAccessoryView = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,6 +202,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Hide members by default
     [self hideRoomMembers];
+    
+    // slide to hide keyboard management
+    if (isKeyboardObserver) {
+        [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
+        [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
+        isKeyboardObserver = NO;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -535,6 +555,29 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self stopActivityIndicator];
         } else {
             [self startActivityIndicator];
+        }
+    } else if ((object == inputAccessoryView.superview) && ([@"frame" isEqualToString:keyPath] || [@"center" isEqualToString:keyPath])) {
+        
+        // if the keyboard is displayed, check if the keyboard is hiding with a slide animation
+        if (inputAccessoryView && inputAccessoryView.superview) {
+            UIEdgeInsets insets = self.messagesTableView.contentInset;
+            insets.bottom = [[UIScreen mainScreen] bounds].size.height - inputAccessoryView.superview.frame.origin.y;
+            
+            // Move up control view
+            // Don't forget the offset related to tabBar
+            _controlViewBottomConstraint.constant = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+            
+            if (_controlViewBottomConstraint.constant >= 0) {
+                // reduce the tableview height
+                self.messagesTableView.contentInset = insets;
+            }
+            else {
+                _controlViewBottomConstraint.constant = 0;
+                
+                [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
+                [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
+                isKeyboardObserver = NO;
+            }
         }
     }
 }
@@ -894,6 +937,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
     
+    // IOS triggers some weird keyboard events
+    if ((endRect.size.height == 0) || (endRect.size.width == 0)) {
+        return;
+    }
+    
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     // Handle portrait/landscape mode
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
@@ -925,11 +973,23 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.view layoutIfNeeded];
         
     } completion:^(BOOL finished) {
+        // be warned when the keyboard frame is updated
+        [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
+        [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
+        
+        isKeyboardObserver = YES;
     }];
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
     
+    // onKeyboardWillHide seems being called several times by IOS
+    if (isKeyboardObserver) {
+        [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
+        [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
+        isKeyboardObserver = NO;
+    }
+
     // get the animation info
     NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
@@ -937,7 +997,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // the duration is ignored but it is better to define it
     double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    // ani
+    // animate the keyboard closing
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         UIEdgeInsets insets = self.messagesTableView.contentInset;
         insets.bottom = self.controlView.frame.size.height;
