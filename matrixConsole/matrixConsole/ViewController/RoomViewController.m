@@ -599,7 +599,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 newConstant = 0;
                 insets.bottom = self.controlView.frame.size.height;
             }
-            
+            else {
+                // IOS 8 / landscape issue
+                // when the top of the keyboard reaches the top of the tabbar, it triggers UIKeyboardWillShowNotification events in loop
+                [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+            }
             // update the table the tableview height
             self.messagesTableView.contentInset = insets;
             _controlViewBottomConstraint.constant = newConstant;
@@ -953,7 +957,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
     
-    // IOS triggers some weird keyboard events
+    // IOS 8 triggers some unexpected keyboard events
     if ((endRect.size.height == 0) || (endRect.size.width == 0)) {
         return;
     }
@@ -1001,9 +1005,29 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // onKeyboardWillHide seems being called several times by IOS
     if (isKeyboardObserver) {
+        
+        // IOS 8 / landscape issue
+        // when the keyboard reaches the tabbar, it triggers UIKeyboardWillShowNotification events in loop
+        // ensure that there is only one evene registration
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        
         [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
         [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
         isKeyboardObserver = NO;
+    }
+
+    // get the keyboard size
+    NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
+    CGRect endRect = rectVal.CGRectValue;
+    
+    rectVal = notif.userInfo[UIKeyboardFrameBeginUserInfoKey];
+    CGRect beginRect = rectVal.CGRectValue;
+    
+    // IOS 8 triggers some unexpected keyboard events
+    // it makes no sense if there is no update to animate
+    if (CGRectEqualToRect(endRect, beginRect)) {
+        return;
     }
 
     // get the animation info
