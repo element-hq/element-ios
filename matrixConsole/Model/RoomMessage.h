@@ -75,4 +75,10 @@ typedef enum : NSUInteger {
 // Show/Hide the component related to the provided event id (available only for type = RoomMessageTypeText)
 - (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId;
 
+// Return true if the provided message has the same sender as the receiver (same sender means here same id, same name and same avatar)
+- (BOOL)hasSameSenderAsRoomMessage:(RoomMessage*)roomMessage;
+
+// Add component(s) of the provided message to the receiver, return true on success (failed if one of the message type is not RoomMessageTypeText)
+- (BOOL)mergeWithRoomMessage:(RoomMessage*)roomMessage;
+
 @end

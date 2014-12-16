@@ -325,14 +325,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // Update message with the received event
                             isHandled = [message addEvent:event withRoomState:roomState];
                             if (!message.components.count) {
-                                [messages removeObjectAtIndex:index];
+                                [self removeMessageAtIndex:index];
                             }
                         } else {
                             // Create a new message to handle attachment
                             message = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
                             if (!message) {
                                 // Ignore unsupported/unexpected events
-                                [messages removeObjectAtIndex:index];
+                                [self removeMessageAtIndex:index];
                             } else {
                                 [messages replaceObjectAtIndex:index withObject:message];
                             }
@@ -348,11 +348,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                     // Removing temporary event (local echo)
                                     [message removeEvent:event.eventId];
                                     if (!message.components.count) {
-                                        [messages removeObjectAtIndex:index];
+                                        [self removeMessageAtIndex:index];
                                     }
                                 } else {
                                     // Remove the local event (a new one will be added to messages)
-                                    [messages removeObjectAtIndex:index];
+                                    [self removeMessageAtIndex:index];
                                 }
                                 shouldBeHidden = NO;
                                 break;
@@ -434,6 +434,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Check whether there is some data and whether the table has already been loaded
     if (rowNb && self.messagesTableView.contentSize.height) {
         [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+}
+
+- (void)removeMessageAtIndex:(NSUInteger)index {
+    [messages removeObjectAtIndex:index];
+    // Check whether the removed message was neither the first nor the last one
+    if (index && index < messages.count) {
+        RoomMessage *previousMessage = [messages objectAtIndex:index - 1];
+        RoomMessage *nextMessage = [messages objectAtIndex:index];
+        // Check whether both messages can merge
+        if ([previousMessage mergeWithRoomMessage:nextMessage]) {
+            [self removeMessageAtIndex:index];
+        }
     }
 }
 
@@ -896,6 +909,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 #pragma mark - Keyboard handling
+
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     // get the keyboard size
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
@@ -1014,11 +1028,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
         RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMessage.senderId isEqualToString:message.senderId]
-            && [previousMessage.senderName isEqualToString:message.senderName]
-            && [previousMessage.senderAvatarUrl isEqualToString:message.senderAvatarUrl]) {
-            shouldHideSenderInfo = YES;
-        }
+        shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
     }
     
     if (shouldHideSenderInfo) {
@@ -1046,8 +1056,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Handle here room message cells
-    RoomMessageTableCell *cell;
     RoomMessage *message = [messages objectAtIndex:indexPath.row];
+    // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
+    if (message.messageType == RoomMessageTypeText && !message.attributedTextMessage.length) {
+        return [[UITableViewCell alloc] initWithFrame:CGRectZero];
+    }
+    // Else prepare the message cell
+    RoomMessageTableCell *cell;
     BOOL isIncomingMsg = NO;
     
     if ([message.senderId isEqualToString:mxHandler.userId]) {
@@ -1085,11 +1100,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
         RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
-        if ([previousMessage.senderId isEqualToString:message.senderId]
-            && [previousMessage.senderName isEqualToString:message.senderName]
-            && [previousMessage.senderAvatarUrl isEqualToString:message.senderAvatarUrl]) {
-            shouldHideSenderInfo = YES;
-        }
+        shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
     }
     // Handle sender's picture and adjust view's constraints
     if (shouldHideSenderInfo) {
@@ -1683,7 +1694,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [message removeEvent:localEvent.eventId];
                         [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         if (!message.components.count) {
-                            [messages removeObjectAtIndex:index];
+                            [self removeMessageAtIndex:index];
                         }
                     } else {
                         // Create a new message
@@ -1692,7 +1703,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
                         } else {
-                            [messages removeObjectAtIndex:index];
+                            [self removeMessageAtIndex:index];
                         }
                     }
                     break;
@@ -1755,7 +1766,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [message addEvent:localEvent withRoomState:self.mxRoom.state];
                         }
                         if (!message.components.count) {
-                            [messages removeObjectAtIndex:index];
+                            [self removeMessageAtIndex:index];
                         }
                     } else {
                         message = nil;
@@ -1768,7 +1779,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // Refresh table display
                             [messages replaceObjectAtIndex:index withObject:message];
                         } else {
-                            [messages removeObjectAtIndex:index];
+                            [self removeMessageAtIndex:index];
                         }
                     }
                     break;
@@ -1868,7 +1879,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 localEvent.eventId = kFailedEventId;
                 [message addEvent:localEvent withRoomState:self.mxRoom.state];
                 if (!message.components.count) {
-                    [messages removeObjectAtIndex:index];
+                    [self removeMessageAtIndex:index];
                 }
             } else {
                 // Create a new message
@@ -1878,7 +1889,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     // Refresh table display
                     [messages replaceObjectAtIndex:index withObject:message];
                 } else {
-                    [messages removeObjectAtIndex:index];
+                    [self removeMessageAtIndex:index];
                 }
             }
             break;
