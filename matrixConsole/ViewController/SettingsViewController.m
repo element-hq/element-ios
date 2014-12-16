@@ -201,7 +201,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)saveDisplayName {
     // Check whether the display name has been changed
     NSString *displayname = self.userDisplayName.text;
-    if ([displayname isEqualToString:currentDisplayName] == NO) {
+    if ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO) {
         // Save display name
         [_activityIndicator startAnimating];
         _userDisplayName.enabled = NO;
@@ -376,8 +376,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 #pragma mark - keyboard
 
-- (void)dismissKeyboard
-{
+- (void)dismissKeyboard {
     // Hide the keyboard
     [_userDisplayName resignFirstResponder];
     // Save display name change (if any)
@@ -386,8 +385,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 #pragma mark - UITextField delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField*) textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField*) textField {
     // "Done" key has been pressed
     [self dismissKeyboard];
     return YES;
