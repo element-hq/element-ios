@@ -107,13 +107,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Hide messages table by default in order to hide initial scrolling to the bottom
     self.messagesTableView.hidden = YES;
     
-    UIButton *membersButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [membersButton setImage:[UIImage imageNamed:@"icon_users"] forState:UIControlStateNormal];
-    [membersButton setImage:[UIImage imageNamed:@"icon_users"] forState:UIControlStateHighlighted];
-    membersButton.frame = CGRectMake(0, 0, 44, 44);
-    [membersButton addTarget:self action:@selector(showHideRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:membersButton];
-    
     // Add tap detection on members view in order to hide members when the user taps outside members list
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers)];
     [tap setNumberOfTouchesRequired:1];
@@ -615,16 +608,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 # pragma mark - Room members
-
-- (void)showHideRoomMembers:(id)sender {
-    // Check whether the members list is displayed
-    if (members) {
-        [self hideRoomMembers];
-    } else {
-        [self hideAttachmentView];
-        [self showRoomMembers];
-    }
-}
 
 - (void)updateRoomMembers {
      members = [[self.mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
@@ -1746,6 +1729,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     [self.messagesTableView reloadData];
+}
+
+- (IBAction)showHideRoomMembers:(id)sender {
+    // Check whether the members list is displayed
+    if (members) {
+        [self hideRoomMembers];
+    } else {
+        [self hideAttachmentView];
+        [self showRoomMembers];
+    }
 }
 
 #pragma mark - Post messages
