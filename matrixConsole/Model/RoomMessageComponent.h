@@ -35,6 +35,9 @@ typedef enum : NSUInteger {
 @property (nonatomic) RoomMessageComponentStyle style;
 @property (nonatomic) BOOL isStateEvent;
 @property (nonatomic) CGFloat height;
+// Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
+// In this case, the message is temporary hidden
+@property (nonatomic,getter=isHidden) BOOL hidden; // default is NO.
 
 // True if text message starts with the sender name (see membership events, emote ...)
 @property (nonatomic) BOOL startsWithSenderName;

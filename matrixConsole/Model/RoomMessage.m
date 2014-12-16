@@ -168,6 +168,19 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
+- (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId {
+    for (RoomMessageComponent *msgComponent in messageComponents) {
+        if ([msgComponent.eventId isEqualToString:eventId]) {
+            msgComponent.hidden = isHidden;
+            // Force attributed string refresh
+            [self refreshMessageComponentsHeight];
+            break;
+        }
+    }
+}
+
+#pragma mark -
+
 - (void)refreshMessageComponentsHeight {
     NSMutableArray *components = messageComponents;
     messageComponents = [NSMutableArray arrayWithCapacity:components.count];
@@ -175,9 +188,13 @@ static NSAttributedString *messageSeparator = nil;
     for (RoomMessageComponent *msgComponent in components) {
         CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
         [messageComponents addObject:msgComponent];
-        // Force text message refresh
-        self.attributedTextMessage = nil;
-        msgComponent.height = self.contentSize.height - previousTextViewHeight;
+        if (msgComponent.isHidden) {
+            msgComponent.height = 0;
+        } else {
+            // Force text message refresh
+            self.attributedTextMessage = nil;
+            msgComponent.height = self.contentSize.height - previousTextViewHeight;
+        }
     }
 }
 
@@ -247,13 +264,15 @@ static NSAttributedString *messageSeparator = nil;
     if (!currentAttributedTextMsg && messageComponents.count) {
         // Create attributed string
         for (RoomMessageComponent* msgComponent in messageComponents) {
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
-            if (!currentAttributedTextMsg) {
-                currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-            } else {
-                // Append attributed text
-                [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
-                [currentAttributedTextMsg appendAttributedString:attributedString];
+            if (!msgComponent.isHidden) {
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
+                if (!currentAttributedTextMsg) {
+                    currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+                } else {
+                    // Append attributed text
+                    [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
+                    [currentAttributedTextMsg appendAttributedString:attributedString];
+                }
             }
         }
     }
@@ -262,9 +281,12 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)startsWithSenderName {
     if (_messageType == RoomMessageTypeText) {
-        if (messageComponents.count) {
-            RoomMessageComponent *msgComponent = [messageComponents firstObject];
-            return msgComponent.startsWithSenderName;
+        NSUInteger index = messageComponents.count;
+        while (index--) {
+            RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:index];
+            if (!msgComponent.isHidden) {
+                return msgComponent.startsWithSenderName;
+            }
         }
     }
     return NO;

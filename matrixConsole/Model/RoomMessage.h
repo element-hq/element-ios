@@ -71,4 +71,8 @@ typedef enum : NSUInteger {
 
 // Return true if the event id is one of the message items
 - (BOOL)containsEventId:(NSString*)eventId;
+
+// Show/Hide the component related to the provided event id (available only for type = RoomMessageTypeText)
+- (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId;
+
 @end
