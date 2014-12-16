@@ -76,6 +76,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutBtn];
     
     // keep the aspect ratio of the contact thumbnail
+    // scale it to fit the button frame
     [[self.userPicture imageView] setContentMode: UIViewContentModeScaleAspectFill];
     [[self.userPicture imageView] setClipsToBounds:YES];
     
