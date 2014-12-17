@@ -1397,6 +1397,41 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - UITableView delegate
 
+// search if a conversation has been started with this user
+- (NSString*) getRoomStartedWith:(MXRoomMember*)roomMember {
+    //
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    if (mxHandler.mxSession) {
+        // list the last messages of each room to get the rooms list
+        NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
+        
+        // loops
+        for (MXEvent *mxEvent in recentEvents) {
+            // get the dedicated mxRooms
+            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+            
+            // accept only room with 2 users
+            if (mxRoom.state.members.count == 2)
+            {
+                NSArray* roomMembers = mxRoom.state.members;
+                
+                MXRoomMember* member1 = [roomMembers objectAtIndex:0];
+                MXRoomMember* member2 = [roomMembers objectAtIndex:1];
+                
+                // check if they are the dedicated users
+                if (
+                    ([member1.userId isEqualToString:mxHandler.mxSession.myUser.userId] || [member1.userId isEqualToString:roomMember.userId]) &&
+                    ([member2.userId isEqualToString:mxHandler.mxSession.myUser.userId] || [member2.userId isEqualToString:roomMember.userId])) {
+                    return mxRoom.state.roomId;
+                }
+            }
+        }
+    }
+    
+    return nil;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
@@ -1431,13 +1466,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
             NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
             NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
+            
+            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+            
             // Consider membership of the selected member
             switch (roomMember.membership) {
                 case MXMembershipInvite:
                 case MXMembershipJoin: {
                     // Check conditions to be able to kick someone
                     if (userPowerLevel >= [powerLevels kick] && userPowerLevel >= memberPowerLevel) {
-                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1455,9 +1492,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     // Check conditions to be able to ban someone
                     if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
-                        if (!self.actionMenu) {
-                            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                        }
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1478,7 +1512,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 case MXMembershipLeave: {
                     // Check conditions to be able to invite someone
                     if (userPowerLevel >= [powerLevels invite]) {
-                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1495,9 +1528,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     // Check conditions to be able to ban someone
                     if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
-                        if (!self.actionMenu) {
-                            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                        }
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1518,7 +1548,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 case MXMembershipBan: {
                     // Check conditions to be able to unban someone
                     if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
-                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1538,6 +1567,45 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 default: {
                     break;
                 }
+            }
+            
+            // the current web interface always creates a new room
+            // uncoment this line opens any existing room with the same uers
+            __block NSString* startedRoomID = nil;//[self getRoomStartedWith:roomMember];
+            
+            //, offer to chat with this user only
+            if (startedRoomID) {
+                [self.actionMenu addActionWithTitle:@"Open chat" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    // Open created room
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:startedRoomID];
+                }];
+            } else {
+                [self.actionMenu addActionWithTitle:@"Start chat" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    // Create new room
+                    [mxHandler.mxRestClient createRoom:(roomMember.displayname) ? roomMember.displayname : roomMember.userId
+                                            visibility:kMXRoomVisibilityPrivate
+                                             roomAlias:nil
+                                                 topic:nil
+                                               success:^(MXCreateRoomResponse *response) {
+                                                   // add the user
+                                                   [mxHandler.mxRestClient inviteUser:roomMember.userId toRoom:response.roomId success:^{
+                                                       //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
+                                                   } failure:^(NSError *error) {
+                                                       NSLog(@"%@ invitation failed (roomId: %@): %@", roomMember.userId, response.roomId, error);
+                                                       //Alert user
+                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                   }];
+                                                   
+                                                   // Open created room
+                                                   [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                     
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"Create room failed: %@", error);
+                                                   //Alert user
+                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                               }];
+                
+                }];
             }
         }
         
