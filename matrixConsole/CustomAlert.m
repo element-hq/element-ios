@@ -1,3 +1,4 @@
+
 /*
  Copyright 2014 OpenMarket Ltd
  
@@ -188,7 +189,9 @@
     blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
     if ([block isEqual:[NSNull null]] == NO) {
         // And call it
-        block(self);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(self);
+        });
     }
     // Release alert reference
     _alert = nil;
@@ -201,7 +204,9 @@
     blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
     if ([block isEqual:[NSNull null]] == NO) {
         // And call it
-        block(self);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(self);
+        });
     }
     // Release _alert reference
     _alert = nil;
