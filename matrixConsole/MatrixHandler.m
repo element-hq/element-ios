@@ -19,6 +19,7 @@
 #import "AppSettings.h"
 #import "CustomAlert.h"
 
+#import "MXFileStore.h"
 #import "MXTools.h"
 
 NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
@@ -85,8 +86,8 @@ static MatrixHandler *sharedHandler = nil;
     
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
-        // Use MXMemoryStore as MXStore to not loose message
-        MXMemoryStore *store = [[MXMemoryStore alloc] init];
+        // Use MXFileStore as MXStore to permanently store events
+        MXFileStore *store = [[MXFileStore alloc] initWithCredentials:credentials];
         
         self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:store];
         // Check here whether the app user wants to display all the events
