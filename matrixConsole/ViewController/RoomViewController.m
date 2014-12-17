@@ -2060,10 +2060,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Check
         if (roomAlias.length) {
-            // FIXME
-            NSLog(@"Join Alias is not supported yet (%@)", text);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/join is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alert show];
+            [[MatrixHandler sharedHandler].mxSession joinRoom:roomAlias success:^(MXRoom *room) {
+                // Show the room
+                [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
+            } failure:^(NSError *error) {
+                NSLog(@"Join roomAlias (%@) failed: %@", roomAlias, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
         } else {
             // Display cmd usage in text input as placeholder
             self.messageTextField.placeholder = @"Usage: /join <room_alias>";
