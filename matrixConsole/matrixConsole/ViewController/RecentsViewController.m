@@ -194,15 +194,16 @@
                 NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
                 recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
                 for (MXEvent *mxEvent in recentEvents) {
-                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andMarkAsUnread:NO];
+                    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andRoomState:mxRoom.state markAsUnread:NO];
                     if (recentRoom) {
                         [recents addObject:recentRoom];
                     }
                 }
                 
                 // Register recent listener
-                recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                    // Consider only live event
+                recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+                    // Consider first live event
                     if (direction == MXEventDirectionForwards) {
                         // Check user's membership in live room state (We will remove left rooms from recents)
                         MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:event.roomId];
@@ -222,17 +223,18 @@
                                     // Remove left room
                                     [recents removeObjectAtIndex:index];
                                 } else {
-                                    [recentRoom updateWithLastEvent:event andMarkAsUnread:isUnread];
-                                    // Move this room at first position
-                                    [recents removeObjectAtIndex:index];
-                                    [recents insertObject:recentRoom atIndex:0];
+                                    if ([recentRoom updateWithLastEvent:event andRoomState:roomState markAsUnread:isUnread]) {
+                                        // Move this room at first position
+                                        [recents removeObjectAtIndex:index];
+                                        [recents insertObject:recentRoom atIndex:0];
+                                    }
                                 }
                                 break;
                             }
                         }
                         if (!isFound && !isLeft) {
                             // Insert in first position this new room
-                            RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andMarkAsUnread:isUnread];
+                            RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andRoomState:roomState markAsUnread:isUnread];
                             if (recentRoom) {
                                 [recents insertObject:recentRoom atIndex:0];
                             }
@@ -419,7 +421,7 @@
     MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
     
     cell.roomTitle.text = [mxRoom.state displayname];
-    cell.lastEventDescription.text = [mxHandler displayTextForEvent:recentRoom.lastEvent withRoomState:mxRoom.state inSubtitleMode:YES];
+    cell.lastEventDescription.text = recentRoom.lastEventDescription;
     
     // Set in bold public room name
     if (mxRoom.state.isPublic) {
@@ -428,8 +430,8 @@
         cell.roomTitle.font = [UIFont systemFontOfSize:19];
     }
     
-    if (recentRoom.lastEvent.originServerTs != kMXUndefinedTimestamp) {
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:recentRoom.lastEvent.originServerTs/1000];
+    if (recentRoom.lastEventOriginServerTs != kMXUndefinedTimestamp) {
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:recentRoom.lastEventOriginServerTs/1000];
         cell.recentDate.text = [dateFormatter stringFromDate:date];
     } else {
         cell.recentDate.text = nil;
