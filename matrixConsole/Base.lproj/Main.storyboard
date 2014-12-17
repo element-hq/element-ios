@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Recents-->
@@ -308,24 +309,41 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userLabel" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="uVK-4R-arl" userLabel="userLabel">
-                                                            <rect key="frame" x="56" y="5" width="464" height="34"/>
+                                                            <rect key="frame" x="56" y="5" width="520" height="34"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wDo-tA-Ar7" userLabel="PowerContainer">
+                                                            <rect key="frame" x="578" y="18" width="14" height="14"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="14" id="12z-f1-s6Z"/>
+                                                                <constraint firstAttribute="width" constant="14" id="pnc-pv-ZIj"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="6La-Gc-4B8"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="wDo-tA-Ar7" secondAttribute="trailing" id="GKG-lb-3k0"/>
                                                         <constraint firstItem="uVK-4R-arl" firstAttribute="leading" secondItem="RW8-nh-DTj" secondAttribute="trailing" constant="8" id="O2H-DM-jOU"/>
-                                                        <constraint firstAttribute="trailing" secondItem="uVK-4R-arl" secondAttribute="trailing" constant="80" id="RSx-Sk-WrV"/>
+                                                        <constraint firstAttribute="trailing" secondItem="uVK-4R-arl" secondAttribute="trailing" constant="24" id="RSx-Sk-WrV"/>
+                                                        <constraint firstAttribute="centerY" secondItem="wDo-tA-Ar7" secondAttribute="centerY" id="a3l-Wn-dkq"/>
+                                                        <constraint firstAttribute="trailing" secondItem="wDo-tA-Ar7" secondAttribute="trailing" constant="21" id="cAm-Af-t17"/>
                                                         <constraint firstItem="uVK-4R-arl" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="cFa-Qa-p2W"/>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="8" id="hXV-sM-uhV"/>
                                                         <constraint firstAttribute="bottom" secondItem="uVK-4R-arl" secondAttribute="bottom" constant="10" id="l5F-M4-LOB"/>
                                                     </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="cAm-Af-t17"/>
+                                                        </mask>
+                                                    </variation>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <connections>
                                                     <outlet property="pictureView" destination="RW8-nh-DTj" id="1Lk-bd-tKv"/>
+                                                    <outlet property="powerContainer" destination="wDo-tA-Ar7" id="sub-O0-L9d"/>
                                                     <outlet property="userLabel" destination="uVK-4R-arl" id="OhP-VD-vj0"/>
                                                 </connections>
                                             </tableViewCell>
