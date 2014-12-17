@@ -307,45 +307,26 @@
                                                                 <constraint firstAttribute="width" constant="40" id="pLY-G3-fxB"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="uVK-4R-arl" userLabel="userLabel">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userLabel" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="uVK-4R-arl" userLabel="userLabel">
                                                             <rect key="frame" x="56" y="5" width="464" height="34"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lastActiveLabel" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="R86-SF-Vqh">
-                                                            <rect key="frame" x="528" y="5" width="64" height="39"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UDn-QR-f6Q">
-                                                            <rect key="frame" x="56" y="42" width="464" height="2"/>
-                                                        </progressView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="UDn-QR-f6Q" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="56" id="2HY-kb-aUu"/>
-                                                        <constraint firstAttribute="bottom" secondItem="R86-SF-Vqh" secondAttribute="bottom" constant="5" id="3dt-Qu-01M"/>
-                                                        <constraint firstAttribute="bottom" secondItem="UDn-QR-f6Q" secondAttribute="bottom" constant="5" id="49f-EW-vEr"/>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="6La-Gc-4B8"/>
-                                                        <constraint firstItem="UDn-QR-f6Q" firstAttribute="top" secondItem="uVK-4R-arl" secondAttribute="bottom" constant="3" id="81T-EM-1pe"/>
-                                                        <constraint firstAttribute="trailing" secondItem="R86-SF-Vqh" secondAttribute="trailing" constant="8" id="BvW-r7-R0r"/>
-                                                        <constraint firstAttribute="trailing" secondItem="UDn-QR-f6Q" secondAttribute="trailing" constant="80" id="Nrk-rv-6eb"/>
                                                         <constraint firstItem="uVK-4R-arl" firstAttribute="leading" secondItem="RW8-nh-DTj" secondAttribute="trailing" constant="8" id="O2H-DM-jOU"/>
                                                         <constraint firstAttribute="trailing" secondItem="uVK-4R-arl" secondAttribute="trailing" constant="80" id="RSx-Sk-WrV"/>
                                                         <constraint firstItem="uVK-4R-arl" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="cFa-Qa-p2W"/>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="8" id="hXV-sM-uhV"/>
                                                         <constraint firstAttribute="bottom" secondItem="uVK-4R-arl" secondAttribute="bottom" constant="10" id="l5F-M4-LOB"/>
-                                                        <constraint firstItem="R86-SF-Vqh" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="mNu-kF-Hb7"/>
-                                                        <constraint firstItem="R86-SF-Vqh" firstAttribute="leading" secondItem="uVK-4R-arl" secondAttribute="trailing" constant="8" id="tz0-aZ-yaX"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <connections>
-                                                    <outlet property="lastActiveAgoLabel" destination="R86-SF-Vqh" id="AIr-OL-gqM"/>
                                                     <outlet property="pictureView" destination="RW8-nh-DTj" id="1Lk-bd-tKv"/>
                                                     <outlet property="userLabel" destination="uVK-4R-arl" id="OhP-VD-vj0"/>
-                                                    <outlet property="userPowerLevel" destination="UDn-QR-f6Q" id="Ts8-l1-Lyv"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>

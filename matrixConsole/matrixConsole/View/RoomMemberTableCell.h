@@ -24,8 +24,6 @@
 @interface RoomMemberTableCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UILabel *userLabel;
-@property (weak, nonatomic) IBOutlet UIProgressView *userPowerLevel;
-@property (weak, nonatomic) IBOutlet UILabel *lastActiveAgoLabel;
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
 @end
