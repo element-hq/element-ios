@@ -18,11 +18,14 @@
 @interface RecentRoom : NSObject
 
 @property (nonatomic, readonly) NSString *roomId;
-@property (nonatomic, readonly) MXEvent  *lastEvent;
+@property (nonatomic, readonly) NSString *lastEventDescription;
+@property (nonatomic, readonly) uint64_t lastEventOriginServerTs;
 @property (nonatomic, readonly) NSUInteger unreadCount;
 
-- (id)initWithLastEvent:(MXEvent*)event andMarkAsUnread:(BOOL)isUnread;
-- (void)updateWithLastEvent:(MXEvent*)event andMarkAsUnread:(BOOL)isUnread;
+- (id)initWithLastEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState markAsUnread:(BOOL)isUnread;
+// Update the current last event description with the provided event, except if this description is empty (see unsupported/unexpected events).
+// Return true when the provided event is considered as new last event
+- (BOOL)updateWithLastEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState markAsUnread:(BOOL)isUnread;
 - (void)resetUnreadCount;
 
 @end
