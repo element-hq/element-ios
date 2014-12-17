@@ -647,7 +647,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 # pragma mark - Room members
 
 - (void)updateRoomMembers {
-     members = [[self.mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
+    NSArray* membersList = [self.mxRoom.state members];
+    
+    if (![[AppSettings sharedSettings] displayLeftUsers]) {
+        NSMutableArray* filteredMembers = [[NSMutableArray alloc] init];
+        
+        for (MXRoomMember* member in membersList) {
+            if (member.membership != MXMembershipLeave) {
+                [filteredMembers addObject:member];
+            }
+        }
+        
+        membersList = filteredMembers;
+    }
+    
+     members = [membersList sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
          // Move banned and left members at the end of the list
          if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
              if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
@@ -665,7 +679,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
          } else if (member2.membership == MXMembershipInvite) {
              return NSOrderedAscending;
          }
-         
+             
          if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
              // Get the users that correspond to these members
              MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
