@@ -47,6 +47,7 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayAllEvents"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedMessages"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayLeftUsers"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -85,6 +86,14 @@ static AppSettings *sharedSettings = nil;
 
 - (void)setSortMembersUsingLastSeenTime:(BOOL)sortMembersUsingLastSeen {
     [[NSUserDefaults standardUserDefaults] setBool:sortMembersUsingLastSeen forKey:@"sortMembersUsingLastSeenTime"];
+}
+
+- (BOOL)displayLeftUsers {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"displayLeftUsers"];
+}
+
+- (void)setDisplayLeftUsers:(BOOL)displayLeftUsers {
+    [[NSUserDefaults standardUserDefaults] setBool:displayLeftUsers forKey:@"displayLeftUsers"];
 }
 
 @end

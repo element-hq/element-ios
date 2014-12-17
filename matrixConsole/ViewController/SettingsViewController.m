@@ -50,6 +50,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *allEventsSwitch;
     UISwitch *unsupportedMsgSwitch;
     UISwitch *sortMembersSwitch;
+    UISwitch *displayLeftMembersSwitch;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -105,6 +106,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     allEventsSwitch = nil;
     unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
+    displayLeftMembersSwitch = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
 }
 
@@ -371,6 +373,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [AppSettings sharedSettings].hideUnsupportedMessages = unsupportedMsgSwitch.on;
     } else if (sender == sortMembersSwitch) {
         [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
+    } else if (sender == displayLeftMembersSwitch) {
+        [AppSettings sharedSettings].displayLeftUsers = displayLeftMembersSwitch.on;
     }
 }
 
@@ -404,7 +408,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         return 1;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
-        return 3;
+        return 4;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         return 1;
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -488,10 +492,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             roomsSettingCell.settingLabel.text = @"Hide unsupported messages";
             roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedMessages];
             unsupportedMsgSwitch = roomsSettingCell.settingSwitch;
-        } else {
+        } else if (indexPath.row == 2) {
             roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
             roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] sortMembersUsingLastSeenTime];
             sortMembersSwitch = roomsSettingCell.settingSwitch;
+        } else {
+            roomsSettingCell.settingLabel.text = @"Display left members";
+            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayLeftUsers];
+            displayLeftMembersSwitch = roomsSettingCell.settingSwitch;
         }
         cell = roomsSettingCell;
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
