@@ -74,9 +74,58 @@
     return presenceText;
 }
 
+- (void) setPowerContainerValue:(CGFloat)progress
+{
+    // no power level -> hide the pie
+    if (0 == progress) {
+        self.powerContainer.hidden = YES;
+        return;
+    }
+
+    // display it
+    self.powerContainer.hidden = NO;
+
+    // defines the view settings
+    CGFloat radius = self.powerContainer.frame.size.width / 2;
+    
+    // draw a rounded view
+    [self.powerContainer.layer setCornerRadius:radius];
+    
+    // the default body color is gray
+    self.powerContainer.backgroundColor = [UIColor lightGrayColor];
+    
+    // draw the pie
+    CALayer* layer = [self.powerContainer layer];
+
+    // remove any previous drawn layer
+    if (powerContainerLayer) {
+        [powerContainerLayer removeFromSuperlayer];
+    }
+
+    // create the red layer
+    powerContainerLayer = [CAShapeLayer layer];
+    [powerContainerLayer setZPosition:0];
+    [powerContainerLayer setStrokeColor:NULL];
+
+    // power level is drawn in red
+    powerContainerLayer.fillColor = [UIColor redColor].CGColor;
+    
+    // build the path
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, radius, radius);
+    
+    CGPathAddArc(path, NULL, radius, radius, radius, -M_PI / 2, (progress * 2 * M_PI) - (M_PI / 2), 0);
+    CGPathCloseSubpath(path);
+    
+    [powerContainerLayer setPath:path];
+    CFRelease(path);
+
+    // add the sub layer
+    [layer addSublayer:powerContainerLayer];
+}
+
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
     if (room && roomMember) {
-        
         // set the user info
         self.userLabel.text = [room.state memberName:roomMember.userId];
         
@@ -99,9 +148,10 @@
                 view.alpha = 1;
             }
         }
-        
+
+        // user info
+        CGFloat powerLevel = 0;
         NSString* presenceText = nil;
-        
         
         // Customize banned and left (kicked) members
         if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
@@ -126,7 +176,8 @@
             if (userPowerLevel) {
                 userPowerLevelFloat = userPowerLevel;
             }
-            //self.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+
+            powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
             
             if (roomMember.membership == MXMembershipInvite) {
                 self.pictureView.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -140,8 +191,11 @@
                 presenceText = [self getLastPresenceText:user];
             }
         }
-        
-        
+
+        // display the power level pie
+        [self setPowerContainerValue:powerLevel];
+
+        // and the presence text (if any) 
         if (presenceText) {
             NSString* extraText = [NSString stringWithFormat:@"(%@)", presenceText];
             self.userLabel.text = [NSString stringWithFormat:@"%@ %@", self.userLabel.text, extraText];
@@ -156,7 +210,7 @@
             
             NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                                       font, NSFontAttributeName,
-                                      [UIColor grayColor], NSForegroundColorAttributeName, nil];
+                                      [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
             
             // Create the attributed string (text + attributes)
             NSMutableAttributedString *attributedText =[[NSMutableAttributedString alloc] initWithString:self.userLabel.text attributes:attrs];
