@@ -733,4 +733,37 @@ static MatrixHandler *sharedHandler = nil;
     return displayText;
 }
 
+
+// search if a conversation has been started with this user
+- (NSString*) getRoomStartedWithMember:(MXRoomMember*)roomMember {
+    //
+    if (self.mxSession) {
+        // list the last messages of each room to get the rooms list
+        NSArray *recentEvents = [NSMutableArray arrayWithArray:[self.mxSession recentsWithTypeIn:self.eventsFilterForMessages]];
+        
+        // loops
+        for (MXEvent *mxEvent in recentEvents) {
+            // get the dedicated mxRooms
+            MXRoom *mxRoom = [self.mxSession roomWithRoomId:mxEvent.roomId];
+            
+            // accept only room with 2 users
+            if (mxRoom.state.members.count == 2) {
+                NSArray* roomMembers = mxRoom.state.members;
+                
+                MXRoomMember* member1 = [roomMembers objectAtIndex:0];
+                MXRoomMember* member2 = [roomMembers objectAtIndex:1];
+                
+                // check if they are the dedicated users
+                if (
+                    ([member1.userId isEqualToString:self.mxSession.myUser.userId] || [member1.userId isEqualToString:roomMember.userId]) &&
+                    ([member2.userId isEqualToString:self.mxSession.myUser.userId] || [member2.userId isEqualToString:roomMember.userId])) {
+                    return mxRoom.state.roomId;
+                }
+            }
+        }
+    }
+    
+    return nil;
+}
+
 @end
