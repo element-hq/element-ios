@@ -221,8 +221,42 @@
                                          _loginBtn.enabled = YES;
                                          
                                          NSLog(@"Login failed: %@", error);
+                                         
+                                         // translate the error code to a human message
+                                         NSString* message = error.localizedDescription;
+                                         NSDictionary* dict = error.userInfo;
+                                         
+                                         // detect if it is a Matrix SDK issue
+                                         if (dict) {
+                                             NSString* localizedError = [dict valueForKey:@"error"];
+                                             NSString* errCode = [dict valueForKey:@"errCode"];
+                                             
+                                             if (errCode) {
+                                                 if ([errCode isEqualToString:@"M_FORBIDDEN"]) {
+                                                     message = @"Invalid username/password";
+                                                 } else if (localizedError .length > 0) {
+                                                     message = localizedError;
+                                                 } else if ([errCode isEqualToString:@"M_UNKNOWN_TOKEN"]) {
+                                                     message = @"The access token specified was not recognised";
+                                                 } else if ([errCode isEqualToString:@"M_BAD_JSON"]) {
+                                                     message = @"Malformed JSON";
+                                                 } else if ([errCode isEqualToString:@"M_NOT_JSON"]) {
+                                                     message = @"Did not contain valid JSON";
+                                                 } else if ([errCode isEqualToString:@"M_LIMIT_EXCEEDED"]) {
+                                                     message = @"Too many requests have been sent";
+                                                 } else if ([errCode isEqualToString:@"M_USER_IN_USE"]) {
+                                                     message = @"This user name is already used";
+                                                 } else if ([errCode isEqualToString:@"M_LOGIN_EMAIL_URL_NOT_YET"]) {
+                                                     message = @"The email link which has not been clicked yet";
+                                                 }
+                                                 else {
+                                                     message = errCode;
+                                                 }
+                                             }
+                                         }
+
                                          //Alert user
-                                          alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:@"Invalid username/password" style:CustomAlertStyleAlert];
+                                          alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:message style:CustomAlertStyleAlert];
                                          [alert addActionWithTitle:@"Dismiss" style:CustomAlertActionStyleCancel handler:^(CustomAlert *alert) {}];
                                          [alert showInViewController:self];
                                      }];
