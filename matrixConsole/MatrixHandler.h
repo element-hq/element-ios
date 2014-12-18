@@ -59,4 +59,6 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
 
+// search if a 1:1 conversation has been started with this member
+- (NSString*) getRoomStartedWithMember:(MXRoomMember*)roomMember;
 @end

@@ -1398,41 +1398,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - UITableView delegate
 
-// search if a conversation has been started with this user
-- (NSString*) getRoomStartedWith:(MXRoomMember*)roomMember {
-    //
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    
-    if (mxHandler.mxSession) {
-        // list the last messages of each room to get the rooms list
-        NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
-        
-        // loops
-        for (MXEvent *mxEvent in recentEvents) {
-            // get the dedicated mxRooms
-            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
-            
-            // accept only room with 2 users
-            if (mxRoom.state.members.count == 2)
-            {
-                NSArray* roomMembers = mxRoom.state.members;
-                
-                MXRoomMember* member1 = [roomMembers objectAtIndex:0];
-                MXRoomMember* member2 = [roomMembers objectAtIndex:1];
-                
-                // check if they are the dedicated users
-                if (
-                    ([member1.userId isEqualToString:mxHandler.mxSession.myUser.userId] || [member1.userId isEqualToString:roomMember.userId]) &&
-                    ([member2.userId isEqualToString:mxHandler.mxSession.myUser.userId] || [member2.userId isEqualToString:roomMember.userId])) {
-                    return mxRoom.state.roomId;
-                }
-            }
-        }
-    }
-    
-    return nil;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
@@ -1572,7 +1537,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             // the current web interface always creates a new room
             // uncoment this line opens any existing room with the same uers
-            __block NSString* startedRoomID = nil;//[self getRoomStartedWith:roomMember];
+            __block NSString* startedRoomID = nil; // [mxHandler getRoomStartedWithMember:roomMember];
             
             //, offer to chat with this user only
             if (startedRoomID) {
