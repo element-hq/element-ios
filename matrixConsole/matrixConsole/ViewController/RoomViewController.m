@@ -125,6 +125,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // add an input to check if the keyboard is hiding with sliding it
     inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
     self.messageTextField.inputAccessoryView = inputAccessoryView;
+    
+    // ensure that the titleView will be scaled when it will be required
+    // during a screen rotation for example.
+    self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
 - (void)dealloc {
