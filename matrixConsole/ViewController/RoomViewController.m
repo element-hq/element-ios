@@ -647,7 +647,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 # pragma mark - Room members
 
 - (void)updateRoomMembers {
-     members = [[self.mxRoom.state members] sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
+    NSArray* membersList = [self.mxRoom.state members];
+    
+    if (![[AppSettings sharedSettings] displayLeftUsers]) {
+        NSMutableArray* filteredMembers = [[NSMutableArray alloc] init];
+        
+        for (MXRoomMember* member in membersList) {
+            if (member.membership != MXMembershipLeave) {
+                [filteredMembers addObject:member];
+            }
+        }
+        
+        membersList = filteredMembers;
+    }
+    
+     members = [membersList sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
          // Move banned and left members at the end of the list
          if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
              if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
@@ -665,7 +679,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
          } else if (member2.membership == MXMembershipInvite) {
              return NSOrderedAscending;
          }
-         
+             
          if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
              // Get the users that correspond to these members
              MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -1188,6 +1202,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Restore initial settings
+    cell.message = message;
     cell.attachmentView.imageURL = nil; // Cancel potential attachment loading
     cell.attachmentView.hidden = YES;
     cell.playIconView.hidden = YES;
@@ -1417,13 +1432,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
             NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
             NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
+            
+            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+            
             // Consider membership of the selected member
             switch (roomMember.membership) {
                 case MXMembershipInvite:
                 case MXMembershipJoin: {
                     // Check conditions to be able to kick someone
                     if (userPowerLevel >= [powerLevels kick] && userPowerLevel >= memberPowerLevel) {
-                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1441,9 +1458,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     // Check conditions to be able to ban someone
                     if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
-                        if (!self.actionMenu) {
-                            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                        }
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1464,7 +1478,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 case MXMembershipLeave: {
                     // Check conditions to be able to invite someone
                     if (userPowerLevel >= [powerLevels invite]) {
-                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1481,9 +1494,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     // Check conditions to be able to ban someone
                     if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
-                        if (!self.actionMenu) {
-                            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-                        }
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1504,7 +1514,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 case MXMembershipBan: {
                     // Check conditions to be able to unban someone
                     if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
-                        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
                         [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1524,6 +1533,45 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 default: {
                     break;
                 }
+            }
+            
+            // the current web interface always creates a new room
+            // uncoment this line opens any existing room with the same uers
+            __block NSString* startedRoomID = nil; // [mxHandler getRoomStartedWithMember:roomMember];
+            
+            //, offer to chat with this user only
+            if (startedRoomID) {
+                [self.actionMenu addActionWithTitle:@"Open chat" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    // Open created room
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:startedRoomID];
+                }];
+            } else {
+                [self.actionMenu addActionWithTitle:@"Start chat" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    // Create new room
+                    [mxHandler.mxRestClient createRoom:(roomMember.displayname) ? roomMember.displayname : roomMember.userId
+                                            visibility:kMXRoomVisibilityPrivate
+                                             roomAlias:nil
+                                                 topic:nil
+                                               success:^(MXCreateRoomResponse *response) {
+                                                   // add the user
+                                                   [mxHandler.mxRestClient inviteUser:roomMember.userId toRoom:response.roomId success:^{
+                                                       //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
+                                                   } failure:^(NSError *error) {
+                                                       NSLog(@"%@ invitation failed (roomId: %@): %@", roomMember.userId, response.roomId, error);
+                                                       //Alert user
+                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                   }];
+                                                   
+                                                   // Open created room
+                                                   [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                     
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"Create room failed: %@", error);
+                                                   //Alert user
+                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                               }];
+                
+                }];
             }
         }
         
@@ -2156,10 +2204,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             // Set power level
             if (userId && powerLevel) {
-                // FIXME
-                NSLog(@"Set user power level (/op) is not supported yet (%@)", userId);
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/op is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [alert show];
+                // Set user power level
+                [self.mxRoom setPowerLevelOfUserWithUserID:userId powerLevel:[powerLevel integerValue] success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Set user power (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
             } else {
                 // Display cmd usage in text input as placeholder
                 self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
@@ -2167,10 +2218,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
             if (userId) {
                 // Reset user power level
-                // FIXME
-                NSLog(@"Reset user power level (/deop) is not supported yet (%@)", userId);
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/deop is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [alert show];
+                [self.mxRoom setPowerLevelOfUserWithUserID:userId powerLevel:0 success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Reset user power (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
             } else {
                 // Display cmd usage in text input as placeholder
                 self.messageTextField.placeholder = @"Usage: /deop <userId>";

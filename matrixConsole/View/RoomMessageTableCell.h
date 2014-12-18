@@ -16,6 +16,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomImageView.h"
+#import "RoomMessage.h"
 
 // Room Message Table View Cell
 @interface RoomMessageTableCell : UITableViewCell
@@ -28,6 +29,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateTimeLabelContainerTopConstraint;
+
+// reference to the linked message
+@property (strong, nonatomic) RoomMessage *message;
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell

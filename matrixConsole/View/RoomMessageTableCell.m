@@ -26,4 +26,12 @@
 
 
 @implementation OutgoingMessageTableCell
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    // ensure that the text is still aligned to the left side of the screen
+    // even during animation while enlarging/reducing the viewcontroller (with UISplitViewController)
+    CGFloat leftInset = self.message.maxTextViewWidth -  self.message.contentSize.width;
+    self.messageTextView.contentInset = UIEdgeInsetsMake(0, leftInset, 0, -leftInset);
+}
 @end

@@ -21,6 +21,7 @@
 @property (nonatomic) BOOL displayAllEvents;
 @property (nonatomic) BOOL hideUnsupportedMessages;
 @property (nonatomic) BOOL sortMembersUsingLastSeenTime;
+@property (nonatomic) BOOL displayLeftUsers;    
 
 + (AppSettings *)sharedSettings;
 
