@@ -21,6 +21,10 @@
 #import "CustomAlert.h"
 
 @interface LoginViewController ()
+{
+    // reference to any opened alert view
+    CustomAlert *alert;
+}
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewBottomConstraint;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -90,6 +94,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+
+    // close any opened alert
+    if (alert) {
+        [alert dismiss:NO];
+        alert = nil;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -212,7 +222,7 @@
                                          
                                          NSLog(@"Login failed: %@", error);
                                          //Alert user
-                                         CustomAlert *alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:@"Invalid username/password" style:CustomAlertStyleAlert];
+                                          alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:@"Invalid username/password" style:CustomAlertStyleAlert];
                                          [alert addActionWithTitle:@"Dismiss" style:CustomAlertActionStyleCancel handler:^(CustomAlert *alert) {}];
                                          [alert showInViewController:self];
                                      }];
