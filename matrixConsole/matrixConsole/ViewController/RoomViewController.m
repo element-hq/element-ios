@@ -1202,6 +1202,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Restore initial settings
+    cell.message = message;
     cell.attachmentView.imageURL = nil; // Cancel potential attachment loading
     cell.attachmentView.hidden = YES;
     cell.playIconView.hidden = YES;
