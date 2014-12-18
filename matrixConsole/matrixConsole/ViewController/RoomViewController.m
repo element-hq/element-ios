@@ -2204,10 +2204,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             // Set power level
             if (userId && powerLevel) {
-                // FIXME
-                NSLog(@"Set user power level (/op) is not supported yet (%@)", userId);
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/op is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [alert show];
+                // Set user power level
+                [self.mxRoom setPowerLevelOfUserWithUserID:userId powerLevel:[powerLevel integerValue] success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Set user power (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
             } else {
                 // Display cmd usage in text input as placeholder
                 self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
@@ -2215,10 +2218,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
             if (userId) {
                 // Reset user power level
-                // FIXME
-                NSLog(@"Reset user power level (/deop) is not supported yet (%@)", userId);
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"/deop is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [alert show];
+                [self.mxRoom setPowerLevelOfUserWithUserID:userId powerLevel:0 success:^{
+                } failure:^(NSError *error) {
+                    NSLog(@"Reset user power (%@) failed: %@", userId, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
             } else {
                 // Display cmd usage in text input as placeholder
                 self.messageTextField.placeholder = @"Usage: /deop <userId>";
