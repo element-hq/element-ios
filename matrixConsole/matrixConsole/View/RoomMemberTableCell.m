@@ -20,21 +20,26 @@
 @implementation RoomMemberTableCell
 
 // returns the presence color
+// nil if there is no valid one
 - (UIColor*) getUserPresenceColor:(MXUser*) user
 {
-    switch (user.presence) {
-        case MXPresenceOnline:
-            return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-        case MXPresenceUnavailable:
-            return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
-        case MXPresenceOffline:
-            return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
-        case MXPresenceUnknown:
-        case MXPresenceFreeForChat:
-        case MXPresenceHidden:
-        default:
-            return [UIColor clearColor];
+    if (user) {
+        switch (user.presence) {
+            case MXPresenceOnline:
+                return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+            case MXPresenceUnavailable:
+                return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
+            case MXPresenceOffline:
+                return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
+            case MXPresenceUnknown:
+            case MXPresenceFreeForChat:
+            case MXPresenceHidden:
+            default:
+                return nil;
+        }
     }
+    
+    return nil;
 }
 
 - (NSString*)getLastPresenceText:(MXUser*)user {
@@ -136,7 +141,6 @@
         // Round image view
         [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];
         self.pictureView.clipsToBounds = YES;
-        self.pictureView.layer.borderWidth = 2;
         
         // Shade invited users
         if (roomMember.membership == MXMembershipInvite) {
@@ -152,6 +156,7 @@
         // user info
         CGFloat powerLevel = 0;
         NSString* presenceText = nil;
+        UIColor* thumbnailBorderColor = nil;
         
         // Customize banned and left (kicked) members
         if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
@@ -178,24 +183,38 @@
             }
 
             powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
-            
+
+            // get the user presence and his thumbnail border color
             if (roomMember.membership == MXMembershipInvite) {
-                self.pictureView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                thumbnailBorderColor = [UIColor lightGrayColor];
                 presenceText = @"invited";
             } else {
                 // Get the user that corresponds to this member
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
                 MXUser *user = [mxHandler.mxSession userWithUserId:roomMember.userId];
                 
-                self.pictureView.layer.borderColor = [self getUserPresenceColor:user].CGColor;
-                presenceText = [self getLastPresenceText:user];
+                // existing user ?
+                if (user) {
+                    thumbnailBorderColor = [self getUserPresenceColor:user];
+                    presenceText = [self getLastPresenceText:user];
+                }
             }
         }
 
         // display the power level pie
         [self setPowerContainerValue:powerLevel];
+        
+        // if the thumbnail is defined
+        if (thumbnailBorderColor) {
+            self.pictureView.layer.borderWidth = 2;
+            self.pictureView.layer.borderColor = thumbnailBorderColor.CGColor;
+        } else {
+            // remove the border
+            // else it draws black border
+            self.pictureView.layer.borderWidth = 0;
+        }
 
-        // and the presence text (if any) 
+        // and the presence text (if any)
         if (presenceText) {
             NSString* extraText = [NSString stringWithFormat:@"(%@)", presenceText];
             self.userLabel.text = [NSString stringWithFormat:@"%@ %@", self.userLabel.text, extraText];
