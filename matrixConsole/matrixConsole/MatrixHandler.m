@@ -539,7 +539,13 @@ static MatrixHandler *sharedHandler = nil;
                     prevDisplayname = nil;
                 }
                 if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
-                    displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", event.userId, prevDisplayname, displayname];
+                    if (!prevDisplayname) {
+                        displayText = [NSString stringWithFormat:@"%@ set their display name to %@", event.userId, displayname];
+                    } else if (!displayname) {
+                        displayText = [NSString stringWithFormat:@"%@ removed their display name (previouly named %@)", event.userId, prevDisplayname];
+                    } else {
+                        displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", event.userId, prevDisplayname, displayname];
+                    }
                 }
                 
                 // Check whether the avatar has been changed
