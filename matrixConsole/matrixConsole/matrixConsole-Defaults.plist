@@ -18,5 +18,7 @@
 	<true/>
 	<key>sortMembersUsingLastSeenTime</key>
 	<true/>
+	<key>displayLeftUsers</key>
+	<false/>
 </dict>
 </plist>

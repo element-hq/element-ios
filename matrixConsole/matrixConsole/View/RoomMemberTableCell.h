@@ -22,10 +22,13 @@
 
 // Room Member Table View Cell
 @interface RoomMemberTableCell : UITableViewCell
+{
+    //
+    CAShapeLayer* powerContainerLayer;
+}
 @property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UILabel *userLabel;
-@property (weak, nonatomic) IBOutlet UIProgressView *userPowerLevel;
-@property (weak, nonatomic) IBOutlet UILabel *lastActiveAgoLabel;
+@property (weak, nonatomic) IBOutlet UIView *powerContainer;
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
 @end

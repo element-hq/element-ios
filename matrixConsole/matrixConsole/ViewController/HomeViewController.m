@@ -318,6 +318,29 @@
     }
 }
 
+#pragma mark - scrollView delegate
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    // hide the keyboard if the user scrolls the public rooms list
+    if (!filteredPublicRooms) {
+        if ([self.roomNameTextField isFirstResponder]) {
+            [self.roomNameTextField resignFirstResponder];
+            [self.tableView becomeFirstResponder];
+        }
+ 
+        if ([self.roomAliasTextField isFirstResponder]) {
+            [self.roomNameTextField resignFirstResponder];
+            [self.tableView becomeFirstResponder];
+        }
+        
+        if ([self.participantsTextField isFirstResponder]) {
+            [self.participantsTextField resignFirstResponder];
+            [self.tableView becomeFirstResponder];
+        }
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -19,11 +19,125 @@
 
 @implementation RoomMemberTableCell
 
+// returns the presence color
+// nil if there is no valid one
+- (UIColor*) getUserPresenceColor:(MXUser*) user
+{
+    if (user) {
+        switch (user.presence) {
+            case MXPresenceOnline:
+                return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+            case MXPresenceUnavailable:
+                return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
+            case MXPresenceOffline:
+                return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
+            case MXPresenceUnknown:
+            case MXPresenceFreeForChat:
+            case MXPresenceHidden:
+            default:
+                return nil;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString*)getLastPresenceText:(MXUser*)user {
+
+    NSString* presenceText = nil;
+    
+    // Prepare last active ago string
+    NSUInteger lastActiveAgoInSec = user.lastActiveAgo / 1000;
+    if (lastActiveAgoInSec < 60) {
+        presenceText = [NSString stringWithFormat:@"%lus", (unsigned long)lastActiveAgoInSec];
+    } else if (lastActiveAgoInSec < 3600) {
+        presenceText = [NSString stringWithFormat:@"%lum", (unsigned long)(lastActiveAgoInSec / 60)];
+    } else if (lastActiveAgoInSec < 86400) {
+        presenceText = [NSString stringWithFormat:@"%luh", (unsigned long)(lastActiveAgoInSec / 3600)];
+    } else {
+        presenceText = [NSString stringWithFormat:@"%lud", (unsigned long)(lastActiveAgoInSec / 86400)];
+    }
+    
+    // Check presence
+    switch (user.presence) {
+        case MXPresenceOffline: {
+            presenceText = @"offline";
+            break;
+        }
+        case MXPresenceHidden:
+        case MXPresenceUnknown:
+        case MXPresenceFreeForChat: {
+            presenceText = nil;
+            break;
+        }
+        case MXPresenceOnline:
+        case MXPresenceUnavailable:
+        default:
+            break;
+    }
+    
+    return presenceText;
+}
+
+- (void) setPowerContainerValue:(CGFloat)progress
+{
+    // no power level -> hide the pie
+    if (0 == progress) {
+        self.powerContainer.hidden = YES;
+        return;
+    }
+
+    // display it
+    self.powerContainer.hidden = NO;
+
+    // defines the view settings
+    CGFloat radius = self.powerContainer.frame.size.width / 2;
+    
+    // draw a rounded view
+    [self.powerContainer.layer setCornerRadius:radius];
+    
+    // the default body color is gray
+    self.powerContainer.backgroundColor = [UIColor lightGrayColor];
+    
+    // draw the pie
+    CALayer* layer = [self.powerContainer layer];
+
+    // remove any previous drawn layer
+    if (powerContainerLayer) {
+        [powerContainerLayer removeFromSuperlayer];
+    }
+
+    // create the red layer
+    powerContainerLayer = [CAShapeLayer layer];
+    [powerContainerLayer setZPosition:0];
+    [powerContainerLayer setStrokeColor:NULL];
+
+    // power level is drawn in red
+    powerContainerLayer.fillColor = [UIColor redColor].CGColor;
+    
+    // build the path
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, radius, radius);
+    
+    CGPathAddArc(path, NULL, radius, radius, radius, -M_PI / 2, (progress * 2 * M_PI) - (M_PI / 2), 0);
+    CGPathCloseSubpath(path);
+    
+    [powerContainerLayer setPath:path];
+    CFRelease(path);
+
+    // add the sub layer
+    [layer addSublayer:powerContainerLayer];
+}
+
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
     if (room && roomMember) {
+        // set the user info
         self.userLabel.text = [room.state memberName:roomMember.userId];
+        
+        // user
         self.pictureView.placeholder = @"default-profile";
         self.pictureView.imageURL = roomMember.avatarUrl;
+        
         // Round image view
         [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];
         self.pictureView.clipsToBounds = YES;
@@ -38,20 +152,21 @@
                 view.alpha = 1;
             }
         }
+
+        // user info
+        CGFloat powerLevel = 0;
+        NSString* presenceText = nil;
+        UIColor* thumbnailBorderColor = nil;
         
         // Customize banned and left (kicked) members
         if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
             self.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-            
-            self.userPowerLevel.hidden = YES;
-            
-            self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
-            self.lastActiveAgoLabel.text = (roomMember.membership == MXMembershipLeave) ? @"left" : @"banned";
+            presenceText = (roomMember.membership == MXMembershipLeave) ? @"left" : @"banned";
         } else {
             self.backgroundColor = [UIColor whiteColor];
             
             // Handle power level display
-            self.userPowerLevel.hidden = NO;
+            //self.userPowerLevel.hidden = NO;
             MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
 
             int maxLevel = 0;
@@ -66,67 +181,62 @@
             if (userPowerLevel) {
                 userPowerLevelFloat = userPowerLevel;
             }
-            self.userPowerLevel.progress = maxLevel ? userPowerLevelFloat / maxLevel : 1;
 
+            powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+
+            // get the user presence and his thumbnail border color
             if (roomMember.membership == MXMembershipInvite) {
-                self.lastActiveAgoLabel.backgroundColor = [UIColor lightGrayColor];
-                self.lastActiveAgoLabel.text = @"invited";
+                thumbnailBorderColor = [UIColor lightGrayColor];
+                presenceText = @"invited";
             } else {
                 // Get the user that corresponds to this member
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
                 MXUser *user = [mxHandler.mxSession userWithUserId:roomMember.userId];
                 
-                // Prepare last active ago string
-                NSUInteger lastActiveAgoInSec = user.lastActiveAgo / 1000;
-                NSString *lastActive;
-                if (lastActiveAgoInSec < 60) {
-                    lastActive = [NSString stringWithFormat:@"%lus ago", (unsigned long)lastActiveAgoInSec];
-                } else if (lastActiveAgoInSec < 3600) {
-                    lastActive = [NSString stringWithFormat:@"%lum ago", (unsigned long)(lastActiveAgoInSec / 60)];
-                } else if (lastActiveAgoInSec < 86400) {
-                    lastActive = [NSString stringWithFormat:@"%luh ago", (unsigned long)(lastActiveAgoInSec / 3600)];
-                } else {
-                    lastActive = [NSString stringWithFormat:@"%lud ago", (unsigned long)(lastActiveAgoInSec / 86400)];
-                }
-                
-                // Check presence
-                switch (user.presence) {
-                    case MXPresenceUnknown: {
-                        self.lastActiveAgoLabel.backgroundColor = [UIColor clearColor];
-                        self.lastActiveAgoLabel.text = nil;//@"unknown";
-                        break;
-                    }
-                    case MXPresenceOnline: {
-                        self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-                        self.lastActiveAgoLabel.text = lastActive;
-                        self.lastActiveAgoLabel.numberOfLines = 0;
-                        break;
-                    }
-                    case MXPresenceUnavailable: {
-                        self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
-                        self.lastActiveAgoLabel.text = lastActive;
-                        self.lastActiveAgoLabel.numberOfLines = 0;
-                        break;
-                    }
-                    case MXPresenceOffline: {
-                        self.lastActiveAgoLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
-                        self.lastActiveAgoLabel.text = @"offline";
-                        break;
-                    }
-                    case MXPresenceFreeForChat: {
-                        self.lastActiveAgoLabel.backgroundColor = [UIColor clearColor];
-                        self.lastActiveAgoLabel.text = nil;//@"free for chat";
-                        break;
-                    }
-                    case MXPresenceHidden: {
-                        self.lastActiveAgoLabel.backgroundColor = [UIColor clearColor];
-                        self.lastActiveAgoLabel.text = nil;//@"hidden";
-                        break;
-                    }
-                    default:
-                        break;
+                // existing user ?
+                if (user) {
+                    thumbnailBorderColor = [self getUserPresenceColor:user];
+                    presenceText = [self getLastPresenceText:user];
                 }
             }
+        }
+
+        // display the power level pie
+        [self setPowerContainerValue:powerLevel];
+        
+        // if the thumbnail is defined
+        if (thumbnailBorderColor) {
+            self.pictureView.layer.borderWidth = 2;
+            self.pictureView.layer.borderColor = thumbnailBorderColor.CGColor;
+        } else {
+            // remove the border
+            // else it draws black border
+            self.pictureView.layer.borderWidth = 0;
+        }
+
+        // and the presence text (if any)
+        if (presenceText) {
+            NSString* extraText = [NSString stringWithFormat:@"(%@)", presenceText];
+            self.userLabel.text = [NSString stringWithFormat:@"%@ %@", self.userLabel.text, extraText];
+            
+            NSRange range = [self.userLabel.text rangeOfString:extraText];
+            UIFont* font = self.userLabel.font;
+            
+            // Create the attributes
+            NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   font, NSFontAttributeName,
+                                   self.userLabel.textColor, NSForegroundColorAttributeName, nil];
+            
+            NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      font, NSFontAttributeName,
+                                      [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
+            
+            // Create the attributed string (text + attributes)
+            NSMutableAttributedString *attributedText =[[NSMutableAttributedString alloc] initWithString:self.userLabel.text attributes:attrs];
+            [attributedText setAttributes:subAttrs range:range];
+            
+            // Set it in our UILabel and we are done!
+            [self.userLabel setAttributedText:attributedText];
         }
     }
 }
