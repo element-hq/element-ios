@@ -229,7 +229,7 @@
                                          // detect if it is a Matrix SDK issue
                                          if (dict) {
                                              NSString* localizedError = [dict valueForKey:@"error"];
-                                             NSString* errCode = [dict valueForKey:@"errCode"];
+                                             NSString* errCode = [dict valueForKey:@"errcode"];
                                              
                                              if (errCode) {
                                                  if ([errCode isEqualToString:@"M_FORBIDDEN"]) {
@@ -248,8 +248,7 @@
                                                      message = @"This user name is already used";
                                                  } else if ([errCode isEqualToString:@"M_LOGIN_EMAIL_URL_NOT_YET"]) {
                                                      message = @"The email link which has not been clicked yet";
-                                                 }
-                                                 else {
+                                                 } else {
                                                      message = errCode;
                                                  }
                                              }
