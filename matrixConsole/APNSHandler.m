@@ -97,10 +97,25 @@ static APNSHandler *sharedHandler = nil;
     }
     
     transientActivity = isActive;
-    // FIXME send the device token to the server (in order to submit this token to the APS servers when the server sends a notification to the user)
-    // Write transientActivity in standardUserDefaults forKey:@"apnsIsActive" on success
-//    [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSString *b64Token = [self.deviceToken base64EncodedStringWithOptions:0];
+    NSDictionary *pushData = @{
+                               // no push gateway set up for matrix console yet
+                               @"url": @"http://localhost:5000/notify",
+#ifdef DEBUG
+                               @"platform": @"sandbox",
+#else
+                               @"platform": @"prod",
+#endif
+                              };
+    
+    MXRestClient *restCli = [MatrixHandler sharedHandler].mxRestClient;
+    [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] data:pushData success:^{
+        [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } failure:^(NSError *error) {
+        NSLog(@"Failed to send APNS token!");
+    }];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
 }
