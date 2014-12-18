@@ -87,82 +87,85 @@ static MatrixHandler *sharedHandler = nil;
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
         // Use MXFileStore as MXStore to permanently store events
-        MXFileStore *store = [[MXFileStore alloc] initWithCredentials:credentials];
-        
-        self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:store];
-        // Check here whether the app user wants to display all the events
-        if ([[AppSettings sharedSettings] displayAllEvents]) {
-            // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
-            self.eventsFilterForMessages = @[
-                                             kMXEventTypeStringRoomName,
-                                             kMXEventTypeStringRoomTopic,
-                                             kMXEventTypeStringRoomMember,
-                                             kMXEventTypeStringRoomCreate,
-                                             kMXEventTypeStringRoomJoinRules,
-                                             kMXEventTypeStringRoomPowerLevels,
-                                             kMXEventTypeStringRoomAliases,
-                                             kMXEventTypeStringRoomMessage,
-                                             kMXEventTypeStringRoomMessageFeedback
-                                             ];
-        }
-        else {
-            // Display only a subset of events
-            self.eventsFilterForMessages = @[
-                                             kMXEventTypeStringRoomName,
-                                             kMXEventTypeStringRoomTopic,
-                                             kMXEventTypeStringRoomMember,
-                                             kMXEventTypeStringRoomMessage
-                                             ];
-        }
+        MXFileStore *store = [[MXFileStore alloc] init];
 
-        // Launch mxSession
-        [self.mxSession start:^{
-            self.isInitialSyncDone = YES;
-            [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
-            _isResumeDone = YES;
-            
-            // Register listener to update user's information
-            userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
-                // Consider only events related to user's presence
-                if (event.eventType == MXEventTypePresence) {
-                    MXPresence presence = [MXTools presence:event.content[@"presence"]];
-                    if (self.userPresence != presence) {
-                        // Handle user presence on multiple devices (keep the more pertinent)
-                        if (self.userPresence == MXPresenceOnline) {
-                            if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
-                                // Force the local presence to overwrite the user presence on server side
-                                [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
-                                return;
+        [store openWithCredentials:credentials onComplete:^{
+            self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:store];
+            // Check here whether the app user wants to display all the events
+            if ([[AppSettings sharedSettings] displayAllEvents]) {
+                // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
+                self.eventsFilterForMessages = @[
+                                                 kMXEventTypeStringRoomName,
+                                                 kMXEventTypeStringRoomTopic,
+                                                 kMXEventTypeStringRoomMember,
+                                                 kMXEventTypeStringRoomCreate,
+                                                 kMXEventTypeStringRoomJoinRules,
+                                                 kMXEventTypeStringRoomPowerLevels,
+                                                 kMXEventTypeStringRoomAliases,
+                                                 kMXEventTypeStringRoomMessage,
+                                                 kMXEventTypeStringRoomMessageFeedback
+                                                 ];
+            }
+            else {
+                // Display only a subset of events
+                self.eventsFilterForMessages = @[
+                                                 kMXEventTypeStringRoomName,
+                                                 kMXEventTypeStringRoomTopic,
+                                                 kMXEventTypeStringRoomMember,
+                                                 kMXEventTypeStringRoomMessage
+                                                 ];
+            }
+
+            // Launch mxSession
+            [self.mxSession start:^{
+                self.isInitialSyncDone = YES;
+                [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
+                _isResumeDone = YES;
+
+                // Register listener to update user's information
+                userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
+                    // Consider only events related to user's presence
+                    if (event.eventType == MXEventTypePresence) {
+                        MXPresence presence = [MXTools presence:event.content[@"presence"]];
+                        if (self.userPresence != presence) {
+                            // Handle user presence on multiple devices (keep the more pertinent)
+                            if (self.userPresence == MXPresenceOnline) {
+                                if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
+                                    // Force the local presence to overwrite the user presence on server side
+                                    [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                                    return;
+                                }
+                            } else if (self.userPresence == MXPresenceUnavailable) {
+                                if (presence == MXPresenceOffline) {
+                                    // Force the local presence to overwrite the user presence on server side
+                                    [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                                    return;
+                                }
                             }
-                        } else if (self.userPresence == MXPresenceUnavailable) {
-                            if (presence == MXPresenceOffline) {
-                                // Force the local presence to overwrite the user presence on server side
-                                [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
-                                return;
-                            }
+                            self.userPresence = presence;
                         }
-                        self.userPresence = presence;
                     }
+                }];
+
+                // Check whether the app user wants notifications on new events
+                if ([[AppSettings sharedSettings] enableInAppNotifications]) {
+                    [self enableInAppNotifications:YES];
                 }
+            } failure:^(NSError *error) {
+                NSLog(@"Initial Sync failed: %@", error);
+                if (notifyOpenSessionFailure) {
+                    //Alert user only once
+                    notifyOpenSessionFailure = NO;
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }
+                
+                // Postpone a new attempt in 10 sec 
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self openSession];
+                });
             }];
-            
-            // Check whether the app user wants notifications on new events
-            if ([[AppSettings sharedSettings] enableInAppNotifications]) {
-                [self enableInAppNotifications:YES];
-            }
-        } failure:^(NSError *error) {
-            NSLog(@"Initial Sync failed: %@", error);
-            if (notifyOpenSessionFailure) {
-                //Alert user only once
-                notifyOpenSessionFailure = NO;
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }
-            
-            // Postpone a new attempt in 10 sec 
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self openSession];
-            });
         }];
+        
     }
 }
 
