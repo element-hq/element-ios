@@ -39,6 +39,8 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 @property (nonatomic,readonly) BOOL isLogged;
 @property (nonatomic,readonly) BOOL isInitialSyncDone;
 @property (nonatomic,readonly) BOOL isResumeDone;
+// return the MX cache size in bytes
+@property (nonatomic,readonly) NSUInteger MXCacheSize;
 
 + (MatrixHandler *)sharedHandler;
 
