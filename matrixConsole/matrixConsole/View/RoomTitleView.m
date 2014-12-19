@@ -19,6 +19,13 @@
 
 @interface RoomTitleView () {
     id messagesListener;
+    
+    // the topic can be animated if it is longer than the screen size
+    UIScrollView* scrollView;
+    UILabel* label;
+    
+    // do not start the topic animation asap
+    NSTimer * animationTimer;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameTextFieldTopConstraint;
 @end
@@ -31,6 +38,9 @@
         messagesListener = nil;
     }
     _mxRoom = nil;
+
+    // stop any animation
+    [self stopTopicAnimation];
 }
 
 - (void)refreshDisplay {
@@ -76,12 +86,116 @@
 }
 
 - (void)setHiddenTopic:(BOOL)hiddenTopic {
+    [self stopTopicAnimation];
     if (hiddenTopic) {
         _topicTextField.hidden = YES;
         _displayNameTextFieldTopConstraint.constant = 10;
     } else {
         _topicTextField.hidden = NO;
         _displayNameTextFieldTopConstraint.constant = 2;
+        [self animateTopic:nil];
+    }
+}
+
+// start with delay
+- (void)startTopicAnimation {
+    if (animationTimer) {
+        [animationTimer invalidate];
+        animationTimer = nil;
+    }
+    
+    // wait a little before really animating the topic text
+    animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(animateTopic:) userInfo:self repeats:NO];
+}
+
+// animate routine
+- (void)animateTopic:(id)sender {
+    // stop any pending timer
+    if (animationTimer) {
+        [animationTimer invalidate];
+        animationTimer = nil;
+    }
+    
+    // already animated the topic
+    if (scrollView) {
+        return;
+    }
+    
+    // compute the text width
+    UIFont* font = _topicTextField.font;
+    
+    // see font description
+    if (!font) {
+        font = [UIFont systemFontOfSize:12];
+    }
+    
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    
+    CGSize stringSize = CGSizeMake(CGFLOAT_MAX, _topicTextField.frame.size.height);
+    
+    stringSize  = [_topicTextField.text boundingRectWithSize:stringSize
+                                                 options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
+                                              attributes:attributes
+                                                 context:nil].size;
+    
+    // does not need to animate the text
+    if (stringSize.width < _topicTextField.frame.size.width) {
+        return;
+    }
+    
+    // put the text in a scrollView to animat it
+    scrollView = [[UIScrollView alloc] initWithFrame: _topicTextField.frame];
+    label = [[UILabel alloc] initWithFrame:_topicTextField.frame];
+    label.text = _topicTextField.text;
+    label.textColor = _topicTextField.textColor;
+    label.font = _topicTextField.font;
+    
+    // move to the top left
+    CGRect topicTextFieldFrame = _topicTextField.frame;
+    topicTextFieldFrame.origin = CGPointZero;
+    label.frame = topicTextFieldFrame;
+    
+    // unplug to plug
+    _topicTextField.hidden = YES;
+    [scrollView addSubview:label];
+    [self addSubview:scrollView];
+    
+    // update the size
+    [label sizeToFit];
+
+    // offset
+    CGPoint offset = scrollView.contentOffset;
+    offset.x = label.frame.size.width - scrollView.frame.size.width;
+
+    // duration (magic computation to give more time if the text is longer)
+    CGFloat duration  = label.frame.size.width / scrollView.frame.size.width * 3;
+
+    // animation
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionCurveLinear animations:^{
+
+        [scrollView setContentOffset:offset animated:NO];
+        
+    } completion:^(BOOL finished) {
+    }];
+}
+
+- (void)stopTopicAnimation {
+    // stop running timers
+    if (animationTimer) {
+        [animationTimer invalidate];
+        animationTimer = nil;
+    }
+    
+    // if there is an animation is progress
+    if (scrollView) {
+        _topicTextField.hidden = NO;
+        
+        [scrollView.layer removeAllAnimations];
+        [scrollView removeFromSuperview];
+        scrollView = nil;
+        label = nil;
+    
+        [self addSubview:_topicTextField];
     }
 }
 
@@ -89,6 +203,30 @@
     // Hide the keyboard
     [_displayNameTextField resignFirstResponder];
     [_topicTextField resignFirstResponder];
+
+    // restart the animation
+    [self stopTopicAnimation];
+    [self startTopicAnimation];
+}
+
+- (void) setFrame:(CGRect)frame {
+    
+    // restart only if there is a frame update
+    BOOL restartAnimation = !CGRectEqualToRect(CGRectIntegral(frame), CGRectIntegral(self.frame));
+    
+    if (restartAnimation) {
+        [self stopTopicAnimation];
+    }
+    else
+    {
+        restartAnimation = restartAnimation;
+    }
+    
+    [super setFrame:frame];
+    
+    if (restartAnimation) {
+        [self startTopicAnimation];
+    }
 }
 
 @end

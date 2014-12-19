@@ -30,4 +30,7 @@
 
 - (void)dismissKeyboard;
 
+- (void)startTopicAnimation;
+- (void)stopTopicAnimation;
+
 @end
