@@ -217,10 +217,6 @@
     if (restartAnimation) {
         [self stopTopicAnimation];
     }
-    else
-    {
-        restartAnimation = restartAnimation;
-    }
     
     [super setFrame:frame];
     
