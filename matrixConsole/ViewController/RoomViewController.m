@@ -802,6 +802,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [tap setNumberOfTapsRequired:1];
             [highResImage addGestureRecognizer:tap];
             highResImage.userInteractionEnabled = YES;
+            highResImage.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
         }
     } else if (msgtype == RoomMessageTypeVideo) {
         NSString *url =content[@"url"];
