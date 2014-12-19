@@ -47,7 +47,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 - (void)logout;
 
 // Flush and restore Matrix data
-- (void)forceInitialSync;
+- (void)forceInitialSync:(BOOL)clearCache;
 
 - (void)enableInAppNotifications:(BOOL)isEnabled;
 

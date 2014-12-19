@@ -36,6 +36,7 @@ static MatrixHandler *sharedHandler = nil;
     id eventsListener;
 }
 
+@property (strong, nonatomic) MXFileStore *mxFileStore;
 @property (nonatomic,readwrite) BOOL isInitialSyncDone;
 @property (nonatomic,readwrite) BOOL isResumeDone;
 @property (strong, nonatomic) CustomAlert *mxNotification;
@@ -87,10 +88,10 @@ static MatrixHandler *sharedHandler = nil;
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
         // Use MXFileStore as MXStore to permanently store events
-        MXFileStore *store = [[MXFileStore alloc] init];
+        _mxFileStore = [[MXFileStore alloc] init];
 
-        [store openWithCredentials:credentials onComplete:^{
-            self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:store];
+        [_mxFileStore openWithCredentials:credentials onComplete:^{
+            self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:_mxFileStore];
             // Check here whether the app user wants to display all the events
             if ([[AppSettings sharedSettings] displayAllEvents]) {
                 // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
@@ -272,10 +273,15 @@ static MatrixHandler *sharedHandler = nil;
     // Keep userLogin, homeServerUrl
 }
 
-- (void)forceInitialSync {
+- (void)forceInitialSync:(BOOL)clearCache {
     if (self.isInitialSyncDone) {
         [self closeSession];
         notifyOpenSessionFailure = NO;
+        
+        if (clearCache) {
+            [_mxFileStore deleteAllData];
+        }
+        
         if (self.accessToken) {
             [self openSession];
         }

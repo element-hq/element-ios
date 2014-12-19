@@ -69,7 +69,7 @@ static AppSettings *sharedSettings = nil;
 - (void)setDisplayAllEvents:(BOOL)displayAllEvents {
     [[NSUserDefaults standardUserDefaults] setBool:displayAllEvents forKey:@"displayAllEvents"];
     // Flush and restore Matrix data
-    [[MatrixHandler sharedHandler] forceInitialSync];
+    [[MatrixHandler sharedHandler] forceInitialSync:NO];
 }
 
 - (BOOL)hideUnsupportedMessages {

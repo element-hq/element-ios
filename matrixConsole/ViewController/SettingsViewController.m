@@ -29,6 +29,13 @@
 #define SETTINGS_SECTION_CONFIGURATION_INDEX 2
 #define SETTINGS_SECTION_COMMANDS_INDEX      3
 
+#define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
+#define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX  1
+#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               2
+#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       3
+#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                4
+#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      5
+
 NSString* const kConfigurationFormatText = @"Home server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
@@ -394,6 +401,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self dismissKeyboard];
     return YES;
 }
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (self.tableView == aTableView) {
+        
+        // tap on clear application cache
+        if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
+            [[MatrixHandler sharedHandler] forceInitialSync:YES];
+        }
+        
+        [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
 
 #pragma mark - Table view data source
 
@@ -408,7 +429,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         return 1;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
-        return 4;
+        return SETTINGS_SECTION_ROOMS_INDEX_COUNT;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         return 1;
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -468,7 +489,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SettingsTableViewCell *cell = nil;
+    UITableViewCell *cell = nil;
     
     if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         SettingsTableCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
@@ -483,25 +504,39 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         cell = notificationsCell;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
-        SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
-        if (indexPath.row == 0) {
-            roomsSettingCell.settingLabel.text = @"Display all events";
-            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
-            allEventsSwitch = roomsSettingCell.settingSwitch;
-        } else if (indexPath.row == 1) {
-            roomsSettingCell.settingLabel.text = @"Hide unsupported messages";
-            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedMessages];
-            unsupportedMsgSwitch = roomsSettingCell.settingSwitch;
-        } else if (indexPath.row == 2) {
-            roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
-            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] sortMembersUsingLastSeenTime];
-            sortMembersSwitch = roomsSettingCell.settingSwitch;
+        if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
+            
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
+            }
+            
+            cell.textLabel.text = @"Clear application cache";
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
         } else {
-            roomsSettingCell.settingLabel.text = @"Display left members";
-            roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayLeftUsers];
-            displayLeftMembersSwitch = roomsSettingCell.settingSwitch;
+            SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            
+            if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Display all events";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
+                allEventsSwitch = roomsSettingCell.settingSwitch;
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Hide unsupported messages";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedMessages];
+                unsupportedMsgSwitch = roomsSettingCell.settingSwitch;
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] sortMembersUsingLastSeenTime];
+                sortMembersSwitch = roomsSettingCell.settingSwitch;
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Display left members";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayLeftUsers];
+                displayLeftMembersSwitch = roomsSettingCell.settingSwitch;
+            }
+            
+            cell = roomsSettingCell;
         }
-        cell = roomsSettingCell;
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         SettingsTableCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
