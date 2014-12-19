@@ -80,7 +80,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Date formatter (nil if dateTime info is hidden)
     NSDateFormatter *dateFormatter;
     
-    // Cache
+    // Local echo
+    NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
 }
 
@@ -121,6 +122,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     _sendBtn.enabled = NO;
     _sendBtn.alpha = 0.5;
     
+    pendingOutgoingEvents = [NSMutableArray array];
     
     // add an input to check if the keyboard is hiding with sliding it
     inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -132,7 +134,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)dealloc {
-    // Clear temporary cached attachments (used for local echo)
+    // Release local echo resources
+    pendingOutgoingEvents = nil;
     NSUInteger index = tmpCachedAttachments.count;
     NSError *error = nil;
     while (index--) {
@@ -332,16 +335,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Update Table
                 BOOL isHandled = NO;
                 BOOL shouldBeHidden = NO;
-                // For outgoing message, remove the temporary event (local echo)
+                // For outgoing message, we update here local echo data
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
                     // Consider first the last message
                     RoomMessage *message = [messages lastObject];
                     NSUInteger index = messages.count - 1;
                     if ([message containsEventId:event.eventId]) {
+                        // The handling of this outgoing message is complete. We remove here its local echo
                         if (message.messageType == RoomMessageTypeText) {
-                            // Removing temporary event (local echo)
                             [message removeEvent:event.eventId];
-                            // Update message with the received event
+                            // Update message with the actual outgoing event
                             isHandled = [message addEvent:event withRoomState:roomState];
                             if (!message.components.count) {
                                 [self removeMessageAtIndex:index];
@@ -358,24 +361,32 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             isHandled = YES;
                         }
                     } else {
-                        // Look for the local echo among other messages, if it is not found (possible when our PUT is not returned yet), the added message will be hidden.
-                        shouldBeHidden = YES;
+                        // Look for the event id in other messages
+                        BOOL isFound = NO;
                         while (index--) {
                             message = [messages objectAtIndex:index];
                             if ([message containsEventId:event.eventId]) {
+                                // The handling of this outgoing message is complete. We remove here its local echo
                                 if (message.messageType == RoomMessageTypeText) {
-                                    // Removing temporary event (local echo)
                                     [message removeEvent:event.eventId];
                                     if (!message.components.count) {
                                         [self removeMessageAtIndex:index];
                                     }
                                 } else {
-                                    // Remove the local event (a new one will be added to messages)
                                     [self removeMessageAtIndex:index];
                                 }
-                                shouldBeHidden = NO;
+                                isFound = YES;
                                 break;
                             }
+                        }
+                        
+                        if (!isFound) {
+                            // Here the received event id has not been found in current messages list.
+                            // This may happen in 2 cases:
+                            // - the message has been posted from another device.
+                            // - the message is received from events stream whereas the app is waiting for our PUT to return (see pendingOutgoingEvents).
+                            // In this second case, the received event will be hidden until our PUT is returned.
+                            shouldBeHidden = [self isPendingEvent:event];
                         }
                     }
                 }
@@ -911,7 +922,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
         
         // Create the local event displayed during uploading
-        MXEvent *localEvent = [self addLocalEventForAttachedImage:thumbnail];
+        MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:thumbnail];
         
         // Upload thumbnail
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -1140,7 +1151,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     CGFloat rowHeight;
     RoomMessage* message = [messages objectAtIndex:indexPath.row];
     // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
-    if (message.messageType == RoomMessageTypeText && !message.attributedTextMessage.length) {
+    if (message.isHidden) {
         return 0;
     }
     // Else compute height of message content (The maximum width available for the textview must be updated dynamically)
@@ -1189,7 +1200,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Handle here room message cells
     RoomMessage *message = [messages objectAtIndex:indexPath.row];
     // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
-    if (message.messageType == RoomMessageTypeText && !message.attributedTextMessage.length) {
+    if (message.isHidden) {
         return [[UITableViewCell alloc] initWithFrame:CGRectZero];
     }
     // Else prepare the message cell
@@ -1890,36 +1901,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             [self.messagesTableView reloadData];
         } else {
-            // Create a temporary event to displayed outgoing message (local echo)
-            NSString* localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
-            localEvent = [[MXEvent alloc] init];
-            localEvent.roomId = self.roomId;
-            localEvent.eventId = localEventId;
-            localEvent.eventType = MXEventTypeRoomMessage;
-            localEvent.type = kMXEventTypeStringRoomMessage;
+            // Add a new local event
+            localEvent = [self createLocalEchoEventWithoutContent];
             localEvent.content = msgContent;
-            localEvent.userId = [MatrixHandler sharedHandler].userId;
-            localEvent.originServerTs = kMXUndefinedTimestamp;
-            // Check whether this new event may be grouped with last message
-            RoomMessage *lastMessage = [messages lastObject];
-            if (lastMessage == nil || [lastMessage addEvent:localEvent withRoomState:self.mxRoom.state] == NO) {
-                // Create a new item
-                lastMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                if (lastMessage) {
-                    [messages addObject:lastMessage];
-                } else {
-                    NSLog(@"ERROR: Unable to add local event: %@", localEvent.description);
-                }
-            }
-            [self.messagesTableView reloadData];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self scrollToBottomAnimated:NO];
-            });
+            [self addLocalEchoEvent:localEvent];
         }
         
         // Send message to the room
         [self.mxRoom postMessageOfType:msgType content:localEvent.content success:^(NSString *eventId) {
+            // Keep the temporary id of this local event
+            NSString *tmpLocalEventId = localEvent.eventId;
+            
             // Check whether this event has already been received from events listener
             BOOL isEventAlreadyAddedToRoom = NO;
             NSUInteger index = messages.count;
@@ -1932,6 +1924,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     break;
                 }
             }
+            
             // Remove or update the temporary event
             index = messages.count;
             while (index--) {
@@ -1961,6 +1954,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [self removeMessageAtIndex:index];
                         }
                     }
+                    break;
+                }
+            }
+            
+            // Remove the local event from pending outgoing events list
+            for (index = 0; index < pendingOutgoingEvents.count; index++) {
+                MXEvent *mxEvent = [pendingOutgoingEvents objectAtIndex:index];
+                if ([mxEvent.eventId isEqualToString:tmpLocalEventId]) {
+                    [pendingOutgoingEvents removeObjectAtIndex:index];
                     break;
                 }
             }
@@ -1997,17 +1999,52 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self postMessage:@{@"msgtype":msgType, @"body":msgTxt} withLocalEvent:nil];
 }
 
-- (MXEvent*)addLocalEventForAttachedImage:(UIImage*)image {
+- (MXEvent*)createLocalEchoEventWithoutContent {
     // Create a temporary event to displayed outgoing message (local echo)
     NSString *localEventId = [NSString stringWithFormat:@"%@%@", kLocalEchoEventIdPrefix, [[NSProcessInfo processInfo] globallyUniqueString]];
-    MXEvent *mxEvent = [[MXEvent alloc] init];
-    mxEvent.roomId = self.roomId;
-    mxEvent.eventId = localEventId;
-    mxEvent.eventType = MXEventTypeRoomMessage;
-    mxEvent.type = kMXEventTypeStringRoomMessage;
-    mxEvent.originServerTs = kMXUndefinedTimestamp;
+    MXEvent *localEvent = [[MXEvent alloc] init];
+    localEvent.roomId = self.roomId;
+    localEvent.eventId = localEventId;
+    localEvent.eventType = MXEventTypeRoomMessage;
+    localEvent.type = kMXEventTypeStringRoomMessage;
+    localEvent.originServerTs = kMXUndefinedTimestamp;
+    
+    localEvent.userId = [MatrixHandler sharedHandler].userId;
+    return localEvent;
+}
+
+- (void)addLocalEchoEvent:(MXEvent*)mxEvent {
+    // Check whether this new event may be grouped with last message
+    RoomMessage *lastMessage = [messages lastObject];
+    if (lastMessage == nil || [lastMessage addEvent:mxEvent withRoomState:self.mxRoom.state] == NO) {
+        // Create a new RoomMessage
+        lastMessage = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:self.mxRoom.state];
+        if (lastMessage) {
+            [messages addObject:lastMessage];
+        } else {
+            lastMessage = nil;
+            NSLog(@"ERROR: Unable to add local event: %@", mxEvent.description);
+        }
+    }
+    
+    if (lastMessage) {
+        // Report this event as pending one
+        [pendingOutgoingEvents addObject:mxEvent];
+        
+        // Refresh table display
+        [self.messagesTableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self scrollToBottomAnimated:NO];
+        });
+    }
+}
+
+- (MXEvent*)addLocalEchoEventForAttachedImage:(UIImage*)image {
+    // Create new item
+    MXEvent *localEvent = [self createLocalEchoEventWithoutContent];
+    
     // We store temporarily the image in cache, use the localId to build temporary url
-    NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEventId];
+    NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEvent.eventId];
     NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
     NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:dummyURL mimeType:@"image/jpeg"];
     if (cacheFilePath) {
@@ -2016,28 +2053,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         [tmpCachedAttachments addObject:cacheFilePath];
     }
+    
+    // Prepare event content
     NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
     [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
     [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
-    mxEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL, @"url":dummyURL, @"info":thumbnailInfo};
-    mxEvent.userId = [MatrixHandler sharedHandler].userId;
+    localEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL, @"url":dummyURL, @"info":thumbnailInfo};
     
-    // Update table sources
-    RoomMessage *message = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:self.mxRoom.state];
-    if (message) {
-        [messages addObject:message];
-    } else {
-        NSLog(@"ERROR: Unable to add local event for attachment: %@", mxEvent.description);
-    }
-    [self.messagesTableView reloadData];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self scrollToBottomAnimated:NO];
-    });
-    
-    return mxEvent;
+    // Add this new event
+    [self addLocalEchoEvent:localEvent];
+    return localEvent;
 }
 
 - (void)handleError:(NSError *)error forLocalEvent:(MXEvent *)localEvent {
@@ -2075,6 +2102,29 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     [self.messagesTableView reloadData];
+}
+
+- (BOOL)isPendingEvent:(MXEvent*)mxEvent {
+    // Note: mxEvent is supposed here to be an outgoing event received from event stream.
+    // This method returns true when its content matches with the content of a pending outgoing event.
+    NSString *msgtype = mxEvent.content[@"msgtype"];
+    
+    for (NSInteger index = 0; index < pendingOutgoingEvents.count; index++) {
+        MXEvent *pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+        NSString *pendingEventType = pendingEvent.content[@"msgtype"];
+        
+        if ([msgtype isEqualToString:pendingEventType]) {
+            if ([msgtype isEqualToString:kMXMessageTypeText] || [msgtype isEqualToString:kMXMessageTypeEmote]) {
+                return [mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]];
+            } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
+                return [mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]];
+            } else {
+                // Here the type is kMXMessageTypeImage, kMXMessageTypeAudio or kMXMessageTypeVideo
+                return [mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]];
+            }
+        }
+    }
+    return NO;
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
@@ -2252,7 +2302,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         if (selectedImage) {
-            MXEvent *localEvent = [self addLocalEventForAttachedImage:selectedImage];
+            MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:selectedImage];
             // Upload image and its thumbnail
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;

@@ -302,6 +302,16 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
+- (BOOL)isHidden {
+    if (_messageType == RoomMessageTypeText) {
+        return (!self.attributedTextMessage.length);
+    } else if (messageComponents.count) {
+        RoomMessageComponent *msgComponent = [messageComponents firstObject];
+        return msgComponent.isHidden;
+    }
+    return YES;
+}
+
 #pragma mark -
 
 - (void)sortComponents {
