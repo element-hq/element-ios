@@ -1659,6 +1659,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
             textField.backgroundColor = [UIColor whiteColor];
+            [self.roomTitleView stopTopicAnimation];
         } else {
             alertMsg = @"You are not authorized to edit this room topic";
         }
@@ -1729,6 +1730,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Hide topic field if empty
             _roomTitleView.hiddenTopic = !topic.length;
         }
+
+        // restart the topic animation
+        [_roomTitleView startTopicAnimation];
     }
 }
 
