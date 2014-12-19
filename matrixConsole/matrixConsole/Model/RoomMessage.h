@@ -60,6 +60,11 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSString *thumbnailURL;
 @property (nonatomic) NSDictionary *thumbnailInfo;
 
+// Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
+// In this case, some messages are temporary hidden
+// The following property is true when all components are hidden
+@property (nonatomic, readonly) BOOL isHidden;
+
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState;
 
 // Concatenates successive text messages from the same user
