@@ -26,11 +26,25 @@
     
     // do not start the topic animation asap
     NSTimer * animationTimer;
+    
+    // restart a killed animation when the application is debackgrounded
+    BOOL restartAnimationWhenActive;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameTextFieldTopConstraint;
 @end
 
 @implementation RoomTitleView
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    }
+    
+    return self;
+}
 
 - (void)dealloc {
     if (messagesListener && _mxRoom) {
@@ -41,6 +55,21 @@
 
     // stop any animation
     [self stopTopicAnimation];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+
+- (void)appEnteredBackground {
+    restartAnimationWhenActive = [self stopTopicAnimation];
+}
+
+- (void)appEnteredForeground {
+    if (restartAnimationWhenActive) {
+        [self startTopicAnimation];
+        restartAnimationWhenActive = NO;
+    }
 }
 
 - (void)refreshDisplay {
@@ -179,7 +208,7 @@
     }];
 }
 
-- (void)stopTopicAnimation {
+- (BOOL)stopTopicAnimation {
     // stop running timers
     if (animationTimer) {
         [animationTimer invalidate];
@@ -196,7 +225,11 @@
         label = nil;
     
         [self addSubview:_topicTextField];
+        
+        return YES;
     }
+    
+    return NO;
 }
 
 - (void)dismissKeyboard {
@@ -209,7 +242,7 @@
     [self startTopicAnimation];
 }
 
-- (void) setFrame:(CGRect)frame {
+- (void)setFrame:(CGRect)frame {
     
     // restart only if there is a frame update
     BOOL restartAnimation = !CGRectEqualToRect(CGRectIntegral(frame), CGRectIntegral(self.frame));

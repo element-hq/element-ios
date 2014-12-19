@@ -31,6 +31,7 @@
 - (void)dismissKeyboard;
 
 - (void)startTopicAnimation;
-- (void)stopTopicAnimation;
+// return YES if the animation has been stopped
+- (BOOL)stopTopicAnimation;
 
 @end
