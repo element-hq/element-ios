@@ -19,8 +19,6 @@
 #import "MatrixHandler.h"
 #import "AppSettings.h"
 
-#define MX_PREFIX_CONTENT_URI  @"mxc://"
-
 static NSAttributedString *messageSeparator = nil;
 
 @interface RoomMessage() {
@@ -28,9 +26,6 @@ static NSAttributedString *messageSeparator = nil;
     NSMutableArray *messageComponents;
     // Current text message reset at each component change (see attributedTextMessage property)
     NSMutableAttributedString *currentAttributedTextMsg;
-    
-    // Relative Matrix content uri
-    NSString *mxContentURI;
 }
 
 + (NSAttributedString *)messageSeparator;
@@ -60,20 +55,14 @@ static NSAttributedString *messageSeparator = nil;
                 // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
-                if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
-                    mxContentURI = _attachmentURL;
-                    NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@/download/", kMXMediaPathPrefix];
-                    // Set actual attachment url
-                    _attachmentURL = [_attachmentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
-                }
                 // Handle thumbnail url/info
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
                 if (!_thumbnailURL) {
-                    if (mxContentURI) {
+                    if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
                         // Build the url to get the well adapted thumbnail from server
-                        _thumbnailURL = mxContentURI;
-                        NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@/thumbnail/", kMXMediaPathPrefix];
+                        _thumbnailURL = _attachmentURL;
+                        NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@%@/thumbnail/", [mxHandler homeServerURL], kMXMediaPathPrefix];
                         _thumbnailURL = [_thumbnailURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxThumbnailPrefix];
                         // Add parameters
                         _thumbnailURL = [NSString stringWithFormat:@"%@?width=%d&height=%d&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
@@ -89,12 +78,6 @@ static NSAttributedString *messageSeparator = nil;
                 // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
-                if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
-                    mxContentURI = _attachmentURL;
-                    NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@/download/", kMXMediaPathPrefix];
-                    // Set actual attachment url
-                    _attachmentURL = [_attachmentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
-                }
                 if (_attachmentInfo) {
                     // Get video thumbnail info
                     _thumbnailURL = _attachmentInfo[@"thumbnail_url"];
