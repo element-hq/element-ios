@@ -1314,9 +1314,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             cell.attachmentView.hideActivityIndicator = NO;
         }
         NSString *url = message.thumbnailURL;
-        if (!url && message.messageType == RoomMessageTypeImage) {
-            url = message.attachmentURL;
-        }
         if (message.messageType == RoomMessageTypeVideo) {
             cell.playIconView.hidden = NO;
         }
@@ -2097,12 +2094,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Prepare event content
-    NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
-    [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
-    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
-    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
-    [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
-    localEvent.content = @{@"msgtype":@"m.image", @"thumbnail_info":thumbnailInfo, @"thumbnail_url":dummyURL, @"url":dummyURL, @"info":thumbnailInfo};
+    NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
+    [info setValue:@"image/jpeg" forKey:@"mimetype"];
+    [info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
+    [info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
+    [info setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
+    localEvent.content = @{@"msgtype":@"m.image", @"url":dummyURL, @"info":info};
     
     // Add this new event
     [self addLocalEchoEvent:localEvent];
@@ -2344,12 +2341,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         if (selectedImage) {
+            // Add a temporary event while the image is attached (local echo)
             MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:selectedImage];
-            // Upload image and its thumbnail
+            // Prepare message to send
+            NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc] init];
+            [imageInfo setValue:@"image/jpeg" forKey:@"mimetype"];
+            [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)selectedImage.size.width] forKey:@"w"];
+            [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)selectedImage.size.height] forKey:@"h"];
+            NSData *imageData = UIImageJPEGRepresentation(selectedImage, 0.8);
+            [imageInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
+            // Upload image
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
-            [mxHandler.mxRestClient uploadImage:selectedImage thumbnailSize:thumbnailSize timeout:30 success:^(NSDictionary *imageMessage) {
-                // Send image
+            [mxHandler.mxRestClient uploadContent:imageData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
+                NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
+                [imageMessage setValue:@"m.image" forKey:@"msgtype"];
+                [imageMessage setValue:url forKey:@"url"];
+                [imageMessage setValue:imageInfo forKey:@"info"];
+                [imageMessage setValue:@"Image" forKey:@"body"];
+                // Send message for this attachment
                 [self postMessage:imageMessage withLocalEvent:localEvent];
             } failure:^(NSError *error) {
                 [self handleError:error forLocalEvent:localEvent];

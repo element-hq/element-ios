@@ -19,6 +19,8 @@
 #import "MatrixHandler.h"
 #import "AppSettings.h"
 
+#define MX_PREFIX_CONTENT_URI  @"mxc://"
+
 static NSAttributedString *messageSeparator = nil;
 
 @interface RoomMessage() {
@@ -26,6 +28,9 @@ static NSAttributedString *messageSeparator = nil;
     NSMutableArray *messageComponents;
     // Current text message reset at each component change (see attributedTextMessage property)
     NSMutableAttributedString *currentAttributedTextMsg;
+    
+    // Relative Matrix content uri
+    NSString *mxContentURI;
 }
 
 + (NSAttributedString *)messageSeparator;
@@ -52,19 +57,46 @@ static NSAttributedString *messageSeparator = nil;
             NSString *msgtype =  event.content[@"msgtype"];
             if ([msgtype isEqualToString:kMXMessageTypeImage]) {
                 _messageType = RoomMessageTypeImage;
-                
+                // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
+                if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
+                    mxContentURI = _attachmentURL;
+                    NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@/download/", kMXMediaPathPrefix];
+                    // Set actual attachment url
+                    _attachmentURL = [_attachmentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
+                }
+                // Handle thumbnail url/info
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
+                if (!_thumbnailURL) {
+                    if (mxContentURI) {
+                        // Build the url to get the well adapted thumbnail from server
+                        _thumbnailURL = mxContentURI;
+                        NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@/thumbnail/", kMXMediaPathPrefix];
+                        _thumbnailURL = [_thumbnailURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxThumbnailPrefix];
+                        // Add parameters
+                        _thumbnailURL = [NSString stringWithFormat:@"%@?width=%d&height=%d&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
+                    } else {
+                        _thumbnailURL = _attachmentURL;
+                    }
+                }
             } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                 // Not supported yet
                 //_messageType = RoomMessageTypeAudio;
             } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
                 _messageType = RoomMessageTypeVideo;
+                // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
+                if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
+                    mxContentURI = _attachmentURL;
+                    NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@/download/", kMXMediaPathPrefix];
+                    // Set actual attachment url
+                    _attachmentURL = [_attachmentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
+                }
                 if (_attachmentInfo) {
+                    // Get video thumbnail info
                     _thumbnailURL = _attachmentInfo[@"thumbnail_url"];
                     _thumbnailInfo = _attachmentInfo[@"thumbnail_info"];
                 }
@@ -222,9 +254,15 @@ static NSAttributedString *messageSeparator = nil;
         } else if (_messageType == RoomMessageTypeImage || _messageType == RoomMessageTypeVideo) {
             CGFloat width, height;
             width = height = 40;
-            if (_thumbnailInfo) {
-                width = [_thumbnailInfo[@"w"] integerValue];
-                height = [_thumbnailInfo[@"h"] integerValue];
+            if (_thumbnailInfo || _attachmentInfo) {
+                if (_thumbnailInfo) {
+                    width = [_thumbnailInfo[@"w"] integerValue];
+                    height = [_thumbnailInfo[@"h"] integerValue];
+                } else {
+                    width = [_attachmentInfo[@"w"] integerValue];
+                    height = [_attachmentInfo[@"h"] integerValue];
+                }
+               
                 if (width > ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH || height > ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) {
                     if (width > height) {
                         height = (height * ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) / width;
