@@ -776,4 +776,13 @@ static MatrixHandler *sharedHandler = nil;
     return nil;
 }
 
+-(NSUInteger) MXCacheSize {
+    
+    if (self.mxFileStore) {
+        return self.mxFileStore.diskUsage;
+    }
+    
+    return 0;
+}
+
 @end
