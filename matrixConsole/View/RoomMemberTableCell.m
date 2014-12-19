@@ -165,24 +165,7 @@
         } else {
             self.backgroundColor = [UIColor whiteColor];
             
-            // Handle power level display
-            //self.userPowerLevel.hidden = NO;
-            MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
-
-            int maxLevel = 0;
-            for (NSString *powerLevel in roomPowerLevels.users.allValues) {
-                int level = [powerLevel intValue];
-                if (level > maxLevel) {
-                    maxLevel = level;
-                }
-            }
-            NSUInteger userPowerLevel = [roomPowerLevels powerLevelOfUserWithUserID:roomMember.userId];
-            float userPowerLevelFloat = 0.0;
-            if (userPowerLevel) {
-                userPowerLevelFloat = userPowerLevel;
-            }
-
-            powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+            powerLevel = [[MatrixHandler sharedHandler] getPowerLevel:roomMember inRoom:room];
 
             // get the user presence and his thumbnail border color
             if (roomMember.membership == MXMembershipInvite) {
