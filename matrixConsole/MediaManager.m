@@ -15,6 +15,7 @@
  */
 
 #import "MediaManager.h"
+#import "MatrixHandler.h"
 
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
 
@@ -38,6 +39,17 @@ static MediaManager *sharedMediaManager = nil;
 #pragma mark - MediaLoader
 
 @implementation MediaLoader
+
+- (NSString*)validateContentURL:(NSString*)contentURL {
+    // Detect matrix content url
+    if ([contentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
+        NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@%@/download/", [[MatrixHandler sharedHandler] homeServerURL], kMXMediaPathPrefix];
+        // Set actual url
+        return [contentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
+    }
+    
+    return contentURL;
+}
 
 - (void)downloadPicture:(NSString*)pictureURL
              success:(blockMediaManager_onImageReady)success
@@ -74,7 +86,7 @@ static MediaManager *sharedMediaManager = nil;
     onError = failure;
     
     // Start downloading
-    NSURL *url = [NSURL URLWithString:aMediaURL];
+    NSURL *url = [NSURL URLWithString:[self validateContentURL:aMediaURL]];
     downloadData = [[NSMutableData alloc] init];
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
