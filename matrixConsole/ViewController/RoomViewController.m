@@ -1418,7 +1418,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
         // List action(s) available on this member
-        MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
+        __block MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         __weak typeof(self) weakSelf = self;
         if (self.actionMenu) {
@@ -1445,7 +1445,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } else {
             // Check user's power level before allowing an action (kick, ban, ...)
-            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+            __block MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
             NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
             NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
             
@@ -1549,6 +1549,48 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 default: {
                     break;
                 }
+            }
+            
+            // update power level
+            if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
+                [self.actionMenu addActionWithTitle:@"Update power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    if (weakSelf) {
+                        // Ask for userId to invite
+                        weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];
+                        weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            weakSelf.actionMenu = nil;
+                            
+                            // Reset user power level
+                            [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:0 success:^{
+                            } failure:^(NSError *error) {
+                                NSLog(@"Reset user power (%@) failed: %@", roomMember.userId, error);
+                                //Alert user
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            }];
+                            
+                        }];
+                        [weakSelf.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                            textField.secureTextEntry = NO;
+                            textField.text = [NSString stringWithFormat:@"%d", (int)([mxHandler getPowerLevel:roomMember inRoom:weakSelf.mxRoom] * 100)];
+                            textField.placeholder = nil;
+                            textField.keyboardType = UIKeyboardTypeDecimalPad;
+                        }];
+                        [weakSelf.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            UITextField *textField = [alert textFieldAtIndex:0];
+                            weakSelf.actionMenu = nil;
+                            
+                            // Set user power level
+                            [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:[textField.text integerValue] success:^{
+                            } failure:^(NSError *error) {
+                                NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
+                                //Alert user
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            }];
+                            
+                        }];
+                        [weakSelf.actionMenu showInViewController:weakSelf];
+                    }
+                }];
             }
             
             // the current web interface always creates a new room

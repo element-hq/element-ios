@@ -193,8 +193,11 @@
             block(self);
         });
     }
-    // Release alert reference
-    _alert = nil;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Release alert reference
+        _alert = nil;
+    });
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
@@ -208,8 +211,10 @@
             block(self);
         });
     }
-    // Release _alert reference
-    _alert = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Release _alert reference
+        _alert = nil;
+    });
 }
 
 @end

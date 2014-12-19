@@ -785,4 +785,34 @@ static MatrixHandler *sharedHandler = nil;
     return 0;
 }
 
+- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
+    CGFloat powerLevel = 0;
+    
+    // Customize banned and left (kicked) members
+    if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
+        powerLevel = 0;
+    } else {
+        // Handle power level display
+        //self.userPowerLevel.hidden = NO;
+        MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
+        
+        int maxLevel = 0;
+        for (NSString *powerLevel in roomPowerLevels.users.allValues) {
+            int level = [powerLevel intValue];
+            if (level > maxLevel) {
+                maxLevel = level;
+            }
+        }
+        NSUInteger userPowerLevel = [roomPowerLevels powerLevelOfUserWithUserID:roomMember.userId];
+        float userPowerLevelFloat = 0.0;
+        if (userPowerLevel) {
+            userPowerLevelFloat = userPowerLevel;
+        }
+        
+        powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+    }
+
+    return powerLevel;
+}
+
 @end

@@ -63,4 +63,6 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 // search if a 1:1 conversation has been started with this member
 - (NSString*) getRoomStartedWithMember:(MXRoomMember*)roomMember;
+
+- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
 @end
