@@ -19,6 +19,8 @@
 // Customize UIImageView in order to let UIImageView handle automatically remote url
 @interface CustomImageView : UIImageView
 
+typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
+
 @property (strong, nonatomic) NSString *placeholder;
 @property (strong, nonatomic) NSString *imageURL;
 
@@ -27,6 +29,12 @@
 
 // Information about the media represented by this image (image, video...)
 @property (strong, nonatomic) NSDictionary *mediaInfo;
+
+// Let the user defines some custom buttons over the tabbar
+- (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;
+- (void)setRightButtonTitle:rightButtonTitle handler:(blockCustomImageView_onClick)handler;
+
+- (void)dismissSelection;
 
 @end
 
