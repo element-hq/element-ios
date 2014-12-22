@@ -27,6 +27,7 @@
     // Array of RecentRooms
     NSMutableArray  *recents;
     id               recentsListener;
+    NSUInteger       unreadCount;
     
     // Search
     UISearchBar     *recentsSearchBar;
@@ -72,6 +73,7 @@
     // Initialisation
     recents = nil;
     filteredRecents = nil;
+    unreadCount = 0;
     
     NSString *dateFormat = @"MMM dd HH:mm";
     dateFormatter = [[NSDateFormatter alloc] init];
@@ -200,6 +202,7 @@
                         [recents addObject:recentRoom];
                     }
                 }
+                unreadCount = 0;
                 
                 // Register recent listener
                 recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
@@ -227,6 +230,10 @@
                                         // Move this room at first position
                                         [recents removeObjectAtIndex:index];
                                         [recents insertObject:recentRoom atIndex:0];
+                                        if (isUnread) {
+                                            unreadCount++;
+                                            [self updateTitleView];
+                                        }
                                     }
                                 }
                                 break;
@@ -237,6 +244,10 @@
                             RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andRoomState:roomState markAsUnread:isUnread];
                             if (recentRoom) {
                                 [recents insertObject:recentRoom atIndex:0];
+                                if (isUnread) {
+                                    unreadCount++;
+                                    [self updateTitleView];
+                                }
                             }
                         }
                         
@@ -272,6 +283,16 @@
             recentsListener = nil;
         }
     }
+    
+    [self updateTitleView];
+}
+
+- (void)updateTitleView {
+    NSString *title = @"Recents";
+    if (unreadCount) {
+         title = [NSString stringWithFormat:@"Recents (%tu)", unreadCount];
+    }
+    self.navigationItem.title = title;
 }
 
 - (void)createNewRoom:(id)sender {
@@ -359,7 +380,9 @@
         }
         
         // Reset unread count for this room
+        unreadCount -= recentRoom.unreadCount;
         [recentRoom resetUnreadCount];
+        [self updateTitleView];
         
         if (self.splitViewController) {
             // Refresh display (required in case of splitViewController)
@@ -440,7 +463,7 @@
     // set background color
     if (recentRoom.unreadCount) {
         cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
-        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%lu)", cell.roomTitle.text, (unsigned long)recentRoom.unreadCount];
+        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%tu)", cell.roomTitle.text, recentRoom.unreadCount];
     } else {
         cell.backgroundColor = [UIColor clearColor];
     }
