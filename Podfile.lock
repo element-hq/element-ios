@@ -23,7 +23,7 @@ PODS:
   - Mantle (1.5.1):
     - Mantle/extobjc (= 1.5.1)
   - Mantle/extobjc (1.5.1)
-  - MatrixSDK (0.1.0):
+  - MatrixSDK (0.2.0):
     - AFNetworking (~> 2.4.1)
     - Mantle (~> 1.5)
 
@@ -37,6 +37,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   Mantle: d7c5ac734579ec751c58fecbf56189853056c58c
-  MatrixSDK: 12c9472b5bd861213c039791b9952f1156afeaa9
+  MatrixSDK: 74bdc315f4f3422b7142704a5bde193583fd0a56
 
 COCOAPODS: 0.35.0
