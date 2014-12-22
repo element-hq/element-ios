@@ -65,7 +65,7 @@ static NSAttributedString *messageSeparator = nil;
                         NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@%@/thumbnail/", [mxHandler homeServerURL], kMXMediaPathPrefix];
                         _thumbnailURL = [_thumbnailURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxThumbnailPrefix];
                         // Add parameters
-                        _thumbnailURL = [NSString stringWithFormat:@"%@?width=%d&height=%d&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
+                        _thumbnailURL = [NSString stringWithFormat:@"%@?width=%tu&height=%tu&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
                     } else {
                         _thumbnailURL = _attachmentURL;
                     }
