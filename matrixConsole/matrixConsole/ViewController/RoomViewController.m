@@ -1813,9 +1813,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Hide topic field if empty
             _roomTitleView.hiddenTopic = !topic.length;
         }
-        
-        // restart the topic animation
-        [_roomTitleView startTopicAnimation];
     }
 }
 
@@ -1862,23 +1859,31 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Media:" message:nil style:CustomAlertStyleActionSheet];
                             
                             [weakSelf.actionMenu addActionWithTitle:@"Photo Library" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                                // Open media gallery
-                                UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
-                                mediaPicker.delegate = weakSelf;
-                                mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                                mediaPicker.allowsEditing = NO;
-                                mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
-                                [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                                if (weakSelf) {
+                                    weakSelf.actionMenu = nil;
+                                    
+                                    // Open media gallery
+                                    UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                                    mediaPicker.delegate = weakSelf;
+                                    mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                                    mediaPicker.allowsEditing = NO;
+                                    mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                                    [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                                }
                             }];
                             
                             [weakSelf.actionMenu addActionWithTitle:@"Take Photo or Video" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                                // Open media gallery
-                                UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
-                                mediaPicker.delegate = weakSelf;
-                                mediaPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                                mediaPicker.allowsEditing = NO;
-                                mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
-                                [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                                if (weakSelf) {
+                                    weakSelf.actionMenu = nil;
+                                    
+                                    // Open media gallery
+                                    UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                                    mediaPicker.delegate = weakSelf;
+                                    mediaPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                                    mediaPicker.allowsEditing = NO;
+                                    mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                                    [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                                }
                             }];
                             
                             weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
