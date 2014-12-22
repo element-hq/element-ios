@@ -95,9 +95,7 @@
     
     // draw a rounded view
     [self.powerContainer.layer setCornerRadius:radius];
-    
-    // the default body color is gray
-    self.powerContainer.backgroundColor = [UIColor lightGrayColor];
+    self.powerContainer.backgroundColor = [UIColor clearColor];
     
     // draw the pie
     CALayer* layer = [self.powerContainer layer];
@@ -105,6 +103,30 @@
     // remove any previous drawn layer
     if (powerContainerLayer) {
         [powerContainerLayer removeFromSuperlayer];
+    }
+
+    // the background cell color is hidden the cell is selected.
+    // so put in grey the cell background triggers a weird display (the background grey is hidden but not the red part).
+    // add an other layer fixes the UX.
+    if (!backgroundContainerLayer) {
+        
+        backgroundContainerLayer = [CAShapeLayer layer];
+        [backgroundContainerLayer setZPosition:0];
+        [backgroundContainerLayer setStrokeColor:NULL];
+        backgroundContainerLayer.fillColor = [UIColor lightGrayColor].CGColor;
+        
+        // build the path
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, radius, radius);
+        
+        CGPathAddArc(path, NULL, radius, radius, radius, 0 , 2 * M_PI, 0);
+        CGPathCloseSubpath(path);
+        
+        [backgroundContainerLayer setPath:path];
+        CFRelease(path);
+        
+        // add the sub layer
+        [layer addSublayer:backgroundContainerLayer];
     }
 
     // create the red layer
