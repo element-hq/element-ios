@@ -538,7 +538,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isBackPaginationInProgress = YES;
         backPaginationAddedMsgNb = 0;
         
-        [self paginateBackMessages:requestedItemsNb];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self paginateBackMessages:requestedItemsNb];
+        });
     }
 }
 
@@ -2396,7 +2398,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 # pragma mark - UIImagePickerControllerDelegate
 
-- (void) sendImage:(UIImage*)image {
+- (void)sendImage:(UIImage*)image {
     // Add a temporary event while the image is attached (local echo)
     MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:image];
     // Prepare message to send
