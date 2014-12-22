@@ -52,7 +52,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @interface RoomViewController () {
     BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
-
+    
     // Messages
     NSMutableArray *messages;
     id messagesListener;
@@ -245,7 +245,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     if (forceScrollToBottomOnViewDidAppear) {
         dispatch_async(dispatch_get_main_queue(), ^{
-           // Scroll to the bottom
+            // Scroll to the bottom
             [self scrollToBottomAnimated:animated];
         });
         forceScrollToBottomOnViewDidAppear = NO;
@@ -652,7 +652,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             CGFloat screenHeight = 0;
             CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-
+            
             UIViewController* rootViewController = self;
             
             // get the root view controller to extract the application size
@@ -711,71 +711,71 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         membersList = filteredMembers;
     }
     
-     members = [membersList sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
-         // Move banned and left members at the end of the list
-         if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
-             if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
-                 return NSOrderedDescending;
-             }
-         } else if (member2.membership == MXMembershipLeave || member2.membership == MXMembershipBan) {
-             return NSOrderedAscending;
-         }
-         
-         // Move invited members just before left and banned members
-         if (member1.membership == MXMembershipInvite) {
-             if (member2.membership != MXMembershipInvite) {
-                 return NSOrderedDescending;
-             }
-         } else if (member2.membership == MXMembershipInvite) {
-             return NSOrderedAscending;
-         }
-             
-         if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
-             // Get the users that correspond to these members
-             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-             MXUser *user1 = [mxHandler.mxSession userWithUserId:member1.userId];
-             MXUser *user2 = [mxHandler.mxSession userWithUserId:member2.userId];
-             
-             // Move users who are not online or unavailable at the end (before invited users)
-             if ((user1.presence == MXPresenceOnline) || (user1.presence == MXPresenceUnavailable)) {
-                 if ((user2.presence != MXPresenceOnline) && (user2.presence != MXPresenceUnavailable)) {
-                     return NSOrderedAscending;
-                 }
-             } else if ((user2.presence == MXPresenceOnline) || (user2.presence == MXPresenceUnavailable)) {
-                 return NSOrderedDescending;
-             } else {
-                 // Here both users are neither online nor unavailable (the lastActive ago is useless)
-                 // We will sort them according to their display, by keeping in front the offline users
-                 if (user1.presence == MXPresenceOffline) {
-                     if (user2.presence != MXPresenceOffline) {
-                         return NSOrderedAscending;
-                     }
-                 } else if (user2.presence == MXPresenceOffline) {
-                     return NSOrderedDescending;
-                 }
-                 return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
-             }
-             
-             // Consider user's lastActive ago value
-             if (user1.lastActiveAgo < user2.lastActiveAgo) {
-                 return NSOrderedAscending;
-             } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
-                 return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
-             }
-             return NSOrderedDescending;
-         } else {
-             // Move user without display name at the end (before invited users)
-             if (member1.displayname.length) {
-                 if (!member2.displayname.length) {
-                     return NSOrderedAscending;
-                 }
-             } else if (member2.displayname.length) {
-                 return NSOrderedDescending;
-             }
-             
-             return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
-         }
-     }];
+    members = [membersList sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
+        // Move banned and left members at the end of the list
+        if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
+            if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
+                return NSOrderedDescending;
+            }
+        } else if (member2.membership == MXMembershipLeave || member2.membership == MXMembershipBan) {
+            return NSOrderedAscending;
+        }
+        
+        // Move invited members just before left and banned members
+        if (member1.membership == MXMembershipInvite) {
+            if (member2.membership != MXMembershipInvite) {
+                return NSOrderedDescending;
+            }
+        } else if (member2.membership == MXMembershipInvite) {
+            return NSOrderedAscending;
+        }
+        
+        if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
+            // Get the users that correspond to these members
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MXUser *user1 = [mxHandler.mxSession userWithUserId:member1.userId];
+            MXUser *user2 = [mxHandler.mxSession userWithUserId:member2.userId];
+            
+            // Move users who are not online or unavailable at the end (before invited users)
+            if ((user1.presence == MXPresenceOnline) || (user1.presence == MXPresenceUnavailable)) {
+                if ((user2.presence != MXPresenceOnline) && (user2.presence != MXPresenceUnavailable)) {
+                    return NSOrderedAscending;
+                }
+            } else if ((user2.presence == MXPresenceOnline) || (user2.presence == MXPresenceUnavailable)) {
+                return NSOrderedDescending;
+            } else {
+                // Here both users are neither online nor unavailable (the lastActive ago is useless)
+                // We will sort them according to their display, by keeping in front the offline users
+                if (user1.presence == MXPresenceOffline) {
+                    if (user2.presence != MXPresenceOffline) {
+                        return NSOrderedAscending;
+                    }
+                } else if (user2.presence == MXPresenceOffline) {
+                    return NSOrderedDescending;
+                }
+                return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+            }
+            
+            // Consider user's lastActive ago value
+            if (user1.lastActiveAgo < user2.lastActiveAgo) {
+                return NSOrderedAscending;
+            } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
+                return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+            }
+            return NSOrderedDescending;
+        } else {
+            // Move user without display name at the end (before invited users)
+            if (member1.displayname.length) {
+                if (!member2.displayname.length) {
+                    return NSOrderedAscending;
+                }
+            } else if (member2.displayname.length) {
+                return NSOrderedDescending;
+            }
+            
+            return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+        }
+    }];
 }
 
 - (void)showRoomMembers {
@@ -1060,7 +1060,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     // Handle portrait/landscape mode
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
-
+    
     // bottom view offset
     // Don't forget the offset related to tabBar
     CGFloat nextBottomViewContanst = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
@@ -1111,7 +1111,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
         isKeyboardObserver = NO;
     }
-
+    
     // get the keyboard size
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
@@ -1124,7 +1124,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (CGRectEqualToRect(endRect, beginRect)) {
         return;
     }
-
+    
     // get the animation info
     NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
@@ -1138,7 +1138,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // animate the keyboard closing
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         self.messagesTableView.contentInset = insets;
-    
+        
         _controlViewBottomConstraint.constant = 0;
         [self.view layoutIfNeeded];
         
@@ -1651,13 +1651,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                    
                                                    // Open created room
                                                    [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
-                     
+                                                   
                                                } failure:^(NSError *error) {
                                                    NSLog(@"Create room failed: %@", error);
                                                    //Alert user
                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                }];
-                
+                    
                 }];
             }
         }
@@ -1813,7 +1813,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Hide topic field if empty
             _roomTitleView.hiddenTopic = !topic.length;
         }
-
+        
         // restart the topic animation
         [_roomTitleView startTopicAnimation];
     }
@@ -1880,12 +1880,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
                                 [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
                             }];
-
+                            
                             weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                                        weakSelf.actionMenu = nil;
-                                    }];
+                                weakSelf.actionMenu = nil;
+                            }];
                             [weakSelf.actionMenu showInViewController:weakSelf];
-                                     
+                            
                         });
                     }
                     
@@ -1926,7 +1926,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
         }];
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-             weakSelf.actionMenu = nil;
+            weakSelf.actionMenu = nil;
         }];
         weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
         [self.actionMenu showInViewController:self];
@@ -2391,33 +2391,29 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 # pragma mark - UIImagePickerControllerDelegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        if (selectedImage) {
-            // Add a temporary event while the image is attached (local echo)
-            MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:selectedImage];
-            // Prepare message to send
-            NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc] init];
-            [imageInfo setValue:@"image/jpeg" forKey:@"mimetype"];
-            [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)selectedImage.size.width] forKey:@"w"];
-            [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)selectedImage.size.height] forKey:@"h"];
-            NSData *imageData = UIImageJPEGRepresentation(selectedImage, 0.8);
-            [imageInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
-            // Upload image
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            [mxHandler.mxRestClient uploadContent:imageData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
-                NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
-                [imageMessage setValue:@"m.image" forKey:@"msgtype"];
-                [imageMessage setValue:url forKey:@"url"];
-                [imageMessage setValue:imageInfo forKey:@"info"];
-                [imageMessage setValue:@"Image" forKey:@"body"];
-                // Send message for this attachment
-                [self sendMessage:imageMessage withLocalEvent:localEvent];
-            } failure:^(NSError *error) {
-                [self handleError:error forLocalEvent:localEvent];
-            }];
+- (void) sendImage:(UIImage*)image {
+    // Add a temporary event while the image is attached (local echo)
+    MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:image];
+    // Prepare message to send
+    NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc] init];
+    [imageInfo setValue:@"image/jpeg" forKey:@"mimetype"];
+    [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
+    [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+    [imageInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
+    // Upload image
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    [mxHandler.mxRestClient uploadContent:imageData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
+        NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
+        [imageMessage setValue:@"m.image" forKey:@"msgtype"];
+        [imageMessage setValue:url forKey:@"url"];
+        [imageMessage setValue:imageInfo forKey:@"info"];
+        [imageMessage setValue:@"Image" forKey:@"body"];
+        // Send message for this attachment
+        [self sendMessage:imageMessage withLocalEvent:localEvent];
+    } failure:^(NSError *error) {
+        [self handleError:error forLocalEvent:localEvent];
+    }];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -2427,16 +2423,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         if (selectedImage) {
             __weak typeof(self) weakSelf = self;
-
+            
             // media picker does not offer a preview
             // so add a preview to let the user validates his selection
             if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
-            
+                
                 self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
                 
                 // the user validates the image
                 [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
-
+                    
                     // dismiss the image view
                     [weakSelf.imageValidationView dismissSelection];
                     [weakSelf.imageValidationView removeFromSuperview];
@@ -2489,7 +2485,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
         }
     }
-
+    
     [self dismissMediaPicker];
 }
 
@@ -2501,3 +2497,5 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
 }
 @end
+
+
