@@ -984,7 +984,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 [videoContent setValue:url forKey:@"url"];
                                 [videoContent setValue:videoInfo forKey:@"info"];
                                 [videoContent setValue:@"Video" forKey:@"body"];
-                                [self postMessage:videoContent withLocalEvent:localEvent];
+                                [self sendMessage:videoContent withLocalEvent:localEvent];
                             } failure:^(NSError *error) {
                                 [self handleError:error forLocalEvent:localEvent];
                             }];
@@ -1549,7 +1549,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             
             // update power level
-            if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
+            if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
                 [self.actionMenu addActionWithTitle:@"Update power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     if (weakSelf) {
                         // Ask for userId to invite
@@ -1685,7 +1685,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Check whether the user has enough power to rename the room
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
-        if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomName]) {
+        if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]) {
             // Only the room name is edited here, update the text field with the room name
             textField.text = self.mxRoom.state.name;
             textField.backgroundColor = [UIColor whiteColor];
@@ -1694,7 +1694,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         // Check whether the user is allowed to change room topic
-        if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
+        if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
             // Show topic text field even if the current value is nil
             _roomTitleView.hiddenTopic = NO;
             if (alertMsg) {
@@ -1708,7 +1708,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Check whether the user has enough power to edit room topic
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
-        if (userPowerLevel >= [powerLevels minimumPowerLevelForPostingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
+        if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
             textField.backgroundColor = [UIColor whiteColor];
             [self.roomTitleView stopTopicAnimation];
         } else {
@@ -1806,7 +1806,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Handle potential commands in room chat
         if ([self isIRCStyleCommand:msgTxt] == NO) {
-            [self postTextMessage:msgTxt];
+            [self sendTextMessage:msgTxt];
         }
         
         self.messageTextField.text = nil;
@@ -1907,7 +1907,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - Post messages
 
-- (void)postMessage:(NSDictionary*)msgContent withLocalEvent:(MXEvent*)localEvent {
+- (void)sendMessage:(NSDictionary*)msgContent withLocalEvent:(MXEvent*)localEvent {
     MXMessageType msgType = msgContent[@"msgtype"];
     if (msgType) {
         // Check whether a temporary event has already been added for local echo (this happens on attachments)
@@ -1947,7 +1947,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         // Send message to the room
-        [self.mxRoom postMessageOfType:msgType content:localEvent.content success:^(NSString *eventId) {
+        [self.mxRoom sendMessageOfType:msgType content:localEvent.content success:^(NSString *eventId) {
             // Keep the temporary id of this local event
             NSString *tmpLocalEventId = localEvent.eventId;
             
@@ -2026,7 +2026,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
-- (void)postTextMessage:(NSString*)msgTxt {
+- (void)sendTextMessage:(NSString*)msgTxt {
     MXMessageType msgType = kMXMessageTypeText;
     // Check whether the message is an emote
     if ([msgTxt hasPrefix:@"/me "]) {
@@ -2035,7 +2035,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         msgTxt = [msgTxt substringFromIndex:4];
     }
     
-    [self postMessage:@{@"msgtype":msgType, @"body":msgTxt} withLocalEvent:nil];
+    [self sendMessage:@{@"msgtype":msgType, @"body":msgTxt} withLocalEvent:nil];
 }
 
 - (MXEvent*)createLocalEchoEventWithoutContent {
@@ -2178,8 +2178,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSUInteger index = 1;
     
     if ([cmd isEqualToString:kCmdEmote]) {
-        // post message as an emote
-        [self postTextMessage:text];
+        // send message as an emote
+        [self sendTextMessage:text];
     } else if ([text hasPrefix:kCmdChangeDisplayName]) {
         // Change display name
         NSString *displayName = [text substringFromIndex:kCmdChangeDisplayName.length + 1];
@@ -2359,7 +2359,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [imageMessage setValue:imageInfo forKey:@"info"];
                 [imageMessage setValue:@"Image" forKey:@"body"];
                 // Send message for this attachment
-                [self postMessage:imageMessage withLocalEvent:localEvent];
+                [self sendMessage:imageMessage withLocalEvent:localEvent];
             } failure:^(NSError *error) {
                 [self handleError:error forLocalEvent:localEvent];
             }];
