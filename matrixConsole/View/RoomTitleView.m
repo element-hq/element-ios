@@ -23,28 +23,15 @@
     // the topic can be animated if it is longer than the screen size
     UIScrollView* scrollView;
     UILabel* label;
+    UIView* topicTextFieldMaskView;
     
     // do not start the topic animation asap
     NSTimer * animationTimer;
-    
-    // restart a killed animation when the application is debackgrounded
-    BOOL restartAnimationWhenActive;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameTextFieldTopConstraint;
 @end
 
 @implementation RoomTitleView
-
-- (id) initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    
-    if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
-    }
-    
-    return self;
-}
 
 - (void)dealloc {
     if (messagesListener && _mxRoom) {
@@ -55,21 +42,6 @@
 
     // stop any animation
     [self stopTopicAnimation];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
-}
-
-
-- (void)appEnteredBackground {
-    restartAnimationWhenActive = [self stopTopicAnimation];
-}
-
-- (void)appEnteredForeground {
-    if (restartAnimationWhenActive) {
-        [self startTopicAnimation];
-        restartAnimationWhenActive = NO;
-    }
 }
 
 - (void)refreshDisplay {
@@ -122,23 +94,11 @@
     } else {
         _topicTextField.hidden = NO;
         _displayNameTextFieldTopConstraint.constant = 2;
-        [self animateTopic:nil];
     }
 }
 
 // start with delay
 - (void)startTopicAnimation {
-    if (animationTimer) {
-        [animationTimer invalidate];
-        animationTimer = nil;
-    }
-    
-    // wait a little before really animating the topic text
-    animationTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(animateTopic:) userInfo:self repeats:NO];
-}
-
-// animate routine
-- (void)animateTopic:(id)sender {
     // stop any pending timer
     if (animationTimer) {
         [animationTimer invalidate];
@@ -183,15 +143,14 @@
     CGRect topicTextFieldFrame = _topicTextField.frame;
     topicTextFieldFrame.origin = CGPointZero;
     label.frame = topicTextFieldFrame;
-    
-    // unplug to plug
+
     _topicTextField.hidden = YES;
     [scrollView addSubview:label];
-    [self addSubview:scrollView];
+    [self insertSubview:scrollView belowSubview:topicTextFieldMaskView];
     
     // update the size
     [label sizeToFit];
-
+    
     // offset
     CGPoint offset = scrollView.contentOffset;
     offset.x = label.frame.size.width - scrollView.frame.size.width;
@@ -199,12 +158,11 @@
     // duration (magic computation to give more time if the text is longer)
     CGFloat duration  = label.frame.size.width / scrollView.frame.size.width * 3;
 
-    // animation
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionCurveLinear animations:^{
-
+    // animate the topic once to display its full content
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionCurveLinear animations:^{
         [scrollView setContentOffset:offset animated:NO];
-        
     } completion:^(BOOL finished) {
+        [self stopTopicAnimation];
     }];
 }
 
@@ -232,6 +190,14 @@
     return NO;
 }
 
+- (void)editTopic {
+    [self stopTopicAnimation];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_topicTextField becomeFirstResponder];
+    });
+}
+
 - (void)dismissKeyboard {
     // Hide the keyboard
     [_displayNameTextField resignFirstResponder];
@@ -239,22 +205,60 @@
 
     // restart the animation
     [self stopTopicAnimation];
-    [self startTopicAnimation];
+}
+
+- (void)layoutSubviews {
+    // mother class call
+    [super layoutSubviews];
+
+    // add a mask to trap the tap events
+    // it is faster (and simpliest) than subclassing the scrollview or the textField
+    // any other gesture could also be trapped here
+    if (!topicTextFieldMaskView) {
+         topicTextFieldMaskView = [[UIView alloc]  initWithFrame:_topicTextField.frame];
+        topicTextFieldMaskView.backgroundColor = [UIColor clearColor];
+        [self addSubview:topicTextFieldMaskView];
+        
+        // tap -> switch to text edition
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editTopic)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [topicTextFieldMaskView addGestureRecognizer:tap];
+        
+        // long tap -> animate the topic
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startTopicAnimation)];
+        [topicTextFieldMaskView addGestureRecognizer:longPress];
+    }
 }
 
 - (void)setFrame:(CGRect)frame {
-    
-    // restart only if there is a frame update
-    BOOL restartAnimation = !CGRectEqualToRect(CGRectIntegral(frame), CGRectIntegral(self.frame));
-    
-    if (restartAnimation) {
-        [self stopTopicAnimation];
-    }
-    
+    // mother class call
     [super setFrame:frame];
     
-    if (restartAnimation) {
-        [self startTopicAnimation];
+    // stop any running animation if the frame is updated (screen rotation for example)
+    if (!CGRectEqualToRect(CGRectIntegral(frame), CGRectIntegral(self.frame))) {
+        // stop any running application
+        [self stopTopicAnimation];
+    }
+
+    // update the mask frame
+    if (self.topicTextField.hidden) {
+        topicTextFieldMaskView.frame = CGRectZero;
+    } else {
+        topicTextFieldMaskView.frame = self.topicTextField.frame;
+    }
+    
+    // topicTextField switches becomes the first responder or it is not anymore the first responder
+    if (self.topicTextField.isFirstResponder != (topicTextFieldMaskView.hidden)) {
+        topicTextFieldMaskView.hidden = self.topicTextField.isFirstResponder;
+        
+        // move topicTextFieldMaskView to the foreground
+        // when topicTextField has been the first responder, it lets a view over topicTextFieldMaskView
+        // so restore the expected Z order
+        if (!topicTextFieldMaskView.hidden) {
+            [self bringSubviewToFront:topicTextFieldMaskView];
+        }
     }
 }
 
