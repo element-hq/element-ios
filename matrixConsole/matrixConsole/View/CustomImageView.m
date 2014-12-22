@@ -16,14 +16,47 @@
 
 #import "CustomImageView.h"
 #import "MediaManager.h"
+#import "AppDelegate.h"
 
 @interface CustomImageView () {
     id imageLoader;
     UIActivityIndicatorView *loadingWheel;
+    
+    // validation buttons
+    UIButton* leftButton;
+    UIButton* rightButton;
+    
+    NSString* leftButtonTitle;
+    NSString* rightButtonTitle;
+    
+    blockCustomImageView_onClick leftHandler;
+    blockCustomImageView_onClick rightHandler;
+    
+    UIView* bottomBarView;
 }
 @end
 
 @implementation CustomImageView
+
+#define CUSTOM_IMAGE_VIEW_BUTTON_WIDTH 100
+
+- (id)initWithFrame:(CGRect)frame {
+    
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        leftButtonTitle = nil;
+        leftHandler = nil;
+        rightButtonTitle = nil;
+        rightHandler = nil;
+        
+        self.backgroundColor = [UIColor blackColor];
+        self.contentMode = UIViewContentModeScaleAspectFit;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+    }
+    
+    return self;
+}
 
 - (void)dealloc {
     if (imageLoader) {
@@ -33,6 +66,10 @@
     if (loadingWheel) {
         [loadingWheel removeFromSuperview];
         loadingWheel = nil;
+    }
+    if (bottomBarView) {
+        [bottomBarView removeFromSuperview];
+        bottomBarView = nil;
     }
 }
 
@@ -62,6 +99,85 @@
 }
 
 #pragma mark -
+
+- (IBAction)onButtonToggle:(id)sender
+{
+    if (sender == leftButton) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            leftHandler(self, leftButtonTitle);
+        });
+    } else if (sender == rightButton) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            rightHandler(self, rightButtonTitle);
+        });
+    }
+}
+
+// add a generic button to the bottom view
+// return the added UIButton
+- (UIButton*) addbuttonWithTitle:(NSString*)title  {
+    UIButton* button = [[UIButton alloc] init];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateHighlighted];
+
+    // default background text color
+    CGFloat textColorFactor = 146.0 / 255.0;
+    UIColor* textColor = [UIColor colorWithRed:textColorFactor green:textColorFactor blue:textColorFactor alpha:1.0];
+   
+    [button setTitleColor:textColor forState:UIControlStateNormal];
+    [button setTitleColor:textColor forState:UIControlStateHighlighted];
+
+    // keep the bottomView background color
+    button.backgroundColor = [UIColor clearColor];
+    
+    [button addTarget:self action:@selector(onButtonToggle:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBarView addSubview:button];
+    
+    return button;
+}
+
+- (void)layoutSubviews {
+    
+    // call upper layer
+    [super layoutSubviews];
+
+    // check if the dedicated buttons are already added
+    if (leftButtonTitle || rightButtonTitle) {
+        
+        if (!bottomBarView) {
+            bottomBarView = [[UIView alloc] init];
+            
+            if (leftButtonTitle) {
+                leftButton = [self addbuttonWithTitle:leftButtonTitle];
+            }
+            
+            rightButton = [[UIButton alloc] init];
+            
+            if (rightButtonTitle) {
+                rightButton = [self addbuttonWithTitle:rightButtonTitle];
+            }
+
+            // default tabbar background color
+            CGFloat base = 248.0 / 255.0f;
+            bottomBarView.backgroundColor = [UIColor colorWithRed:base green:base blue:base alpha:1.0];
+            
+            [[AppDelegate theDelegate].masterTabBarController.tabBar addSubview:bottomBarView];
+        }
+
+        // manage the item 
+        CGRect tabBarFrame = [AppDelegate theDelegate].masterTabBarController.tabBar.frame;
+        tabBarFrame.origin.y = 0;
+        bottomBarView.frame = tabBarFrame;
+        
+        if (leftButton) {
+            leftButton.frame = CGRectMake(0, 0, CUSTOM_IMAGE_VIEW_BUTTON_WIDTH, bottomBarView.frame.size.height);
+        }
+        
+        if (rightButton) {
+            rightButton.frame = CGRectMake(bottomBarView.frame.size.width - CUSTOM_IMAGE_VIEW_BUTTON_WIDTH, 0, CUSTOM_IMAGE_VIEW_BUTTON_WIDTH, bottomBarView.frame.size.height);
+        }
+    }
+}
 
 - (void)setHideActivityIndicator:(BOOL)hideActivityIndicator {
     _hideActivityIndicator = hideActivityIndicator;
@@ -103,6 +219,25 @@
                                             [self stopActivityIndicator];
                                             NSLog(@"Failed to download image (%@): %@", imageURL, error);
                                         }];
+    }
+}
+
+#pragma mark - buttons management
+
+- (void)setLeftButtonTitle: aLeftButtonTitle handler:(blockCustomImageView_onClick)handler {
+    leftButtonTitle = aLeftButtonTitle;
+    leftHandler = handler;
+}
+
+- (void)setRightButtonTitle:aRightButtonTitle handler:(blockCustomImageView_onClick)handler {
+    rightButtonTitle = aRightButtonTitle;
+    rightHandler = handler;
+}
+
+- (void)dismissSelection {
+    if (bottomBarView) {
+        [bottomBarView removeFromSuperview];
+        bottomBarView = nil;
     }
 }
 

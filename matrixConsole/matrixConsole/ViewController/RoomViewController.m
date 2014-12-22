@@ -100,6 +100,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 @property (strong, nonatomic) MXRoom *mxRoom;
 @property (strong, nonatomic) CustomAlert *actionMenu;
+@property (strong, nonatomic) CustomImageView* imageValidationView;
 @end
 
 @implementation RoomViewController
@@ -197,6 +198,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -218,9 +220,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
+    if (self.imageValidationView) {
+        [self.imageValidationView dismissSelection];
+        [self.imageValidationView removeFromSuperview];
+        self.imageValidationView = nil;
+    }
+    
+    if (highResImage) {
+        [highResImage removeFromSuperview];
+        highResImage = nil;
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -244,6 +258,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Reset visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
+}
+
+- (void)onAppDidEnterBackground {
+    // close any opened CustomImageView
+    if (highResImage) {
+        [highResImage removeFromSuperview];
+        highResImage = nil;
+    }
+    
+    if (self.imageValidationView) {
+        [self.imageValidationView removeFromSuperview];
+        self.imageValidationView = nil;
+    }
 }
 
 #pragma mark - room ID
@@ -810,8 +837,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSString *url = content[@"url"];
         if (url.length) {
             highResImage = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
-            highResImage.contentMode = UIViewContentModeScaleAspectFit;
-            highResImage.backgroundColor = [UIColor blackColor];
             highResImage.imageURL = url;
             [self.view addSubview:highResImage];
             
@@ -821,7 +846,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [tap setNumberOfTapsRequired:1];
             [highResImage addGestureRecognizer:tap];
             highResImage.userInteractionEnabled = YES;
-            highResImage.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
         }
     } else if (msgtype == RoomMessageTypeVideo) {
         NSString *url =content[@"url"];
@@ -1834,14 +1858,37 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [weakSelf.actionMenu addActionWithTitle:@"Media" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     if (weakSelf) {
                         weakSelf.actionMenu = nil;
-                        // Open media gallery
-                        UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
-                        mediaPicker.delegate = weakSelf;
-                        mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                        mediaPicker.allowsEditing = NO;
-                        mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
-                        [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Media:" message:nil style:CustomAlertStyleActionSheet];
+                            
+                            [weakSelf.actionMenu addActionWithTitle:@"Photo Library" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                                // Open media gallery
+                                UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                                mediaPicker.delegate = weakSelf;
+                                mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                                mediaPicker.allowsEditing = NO;
+                                mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                                [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                            }];
+                            
+                            [weakSelf.actionMenu addActionWithTitle:@"Take Photo or Video" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                                // Open media gallery
+                                UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                                mediaPicker.delegate = weakSelf;
+                                mediaPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                                mediaPicker.allowsEditing = NO;
+                                mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                                [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                            }];
+
+                            weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                                        weakSelf.actionMenu = nil;
+                                    }];
+                            [weakSelf.actionMenu showInViewController:weakSelf];
+                                     
+                        });
                     }
+                    
                 }];
                 weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     weakSelf.actionMenu = nil;
@@ -2371,6 +2418,58 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             } failure:^(NSError *error) {
                 [self handleError:error forLocalEvent:localEvent];
             }];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        if (selectedImage) {
+            __weak typeof(self) weakSelf = self;
+
+            // media picker does not offer a preview
+            // so add a preview to let the user validates his selection
+            if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
+            
+                self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+                
+                // the user validates the image
+                [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
+
+                    // dismiss the image view
+                    [weakSelf.imageValidationView dismissSelection];
+                    [weakSelf.imageValidationView removeFromSuperview];
+                    weakSelf.imageValidationView = nil;
+                    
+                    [weakSelf sendImage:selectedImage];
+                }];
+                
+                // the user wants to use an other image
+                [self.imageValidationView setLeftButtonTitle:@"Cancel" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
+                    
+                    // dismiss the image view
+                    [weakSelf.imageValidationView dismissSelection];
+                    [weakSelf.imageValidationView removeFromSuperview];
+                    weakSelf.imageValidationView = nil;
+                    
+                    // Open again media gallery
+                    UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                    mediaPicker.delegate = weakSelf;
+                    mediaPicker.sourceType = picker.sourceType;
+                    mediaPicker.allowsEditing = NO;
+                    mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                    [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                }];
+                
+                self.imageValidationView.image = selectedImage;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.view addSubview:self.imageValidationView];
+                });
+            } else {
+                [weakSelf sendImage:selectedImage];
+            }
         }
     } else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
