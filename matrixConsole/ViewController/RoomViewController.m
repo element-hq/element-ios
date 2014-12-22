@@ -62,6 +62,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL isFirstPagination;
     NSUInteger backPaginationAddedMsgNb;
     NSUInteger backPaginationHandledEventsNb;
+    NSOperation *backPaginationOperation;
     
     // Members list
     NSArray *members;
@@ -156,6 +157,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     self.mxRoom = nil;
+    
+    if (backPaginationOperation) {
+        [backPaginationOperation cancel];
+        backPaginationOperation = nil;
+    }
     
     members = nil;
     if (membersListener) {
@@ -511,7 +517,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)paginateBackMessages:(NSUInteger)requestedItemsNb {
     backPaginationHandledEventsNb = 0;
-    [self.mxRoom paginateBackMessages:requestedItemsNb complete:^{
+    backPaginationOperation = [self.mxRoom paginateBackMessages:requestedItemsNb complete:^{
         // Sanity check: check whether the view controller has not been released while back pagination was running
         if (self.roomId == nil) {
             return;
@@ -579,6 +585,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     isFirstPagination = NO;
     isBackPaginationInProgress = NO;
+    backPaginationOperation = nil;
+    
     [self stopActivityIndicator];
 }
 
@@ -1550,7 +1558,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             // update power level
             if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
-                [self.actionMenu addActionWithTitle:@"Update power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                [self.actionMenu addActionWithTitle:@"Set power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     if (weakSelf) {
                         // Ask for userId to invite
                         weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];

@@ -20,6 +20,7 @@
 @interface RecentRoom() {
     MXRoom *mxRoom;
     id backPaginationListener;
+    NSOperation *backPaginationOperation;
 }
 @end
 
@@ -83,8 +84,10 @@
 
 - (void)triggerBackPagination {
     if (mxRoom.canPaginate) {
-        [mxRoom paginateBackMessages:1 complete:^{
+        backPaginationOperation = [mxRoom paginateBackMessages:1 complete:^{
+            backPaginationOperation = nil;
         } failure:^(NSError *error) {
+            backPaginationOperation = nil;
             NSLog(@"RecentRoom: Failed to paginate back: %@", error);
             [self cancelBackPagination];
         }];
@@ -98,6 +101,10 @@
         [mxRoom removeListener:backPaginationListener];
         backPaginationListener = nil;
         mxRoom = nil;
+    }
+    if (backPaginationOperation) {
+        [backPaginationOperation cancel];
+        backPaginationOperation = nil;
     }
 }
 
