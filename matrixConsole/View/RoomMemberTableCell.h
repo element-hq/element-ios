@@ -24,6 +24,7 @@
 @interface RoomMemberTableCell : UITableViewCell
 {
     //
+    CAShapeLayer* backgroundContainerLayer;
     CAShapeLayer* powerContainerLayer;
 }
 @property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
