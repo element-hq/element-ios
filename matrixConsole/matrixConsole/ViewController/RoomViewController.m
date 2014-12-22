@@ -220,16 +220,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
-    if (self.imageValidationView) {
-        [self.imageValidationView dismissSelection];
-        [self.imageValidationView removeFromSuperview];
-        self.imageValidationView = nil;
-    }
-    
-    if (highResImage) {
-        [highResImage removeFromSuperview];
-        highResImage = nil;
-    }
+    [self closeImageView];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -261,16 +252,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)onAppDidEnterBackground {
-    // close any opened CustomImageView
-    if (highResImage) {
-        [highResImage removeFromSuperview];
-        highResImage = nil;
-    }
-    
-    if (self.imageValidationView) {
-        [self.imageValidationView removeFromSuperview];
-        self.imageValidationView = nil;
-    }
+    [self closeImageView];
 }
 
 #pragma mark - room ID
@@ -848,6 +830,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [tap setNumberOfTapsRequired:1];
             [highResImage addGestureRecognizer:tap];
             highResImage.userInteractionEnabled = YES;
+            
+            // add a button to close the ImageView
+            self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
+                                                      initWithTitle:@"Close"
+                                                      style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(closeImageView)];
         }
     } else if (msgtype == RoomMessageTypeVideo) {
         NSString *url =content[@"url"];
@@ -2423,6 +2412,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }];
 }
 
+- (void)closeImageView {
+    if (self.imageValidationView) {
+        [self.imageValidationView dismissSelection];
+        [self.imageValidationView removeFromSuperview];
+        self.imageValidationView = nil;
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+    
+    if (highResImage) {
+        [highResImage removeFromSuperview];
+        highResImage = nil;
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
@@ -2466,6 +2470,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
                 
                 self.imageValidationView.image = selectedImage;
+                
+                // add a button to close the ImageView
+                self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
+                                                          initWithTitle:@"Close"
+                                                          style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(closeImageView)];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.view addSubview:self.imageValidationView];
