@@ -18,6 +18,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "RoomViewController.h"
+#import "MemberViewController.h"
 #import "RoomMessage.h"
 #import "RoomMessageTableCell.h"
 #import "RoomMemberTableCell.h"
@@ -1426,53 +1427,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - UITableView delegate
 
-- (void) updateUserPowerLevel:(MXRoomMember*)roomMember
-{
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    __weak typeof(self) weakSelf = self;
-    
-    // Ask for userId to invite
-    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];
-    
-    if (![mxHandler.userId isEqualToString:roomMember.userId]) {
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                weakSelf.actionMenu = nil;
-            
-                // Reset user power level
-                [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:0 success:^{
-            } failure:^(NSError *error) {
-                NSLog(@"Reset user power (%@) failed: %@", roomMember.userId, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-            
-        }];
-    }
-    [self.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.secureTextEntry = NO;
-        textField.text = [NSString stringWithFormat:@"%d", (int)([mxHandler getPowerLevel:roomMember inRoom:weakSelf.mxRoom] * 100)];
-        textField.placeholder = nil;
-        textField.keyboardType = UIKeyboardTypeDecimalPad;
-    }];
-    [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-        UITextField *textField = [alert textFieldAtIndex:0];
-        weakSelf.actionMenu = nil;
-        
-        // Set user power level
-        [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:[textField.text integerValue] success:^{
-        } failure:^(NSError *error) {
-            NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-        
-    }];
-    [self.actionMenu showInViewController:self];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
+        /*
         // List action(s) available on this member
         __block MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
         
@@ -1679,7 +1637,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 weakSelf.actionMenu = nil;
             }];
             [self.actionMenu showInViewController:self];
-        }
+        }*/
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if (tableView == self.messagesTableView) {
         // Dismiss keyboard when user taps on messages table view content
@@ -2525,6 +2483,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)dismissMediaPicker {
     [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
 }
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showMemberSheet"]) {
+        NSIndexPath *indexPath = [self.membersTableView indexPathForSelectedRow];
+        
+        MemberViewController* controller = [segue destinationViewController];
+        controller.roomMember = [members objectAtIndex:indexPath.row];
+    }
+}
+
 @end
 
 
