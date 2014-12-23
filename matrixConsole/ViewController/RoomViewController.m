@@ -154,7 +154,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
-        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
         [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     self.mxRoom = nil;
@@ -295,7 +294,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
-        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"displayAllEvents"];
         [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
@@ -335,7 +333,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
-        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"displayAllEvents" options:0 context:nil];
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
@@ -615,10 +612,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"displayAllEvents" isEqualToString:keyPath]) {
-        // Back to recents (Room details are not available until the end of initial sync)
-        [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
-    } else if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
+    if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
