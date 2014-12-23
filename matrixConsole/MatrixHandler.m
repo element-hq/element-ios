@@ -119,6 +119,8 @@ static MatrixHandler *sharedHandler = nil;
 
             // Launch mxSession
             [self.mxSession start:^{
+                // @TODO (SYIOS-26)
+            } onServerSyncDone:^{
                 self.isInitialSyncDone = YES;
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
                 _isResumeDone = YES;
