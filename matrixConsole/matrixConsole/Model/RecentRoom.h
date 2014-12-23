@@ -15,6 +15,11 @@
  */
 #import <MatrixSDK/MatrixSDK.h>
 
+// When a recent is initialized with a blank last event description (unexpected/unsupported event),
+// a back pagination is triggered to find a non empty description.
+// The following notification is posted when this operation succeeds
+extern NSString *const kRecentRoomUpdatedByBackPagination;
+
 @interface RecentRoom : NSObject
 
 @property (nonatomic, readonly) NSString *roomId;
