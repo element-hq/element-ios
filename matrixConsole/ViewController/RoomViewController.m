@@ -219,7 +219,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
-    [self closeImageView];
+    [self dismissCustomImageView];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -251,7 +251,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)onAppDidEnterBackground {
-    [self closeImageView];
+    [self dismissCustomImageView];
 }
 
 #pragma mark - room ID
@@ -830,7 +830,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                       initWithTitle:@"Close"
                                                       style:UIBarButtonItemStylePlain
                                                       target:self
-                                                      action:@selector(closeImageView)];
+                                                      action:@selector(dismissCustomImageView)];
         }
     } else if (msgtype == RoomMessageTypeVideo) {
         NSString *url =content[@"url"];
@@ -881,10 +881,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerWillExitFullscreenNotification object:nil];
     
-    if (highResImage) {
-        [highResImage removeFromSuperview];
-        highResImage = nil;
-    }
+    [self dismissCustomImageView];
+    
     // Restore audio category
     if (AVAudioSessionCategory) {
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategory error:nil];
@@ -2429,7 +2427,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }];
 }
 
-- (void)closeImageView {
+- (void)dismissCustomImageView {
     if (self.imageValidationView) {
         [self.imageValidationView dismissSelection];
         [self.imageValidationView removeFromSuperview];
@@ -2462,9 +2460,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
                     
                     // dismiss the image view
-                    [weakSelf.imageValidationView dismissSelection];
-                    [weakSelf.imageValidationView removeFromSuperview];
-                    weakSelf.imageValidationView = nil;
+                    [weakSelf dismissCustomImageView];
                     
                     [weakSelf sendImage:selectedImage];
                 }];
@@ -2473,9 +2469,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [self.imageValidationView setLeftButtonTitle:@"Cancel" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
                     
                     // dismiss the image view
-                    [weakSelf.imageValidationView dismissSelection];
-                    [weakSelf.imageValidationView removeFromSuperview];
-                    weakSelf.imageValidationView = nil;
+                    [weakSelf dismissCustomImageView];
                     
                     // Open again media gallery
                     UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
@@ -2493,7 +2487,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                           initWithTitle:@"Close"
                                                           style:UIBarButtonItemStylePlain
                                                           target:self
-                                                          action:@selector(closeImageView)];
+                                                          action:@selector(dismissCustomImageView)];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.view addSubview:self.imageValidationView];
