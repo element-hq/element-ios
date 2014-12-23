@@ -184,6 +184,10 @@
     
         [self addSubview:_topicTextField];
         
+        // must be done to be able to restart the animation
+        // the Z order is not kept
+        [self bringSubviewToFront:topicTextFieldMaskView];
+        
         return YES;
     }
     
