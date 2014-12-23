@@ -1434,13 +1434,66 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - UITableView delegate
 
+- (void) updateUserPowerLevel:(MXRoomMember*)roomMember
+{
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    __weak typeof(self) weakSelf = self;
+    
+    // Ask for userId to invite
+    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];
+    
+    if (![mxHandler.userId isEqualToString:roomMember.userId]) {
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu = nil;
+            
+                // Reset user power level
+                [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:0 success:^{
+            } failure:^(NSError *error) {
+                NSLog(@"Reset user power (%@) failed: %@", roomMember.userId, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+            
+        }];
+    }
+    [self.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = NO;
+        textField.text = [NSString stringWithFormat:@"%d", (int)([mxHandler getPowerLevel:roomMember inRoom:weakSelf.mxRoom] * 100)];
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDecimalPad;
+    }];
+    [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        UITextField *textField = [alert textFieldAtIndex:0];
+        weakSelf.actionMenu = nil;
+        
+        // Set user power level
+        [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:[textField.text integerValue] success:^{
+        } failure:^(NSError *error) {
+            NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+        
+    }];
+    [self.actionMenu showInViewController:self];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
         // List action(s) available on this member
         __block MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
+        
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        
+        // Check user's power level before allowing an action (kick, ban, ...)
+        __block MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+        NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
+        NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
+        
         __weak typeof(self) weakSelf = self;
+        
+        // dismiss any opened action sheet
         if (self.actionMenu) {
             [self.actionMenu dismiss:NO];
             self.actionMenu = nil;
@@ -1463,12 +1516,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }];
                 }
             }];
-        } else {
-            // Check user's power level before allowing an action (kick, ban, ...)
-            __block MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-            NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
-            NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
             
+            if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
+                [self.actionMenu addActionWithTitle:@"Set power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    if (weakSelf) {
+                        [weakSelf updateUserPowerLevel:roomMember];
+                    }
+                }];
+            }
+        } else {
             self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
             
             // Consider membership of the selected member
@@ -1476,7 +1532,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 case MXMembershipInvite:
                 case MXMembershipJoin: {
                     // Check conditions to be able to kick someone
-                    if (userPowerLevel >= [powerLevels kick] && userPowerLevel >= memberPowerLevel) {
+                    if (oneSelfPowerLevel >= [powerLevels kick] && oneSelfPowerLevel >= memberPowerLevel) {
                         [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1493,7 +1549,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         }];
                     }
                     // Check conditions to be able to ban someone
-                    if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
+                    if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1513,7 +1569,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
                 case MXMembershipLeave: {
                     // Check conditions to be able to invite someone
-                    if (userPowerLevel >= [powerLevels invite]) {
+                    if (oneSelfPowerLevel >= [powerLevels invite]) {
                         [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1529,7 +1585,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         }];
                     }
                     // Check conditions to be able to ban someone
-                    if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
+                    if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
                         [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1549,7 +1605,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
                 case MXMembershipBan: {
                     // Check conditions to be able to unban someone
-                    if (userPowerLevel >= [powerLevels ban] && userPowerLevel >= memberPowerLevel) {
+                    if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
                         [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                             if (weakSelf) {
                                 weakSelf.actionMenu = nil;
@@ -1572,43 +1628,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             
             // update power level
-            if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
+            if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
                 [self.actionMenu addActionWithTitle:@"Set power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     if (weakSelf) {
-                        // Ask for userId to invite
-                        weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];
-                        weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            weakSelf.actionMenu = nil;
-                            
-                            // Reset user power level
-                            [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:0 success:^{
-                            } failure:^(NSError *error) {
-                                NSLog(@"Reset user power (%@) failed: %@", roomMember.userId, error);
-                                //Alert user
-                                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                            }];
-                            
-                        }];
-                        [weakSelf.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-                            textField.secureTextEntry = NO;
-                            textField.text = [NSString stringWithFormat:@"%d", (int)([mxHandler getPowerLevel:roomMember inRoom:weakSelf.mxRoom] * 100)];
-                            textField.placeholder = nil;
-                            textField.keyboardType = UIKeyboardTypeDecimalPad;
-                        }];
-                        [weakSelf.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            UITextField *textField = [alert textFieldAtIndex:0];
-                            weakSelf.actionMenu = nil;
-                            
-                            // Set user power level
-                            [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:[textField.text integerValue] success:^{
-                            } failure:^(NSError *error) {
-                                NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
-                                //Alert user
-                                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                            }];
-                            
-                        }];
-                        [weakSelf.actionMenu showInViewController:weakSelf];
+                        [weakSelf updateUserPowerLevel:roomMember];
                     }
                 }];
             }
