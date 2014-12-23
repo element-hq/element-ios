@@ -116,6 +116,9 @@
     // Refresh display
     [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
+    // Add observer to force refresh when a recent last description is updated thanks to back pagination
+    // (This happens when the current last event description is blank, a back pagination is triggered to display non empty description)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configureView) name:kRecentRoomUpdatedByBackPagination object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -132,6 +135,7 @@
     
     _preSelectedRoomId = nil;
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kRecentRoomUpdatedByBackPagination object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
