@@ -243,10 +243,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         forceScrollToBottomOnViewDidAppear = NO;
         self.messagesTableView.hidden = NO;
     }
-    
+
     // manage the room membes button
     // disable it if there is no member
     [self updateRoomMembers];
+    members = nil;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
