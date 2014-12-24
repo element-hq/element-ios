@@ -188,6 +188,33 @@
 
 #pragma mark - Internal methods
 
+// remove the focus on a deleted room
+// when the view is splitted between the recents and the selected rooms
+- (void)checkSelectedRoomExists {
+    // IOS 8 only
+    if ([self.splitViewController respondsToSelector:@selector(isCollapsed)]) {
+        // there is a split view recents / chat view
+        if (!self.splitViewController.isCollapsed && currentRoomViewController.roomId) {
+            
+            // check if the room still exists
+            BOOL exists = NO;
+            
+            for(RecentRoom* recentRoom in recents) {
+                exists |= [recentRoom.roomId isEqualToString:currentRoomViewController.roomId];        
+            }
+            
+            // if it does not exist anymore
+            if (!exists) {
+                // release the room viewController
+                currentRoomViewController.roomId = nil;
+                currentRoomViewController = nil;
+                // delete the selected row
+                [self.tableView selectRowAtIndexPath:nil animated:NO scrollPosition: UITableViewScrollPositionNone];
+            }
+        }
+    }
+}
+
 - (void)configureView {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
@@ -254,6 +281,8 @@
                                 }
                             }
                         }
+                        
+                        [self checkSelectedRoomExists];
                         
                         // Reload table
                         [self.tableView reloadData];
@@ -481,6 +510,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         // Leave the selected room
         RecentRoom *recentRoom;
         if (filteredRecents) {
@@ -497,6 +527,8 @@
                 [recents removeObjectAtIndex:indexPath.row];
             }
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self checkSelectedRoomExists];
         } failure:^(NSError *error) {
             NSLog(@"Failed to leave room (%@) failed: %@", recentRoom.roomId, error);
             //Alert user
