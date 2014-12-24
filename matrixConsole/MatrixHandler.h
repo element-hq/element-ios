@@ -67,4 +67,8 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 - (NSString*) getRoomStartedWithMember:(MXRoomMember*)roomMember;
 
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
+
+// provide a non empty display name
+- (NSString*) getMXRoomMemberDisplayName:(MXRoomMember*)roomMember;
+
 @end
