@@ -23,6 +23,8 @@
 @interface MemberViewController () {
     id imageLoader;
     id membersListener;
+    
+    UIActivityIndicatorView * pendingMaskSpinnerView;
 }
 
 @property (strong, nonatomic) CustomAlert *actionMenu;
@@ -72,6 +74,16 @@
                 [self.actionMenu dismiss:NO];
                 self.actionMenu = nil;
             }
+            
+            // get the updated memmber
+            NSArray* membersList = [self.mxRoom.state members];
+            for (MXRoomMember* member in membersList) {
+                if ([member.userId isEqual:_roomMember.userId]) {
+                    _roomMember = member;
+                    break;
+                }
+            }
+            
             // Refresh members list
             [self updateMemberInfo];
             [self.tableView reloadData];
@@ -174,7 +186,7 @@
             case MXMembershipBan: {
                 // Check conditions to be able to unban someone
                 if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
-                    [buttonsTitles addObject:@"Ban"];
+                    [buttonsTitles addObject:@"Unban"];
                 }
                 break;
             }
@@ -223,6 +235,33 @@
 
 #pragma mark - button management
 
+- (BOOL)hasPendingAction {
+    return nil != pendingMaskSpinnerView;
+}
+
+- (void) addPendingActionMask {
+
+    // add a spinner above the tableview to avoid that the user tap on any other button
+    pendingMaskSpinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    pendingMaskSpinnerView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+    pendingMaskSpinnerView.frame = self.tableView.frame;
+    pendingMaskSpinnerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+    
+    // append it
+    [self.tableView.superview addSubview:pendingMaskSpinnerView];
+    
+    // animate it
+    [pendingMaskSpinnerView startAnimating];
+}
+
+- (void) removePendingActionMask {
+    if (pendingMaskSpinnerView) {
+        [pendingMaskSpinnerView removeFromSuperview];
+        pendingMaskSpinnerView = nil;
+        [self.tableView reloadData];
+    }
+}
+
 - (void) updateUserPowerLevel:(MXRoomMember*)roomMember
 {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -235,9 +274,13 @@
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
             weakSelf.actionMenu = nil;
             
+            [weakSelf addPendingActionMask];
+            
             // Reset user power level
             [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:0 success:^{
+                [weakSelf removePendingActionMask];
             } failure:^(NSError *error) {
+                [weakSelf removePendingActionMask];
                 NSLog(@"Reset user power (%@) failed: %@", roomMember.userId, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -255,9 +298,13 @@
         UITextField *textField = [alert textFieldAtIndex:0];
         weakSelf.actionMenu = nil;
         
+        [weakSelf addPendingActionMask];
+        
         // Set user power level
         [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:[textField.text integerValue] success:^{
+            [weakSelf removePendingActionMask];
         } failure:^(NSError *error) {
+            [weakSelf removePendingActionMask];
             NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -269,14 +316,22 @@
 
 - (IBAction)onButtonToggle:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
+        
+        // already a pending action
+        if ([self hasPendingAction]) {
+            return;
+        }
+        
         NSString* text = ((UIButton*)sender).titleLabel.text;
         
         if ([text isEqualToString:@"Leave"]) {
-            
+            [self addPendingActionMask];
             [self.mxRoom leave:^{
+                [self removePendingActionMask];
                 // Back to recents
                 [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
             } failure:^(NSError *error) {
+                [self removePendingActionMask];
                 NSLog(@"Leave room %@ failed: %@", mxRoom.state.roomId, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -285,45 +340,59 @@
         } else if ([text isEqualToString:@"Set power level"]) {
             [self updateUserPowerLevel:_roomMember];
         } else if ([text isEqualToString:@"Kick"]) {
+            [self addPendingActionMask];
             [mxRoom kickUser:_roomMember.userId
                                reason:nil
                               success:^{
+                                  [self removePendingActionMask];
+                                  [self.navigationController  popViewControllerAnimated:YES];
                               }
                               failure:^(NSError *error) {
+                                  [self removePendingActionMask];
                                   NSLog(@"Kick %@ failed: %@", _roomMember.userId, error);
                                   //Alert user
                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
                               }];
         } else if ([text isEqualToString:@"Ban"]) {
+            [self addPendingActionMask];
             [mxRoom banUser:_roomMember.userId
                               reason:nil
                              success:^{
+                                 [self removePendingActionMask];
                              }
                              failure:^(NSError *error) {
+                                 [self removePendingActionMask];
                                  NSLog(@"Ban %@ failed: %@", _roomMember.userId, error);
                                  //Alert user
                                  [[AppDelegate theDelegate] showErrorAsAlert:error];
                              }];
         } else if ([text isEqualToString:@"Invite"]) {
+            [self addPendingActionMask];
             [mxRoom inviteUser:_roomMember.userId
                                 success:^{
+                                    [self removePendingActionMask];
                                 }
                                 failure:^(NSError *error) {
+                                    [self removePendingActionMask];
                                     NSLog(@"Invite %@ failed: %@", _roomMember.userId, error);
                                     //Alert user
                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                                 }];
         } else if ([text isEqualToString:@"Unban"]) {
+            [self addPendingActionMask];
             [mxRoom unbanUser:_roomMember.userId
                                success:^{
+                                   [self removePendingActionMask];
                                }
                                failure:^(NSError *error) {
+                                   [self removePendingActionMask];
                                    NSLog(@"Unban %@ failed: %@", _roomMember.userId, error);
                                    //Alert user
                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                }];
     
         } else if ([text isEqualToString:@"Start chat"]) {
+            [self addPendingActionMask];
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             
             // Create new room
@@ -332,6 +401,8 @@
                                      roomAlias:nil
                                          topic:nil
                                        success:^(MXCreateRoomResponse *response) {
+                                           [self removePendingActionMask];
+                                           
                                            // add the user
                                            [mxHandler.mxRestClient inviteUser:_roomMember.userId toRoom:response.roomId success:^{
                                                //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
@@ -345,6 +416,7 @@
                                            [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
                                            
                                        } failure:^(NSError *error) {
+                                           [self removePendingActionMask];
                                            NSLog(@"Create room failed: %@", error);
                                            //Alert user
                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
