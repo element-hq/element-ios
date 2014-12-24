@@ -30,6 +30,9 @@
 
 - (void)dismissKeyboard;
 
+// force to refresh the title display
+- (void)refreshDisplay;
+
 // return YES if the animation has been stopped
 - (BOOL)stopTopicAnimation;
 

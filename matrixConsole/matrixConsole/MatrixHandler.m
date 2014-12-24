@@ -820,4 +820,8 @@ static MatrixHandler *sharedHandler = nil;
     return powerLevel;
 }
 
+- (NSString*)getMXRoomMemberDisplayName:(MXRoomMember*)roomMember {
+    return roomMember.displayname.length == 0 ? roomMember.userId : roomMember.displayname;
+}
+
 @end

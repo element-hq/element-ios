@@ -195,6 +195,38 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self startActivityIndicator];
     }
     
+    // Register a listener for events that concern room members
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    NSArray *mxMembersEvents = @[
+                                 kMXEventTypeStringRoomMember,
+                                 kMXEventTypeStringRoomPowerLevels,
+                                 kMXEventTypeStringPresence
+                                 ];
+    membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+        // consider only live event
+        if (direction == MXEventDirectionForwards) {
+            // Check the room Id (if any)
+            if (event.roomId && [event.roomId isEqualToString:self.roomId] == NO) {
+                // This event does not concern the current room members
+                return;
+            }
+            
+            [self.roomTitleView refreshDisplay];
+
+            // refresh the
+            if (members.count > 0) {
+                // Hide potential action sheet
+                if (self.actionMenu) {
+                    [self.actionMenu dismiss:NO];
+                    self.actionMenu = nil;
+                }
+                // Refresh members list
+                [self updateRoomMembers];
+                [self.membersTableView reloadData];
+            }
+        }
+    }];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -222,6 +254,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     [self dismissCustomImageView];
+    
+    if (membersListener) {
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxSession removeListener:membersListener];
+        membersListener = nil;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -777,43 +815,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
-    // Register a listener for events that concern room members
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    NSArray *mxMembersEvents = @[
-                                 kMXEventTypeStringRoomMember,
-                                 kMXEventTypeStringRoomPowerLevels,
-                                 kMXEventTypeStringPresence
-                                 ];
-    membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-        // consider only live event
-        if (direction == MXEventDirectionForwards) {
-            // Check the room Id (if any)
-            if (event.roomId && [event.roomId isEqualToString:self.roomId] == NO) {
-                // This event does not concern the current room members
-                return;
-            }
-            
-            // Hide potential action sheet
-            if (self.actionMenu) {
-                [self.actionMenu dismiss:NO];
-                self.actionMenu = nil;
-            }
-            // Refresh members list
-            [self updateRoomMembers];
-            [self.membersTableView reloadData];
-        }
-    }];
-    
     self.membersView.hidden = NO;
     [self.membersTableView reloadData];
 }
 
 - (void)hideRoomMembers {
-    if (membersListener) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [mxHandler.mxSession removeListener:membersListener];
-        membersListener = nil;
-    }
     self.membersView.hidden = YES;
     members = nil;
 }
