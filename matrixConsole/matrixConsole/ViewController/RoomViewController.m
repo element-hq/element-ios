@@ -762,6 +762,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self dismissKeyboard];
     
     [self updateRoomMembers];
+    
+    // check if there is some members to display
+    // else it makes no sense to display the list
+    if (0 == members.count) {
+        return;
+    }
+    
     // Register a listener for events that concern room members
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     NSArray *mxMembersEvents = @[
@@ -1430,214 +1437,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
-        /*
-        // List action(s) available on this member
-        __block MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-        
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        
-        // Check user's power level before allowing an action (kick, ban, ...)
-        __block MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMember.userId];
-        NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
-        
-        __weak typeof(self) weakSelf = self;
-        
-        // dismiss any opened action sheet
-        if (self.actionMenu) {
-            [self.actionMenu dismiss:NO];
-            self.actionMenu = nil;
-        }
-        
-        // Consider the case of the user himself
-        if ([roomMember.userId isEqualToString:mxHandler.userId]) {
-            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-            [self.actionMenu addActionWithTitle:@"Leave" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                if (weakSelf) {
-                    weakSelf.actionMenu = nil;
-                    MXRoom *currentRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:weakSelf.roomId];
-                    [currentRoom leave:^{
-                        // Back to recents
-                        [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
-                    } failure:^(NSError *error) {
-                        NSLog(@"Leave room %@ failed: %@", weakSelf.roomId, error);
-                        //Alert user
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    }];
-                }
-            }];
-            
-            if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
-                [self.actionMenu addActionWithTitle:@"Set power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                    if (weakSelf) {
-                        [weakSelf updateUserPowerLevel:roomMember];
-                    }
-                }];
-            }
-        } else {
-            self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
-            
-            // Consider membership of the selected member
-            switch (roomMember.membership) {
-                case MXMembershipInvite:
-                case MXMembershipJoin: {
-                    // Check conditions to be able to kick someone
-                    if (oneSelfPowerLevel >= [powerLevels kick] && oneSelfPowerLevel >= memberPowerLevel) {
-                        [self.actionMenu addActionWithTitle:@"Kick" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            if (weakSelf) {
-                                weakSelf.actionMenu = nil;
-                                [weakSelf.mxRoom kickUser:roomMember.userId
-                                                   reason:nil
-                                                  success:^{
-                                                  }
-                                                  failure:^(NSError *error) {
-                                                      NSLog(@"Kick %@ failed: %@", roomMember.userId, error);
-                                                      //Alert user
-                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                  }];
-                            }
-                        }];
-                    }
-                    // Check conditions to be able to ban someone
-                    if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
-                        [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            if (weakSelf) {
-                                weakSelf.actionMenu = nil;
-                                [weakSelf.mxRoom banUser:roomMember.userId
-                                                  reason:nil
-                                                 success:^{
-                                                 }
-                                                 failure:^(NSError *error) {
-                                                     NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
-                                                     //Alert user
-                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                 }];
-                            }
-                        }];
-                    }
-                    break;
-                }
-                case MXMembershipLeave: {
-                    // Check conditions to be able to invite someone
-                    if (oneSelfPowerLevel >= [powerLevels invite]) {
-                        [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            if (weakSelf) {
-                                weakSelf.actionMenu = nil;
-                                [weakSelf.mxRoom inviteUser:roomMember.userId
-                                                    success:^{
-                                                    }
-                                                    failure:^(NSError *error) {
-                                                        NSLog(@"Invite %@ failed: %@", roomMember.userId, error);
-                                                        //Alert user
-                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                    }];
-                            }
-                        }];
-                    }
-                    // Check conditions to be able to ban someone
-                    if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
-                        [self.actionMenu addActionWithTitle:@"Ban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            if (weakSelf) {
-                                weakSelf.actionMenu = nil;
-                                [weakSelf.mxRoom banUser:roomMember.userId
-                                                  reason:nil
-                                                 success:^{
-                                                 }
-                                                 failure:^(NSError *error) {
-                                                     NSLog(@"Ban %@ failed: %@", roomMember.userId, error);
-                                                     //Alert user
-                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                 }];
-                            }
-                        }];
-                    }
-                    break;
-                }
-                case MXMembershipBan: {
-                    // Check conditions to be able to unban someone
-                    if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel >= memberPowerLevel) {
-                        [self.actionMenu addActionWithTitle:@"Unban" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                            if (weakSelf) {
-                                weakSelf.actionMenu = nil;
-                                [weakSelf.mxRoom unbanUser:roomMember.userId
-                                                   success:^{
-                                                   }
-                                                   failure:^(NSError *error) {
-                                                       NSLog(@"Unban %@ failed: %@", roomMember.userId, error);
-                                                       //Alert user
-                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                   }];
-                            }
-                        }];
-                    }
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-            
-            // update power level
-            if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
-                [self.actionMenu addActionWithTitle:@"Set power level" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                    if (weakSelf) {
-                        [weakSelf updateUserPowerLevel:roomMember];
-                    }
-                }];
-            }
-            
-            // the current web interface always creates a new room
-            // uncoment this line opens any existing room with the same uers
-            __block NSString* startedRoomID = nil; // [mxHandler getRoomStartedWithMember:roomMember];
-            
-            //, offer to chat with this user only
-            if (startedRoomID) {
-                [self.actionMenu addActionWithTitle:@"Open chat" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                    // Open created room
-                    [[AppDelegate theDelegate].masterTabBarController showRoom:startedRoomID];
-                }];
-            } else {
-                [self.actionMenu addActionWithTitle:@"Start chat" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                    // Create new room
-                    [mxHandler.mxRestClient createRoom:(roomMember.displayname) ? roomMember.displayname : roomMember.userId
-                                            visibility:kMXRoomVisibilityPrivate
-                                             roomAlias:nil
-                                                 topic:nil
-                                               success:^(MXCreateRoomResponse *response) {
-                                                   // add the user
-                                                   [mxHandler.mxRestClient inviteUser:roomMember.userId toRoom:response.roomId success:^{
-                                                       //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
-                                                   } failure:^(NSError *error) {
-                                                       NSLog(@"%@ invitation failed (roomId: %@): %@", roomMember.userId, response.roomId, error);
-                                                       //Alert user
-                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                   }];
-                                                   
-                                                   // Open created room
-                                                   [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
-                                                   
-                                               } failure:^(NSError *error) {
-                                                   NSLog(@"Create room failed: %@", error);
-                                                   //Alert user
-                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                               }];
-                    
-                }];
-            }
-        }
-        
-        // Notify user when his power is too weak
-        if (!self.actionMenu) {
-            self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"You are not authorized to change the status of this member" style:CustomAlertStyleAlert];
-        }
-        
-        // Display the action sheet (or the alert)
-        if (self.actionMenu) {
-            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                weakSelf.actionMenu = nil;
-            }];
-            [self.actionMenu showInViewController:self];
-        }*/
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if (tableView == self.messagesTableView) {
         // Dismiss keyboard when user taps on messages table view content
@@ -2492,6 +2291,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         MemberViewController* controller = [segue destinationViewController];
         controller.roomMember = [members objectAtIndex:indexPath.row];
+        controller.mxRoom = self.mxRoom;
     }
 }
 
