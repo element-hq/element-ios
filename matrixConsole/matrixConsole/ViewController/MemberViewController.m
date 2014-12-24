@@ -157,14 +157,16 @@
     [[self.memberThumbnailButton imageView] setClipsToBounds:YES];
     
     
-    imageLoader = [MediaManager loadPicture:_mxRoomMember.avatarUrl
-                                    success:^(UIImage *image) {
-                                        [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
-                                        [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
-                                    }
-                                    failure:^(NSError *error) {
-                                        NSLog(@"Failed to download image (%@): %@", _mxRoomMember.avatarUrl, error);
-                                    }];
+    if (_mxRoomMember.avatarUrl) {
+        imageLoader = [MediaManager loadPicture:_mxRoomMember.avatarUrl
+                                        success:^(UIImage *image) {
+                                            [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
+                                            [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
+                                        }
+                                        failure:^(NSError *error) {
+                                            NSLog(@"Failed to download image (%@): %@", _mxRoomMember.avatarUrl, error);
+                                        }];
+    }
     
     self.roomMemberMID.text = _mxRoomMember.userId;
 }
@@ -243,7 +245,12 @@
             [buttonsTitles addObject:@"Set power level"];
         }
         
-        [buttonsTitles addObject:@"Start chat"];
+        // offer to start a new chat only if the room is not a 1:1 room with this user
+        // it does not make sense : it would open the same room
+        NSString* roomId = [mxHandler getRoomStartedWithMember:_mxRoomMember];
+        if (![roomId isEqualToString:mxRoom.state.roomId]) {
+            [buttonsTitles addObject:@"Start chat"];
+        }
     }
     
     return (buttonsTitles.count + 1) / 2;
@@ -438,34 +445,43 @@
     
         } else if ([text isEqualToString:@"Start chat"]) {
             [self addPendingActionMask];
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             
-            // Create new room
-            [mxHandler.mxRestClient createRoom:(_mxRoomMember.displayname) ? _mxRoomMember.displayname : _mxRoomMember.userId
-                                    visibility:kMXRoomVisibilityPrivate
-                                     roomAlias:nil
-                                         topic:nil
-                                       success:^(MXCreateRoomResponse *response) {
-                                           [self removePendingActionMask];
-                                           
-                                           // add the user
-                                           [mxHandler.mxRestClient inviteUser:_mxRoomMember.userId toRoom:response.roomId success:^{
-                                               //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            NSString* roomId = [mxHandler getRoomStartedWithMember:_mxRoomMember];
+            
+            // if the room has already been started
+            if (roomId) {
+                // open it
+                [[AppDelegate theDelegate].masterTabBarController showRoom:roomId];
+            }
+            else {
+                // else create new room
+                [mxHandler.mxRestClient createRoom:nil
+                                        visibility:kMXRoomVisibilityPrivate
+                                         roomAlias:nil
+                                             topic:nil
+                                           success:^(MXCreateRoomResponse *response) {
+                                               [self removePendingActionMask];
+                                               
+                                               // add the user
+                                               [mxHandler.mxRestClient inviteUser:_mxRoomMember.userId toRoom:response.roomId success:^{
+                                                   //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"%@ invitation failed (roomId: %@): %@", _mxRoomMember.userId, response.roomId, error);
+                                                   //Alert user
+                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                               }];
+                                               
+                                               // Open created room
+                                               [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                                               
                                            } failure:^(NSError *error) {
-                                               NSLog(@"%@ invitation failed (roomId: %@): %@", _mxRoomMember.userId, response.roomId, error);
+                                               [self removePendingActionMask];
+                                               NSLog(@"Create room failed: %@", error);
                                                //Alert user
                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
                                            }];
-                                           
-                                           // Open created room
-                                           [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
-                                           
-                                       } failure:^(NSError *error) {
-                                           [self removePendingActionMask];
-                                           NSLog(@"Create room failed: %@", error);
-                                           //Alert user
-                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                       }];            
+            }
         }
     }
 }
