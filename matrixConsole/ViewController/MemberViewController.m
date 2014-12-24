@@ -24,15 +24,45 @@
     id imageLoader;
     id membersListener;
     
+    NSMutableArray* buttonsTitles;
+    
+    // mask view while processing a request
+    UIView* pendingRequestMask;
     UIActivityIndicatorView * pendingMaskSpinnerView;
 }
 
+// graphical objects
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *memberThumbnailButton;
+@property (weak, nonatomic) IBOutlet UITextView *roomMemberMID;
+
 @property (strong, nonatomic) CustomAlert *actionMenu;
+
+- (IBAction)onButtonToggle:(id)sender;
 
 @end
 
 @implementation MemberViewController
 @synthesize mxRoom;
+
+- (void)dealloc {
+    // close any pending actionsheet
+    if (self.actionMenu) {
+        [self.actionMenu dismiss:NO];
+        self.actionMenu = nil;
+    }
+    
+    if (imageLoader) {
+        [MediaManager cancel:imageLoader];
+        imageLoader = nil;
+    }
+    
+    if (membersListener) {
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        [mxHandler.mxSession removeListener:membersListener];
+        membersListener = nil;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,7 +75,7 @@
     buttonsTitles = [[NSMutableArray alloc] init];
     
     // ignore useless update
-    if (_roomMember) {
+    if (_mxRoomMember) {
         [self updateMemberInfo];
     }
 }
@@ -60,6 +90,7 @@
                                  kMXEventTypeStringRoomPowerLevels
                                  ];
     
+    // list on member updates
     membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
         // consider only live event
         if (direction == MXEventDirectionForwards) {
@@ -75,18 +106,30 @@
                 self.actionMenu = nil;
             }
             
+            MXRoomMember* nextRoomMember = nil;
+            
             // get the updated memmber
             NSArray* membersList = [self.mxRoom.state members];
             for (MXRoomMember* member in membersList) {
-                if ([member.userId isEqual:_roomMember.userId]) {
-                    _roomMember = member;
+                if ([member.userId isEqual:_mxRoomMember.userId]) {
+                    nextRoomMember = member;
                     break;
                 }
             }
             
-            // Refresh members list
-            [self updateMemberInfo];
-            [self.tableView reloadData];
+            // does the member still exist ?
+            if (nextRoomMember) {
+                // Refresh members list
+                _mxRoomMember = nextRoomMember;
+                [self updateMemberInfo];
+                [self.tableView reloadData];
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.navigationController popToRootViewControllerAnimated:NO];
+                    [[AppDelegate theDelegate].masterTabBarController setVisibleRoomId:nil];
+                    [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
+                });
+            }
         }
     }];
 }
@@ -107,29 +150,29 @@
 }
 
 - (void) updateMemberInfo {
-    self.title = _roomMember.displayname;
+    self.title = _mxRoomMember.displayname ? _mxRoomMember.displayname : _mxRoomMember.userId;
     
     // set the thumbnail info
     [[self.memberThumbnailButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     [[self.memberThumbnailButton imageView] setClipsToBounds:YES];
     
     
-    imageLoader = [MediaManager loadPicture:_roomMember.avatarUrl
+    imageLoader = [MediaManager loadPicture:_mxRoomMember.avatarUrl
                                     success:^(UIImage *image) {
                                         [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
                                         [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
                                     }
                                     failure:^(NSError *error) {
-                                        NSLog(@"Failed to download image (%@): %@", _roomMember.avatarUrl, error);
+                                        NSLog(@"Failed to download image (%@): %@", _mxRoomMember.avatarUrl, error);
                                     }];
     
-    self.roomMemberMID.text = _roomMember.userId;
+    self.roomMemberMID.text = _mxRoomMember.userId;
 }
 
 - (void)setRoomMember:(MXRoomMember*) aRoomMember {
     // ignore useless update
-    if (![self.roomMember.userId isEqualToString:aRoomMember.userId]) {
-        _roomMember = aRoomMember;
+    if (![_mxRoomMember.userId isEqualToString:aRoomMember.userId]) {
+        _mxRoomMember = aRoomMember;
     }
 }
 
@@ -144,13 +187,13 @@
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
-    NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:_roomMember.userId];
+    NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:_mxRoomMember.userId];
     NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
     
     [buttonsTitles removeAllObjects];
     
     // Consider the case of the user himself
-    if ([_roomMember.userId isEqualToString:mxHandler.userId]) {
+    if ([_mxRoomMember.userId isEqualToString:mxHandler.userId]) {
         
         [buttonsTitles addObject:@"Leave"];
     
@@ -159,7 +202,7 @@
         }
     } else {
         // Consider membership of the selected member
-        switch (_roomMember.membership) {
+        switch (_mxRoomMember.membership) {
             case MXMembershipInvite:
             case MXMembershipJoin: {
                 // Check conditions to be able to kick someone
@@ -262,8 +305,29 @@
     }
 }
 
-- (void) updateUserPowerLevel:(MXRoomMember*)roomMember
-{
+- (void) setUserPowerLevel:(MXRoomMember*)roomMember to:(int)value {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    int currentPowerLevel = (int)([mxHandler getPowerLevel:roomMember inRoom:self.mxRoom] * 100);
+    
+    // check if the power level has not yet been set to 0
+    if (value != currentPowerLevel) {
+        __weak typeof(self) weakSelf = self;
+        
+        [weakSelf addPendingActionMask];
+        
+        // Reset user power level
+        [self.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:value success:^{
+            [weakSelf removePendingActionMask];
+        } failure:^(NSError *error) {
+            [weakSelf removePendingActionMask];
+            NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+}
+
+- (void) updateUserPowerLevel:(MXRoomMember*)roomMember {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     __weak typeof(self) weakSelf = self;
     
@@ -274,18 +338,7 @@
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
             weakSelf.actionMenu = nil;
             
-            [weakSelf addPendingActionMask];
-            
-            // Reset user power level
-            [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:0 success:^{
-                [weakSelf removePendingActionMask];
-            } failure:^(NSError *error) {
-                [weakSelf removePendingActionMask];
-                NSLog(@"Reset user power (%@) failed: %@", roomMember.userId, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-            
+            [weakSelf setUserPowerLevel:roomMember to:0];
         }];
     }
     [self.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
@@ -298,18 +351,9 @@
         UITextField *textField = [alert textFieldAtIndex:0];
         weakSelf.actionMenu = nil;
         
-        [weakSelf addPendingActionMask];
-        
-        // Set user power level
-        [weakSelf.mxRoom setPowerLevelOfUserWithUserID:roomMember.userId powerLevel:[textField.text integerValue] success:^{
-            [weakSelf removePendingActionMask];
-        } failure:^(NSError *error) {
-            [weakSelf removePendingActionMask];
-            NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-        
+        if (textField.text.length > 0) {
+            [weakSelf setUserPowerLevel:roomMember to:(int)[textField.text integerValue]];
+        }
     }];
     [self.actionMenu showInViewController:self];
 }
@@ -328,7 +372,8 @@
             [self addPendingActionMask];
             [self.mxRoom leave:^{
                 [self removePendingActionMask];
-                // Back to recents
+                [self.navigationController popToRootViewControllerAnimated:NO];
+                [[AppDelegate theDelegate].masterTabBarController setVisibleRoomId:nil];                
                 [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
             } failure:^(NSError *error) {
                 [self removePendingActionMask];
@@ -338,55 +383,55 @@
             }];
 
         } else if ([text isEqualToString:@"Set power level"]) {
-            [self updateUserPowerLevel:_roomMember];
+            [self updateUserPowerLevel:_mxRoomMember];
         } else if ([text isEqualToString:@"Kick"]) {
             [self addPendingActionMask];
-            [mxRoom kickUser:_roomMember.userId
+            [mxRoom kickUser:_mxRoomMember.userId
                                reason:nil
                               success:^{
                                   [self removePendingActionMask];
-                                  [self.navigationController  popViewControllerAnimated:YES];
+                                  [self.navigationController popToRootViewControllerAnimated:YES];
                               }
                               failure:^(NSError *error) {
                                   [self removePendingActionMask];
-                                  NSLog(@"Kick %@ failed: %@", _roomMember.userId, error);
+                                  NSLog(@"Kick %@ failed: %@", _mxRoomMember.userId, error);
                                   //Alert user
                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
                               }];
         } else if ([text isEqualToString:@"Ban"]) {
             [self addPendingActionMask];
-            [mxRoom banUser:_roomMember.userId
+            [mxRoom banUser:_mxRoomMember.userId
                               reason:nil
                              success:^{
                                  [self removePendingActionMask];
                              }
                              failure:^(NSError *error) {
                                  [self removePendingActionMask];
-                                 NSLog(@"Ban %@ failed: %@", _roomMember.userId, error);
+                                 NSLog(@"Ban %@ failed: %@", _mxRoomMember.userId, error);
                                  //Alert user
                                  [[AppDelegate theDelegate] showErrorAsAlert:error];
                              }];
         } else if ([text isEqualToString:@"Invite"]) {
             [self addPendingActionMask];
-            [mxRoom inviteUser:_roomMember.userId
+            [mxRoom inviteUser:_mxRoomMember.userId
                                 success:^{
                                     [self removePendingActionMask];
                                 }
                                 failure:^(NSError *error) {
                                     [self removePendingActionMask];
-                                    NSLog(@"Invite %@ failed: %@", _roomMember.userId, error);
+                                    NSLog(@"Invite %@ failed: %@", _mxRoomMember.userId, error);
                                     //Alert user
                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                                 }];
         } else if ([text isEqualToString:@"Unban"]) {
             [self addPendingActionMask];
-            [mxRoom unbanUser:_roomMember.userId
+            [mxRoom unbanUser:_mxRoomMember.userId
                                success:^{
                                    [self removePendingActionMask];
                                }
                                failure:^(NSError *error) {
                                    [self removePendingActionMask];
-                                   NSLog(@"Unban %@ failed: %@", _roomMember.userId, error);
+                                   NSLog(@"Unban %@ failed: %@", _mxRoomMember.userId, error);
                                    //Alert user
                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                }];
@@ -396,7 +441,7 @@
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             
             // Create new room
-            [mxHandler.mxRestClient createRoom:(_roomMember.displayname) ? _roomMember.displayname : _roomMember.userId
+            [mxHandler.mxRestClient createRoom:(_mxRoomMember.displayname) ? _mxRoomMember.displayname : _mxRoomMember.userId
                                     visibility:kMXRoomVisibilityPrivate
                                      roomAlias:nil
                                          topic:nil
@@ -404,10 +449,10 @@
                                            [self removePendingActionMask];
                                            
                                            // add the user
-                                           [mxHandler.mxRestClient inviteUser:_roomMember.userId toRoom:response.roomId success:^{
+                                           [mxHandler.mxRestClient inviteUser:_mxRoomMember.userId toRoom:response.roomId success:^{
                                                //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
                                            } failure:^(NSError *error) {
-                                               NSLog(@"%@ invitation failed (roomId: %@): %@", _roomMember.userId, response.roomId, error);
+                                               NSLog(@"%@ invitation failed (roomId: %@): %@", _mxRoomMember.userId, response.roomId, error);
                                                //Alert user
                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
                                            }];

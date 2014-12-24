@@ -433,6 +433,7 @@
                         <outlet property="activityIndicator" destination="dvT-c5-Ymf" id="F6h-Al-Vw6"/>
                         <outlet property="controlView" destination="6fM-aJ-d0M" id="13g-Wl-z5n"/>
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
+                        <outlet property="membersListButtonItem" destination="3d6-ln-ICU" id="KtB-5h-eJl"/>
                         <outlet property="membersTableView" destination="pLY-I9-ghF" id="Ioc-IJ-WYX"/>
                         <outlet property="membersView" destination="OWi-J8-sFZ" id="3n2-n5-r6B"/>
                         <outlet property="messageTextField" destination="k2m-aY-U73" id="fSA-Eg-duj"/>
@@ -493,8 +494,8 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zRe-DS-U67" id="C5i-Xc-2Zi">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1wm-Iq-0AV">
-                                            <rect key="frame" x="30" y="5" width="240" height="34"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1wm-Iq-0AV">
+                                            <rect key="frame" x="30" y="7" width="240" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="LeftButton">
                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -503,8 +504,8 @@
                                                 <action selector="onButtonToggle:" destination="qlN-Mb-ZH7" eventType="touchUpInside" id="Wyh-9j-XfT"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fW1-mK-8cr" userLabel="rightButton">
-                                            <rect key="frame" x="330" y="5" width="247" height="34"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fW1-mK-8cr" userLabel="rightButton">
+                                            <rect key="frame" x="330" y="7" width="247" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="rightButton">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

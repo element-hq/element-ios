@@ -98,6 +98,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *membersListButtonItem;
 
 @property (strong, nonatomic) MXRoom *mxRoom;
 @property (strong, nonatomic) CustomAlert *actionMenu;
@@ -242,6 +243,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         forceScrollToBottomOnViewDidAppear = NO;
         self.messagesTableView.hidden = NO;
     }
+    
+    // manage the room membes button
+    // disable it if there is no member
+    [self updateRoomMembers];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -755,6 +760,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
         }
     }];
+    
+    self.membersListButtonItem.enabled = members.count != 0;
 }
 
 - (void)showRoomMembers {
@@ -2290,7 +2297,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSIndexPath *indexPath = [self.membersTableView indexPathForSelectedRow];
         
         MemberViewController* controller = [segue destinationViewController];
-        controller.roomMember = [members objectAtIndex:indexPath.row];
+        controller.mxRoomMember = [members objectAtIndex:indexPath.row];
         controller.mxRoom = self.mxRoom;
     }
 }

@@ -18,25 +18,10 @@
 
 #import "MatrixHandler.h"
 
-@interface MemberViewController : UITableViewController {
-    NSMutableArray* buttonsTitles;
-    
-    UIView* pendingRequestMask;
-}
+@interface MemberViewController : UITableViewController
 
-
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
-
-@property (weak, nonatomic) IBOutlet UIButton *memberThumbnailButton;
-@property (weak, nonatomic) IBOutlet UITextView *roomMemberMID;
-
-- (IBAction)onButtonToggle:(id)sender;
-
-
-@property (strong, nonatomic) MXRoomMember *roomMember;
+@property (strong, nonatomic) MXRoomMember *mxRoomMember;
 @property (strong, nonatomic) MXRoom *mxRoom;
-
-
 
 @end
 
