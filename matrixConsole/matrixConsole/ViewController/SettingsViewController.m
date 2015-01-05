@@ -197,6 +197,40 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
     } else {
         [self reset];
+        
+        // try to provide the user info even if the catchup is not finished
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        
+        NSString* displayName = nil;
+        NSString* avatarURL = nil;
+        
+        // the user info is already retrieved from the server but the cu
+        if (mxHandler.mxSession.myUser) {
+            if (mxHandler.mxSession.myUser.displayname) {
+                displayName = mxHandler.mxSession.myUser.displayname;
+            }
+            
+            if (mxHandler.mxSession.myUser.avatarUrl) {
+                avatarURL = mxHandler.mxSession.myUser.avatarUrl;
+            }
+        }
+        
+        // the store could provide the missing info
+        if (mxHandler.mxSession.store && (!displayName || !avatarURL)) {
+            if (!displayName) {
+                displayName = mxHandler.mxSession.store.userDisplayname;
+            }
+            
+            if (!avatarURL) {
+                avatarURL = mxHandler.mxSession.store.userAvatarUrl;
+            }
+        }
+        
+        // display the retrieved fields
+        self.userDisplayName.text = displayName;
+        if (avatarURL) {
+            [self updateUserPicture:avatarURL];
+        }
     }
     
     if ([mxHandler isResumeDone]) {
