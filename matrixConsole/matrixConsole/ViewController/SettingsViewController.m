@@ -62,6 +62,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // user info update
     BOOL isAvatarUpdated;
     BOOL isDisplayNameUpdated;
+    
+    // do not hide the spinner while switching between viewcontroller
+    BOOL isAvatarUploading;
+    BOOL isDisplayNameUploading;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -70,6 +74,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 @property (weak, nonatomic) IBOutlet UIButton *saveUserInfoButton;
 @property (strong, nonatomic) IBOutlet UIView *activityIndicatorBackgroundView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (strong, nonatomic) CustomAlert* customAlert;
 
 - (IBAction)onButtonPressed:(id)sender;
 
@@ -99,6 +105,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     isAvatarUpdated = NO;
     isDisplayNameUpdated = NO;
+    
+    isAvatarUploading = NO;
+    isDisplayNameUploading = NO;
+    
     _saveUserInfoButton.enabled = NO;
     _activityIndicatorBackgroundView.hidden = YES;
 }
@@ -140,8 +150,36 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
     [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
+}
+
+- (BOOL)checkPendingSave:(blockSettings_onCheckSave)handler {
+    // there is a profile update and there is no pending update
+    if ((isAvatarUpdated || isDisplayNameUpdated) && (!isDisplayNameUploading) && (!isAvatarUploading)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __weak typeof(self) weakSelf = self;
+            
+            self.customAlert  = [[CustomAlert alloc] initWithTitle:nil message:@"Save profile update" style:CustomAlertStyleAlert];
+            self.customAlert.cancelButtonIndex = [self.customAlert addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                handler();
+                weakSelf.customAlert = nil;
+            }];
+            
+            [self.customAlert addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                [weakSelf saveDisplayName];
+                
+                weakSelf.customAlert = nil;
+                handler();
+            }];
+            
+            [self.customAlert showInViewController:self];
+        });
+                       
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Internal methods
@@ -202,6 +240,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)configureView {
+    // ignore any refresh until there is a pending upload
+    if (isDisplayNameUploading || isAvatarUploading) {
+        return;
+    }
+    
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Disable user's interactions
@@ -258,7 +301,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // Save display name
         [self startUserInfoUploadAnimation];
         _userDisplayName.enabled = NO;
-        _saveUserInfoButton.enabled = NO;
+        isDisplayNameUploading = YES;
 
          MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         [mxHandler.mxSession.myUser setDisplayName:displayname success:^{
@@ -275,10 +318,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 [self stopUserInfoUploadAnimation];
             }
             _userDisplayName.enabled = YES;
+            isDisplayNameUploading = NO;
         } failure:^(NSError *error) {
             NSLog(@"Set displayName failed: %@", error);
             [self stopUserInfoUploadAnimation];
             _userDisplayName.enabled = YES;
+            isDisplayNameUploading = NO;
             
             //Alert user
             NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
@@ -309,6 +354,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Save picture
     [self startUserInfoUploadAnimation];
     _userPicture.enabled = NO;
+    isAvatarUploading = YES;
     
     if (uploadedPictureURL == nil) {
         // Upload picture
@@ -323,6 +369,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                           NSLog(@"Upload image failed: %@", error);
                                           [self stopUserInfoUploadAnimation];
                                           _userPicture.enabled = YES;
+                                          isAvatarUploading = NO;
                                           [self handleErrorDuringPictureSaving:error];
                                       }];
     } else {
@@ -341,13 +388,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                          } else {
                                              _saveUserInfoButton.enabled = NO;
                                              [self stopUserInfoUploadAnimation];
-                                             _userPicture.enabled = YES;
                                          }
+                                         
+                                         // update statuses
+                                         _userPicture.enabled = YES;
+                                         isAvatarUploading = NO;
                                          
                                      } failure:^(NSError *error) {
                                          NSLog(@"Set avatar url failed: %@", error);
                                          [self stopUserInfoUploadAnimation];
+                                         
                                          _userPicture.enabled = YES;
+                                         isAvatarUploading = NO;
+                                         
+                                         // update statuses
                                          [self handleErrorDuringPictureSaving:error];
                                      }];
     }
