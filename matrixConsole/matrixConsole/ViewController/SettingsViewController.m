@@ -58,11 +58,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *unsupportedMsgSwitch;
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
+    
+    // user info update
+    BOOL isAvatarUpdated;
+    BOOL isDisplayNameUpdated;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
 @property (weak, nonatomic) IBOutlet UIButton *userPicture;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
+@property (weak, nonatomic) IBOutlet UIButton *saveUserInfoButton;
+@property (strong, nonatomic) IBOutlet UIView *activityIndicatorBackgroundView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)onButtonPressed:(id)sender;
@@ -90,6 +96,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     errorAlerts = [NSMutableArray array];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
+    
+    isAvatarUpdated = NO;
+    isDisplayNameUpdated = NO;
+    _saveUserInfoButton.enabled = NO;
+    _activityIndicatorBackgroundView.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,6 +132,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [super viewWillAppear:animated];
     
     // Refresh display
+    [self startUserInfoUploadAnimation];
     [self configureView];
     [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
@@ -138,6 +150,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Force table reload to update notifications section
     apnsNotificationsSwitch = nil;
     [self.tableView reloadData];
+}
+
+- (void)updateAvatarImage:(UIImage*)image {
+    [self.userPicture setImage:image forState:UIControlStateNormal];
+    [self.userPicture setImage:image forState:UIControlStateHighlighted];
+    [self.userPicture setImage:image forState:UIControlStateDisabled];
 }
 
 - (void)reset {
@@ -160,18 +178,32 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     currentPictureURL = nil;
     uploadedPictureURL = nil;
-    UIImage *image = [UIImage imageNamed:@"default-profile"];
-    [self.userPicture setImage:image forState:UIControlStateNormal];
-    [self.userPicture setImage:image forState:UIControlStateHighlighted];
+    
+    [self updateAvatarImage:[UIImage imageNamed:@"default-profile"]];
     
     currentDisplayName = nil;
     self.userDisplayName.text = nil;
 }
 
+- (void) startUserInfoUploadAnimation {
+    if (_activityIndicatorBackgroundView.hidden) {
+        _activityIndicatorBackgroundView.hidden = NO;
+        [_activityIndicator startAnimating];
+    }
+    _saveUserInfoButton.enabled = NO;
+}
+
+- (void) stopUserInfoUploadAnimation {
+    if (!_activityIndicatorBackgroundView.hidden) {
+        _activityIndicatorBackgroundView.hidden = YES;
+        [_activityIndicator stopAnimating];
+    }
+    _saveUserInfoButton.enabled = isAvatarUpdated || isDisplayNameUpdated;
+}
+
 - (void)configureView {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
-    [_activityIndicator startAnimating];
     // Disable user's interactions
     _userPicture.enabled = NO;
     _userDisplayName.enabled = NO;
@@ -183,6 +215,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             currentDisplayName = mxHandler.mxSession.myUser.displayname;
             self.userDisplayName.text = currentDisplayName;
             
+            [self stopUserInfoUploadAnimation];
+            
             // Register listener to update user's information
             userUpdateListener = [mxHandler.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
                 // Update displayName
@@ -192,6 +226,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 }
                 // Update user's avatar
                 [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
+               
+                // update button management
+                isDisplayNameUpdated = isAvatarUpdated = NO;
+                _saveUserInfoButton.enabled = NO;
+                
                 // TODO display user's presence
             }];
         }
@@ -234,7 +273,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     if ([mxHandler isResumeDone]) {
-        [_activityIndicator stopAnimating];
+        [self stopUserInfoUploadAnimation];
         _userPicture.enabled = YES;
         _userDisplayName.enabled = YES;
     }
@@ -246,17 +285,28 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSString *displayname = self.userDisplayName.text;
     if ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO) {
         // Save display name
-        [_activityIndicator startAnimating];
+        [self startUserInfoUploadAnimation];
         _userDisplayName.enabled = NO;
+        _saveUserInfoButton.enabled = NO;
 
          MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         [mxHandler.mxSession.myUser setDisplayName:displayname success:^{
+            // save the current displayname
             currentDisplayName = displayname;
-            [_activityIndicator stopAnimating];
+            // no more update in progress
+            isDisplayNameUpdated = NO;
+            
+            // need to uploaded the avatar
+            if (isAvatarUpdated) {
+                [self savePicture];
+            } else {
+                // the job is ended
+                [self stopUserInfoUploadAnimation];
+            }
             _userDisplayName.enabled = YES;
         } failure:^(NSError *error) {
             NSLog(@"Set displayName failed: %@", error);
-            [_activityIndicator stopAnimating];
+            [self stopUserInfoUploadAnimation];
             _userDisplayName.enabled = YES;
             
             //Alert user
@@ -286,7 +336,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Save picture
-    [_activityIndicator startAnimating];
+    [self startUserInfoUploadAnimation];
     _userPicture.enabled = NO;
     
     if (uploadedPictureURL == nil) {
@@ -300,7 +350,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                           [self savePicture];
                                       } failure:^(NSError *error) {
                                           NSLog(@"Upload image failed: %@", error);
-                                          [_activityIndicator stopAnimating];
+                                          [self stopUserInfoUploadAnimation];
                                           _userPicture.enabled = YES;
                                           [self handleErrorDuringPictureSaving:error];
                                       }];
@@ -312,11 +362,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                          // manage the nil case.
                                          [self updateUserPicture:uploadedPictureURL];
                                          uploadedPictureURL = nil;
-                                         [_activityIndicator stopAnimating];
-                                         _userPicture.enabled = YES;
+                                         
+                                         isAvatarUpdated = NO;
+                                         
+                                         if (isDisplayNameUpdated) {
+                                             [self saveDisplayName];
+                                         } else {
+                                             _saveUserInfoButton.enabled = NO;
+                                             [self stopUserInfoUploadAnimation];
+                                             _userPicture.enabled = YES;
+                                         }
+                                         
                                      } failure:^(NSError *error) {
                                          NSLog(@"Set avatar url failed: %@", error);
-                                         [_activityIndicator stopAnimating];
+                                         [self stopUserInfoUploadAnimation];
                                          _userPicture.enabled = YES;
                                          [self handleErrorDuringPictureSaving:error];
                                      }];
@@ -358,17 +417,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (currentPictureURL) {
             // Load user's picture
             imageLoader = [MediaManager loadPicture:currentPictureURL success:^(UIImage *image) {
-                [self.userPicture setImage:image forState:UIControlStateNormal];
-                [self.userPicture setImage:image forState:UIControlStateHighlighted];
+                [self updateAvatarImage:image];
             } failure:^(NSError *error) {
                 // Reset picture URL in order to try next time
                 currentPictureURL = nil;
             }];
         } else {
             // Set placeholder
-            UIImage *image = [UIImage imageNamed:@"default-profile"];
-            [self.userPicture setImage:image forState:UIControlStateNormal];
-            [self.userPicture setImage:image forState:UIControlStateHighlighted];
+            [self updateAvatarImage:[UIImage imageNamed:@"default-profile"]];
         }
     }
 }
@@ -382,11 +438,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         });
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
         if ([[MatrixHandler sharedHandler] isResumeDone]) {
-            [_activityIndicator stopAnimating];
+            [self stopUserInfoUploadAnimation];
             _userPicture.enabled = YES;
             _userDisplayName.enabled = YES;
         } else {
-            [_activityIndicator startAnimating];
+            [self startUserInfoUploadAnimation];
             _userPicture.enabled = NO;
             _userDisplayName.enabled = NO;
         }
@@ -398,7 +454,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (IBAction)onButtonPressed:(id)sender {
     [self dismissKeyboard];
     
-    if (sender == _userPicture) {
+    if (sender == _saveUserInfoButton) {
+        if (isDisplayNameUpdated) {
+            _saveUserInfoButton.enabled = NO;
+            [self saveDisplayName];
+        } else if (isAvatarUpdated) {
+            _saveUserInfoButton.enabled = NO;
+            [self savePicture];
+        }
+    } else if (sender == _userPicture) {
         // Open picture gallery
         UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
         mediaPicker.delegate = self;
@@ -424,26 +488,40 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 #pragma mark - keyboard
 
+- (void) manageSaveChangeButton {
+    // check if there is a displayname update
+    NSString *displayname = self.userDisplayName.text;
+    isDisplayNameUpdated = ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO);
+    
+    _saveUserInfoButton.enabled = isDisplayNameUpdated || isAvatarUpdated;
+}
+
 - (void)dismissKeyboard {
     // Hide the keyboard
     [_userDisplayName resignFirstResponder];
-    // Save display name change (if any)
-    [self saveDisplayName];
+    [self manageSaveChangeButton];
 }
 
 #pragma mark - UITextField delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField*) textField {
-    // "Done" key has been pressed
-    [self dismissKeyboard];
+- (BOOL)textFieldShouldReturn:(UITextField*)textField {
+    if (_userDisplayName == textField) {
+        // "Done" key has been pressed
+        [self dismissKeyboard];
+    }
     return YES;
 }
+
+- (IBAction)textFieldDidChange:(id)sender {
+    if (sender == _userDisplayName) {
+        [self manageSaveChangeButton];
+    }
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (self.tableView == aTableView) {
-        
         // tap on clear application cache
         if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
             [[MatrixHandler sharedHandler] forceInitialSync:YES];
@@ -594,9 +672,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (selectedImage) {
-        [self.userPicture setImage:selectedImage forState:UIControlStateNormal];
-        [self.userPicture setImage:selectedImage forState:UIControlStateHighlighted];
-        [self savePicture];
+        [self updateAvatarImage:selectedImage];
+        isAvatarUpdated = YES;
+        _saveUserInfoButton.enabled = YES;
     }
     [self dismissMediaPicker];
 }
