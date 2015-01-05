@@ -20,6 +20,13 @@
 
 extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
+typedef enum : NSUInteger {
+    MatrixHandlerStatusLoggedOut = 0,
+    MatrixHandlerStatusLogged,
+    MatrixHandlerStatusStoreDataReady,
+    MatrixHandlerStatusServerSyncDone
+} MatrixHandlerStatus;
+
 @interface MatrixHandler : NSObject
 
 @property (strong, nonatomic) MXRestClient *mxRestClient;
@@ -38,8 +45,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 // Matrix user's settings
 @property (nonatomic) MXPresence userPresence;
 
-@property (nonatomic,readonly) BOOL isLogged;
-@property (nonatomic,readonly) BOOL isInitialSyncDone;
+@property (nonatomic,readonly) MatrixHandlerStatus status;
 @property (nonatomic,readonly) BOOL isResumeDone;
 // return the MX cache size in bytes
 @property (nonatomic,readonly) NSUInteger MXCacheSize;

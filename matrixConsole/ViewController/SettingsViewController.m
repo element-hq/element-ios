@@ -95,7 +95,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [[self.userPicture imageView] setClipsToBounds:YES];
     
     errorAlerts = [NSMutableArray array];
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
     
     isAvatarUpdated = NO;
     isDisplayNameUpdated = NO;
@@ -125,7 +125,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -208,7 +208,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     _userPicture.enabled = NO;
     _userDisplayName.enabled = NO;
     
-    if ([mxHandler isInitialSyncDone]) {
+    if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
         if (!userUpdateListener) {
             // Set current user's information and add observers
             [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
@@ -234,42 +234,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // TODO display user's presence
             }];
         }
-    } else {
+    } else if (mxHandler.status == MatrixHandlerStatusStoreDataReady) {
+        // Set local user's information (the data may not be up-to-date)
+        [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
+        currentDisplayName = mxHandler.mxSession.myUser.displayname;
+        self.userDisplayName.text = currentDisplayName;
+    } else if (mxHandler.status == MatrixHandlerStatusLoggedOut) {
         [self reset];
-        
-        // try to provide the user info even if the catchup is not finished
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        
-        NSString* displayName = nil;
-        NSString* avatarURL = nil;
-        
-        // the user info is already retrieved from the server but the cu
-        if (mxHandler.mxSession.myUser) {
-            if (mxHandler.mxSession.myUser.displayname) {
-                displayName = mxHandler.mxSession.myUser.displayname;
-            }
-            
-            if (mxHandler.mxSession.myUser.avatarUrl) {
-                avatarURL = mxHandler.mxSession.myUser.avatarUrl;
-            }
-        }
-        
-        // the store could provide the missing info
-        if (mxHandler.mxSession.store && (!displayName || !avatarURL)) {
-            if (!displayName) {
-                displayName = mxHandler.mxSession.store.userDisplayname;
-            }
-            
-            if (!avatarURL) {
-                avatarURL = mxHandler.mxSession.store.userAvatarUrl;
-            }
-        }
-        
-        // display the retrieved fields
-        self.userDisplayName.text = displayName;
-        if (avatarURL) {
-            [self updateUserPicture:avatarURL];
-        }
     }
     
     if ([mxHandler isResumeDone]) {
@@ -432,7 +403,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
+    if ([@"status" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });

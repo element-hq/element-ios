@@ -37,7 +37,7 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 @property (strong, nonatomic) MXFileStore *mxFileStore;
-@property (nonatomic,readwrite) BOOL isInitialSyncDone;
+@property (nonatomic,readwrite) MatrixHandlerStatus status;
 @property (nonatomic,readwrite) BOOL isResumeDone;
 @property (strong, nonatomic) CustomAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
@@ -61,7 +61,7 @@ static MatrixHandler *sharedHandler = nil;
 
 -(MatrixHandler *)init {
     if (self = [super init]) {
-        _isInitialSyncDone = NO;
+        _status = (self.accessToken != nil) ? MatrixHandlerStatusLogged : MatrixHandlerStatusLoggedOut;
         _isResumeDone = NO;
         _userPresence = MXPresenceUnknown;
         notifyOpenSessionFailure = YES;
@@ -119,9 +119,9 @@ static MatrixHandler *sharedHandler = nil;
 
             // Launch mxSession
             [self.mxSession start:^{
-                // @TODO (SYIOS-26)
+                self.status = MatrixHandlerStatusStoreDataReady;
             } onServerSyncDone:^{
-                self.isInitialSyncDone = YES;
+                self.status = MatrixHandlerStatusServerSyncDone;
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
                 _isResumeDone = YES;
 
@@ -191,7 +191,6 @@ static MatrixHandler *sharedHandler = nil;
         self.mxRestClient = nil;
     }
     
-    self.isInitialSyncDone = NO;
     _isResumeDone = NO;
     notifyOpenSessionFailure = YES;
 }
@@ -218,12 +217,8 @@ static MatrixHandler *sharedHandler = nil;
 
 #pragma mark -
 
-- (BOOL)isLogged {
-    return (self.accessToken != nil);
-}
-
 - (void)pauseInBackgroundTask {
-    if (self.mxSession) {
+    if (self.mxSession && self.status == MatrixHandlerStatusServerSyncDone) {
         _bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
@@ -247,7 +242,7 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)resume {
-    if (self.mxSession && self.isInitialSyncDone) {
+    if (self.mxSession && self.status == MatrixHandlerStatusServerSyncDone) {
         if (!self.isResumeDone) {
             // Resume SDK and update user presence
             [self.mxSession resume:^{
@@ -276,7 +271,8 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)forceInitialSync:(BOOL)clearCache {
-    if (self.isInitialSyncDone) {
+    if (self.status == MatrixHandlerStatusServerSyncDone || self.status == MatrixHandlerStatusStoreDataReady) {
+        self.status = MatrixHandlerStatusLogged;
         [self closeSession];
         notifyOpenSessionFailure = NO;
         
@@ -428,9 +424,11 @@ static MatrixHandler *sharedHandler = nil;
     if (inAccessToken.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
         [[AppDelegate theDelegate] registerUserNotificationSettings];
+        self.status = MatrixHandlerStatusLogged;
         [self openSession];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
+        self.status = MatrixHandlerStatusLoggedOut;
         [self closeSession];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
