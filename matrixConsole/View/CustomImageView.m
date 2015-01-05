@@ -120,12 +120,9 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitle:title forState:UIControlStateHighlighted];
 
-    // default background text color
-    CGFloat textColorFactor = 146.0 / 255.0;
-    UIColor* textColor = [UIColor colorWithRed:textColorFactor green:textColorFactor blue:textColorFactor alpha:1.0];
-   
-    [button setTitleColor:textColor forState:UIControlStateNormal];
-    [button setTitleColor:textColor forState:UIControlStateHighlighted];
+    // use the same text color as the tabbar
+    [button setTitleColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor forState:UIControlStateNormal];
+    [button setTitleColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor forState:UIControlStateHighlighted];
 
     // keep the bottomView background color
     button.backgroundColor = [UIColor clearColor];
