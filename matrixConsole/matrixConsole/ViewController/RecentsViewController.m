@@ -38,6 +38,7 @@
     NSDateFormatter *dateFormatter;
     
     RoomViewController *currentRoomViewController;
+    BOOL                isVisible;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -141,11 +142,19 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    isVisible = YES;
+    
     // Release potential Room ViewController if none is visible (Note: check on room visibility is required to handle correctly splitViewController)
     if ([AppDelegate theDelegate].masterTabBarController.visibleRoomId == nil && currentRoomViewController) {
         currentRoomViewController.roomId = nil;
         currentRoomViewController = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    isVisible = NO;
 }
 
 #pragma mark -
@@ -220,11 +229,26 @@
     
     [self startActivityIndicator];
     
-    // FIXME handle MatrixHandlerStatusStoreDataReady gfo
-    if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
-        // Create/Update recents
-        if (mxHandler.mxSession) {
+    if (mxHandler.mxSession) {
+        // Check matrix handler status
+        if (mxHandler.status == MatrixHandlerStatusStoreDataReady) {
+            // Server sync is not complete yet
             if (!recents) {
+                // Retrieve recents from local storage (some data may not be up-to-date)
+                NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
+                recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
+                for (MXEvent *mxEvent in recentEvents) {
+                    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andRoomState:mxRoom.state markAsUnread:NO];
+                    if (recentRoom) {
+                        [recents addObject:recentRoom];
+                    }
+                }
+                unreadCount = 0;
+            }
+        } else if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
+            // Force recents refresh and add listener to update them (if it is not already done)
+            if (!recentsListener) {
                 NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
                 recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
                 for (MXEvent *mxEvent in recentEvents) {
@@ -370,8 +394,8 @@
     if ([@"status" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
-            // Hide the activity indicator when Recents is not the current tab
-            if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX) {
+            // Hide the activity indicator when Recents is not visible
+            if (!isVisible) {
                 [self stopActivityIndicator];
             }
         });
