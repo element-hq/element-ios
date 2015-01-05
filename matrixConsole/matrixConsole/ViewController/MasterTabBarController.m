@@ -60,7 +60,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (! [[MatrixHandler sharedHandler] isLogged]) {
+    if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusLoggedOut) {
         [self showLoginScreen];
     }
 }

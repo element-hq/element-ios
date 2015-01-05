@@ -82,7 +82,7 @@
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     [dateFormatter setDateFormat:dateFormat];
     
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
 }
 
 - (void)dealloc {
@@ -102,7 +102,7 @@
     if (dateFormatter) {
         dateFormatter = nil;
     }
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -220,7 +220,8 @@
     
     [self startActivityIndicator];
     
-    if ([mxHandler isInitialSyncDone]) {
+    // FIXME handle MatrixHandlerStatusStoreDataReady gfo
+    if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
         // Create/Update recents
         if (mxHandler.mxSession) {
             if (!recents) {
@@ -366,7 +367,7 @@
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
+    if ([@"status" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
             // Hide the activity indicator when Recents is not the current tab

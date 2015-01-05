@@ -67,7 +67,7 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if ([[MatrixHandler sharedHandler] isLogged]) {
+        if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
             [self registerUserNotificationSettings];
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];

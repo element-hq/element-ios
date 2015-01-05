@@ -83,7 +83,7 @@
     // Ensure to display room creation section
     [self.tableView scrollRectToVisible:_roomCreationLabel.frame animated:NO];
     
-    if ([[MatrixHandler sharedHandler] isLogged]) {
+    if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
         homeServerSuffix = [NSString stringWithFormat:@":%@",[MatrixHandler sharedHandler].homeServer];
         // Update alias placeholder
         _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
