@@ -20,6 +20,7 @@
 #import "RoomViewController.h"
 #import "MatrixHandler.h"
 #import "MediaManager.h"
+#import "SettingsViewController.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -206,6 +207,27 @@
     } else {
         return NO;
     }
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    BOOL res = YES;
+    UIViewController* currentViewController = [tabBarController.viewControllers objectAtIndex:tabBarController.selectedIndex];
+
+    if ([currentViewController isKindOfClass:[UINavigationController class]]) {
+        UIViewController *topViewController = ((UINavigationController*)currentViewController).topViewController;
+
+        // ask to the user to save unsaved profile updates
+        // before switching to another tab
+        if ([topViewController isKindOfClass:[SettingsViewController class]]) {
+            __block int nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
+            
+            res = ![((SettingsViewController *)topViewController) checkPendingSave:^() {
+                tabBarController.selectedIndex = nextSelectedViewController;
+            }];
+        }
+    }
+    
+    return res;
 }
 
 @end
