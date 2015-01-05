@@ -307,6 +307,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else {
         [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
                                      success:^{
+                                         // uploadedPictureURL becomes the uploaded picture
+                                         currentPictureURL = uploadedPictureURL;
+                                         // manage the nil case.
                                          [self updateUserPicture:uploadedPictureURL];
                                          uploadedPictureURL = nil;
                                          [_activityIndicator stopAnimating];
