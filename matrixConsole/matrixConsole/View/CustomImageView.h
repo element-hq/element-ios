@@ -30,7 +30,9 @@ typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSStrin
 @property (strong, nonatomic) NSDictionary *mediaInfo;
 
 @property (strong, nonatomic) UIImage *image;
-@property (nonatomic) BOOL canBeZoomed;
+
+@property (nonatomic) BOOL stretchable;
+@property (nonatomic) BOOL fullScreen;
 
 // Let the user defines some custom buttons over the tabbar
 - (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;
