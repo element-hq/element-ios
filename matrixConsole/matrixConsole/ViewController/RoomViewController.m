@@ -2221,6 +2221,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
+    // Set visible room id
+    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomId;
+    
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
