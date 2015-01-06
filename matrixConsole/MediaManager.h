@@ -18,6 +18,12 @@
 #import <UIKit/UIKit.h>
 
 extern NSString *const kMediaManagerPrefixForDummyURL;
+extern NSString *const kMediaManagerProgressKey;
+
+// provide the download progress
+// object: URL
+// userInfo: progress value nested in a NSNumber (range 0->1) (key kMediaManagerProgressKey)
+extern NSString *const kMediaDownloadProgressNotification;
 
 // The callback blocks
 typedef void (^blockMediaManager_onImageReady)(UIImage *image);

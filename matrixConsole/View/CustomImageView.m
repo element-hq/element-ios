@@ -17,11 +17,17 @@
 #import "CustomImageView.h"
 #import "MediaManager.h"
 #import "AppDelegate.h"
+#import "PieChartView.h"
 
 @interface CustomImageView () {
     id imageLoader;
-    UIActivityIndicatorView *loadingWheel;
     
+    // the loading view is composed with the spinner and a pie chart
+    // the spinner is display until progress > 0
+    UIView* loadingView;
+    UIActivityIndicatorView *waitingDownloadSpinner;
+    PieChartView *pieChartView;
+
     // validation buttons
     UIButton* leftButton;
     UIButton* rightButton;
@@ -38,7 +44,8 @@
     UIScrollView* scrollView;
     UIImageView* imageView;
 
-    // 
+    //
+    NSString* downloadingImageURL;
     NSString* loadedImageURL;
     UIImage* _image;
     
@@ -70,15 +77,17 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+    
     [self stopActivityIndicator];
     
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
         imageLoader = nil;
     }
-    if (loadingWheel) {
-        [loadingWheel removeFromSuperview];
-        loadingWheel = nil;
+    if (loadingView) {
+        [loadingView removeFromSuperview];
+        loadingView = nil;
     }
     if (bottomBarView) {
         [bottomBarView removeFromSuperview];
@@ -87,44 +96,69 @@
 }
 
 - (void)startActivityIndicator {
-    // Add activity indicator if none
-    if (loadingWheel == nil) {
-        loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    // create the views if they don't exist
+    if (!waitingDownloadSpinner) {
+        waitingDownloadSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         
-        CGRect frame = loadingWheel.frame;
+        CGRect frame = waitingDownloadSpinner.frame;
         frame.size.width += 30;
         frame.size.height += 30;
-        loadingWheel.bounds = frame;
-        [loadingWheel.layer setCornerRadius:5];
-        [self addSubview:loadingWheel];
+        waitingDownloadSpinner.bounds = frame;
+        [waitingDownloadSpinner.layer setCornerRadius:5];
     }
+    
+    if (!loadingView) {
+        loadingView = [[UIView alloc] init];
+        loadingView.frame = waitingDownloadSpinner.bounds;
+        [loadingView addSubview:waitingDownloadSpinner];
+        loadingView.backgroundColor = [UIColor clearColor];
+        [self addSubview:loadingView];
+    }
+    
+    if (!pieChartView) {
+        pieChartView = [[PieChartView alloc] init];
+        pieChartView.frame = loadingView.bounds;
+        pieChartView.progress = 0;
+        pieChartView.progressColor = [UIColor redColor];
+        pieChartView.unprogressColor = [UIColor clearColor];
+    
+        [loadingView addSubview:pieChartView];
+    }
+    
+    // initvalue
+    loadingView.hidden = NO;
+    pieChartView.progress = 0;
     
     // Adjust color
     if ([self.backgroundColor isEqual:[UIColor blackColor]]) {
-        loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+        waitingDownloadSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
         // a preview image could be displayed
         // ensure that the white spinner is visible
         // it could be drawn on a white area
-        loadingWheel.backgroundColor = [UIColor darkGrayColor];
+        waitingDownloadSpinner.backgroundColor = [UIColor darkGrayColor];
+        
     } else {
-        loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        waitingDownloadSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     }
-    
-    // ensure that the spinner is drawn at the top
-    [loadingWheel.superview bringSubviewToFront:loadingWheel];
+
+        // ensure that the spinner is drawn at the top
+    [loadingView.superview bringSubviewToFront:loadingView];
     
     // Adjust position
     CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-    loadingWheel.center = center;
+    loadingView.center = center;
     
     // Start
-    [loadingWheel startAnimating];
+    [waitingDownloadSpinner startAnimating];
 }
 
 - (void)stopActivityIndicator {
-    if (loadingWheel && loadingWheel.isAnimating) {
-        [loadingWheel stopAnimating];
+    if (waitingDownloadSpinner && waitingDownloadSpinner.isAnimating) {
+        [waitingDownloadSpinner stopAnimating];
     }
+    
+    pieChartView.progress = 0;
+    loadingView.hidden = YES;
 }
 
 #pragma mark - setters/getters
@@ -234,6 +268,8 @@
 - (void)removeFromSuperview {
     [super removeFromSuperview];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+    
     if (useFullScreen) {
         [UIApplication sharedApplication].statusBarHidden = NO;
     }
@@ -337,13 +373,13 @@
         }
     }
     
-    if (loadingWheel.isAnimating) {
+    if (!loadingView.hidden) {
         // ensure that the spinner is drawn at the top
-        [loadingWheel.superview bringSubviewToFront:loadingWheel];
+        [loadingView.superview bringSubviewToFront:loadingView];
         
         // Adjust position
         CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-        loadingWheel.center = center;
+        loadingView.center = center;
     }
 }
 
@@ -369,6 +405,13 @@
         loadedImageURL = nil;
     }
     
+    // the current image is already downloading
+    // please wait....
+    // it could be triggered after a screen rotation, new message ...
+    if (anImageURL && [anImageURL isEqualToString:downloadingImageURL]) {
+        return;
+    }
+    
     // Cancel media loader in progress (if any)
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
@@ -380,21 +423,48 @@
     
     // Consider provided url to update image view
     if (anImageURL) {
+        
+        // store the downloading media
+        downloadingImageURL = anImageURL;
+        
         // Load picture
         if (!_hideActivityIndicator) {
             [self startActivityIndicator];
         }
         
-        imageLoader = [MediaManager loadPicture:anImageURL
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
+        
+        imageLoader = [MediaManager loadPicture:downloadingImageURL
                                         success:^(UIImage *anImage) {
+                                            downloadingImageURL = nil;
                                             [self stopActivityIndicator];
                                             self.image = anImage;
                                             loadedImageURL = anImageURL;
+                                            
+                                            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
                                         }
                                         failure:^(NSError *error) {
                                             [self stopActivityIndicator];
+                                            downloadingImageURL = nil;
                                             NSLog(@"Failed to download image (%@): %@", anImageURL, error);
+                                            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
                                         }];
+    }
+}
+
+- (void)onMediaDownloadProgress:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:downloadingImageURL]) {
+            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressKey];
+            
+            if (progressNumber) {
+                pieChartView.progress = progressNumber.floatValue;
+                waitingDownloadSpinner.hidden = YES;
+            }
+        }
     }
 }
 
