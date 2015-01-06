@@ -21,8 +21,7 @@
 
 typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
 
-@property (strong, nonatomic) NSString *placeholder;
-@property (strong, nonatomic) NSString *imageURL;
+- (void)setImageURL:(NSString *)imageURL withPreviewImage:(UIImage*)previewImage;
 
 // Use this boolean to hide activity indicator during image downloading
 @property (nonatomic) BOOL hideActivityIndicator;

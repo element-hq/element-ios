@@ -156,9 +156,8 @@
         // set the user info
         self.userLabel.text = [room.state memberName:roomMember.userId];
         
-        // user
-        self.pictureView.placeholder = @"default-profile";
-        self.pictureView.imageURL = roomMember.avatarUrl;
+        // user thumbnail
+        [self.pictureView setImageURL:roomMember.avatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         
         // Round image view
         [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];
