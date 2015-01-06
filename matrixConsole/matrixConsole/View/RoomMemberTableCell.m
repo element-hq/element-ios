@@ -89,66 +89,14 @@
 
     // display it
     self.powerContainer.hidden = NO;
-
-    // defines the view settings
-    CGFloat radius = self.powerContainer.frame.size.width / 2;
-    
-    // draw a rounded view
-    [self.powerContainer.layer setCornerRadius:radius];
     self.powerContainer.backgroundColor = [UIColor clearColor];
     
-    // draw the pie
-    CALayer* layer = [self.powerContainer layer];
-
-    // remove any previous drawn layer
-    if (powerContainerLayer) {
-        [powerContainerLayer removeFromSuperlayer];
+    if (!pieChartView) {
+        pieChartView = [[PieChartView alloc] initWithFrame:self.powerContainer.bounds];
+        [self.powerContainer addSubview:pieChartView];
     }
-
-    // the background cell color is hidden the cell is selected.
-    // so put in grey the cell background triggers a weird display (the background grey is hidden but not the red part).
-    // add an other layer fixes the UX.
-    if (!backgroundContainerLayer) {
-        
-        backgroundContainerLayer = [CAShapeLayer layer];
-        [backgroundContainerLayer setZPosition:0];
-        [backgroundContainerLayer setStrokeColor:NULL];
-        backgroundContainerLayer.fillColor = [UIColor lightGrayColor].CGColor;
-        
-        // build the path
-        CGMutablePathRef path = CGPathCreateMutable();
-        CGPathMoveToPoint(path, NULL, radius, radius);
-        
-        CGPathAddArc(path, NULL, radius, radius, radius, 0 , 2 * M_PI, 0);
-        CGPathCloseSubpath(path);
-        
-        [backgroundContainerLayer setPath:path];
-        CFRelease(path);
-        
-        // add the sub layer
-        [layer addSublayer:backgroundContainerLayer];
-    }
-
-    // create the red layer
-    powerContainerLayer = [CAShapeLayer layer];
-    [powerContainerLayer setZPosition:0];
-    [powerContainerLayer setStrokeColor:NULL];
-
-    // power level is drawn in red
-    powerContainerLayer.fillColor = [UIColor redColor].CGColor;
     
-    // build the path
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, radius, radius);
-    
-    CGPathAddArc(path, NULL, radius, radius, radius, -M_PI / 2, (progress * 2 * M_PI) - (M_PI / 2), 0);
-    CGPathCloseSubpath(path);
-    
-    [powerContainerLayer setPath:path];
-    CFRelease(path);
-
-    // add the sub layer
-    [layer addSublayer:powerContainerLayer];
+    pieChartView.progress = progress;
 }
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {

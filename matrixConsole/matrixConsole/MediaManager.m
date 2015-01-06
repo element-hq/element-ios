@@ -18,6 +18,8 @@
 #import "MatrixHandler.h"
 
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
+NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
+NSString *const kMediaManagerProgressKey = @"kMediaManagerProgressKey";
 
 static NSString* mediaCachePath  = nil;
 static NSString *mediaDir        = @"mediacache";
@@ -30,6 +32,8 @@ static MediaManager *sharedMediaManager = nil;
     
     blockMediaManager_onMediaReady onMediaReady;
     blockMediaManager_onError onError;
+    
+    long long expectedSize;
     
     NSMutableData *downloadData;
     NSURLConnection *downloadConnection;
@@ -109,6 +113,10 @@ static MediaManager *sharedMediaManager = nil;
 
 #pragma mark -
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    expectedSize = response.expectedContentLength;
+}
+
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"ERROR: media download failed: %@, %@", error, mediaURL);
     if (onError) {
@@ -119,6 +127,23 @@ static MediaManager *sharedMediaManager = nil;
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     // Append data
     [downloadData appendData:data];
+    
+    if (expectedSize > 0) {
+        //
+        float rate = ((float)downloadData.length) /  ((float)expectedSize);
+       
+        // should never happen
+        if (rate > 1) {
+            rate = 1.0;
+        }
+        
+        // only one parameter by now
+        // but assume more could be expected (like download rates, remaining time...)
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+        [dict setValue:[NSNumber numberWithFloat:rate] forKey:kMediaManagerProgressKey];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:dict];
+    }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
