@@ -17,7 +17,7 @@
 #import <UIKit/UIKit.h>
 
 // Customize UIImageView in order to let UIImageView handle automatically remote url
-@interface CustomImageView : UIImageView
+@interface CustomImageView : UIView<UIScrollViewDelegate>
 
 typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
 
@@ -29,6 +29,9 @@ typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSStrin
 
 // Information about the media represented by this image (image, video...)
 @property (strong, nonatomic) NSDictionary *mediaInfo;
+
+@property (strong, nonatomic) UIImage *image;
+@property (nonatomic) BOOL canBeZoomed;
 
 // Let the user defines some custom buttons over the tabbar
 - (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;

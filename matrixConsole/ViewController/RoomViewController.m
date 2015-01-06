@@ -85,6 +85,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Local echo
     NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
+    
+    // the left bar button is replaced by a custom one when the image is zoomed
+    UIBarButtonItem* defaultLeftBarButtonItem;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -837,6 +840,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSString *url = content[@"url"];
         if (url.length) {
             highResImage = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+            highResImage.canBeZoomed = YES;
             highResImage.imageURL = url;
             [self.view addSubview:highResImage];
             
@@ -846,6 +850,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [tap setNumberOfTapsRequired:1];
             [highResImage addGestureRecognizer:tap];
             highResImage.userInteractionEnabled = YES;
+            
+            defaultLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
             
             // add a button to close the ImageView
             self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
@@ -2203,13 +2209,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.imageValidationView dismissSelection];
         [self.imageValidationView removeFromSuperview];
         self.imageValidationView = nil;
-        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = defaultLeftBarButtonItem;
     }
     
     if (highResImage) {
         [highResImage removeFromSuperview];
         highResImage = nil;
-        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = defaultLeftBarButtonItem;
     }
 }
 
@@ -2225,43 +2231,50 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // so add a preview to let the user validates his selection
             if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
                 
-                self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
-                
-                // the user validates the image
-                [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
-                    
-                    // dismiss the image view
-                    [weakSelf dismissCustomImageView];
-                    
-                    [weakSelf sendImage:selectedImage];
-                }];
-                
-                // the user wants to use an other image
-                [self.imageValidationView setLeftButtonTitle:@"Cancel" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
-                    
-                    // dismiss the image view
-                    [weakSelf dismissCustomImageView];
-                    
-                    // Open again media gallery
-                    UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
-                    mediaPicker.delegate = weakSelf;
-                    mediaPicker.sourceType = picker.sourceType;
-                    mediaPicker.allowsEditing = NO;
-                    mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
-                    [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
-                }];
-                
-                self.imageValidationView.image = selectedImage;
-                
-                // add a button to close the ImageView
-                self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
-                                                          initWithTitle:@"Close"
-                                                          style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(dismissCustomImageView)];
-                
+                // wait that the media picker is dismissed to have the valid membersView frame
+                // else it would include a status bar height offset
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.view addSubview:self.imageValidationView];
+                    self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+                    self.imageValidationView.canBeZoomed = YES;
+                    
+                    // the user validates the image
+                    [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
+                        
+                        // dismiss the image view
+                        [weakSelf dismissCustomImageView];
+                        
+                        [weakSelf sendImage:selectedImage];
+                    }];
+                    
+                    // the user wants to use an other image
+                    [self.imageValidationView setLeftButtonTitle:@"Cancel" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
+                        
+                        // dismiss the image view
+                        [weakSelf dismissCustomImageView];
+                        
+                        // Open again media gallery
+                        UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+                        mediaPicker.delegate = weakSelf;
+                        mediaPicker.sourceType = picker.sourceType;
+                        mediaPicker.allowsEditing = NO;
+                        mediaPicker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
+                        [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+                    }];
+                    
+                    self.imageValidationView.image = selectedImage;
+                    
+                    defaultLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
+                    
+                    // add a button to close the ImageView
+                    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
+                                                              initWithTitle:@"Close"
+                                                              style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(dismissCustomImageView)];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.view addSubview:self.imageValidationView];
+                });
                 });
             } else {
                 [weakSelf sendImage:selectedImage];
