@@ -70,7 +70,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     id membersListener;
     
     // Attachment handling
-    CustomImageView *highResImage;
+    CustomImageView *highResImageView;
     NSString *AVAudioSessionCategory;
     MPMoviePlayerController *videoPlayer;
     MPMoviePlayerController *tmpVideoPlayer;
@@ -839,17 +839,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (msgtype == RoomMessageTypeImage) {
         NSString *url = content[@"url"];
         if (url.length) {
-            highResImage = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
-            highResImage.canBeZoomed = YES;
-            highResImage.imageURL = url;
-            [self.view addSubview:highResImage];
+            highResImageView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+            highResImageView.canBeZoomed = YES;
+            [highResImageView setImageURL:url withPreviewImage:attachment.image];
+            [self.view addSubview:highResImageView];
             
             // Add tap recognizer to hide attachment
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAttachmentView)];
             [tap setNumberOfTouchesRequired:1];
             [tap setNumberOfTapsRequired:1];
-            [highResImage addGestureRecognizer:tap];
-            highResImage.userInteractionEnabled = YES;
+            [highResImageView addGestureRecognizer:tap];
+            highResImageView.userInteractionEnabled = YES;
             
             defaultLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
             
@@ -1262,7 +1262,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Restore initial settings
     cell.message = message;
-    cell.attachmentView.imageURL = nil; // Cancel potential attachment loading
+    [cell.attachmentView  setImageURL:nil withPreviewImage:nil]; // Cancel potential attachment loading
     cell.attachmentView.hidden = YES;
     cell.playIconView.hidden = YES;
     // Remove all gesture recognizer
@@ -1299,8 +1299,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
         cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST;
         // Handle user's picture
-        cell.pictureView.placeholder = @"default-profile";
-        cell.pictureView.imageURL = message.senderAvatarUrl;
+        [cell.pictureView setImageURL:message.senderAvatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
         cell.pictureView.clipsToBounds = YES;
     }
@@ -1361,7 +1360,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             cell.playIconView.hidden = NO;
         }
         
-        cell.attachmentView.imageURL = url;
+        [cell.attachmentView setImageURL:url withPreviewImage:nil];
+
         if (url && message.attachmentURL && message.attachmentInfo) {
             // Add tap recognizer to open attachment
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAttachmentView:)];
@@ -2212,9 +2212,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.navigationItem.leftBarButtonItem = defaultLeftBarButtonItem;
     }
     
-    if (highResImage) {
-        [highResImage removeFromSuperview];
-        highResImage = nil;
+    if (highResImageView) {
+        [highResImageView removeFromSuperview];
+        highResImageView = nil;
         self.navigationItem.leftBarButtonItem = defaultLeftBarButtonItem;
     }
 }

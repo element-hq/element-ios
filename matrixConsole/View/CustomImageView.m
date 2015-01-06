@@ -85,18 +85,34 @@
 - (void)startActivityIndicator {
     // Add activity indicator if none
     if (loadingWheel == nil) {
-        loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        
+        CGRect frame = loadingWheel.frame;
+        frame.size.width += 30;
+        frame.size.height += 30;
+        loadingWheel.bounds = frame;
+        [loadingWheel.layer setCornerRadius:5];
         [self addSubview:loadingWheel];
     }
-    // Adjust position
-    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
-    loadingWheel.center = center;
+    
     // Adjust color
     if ([self.backgroundColor isEqual:[UIColor blackColor]]) {
         loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+        // a preview image could be displayed
+        // ensure that the white spinner is visible
+        // it could be drawn on a white area
+        loadingWheel.backgroundColor = [UIColor darkGrayColor];
     } else {
         loadingWheel.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     }
+    
+    // ensure that the spinner is drawn at the top
+    [loadingWheel.superview bringSubviewToFront:loadingWheel];
+    
+    // Adjust position
+    CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+    loadingWheel.center = center;
+    
     // Start
     [loadingWheel startAnimating];
 }
@@ -259,6 +275,15 @@
             rightButton.frame = CGRectMake(bottomBarView.frame.size.width - CUSTOM_IMAGE_VIEW_BUTTON_WIDTH, 0, CUSTOM_IMAGE_VIEW_BUTTON_WIDTH, bottomBarView.frame.size.height);
         }
     }
+    
+    if (loadingWheel.isAnimating) {
+        // ensure that the spinner is drawn at the top
+        [loadingWheel.superview bringSubviewToFront:loadingWheel];
+        
+        // Adjust position
+        CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+        loadingWheel.center = center;
+    }
 }
 
 - (void)setHideActivityIndicator:(BOOL)hideActivityIndicator {
@@ -271,9 +296,9 @@
     }
 }
 
-- (void)setImageURL:(NSString *)imageURL {
+- (void)setImageURL:(NSString *)anImageURL withPreviewImage:(UIImage*)previewImage {
     // the displayed image is already the expected one ?
-    if ([imageURL isEqualToString:loadedImageURL]) {
+    if ([anImageURL isEqualToString:loadedImageURL]) {
         
         // check if the image content has not been released
         if (self.image.size.width && self.image.size.height) {
@@ -289,30 +314,25 @@
         imageLoader = nil;
     }
     
-    _imageURL = imageURL;
-    
-    // Reset image view
-    self.image = nil;
-    if (_placeholder) {
-        // Set picture placeholder
-        self.image = [UIImage imageNamed:_placeholder];
-    }
+    // preview image until the image is loaded
+    self.image = previewImage;
     
     // Consider provided url to update image view
-    if (imageURL) {
+    if (anImageURL) {
         // Load picture
         if (!_hideActivityIndicator) {
             [self startActivityIndicator];
         }
-        imageLoader = [MediaManager loadPicture:imageURL
+        
+        imageLoader = [MediaManager loadPicture:anImageURL
                                         success:^(UIImage *anImage) {
                                             [self stopActivityIndicator];
                                             self.image = anImage;
-                                            loadedImageURL = imageURL;
+                                            loadedImageURL = anImageURL;
                                         }
                                         failure:^(NSError *error) {
                                             [self stopActivityIndicator];
-                                            NSLog(@"Failed to download image (%@): %@", imageURL, error);
+                                            NSLog(@"Failed to download image (%@): %@", anImageURL, error);
                                         }];
     }
 }
