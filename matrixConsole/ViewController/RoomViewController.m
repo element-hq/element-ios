@@ -85,9 +85,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Local echo
     NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
-    
-    // the left bar button is replaced by a custom one when the image is zoomed
-    UIBarButtonItem* defaultLeftBarButtonItem;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -840,9 +837,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSString *url = content[@"url"];
         if (url.length) {
             highResImageView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
-            highResImageView.canBeZoomed = YES;
+            highResImageView.stretchable = YES;
+            highResImageView.fullScreen = YES;
             [highResImageView setImageURL:url withPreviewImage:attachment.image];
-            [self.view addSubview:highResImageView];
             
             // Add tap recognizer to hide attachment
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAttachmentView)];
@@ -850,15 +847,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [tap setNumberOfTapsRequired:1];
             [highResImageView addGestureRecognizer:tap];
             highResImageView.userInteractionEnabled = YES;
-            
-            defaultLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
-            
-            // add a button to close the ImageView
-            self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
-                                                      initWithTitle:@"Close"
-                                                      style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(dismissCustomImageView)];
         }
     } else if (msgtype == RoomMessageTypeVideo) {
         NSString *url =content[@"url"];
@@ -2209,13 +2197,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.imageValidationView dismissSelection];
         [self.imageValidationView removeFromSuperview];
         self.imageValidationView = nil;
-        self.navigationItem.leftBarButtonItem = defaultLeftBarButtonItem;
     }
     
     if (highResImageView) {
         [highResImageView removeFromSuperview];
         highResImageView = nil;
-        self.navigationItem.leftBarButtonItem = defaultLeftBarButtonItem;
     }
 }
 
@@ -2238,7 +2224,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // else it would include a status bar height offset
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
-                    self.imageValidationView.canBeZoomed = YES;
+                    self.imageValidationView.stretchable = YES;
+                    self.imageValidationView.fullScreen = YES;
                     
                     // the user validates the image
                     [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
@@ -2265,19 +2252,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }];
                     
                     self.imageValidationView.image = selectedImage;
-                    
-                    defaultLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
-                    
-                    // add a button to close the ImageView
-                    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc]
-                                                              initWithTitle:@"Close"
-                                                              style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(dismissCustomImageView)];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.view addSubview:self.imageValidationView];
-                });
                 });
             } else {
                 [weakSelf sendImage:selectedImage];

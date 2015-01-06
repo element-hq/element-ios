@@ -41,11 +41,13 @@
     // 
     NSString* loadedImageURL;
     UIImage* _image;
+    
+    BOOL useFullScreen;
 }
 @end
 
 @implementation CustomImageView
-@synthesize canBeZoomed;
+@synthesize stretchable;
 
 #define CUSTOM_IMAGE_VIEW_BUTTON_WIDTH 100
 
@@ -68,6 +70,8 @@
 }
 
 - (void)dealloc {
+    [self stopActivityIndicator];
+    
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
         imageLoader = nil;
@@ -118,14 +122,13 @@
 }
 
 - (void)stopActivityIndicator {
-    if (loadingWheel) {
+    if (loadingWheel && loadingWheel.isAnimating) {
         [loadingWheel stopAnimating];
     }
 }
 
-#pragma mark -
+#pragma mark - setters/getters
 
-// image setter/getter
 - (void)setImage:(UIImage *)anImage {
     _image = anImage;
     
@@ -137,6 +140,25 @@
     return _image;
 }
 
+- (void)setFullScreen:(BOOL)fullScreen {
+    useFullScreen = fullScreen;
+    
+    [self initLayout];
+    
+    if (useFullScreen) {
+        [self removeFromSuperview];
+        [UIApplication sharedApplication].statusBarHidden = YES;
+                
+        self.frame = [AppDelegate theDelegate].window.rootViewController.view.bounds;
+        [[AppDelegate theDelegate].window.rootViewController.view addSubview:self];
+    }
+}
+
+- (BOOL)fullScreen {
+    return useFullScreen;
+}
+
+#pragma mark -
 - (IBAction)onButtonToggle:(id)sender
 {
     if (sender == leftButton) {
@@ -156,10 +178,17 @@
     UIButton* button = [[UIButton alloc] init];
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitle:title forState:UIControlStateHighlighted];
-
-    // use the same text color as the tabbar
-    [button setTitleColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor forState:UIControlStateNormal];
-    [button setTitleColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor forState:UIControlStateHighlighted];
+    
+    if (useFullScreen) {
+        // use the same text color as the tabbar
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    }
+    else  {
+        // use the same text color as the tabbar
+        [button setTitleColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor forState:UIControlStateNormal];
+        [button setTitleColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor forState:UIControlStateHighlighted];
+    }
 
     // keep the bottomView background color
     button.backgroundColor = [UIColor clearColor];
@@ -172,7 +201,7 @@
 
 - (void)initScrollZoomFactors {
     // check if the image can be zoomed
-    if (self.image && self.canBeZoomed && imageView.frame.size.width && imageView.frame.size.height) {
+    if (self.image && self.stretchable && imageView.frame.size.width && imageView.frame.size.height) {
         // ensure that the content size is properly initialized
         scrollView.contentSize = scrollView.frame.size;
         
@@ -202,11 +231,17 @@
     }
 }
 
-- (void)layoutSubviews {
+- (void)removeFromSuperview {
+    [super removeFromSuperview];
     
-    // call upper layer
-    [super layoutSubviews];
+    if (useFullScreen) {
+        [UIApplication sharedApplication].statusBarHidden = NO;
+    }
+    
+    [self stopActivityIndicator];
+}
 
+- (void)initLayout {
     // create the subviews if they don't exist
     if (!scrollView) {
         scrollView = [[UIScrollView alloc] init];
@@ -219,20 +254,35 @@
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [scrollView addSubview:imageView];
     }
+}
+
+- (void)layoutSubviews {
+    
+    // call upper layer
+    [super layoutSubviews];
+
+    [self initLayout];
     
     // the image has been updated
     if (imageView.image != self.image) {
         imageView.image = self.image;
     }
+    
+    CGRect tabBarFrame = [AppDelegate theDelegate].masterTabBarController.tabBar.frame;
 
     // update the scrollview frame
-    CGRect oneSelfFrame = CGRectIntegral(self.frame);
+    CGRect oneSelfFrame = self.frame;
     CGRect scrollViewFrame = CGRectIntegral(scrollView.frame);
     
+    if (leftButtonTitle || rightButtonTitle) {
+        oneSelfFrame.size.height -= tabBarFrame.size.height;
+    }
+    
+    oneSelfFrame = CGRectIntegral(oneSelfFrame);
     oneSelfFrame.origin = scrollViewFrame.origin = CGPointZero;
     
     // use integral rect to avoid rounded value issue (float precision)
-    if (!CGRectEqualToRect(CGRectIntegral(self.frame), CGRectIntegral(scrollView.frame))) {
+    if (!CGRectEqualToRect(oneSelfFrame, scrollViewFrame)) {
         scrollView.frame = oneSelfFrame;
         imageView.frame = oneSelfFrame;
         
@@ -255,16 +305,27 @@
                 rightButton = [self addbuttonWithTitle:rightButtonTitle];
             }
 
-            // default tabbar background color
-            CGFloat base = 248.0 / 255.0f;
-            bottomBarView.backgroundColor = [UIColor colorWithRed:base green:base blue:base alpha:1.0];
-            
-            [[AppDelegate theDelegate].masterTabBarController.tabBar addSubview:bottomBarView];
+            // in fullscreen, display both buttons above the view
+            if (useFullScreen) {
+                bottomBarView.backgroundColor = [UIColor blackColor];
+                [self addSubview:bottomBarView];
+            }
+            // display them above the tabbar
+            else {
+                // default tabbar background color
+                CGFloat base = 248.0 / 255.0f;
+  
+                bottomBarView.backgroundColor = [UIColor colorWithRed:base green:base blue:base alpha:1.0];
+                [[AppDelegate theDelegate].masterTabBarController.tabBar addSubview:bottomBarView];
+            }
         }
-
-        // manage the item 
-        CGRect tabBarFrame = [AppDelegate theDelegate].masterTabBarController.tabBar.frame;
-        tabBarFrame.origin.y = 0;
+        
+        if (useFullScreen) {
+            tabBarFrame.origin.y = self.frame.size.height - tabBarFrame.size.height;
+        }
+        else {
+            tabBarFrame.origin.y = 0;
+        }
         bottomBarView.frame = tabBarFrame;
         
         if (leftButton) {
@@ -354,13 +415,17 @@
         [bottomBarView removeFromSuperview];
         bottomBarView = nil;
     }
+    
+    if (useFullScreen) {
+        [UIApplication sharedApplication].statusBarHidden = NO;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
 // require to be able to zoom an image
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.canBeZoomed ? imageView : nil;
+    return self.stretchable ? imageView : nil;
 }
 
 @end
