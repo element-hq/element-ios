@@ -1035,7 +1035,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 
                                 // assume that the thumbnail is about 10% of the video
                                 // the video is about 90 %
-                                [dict setValue:[NSNumber numberWithFloat: 0.1 + (progress * 0.9)] forKey:kMediaManagerProgressKey];
+                                [dict setValue:[NSNumber numberWithFloat: 0.1 + (progress * 0.9)] forKey:kMediaManagerProgressRateKey];
                                 
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
                         
@@ -1067,7 +1067,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             CGFloat progress = ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite);
             
             // assume that the thumbnail is about 10% of the video
-            [dict setValue:[NSNumber numberWithFloat: (progress * 0.1)] forKey:kMediaManagerProgressKey];
+            [dict setValue:[NSNumber numberWithFloat: (progress * 0.1)] forKey:kMediaManagerProgressRateKey];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
         }];
@@ -1311,7 +1311,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.pictureView.hidden = YES;
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST + ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
         cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST + ROOM_MESSAGE_CELL_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
-        
     } else {
         cell.pictureView.hidden = NO;
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
@@ -1320,6 +1319,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [cell.pictureView setImageURL:message.senderAvatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
         cell.pictureView.clipsToBounds = YES;
+        cell.pictureView.backgroundColor = [UIColor redColor];
     }
     
     // Adjust top constraint constant for dateTime labels container, and hide it by default
@@ -2263,7 +2263,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // only one parameter by now
         // but assume more could be expected (like download rates, remaining time...)
         NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-        [dict setValue:[NSNumber numberWithFloat: ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite)] forKey:kMediaManagerProgressKey];
+        [dict setValue:[NSNumber numberWithFloat: ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite)] forKey:kMediaManagerProgressRateKey];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
     }];

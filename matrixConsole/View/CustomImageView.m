@@ -27,6 +27,7 @@
     UIView* loadingView;
     UIActivityIndicatorView *waitingDownloadSpinner;
     PieChartView *pieChartView;
+    UILabel* progressInfoLabel;
 
     // validation buttons
     UIButton* leftButton;
@@ -110,6 +111,7 @@
     if (!loadingView) {
         loadingView = [[UIView alloc] init];
         loadingView.frame = waitingDownloadSpinner.bounds;
+        waitingDownloadSpinner.frame = waitingDownloadSpinner.bounds;
         [loadingView addSubview:waitingDownloadSpinner];
         loadingView.backgroundColor = [UIColor clearColor];
         [self addSubview:loadingView];
@@ -123,6 +125,19 @@
         pieChartView.unprogressColor = [UIColor clearColor];
     
         [loadingView addSubview:pieChartView];
+    }
+    
+    // display the download statistics
+    if (useFullScreen && !progressInfoLabel) {
+        progressInfoLabel = [[UILabel alloc] init];
+        progressInfoLabel.backgroundColor = [UIColor whiteColor];
+        progressInfoLabel.textColor = [UIColor blackColor];
+        progressInfoLabel.font = [UIFont systemFontOfSize:8];
+        progressInfoLabel.alpha = 0.25;
+        progressInfoLabel.text = @"";
+        progressInfoLabel.numberOfLines = 0;
+        [progressInfoLabel sizeToFit];
+        [self addSubview:progressInfoLabel];
     }
     
     // initvalue
@@ -159,6 +174,11 @@
     
     pieChartView.progress = 0;
     loadingView.hidden = YES;
+    
+    if (progressInfoLabel) {
+        [progressInfoLabel removeFromSuperview];
+        progressInfoLabel = nil;
+    }
 }
 
 #pragma mark - setters/getters
@@ -377,9 +397,14 @@
         // ensure that the spinner is drawn at the top
         [loadingView.superview bringSubviewToFront:loadingView];
         
-        // Adjust position
+        // Adjust positions
         CGPoint center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
         loadingView.center = center;
+        
+        CGRect progressInfoLabelFrame = progressInfoLabel.frame;
+        progressInfoLabelFrame.origin.x = center.x - (progressInfoLabelFrame.size.width / 2);
+        progressInfoLabelFrame.origin.y = 10 + loadingView.frame.origin.y + loadingView.frame.size.height;
+        progressInfoLabel.frame = progressInfoLabelFrame;
     }
 }
 
@@ -458,11 +483,43 @@
         NSString* url = notif.object;
         
         if ([url isEqualToString:downloadingImageURL]) {
-            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressKey];
-            
+            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressRateKey];
+                        
             if (progressNumber) {
                 pieChartView.progress = progressNumber.floatValue;
                 waitingDownloadSpinner.hidden = YES;
+            }
+            
+            if (progressInfoLabel) {
+                NSString* downloadRate = [notif.userInfo valueForKey:kMediaManagerProgressDownloadRateKey];
+                NSString* remaingTime = [notif.userInfo valueForKey:kMediaManagerProgressRemaingTimeKey];
+                NSString* progressString = [notif.userInfo valueForKey:kMediaManagerProgressStringKey];
+                
+                NSMutableString* text = [[NSMutableString alloc] init];
+                
+                [text appendString:progressString];
+                
+                if (remaingTime) {
+                    [text appendFormat:@" (%@)", remaingTime];
+                }
+                
+                if (downloadRate) {
+                    [text appendFormat:@"\n %@", downloadRate];
+                }
+               
+                progressInfoLabel.text = text;
+                
+                // on multilines, sizeToFit uses the current width
+                // so reset it
+                progressInfoLabel.frame = CGRectZero;
+                
+                [progressInfoLabel sizeToFit];
+                
+                //
+                CGRect progressInfoLabelFrame = progressInfoLabel.frame;
+                progressInfoLabelFrame.origin.x = self.center.x - (progressInfoLabelFrame.size.width / 2);
+                progressInfoLabelFrame.origin.y = 10 + loadingView.frame.origin.y + loadingView.frame.size.height;
+                progressInfoLabel.frame = progressInfoLabelFrame;
             }
         }
     }
