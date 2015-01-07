@@ -64,7 +64,7 @@
         NSString* url = notif.object;
         
         if ([url isEqualToString:self.message.thumbnailURL] || [url isEqualToString:self.message.attachmentURL]) {
-            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressKey];
+            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressRateKey];
             
             if (progressNumber) {
                 [self updateUploadProgressTo:progressNumber.floatValue];

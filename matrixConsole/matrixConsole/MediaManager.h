@@ -18,11 +18,19 @@
 #import <UIKit/UIKit.h>
 
 extern NSString *const kMediaManagerPrefixForDummyURL;
-extern NSString *const kMediaManagerProgressKey;
+
+extern NSString *const kMediaManagerProgressRateKey;
+extern NSString *const kMediaManagerProgressStringKey;
+extern NSString *const kMediaManagerProgressRemaingTimeKey;
+extern NSString *const kMediaManagerProgressDownloadRateKey;
 
 // provide the download progress
 // object: URL
-// userInfo: progress value nested in a NSNumber (range 0->1) (key kMediaManagerProgressKey)
+// userInfo: kMediaManagerProgressRateKey : progress value nested in a NSNumber (range 0->1)
+//         : kMediaManagerProgressStringKey : progress string XXX KB / XXX MB"
+//         : kMediaManagerProgressRemaingTimeKey : remaining time string "XX s left"
+//         : kMediaManagerProgressDownloadRateKey : string like XX MB/s
+
 extern NSString *const kMediaDownloadProgressNotification;
 extern NSString *const kMediaUploadProgressNotification;
 
