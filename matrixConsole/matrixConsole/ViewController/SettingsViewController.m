@@ -371,6 +371,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                           _userPicture.enabled = YES;
                                           isAvatarUploading = NO;
                                           [self handleErrorDuringPictureSaving:error];
+                                      } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                                          // need to display the progress ?
                                       }];
     } else {
         [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
