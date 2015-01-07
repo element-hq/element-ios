@@ -416,6 +416,7 @@
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
         imageLoader = nil;
+        downloadingImageURL = nil;
     }
     
     // preview image until the image is loaded
