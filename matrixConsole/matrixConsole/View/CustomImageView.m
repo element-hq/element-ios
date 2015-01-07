@@ -79,13 +79,13 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
     
     [self stopActivityIndicator];
     
-    if (imageLoader) {
-        [MediaManager cancel:imageLoader];
-        imageLoader = nil;
-    }
+    imageLoader = nil;
+    
     if (loadingView) {
         [loadingView removeFromSuperview];
         loadingView = nil;
@@ -289,6 +289,8 @@
     [super removeFromSuperview];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
     
     if (useFullScreen) {
         [UIApplication sharedApplication].statusBarHidden = NO;
@@ -435,13 +437,13 @@
         // it could be triggered after a screen rotation, new message ...
         return;
     }
+
+    // reinit parameters
+    imageLoader = nil;
+    downloadingImageURL = nil;
     
-    // Cancel media loader in progress (if any)
-    if (imageLoader) {
-        [MediaManager cancel:imageLoader];
-        imageLoader = nil;
-        downloadingImageURL = nil;
-    }
+    // remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // preview image until the image is loaded
     self.image = previewImage;
@@ -459,21 +461,102 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
         
-        imageLoader = [MediaManager loadPicture:downloadingImageURL
-                                        success:^(UIImage *anImage) {
-                                            downloadingImageURL = nil;
-                                            [self stopActivityIndicator];
-                                            self.image = anImage;
-                                            loadedImageURL = anImageURL;
-                                            
-                                            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-                                        }
-                                        failure:^(NSError *error) {
-                                            [self stopActivityIndicator];
-                                            downloadingImageURL = nil;
-                                            NSLog(@"Failed to download image (%@): %@", anImageURL, error);
-                                            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-                                        }];
+        id loader = [MediaManager mediaLoaderForURL:downloadingImageURL];
+        
+        // there is no pending request to this URL
+        if (!loader) {
+            imageLoader = [MediaManager loadPicture:downloadingImageURL
+                                            success:^(UIImage *anImage) {
+                                                downloadingImageURL = nil;
+                                                [self stopActivityIndicator];
+                                                self.image = anImage;
+                                                loadedImageURL = anImageURL;
+                                                
+                                                [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+                                            }
+                                            failure:^(NSError *error) {
+                                                [self stopActivityIndicator];
+                                                downloadingImageURL = nil;
+                                                NSLog(@"Failed to download image (%@): %@", anImageURL, error);
+                                                [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+                                            }];
+        } else {
+            // update the progress UI with the current info
+            [self updateProgressUI:[MediaManager downloadStatsDict:loader]];
+            
+            // wait that the download is ended
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+        }
+    }
+}
+
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:downloadingImageURL]) {
+            [self stopActivityIndicator];
+            
+            // update the image
+            UIImage* image = [MediaManager loadCachePicture:downloadingImageURL];
+            
+            if (image) {
+                self.image = image;
+            }
+            
+            // updates the statuses
+            loadedImageURL = downloadingImageURL;
+            downloadingImageURL = nil;
+            
+            // remove the observers
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+        }
+    }
+}
+
+
+- (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
+    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaManagerProgressRateKey];
+    
+    if (progressNumber) {
+        pieChartView.progress = progressNumber.floatValue;
+        waitingDownloadSpinner.hidden = YES;
+    }
+    
+    if (progressInfoLabel) {
+        NSString* downloadRate = [downloadStatsDict valueForKey:kMediaManagerProgressDownloadRateKey];
+        NSString* remaingTime = [downloadStatsDict valueForKey:kMediaManagerProgressRemaingTimeKey];
+        NSString* progressString = [downloadStatsDict valueForKey:kMediaManagerProgressStringKey];
+        
+        NSMutableString* text = [[NSMutableString alloc] init];
+        
+        [text appendString:progressString];
+        
+        if (remaingTime) {
+            [text appendFormat:@" (%@)", remaingTime];
+        }
+        
+        if (downloadRate) {
+            [text appendFormat:@"\n %@", downloadRate];
+        }
+        
+        progressInfoLabel.text = text;
+        
+        // on multilines, sizeToFit uses the current width
+        // so reset it
+        progressInfoLabel.frame = CGRectZero;
+        
+        [progressInfoLabel sizeToFit];
+        
+        //
+        CGRect progressInfoLabelFrame = progressInfoLabel.frame;
+        progressInfoLabelFrame.origin.x = self.center.x - (progressInfoLabelFrame.size.width / 2);
+        progressInfoLabelFrame.origin.y = 10 + loadingView.frame.origin.y + loadingView.frame.size.height;
+        progressInfoLabel.frame = progressInfoLabelFrame;
     }
 }
 
@@ -483,44 +566,7 @@
         NSString* url = notif.object;
         
         if ([url isEqualToString:downloadingImageURL]) {
-            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressRateKey];
-                        
-            if (progressNumber) {
-                pieChartView.progress = progressNumber.floatValue;
-                waitingDownloadSpinner.hidden = YES;
-            }
-            
-            if (progressInfoLabel) {
-                NSString* downloadRate = [notif.userInfo valueForKey:kMediaManagerProgressDownloadRateKey];
-                NSString* remaingTime = [notif.userInfo valueForKey:kMediaManagerProgressRemaingTimeKey];
-                NSString* progressString = [notif.userInfo valueForKey:kMediaManagerProgressStringKey];
-                
-                NSMutableString* text = [[NSMutableString alloc] init];
-                
-                [text appendString:progressString];
-                
-                if (remaingTime) {
-                    [text appendFormat:@" (%@)", remaingTime];
-                }
-                
-                if (downloadRate) {
-                    [text appendFormat:@"\n %@", downloadRate];
-                }
-               
-                progressInfoLabel.text = text;
-                
-                // on multilines, sizeToFit uses the current width
-                // so reset it
-                progressInfoLabel.frame = CGRectZero;
-                
-                [progressInfoLabel sizeToFit];
-                
-                //
-                CGRect progressInfoLabelFrame = progressInfoLabel.frame;
-                progressInfoLabelFrame.origin.x = self.center.x - (progressInfoLabelFrame.size.width / 2);
-                progressInfoLabelFrame.origin.y = 10 + loadingView.frame.origin.y + loadingView.frame.size.height;
-                progressInfoLabel.frame = progressInfoLabelFrame;
-            }
+            [self updateProgressUI:notif.userInfo];
         }
     }
 }

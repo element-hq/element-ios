@@ -22,6 +22,9 @@ NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
 NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
 NSString *const kMediaUploadProgressNotification = @"kMediaUploadProgressNotification";
 
+NSString *const kMediaDownloadDidFinishNotification = @"kMediaDownloadDidFinishNotification";
+NSString *const kMediaDownloadDidFailNotification = @"kMediaDownloadDidFailNotification";
+
 NSString *const kMediaManagerProgressRateKey = @"kMediaManagerProgressRateKey";
 NSString *const kMediaManagerProgressStringKey = @"kMediaManagerProgressStringKey";
 NSString *const kMediaManagerProgressRemaingTimeKey = @"kMediaManagerProgressRemaingTimeKey";
@@ -49,15 +52,47 @@ static MediaManager *sharedMediaManager = nil;
     CFAbsoluteTime downloadStartTime;
     CFAbsoluteTime lastProgressEventTimeStamp;
     NSTimer* progressCheckTimer;
-    
-    // keep to a copy of the upload dict
-    NSMutableDictionary* uploadDict;
 }
+
++ (MediaLoader*)mediaLoaderForURL:(NSString*)url;
+
+@property (strong, nonatomic) NSMutableDictionary* downloadStatsDict;
 @end
 
 #pragma mark - MediaLoader
 
 @implementation MediaLoader
+@synthesize downloadStatsDict;
+
+// find a MediaLoader
+static NSMutableDictionary* pendingMediaLoadersByURL = nil;
+
++ (MediaLoader*)mediaLoaderForURL:(NSString*)url {
+    MediaLoader* res = nil;
+    
+    if (pendingMediaLoadersByURL && url) {
+        res = [pendingMediaLoadersByURL valueForKey:url];
+    }
+    
+    return res;
+}
+
++ (void) setMediaLoader:(MediaLoader*)mediaLoader forURL:(NSString*)url {
+    if (!pendingMediaLoadersByURL) {
+        pendingMediaLoadersByURL = [[NSMutableDictionary alloc] init];
+    }
+    
+    // sanity check
+    if (mediaLoader && url) {
+        [pendingMediaLoadersByURL setValue:mediaLoader forKey:url];
+    }
+}
+
++ (void) removeMediaLoaderWithUrl:(NSString*)url {
+    if (url) {
+        [pendingMediaLoadersByURL removeObjectForKey:url];
+    }
+}
 
 - (NSString*)validateContentURL:(NSString*)contentURL {
     // Detect matrix content url
@@ -70,27 +105,37 @@ static MediaManager *sharedMediaManager = nil;
     return contentURL;
 }
 
+
 - (void)downloadPicture:(NSString*)pictureURL
              success:(blockMediaManager_onImageReady)success
              failure:(blockMediaManager_onError)failure {
+    
+    [MediaLoader setMediaLoader:self forURL:pictureURL];
+    
     // Download picture content
     [self downloadMedia:pictureURL mimeType:@"image/jpeg" success:^(NSString *cacheFilePath) {
+        [MediaLoader removeMediaLoaderWithUrl:pictureURL];
+
         if (success) {
             NSData* imageContent = [NSData dataWithContentsOfFile:cacheFilePath options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
             if (imageContent) {
                 UIImage *image = [UIImage imageWithData:imageContent];
                 if (image) {
                     success(image);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFinishNotification object:pictureURL userInfo:nil];
                 } else {
                     NSLog(@"ERROR: picture download failed: %@", pictureURL);
                     if (failure){
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
                         failure(nil);
                     }
                 }
             }
         }
     } failure:^(NSError *error) {
+        [MediaLoader removeMediaLoaderWithUrl:pictureURL];
         failure(error);
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
     }];
 }
 
@@ -107,6 +152,8 @@ static MediaManager *sharedMediaManager = nil;
     downloadStartTime = statsStartTime = CFAbsoluteTimeGetCurrent();
     lastProgressEventTimeStamp = -1;
     
+    [MediaLoader setMediaLoader:self forURL:mediaURL];
+    
     // Start downloading
     NSURL *url = [NSURL URLWithString:[self validateContentURL:aMediaURL]];
     downloadData = [[NSMutableData alloc] init];
@@ -114,6 +161,7 @@ static MediaManager *sharedMediaManager = nil;
 }
 
 - (void)cancel {
+    [MediaLoader removeMediaLoaderWithUrl:mediaURL];
     // Reset blocks
     onMediaReady = nil;
     onError = nil;
@@ -138,9 +186,13 @@ static MediaManager *sharedMediaManager = nil;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"ERROR: media download failed: %@, %@", error, mediaURL);
     
+    [MediaLoader removeMediaLoaderWithUrl:mediaURL];
+    
     // send the latest known upload info
     [self progressCheckTimeout:nil];
-    uploadDict = nil;
+    downloadStatsDict = nil;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
     
     if (onError) {
         onError (error);
@@ -184,14 +236,12 @@ static MediaManager *sharedMediaManager = nil;
         
         statsStartTime = currentTime;
 
-        // only one parameter by now
+        // build the user info dictionary
         NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
         [dict setValue:[NSNumber numberWithFloat:rate] forKey:kMediaManagerProgressRateKey];
         
-        
         NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:downloadData.length countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:expectedSize countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:progressString forKey:kMediaManagerProgressStringKey];
-        
         
         NSMutableString* remaingTimeStr = [[NSMutableString alloc] init];
         
@@ -218,7 +268,7 @@ static MediaManager *sharedMediaManager = nil;
         NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:meanRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:downloadRateStr forKey:kMediaManagerProgressDownloadRateKey];
         
-        uploadDict = dict;
+        downloadStatsDict = dict;
         
         // after 0.1s, resend the progress info
         // the upload can be stuck
@@ -228,8 +278,7 @@ static MediaManager *sharedMediaManager = nil;
         // trigger the event only each 0.1s to avoid send to many events
         if ((lastProgressEventTimeStamp == -1) || ((currentTime - lastProgressEventTimeStamp) > 0.1)) {
             lastProgressEventTimeStamp = currentTime;
-
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:uploadDict];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:downloadStatsDict];
         }
     }
 }
@@ -237,18 +286,19 @@ static MediaManager *sharedMediaManager = nil;
 - (IBAction) progressCheckTimeout:(id)sender
 {
     // remove the bitrate -> can be invalid
-    [uploadDict removeObjectForKey:kMediaManagerProgressDownloadRateKey];
+    [downloadStatsDict removeObjectForKey:kMediaManagerProgressDownloadRateKey];
         
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:uploadDict];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:downloadStatsDict];
     [progressCheckTimer invalidate];
     progressCheckTimer = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    [MediaLoader removeMediaLoaderWithUrl:mediaURL];
     
     // send the latest known upload info
     [self progressCheckTimeout:nil];
-    uploadDict = nil;
+    downloadStatsDict = nil;
     
     if (downloadData.length) {
         // Cache the downloaded data
@@ -257,11 +307,14 @@ static MediaManager *sharedMediaManager = nil;
         if (onMediaReady) {
             onMediaReady(cacheFilePath);
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFinishNotification object:mediaURL userInfo:nil];
     } else {
         NSLog(@"ERROR: media download failed: %@", mediaURL);
         if (onError){
             onError(nil);
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
     }
     
     downloadData = nil;
@@ -373,6 +426,15 @@ static MediaManager *sharedMediaManager = nil;
         }
     }
     return ret;
+}
+
+// try to find out a media loder from a media URL
++ (id)mediaLoaderForURL:(NSString*)url {
+    return [MediaLoader mediaLoaderForURL:url];
+}
+
++ (NSDictionary*)downloadStatsDict:(id)mediaLoader {
+    return ((MediaLoader*)mediaLoader).downloadStatsDict;
 }
 
 + (void)cancel:(id)mediaLoader {
