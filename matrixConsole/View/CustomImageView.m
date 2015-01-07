@@ -394,21 +394,20 @@
 }
 
 - (void)setImageURL:(NSString *)anImageURL withPreviewImage:(UIImage*)previewImage {
-    // the displayed image is already the expected one ?
+    // Is the displayed image already the expected one ?
     if ([anImageURL isEqualToString:loadedImageURL]) {
-        
         // check if the image content has not been released
         if (self.image.size.width && self.image.size.height) {
+            [self stopActivityIndicator];
             return;
         }
-        
-        loadedImageURL = nil;
     }
+    loadedImageURL = nil;
     
-    // the current image is already downloading
-    // please wait....
-    // it could be triggered after a screen rotation, new message ...
     if (anImageURL && [anImageURL isEqualToString:downloadingImageURL]) {
+        // the current image is already downloading
+        // please wait....
+        // it could be triggered after a screen rotation, new message ...
         return;
     }
     

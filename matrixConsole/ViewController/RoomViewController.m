@@ -1280,11 +1280,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isIncomingMsg = YES;
     }
     
-    // Restore initial settings
+    // Keep reference on message
     cell.message = message;
-    [cell.attachmentView  setImageURL:nil withPreviewImage:nil]; // Cancel potential attachment loading
-    cell.attachmentView.hidden = YES;
-    cell.playIconView.hidden = YES;
+    
     // Remove all gesture recognizer
     while (cell.attachmentView.gestureRecognizers.count) {
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
@@ -1376,6 +1374,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         NSString *url = message.thumbnailURL;
         if (message.messageType == RoomMessageTypeVideo) {
             cell.playIconView.hidden = NO;
+        } else {
+            cell.playIconView.hidden = YES;
         }
         
         [cell.attachmentView setImageURL:url withPreviewImage:nil];
@@ -1396,6 +1396,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Adjust Attachment width constant
         cell.attachViewWidthConstraint.constant = contentSize.width;
     } else {
+        [cell.attachmentView setImageURL:nil withPreviewImage:nil]; // Cancel potential attachment loading
+        cell.attachmentView.hidden = YES;
+        cell.playIconView.hidden = YES;
         cell.messageTextView.hidden = NO;
         if (!isIncomingMsg) {
             // Adjust horizontal position for outgoing messages (text is left aligned, but the textView should be right aligned)
