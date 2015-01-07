@@ -287,7 +287,7 @@
         
         imageView = [[UIImageView alloc] init];
         imageView.backgroundColor = [UIColor clearColor];
-        imageView.contentMode = self.contentMode;
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
         [scrollView addSubview:imageView];
     }
 }
