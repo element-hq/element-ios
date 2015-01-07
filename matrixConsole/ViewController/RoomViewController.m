@@ -1018,6 +1018,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 [self sendMessage:videoContent withLocalEvent:localEvent];
                             } failure:^(NSError *error) {
                                 [self handleError:error forLocalEvent:localEvent];
+                            } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                        
                             }];
                         } else {
                             NSLog(@"Video is too large");
@@ -1038,6 +1040,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         } failure:^(NSError *error) {
             NSLog(@"Video thumbnail upload failed");
             [self handleError:error forLocalEvent:localEvent];
+        } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            
         }];
     }
     
@@ -1242,7 +1246,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
         OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
         // Hide potential loading wheel
-        [outgoingMsgCell.activityIndicator stopAnimating];
+        [outgoingMsgCell stopAnimating];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
         isIncomingMsg = YES;
@@ -1337,7 +1341,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Fade attachments during upload
         if (message.isUploadInProgress) {
             cell.attachmentView.alpha = 0.5;
-            [((OutgoingMessageTableCell*)cell).activityIndicator startAnimating];
+            [((OutgoingMessageTableCell*)cell) startAnimating];
             cell.attachmentView.hideActivityIndicator = YES;
         } else {
             cell.attachmentView.alpha = 1;
@@ -2189,6 +2193,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self sendMessage:imageMessage withLocalEvent:localEvent];
     } failure:^(NSError *error) {
         [self handleError:error forLocalEvent:localEvent];
+    } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
     }];
 }
 

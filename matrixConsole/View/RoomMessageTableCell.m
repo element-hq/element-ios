@@ -16,6 +16,8 @@
 
 #import "RoomMessageTableCell.h"
 #import "MediaManager.h"
+#import "PieChartView.h"
+
 
 @implementation RoomMessageTableCell
 @end
@@ -24,8 +26,23 @@
 @implementation IncomingMessageTableCell
 @end
 
+@interface OutgoingMessageTableCell () {
+    PieChartView* pieChartView;
+}
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@end
 
 @implementation OutgoingMessageTableCell
+
+-(void)startAnimating {
+    [self.activityIndicator startAnimating];
+}
+
+-(void)stopAnimating {
+    [self.activityIndicator stopAnimating];
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     

@@ -39,6 +39,8 @@
 @end
 
 @interface OutgoingMessageTableCell : RoomMessageTableCell
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+-(void)startAnimating;
+-(void)stopAnimating;
 @end
 
