@@ -119,7 +119,7 @@
         pieChartView = [[PieChartView alloc] init];
         pieChartView.frame = loadingView.bounds;
         pieChartView.progress = 0;
-        pieChartView.progressColor = [UIColor redColor];
+        pieChartView.progressColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.25];
         pieChartView.unprogressColor = [UIColor clearColor];
     
         [loadingView addSubview:pieChartView];

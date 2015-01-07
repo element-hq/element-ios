@@ -35,12 +35,66 @@
 
 @implementation OutgoingMessageTableCell
 
+- (void)dealloc {
+    [self stopAnimating];
+}
+
 -(void)startAnimating {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUploadProgress:) name:kMediaUploadProgressNotification object:nil];
+    
+     self.activityIndicator.hidden = NO;
     [self.activityIndicator startAnimating];
+    
+    [self updateUploadProgressTo:self.message.uploadProgress];
 }
 
 -(void)stopAnimating {
+    // remove any pie chart
+    [pieChartView removeFromSuperview];
+    pieChartView = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
     [self.activityIndicator stopAnimating];
+}
+
+- (void)onUploadProgress:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:self.message.thumbnailURL] || [url isEqualToString:self.message.attachmentURL]) {
+            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressKey];
+            
+            if (progressNumber) {
+                [self updateUploadProgressTo:progressNumber.floatValue];
+            }
+        }
+    }
+}
+- (void) updateUploadProgressTo:(CGFloat)progress {
+    // nothing to display
+    if (progress <= 0) {
+        [pieChartView removeFromSuperview];
+        pieChartView = nil;
+        
+        self.activityIndicator.hidden = NO;
+    } else {
+        
+        if (!pieChartView) {
+            pieChartView = [[PieChartView alloc] init];
+            pieChartView.frame = self.activityIndicator.frame;
+            pieChartView.progress = 0;
+            pieChartView.progressColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
+            pieChartView.unprogressColor = [UIColor clearColor];
+            
+            [self.contentView addSubview:pieChartView];
+        }
+        
+        self.message.uploadProgress = progress;
+        self.activityIndicator.hidden = YES;
+        pieChartView.progress = progress;
+    }
 }
 
 - (void)layoutSubviews {
