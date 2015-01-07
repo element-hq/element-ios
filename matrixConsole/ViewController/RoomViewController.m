@@ -30,6 +30,8 @@
 
 #import "MediaManager.h"
 
+#define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS 20000
+
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
 #define ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE 20
 
@@ -53,6 +55,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @interface RoomViewController () {
     BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
+    NSDate *lastTypingNotificationDate;
     
     // Messages
     NSMutableArray *messages;
@@ -138,6 +141,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)dealloc {
+    lastTypingNotificationDate = nil;
+    
     // Release local echo resources
     pendingOutgoingEvents = nil;
     NSUInteger index = tmpCachedAttachments.count;
@@ -1495,11 +1500,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (notification.object == _messageTextField) {
         NSString *msg = _messageTextField.text;
         if (msg.length) {
+            [self sendTypingNotification:YES];
             _sendBtn.enabled = YES;
             _sendBtn.alpha = 1;
             // Reset potential placeholder (used in case of wrong command usage)
             _messageTextField.placeholder = nil;
         } else {
+            [self sendTypingNotification:NO];
             _sendBtn.enabled = NO;
             _sendBtn.alpha = 0.5;
         }
@@ -1609,6 +1616,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Hide topic field if empty
             _roomTitleView.hiddenTopic = !topic.length;
         }
+    } else if (textField == _messageTextField) {
+        [self sendTypingNotification:NO];
     }
 }
 
@@ -1635,8 +1644,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         self.messageTextField.text = nil;
+        [self sendTypingNotification:NO];
         // disable send button
-        [self onTextFieldChange:nil];
+        _sendBtn.enabled = NO;
+        _sendBtn.alpha = 0.5;
     } else if (sender == _optionBtn) {
         [self dismissKeyboard];
         
@@ -2189,6 +2200,34 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     return YES;
 }
+
+# pragma mark - Typing notification
+
+- (void)sendTypingNotification:(BOOL)typing {
+    NSUInteger timeout = -1;
+    if (typing) {
+        // Check whether a typing notification has been sent recently
+        if (lastTypingNotificationDate) {
+            // We don't send new notification if less than half of the timeout is elapsed
+            NSTimeInterval interval = -[lastTypingNotificationDate timeIntervalSinceNow];
+            if (interval < ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS / 2000) {
+                return;
+            }
+        }
+        timeout = ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS;
+    }
+    
+    // Send typing notification to server
+    lastTypingNotificationDate = nil;
+    [self.mxRoom sendTypingNotification:typing timeout:timeout success:^{
+        if (typing) {
+            lastTypingNotificationDate = [[NSDate alloc] init];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"sendTypingNotification (%d) failed: %@", typing, error);
+    }];
+}
+
 
 # pragma mark - UIImagePickerControllerDelegate
 
