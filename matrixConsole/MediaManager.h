@@ -24,6 +24,7 @@ extern NSString *const kMediaManagerProgressKey;
 // object: URL
 // userInfo: progress value nested in a NSNumber (range 0->1) (key kMediaManagerProgressKey)
 extern NSString *const kMediaDownloadProgressNotification;
+extern NSString *const kMediaUploadProgressNotification;
 
 // The callback blocks
 typedef void (^blockMediaManager_onImageReady)(UIImage *image);

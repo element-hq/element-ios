@@ -18,8 +18,10 @@
 #import "MatrixHandler.h"
 
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
-NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
 NSString *const kMediaManagerProgressKey = @"kMediaManagerProgressKey";
+
+NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
+NSString *const kMediaUploadProgressNotification = @"kMediaUploadProgressNotification";
 
 static NSString* mediaCachePath  = nil;
 static NSString *mediaDir        = @"mediacache";

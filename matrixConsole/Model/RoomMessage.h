@@ -59,6 +59,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSDictionary *attachmentInfo;
 @property (nonatomic) NSString *thumbnailURL;
 @property (nonatomic) NSDictionary *thumbnailInfo;
+@property (nonatomic) CGFloat uploadProgress;
 
 // Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
 // In this case, some messages are temporary hidden
