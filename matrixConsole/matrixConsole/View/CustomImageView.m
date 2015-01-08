@@ -414,6 +414,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     imageURL = anImageURL;
     
+    if (!imageURL) {
+        // Set preview by default
+        self.image = previewImage;
+        return;
+    }
+    
     // Check whether the image download is in progress
     id loader = [MediaManager mediaLoaderForURL:imageURL];
     if (loader) {
@@ -443,11 +449,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-            [MediaManager loadPicture:imageURL
-                                            success:^(UIImage *anImage) {
-                                            }
-                                            failure:^(NSError *error) {
-                                            }];
+            [MediaManager downloadPicture:imageURL];
         }
     }
 }

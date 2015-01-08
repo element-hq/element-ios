@@ -52,6 +52,8 @@
         self.actionMenu = nil;
     }
     
+    // Remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
         imageLoader = nil;
@@ -137,6 +139,8 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
+    // Remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
         imageLoader = nil;
@@ -149,26 +153,71 @@
     }
 }
 
-- (void) updateMemberInfo {
+- (void)updateMemberInfo {
     self.title = _mxRoomMember.displayname ? _mxRoomMember.displayname : _mxRoomMember.userId;
     
     // set the thumbnail info
     [[self.memberThumbnailButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     [[self.memberThumbnailButton imageView] setClipsToBounds:YES];
     
+    // Remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (_mxRoomMember.avatarUrl) {
-        imageLoader = [MediaManager loadPicture:_mxRoomMember.avatarUrl
-                                        success:^(UIImage *image) {
-                                            [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
-                                            [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
-                                        }
-                                        failure:^(NSError *error) {
-                                            NSLog(@"Failed to download image (%@): %@", _mxRoomMember.avatarUrl, error);
-                                        }];
+        // Check whether the image download is in progress
+        id loader = [MediaManager mediaLoaderForURL:_mxRoomMember.avatarUrl];
+        if (loader) {
+            // Add observers
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+        } else {
+            // Retrieve the image from cache
+            UIImage* image = [MediaManager loadCachePicture:_mxRoomMember.avatarUrl];
+            if (image) {
+                [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
+                [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
+            } else {
+                // Cancel potential download in progress
+                if (imageLoader) {
+                    [MediaManager cancel:imageLoader];
+                }
+                // Add observers
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+                imageLoader = [MediaManager downloadPicture:_mxRoomMember.avatarUrl];
+            }
+        }
+    } else {
+        UIImage *image = [UIImage imageNamed:@"default-profile"];
+        if (image) {
+            [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
+            [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
+        }
     }
     
     self.roomMemberMID.text = _mxRoomMember.userId;
+}
+
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:_mxRoomMember.avatarUrl]) {
+            // update the image
+            UIImage* image = [MediaManager loadCachePicture:_mxRoomMember.avatarUrl];
+            if (image == nil) {
+                image = [UIImage imageNamed:@"default-profile"];
+            }
+            if (image) {
+                [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
+                [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
+            }
+            // remove the observers
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            imageLoader = nil;
+        }
+    }
 }
 
 - (void)setRoomMember:(MXRoomMember*) aRoomMember {
