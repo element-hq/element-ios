@@ -30,9 +30,9 @@
     
     self.progressView.hidden = NO;
     
-    NSString* downloadRate = [downloadStatsDict valueForKey:kMediaManagerProgressDownloadRateKey];
-    NSString* remaingTime = [downloadStatsDict valueForKey:kMediaManagerProgressRemaingTimeKey];
-    NSString* progressString = [downloadStatsDict valueForKey:kMediaManagerProgressStringKey];
+    NSString* downloadRate = [downloadStatsDict valueForKey:kMediaLoaderProgressDownloadRateKey];
+    NSString* remaingTime = [downloadStatsDict valueForKey:kMediaLoaderProgressRemaingTimeKey];
+    NSString* progressString = [downloadStatsDict valueForKey:kMediaLoaderProgressStringKey];
     
     NSMutableString* text = [[NSMutableString alloc] init];
     
@@ -52,7 +52,7 @@
     
     self.statsLabel.text = text;
     
-    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaManagerProgressRateKey];
+    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaLoaderProgressRateKey];
     
     if (progressNumber) {
         self.progressChartView.progress = progressNumber.floatValue;
@@ -98,9 +98,9 @@
     if (self.message.attachmentURL) {
         
         // check if there is a downlad in progress
-        id loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
+        MediaLoader *loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
         
-        NSDictionary *dict = [MediaManager downloadStatsDict:loader];
+        NSDictionary *dict = loader.downloadStatsDict;
         
         if (dict) {
             isHidden = NO;
@@ -127,10 +127,9 @@
 
 - (void)cancelDownload {
     // get the linked medida loader
-    id loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
-    
+    MediaLoader *loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
     if (loader) {
-        [MediaManager cancel:loader];
+        [loader cancel];
     }
     
     // ensure there is no more progress bar

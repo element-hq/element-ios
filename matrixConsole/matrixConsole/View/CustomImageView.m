@@ -421,12 +421,12 @@
     }
     
     // Check whether the image download is in progress
-    id loader = [MediaManager mediaLoaderForURL:imageURL];
+    MediaLoader* loader = [MediaManager mediaLoaderForURL:imageURL];
     if (loader) {
         // Set preview until the image is loaded
         self.image = previewImage;
         // update the progress UI with the current info
-        [self updateProgressUI:[MediaManager downloadStatsDict:loader]];
+        [self updateProgressUI:loader.downloadStatsDict];
         
         // Add observers
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
@@ -473,7 +473,7 @@
 }
 
 - (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
-    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaManagerProgressRateKey];
+    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaLoaderProgressRateKey];
     
     if (progressNumber) {
         pieChartView.progress = progressNumber.floatValue;
@@ -481,9 +481,9 @@
     }
     
     if (progressInfoLabel) {
-        NSString* downloadRate = [downloadStatsDict valueForKey:kMediaManagerProgressDownloadRateKey];
-        NSString* remaingTime = [downloadStatsDict valueForKey:kMediaManagerProgressRemaingTimeKey];
-        NSString* progressString = [downloadStatsDict valueForKey:kMediaManagerProgressStringKey];
+        NSString* downloadRate = [downloadStatsDict valueForKey:kMediaLoaderProgressDownloadRateKey];
+        NSString* remaingTime = [downloadStatsDict valueForKey:kMediaLoaderProgressRemaingTimeKey];
+        NSString* progressString = [downloadStatsDict valueForKey:kMediaLoaderProgressStringKey];
         
         NSMutableString* text = [[NSMutableString alloc] init];
         

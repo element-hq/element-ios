@@ -1063,7 +1063,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 
                                 // assume that the thumbnail is about 10% of the video
                                 // the video is about 90 %
-                                [dict setValue:[NSNumber numberWithFloat: 0.1 + (progress * 0.9)] forKey:kMediaManagerProgressRateKey];
+                                [dict setValue:[NSNumber numberWithFloat: 0.1 + (progress * 0.9)] forKey:kMediaLoaderProgressRateKey];
                                 
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
                         
@@ -1095,7 +1095,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             CGFloat progress = ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite);
             
             // assume that the thumbnail is about 10% of the video
-            [dict setValue:[NSNumber numberWithFloat: (progress * 0.1)] forKey:kMediaManagerProgressRateKey];
+            [dict setValue:[NSNumber numberWithFloat: (progress * 0.1)] forKey:kMediaLoaderProgressRateKey];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
         }];
@@ -2297,7 +2297,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // only one parameter by now
         // but assume more could be expected (like download rates, remaining time...)
         NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-        [dict setValue:[NSNumber numberWithFloat: ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite)] forKey:kMediaManagerProgressRateKey];
+        [dict setValue:[NSNumber numberWithFloat: ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite)] forKey:kMediaLoaderProgressRateKey];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
     }];
