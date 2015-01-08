@@ -197,6 +197,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)reset {
+    // Remove observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Cancel picture loader (if any)
     if (imageLoader) {
         [MediaManager cancel:imageLoader];
@@ -434,6 +436,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)updateUserPicture:(NSString *)avatar_url {
     if (currentPictureURL == nil || [currentPictureURL isEqualToString:avatar_url] == NO) {
+        // Remove any pending observers
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         // Cancel previous loader (if any)
         if (imageLoader) {
             [MediaManager cancel:imageLoader];
@@ -442,16 +446,56 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
         if (currentPictureURL) {
-            // Load user's picture
-            imageLoader = [MediaManager loadPicture:currentPictureURL success:^(UIImage *image) {
-                [self updateAvatarImage:image];
-            } failure:^(NSError *error) {
-                // Reset picture URL in order to try next time
-                currentPictureURL = nil;
-            }];
+            // Check whether the image download is in progress
+            id loader = [MediaManager mediaLoaderForURL:currentPictureURL];
+            if (loader) {
+                // Add observers
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+            } else {
+                // Retrieve the image from cache
+                UIImage* image = [MediaManager loadCachePicture:currentPictureURL];
+                if (image) {
+                    [self updateAvatarImage:image];
+                } else {
+                    // Cancel potential download in progress
+                    if (imageLoader) {
+                        [MediaManager cancel:imageLoader];
+                    }
+                    // Add observers
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+                    imageLoader = [MediaManager downloadPicture:currentPictureURL];
+                }
+            }
         } else {
             // Set placeholder
             [self updateAvatarImage:[UIImage imageNamed:@"default-profile"]];
+        }
+    }
+}
+
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:currentPictureURL]) {
+            // update the image
+            UIImage* image = [MediaManager loadCachePicture:currentPictureURL];
+            if (image == nil) {
+                image = [UIImage imageNamed:@"default-profile"];
+            }
+            [self updateAvatarImage:image];
+            
+            // remove the observers
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            imageLoader = nil;
+            
+            if ([notif.name isEqualToString:kMediaDownloadDidFailNotification]) {
+                // Reset picture URL in order to try next time
+                currentPictureURL = nil;
+            }
         }
     }
 }

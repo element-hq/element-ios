@@ -36,7 +36,7 @@ static NSString *mediaDir        = @"mediacache";
 static MediaManager *sharedMediaManager = nil;
 
 @interface MediaLoader : NSObject <NSURLConnectionDataDelegate> {
-    NSString *mediaURL;
+    
     NSString *mimeType;
     
     blockMediaManager_onMediaReady onMediaReady;
@@ -54,45 +54,14 @@ static MediaManager *sharedMediaManager = nil;
     NSTimer* progressCheckTimer;
 }
 
-+ (MediaLoader*)mediaLoaderForURL:(NSString*)url;
-
 @property (strong, nonatomic) NSMutableDictionary* downloadStatsDict;
+@property (strong, readonly)  NSString *mediaURL;
 @end
 
 #pragma mark - MediaLoader
 
 @implementation MediaLoader
-@synthesize downloadStatsDict;
-
-// find a MediaLoader
-static NSMutableDictionary* pendingMediaLoadersByURL = nil;
-
-+ (MediaLoader*)mediaLoaderForURL:(NSString*)url {
-    MediaLoader* res = nil;
-    
-    if (pendingMediaLoadersByURL && url) {
-        res = [pendingMediaLoadersByURL valueForKey:url];
-    }
-    
-    return res;
-}
-
-+ (void) setMediaLoader:(MediaLoader*)mediaLoader forURL:(NSString*)url {
-    if (!pendingMediaLoadersByURL) {
-        pendingMediaLoadersByURL = [[NSMutableDictionary alloc] init];
-    }
-    
-    // sanity check
-    if (mediaLoader && url) {
-        [pendingMediaLoadersByURL setValue:mediaLoader forKey:url];
-    }
-}
-
-+ (void) removeMediaLoaderWithUrl:(NSString*)url {
-    if (url) {
-        [pendingMediaLoadersByURL removeObjectForKey:url];
-    }
-}
+@synthesize downloadStatsDict, mediaURL;
 
 - (NSString*)validateContentURL:(NSString*)contentURL {
     // Detect matrix content url
@@ -103,41 +72,6 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
     }
     
     return contentURL;
-}
-
-
-- (void)downloadPicture:(NSString*)pictureURL
-             success:(blockMediaManager_onImageReady)success
-             failure:(blockMediaManager_onError)failure {
-    
-    [MediaLoader setMediaLoader:self forURL:pictureURL];
-    
-    // Download picture content
-    [self downloadMedia:pictureURL mimeType:@"image/jpeg" success:^(NSString *cacheFilePath) {
-        [MediaLoader removeMediaLoaderWithUrl:pictureURL];
-
-        if (success) {
-            NSData* imageContent = [NSData dataWithContentsOfFile:cacheFilePath options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
-            if (imageContent) {
-                UIImage *image = [UIImage imageWithData:imageContent];
-                if (image) {
-                    success(image);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFinishNotification object:pictureURL userInfo:nil];
-                } else {
-                    NSLog(@"ERROR: picture download failed: %@", pictureURL);
-                    if (failure){
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
-                        failure(nil);
-                    }
-                }
-            }
-        }
-    } failure:^(NSError *error) {
-        [MediaLoader removeMediaLoaderWithUrl:pictureURL];
-        failure(error);
-        NSLog(@"Failed to download image (%@): %@", pictureURL, error);
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
-    }];
 }
 
 - (void)downloadMedia:(NSString*)aMediaURL
@@ -153,8 +87,6 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
     downloadStartTime = statsStartTime = CFAbsoluteTimeGetCurrent();
     lastProgressEventTimeStamp = -1;
     
-    [MediaLoader setMediaLoader:self forURL:mediaURL];
-    
     // Start downloading
     NSURL *url = [NSURL URLWithString:[self validateContentURL:aMediaURL]];
     downloadData = [[NSMutableData alloc] init];
@@ -162,7 +94,6 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
 }
 
 - (void)cancel {
-    [MediaLoader removeMediaLoaderWithUrl:mediaURL];
     // Reset blocks
     onMediaReady = nil;
     onError = nil;
@@ -186,15 +117,9 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"ERROR: media download failed: %@, %@", error, mediaURL);
-    
-    [MediaLoader removeMediaLoaderWithUrl:mediaURL];
-    
     // send the latest known upload info
     [self progressCheckTimeout:nil];
     downloadStatsDict = nil;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
-    
     if (onError) {
         onError (error);
     }
@@ -295,8 +220,6 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    [MediaLoader removeMediaLoaderWithUrl:mediaURL];
-    
     // send the latest known upload info
     [self progressCheckTimeout:nil];
     downloadStatsDict = nil;
@@ -308,14 +231,11 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
         if (onMediaReady) {
             onMediaReady(cacheFilePath);
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFinishNotification object:mediaURL userInfo:nil];
     } else {
         NSLog(@"ERROR: media download failed: %@", mediaURL);
         if (onError){
             onError(nil);
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
     }
     
     downloadData = nil;
@@ -327,6 +247,9 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
 #pragma mark - MediaManager
 
 @implementation MediaManager
+
+// Table of mediaLoaders in progress
+static NSMutableDictionary* pendingMediaLoadersByURL = nil;
 
 + (id)sharedInstance {
     @synchronized(self) {
@@ -374,32 +297,23 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
     return resizedImage;
 }
 
-// Load a picture from the local cache or download it if it is not available yet.
-// In this second case a mediaLoader reference is returned in order to let the user cancel this action.
-+ (id)loadPicture:(NSString*)pictureURL
-          success:(blockMediaManager_onImageReady)success
-          failure:(blockMediaManager_onError)failure {
-    id ret = nil;
-    // Check cached pictures
-    UIImage *image = [MediaManager loadCachePicture:pictureURL];
-    if (image) {
-        if (success) {
-            // Reply synchronously
-            success (image);
-        }
-    }
-    else if ([pictureURL hasPrefix:kMediaManagerPrefixForDummyURL] == NO) {
++ (id)downloadPicture:(NSString*)pictureURL {
+    if ([pictureURL hasPrefix:kMediaManagerPrefixForDummyURL] == NO) {
         // Create a media loader to download picture
         MediaLoader *mediaLoader = [[MediaLoader alloc] init];
-        [mediaLoader downloadPicture:pictureURL success:success failure:failure];
-        ret = mediaLoader;
-    } else {
-        NSLog(@"Load tmp picture from cache failed: %@", pictureURL);
-        if (failure){
-            failure(nil);
-        }
+        [self setMediaLoader:mediaLoader forURL:pictureURL];
+        [mediaLoader downloadMedia:pictureURL mimeType:@"image/jpeg" success:^(NSString *cacheFilePath) {
+            [self removeMediaLoaderWithUrl:pictureURL];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFinishNotification object:pictureURL userInfo:nil];
+        } failure:^(NSError *error) {
+            [self removeMediaLoaderWithUrl:pictureURL];
+            NSLog(@"Failed to download image (%@): %@", pictureURL, error);
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
+        }];
+        return mediaLoader;
     }
-    return ret;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
+    return nil;
 }
 
 + (id)prepareMedia:(NSString *)mediaURL
@@ -429,9 +343,29 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
     return ret;
 }
 
-// try to find out a media loder from a media URL
+// try to find out a media loader from a media URL
 + (id)mediaLoaderForURL:(NSString*)url {
-    return [MediaLoader mediaLoaderForURL:url];
+    if (pendingMediaLoadersByURL && url) {
+        return [pendingMediaLoadersByURL valueForKey:url];
+    }
+    return nil;
+}
+
++ (void)setMediaLoader:(MediaLoader*)mediaLoader forURL:(NSString*)url {
+    if (!pendingMediaLoadersByURL) {
+        pendingMediaLoadersByURL = [[NSMutableDictionary alloc] init];
+    }
+    
+    // sanity check
+    if (mediaLoader && url) {
+        [pendingMediaLoadersByURL setValue:mediaLoader forKey:url];
+    }
+}
+
++ (void)removeMediaLoaderWithUrl:(NSString*)url {
+    if (url) {
+        [pendingMediaLoadersByURL removeObjectForKey:url];
+    }
 }
 
 + (NSDictionary*)downloadStatsDict:(id)mediaLoader {
@@ -440,6 +374,12 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
 
 + (void)cancel:(id)mediaLoader {
     [((MediaLoader*)mediaLoader) cancel];
+    NSString *mediaURL = ((MediaLoader*)mediaLoader).mediaURL;
+    if (mediaURL) {
+        [self removeMediaLoaderWithUrl:mediaURL];
+        NSLog(@"Image download has been cancelled (%@)", mediaURL);
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
+    }
 }
 
 + (NSString*)cacheMediaData:(NSData*)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType {

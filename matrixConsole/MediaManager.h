@@ -40,7 +40,6 @@ extern NSString *const kMediaDownloadDidFinishNotification;
 extern NSString *const kMediaDownloadDidFailNotification;
 
 // The callback blocks
-typedef void (^blockMediaManager_onImageReady)(UIImage *image);
 typedef void (^blockMediaManager_onMediaReady)(NSString *cacheFilePath);
 typedef void (^blockMediaManager_onError)(NSError *error);
 
@@ -50,15 +49,12 @@ typedef void (^blockMediaManager_onError)(NSError *error);
 
 + (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
 
-// get a picture from the local cache
-// do not start any remote requests
+// Load a picture from the local cache (Do not start any remote requests)
 + (UIImage*)loadCachePicture:(NSString*)pictureURL;
 
-// Load a picture from the local cache or download it if it is not available yet.
-// In this second case a mediaLoader reference is returned in order to let the user cancel this action.
-+ (id)loadPicture:(NSString *)pictureURL
-          success:(blockMediaManager_onImageReady)success
-          failure:(blockMediaManager_onError)failure;
+// Launch picture downloading. Return a mediaLoader reference in order to let the user cancel this action.
++ (id)downloadPicture:(NSString*)pictureURL;
+
 // Prepare a media from the local cache or download it if it is not available yet.
 // In this second case a mediaLoader reference is returned in order to let the user cancel this action.
 + (id)prepareMedia:(NSString *)mediaURL
