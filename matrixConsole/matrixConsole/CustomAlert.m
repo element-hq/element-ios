@@ -164,7 +164,10 @@
 
 - (void)dismiss:(BOOL)animated {
     if ([_alert isKindOfClass:[UIAlertController class]]) {
-        [parentViewController dismissViewControllerAnimated:animated completion:nil];
+        // only dismiss it if it is presented
+        if (parentViewController.presentedViewController == _alert) {
+            [parentViewController dismissViewControllerAnimated:animated completion:nil];
+        }
     } else if ([_alert isKindOfClass:[UIActionSheet class]]) {
         [((UIActionSheet *)_alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
     } else if ([_alert isKindOfClass:[UIAlertView class]]) {
