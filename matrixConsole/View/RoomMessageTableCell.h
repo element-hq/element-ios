@@ -51,7 +51,7 @@
 
 @interface OutgoingMessageTableCell : RoomMessageTableCell
 
--(void)startAnimating;
+-(void)startUploadAnimating;
 -(void)stopAnimating;
 @end
 

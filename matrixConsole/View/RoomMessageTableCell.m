@@ -36,7 +36,9 @@
     
     NSMutableString* text = [[NSMutableString alloc] init];
     
-    [text appendString:progressString];
+    if (progressString) {
+        [text appendString:progressString];
+    }
     
     if (remaingTime) {
         [text appendFormat:@" (%@)", remaingTime];
@@ -141,7 +143,6 @@
 @end
 
 @interface OutgoingMessageTableCell () {
-    PieChartView* pieChartView;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -153,21 +154,17 @@
     [self stopAnimating];
 }
 
--(void)startAnimating {
+-(void)startUploadAnimating {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUploadProgress:) name:kMediaUploadProgressNotification object:nil];
     
      self.activityIndicator.hidden = NO;
     [self.activityIndicator startAnimating];
     
-    [self updateUploadProgressTo:self.message.uploadProgress];
+    [self initUploadProgressTo:self.message.uploadProgress];
 }
 
 -(void)stopAnimating {
-    // remove any pie chart
-    [pieChartView removeFromSuperview];
-    pieChartView = nil;
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
     [self.activityIndicator stopAnimating];
 }
@@ -178,36 +175,20 @@
         NSString* url = notif.object;
         
         if ([url isEqualToString:self.message.thumbnailURL] || [url isEqualToString:self.message.attachmentURL]) {
-            NSNumber* progressNumber = [notif.userInfo valueForKey:kMediaManagerProgressRateKey];
-            
-            if (progressNumber) {
-                [self updateUploadProgressTo:progressNumber.floatValue];
-            }
+            [self updateProgressUI:notif.userInfo];
         }
     }
 }
-- (void) updateUploadProgressTo:(CGFloat)progress {
+- (void) initUploadProgressTo:(CGFloat)progress {
     // nothing to display
     if (progress <= 0) {
-        [pieChartView removeFromSuperview];
-        pieChartView = nil;
-        
         self.activityIndicator.hidden = NO;
     } else {
-        
-        if (!pieChartView) {
-            pieChartView = [[PieChartView alloc] init];
-            pieChartView.frame = self.activityIndicator.frame;
-            pieChartView.progress = 0;
-            pieChartView.progressColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
-            pieChartView.unprogressColor = [UIColor clearColor];
-            
-            [self.contentView addSubview:pieChartView];
-        }
-        
         self.message.uploadProgress = progress;
         self.activityIndicator.hidden = YES;
-        pieChartView.progress = progress;
+        
+        self.progressView.hidden = NO;
+        self.progressChartView.progress = progress;
     }
 }
 
