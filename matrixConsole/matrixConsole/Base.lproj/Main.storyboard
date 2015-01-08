@@ -96,15 +96,44 @@
                                                     <rect key="frame" x="531" y="10" width="61" height="40"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUK-od-5YZ" userLabel="ProgressView">
+                                                    <rect key="frame" x="422" y="-1" width="120" height="70"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFo-GV-TO9" userLabel="Progress stats">
+                                                            <rect key="frame" x="0.0" y="59" width="120" height="11"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-aQ-7qW" customClass="PieChartView">
+                                                            <rect key="frame" x="40" y="0.0" width="40" height="40"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="DnA-mx-Lyj"/>
+                                                                <constraint firstAttribute="height" constant="40" id="Z4v-m3-EOx"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="centerX" secondItem="pg4-aQ-7qW" secondAttribute="centerX" id="FQt-WU-G5b"/>
+                                                        <constraint firstAttribute="width" constant="120" id="Ftj-Ew-rWQ"/>
+                                                        <constraint firstItem="HFo-GV-TO9" firstAttribute="width" secondItem="yUK-od-5YZ" secondAttribute="width" id="Is9-Hu-QMI"/>
+                                                        <constraint firstAttribute="centerX" secondItem="HFo-GV-TO9" secondAttribute="centerX" id="KhM-B0-Lqp"/>
+                                                        <constraint firstAttribute="bottom" secondItem="HFo-GV-TO9" secondAttribute="bottom" id="dzX-eg-0Dc"/>
+                                                        <constraint firstAttribute="height" constant="70" id="epL-98-VdI"/>
+                                                        <constraint firstItem="pg4-aQ-7qW" firstAttribute="top" secondItem="yUK-od-5YZ" secondAttribute="top" id="mEw-ej-VSR"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstItem="mvK-ez-meg" firstAttribute="centerY" secondItem="yUK-od-5YZ" secondAttribute="centerY" id="3bj-yG-8A6"/>
                                                 <constraint firstAttribute="bottom" secondItem="J5R-Mh-3hV" secondAttribute="bottom" id="662-Ze-6ia"/>
                                                 <constraint firstItem="Ttt-0P-dQW" firstAttribute="leading" secondItem="egJ-aY-QVW" secondAttribute="trailing" id="6L3-Pz-zbG"/>
                                                 <constraint firstItem="ds0-yH-8Uu" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="10" id="998-YZ-TJ4"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="18" id="AeJ-P9-ueq"/>
                                                 <constraint firstItem="ds0-yH-8Uu" firstAttribute="leading" secondItem="egJ-aY-QVW" secondAttribute="trailing" id="G6w-Dp-rpr"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ttt-0P-dQW" secondAttribute="bottom" id="GAU-J5-ciT"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="yUK-od-5YZ" secondAttribute="trailing" constant="50" id="HKC-g7-1nd"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="3" id="N8f-0n-ObR"/>
                                                 <constraint firstItem="Ttt-0P-dQW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="Ptt-qa-Cg4"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="centerY" secondItem="vF4-rq-4Rn" secondAttribute="centerY" id="ROj-jF-hIQ"/>
@@ -134,6 +163,9 @@
                                             <outlet property="msgTextViewTopConstraint" destination="rJt-w3-D8g" id="6Um-o1-J08"/>
                                             <outlet property="pictureView" destination="uhu-R0-9NH" id="59O-If-m7H"/>
                                             <outlet property="playIconView" destination="vF4-rq-4Rn" id="G3R-52-GmA"/>
+                                            <outlet property="progressChartView" destination="pg4-aQ-7qW" id="pdM-fl-r2e"/>
+                                            <outlet property="progressView" destination="yUK-od-5YZ" id="Qba-ld-tjt"/>
+                                            <outlet property="statsLabel" destination="HFo-GV-TO9" id="pu0-DB-zgG"/>
                                             <outlet property="userNameLabel" destination="egJ-aY-QVW" id="IWg-7t-5Vp"/>
                                         </connections>
                                     </tableViewCell>
@@ -166,6 +198,33 @@
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Pq8-lB-cZM">
                                                     <rect key="frame" x="443" y="24" width="20" height="20"/>
                                                 </activityIndicatorView>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="own-aM-Zlf" userLabel="ProgressView">
+                                                    <rect key="frame" x="58" y="-1" width="120" height="70"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L87-yV-XGk" userLabel="Progress stats">
+                                                            <rect key="frame" x="0.0" y="59" width="120" height="11"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lTG-14-OWN" customClass="PieChartView">
+                                                            <rect key="frame" x="40" y="0.0" width="40" height="40"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="egQ-Kd-VbD"/>
+                                                                <constraint firstAttribute="height" constant="40" id="k9p-HS-FTd"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="70" id="Hg0-st-iq2"/>
+                                                        <constraint firstAttribute="bottom" secondItem="L87-yV-XGk" secondAttribute="bottom" id="XHf-06-vkY"/>
+                                                        <constraint firstAttribute="width" constant="120" id="c7o-qp-t8x"/>
+                                                        <constraint firstItem="lTG-14-OWN" firstAttribute="top" secondItem="own-aM-Zlf" secondAttribute="top" id="nNh-6v-viL"/>
+                                                        <constraint firstAttribute="centerX" secondItem="L87-yV-XGk" secondAttribute="centerX" id="vMM-Hu-UkI"/>
+                                                        <constraint firstItem="L87-yV-XGk" firstAttribute="width" secondItem="own-aM-Zlf" secondAttribute="width" id="veQ-rO-ztV"/>
+                                                        <constraint firstAttribute="centerX" secondItem="lTG-14-OWN" secondAttribute="centerX" id="weT-lI-eKE"/>
+                                                    </constraints>
+                                                </view>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ" customClass="CustomImageView">
                                                     <rect key="frame" x="552" y="5" width="40" height="40"/>
                                                     <constraints>
@@ -194,7 +253,9 @@
                                                 <constraint firstAttribute="bottom" secondItem="Glo-Wx-mP6" secondAttribute="bottom" id="23i-Iz-P2P"/>
                                                 <constraint firstItem="7qn-gi-w7s" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leading" constant="69" id="Fys-kP-JGR"/>
                                                 <constraint firstItem="Glo-Wx-mP6" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leading" constant="8" id="HbL-hO-OE7"/>
+                                                <constraint firstItem="own-aM-Zlf" firstAttribute="centerY" secondItem="QZT-V8-yqJ" secondAttribute="centerY" id="Iyj-qo-ozl"/>
                                                 <constraint firstItem="Glo-Wx-mP6" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="KAT-n3-5vl"/>
+                                                <constraint firstItem="own-aM-Zlf" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leadingMargin" constant="50" id="KFA-n1-Wj6"/>
                                                 <constraint firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" id="KPt-Vo-ntg"/>
                                                 <constraint firstItem="fNQ-DX-U8F" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leading" id="MqK-3Z-lp5"/>
                                                 <constraint firstAttribute="bottom" secondItem="fNQ-DX-U8F" secondAttribute="bottom" id="NUK-Kq-ITl"/>
@@ -224,6 +285,9 @@
                                             <outlet property="msgTextViewTopConstraint" destination="owD-KZ-snG" id="oqc-0f-05O"/>
                                             <outlet property="pictureView" destination="mks-jh-AiZ" id="qL1-Kd-oRC"/>
                                             <outlet property="playIconView" destination="0Bl-Sv-Q2H" id="VNa-J3-NuO"/>
+                                            <outlet property="progressChartView" destination="lTG-14-OWN" id="KQO-cZ-qvK"/>
+                                            <outlet property="progressView" destination="own-aM-Zlf" id="3vq-Cd-3Xu"/>
+                                            <outlet property="statsLabel" destination="L87-yV-XGk" id="7hG-Eb-zQr"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
