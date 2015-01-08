@@ -219,7 +219,7 @@
         // ask to the user to save unsaved profile updates
         // before switching to another tab
         if ([topViewController isKindOfClass:[SettingsViewController class]]) {
-            __block int nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
+            __block NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
             
             res = ![((SettingsViewController *)topViewController) checkPendingSave:^() {
                 tabBarController.selectedIndex = nextSelectedViewController;
