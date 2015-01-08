@@ -20,36 +20,32 @@
 #import "PieChartView.h"
 
 @interface CustomImageView () {
-    id imageLoader;
+    NSString *imageURL;
+    UIImage  *currentImage;
     
     // the loading view is composed with the spinner and a pie chart
     // the spinner is display until progress > 0
-    UIView* loadingView;
+    UIView *loadingView;
     UIActivityIndicatorView *waitingDownloadSpinner;
     PieChartView *pieChartView;
-    UILabel* progressInfoLabel;
+    UILabel *progressInfoLabel;
 
     // validation buttons
-    UIButton* leftButton;
-    UIButton* rightButton;
+    UIButton *leftButton;
+    UIButton *rightButton;
     
-    NSString* leftButtonTitle;
-    NSString* rightButtonTitle;
+    NSString *leftButtonTitle;
+    NSString *rightButtonTitle;
     
     blockCustomImageView_onClick leftHandler;
     blockCustomImageView_onClick rightHandler;
     
     UIView* bottomBarView;
 
-    // sub items
-    UIScrollView* scrollView;
-    UIImageView* imageView;
+    // Subviews
+    UIScrollView *scrollView;
+    UIImageView *imageView;
 
-    //
-    NSString* downloadingImageURL;
-    NSString* loadedImageURL;
-    UIImage* _image;
-    
     BOOL useFullScreen;
 }
 @end
@@ -78,13 +74,9 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self stopActivityIndicator];
-    
-    imageLoader = nil;
     
     if (loadingView) {
         [loadingView removeFromSuperview];
@@ -184,14 +176,13 @@
 #pragma mark - setters/getters
 
 - (void)setImage:(UIImage *)anImage {
-    _image = anImage;
-    
+    currentImage = anImage;
     imageView.image = anImage;
     [self initScrollZoomFactors];
 }
 
 - (UIImage*)image {
-    return _image;
+    return currentImage;
 }
 
 - (void)setFullScreen:(BOOL)fullScreen {
@@ -288,9 +279,7 @@
 - (void)removeFromSuperview {
     [super removeFromSuperview];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (useFullScreen) {
         [UIApplication sharedApplication].statusBarHidden = NO;
@@ -414,79 +403,51 @@
     _hideActivityIndicator = hideActivityIndicator;
     if (hideActivityIndicator) {
         [self stopActivityIndicator];
-    } else if (imageLoader) {
+    } else if ([MediaManager mediaLoaderForURL:imageURL]) {
         // Loading is in progress, start activity indicator
         [self startActivityIndicator];
     }
 }
 
 - (void)setImageURL:(NSString *)anImageURL withPreviewImage:(UIImage*)previewImage {
-    // Is the displayed image already the expected one ?
-    if ([anImageURL isEqualToString:loadedImageURL]) {
-        // check if the image content has not been released
-        if (self.image.size.width && self.image.size.height) {
-            [self stopActivityIndicator];
-            return;
-        }
-    }
-    loadedImageURL = nil;
-    
-    if (anImageURL && [anImageURL isEqualToString:downloadingImageURL]) {
-        // the current image is already downloading
-        // please wait....
-        // it could be triggered after a screen rotation, new message ...
-        return;
-    }
-
-    // reinit parameters
-    imageLoader = nil;
-    downloadingImageURL = nil;
-    
-    // remove any pending observers
+    // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    imageURL = anImageURL;
     
-    // preview image until the image is loaded
-    self.image = previewImage;
-    
-    // Consider provided url to update image view
-    if (anImageURL) {
+    // Check whether the image download is in progress
+    id loader = [MediaManager mediaLoaderForURL:imageURL];
+    if (loader) {
+        // Set preview until the image is loaded
+        self.image = previewImage;
+        // update the progress UI with the current info
+        [self updateProgressUI:[MediaManager downloadStatsDict:loader]];
         
-        // store the downloading media
-        downloadingImageURL = anImageURL;
-        
-        // Load picture
-        if (!_hideActivityIndicator) {
-            [self startActivityIndicator];
-        }
-        
+        // Add observers
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
-        
-        id loader = [MediaManager mediaLoaderForURL:downloadingImageURL];
-        
-        // there is no pending request to this URL
-        if (!loader) {
-            imageLoader = [MediaManager loadPicture:downloadingImageURL
-                                            success:^(UIImage *anImage) {
-                                                downloadingImageURL = nil;
-                                                [self stopActivityIndicator];
-                                                self.image = anImage;
-                                                loadedImageURL = anImageURL;
-                                                
-                                                [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-                                            }
-                                            failure:^(NSError *error) {
-                                                [self stopActivityIndicator];
-                                                downloadingImageURL = nil;
-                                                NSLog(@"Failed to download image (%@): %@", anImageURL, error);
-                                                [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-                                            }];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+    } else {
+        // Retrieve the image from cache
+        UIImage* image = [MediaManager loadCachePicture:imageURL];
+        if (image) {
+            self.image = image;
+            [self stopActivityIndicator];
         } else {
-            // update the progress UI with the current info
-            [self updateProgressUI:[MediaManager downloadStatsDict:loader]];
-            
-            // wait that the download is ended
+            // Set preview until the image is loaded
+            self.image = previewImage;
+            // Trigger image downloading
+            if (!_hideActivityIndicator) {
+                [self startActivityIndicator];
+            }
+            // Add observers
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+            [MediaManager loadPicture:imageURL
+                                            success:^(UIImage *anImage) {
+                                            }
+                                            failure:^(NSError *error) {
+                                            }];
         }
     }
 }
@@ -496,28 +457,18 @@
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
         
-        if ([url isEqualToString:downloadingImageURL]) {
+        if ([url isEqualToString:imageURL]) {
             [self stopActivityIndicator];
-            
             // update the image
-            UIImage* image = [MediaManager loadCachePicture:downloadingImageURL];
-            
+            UIImage* image = [MediaManager loadCachePicture:imageURL];
             if (image) {
                 self.image = image;
             }
-            
-            // updates the statuses
-            loadedImageURL = downloadingImageURL;
-            downloadingImageURL = nil;
-            
             // remove the observers
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
         }
     }
 }
-
 
 - (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
     NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaManagerProgressRateKey];
@@ -565,7 +516,7 @@
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
         
-        if ([url isEqualToString:downloadingImageURL]) {
+        if ([url isEqualToString:imageURL]) {
             [self updateProgressUI:notif.userInfo];
         }
     }

@@ -135,6 +135,7 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
     } failure:^(NSError *error) {
         [MediaLoader removeMediaLoaderWithUrl:pictureURL];
         failure(error);
+        NSLog(@"Failed to download image (%@): %@", pictureURL, error);
         [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:pictureURL userInfo:nil];
     }];
 }
