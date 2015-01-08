@@ -1353,6 +1353,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     
+    [cell stopProgressUI];
+    
     // Set message content
     message.maxTextViewWidth = self.messagesTableView.frame.size.width - ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW;
     CGSize contentSize = message.contentSize;
@@ -1392,6 +1394,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                               @"url" : message.attachmentURL,
                                               @"info" : message.attachmentInfo};
         }
+        
+        [cell startProgressUI];
         
         // Adjust Attachment width constant
         cell.attachViewWidthConstraint.constant = contentSize.width;
@@ -2306,7 +2310,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     
                     // the user validates the image
                     [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
-                        
                         // dismiss the image view
                         [weakSelf dismissCustomImageView];
                         

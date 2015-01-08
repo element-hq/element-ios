@@ -38,6 +38,10 @@
 
 // reference to the linked message
 @property (strong, nonatomic) RoomMessage *message;
+
+- (void)startProgressUI;
+- (void)stopProgressUI;
+
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell
