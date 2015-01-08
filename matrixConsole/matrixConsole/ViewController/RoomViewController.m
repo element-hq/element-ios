@@ -1394,13 +1394,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         frame.size.width = contentSize.width;
         frame.size.height = contentSize.height;
         cell.attachmentView.frame = frame;
-        // Fade attachments during upload
-        if (message.isUploadInProgress) {
-            [((OutgoingMessageTableCell*)cell) startAnimating];
-            cell.attachmentView.hideActivityIndicator = YES;
-        } else {
-            cell.attachmentView.hideActivityIndicator = NO;
-        }
+        
         NSString *url = message.thumbnailURL;
         if (message.messageType == RoomMessageTypeVideo) {
             cell.playIconView.hidden = NO;
@@ -1424,6 +1418,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         [cell startProgressUI];
+        
+        // wait after upload info
+        if (message.isUploadInProgress) {
+            [((OutgoingMessageTableCell*)cell) startUploadAnimating];
+            cell.attachmentView.hideActivityIndicator = YES;
+        } else {
+            cell.attachmentView.hideActivityIndicator = NO;
+        }
         
         // Adjust Attachment width constant
         cell.attachViewWidthConstraint.constant = contentSize.width;
