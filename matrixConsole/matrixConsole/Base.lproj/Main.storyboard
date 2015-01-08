@@ -99,8 +99,8 @@
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUK-od-5YZ" userLabel="ProgressView">
                                                     <rect key="frame" x="487" y="-1" width="100" height="70"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="HFo-GV-TO9" userLabel="Progress stats">
-                                                            <rect key="frame" x="0.0" y="59" width="100" height="11"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="HFo-GV-TO9" userLabel="Progress stats">
+                                                            <rect key="frame" x="0.0" y="60" width="100" height="10"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -113,6 +113,7 @@
                                                             </constraints>
                                                         </view>
                                                     </subviews>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstItem="HFo-GV-TO9" firstAttribute="leading" secondItem="yUK-od-5YZ" secondAttribute="leading" id="2Xg-Bu-iAg"/>
                                                         <constraint firstAttribute="centerX" secondItem="pg4-aQ-7qW" secondAttribute="centerX" id="FQt-WU-G5b"/>
@@ -123,6 +124,9 @@
                                                         <constraint firstItem="pg4-aQ-7qW" firstAttribute="top" secondItem="yUK-od-5YZ" secondAttribute="top" id="mEw-ej-VSR"/>
                                                         <constraint firstAttribute="trailing" secondItem="HFo-GV-TO9" secondAttribute="trailing" id="rF7-vW-wgF"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="TmC-iG-UPj" appends="YES" id="MmM-Jr-ywe"/>
+                                                    </connections>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -202,8 +206,8 @@
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="own-aM-Zlf" userLabel="ProgressView">
                                                     <rect key="frame" x="18" y="-1" width="100" height="70"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="L87-yV-XGk" userLabel="Progress stats">
-                                                            <rect key="frame" x="0.0" y="59" width="100" height="11"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="L87-yV-XGk" userLabel="Progress stats">
+                                                            <rect key="frame" x="0.0" y="60" width="100" height="10"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -216,6 +220,7 @@
                                                             </constraints>
                                                         </view>
                                                     </subviews>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstItem="L87-yV-XGk" firstAttribute="leading" secondItem="own-aM-Zlf" secondAttribute="leading" id="BFY-SA-2gW"/>
                                                         <constraint firstAttribute="height" constant="70" id="Hg0-st-iq2"/>
@@ -226,6 +231,9 @@
                                                         <constraint firstAttribute="centerX" secondItem="L87-yV-XGk" secondAttribute="centerX" id="vMM-Hu-UkI"/>
                                                         <constraint firstAttribute="centerX" secondItem="lTG-14-OWN" secondAttribute="centerX" id="weT-lI-eKE"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="bv4-jS-RnJ" appends="YES" id="ZPg-Ay-HeL"/>
+                                                    </connections>
                                                 </view>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ" customClass="CustomImageView">
                                                     <rect key="frame" x="552" y="5" width="40" height="40"/>
@@ -511,6 +519,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="TmC-iG-UPj">
+                    <connections>
+                        <action selector="onProgressLongTap:" destination="msb-ol-2LB" id="no2-Q3-7ya"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="bv4-jS-RnJ">
+                    <connections>
+                        <action selector="onProgressLongTap:" destination="msb-ol-2LB" id="8ks-us-qqh"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1595" y="75"/>
         </scene>

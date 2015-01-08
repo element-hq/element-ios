@@ -329,6 +329,34 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     return YES;
 }
 
+- (IBAction)onProgressLongTap:(UILongPressGestureRecognizer*)sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        // find out the linked uitableviewcell
+        UIView* view = sender.view;
+        
+        while(view && ![view isKindOfClass:[UITableViewCell class]]) {
+            view = view.superview;
+        }
+        
+        // if it is a RoomMessageTableCell
+        if ([view isKindOfClass:[RoomMessageTableCell class]]) {
+            __weak typeof(self) weakSelf = self;
+            
+            
+            self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"Cancel the download ?" style:CustomAlertStyleAlert];
+            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu = nil;
+            }];
+            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+               [(RoomMessageTableCell*)view cancelDownload];
+                weakSelf.actionMenu = nil;
+            }];
+            
+            [self.actionMenu showInViewController:self];
+        }
+    }
+}
+
 #pragma mark - Internal methods
 
 - (void)configureView {

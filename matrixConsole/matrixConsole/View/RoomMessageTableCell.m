@@ -21,6 +21,11 @@
 
 @implementation RoomMessageTableCell
 
+- (void)dealloc {
+    // remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
     
     self.progressView.hidden = NO;
@@ -70,6 +75,12 @@
         
         if ([url isEqualToString:self.message.attachmentURL]) {
             [self stopProgressUI];
+            
+            // the job is really over
+            if ([notif.name isEqualToString:kMediaDownloadDidFinishNotification]) {
+                // remove any pending observers
+                [[NSNotificationCenter defaultCenter] removeObserver:self];
+            }
         }
     }
 }
@@ -77,6 +88,9 @@
 - (void)startProgressUI {
     
     BOOL isHidden = YES;
+    
+    // remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // there is an attachment URL
     if (self.message.attachmentURL) {
@@ -105,10 +119,20 @@
 - (void)stopProgressUI {
     self.progressView.hidden = YES;
     
-    // remove the observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+    // do not remove the observer here
+    // the download could restart without recomposing the cell
+}
+
+- (void)cancelDownload {
+    // get the linked medida loader
+    id loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
+    
+    if (loader) {
+        [MediaManager cancel:loader];
+    }
+    
+    // ensure there is no more progress bar
+    [self stopProgressUI];
 }
 @end
 
