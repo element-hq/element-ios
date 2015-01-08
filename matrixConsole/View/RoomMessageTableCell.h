@@ -42,6 +42,7 @@
 - (void)startProgressUI;
 - (void)stopProgressUI;
 
+- (void)cancelDownload;
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell
