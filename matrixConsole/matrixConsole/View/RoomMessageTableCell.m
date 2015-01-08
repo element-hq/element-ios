@@ -20,6 +20,96 @@
 
 
 @implementation RoomMessageTableCell
+
+- (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
+    
+    self.progressView.hidden = NO;
+    
+    NSString* downloadRate = [downloadStatsDict valueForKey:kMediaManagerProgressDownloadRateKey];
+    NSString* remaingTime = [downloadStatsDict valueForKey:kMediaManagerProgressRemaingTimeKey];
+    NSString* progressString = [downloadStatsDict valueForKey:kMediaManagerProgressStringKey];
+    
+    NSMutableString* text = [[NSMutableString alloc] init];
+    
+    [text appendString:progressString];
+    
+    if (remaingTime) {
+        [text appendFormat:@" (%@)", remaingTime];
+    }
+    
+    [text appendString:@"\n "];
+    
+    if (downloadRate) {
+        [text appendFormat:@"%@", downloadRate];
+    }
+    
+    self.statsLabel.text = text;
+    
+    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaManagerProgressRateKey];
+    
+    if (progressNumber) {
+        self.progressChartView.progress = progressNumber.floatValue;
+    }
+}
+
+- (void)onMediaDownloadProgress:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:self.message.attachmentURL]) {
+            [self updateProgressUI:notif.userInfo];
+        }
+    }
+}
+
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:self.message.attachmentURL]) {
+            [self stopProgressUI];
+        }
+    }
+}
+
+- (void)startProgressUI {
+    
+    BOOL isHidden = YES;
+    
+    // there is an attachment URL
+    if (self.message.attachmentURL) {
+        
+        // check if there is a downlad in progress
+        id loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
+        
+        NSDictionary *dict = [MediaManager downloadStatsDict:loader];
+        
+        if (dict) {
+            isHidden = NO;
+            
+            // defines the text to display
+            [self updateProgressUI:dict];
+        }
+        
+        // anyway listen to the progress event
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
+    }
+    
+    self.progressView.hidden = isHidden;
+}
+
+- (void)stopProgressUI {
+    self.progressView.hidden = YES;
+    
+    // remove the observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+}
 @end
 
 
