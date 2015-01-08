@@ -97,16 +97,16 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUK-od-5YZ" userLabel="ProgressView">
-                                                    <rect key="frame" x="422" y="-1" width="120" height="70"/>
+                                                    <rect key="frame" x="487" y="-1" width="100" height="70"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFo-GV-TO9" userLabel="Progress stats">
-                                                            <rect key="frame" x="0.0" y="59" width="120" height="11"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="HFo-GV-TO9" userLabel="Progress stats">
+                                                            <rect key="frame" x="0.0" y="59" width="100" height="11"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-aQ-7qW" customClass="PieChartView">
-                                                            <rect key="frame" x="40" y="0.0" width="40" height="40"/>
+                                                            <rect key="frame" x="30" y="0.0" width="40" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="DnA-mx-Lyj"/>
                                                                 <constraint firstAttribute="height" constant="40" id="Z4v-m3-EOx"/>
@@ -114,13 +114,14 @@
                                                         </view>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="HFo-GV-TO9" firstAttribute="leading" secondItem="yUK-od-5YZ" secondAttribute="leading" id="2Xg-Bu-iAg"/>
                                                         <constraint firstAttribute="centerX" secondItem="pg4-aQ-7qW" secondAttribute="centerX" id="FQt-WU-G5b"/>
-                                                        <constraint firstAttribute="width" constant="120" id="Ftj-Ew-rWQ"/>
-                                                        <constraint firstItem="HFo-GV-TO9" firstAttribute="width" secondItem="yUK-od-5YZ" secondAttribute="width" id="Is9-Hu-QMI"/>
+                                                        <constraint firstAttribute="width" constant="100" id="Ftj-Ew-rWQ"/>
                                                         <constraint firstAttribute="centerX" secondItem="HFo-GV-TO9" secondAttribute="centerX" id="KhM-B0-Lqp"/>
                                                         <constraint firstAttribute="bottom" secondItem="HFo-GV-TO9" secondAttribute="bottom" id="dzX-eg-0Dc"/>
                                                         <constraint firstAttribute="height" constant="70" id="epL-98-VdI"/>
                                                         <constraint firstItem="pg4-aQ-7qW" firstAttribute="top" secondItem="yUK-od-5YZ" secondAttribute="top" id="mEw-ej-VSR"/>
+                                                        <constraint firstAttribute="trailing" secondItem="HFo-GV-TO9" secondAttribute="trailing" id="rF7-vW-wgF"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -133,7 +134,7 @@
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="18" id="AeJ-P9-ueq"/>
                                                 <constraint firstItem="ds0-yH-8Uu" firstAttribute="leading" secondItem="egJ-aY-QVW" secondAttribute="trailing" id="G6w-Dp-rpr"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ttt-0P-dQW" secondAttribute="bottom" id="GAU-J5-ciT"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="yUK-od-5YZ" secondAttribute="trailing" constant="50" id="HKC-g7-1nd"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="yUK-od-5YZ" secondAttribute="trailing" constant="5" id="HKC-g7-1nd"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="3" id="N8f-0n-ObR"/>
                                                 <constraint firstItem="Ttt-0P-dQW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="Ptt-qa-Cg4"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="centerY" secondItem="vF4-rq-4Rn" secondAttribute="centerY" id="ROj-jF-hIQ"/>
@@ -199,16 +200,16 @@
                                                     <rect key="frame" x="443" y="24" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="own-aM-Zlf" userLabel="ProgressView">
-                                                    <rect key="frame" x="58" y="-1" width="120" height="70"/>
+                                                    <rect key="frame" x="18" y="-1" width="100" height="70"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L87-yV-XGk" userLabel="Progress stats">
-                                                            <rect key="frame" x="0.0" y="59" width="120" height="11"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="L87-yV-XGk" userLabel="Progress stats">
+                                                            <rect key="frame" x="0.0" y="59" width="100" height="11"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lTG-14-OWN" customClass="PieChartView">
-                                                            <rect key="frame" x="40" y="0.0" width="40" height="40"/>
+                                                            <rect key="frame" x="30" y="0.0" width="40" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="egQ-Kd-VbD"/>
                                                                 <constraint firstAttribute="height" constant="40" id="k9p-HS-FTd"/>
@@ -216,12 +217,13 @@
                                                         </view>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="L87-yV-XGk" firstAttribute="leading" secondItem="own-aM-Zlf" secondAttribute="leading" id="BFY-SA-2gW"/>
                                                         <constraint firstAttribute="height" constant="70" id="Hg0-st-iq2"/>
                                                         <constraint firstAttribute="bottom" secondItem="L87-yV-XGk" secondAttribute="bottom" id="XHf-06-vkY"/>
-                                                        <constraint firstAttribute="width" constant="120" id="c7o-qp-t8x"/>
+                                                        <constraint firstAttribute="trailing" secondItem="L87-yV-XGk" secondAttribute="trailing" id="bpR-p0-f7M"/>
+                                                        <constraint firstAttribute="width" constant="100" id="c7o-qp-t8x"/>
                                                         <constraint firstItem="lTG-14-OWN" firstAttribute="top" secondItem="own-aM-Zlf" secondAttribute="top" id="nNh-6v-viL"/>
                                                         <constraint firstAttribute="centerX" secondItem="L87-yV-XGk" secondAttribute="centerX" id="vMM-Hu-UkI"/>
-                                                        <constraint firstItem="L87-yV-XGk" firstAttribute="width" secondItem="own-aM-Zlf" secondAttribute="width" id="veQ-rO-ztV"/>
                                                         <constraint firstAttribute="centerX" secondItem="lTG-14-OWN" secondAttribute="centerX" id="weT-lI-eKE"/>
                                                     </constraints>
                                                 </view>
@@ -255,7 +257,7 @@
                                                 <constraint firstItem="Glo-Wx-mP6" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leading" constant="8" id="HbL-hO-OE7"/>
                                                 <constraint firstItem="own-aM-Zlf" firstAttribute="centerY" secondItem="QZT-V8-yqJ" secondAttribute="centerY" id="Iyj-qo-ozl"/>
                                                 <constraint firstItem="Glo-Wx-mP6" firstAttribute="top" secondItem="5tf-BC-9Ed" secondAttribute="top" constant="10" id="KAT-n3-5vl"/>
-                                                <constraint firstItem="own-aM-Zlf" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leadingMargin" constant="50" id="KFA-n1-Wj6"/>
+                                                <constraint firstItem="own-aM-Zlf" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leadingMargin" constant="10" id="KFA-n1-Wj6"/>
                                                 <constraint firstAttribute="bottom" secondItem="7qn-gi-w7s" secondAttribute="bottom" id="KPt-Vo-ntg"/>
                                                 <constraint firstItem="fNQ-DX-U8F" firstAttribute="leading" secondItem="5tf-BC-9Ed" secondAttribute="leading" id="MqK-3Z-lp5"/>
                                                 <constraint firstAttribute="bottom" secondItem="fNQ-DX-U8F" secondAttribute="bottom" id="NUK-Kq-ITl"/>
