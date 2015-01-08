@@ -15,33 +15,14 @@
  */
 
 #import <AVFoundation/AVFoundation.h>
-#import <UIKit/UIKit.h>
+#import "MediaLoader.h"
 
 extern NSString *const kMediaManagerPrefixForDummyURL;
-
-extern NSString *const kMediaManagerProgressRateKey;
-extern NSString *const kMediaManagerProgressStringKey;
-extern NSString *const kMediaManagerProgressRemaingTimeKey;
-extern NSString *const kMediaManagerProgressDownloadRateKey;
-
-// provide the download/upload progress
-// object: URL
-// userInfo: kMediaManagerProgressRateKey : progress value nested in a NSNumber (range 0->1)
-//         : kMediaManagerProgressStringKey : progress string XXX KB / XXX MB" (optional)
-//         : kMediaManagerProgressRemaingTimeKey : remaining time string "XX s left" (optional)
-//         : kMediaManagerProgressDownloadRateKey : string like XX MB/s (optional)
-
-extern NSString *const kMediaDownloadProgressNotification;
-extern NSString *const kMediaUploadProgressNotification;
 
 // notify when a media download is finished
 // object: URL
 extern NSString *const kMediaDownloadDidFinishNotification;
 extern NSString *const kMediaDownloadDidFailNotification;
-
-// The callback blocks
-typedef void (^blockMediaManager_onMediaReady)(NSString *cacheFilePath);
-typedef void (^blockMediaManager_onError)(NSError *error);
 
 @interface MediaManager : NSObject
 
@@ -53,23 +34,17 @@ typedef void (^blockMediaManager_onError)(NSError *error);
 + (UIImage*)loadCachePicture:(NSString*)pictureURL;
 
 // Launch picture downloading. Return a mediaLoader reference in order to let the user cancel this action.
-+ (id)downloadPicture:(NSString*)pictureURL;
++ (MediaLoader*)downloadPicture:(NSString*)pictureURL;
 
 // Prepare a media from the local cache or download it if it is not available yet.
 // In this second case a mediaLoader reference is returned in order to let the user cancel this action.
-+ (id)prepareMedia:(NSString *)mediaURL
++ (MediaLoader*)prepareMedia:(NSString *)mediaURL
           mimeType:(NSString *)mimeType
-           success:(blockMediaManager_onMediaReady)success
-        failure:(blockMediaManager_onError)failure;
+           success:(blockMediaLoader_onMediaReady)success
+        failure:(blockMediaLoader_onError)failure;
 
-// try to find out a media loder from a media URL
-+ (id)mediaLoaderForURL:(NSString*)url;
-
-// same dictionary as the kMediaDownloadProgressNotification one
-+ (NSDictionary*)downloadStatsDict:(id)mediaLoader;
-
-// cancel a media loader
-+ (void)cancel:(id)mediaLoader;
+// Check whether a media loader is already running for this media url. Return loader if any
++ (MediaLoader*)mediaLoaderForURL:(NSString*)url;
 
 + (NSString *)cacheMediaData:(NSData *)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType;
 

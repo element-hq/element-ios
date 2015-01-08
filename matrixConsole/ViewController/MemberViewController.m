@@ -21,7 +21,7 @@
 #import "MediaManager.h"
 
 @interface MemberViewController () {
-    id imageLoader;
+    MediaLoader* imageLoader;
     id membersListener;
     
     NSMutableArray* buttonsTitles;
@@ -55,7 +55,7 @@
     // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (imageLoader) {
-        [MediaManager cancel:imageLoader];
+        [imageLoader cancel];
         imageLoader = nil;
     }
     
@@ -142,7 +142,7 @@
     // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (imageLoader) {
-        [MediaManager cancel:imageLoader];
+        [imageLoader cancel];
         imageLoader = nil;
     }
     
@@ -179,7 +179,7 @@
             } else {
                 // Cancel potential download in progress
                 if (imageLoader) {
-                    [MediaManager cancel:imageLoader];
+                    [imageLoader cancel];
                 }
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];

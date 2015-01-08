@@ -40,7 +40,7 @@ NSString* const kConfigurationFormatText = @"Home server: %@\r\nIdentity server:
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
 @interface SettingsViewController () {
-    id imageLoader;
+    MediaLoader *imageLoader;
     
     NSString *currentDisplayName;
     NSString *currentPictureURL;
@@ -118,7 +118,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Dispose of any resources that can be recreated.
     
     if (imageLoader) {
-        [MediaManager cancel:imageLoader];
+        [imageLoader cancel];
         imageLoader = nil;
     }
 }
@@ -201,7 +201,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Cancel picture loader (if any)
     if (imageLoader) {
-        [MediaManager cancel:imageLoader];
+        [imageLoader cancel];
         imageLoader = nil;
     }
     
@@ -440,7 +440,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         // Cancel previous loader (if any)
         if (imageLoader) {
-            [MediaManager cancel:imageLoader];
+            [imageLoader cancel];
             imageLoader = nil;
         }
         
@@ -460,7 +460,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 } else {
                     // Cancel potential download in progress
                     if (imageLoader) {
-                        [MediaManager cancel:imageLoader];
+                        [imageLoader cancel];
                     }
                     // Add observers
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
