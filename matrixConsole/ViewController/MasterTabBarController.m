@@ -124,6 +124,10 @@
     }
 }
 
+- (BOOL)isPresentingMediaPicker {
+    return nil != mediaPicker;
+}
+
 - (void)presentMediaPicker:(UIImagePickerController*)aMediaPicker {
     [self dismissMediaPicker];
     [self presentViewController:aMediaPicker animated:YES completion:^{

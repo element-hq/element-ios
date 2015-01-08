@@ -304,7 +304,8 @@ static MatrixHandler *sharedHandler = nil;
                     [localNotification setAlertBody:[self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES]];
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 } else if (![event.userId isEqualToString:self.userId]
-                           && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]) {
+                           && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]
+                           && ![[AppDelegate theDelegate].masterTabBarController isPresentingMediaPicker]) {
                     // The sender is not the user and the concerned room is not presently visible,
                     // we display a notification by removing existing one (if any)
                     if (self.mxNotification) {
