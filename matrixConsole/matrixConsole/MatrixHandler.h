@@ -49,6 +49,8 @@ typedef enum : NSUInteger {
 @property (nonatomic,readonly) BOOL isResumeDone;
 // return the MX cache size in bytes
 @property (nonatomic,readonly) NSUInteger MXCacheSize;
+// return the sum of the caches (MX cache + media cache ...)
+@property (nonatomic,readonly) NSUInteger cachesSize;
 
 + (MatrixHandler *)sharedHandler;
 

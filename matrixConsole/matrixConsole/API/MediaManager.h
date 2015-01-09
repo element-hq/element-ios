@@ -50,6 +50,7 @@ extern NSString *const kMediaDownloadDidFailNotification;
 
 + (NSString *)cacheMediaData:(NSData *)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType;
 
++ (NSUInteger)cacheSize;
 + (void)clearCache;
 
 @end

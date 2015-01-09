@@ -658,6 +658,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if (self.tableView == aTableView) {
         // tap on clear application cache
         if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
+            // clear caches
             [[MatrixHandler sharedHandler] forceInitialSync:YES];
         }
         
@@ -807,7 +808,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
             
-            cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].MXCacheSize countStyle:NSByteCountFormatterCountStyleFile]];
+            cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
  ;
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;

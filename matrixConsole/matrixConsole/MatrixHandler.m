@@ -22,6 +22,8 @@
 #import "MXFileStore.h"
 #import "MXTools.h"
 
+#import "MediaManager.h"
+
 NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
 
 static MatrixHandler *sharedHandler = nil;
@@ -280,6 +282,9 @@ static MatrixHandler *sharedHandler = nil;
         [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
         
         if (clearCache) {
+            // clear the media cache
+            [MediaManager clearCache];
+            
             [_mxFileStore deleteAllData];
         }
         
@@ -787,13 +792,17 @@ static MatrixHandler *sharedHandler = nil;
     return nil;
 }
 
--(NSUInteger) MXCacheSize {
+- (NSUInteger) MXCacheSize {
     
     if (self.mxFileStore) {
         return self.mxFileStore.diskUsage;
     }
     
     return 0;
+}
+
+- (NSUInteger) cachesSize {
+    return self.MXCacheSize + [MediaManager cacheSize];
 }
 
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
