@@ -27,7 +27,6 @@
 }
 
 - (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
-    
     self.progressView.hidden = NO;
     
     NSString* downloadRate = [downloadStatsDict valueForKey:kMediaLoaderProgressDownloadRateKey];
@@ -40,14 +39,12 @@
         [text appendString:progressString];
     }
     
-    if (remaingTime) {
-        [text appendFormat:@" (%@)", remaingTime];
+    if (downloadRate) {
+        [text appendFormat:@"\n%@", downloadRate];
     }
     
-    [text appendString:@"\n "];
-    
-    if (downloadRate) {
-        [text appendFormat:@"%@", downloadRate];
+    if (remaingTime) {
+        [text appendFormat:@"\n%@", remaingTime];
     }
     
     self.statsLabel.text = text;
@@ -171,6 +168,7 @@
     }
 }
 
+
 -(void)stopAnimating {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
     [self.activityIndicator stopAnimating];
@@ -182,7 +180,7 @@
         NSString* url = notif.object;
         
         if ([url isEqualToString:self.message.thumbnailURL] || [url isEqualToString:self.message.attachmentURL]) {
-
+            self.activityIndicator.hidden = YES;
             [self updateProgressUI:notif.userInfo];
             
             // the upload is ended
