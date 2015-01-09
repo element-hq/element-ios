@@ -19,6 +19,8 @@
 #import "MatrixHandler.h"
 #import "AppSettings.h"
 
+NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
+
 static NSAttributedString *messageSeparator = nil;
 
 @interface RoomMessage() {
@@ -89,6 +91,8 @@ static NSAttributedString *messageSeparator = nil;
                 // Not supported yet
                 // _messageType = RoomMessageTypeLocation;
             }
+            // Retriew local preview url (if any)
+            _previewURL = event.content[kRoomMessageLocalPreviewKey];
         }
         
         // Set first component of the current message
