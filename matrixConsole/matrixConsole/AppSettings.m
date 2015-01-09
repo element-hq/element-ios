@@ -44,6 +44,7 @@ static AppSettings *sharedSettings = nil;
 
 - (void)reset {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"enableInAppNotifications"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"specificWordsToAlertOn"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayAllEvents"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedMessages"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
@@ -60,6 +61,26 @@ static AppSettings *sharedSettings = nil;
 - (void)setEnableInAppNotifications:(BOOL)notifications {
     [[MatrixHandler sharedHandler] enableInAppNotifications:notifications];
     [[NSUserDefaults standardUserDefaults] setBool:notifications forKey:@"enableInAppNotifications"];
+}
+
+- (NSArray*)specificWordsToAlertOn {
+    NSArray* res = [[NSUserDefaults standardUserDefaults] objectForKey:@"specificWordsToAlertOn"];
+    
+    // avoid returning nil
+    if (!res) {
+        res = [[NSArray alloc] init];
+    }
+    
+    return res;
+}
+
+- (void)setSpecificWordsToAlertOn:(NSArray*)words {
+    
+    if (!words.count) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"specificWordsToAlertOn"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:words forKey:@"specificWordsToAlertOn"];
+    }
 }
 
 - (BOOL)displayAllEvents {

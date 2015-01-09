@@ -77,4 +77,7 @@ typedef enum : NSUInteger {
 // provide a non empty display name
 - (NSString*) getMXRoomMemberDisplayName:(MXRoomMember*)roomMember;
 
+// return YES if the text contains a bing word
+- (BOOL)containsBingWord:(NSString*)text;
+
 @end

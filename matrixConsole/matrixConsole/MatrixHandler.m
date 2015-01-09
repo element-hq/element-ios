@@ -306,29 +306,36 @@ static MatrixHandler *sharedHandler = nil;
                 } else if (![event.userId isEqualToString:self.userId]
                            && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]
                            && ![[AppDelegate theDelegate].masterTabBarController isPresentingMediaPicker]) {
-                    // The sender is not the user and the concerned room is not presently visible,
-                    // we display a notification by removing existing one (if any)
-                    if (self.mxNotification) {
-                        [self.mxNotification dismiss:NO];
+                    
+                    
+                    NSString* messageText = [self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
+                    
+                    // display the alert only the text contains an expected word
+                    if ((0 == [AppSettings sharedSettings].specificWordsToAlertOn.count) ||[self containsBingWord:messageText]) {
+                        // The sender is not the user and the concerned room is not presently visible,
+                        // we display a notification by removing existing one (if any)
+                        if (self.mxNotification) {
+                            [self.mxNotification dismiss:NO];
+                        }
+                        
+                        self.mxNotification = [[CustomAlert alloc] initWithTitle:roomState.displayname
+                                                                         message:messageText
+                                                                           style:CustomAlertStyleAlert];
+                        self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
+                                                                                                  style:CustomAlertActionStyleDefault
+                                                                                                handler:^(CustomAlert *alert) {
+                                                                                                    [MatrixHandler sharedHandler].mxNotification = nil;
+                                                                                                }];
+                        [self.mxNotification addActionWithTitle:@"View"
+                                                          style:CustomAlertActionStyleDefault
+                                                        handler:^(CustomAlert *alert) {
+                                                            [MatrixHandler sharedHandler].mxNotification = nil;
+                                                            // Show the room
+                                                            [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
+                                                        }];
+                        
+                        [self.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
                     }
-                    
-                    self.mxNotification = [[CustomAlert alloc] initWithTitle:roomState.displayname
-                                                                     message:[self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES]
-                                                                       style:CustomAlertStyleAlert];
-                    self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
-                                                                                              style:CustomAlertActionStyleDefault
-                                                                                            handler:^(CustomAlert *alert) {
-                                                                                                [MatrixHandler sharedHandler].mxNotification = nil;
-                                                                                            }];
-                    [self.mxNotification addActionWithTitle:@"View"
-                                                      style:CustomAlertActionStyleDefault
-                                                    handler:^(CustomAlert *alert) {
-                                                        [MatrixHandler sharedHandler].mxNotification = nil;
-                                                        // Show the room
-                                                        [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
-                                                    }];
-                    
-                    [self.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
                 }
             }
         }];
@@ -821,6 +828,44 @@ static MatrixHandler *sharedHandler = nil;
 
 - (NSString*)getMXRoomMemberDisplayName:(MXRoomMember*)roomMember {
     return roomMember.displayname.length == 0 ? roomMember.userId : roomMember.displayname;
+}
+
+// return YES if the text contains a bing word
+- (BOOL)containsBingWord:(NSString*)text {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    NSMutableArray* wordsList = [[AppSettings sharedSettings].specificWordsToAlertOn mutableCopy];
+    
+    // add the display name
+    if (mxHandler.mxSession.myUser.displayname.length) {
+        [wordsList addObject:mxHandler.mxSession.myUser.displayname];
+    }
+    
+    // and the user identifiers
+    if (mxHandler.localPartFromUserId.length) {
+        [wordsList addObject:mxHandler.localPartFromUserId];
+    }
+    
+    if (wordsList.count > 0) {
+        NSMutableString* pattern = [[NSMutableString alloc] init];
+        
+        [pattern appendString:@"("];
+        
+        for(NSString* word in wordsList) {
+            // check it is a regex
+            if ([pattern hasPrefix:@"\\b"] && [pattern hasSuffix:@"\\b"]) {
+                [pattern appendFormat:@"%@|", word];
+            } else {
+                [pattern appendFormat:@"\\b%@\\b|", word];
+            }
+        }
+        
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%@)", [pattern substringToIndex:pattern.length - 1]] options:NSRegularExpressionCaseInsensitive error:nil];
+        if ([regex numberOfMatchesInString:text options:0 range:NSMakeRange(0, [text length])]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end
