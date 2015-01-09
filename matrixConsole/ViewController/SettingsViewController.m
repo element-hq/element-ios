@@ -66,6 +66,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // do not hide the spinner while switching between viewcontroller
     BOOL isAvatarUploading;
     BOOL isDisplayNameUploading;
+
+    //
+    UITextField* wordsListTextField;
+    
+    // dynamic rows in the notification settings
+    int enableInAppRowIndex;
+    int setInAppWordRowIndex;
+    int enablePushNotificationdRowIndex;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -546,6 +554,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
     } else if (sender == inAppNotificationsSwitch) {
         [AppSettings sharedSettings].enableInAppNotifications = inAppNotificationsSwitch.on;
+        [self.tableView reloadData];
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
     } else if (sender == unsupportedMsgSwitch) {
@@ -567,16 +576,70 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     _saveUserInfoButton.enabled = isDisplayNameUpdated || isAvatarUpdated;
 }
 
+// remove trailing spaces
+- (NSString*)removeUselessSpaceChars:(NSString*)text {
+    NSMutableString* cleanedText = [text mutableCopy];
+    
+    while ([cleanedText hasPrefix:@" "]) {
+        cleanedText = [[cleanedText substringFromIndex:1] mutableCopy];
+    }
+    
+    while ([cleanedText hasSuffix:@" "]) {
+        cleanedText = [[cleanedText substringToIndex:cleanedText.length-1] mutableCopy];
+    }
+    
+    return cleanedText;
+}
+
+// split the words list provided by the user
+// check if they are valid, not duplicated
+- (void)manageWordsList {
+    NSArray* words = [wordsListTextField.text componentsSeparatedByString:@","];
+    NSMutableArray* fiteredWords = [[NSMutableArray alloc] init];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+    // theses both items are implicitly checked
+    NSString* displayname = nil;
+    if (mxHandler.mxSession.myUser.displayname.length) {
+        displayname = mxHandler.mxSession.myUser.displayname;
+    }
+    
+    NSString* userID = nil;
+    if (mxHandler.localPartFromUserId.length) {
+        userID = mxHandler.localPartFromUserId;
+    }
+    
+    // checked word by word
+    for(NSString* word in words) {
+        NSString* cleanWord = [self removeUselessSpaceChars:word];
+        
+        // if they are valid (not null, not implicit and does not already added
+        if ((cleanWord.length > 0) && ![cleanWord isEqualToString:displayname] && ![cleanWord isEqualToString:userID] && ([fiteredWords indexOfObject:cleanWord] == NSNotFound)) {
+            [fiteredWords addObject:cleanWord];
+        }
+    }
+    
+    [[AppSettings sharedSettings] setSpecificWordsToAlertOn:fiteredWords];
+    [self refreshWordsList];
+}
+
 - (void)dismissKeyboard {
-    // Hide the keyboard
-    [_userDisplayName resignFirstResponder];
-    [self manageSaveChangeButton];
+    if ([_userDisplayName isFirstResponder]) {
+        // Hide the keyboard
+        [_userDisplayName resignFirstResponder];
+        [self manageSaveChangeButton];
+    }
+    
+    if ([wordsListTextField isFirstResponder]) {
+        [self manageWordsList];
+        [wordsListTextField resignFirstResponder];
+    }
 }
 
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField {
-    if (_userDisplayName == textField) {
+    if ((_userDisplayName == textField) || (wordsListTextField == textField)) {
         // "Done" key has been pressed
         [self dismissKeyboard];
     }
@@ -610,10 +673,21 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        if ([APNSHandler sharedHandler].isAvailable) {
-            return 2;
+        
+        enableInAppRowIndex = setInAppWordRowIndex = enablePushNotificationdRowIndex = -1;
+        
+        int count = 0;
+        enableInAppRowIndex = count++;
+        
+        if ([[AppSettings sharedSettings] enableInAppNotifications]) {
+            setInAppWordRowIndex = count++;
         }
-        return 1;
+        
+        if ([APNSHandler sharedHandler].isAvailable) {
+            enablePushNotificationdRowIndex = count++;
+        }
+        
+        return count;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
         return SETTINGS_SECTION_ROOMS_INDEX_COUNT;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
@@ -627,6 +701,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+        if (indexPath.row == setInAppWordRowIndex) {
+            return 110;
+        }
+
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         return 44;
@@ -674,21 +752,53 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     return sectionHeader;
 }
 
+- (void)refreshWordsList {
+    NSMutableString* wordsList = [[NSMutableString alloc] init];
+    NSArray* patterns = [AppSettings sharedSettings].specificWordsToAlertOn;
+    
+    for(NSString* string in patterns) {
+        [wordsList appendFormat:@"%@,", string];
+    }
+    
+    if (wordsList.length > 0) {
+        wordsListTextField.text = [wordsList substringToIndex:wordsList.length - 1];
+    }
+    else {
+        wordsListTextField.text = nil;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
     
     if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        SettingsTableCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
-        if (indexPath.row == 0) {
-            notificationsCell.settingLabel.text = @"Enable In-App notifications";
-            notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
-            inAppNotificationsSwitch = notificationsCell.settingSwitch;
-        } else {
-            notificationsCell.settingLabel.text = @"Enable push notifications";
-            notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
-            apnsNotificationsSwitch = notificationsCell.settingSwitch;
+        
+        if (indexPath.row == setInAppWordRowIndex) {
+            SettingsCellWithLabelAndTextField* settingsCellWithLabelAndTextField = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndTextField" forIndexPath:indexPath];
+            
+            settingsCellWithLabelAndTextField.settingTextField.delegate = self;
+            wordsListTextField = settingsCellWithLabelAndTextField.settingTextField;
+            
+            // update the text only if it is not the first responder
+            if (!wordsListTextField.isFirstResponder) {
+                [self refreshWordsList];
+            }
+        
+            cell = settingsCellWithLabelAndTextField;
         }
-        cell = notificationsCell;
+        else {
+            SettingsTableCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            if (indexPath.row == enableInAppRowIndex) {
+                notificationsCell.settingLabel.text = @"Enable In-App notifications";
+                notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
+                inAppNotificationsSwitch = notificationsCell.settingSwitch;
+            } else /* SETTINGS_SECTION_NOTIFICATIONS_PUSH_NOTIFICATION_INDEX */{
+                notificationsCell.settingLabel.text = @"Enable push notifications";
+                notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
+                apnsNotificationsSwitch = notificationsCell.settingSwitch;
+            }
+            cell = notificationsCell;
+        }
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
@@ -757,5 +867,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)dismissMediaPicker {
     [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
 }
+
+# pragma mark - UITextViewDelegate
 
 @end

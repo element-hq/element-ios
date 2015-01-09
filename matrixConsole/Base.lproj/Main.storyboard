@@ -1093,6 +1093,45 @@
                                     <outlet property="settingSwitch" destination="l1h-g3-1Cr" id="trh-zz-dn2"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCellWithLabelAndTextField" rowHeight="120" id="bfI-Qq-oqO" customClass="SettingsCellWithLabelAndTextField">
+                                <rect key="frame" x="140" y="28" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bfI-Qq-oqO" id="l4g-kK-2cb">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If blank, all messages will trigger an alert.Your username &amp; display name always alerts." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="584" translatesAutoresizingMaskIntoConstraints="NO" id="5ty-Sv-0p1">
+                                            <rect key="frame" x="8" y="8" width="584" height="44"/>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="h8R-br-xLz"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter words separated by , (support regex)" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="am8-vZ-baW">
+                                            <rect key="frame" x="8" y="67" width="584" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="JGd-Xp-gSv"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="5ty-Sv-0p1" secondAttribute="trailing" id="9PC-6S-hN1"/>
+                                        <constraint firstItem="5ty-Sv-0p1" firstAttribute="leading" secondItem="l4g-kK-2cb" secondAttribute="leadingMargin" id="XTN-cr-Spa"/>
+                                        <constraint firstItem="5ty-Sv-0p1" firstAttribute="top" secondItem="l4g-kK-2cb" secondAttribute="topMargin" id="aUK-x5-GC1"/>
+                                        <constraint firstItem="am8-vZ-baW" firstAttribute="leading" secondItem="l4g-kK-2cb" secondAttribute="leadingMargin" id="gC5-aJ-Bas"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="am8-vZ-baW" secondAttribute="trailing" id="iRM-be-l7W"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="am8-vZ-baW" secondAttribute="bottom" id="jJZ-aQ-Ce2"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="settingLabel" destination="5ty-Sv-0p1" id="iWd-G2-b3e"/>
+                                    <outlet property="settingTextField" destination="am8-vZ-baW" id="Wnw-CQ-Pe5"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithTextView" id="YFJ-c6-8tp" customClass="SettingsTableCellWithTextView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
@@ -1114,9 +1153,6 @@
                                         <constraint firstItem="SAI-hV-Jai" firstAttribute="leading" secondItem="A3V-Y7-p1i" secondAttribute="leading" id="LTO-yi-5ts"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="settingTextView" destination="SAI-hV-Jai" id="UL1-hb-UbE"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1137,7 +1173,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKJ-22-Asy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="875" y="841"/>
+            <point key="canvasLocation" x="875" y="840"/>
         </scene>
         <!--SettingsNav-->
         <scene sceneID="b0q-mf-7ii">
