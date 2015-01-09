@@ -143,28 +143,8 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         
         NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:downloadData.length countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:expectedSize countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:progressString forKey:kMediaLoaderProgressStringKey];
-        
-        NSMutableString* remaingTimeStr = [[NSMutableString alloc] init];
-        
-        if (dataRemainingTime < 1) {
-            [remaingTimeStr appendString:@"< 1s"];
-        } else if (dataRemainingTime < 60)
-        {
-            [remaingTimeStr appendFormat:@"%ds", (int)dataRemainingTime];
-        }
-        else if (dataRemainingTime < 3600)
-        {
-            [remaingTimeStr appendFormat:@"%dm %2ds", (int)(dataRemainingTime/60), ((int)dataRemainingTime) % 60];
-        }
-        else if (dataRemainingTime >= 3600)
-        {
-            [remaingTimeStr appendFormat:@"%dh %dm %ds", (int)(dataRemainingTime / 3600),
-             ((int)(dataRemainingTime) % 3600) / 60,
-             (int)(dataRemainingTime) % 60];
-        }
-        [remaingTimeStr appendString:@" left"];
-        
-        [dict setValue:remaingTimeStr forKey:kMediaLoaderProgressRemaingTimeKey];
+                
+        [dict setValue:[MediaManager formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
         
         NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:meanRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];

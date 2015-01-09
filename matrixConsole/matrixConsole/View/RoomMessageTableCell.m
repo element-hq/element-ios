@@ -17,7 +17,7 @@
 #import "RoomMessageTableCell.h"
 #import "MediaManager.h"
 #import "PieChartView.h"
-
+#import "UploadManager.h"
 
 @implementation RoomMessageTableCell
 
@@ -160,7 +160,15 @@
      self.activityIndicator.hidden = NO;
     [self.activityIndicator startAnimating];
     
-    [self initUploadProgressTo:self.message.uploadProgress];
+    NSDictionary* uploadDict = [UploadManager statsInfoForURL:self.message.attachmentURL];
+    
+    if (uploadDict) {
+        self.activityIndicator.hidden = YES;
+        [self updateProgressUI:uploadDict];
+    } else {
+        self.activityIndicator.hidden = NO;
+        self.progressView.hidden = YES;
+    }
 }
 
 -(void)stopAnimating {
@@ -174,20 +182,14 @@
         NSString* url = notif.object;
         
         if ([url isEqualToString:self.message.thumbnailURL] || [url isEqualToString:self.message.attachmentURL]) {
+
             [self updateProgressUI:notif.userInfo];
+            
+            // the upload is ended
+            if (self.progressChartView.progress == 1.0) {
+                self.progressView.hidden = YES;
+            }
         }
-    }
-}
-- (void) initUploadProgressTo:(CGFloat)progress {
-    // nothing to display
-    if (progress <= 0) {
-        self.activityIndicator.hidden = NO;
-    } else {
-        self.message.uploadProgress = progress;
-        self.activityIndicator.hidden = YES;
-        
-        self.progressView.hidden = NO;
-        self.progressChartView.progress = progress;
     }
 }
 
