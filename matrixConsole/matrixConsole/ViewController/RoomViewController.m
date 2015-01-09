@@ -1399,8 +1399,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         } else {
             cell.playIconView.hidden = YES;
         }
-        
-        [cell.attachmentView setImageURL:url withPreviewImage:nil];
+        UIImage *preview = nil;
+        if (message.previewURL) {
+            preview = [MediaManager loadCachePicture:message.previewURL];
+        }
+        [cell.attachmentView setImageURL:url withPreviewImage:preview];
 
         if (url && message.attachmentURL && message.attachmentInfo) {
             // Add tap recognizer to open attachment
@@ -1825,12 +1828,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Check whether a temporary event has already been added for local echo (this happens on attachments)
         RoomMessage *message = nil;
         if (localEvent) {
-            // Update the temporary event with the actual msg content
+            // Look for this local event in messages
             NSUInteger index = messages.count;
             while (index--) {
                 message = [messages objectAtIndex:index];
                 if ([message containsEventId:localEvent.eventId]) {
+                    // Update the local event with the actual msg content
                     localEvent.content = msgContent;
+                    if (message.thumbnailURL) {
+                        // Reuse the current thumbnailURL as preview
+                        [localEvent.content setValue:message.thumbnailURL forKey:kRoomMessageLocalPreviewKey];
+                    }
+                    
                     if (message.messageType == RoomMessageTypeText) {
                         [message removeEvent:localEvent.eventId];
                         [message addEvent:localEvent withRoomState:self.mxRoom.state];
@@ -1859,7 +1868,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         // Send message to the room
-        [self.mxRoom sendMessageOfType:msgType content:localEvent.content success:^(NSString *eventId) {
+        [self.mxRoom sendMessageOfType:msgType content:msgContent success:^(NSString *eventId) {
             // Keep the temporary id of this local event
             NSString *tmpLocalEventId = localEvent.eventId;
             
