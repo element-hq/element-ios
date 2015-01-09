@@ -1428,7 +1428,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Adjust Attachment width constant
         cell.attachViewWidthConstraint.constant = contentSize.width;
     } else {
-        [cell.attachmentView setImageURL:nil withPreviewImage:nil]; // Cancel potential attachment loading
         cell.attachmentView.hidden = YES;
         cell.playIconView.hidden = YES;
         cell.messageTextView.hidden = NO;
