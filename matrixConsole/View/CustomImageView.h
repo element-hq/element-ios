@@ -16,8 +16,8 @@
 
 #import <UIKit/UIKit.h>
 
-// Customize UIImageView in order to let UIImageView handle automatically remote url
-@interface CustomImageView : UIView<UIScrollViewDelegate>
+// Customize UIView in order to display image defined with remote url. Zooming inside the image (Stretching) is supported.
+@interface CustomImageView : UIView <UIScrollViewDelegate>
 
 typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
 

@@ -87,6 +87,10 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
             CGSize imageSize = CGSizeMake(width, height);
             UIGraphicsBeginImageContext(imageSize);
             
+//            // set to the top quality
+//            CGContextRef context = UIGraphicsGetCurrentContext();
+//            CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+            
             CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
             thumbnailRect.origin = CGPointMake(0.0,0.0);
             thumbnailRect.size.width  = imageSize.width;
@@ -171,16 +175,6 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
         [pendingMediaLoadersByURL removeObjectForKey:url];
     }
 }
-
-//+ (void)cancel:(id)mediaLoader {
-//    [((MediaLoader*)mediaLoader) cancel];
-//    NSString *mediaURL = ((MediaLoader*)mediaLoader).mediaURL;
-//    if (mediaURL) {
-//        [self removeMediaLoaderWithUrl:mediaURL];
-//        
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
-//    }
-//}
 
 + (NSString*)cacheMediaData:(NSData*)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType {
     NSString* filename = [MediaManager getCacheFileNameFor:mediaURL mimeType:mimeType];
