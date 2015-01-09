@@ -29,6 +29,7 @@
 #import "AppSettings.h"
 
 #import "MediaManager.h"
+#import "UploadManager.h"
 
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS 20000
 
@@ -988,11 +989,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Create the local event displayed during uploading
         MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:thumbnail];
         
-        __block NSString* dummyURL = [localEvent.content valueForKey:@"url"];
+        NSString* dummyURL = [localEvent.content valueForKey:@"url"];
         
         // Upload thumbnail
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         [mxHandler.mxRestClient uploadContent:thumbnailData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
+            
+            [UploadManager removeURL:dummyURL];
+            
             // Prepare content of attached video
             NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
             NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
@@ -1047,26 +1051,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         if (videoData.length < ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE) {
                             [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
                             [mxHandler.mxRestClient uploadContent:videoData mimeType:videoInfo[@"mimetype"] timeout:30 success:^(NSString *url) {
+                                [UploadManager removeURL:dummyURL];
                                 [videoContent setValue:url forKey:@"url"];
                                 [videoContent setValue:videoInfo forKey:@"info"];
                                 [videoContent setValue:@"Video" forKey:@"body"];
                                 [self sendMessage:videoContent withLocalEvent:localEvent];
                             } failure:^(NSError *error) {
+                                [UploadManager removeURL:dummyURL];
                                 [self handleError:error forLocalEvent:localEvent];
                             } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                                
-                                // only one parameter by now
-                                // but assume more could be expected (like download rates, remaining time...)
-                                NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-                                
-                                CGFloat progress = ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite);
-                                
-                                // assume that the thumbnail is about 10% of the video
-                                // the video is about 90 %
-                                [dict setValue:[NSNumber numberWithFloat: 0.1 + (progress * 0.9)] forKey:kMediaLoaderProgressRateKey];
-                                
-                                [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
-                        
+                                [UploadManager onUploadProgress:dummyURL bytesWritten:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite initialRange:0.1 range:0.9];
                             }];
                         } else {
                             NSLog(@"Video is too large");
@@ -1079,6 +1073,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
                 else {
                     NSLog(@"Video export failed: %d", (int)[exportSession status]);
+                    [UploadManager removeURL:dummyURL];
                     // remove tmp file (if any)
                     [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
                     [self handleError:nil forLocalEvent:localEvent];
@@ -1086,18 +1081,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } failure:^(NSError *error) {
             NSLog(@"Video thumbnail upload failed");
+            [UploadManager removeURL:dummyURL];
             [self handleError:error forLocalEvent:localEvent];
         } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-            // only one parameter by now
-            // but assume more could be expected (like download rates, remaining time...)
-            NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-            
-            CGFloat progress = ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite);
-            
-            // assume that the thumbnail is about 10% of the video
-            [dict setValue:[NSNumber numberWithFloat: (progress * 0.1)] forKey:kMediaLoaderProgressRateKey];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
+            [UploadManager onUploadProgress:dummyURL bytesWritten:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite initialRange:0 range:0.1];
         }];
     }
     
@@ -2279,11 +2266,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
     [imageInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
     
-    __block NSString* dummyURL = [localEvent.content valueForKey:@"url"];
+    NSString* dummyURL = [localEvent.content valueForKey:@"url"];
     
     // Upload image
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     [mxHandler.mxRestClient uploadContent:imageData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
+        [UploadManager removeURL:dummyURL];
+
         NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
         [imageMessage setValue:@"m.image" forKey:@"msgtype"];
         [imageMessage setValue:url forKey:@"url"];
@@ -2292,14 +2281,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Send message for this attachment
         [self sendMessage:imageMessage withLocalEvent:localEvent];
     } failure:^(NSError *error) {
+        [UploadManager removeURL:dummyURL];        
         [self handleError:error forLocalEvent:localEvent];
     } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        // only one parameter by now
-        // but assume more could be expected (like download rates, remaining time...)
-        NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-        [dict setValue:[NSNumber numberWithFloat: ((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite)] forKey:kMediaLoaderProgressRateKey];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:dummyURL userInfo:dict];
+        [UploadManager onUploadProgress:dummyURL bytesWritten:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite initialRange:0 range:1.0];
     }];
 }
 

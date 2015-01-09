@@ -28,6 +28,8 @@ extern NSString *const kMediaDownloadDidFailNotification;
 
 + (id)sharedInstance;
 
++ (NSString*)formatSecondsInterval:(CGFloat)secondsInterval;
+
 + (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
 
 // Load a picture from the local cache (Do not start any remote requests)
