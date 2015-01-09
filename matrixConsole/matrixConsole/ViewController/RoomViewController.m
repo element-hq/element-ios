@@ -343,17 +343,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         if ([view isKindOfClass:[RoomMessageTableCell class]]) {
             __weak typeof(self) weakSelf = self;
             
+            NSString* url = ((RoomMessageTableCell*)view).message.attachmentURL;
+            MediaLoader *loader = [MediaManager mediaLoaderForURL:url];
             
-            self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"Cancel the download ?" style:CustomAlertStyleAlert];
-            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-                weakSelf.actionMenu = nil;
-            }];
-            self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
-               [(RoomMessageTableCell*)view cancelDownload];
-                weakSelf.actionMenu = nil;
-            }];
-            
-            [self.actionMenu showInViewController:self];
+            // offer to cancel a download only if there is a pending one
+            if (loader) {
+                self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"Cancel the download ?" style:CustomAlertStyleAlert];
+                self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    weakSelf.actionMenu = nil;
+                }];
+                self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    
+                    // get again the loader, the cell could have been reused.
+                    MediaLoader *loader = [MediaManager mediaLoaderForURL:url];
+                    if (loader) {
+                        [loader cancel];
+                    }
+
+                    weakSelf.actionMenu = nil;
+                }];
+                
+                [self.actionMenu showInViewController:self];
+            }
         }
     }
 }
@@ -1428,6 +1439,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         cell.messageTextView.attributedText = message.attributedTextMessage;
     }
+    
+    // add a long tap gesture on the progressView
+    // manage it in the storyboard does not work properly
+    // -> The gesture view is always the same i.e. the latest composed one.
+    while (cell.progressView.gestureRecognizers.count) {
+        [cell.progressView removeGestureRecognizer:cell.progressView.gestureRecognizers[0]];
+    }
+
+    // only the download can be cancelled
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onProgressLongTap:)];
+    [cell.progressView addGestureRecognizer:longPress];
     
     // Handle timestamp display
     if (dateFormatter) {
