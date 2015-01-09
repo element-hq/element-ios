@@ -207,6 +207,45 @@ static NSMutableDictionary* pendingMediaLoadersByURL = nil;
     mediaCachePath = nil;
 }
 
+// recursive method to compute the folder content size
++ (long long)folderSize:(NSString *)folderPath
+{
+    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:nil];
+    NSEnumerator *contentsEnumurator = [contents objectEnumerator];
+    
+    NSString *file;
+    unsigned long long int folderSize = 0;
+    
+    while (file = [contentsEnumurator nextObject])
+    {
+        NSString* itemPath = [folderPath stringByAppendingPathComponent:file];
+        
+        NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:itemPath error:nil];
+        
+        // is directory
+        if ([[fileAttributes objectForKey:NSFileType] isEqual:NSFileTypeDirectory])
+        {
+            folderSize += [MediaManager folderSize:itemPath];
+        }
+        else
+        {
+            folderSize += [[fileAttributes objectForKey:NSFileSize] intValue];
+        }
+    }
+    
+    return folderSize;
+}
+
++ (NSUInteger)cacheSize {
+    
+    if (!mediaCachePath) {
+        // compute the path
+        mediaCachePath = [MediaManager getCachePath];
+    }
+    
+    return (NSUInteger)[MediaManager folderSize:mediaCachePath];
+}
+
 #pragma mark - Cache handling
 
 + (UIImage*)loadCachePicture:(NSString*)pictureURL {
