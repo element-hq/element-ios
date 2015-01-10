@@ -1145,12 +1145,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.view layoutIfNeeded];
         
     } completion:^(BOOL finished) {
-        // be warned when the keyboard frame is updated
-        [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
-        [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
-        
-        isKeyboardObserver = YES;
     }];
+    
+    // be warned when the keyboard frame is updated
+    // we don't this put this in completion otherwise we may race and leak observers if we
+    // remove the observer (e.g. in onKeyboardWillHide) before the animation has completed.
+    // fixes https://github.com/matrix-org/matrix-ios-sdk/issues/4
+    
+    [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
+    [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
+    isKeyboardObserver = YES;
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
