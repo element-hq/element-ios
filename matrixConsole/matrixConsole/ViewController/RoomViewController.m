@@ -1343,7 +1343,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
     }
     // Remove potential dateTime (or unsent) label(s)
-    if (cell.dateTimeLabelContainer.constraints.count) {
+    if (cell.dateTimeLabelContainer.subviews.count > 0) {
         if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
             [NSLayoutConstraint deactivateConstraints:cell.dateTimeLabelContainer.constraints];
         } else {
