@@ -18,7 +18,7 @@
 #import "MatrixHandler.h"
 
 NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
-NSString *const kFailedEventId = @"failedEventId";
+NSString *const kFailedEventIdPrefix = @"failedEventId-";
 
 @implementation RoomMessageComponent
 
@@ -51,7 +51,7 @@ NSString *const kFailedEventId = @"failedEventId";
             BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
                 _style = RoomMessageComponentStyleUnsupported;
-            } else if ([_eventId hasPrefix:kFailedEventId]) {
+            } else if ([_eventId hasPrefix:kFailedEventIdPrefix]) {
                 _style = RoomMessageComponentStyleFailed;
             } else if (isIncomingMsg && !_isStateEvent && [mxHandler containsBingWord:_textMessage]) {
                 _style = RoomMessageComponentStyleBing;
