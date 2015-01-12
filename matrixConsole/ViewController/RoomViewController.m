@@ -2112,16 +2112,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [tmpCachedAttachments addObject:cacheFilePath];
     }
     
-    // Define a unique upload id (reuse the local event id)
-    [localEvent.content setValue:localEvent.eventId forKey:kRoomMessageUploadIdKey];
-    
     // Prepare event content
     NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
     [info setValue:@"image/jpeg" forKey:@"mimetype"];
     [info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
     [info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
     [info setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
-    localEvent.content = @{@"msgtype":@"m.image", @"url":dummyURL, @"info":info};
+    localEvent.content = @{@"msgtype":@"m.image", @"url":dummyURL, @"info":info, kRoomMessageUploadIdKey:localEvent.eventId};
+    // Note: we have defined here an upload id with the local event id
     
     // Add this new event
     [self addLocalEchoEvent:localEvent];
