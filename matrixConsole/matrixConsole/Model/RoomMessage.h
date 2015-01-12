@@ -21,6 +21,7 @@
 #define ROOM_MESSAGE_TEXTVIEW_MARGIN 5
 
 extern NSString *const kRoomMessageLocalPreviewKey;
+extern NSString *const kRoomMessageUploadIdKey;
 
 typedef enum : NSUInteger {
     // Text type
@@ -61,8 +62,9 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSDictionary *attachmentInfo;
 @property (nonatomic) NSString *thumbnailURL;
 @property (nonatomic) NSDictionary *thumbnailInfo;
-@property (nonatomic) CGFloat uploadProgress;
 @property (nonatomic) NSString *previewURL;
+@property (nonatomic) NSString *uploadId;
+@property (nonatomic) CGFloat uploadProgress;
 
 // Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
 // In this case, some messages are temporary hidden

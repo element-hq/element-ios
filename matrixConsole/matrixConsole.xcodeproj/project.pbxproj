@@ -10,7 +10,6 @@
 		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
-		71E94A7A1A5FB6D3009F52E5 /* UploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A791A5FB6D3009F52E5 /* UploadManager.m */; };
 		D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */; };
 		F00B5DB91A1B9BCE00EA1C8D /* CustomImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B5DB81A1B9BCE00EA1C8D /* CustomImageView.m */; };
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
@@ -74,8 +73,6 @@
 		71DB9DC01A495B6400504A09 /* MemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberViewController.m; sourceTree = "<group>"; };
 		71E94A751A5C4020009F52E5 /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
 		71E94A761A5C4020009F52E5 /* PieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartView.m; sourceTree = "<group>"; };
-		71E94A781A5FB6D3009F52E5 /* UploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadManager.h; sourceTree = "<group>"; };
-		71E94A791A5FB6D3009F52E5 /* UploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadManager.m; sourceTree = "<group>"; };
 		8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-matrixConsole.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7EC7E45C718BF2BBCE0CF48 /* Pods-matrixConsole.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.debug.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.debug.xcconfig"; sourceTree = "<group>"; };
 		F00B5DB71A1B9BCE00EA1C8D /* CustomImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomImageView.h; sourceTree = "<group>"; };
@@ -215,8 +212,6 @@
 				F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */,
 				F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */,
 				F021FBF11A5F1F8E00EA3AE6 /* MediaManager.m */,
-				71E94A781A5FB6D3009F52E5 /* UploadManager.h */,
-				71E94A791A5FB6D3009F52E5 /* UploadManager.m */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -516,7 +511,6 @@
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
-				71E94A7A1A5FB6D3009F52E5 /* UploadManager.m in Sources */,
 				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
 				F04EE51F1A3A01D500C64930 /* APNSHandler.m in Sources */,
 				F03C47111A02952800E445AB /* CustomAlert.m in Sources */,

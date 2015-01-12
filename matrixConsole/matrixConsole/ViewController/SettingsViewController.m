@@ -368,22 +368,18 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (uploadedPictureURL == nil) {
         // Upload picture
-        [mxHandler.mxRestClient uploadContent:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5)
-                                     mimeType:@"image/jpeg"
-                                      timeout:30
-                                      success:^(NSString *url) {
-                                          // Store uploaded picture url and trigger picture saving
-                                          uploadedPictureURL = url;
-                                          [self savePicture];
-                                      } failure:^(NSError *error) {
-                                          NSLog(@"Upload image failed: %@", error);
-                                          [self stopUserInfoUploadAnimation];
-                                          _userPicture.enabled = YES;
-                                          isAvatarUploading = NO;
-                                          [self handleErrorDuringPictureSaving:error];
-                                      } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                                          // need to display the progress ?
-                                      }];
+        MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0];
+        [uploader uploadData:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
+            // Store uploaded picture url and trigger picture saving
+            uploadedPictureURL = url;
+            [self savePicture];
+        } failure:^(NSError *error) {
+            NSLog(@"Upload image failed: %@", error);
+            [self stopUserInfoUploadAnimation];
+            _userPicture.enabled = YES;
+            isAvatarUploading = NO;
+            [self handleErrorDuringPictureSaving:error];
+        }];
     } else {
         [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
                                      success:^{
@@ -473,7 +469,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     // Add observers
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    imageLoader = [MediaManager downloadMedia:currentPictureURL mimeType:@"image/jpeg"];
+                    imageLoader = [MediaManager downloadMediaFromURL:currentPictureURL withType:@"image/jpeg"];
                 }
             }
         } else {

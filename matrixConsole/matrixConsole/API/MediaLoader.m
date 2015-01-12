@@ -28,7 +28,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 @implementation MediaLoader
 
-@synthesize downloadStatsDict;
+@synthesize statisticsDict;
 
 - (NSString*)validateContentURL:(NSString*)contentURL {
     // Detect matrix content url
@@ -41,14 +41,42 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     return contentURL;
 }
 
+- (void)cancel {
+    // Cancel potential connection
+    if (downloadConnection) {
+        NSLog(@"Image download has been cancelled (%@)", mediaURL);
+        if (onError){
+            onError(nil);
+        }
+        // Reset blocks
+        onSuccess = nil;
+        onError = nil;
+        [downloadConnection cancel];
+        downloadConnection = nil;
+        downloadData = nil;
+    }
+    else {
+        // Reset blocks
+        onSuccess = nil;
+        onError = nil;
+    }
+    statisticsDict = nil;
+}
+
+- (void)dealloc {
+    [self cancel];
+}
+
+#pragma mark - Download
+
 - (void)downloadMedia:(NSString*)aMediaURL
              mimeType:(NSString *)aMimeType
-                success:(blockMediaLoader_onMediaReady)success
-                failure:(blockMediaLoader_onError)failure {
+              success:(blockMediaLoader_onSuccess)success
+              failure:(blockMediaLoader_onError)failure {
     // Report provided params
     mediaURL = aMediaURL;
     mimeType = aMimeType;
-    onMediaReady = success;
+    onSuccess = success;
     onError = failure;
     
     downloadStartTime = statsStartTime = CFAbsoluteTimeGetCurrent();
@@ -60,33 +88,6 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
 
-- (void)cancel {
-    // Cancel potential connection
-    if (downloadConnection) {
-        NSLog(@"Image download has been cancelled (%@)", mediaURL);
-        if (onError){
-            onError(nil);
-        }
-        // Reset blocks
-        onMediaReady = nil;
-        onError = nil;
-        [downloadConnection cancel];
-        downloadConnection = nil;
-        downloadData = nil;
-    }
-    else {
-        // Reset blocks
-        onMediaReady = nil;
-        onError = nil;
-    }
-}
-
-- (void)dealloc {
-    [self cancel];
-}
-
-#pragma mark -
-
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     expectedSize = response.expectedContentLength;
 }
@@ -95,7 +96,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     NSLog(@"ERROR: media download failed: %@, %@", error, mediaURL);
     // send the latest known upload info
     [self progressCheckTimeout:nil];
-    downloadStatsDict = nil;
+    statisticsDict = nil;
     if (onError) {
         onError (error);
     }
@@ -150,7 +151,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:meanRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];
         
-        downloadStatsDict = dict;
+        statisticsDict = dict;
         
         // after 0.1s, resend the progress info
         // the upload can be stuck
@@ -160,16 +161,16 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         // trigger the event only each 0.1s to avoid send to many events
         if ((lastProgressEventTimeStamp == -1) || ((currentTime - lastProgressEventTimeStamp) > 0.1)) {
             lastProgressEventTimeStamp = currentTime;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:downloadStatsDict];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:statisticsDict];
         }
     }
 }
 
 - (IBAction)progressCheckTimeout:(id)sender {
     // remove the bitrate -> can be invalid
-    [downloadStatsDict removeObjectForKey:kMediaLoaderProgressDownloadRateKey];
+    [statisticsDict removeObjectForKey:kMediaLoaderProgressDownloadRateKey];
         
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:downloadStatsDict];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:statisticsDict];
     [progressCheckTimer invalidate];
     progressCheckTimer = nil;
 }
@@ -177,14 +178,14 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     // send the latest known upload info
     [self progressCheckTimeout:nil];
-    downloadStatsDict = nil;
+    statisticsDict = nil;
     
     if (downloadData.length) {
         // Cache the downloaded data
         NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL andType:mimeType];
         // Call registered block
-        if (onMediaReady) {
-            onMediaReady(cacheFilePath);
+        if (onSuccess) {
+            onSuccess(cacheFilePath);
         }
     } else {
         NSLog(@"ERROR: media download failed: %@", mediaURL);
@@ -195,6 +196,67 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     
     downloadData = nil;
     downloadConnection = nil;
+}
+
+#pragma mark - Upload
+
+- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange {
+    if (self = [super init]) {
+        uploadId = anUploadId;
+        initialRange = anInitialRange;
+        range = aRange;
+    }
+    return self;
+}
+
+- (void)uploadData:(NSData *)data mimeType:(NSString *)aMimeType success:(blockMediaLoader_onSuccess)success failure:(blockMediaLoader_onError)failure {
+    mimeType = aMimeType;
+    
+    statsStartTime = CFAbsoluteTimeGetCurrent();
+    
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    [mxHandler.mxRestClient uploadContent:data mimeType:mimeType timeout:30 success:success failure:failure uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        [self updateUploadProgressWithBytesWritten:bytesWritten totalBytesWritten:totalBytesWritten andTotalBytesExpectedToWrite:totalBytesExpectedToWrite];
+    }];
+    
+}
+
+- (void)updateUploadProgressWithBytesWritten:(NSUInteger)bytesWritten totalBytesWritten:(long long)totalBytesWritten andTotalBytesExpectedToWrite:(long long)totalBytesExpectedToWrite {
+    CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
+    if (!statisticsDict) {
+        statisticsDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    CGFloat progressRate = initialRange + (((float)totalBytesWritten) /  ((float)totalBytesExpectedToWrite) * range);
+    
+    [statisticsDict setValue:[NSNumber numberWithFloat:progressRate] forKey:kMediaLoaderProgressRateKey];
+    
+    CGFloat dataRate = 0;
+    if (currentTime != statsStartTime)
+    {
+        dataRate = bytesWritten / 1024.0 / (currentTime - statsStartTime);
+    }
+    else
+    {
+        dataRate = bytesWritten / 1024.0 / 0.001;
+    }
+    statsStartTime = currentTime;
+    
+    CGFloat dataRemainingTime = 0;
+    if (0 != dataRate)
+    {
+        dataRemainingTime = (totalBytesExpectedToWrite - totalBytesWritten)/ 1024.0 / dataRate;
+    }
+    
+    NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:totalBytesWritten countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:totalBytesExpectedToWrite countStyle:NSByteCountFormatterCountStyleFile]];
+    
+    [statisticsDict setValue:progressString forKey:kMediaLoaderProgressStringKey];
+    [statisticsDict setValue:[ConsoleTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+    
+    NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:dataRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
+    [statisticsDict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMediaUploadProgressNotification object:uploadId userInfo:statisticsDict];
 }
 
 @end

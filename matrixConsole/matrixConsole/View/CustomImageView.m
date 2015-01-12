@@ -426,7 +426,7 @@
         // Set preview until the image is loaded
         self.image = previewImage;
         // update the progress UI with the current info
-        [self updateProgressUI:loader.downloadStatsDict];
+        [self updateProgressUI:loader.statisticsDict];
         
         // Add observers
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
@@ -449,7 +449,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-            [MediaManager downloadMedia:imageURL mimeType:@"image/jpeg"];
+            [MediaManager downloadMediaFromURL:imageURL withType:@"image/jpeg"];
         }
     }
 }
