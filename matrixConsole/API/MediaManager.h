@@ -28,28 +28,17 @@ extern NSString *const kMediaDownloadDidFailNotification;
 
 + (id)sharedInstance;
 
-+ (NSString*)formatSecondsInterval:(CGFloat)secondsInterval;
-
-+ (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
+// Launch data download from the provided URL. Return a mediaLoader reference in order to let the user cancel this action.
++ (MediaLoader*)downloadMedia:(NSString*)mediaURL mimeType:(NSString *)mimeType;
+// Check whether a download is already running for this media url. Return loader if any
++ (MediaLoader*)existingDownloaderForURL:(NSString*)url;
 
 // Load a picture from the local cache (Do not start any remote requests)
-+ (UIImage*)loadCachePicture:(NSString*)pictureURL;
-
-// Launch picture downloading. Return a mediaLoader reference in order to let the user cancel this action.
-+ (MediaLoader*)downloadPicture:(NSString*)pictureURL;
-
-// Prepare a media from the local cache or download it if it is not available yet.
-// In this second case a mediaLoader reference is returned in order to let the user cancel this action.
-+ (MediaLoader*)prepareMedia:(NSString *)mediaURL
-          mimeType:(NSString *)mimeType
-           success:(blockMediaLoader_onMediaReady)success
-        failure:(blockMediaLoader_onError)failure;
-
-// Check whether a media loader is already running for this media url. Return loader if any
-+ (MediaLoader*)mediaLoaderForURL:(NSString*)url;
-
-+ (NSString *)cacheMediaData:(NSData *)mediaData forURL:(NSString *)mediaURL mimeType:(NSString *)mimeType;
-
++ (UIImage*)loadCachePictureForURL:(NSString*)pictureURL;
+// Store in cache the provided data for the media URL, return the path of the resulting file
++ (NSString*)cacheMediaData:(NSData *)mediaData forURL:(NSString *)mediaURL andType:(NSString *)mimeType;
+// Return the cache path deduced from media URL and type
++ (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType;
 + (NSUInteger)cacheSize;
 + (void)clearCache;
 

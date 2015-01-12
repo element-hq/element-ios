@@ -30,6 +30,7 @@
 
 #import "MediaManager.h"
 #import "UploadManager.h"
+#import "ConsoleTools.h"
 
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS 20000
 
@@ -78,6 +79,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSString *AVAudioSessionCategory;
     MPMoviePlayerController *videoPlayer;
     MPMoviePlayerController *tmpVideoPlayer;
+    NSString *selectedVideoURL;
+    NSString *selectedVideoCachePath;
     
     // used to trap the slide to close the keyboard
     UIView* inputAccessoryView;
@@ -344,7 +347,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             __weak typeof(self) weakSelf = self;
             
             NSString* url = ((RoomMessageTableCell*)view).message.attachmentURL;
-            MediaLoader *loader = [MediaManager mediaLoaderForURL:url];
+            MediaLoader *loader = [MediaManager existingDownloaderForURL:url];
             
             // offer to cancel a download only if there is a pending one
             if (loader) {
@@ -355,7 +358,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     
                     // get again the loader, the cell could have been reused.
-                    MediaLoader *loader = [MediaManager mediaLoaderForURL:url];
+                    MediaLoader *loader = [MediaManager existingDownloaderForURL:url];
                     if (loader) {
                         [loader cancel];
                     }
@@ -915,22 +918,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                          selector:@selector(moviePlayerWillExitFullscreen:)
                                                              name:MPMoviePlayerWillExitFullscreenNotification
                                                            object:videoPlayer];
-                [MediaManager prepareMedia:url mimeType:mimetype success:^(NSString *cacheFilePath) {
-                    if (cacheFilePath) {
-                        if (tmpCachedAttachments == nil) {
-                            tmpCachedAttachments = [NSMutableArray array];
-                        }
-                        if ([tmpCachedAttachments indexOfObject:cacheFilePath]) {
-                            [tmpCachedAttachments addObject:cacheFilePath];
-                        }
-                    }
-                    videoPlayer.contentURL = [NSURL fileURLWithPath:cacheFilePath];
+                selectedVideoURL = url;
+                selectedVideoCachePath = [MediaManager cachePathForMediaURL:selectedVideoURL andType:mimetype];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:selectedVideoCachePath]) {
+                    videoPlayer.contentURL = [NSURL fileURLWithPath:selectedVideoCachePath];
                     [videoPlayer play];
-                } failure:^(NSError *error) {
-                    [self hideAttachmentView];
-                    //Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
+                } else {
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+                    [MediaManager downloadMedia:selectedVideoURL mimeType:mimetype];
+                }
             }
         }
     } else if (msgtype == RoomMessageTypeAudio) {
@@ -938,9 +935,32 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        if ([url isEqualToString:selectedVideoURL]) {
+            // remove the observers
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:selectedVideoCachePath]) {
+                videoPlayer.contentURL = [NSURL fileURLWithPath:selectedVideoCachePath];
+                [videoPlayer play];
+            } else {
+                NSLog(@"Video Download failed"); // TODO we should notify user
+                [self hideAttachmentView];
+            }
+        }
+    }
+}
+
 - (void)hideAttachmentView {
+    selectedVideoURL = nil;
+    selectedVideoCachePath = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerWillExitFullscreenNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
     
     [self dismissCustomImageView];
     
@@ -989,7 +1009,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (videoThumbnail && selectedVideo) {
         // Prepare video thumbnail description
         NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
-        UIImage *thumbnail = [MediaManager resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
+        UIImage *thumbnail = [ConsoleTools resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
         NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
         [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
         [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.width] forKey:@"w"];
@@ -1405,7 +1425,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         UIImage *preview = nil;
         if (message.previewURL) {
-            preview = [MediaManager loadCachePicture:message.previewURL];
+            preview = [MediaManager loadCachePictureForURL:message.previewURL];
         }
         [cell.attachmentView setImageURL:url withPreviewImage:preview];
 
@@ -2010,7 +2030,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // We store temporarily the image in cache, use the localId to build temporary url
     NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEvent.eventId];
     NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:dummyURL mimeType:@"image/jpeg"];
+    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:dummyURL andType:@"image/jpeg"];
     if (cacheFilePath) {
         if (tmpCachedAttachments == nil) {
             tmpCachedAttachments = [NSMutableArray array];

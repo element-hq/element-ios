@@ -165,14 +165,14 @@
     
     if (_mxRoomMember.avatarUrl) {
         // Check whether the image download is in progress
-        id loader = [MediaManager mediaLoaderForURL:_mxRoomMember.avatarUrl];
+        id loader = [MediaManager existingDownloaderForURL:_mxRoomMember.avatarUrl];
         if (loader) {
             // Add observers
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
         } else {
             // Retrieve the image from cache
-            UIImage* image = [MediaManager loadCachePicture:_mxRoomMember.avatarUrl];
+            UIImage* image = [MediaManager loadCachePictureForURL:_mxRoomMember.avatarUrl];
             if (image) {
                 [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
                 [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
@@ -184,7 +184,7 @@
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                imageLoader = [MediaManager downloadPicture:_mxRoomMember.avatarUrl];
+                imageLoader = [MediaManager downloadMedia:_mxRoomMember.avatarUrl mimeType:@"image/jpeg"];
             }
         }
     } else {
@@ -205,7 +205,7 @@
         
         if ([url isEqualToString:_mxRoomMember.avatarUrl]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePicture:_mxRoomMember.avatarUrl];
+            UIImage* image = [MediaManager loadCachePictureForURL:_mxRoomMember.avatarUrl];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }

@@ -20,6 +20,7 @@
 		F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */; };
 		F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F021FBF11A5F1F8E00EA3AE6 /* MediaManager.m */; };
 		F024098219E7D177006E741B /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F024098119E7D177006E741B /* tab_recents@2x.png */; };
+		F02900BB1A63C71E00356F7D /* ConsoleTools.m in Sources */ = {isa = PBXBuildFile; fileRef = F02900BA1A63C71E00356F7D /* ConsoleTools.m */; };
 		F02BCE231A1A5A2B00543B47 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = F02BCE221A1A5A2B00543B47 /* play.png */; };
 		F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */; };
 		F03C47111A02952800E445AB /* CustomAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C47101A02952800E445AB /* CustomAlert.m */; };
@@ -89,6 +90,8 @@
 		F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
 		F021FBF11A5F1F8E00EA3AE6 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		F024098119E7D177006E741B /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
+		F02900B91A63C71E00356F7D /* ConsoleTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleTools.h; sourceTree = "<group>"; };
+		F02900BA1A63C71E00356F7D /* ConsoleTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleTools.m; sourceTree = "<group>"; };
 		F02BCE221A1A5A2B00543B47 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTableCell.h; sourceTree = "<group>"; };
 		F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTableCell.m; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 		F021FBEC1A5EF57300EA3AE6 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				F02900B91A63C71E00356F7D /* ConsoleTools.h */,
+				F02900BA1A63C71E00356F7D /* ConsoleTools.m */,
 				F021FBED1A5EF57300EA3AE6 /* MediaLoader.h */,
 				F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */,
 				F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */,
@@ -501,6 +506,7 @@
 				F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */,
 				F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
+				F02900BB1A63C71E00356F7D /* ConsoleTools.m in Sources */,
 				F01A0FF31A27314B009FAE2F /* RoomMessageComponent.m in Sources */,
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
