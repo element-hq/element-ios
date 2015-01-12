@@ -28,27 +28,21 @@ static MediaManager *sharedMediaManager = nil;
 
 @implementation MediaManager
 
-// Table of mediaLoaders in progress
+// Table of downloads in progress
 static NSMutableDictionary* downloadTableByURL = nil;
-
-+ (id)sharedInstance {
-    @synchronized(self) {
-        if(sharedMediaManager == nil) {
-            sharedMediaManager = [[self alloc] init];
-            // Create download table here
-            downloadTableByURL = [[NSMutableDictionary alloc] init];
-        }
-    }
-    return sharedMediaManager;
-}
+// Table of uploads in progress
+static NSMutableDictionary* uploadTableById = nil;
 
 #pragma mark - Media Download
 
-+ (MediaLoader*)downloadMedia:(NSString*)mediaURL mimeType:(NSString *)mimeType {
-    if ([mediaURL hasPrefix:kMediaManagerPrefixForDummyURL] == NO) {
++ (MediaLoader*)downloadMediaFromURL:(NSString*)mediaURL withType:(NSString *)mimeType {
+    if (mediaURL && [mediaURL hasPrefix:kMediaManagerPrefixForDummyURL] == NO) {
         // Create a media loader to download data
         MediaLoader *mediaLoader = [[MediaLoader alloc] init];
         // Report this loader
+        if (!downloadTableByURL) {
+            downloadTableByURL = [[NSMutableDictionary alloc] init];
+        }
         [downloadTableByURL setValue:mediaLoader forKey:mediaURL];
         
         // Launch download
@@ -72,6 +66,35 @@ static NSMutableDictionary* downloadTableByURL = nil;
         return [downloadTableByURL valueForKey:url];
     }
     return nil;
+}
+
+#pragma mark - Media Uploader
+
++ (MediaLoader*)prepareUploaderWithId:(NSString *)uploadId initialRange:(CGFloat)initialRange andRange:(CGFloat)range {
+    if (uploadId) {
+        // Create a media loader to upload data
+        MediaLoader *mediaLoader = [[MediaLoader alloc] initWithUploadId:uploadId initialRange:initialRange andRange:range];
+        // Report this loader
+        if (!uploadTableById) {
+            uploadTableById =  [[NSMutableDictionary alloc] init];
+        }
+        [uploadTableById setValue:mediaLoader forKey:uploadId];
+        return mediaLoader;
+    }
+    return nil;
+}
+
++ (MediaLoader*)existingUploaderWithId:(NSString*)uploadId {
+    if (uploadTableById && uploadId) {
+        return [uploadTableById valueForKey:uploadId];
+    }
+    return nil;
+}
+
++ (void)removeUploaderWithId:(NSString*)uploadId {
+    if (uploadTableById && uploadId) {
+        return [uploadTableById removeObjectForKey:uploadId];
+    }
 }
 
 #pragma mark - Cache Handling

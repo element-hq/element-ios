@@ -184,7 +184,7 @@
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                imageLoader = [MediaManager downloadMedia:_mxRoomMember.avatarUrl mimeType:@"image/jpeg"];
+                imageLoader = [MediaManager downloadMediaFromURL:_mxRoomMember.avatarUrl withType:@"image/jpeg"];
             }
         }
     } else {

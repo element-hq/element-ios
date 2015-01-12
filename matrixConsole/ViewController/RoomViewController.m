@@ -29,7 +29,6 @@
 #import "AppSettings.h"
 
 #import "MediaManager.h"
-#import "UploadManager.h"
 #import "ConsoleTools.h"
 
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS 20000
@@ -929,7 +928,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 } else {
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    [MediaManager downloadMedia:selectedVideoURL mimeType:mimetype];
+                    [MediaManager downloadMediaFromURL:selectedVideoURL withType:mimetype];
                 }
             }
         }
@@ -1021,15 +1020,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
         
         // Create the local event displayed during uploading
-        MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:thumbnail];
-        
-        NSString* dummyURL = [localEvent.content valueForKey:@"url"];
+        MXEvent *localEvent = [self addLocalEchoEventForAttachedMedia:thumbnail];
         
         // Upload thumbnail
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        [mxHandler.mxRestClient uploadContent:thumbnailData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
-            
-            [UploadManager removeURL:dummyURL];
+        MediaLoader *uploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:0.1];
+        [uploader uploadData:thumbnailData mimeType:@"image/jpeg" success:^(NSString *url) {
+            [MediaManager removeUploaderWithId:localEvent.eventId];
             
             // Prepare content of attached video
             NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
@@ -1084,17 +1080,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (videoData) {
                         if (videoData.length < ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE) {
                             [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
-                            [mxHandler.mxRestClient uploadContent:videoData mimeType:videoInfo[@"mimetype"] timeout:30 success:^(NSString *url) {
-                                [UploadManager removeURL:dummyURL];
+                            
+                            MediaLoader *videoUploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0.1 andRange:0.9];
+                            [videoUploader uploadData:videoData mimeType:videoInfo[@"mimetype"] success:^(NSString *url) {
+                                [MediaManager removeUploaderWithId:localEvent.eventId];
                                 [videoContent setValue:url forKey:@"url"];
                                 [videoContent setValue:videoInfo forKey:@"info"];
                                 [videoContent setValue:@"Video" forKey:@"body"];
                                 [self sendMessage:videoContent withLocalEvent:localEvent];
                             } failure:^(NSError *error) {
-                                [UploadManager removeURL:dummyURL];
+                                NSLog(@"Video upload failed");
+                                [MediaManager removeUploaderWithId:localEvent.eventId];
                                 [self handleError:error forLocalEvent:localEvent];
-                            } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                                [UploadManager onUploadProgress:dummyURL bytesWritten:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite initialRange:0.1 range:0.9];
                             }];
                         } else {
                             NSLog(@"Video is too large");
@@ -1107,7 +1104,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
                 else {
                     NSLog(@"Video export failed: %d", (int)[exportSession status]);
-                    [UploadManager removeURL:dummyURL];
                     // remove tmp file (if any)
                     [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
                     [self handleError:nil forLocalEvent:localEvent];
@@ -1115,10 +1111,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } failure:^(NSError *error) {
             NSLog(@"Video thumbnail upload failed");
-            [UploadManager removeURL:dummyURL];
+            [MediaManager removeUploaderWithId:localEvent.eventId];
             [self handleError:error forLocalEvent:localEvent];
-        } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-            [UploadManager onUploadProgress:dummyURL bytesWritten:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite initialRange:0 range:0.1];
         }];
     }
     
@@ -2103,7 +2097,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
-- (MXEvent*)addLocalEchoEventForAttachedImage:(UIImage*)image {
+- (MXEvent*)addLocalEchoEventForAttachedMedia:(UIImage*)image {
     // Create new item
     MXEvent *localEvent = [self createLocalEchoEventWithoutContent];
     
@@ -2117,6 +2111,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         [tmpCachedAttachments addObject:cacheFilePath];
     }
+    
+    // Define a unique upload id (reuse the local event id)
+    [localEvent.content setValue:localEvent.eventId forKey:kRoomMessageUploadIdKey];
     
     // Prepare event content
     NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
@@ -2392,7 +2389,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)sendImage:(UIImage*)image {
     // Add a temporary event while the image is attached (local echo)
-    MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:image];
+    MXEvent *localEvent = [self addLocalEchoEventForAttachedMedia:image];
     // Prepare message to send
     NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc] init];
     [imageInfo setValue:@"image/jpeg" forKey:@"mimetype"];
@@ -2401,13 +2398,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
     [imageInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
     
-    NSString* dummyURL = [localEvent.content valueForKey:@"url"];
-    
-    // Upload image
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    [mxHandler.mxRestClient uploadContent:imageData mimeType:@"image/jpeg" timeout:30 success:^(NSString *url) {
-        [UploadManager removeURL:dummyURL];
-
+    // Upload data
+    MediaLoader *mediaLoader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:1.0];
+    [mediaLoader uploadData:imageData mimeType:@"image/jpeg" success:^(NSString *url) {
+        [MediaManager removeUploaderWithId:localEvent.eventId];
+        
         NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
         [imageMessage setValue:@"m.image" forKey:@"msgtype"];
         [imageMessage setValue:url forKey:@"url"];
@@ -2416,10 +2411,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Send message for this attachment
         [self sendMessage:imageMessage withLocalEvent:localEvent];
     } failure:^(NSError *error) {
-        [UploadManager removeURL:dummyURL];        
+        [MediaManager removeUploaderWithId:localEvent.eventId];
+        NSLog(@"Failed to upload image: %@", error);
         [self handleError:error forLocalEvent:localEvent];
-    } uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        [UploadManager onUploadProgress:dummyURL bytesWritten:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite initialRange:0 range:1.0];
     }];
 }
 

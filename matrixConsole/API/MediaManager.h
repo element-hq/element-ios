@@ -19,19 +19,27 @@
 
 extern NSString *const kMediaManagerPrefixForDummyURL;
 
-// notify when a media download is finished
-// object: URL
+// notify when a media download is finished (object: URL)
 extern NSString *const kMediaDownloadDidFinishNotification;
 extern NSString *const kMediaDownloadDidFailNotification;
 
 @interface MediaManager : NSObject
 
-+ (id)sharedInstance;
-
-// Launch data download from the provided URL. Return a mediaLoader reference in order to let the user cancel this action.
-+ (MediaLoader*)downloadMedia:(NSString*)mediaURL mimeType:(NSString *)mimeType;
+// Download data from the provided URL. Return a mediaLoader reference in order to let the user cancel this action.
++ (MediaLoader*)downloadMediaFromURL:(NSString *)mediaURL withType:(NSString *)mimeType;
 // Check whether a download is already running for this media url. Return loader if any
 + (MediaLoader*)existingDownloaderForURL:(NSString*)url;
+
+// Prepares and returns a media loader to upload data to matrix content repository.
+// initialRange / range: an upload could be a subpart of uploads. initialRange defines the global upload progress already did done before this current upload.
+// range is the range value of this upload in the global scope.
+// e.g. : Upload a media can be split in two parts :
+// 1 - upload the thumbnail -> initialRange = 0, range = 0.1 : assume that the thumbnail upload is 10% of the upload process
+// 2 - upload the media -> initialRange = 0.1, range = 0.9 : the media upload is 90% of the global upload
++ (MediaLoader*)prepareUploaderWithId:(NSString *)uploadId initialRange:(CGFloat)initialRange andRange:(CGFloat)range;
+// Check whether an upload is already running with this id. Return loader if any
++ (MediaLoader*)existingUploaderWithId:(NSString*)uploadId;
++ (void)removeUploaderWithId:(NSString*)uploadId;
 
 // Load a picture from the local cache (Do not start any remote requests)
 + (UIImage*)loadCachePictureForURL:(NSString*)pictureURL;

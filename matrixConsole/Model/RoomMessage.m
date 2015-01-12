@@ -20,6 +20,7 @@
 #import "AppSettings.h"
 
 NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
+NSString *const kRoomMessageUploadIdKey     = @"kRoomMessageUploadIdKey";
 
 static NSAttributedString *messageSeparator = nil;
 
@@ -91,8 +92,10 @@ static NSAttributedString *messageSeparator = nil;
                 // Not supported yet
                 // _messageType = RoomMessageTypeLocation;
             }
-            // Retriew local preview url (if any)
+            // Retrieve local preview url (if any)
             _previewURL = event.content[kRoomMessageLocalPreviewKey];
+            // Retrieve upload id (if any)
+            _uploadId = event.content[kRoomMessageUploadIdKey];
         }
         
         // Set first component of the current message

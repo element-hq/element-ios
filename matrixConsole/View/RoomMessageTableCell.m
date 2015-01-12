@@ -17,7 +17,6 @@
 #import "RoomMessageTableCell.h"
 #import "MediaManager.h"
 #import "PieChartView.h"
-#import "UploadManager.h"
 
 @implementation RoomMessageTableCell
 
@@ -26,12 +25,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)updateProgressUI:(NSDictionary*)downloadStatsDict {
+- (void)updateProgressUI:(NSDictionary*)statisticsDict {
     self.progressView.hidden = NO;
     
-    NSString* downloadRate = [downloadStatsDict valueForKey:kMediaLoaderProgressDownloadRateKey];
-    NSString* remaingTime = [downloadStatsDict valueForKey:kMediaLoaderProgressRemaingTimeKey];
-    NSString* progressString = [downloadStatsDict valueForKey:kMediaLoaderProgressStringKey];
+    NSString* downloadRate = [statisticsDict valueForKey:kMediaLoaderProgressDownloadRateKey];
+    NSString* remaingTime = [statisticsDict valueForKey:kMediaLoaderProgressRemaingTimeKey];
+    NSString* progressString = [statisticsDict valueForKey:kMediaLoaderProgressStringKey];
     
     NSMutableString* text = [[NSMutableString alloc] init];
     
@@ -49,7 +48,7 @@
     
     self.statsLabel.text = text;
     
-    NSNumber* progressNumber = [downloadStatsDict valueForKey:kMediaLoaderProgressRateKey];
+    NSNumber* progressNumber = [statisticsDict valueForKey:kMediaLoaderProgressRateKey];
     
     if (progressNumber) {
         self.progressChartView.progress = progressNumber.floatValue;
@@ -97,7 +96,7 @@
         // check if there is a downlad in progress
         MediaLoader *loader = [MediaManager existingDownloaderForURL:self.message.attachmentURL];
         
-        NSDictionary *dict = loader.downloadStatsDict;
+        NSDictionary *dict = loader.statisticsDict;
         
         if (dict) {
             isHidden = NO;
@@ -157,11 +156,10 @@
      self.activityIndicator.hidden = NO;
     [self.activityIndicator startAnimating];
     
-    NSDictionary* uploadDict = [UploadManager statsInfoForURL:self.message.attachmentURL];
-    
-    if (uploadDict) {
+    MediaLoader *uploader = [MediaManager existingUploaderWithId:self.message.uploadId];
+    if (uploader && uploader.statisticsDict) {
         self.activityIndicator.hidden = YES;
-        [self updateProgressUI:uploadDict];
+        [self updateProgressUI:uploader.statisticsDict];
     } else {
         self.activityIndicator.hidden = NO;
         self.progressView.hidden = YES;
@@ -177,9 +175,8 @@
 - (void)onUploadProgress:(NSNotification *)notif {
     // sanity check
     if ([notif.object isKindOfClass:[NSString class]]) {
-        NSString* url = notif.object;
-        
-        if ([url isEqualToString:self.message.thumbnailURL] || [url isEqualToString:self.message.attachmentURL]) {
+        NSString *uploadId = notif.object;
+        if ([uploadId isEqualToString:self.message.uploadId]) {
             self.activityIndicator.hidden = YES;
             [self updateProgressUI:notif.userInfo];
             
