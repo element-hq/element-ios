@@ -165,13 +165,17 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
-- (BOOL)containsEventId:(NSString *)eventId {
+- (RoomMessageComponent*)componentWithEventId:(NSString *)eventId {
     for (RoomMessageComponent* msgComponent in messageComponents) {
         if ([msgComponent.eventId isEqualToString:eventId]) {
-            return YES;
+            return msgComponent;
         }
     }
-    return NO;
+    return nil;
+}
+
+- (BOOL)containsEventId:(NSString *)eventId {
+    return nil != [self componentWithEventId:eventId];
 }
 
 - (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId {

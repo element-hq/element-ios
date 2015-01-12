@@ -77,7 +77,8 @@ typedef enum : NSUInteger {
 // Remove the item defined with this event id
 // Return false if the event id is not found
 - (BOOL)removeEvent:(NSString*)eventId;
-
+// returns the component from the eventId
+- (RoomMessageComponent*)componentWithEventId:(NSString *)eventId;
 // Return true if the event id is one of the message items
 - (BOOL)containsEventId:(NSString*)eventId;
 

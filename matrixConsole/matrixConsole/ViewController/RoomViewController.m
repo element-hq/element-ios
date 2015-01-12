@@ -44,6 +44,8 @@
 
 #define ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW 120 // (51 + 69)
 
+#define HIDDEN_UNSENT_MSG_LABEL 12012015
+
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
 NSString *const kCmdJoinRoom = @"/join";
@@ -92,6 +94,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Local echo
     NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -1303,6 +1306,57 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     return rowHeight;
 }
 
+- (IBAction)onResendToggle:(id)sender {
+    // sanity check
+    if ([sender isKindOfClass:[UIButton class]]) {
+        id hiddenLabel = [(UIButton*)sender viewWithTag:HIDDEN_UNSENT_MSG_LABEL];
+        
+        // get the hidden label where the event ID is store
+        if ([hiddenLabel isKindOfClass:[UILabel class]]) {
+            NSString* eventID =((UILabel*)hiddenLabel).text;
+            
+            // search the selected cell
+            UIView* cellView = sender;
+            while (![cellView isKindOfClass:[RoomMessageTableCell class]]) {
+                cellView = cellView.superview;
+            }
+            
+            if (cellView) {
+                RoomMessage* roomMessage = ((RoomMessageTableCell*)cellView).message;
+                RoomMessageComponent* component =[roomMessage componentWithEventId:eventID];
+                
+                // sanity check
+                if (component && (roomMessage.messageType == RoomMessageTypeText)) {
+                    NSString* textMessage = component.textMessage;
+                    
+                    __weak typeof(self) weakSelf = self;
+                    
+                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Resend the message"
+                                                                     message:textMessage
+                                                                       style:CustomAlertStyleAlert];
+                    
+                    
+                    self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel"
+                                                                                              style:CustomAlertActionStyleDefault
+                                                                                            handler:^(CustomAlert *alert) {
+                                                                                                weakSelf.actionMenu = nil;
+                                                                                            }];
+                    [self.actionMenu addActionWithTitle:@"OK"
+                                                      style:CustomAlertActionStyleDefault
+                                                    handler:^(CustomAlert *alert) {
+                                                         weakSelf.actionMenu = nil;
+                                                        // remove the message
+                                                        [roomMessage removeEvent:eventID];
+                                                        [weakSelf sendTextMessage:textMessage];
+                                                    }];
+                    
+                    [self.actionMenu showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
+                }
+            }
+        }
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
@@ -1354,6 +1408,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     
+    for(UIView*v in cell.contentView.subviews) {
+        
+        if ([v isKindOfClass:[UIButton class]]) {
+            v.backgroundColor = [UIColor greenColor];
+            v.hidden = YES;
+        }
+    }
+    
     // Check whether the previous message has been sent by the same user.
     // The user's picture and name are displayed only for the first message.
     BOOL shouldHideSenderInfo = NO;
@@ -1396,13 +1458,31 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
             if (component.style == RoomMessageComponentStyleFailed) {
-                UILabel *unsentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, 58 , 20)];
-                unsentLabel.text = @"Unsent";
-                unsentLabel.textAlignment = NSTextAlignmentCenter;
-                unsentLabel.textColor = [UIColor redColor];
-                unsentLabel.font = [UIFont systemFontOfSize:14];
-                [cell.dateTimeLabelContainer addSubview:unsentLabel];
+                UIButton *unsentButton = [[UIButton alloc] initWithFrame:CGRectMake(0, yPosition, 58 , 20)];
+                
+                [unsentButton setTitle:@"Unsent" forState:UIControlStateNormal];
+                [unsentButton setTitle:@"Unsent" forState:UIControlStateSelected];
+                [unsentButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+                [unsentButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
+             
+                unsentButton.backgroundColor = [UIColor clearColor];
+                unsentButton.titleLabel.font =  [UIFont systemFontOfSize:14];
+                
+                // add a dummy label to store the event ID
+                // so the message will be easily found when the button will be tapped
+                UILabel* hiddenLabel = [[UILabel alloc] init];
+                hiddenLabel.tag = HIDDEN_UNSENT_MSG_LABEL;
+                hiddenLabel.text = component.eventId;
+                hiddenLabel.hidden = YES;
+                hiddenLabel.frame = CGRectZero;
+                hiddenLabel.userInteractionEnabled = YES;
+                [unsentButton addSubview:hiddenLabel];
+                
+                [unsentButton addTarget:self action:@selector(onResendToggle:)  forControlEvents:UIControlEventTouchUpInside];
+                
+                [cell.dateTimeLabelContainer addSubview:unsentButton];
                 cell.dateTimeLabelContainer.hidden = NO;
+                cell.dateTimeLabelContainer.userInteractionEnabled = YES;
             }
             yPosition += component.height;
         }
@@ -1543,6 +1623,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             yPosition += component.height;
         }
+        
+        [cell.dateTimeLabelContainer.superview bringSubviewToFront:cell.dateTimeLabelContainer];
     }
     return cell;
 }
@@ -2071,14 +2153,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             NSLog(@"Posted event: %@", localEvent.description);
             if (message.messageType == RoomMessageTypeText) {
                 [message removeEvent:localEvent.eventId];
-                localEvent.eventId = kFailedEventId;
+                // defines an unique identfier to be able to resend the message
+                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)CFAbsoluteTimeGetCurrent()];
                 [message addEvent:localEvent withRoomState:self.mxRoom.state];
                 if (!message.components.count) {
                     [self removeMessageAtIndex:index];
                 }
             } else {
                 // Create a new message
-                localEvent.eventId = kFailedEventId;
+                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)CFAbsoluteTimeGetCurrent()];
                 message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                 if (message) {
                     // Refresh table display
