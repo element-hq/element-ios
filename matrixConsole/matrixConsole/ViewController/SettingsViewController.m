@@ -455,14 +455,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
         if (currentPictureURL) {
             // Check whether the image download is in progress
-            id loader = [MediaManager mediaLoaderForURL:currentPictureURL];
+            id loader = [MediaManager existingDownloaderForURL:currentPictureURL];
             if (loader) {
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
             } else {
                 // Retrieve the image from cache
-                UIImage* image = [MediaManager loadCachePicture:currentPictureURL];
+                UIImage* image = [MediaManager loadCachePictureForURL:currentPictureURL];
                 if (image) {
                     [self updateAvatarImage:image];
                 } else {
@@ -473,7 +473,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     // Add observers
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    imageLoader = [MediaManager downloadPicture:currentPictureURL];
+                    imageLoader = [MediaManager downloadMedia:currentPictureURL mimeType:@"image/jpeg"];
                 }
             }
         } else {
@@ -490,7 +490,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         if ([url isEqualToString:currentPictureURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePicture:currentPictureURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureURL];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }

@@ -95,7 +95,7 @@
     if (self.message.attachmentURL) {
         
         // check if there is a downlad in progress
-        MediaLoader *loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
+        MediaLoader *loader = [MediaManager existingDownloaderForURL:self.message.attachmentURL];
         
         NSDictionary *dict = loader.downloadStatsDict;
         
@@ -124,7 +124,7 @@
 
 - (void)cancelDownload {
     // get the linked medida loader
-    MediaLoader *loader = [MediaManager mediaLoaderForURL:self.message.attachmentURL];
+    MediaLoader *loader = [MediaManager existingDownloaderForURL:self.message.attachmentURL];
     if (loader) {
         [loader cancel];
     }

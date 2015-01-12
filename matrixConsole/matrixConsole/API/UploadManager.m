@@ -16,6 +16,7 @@
 
 #import "UploadManager.h"
 #import "MediaManager.h"
+#import "ConsoleTools.h"
 
 NSString *const kUploadManagerUploadStartTimeKey = @"kUploadManagerUploadStartTimeKey";
 NSString *const kUploadManagerStatsStartTimeKey = @"kUploadManagerUploadStartTimeKey";
@@ -85,7 +86,7 @@ static NSMutableDictionary* statsByURL = nil;
     NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:totalBytesWritten countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:totalBytesExpectedToWrite countStyle:NSByteCountFormatterCountStyleFile]];
     [dict setValue:progressString forKey:kMediaLoaderProgressStringKey];
     
-    [dict setValue:[MediaManager formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+    [dict setValue:[ConsoleTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
     
     NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:dataRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
     [dict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];

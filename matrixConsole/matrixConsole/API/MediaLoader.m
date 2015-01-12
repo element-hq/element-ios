@@ -16,6 +16,7 @@
 
 #import "MediaManager.h"
 #import "MatrixHandler.h"
+#import "ConsoleTools.h"
 
 NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
 NSString *const kMediaUploadProgressNotification = @"kMediaUploadProgressNotification";
@@ -144,7 +145,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:downloadData.length countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:expectedSize countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:progressString forKey:kMediaLoaderProgressStringKey];
                 
-        [dict setValue:[MediaManager formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+        [dict setValue:[ConsoleTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
         
         NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:meanRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];
@@ -180,7 +181,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     
     if (downloadData.length) {
         // Cache the downloaded data
-        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL mimeType:mimeType];
+        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL andType:mimeType];
         // Call registered block
         if (onMediaReady) {
             onMediaReady(cacheFilePath);
