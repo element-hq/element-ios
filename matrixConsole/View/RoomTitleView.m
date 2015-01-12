@@ -46,7 +46,7 @@
 
 - (void)refreshDisplay {
     if (_mxRoom) {
-        _displayNameTextField.text = _mxRoom.state.displayname;
+        _displayNameTextField.text = (_mxRoom.state.displayname.length) ? _displayNameTextField.text : @" ";
         _topicTextField.text = _mxRoom.state.topic;
     } else {
         _displayNameTextField.text = nil;
