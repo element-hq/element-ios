@@ -1149,6 +1149,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // the duration is ignored but it is better to define it
     double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
+    // remove pending observers to avoid duplicates
+    // onKeyboardWillShow could be called several times bebore onKeyboardWillHide
+    // because the keyboard height is updated (swicth to a chinese keyboard for example)
+    // fixes https://github.com/matrix-org/matrix-ios-sdk/issues/4
+    if (isKeyboardObserver) {
+        [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
+        [inputAccessoryView.superview removeObserver:self forKeyPath:@"center"];
+        isKeyboardObserver = NO;
+    }
+    
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         
         // Move up control view
@@ -1165,16 +1175,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.view layoutIfNeeded];
         
     } completion:^(BOOL finished) {
+        // be warned when the keyboard frame is updated
+        [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
+        [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
+        isKeyboardObserver = YES;
     }];
-    
-    // be warned when the keyboard frame is updated
-    // we don't this put this in completion otherwise we may race and leak observers if we
-    // remove the observer (e.g. in onKeyboardWillHide) before the animation has completed.
-    // fixes https://github.com/matrix-org/matrix-ios-sdk/issues/4
-    
-    [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
-    [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
-    isKeyboardObserver = YES;
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
