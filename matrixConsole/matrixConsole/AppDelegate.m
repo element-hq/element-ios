@@ -53,6 +53,14 @@
             // IOS >= 8
             if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
                 navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+                
+                // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
+                // to avoid empty room View Controller in portrait orientation
+                // else, the user cannot select a room
+                // shouldHideViewController delegate method is also implemented
+                if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
+                    splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+                }
             }
             
             splitViewController.delegate = self;
@@ -198,7 +206,7 @@
     return self.errorNotification;
 }
 
-#pragma mark - Split view
+#pragma mark - SplitViewController delegate
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
     if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomId] == nil)) {
@@ -208,6 +216,15 @@
         return NO;
     }
 }
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    // oniPad devices, force to display the primary and the secondary viewcontroller
+    // to avoid empty room View Controller in portrait orientation
+    // else, the user cannot select a room
+    return NO;
+}
+
+#pragma mark - UITabBarControllerDelegate delegate
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     BOOL res = YES;
