@@ -1408,14 +1408,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     
-    for(UIView*v in cell.contentView.subviews) {
-        
-        if ([v isKindOfClass:[UIButton class]]) {
-            v.backgroundColor = [UIColor greenColor];
-            v.hidden = YES;
-        }
-    }
-    
     // Check whether the previous message has been sent by the same user.
     // The user's picture and name are displayed only for the first message.
     BOOL shouldHideSenderInfo = NO;
@@ -1483,6 +1475,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [cell.dateTimeLabelContainer addSubview:unsentButton];
                 cell.dateTimeLabelContainer.hidden = NO;
                 cell.dateTimeLabelContainer.userInteractionEnabled = YES;
+                
+                // ensure that dateTimeLabelContainer is at front to catch the the tap event 
+                [cell.dateTimeLabelContainer.superview bringSubviewToFront:cell.dateTimeLabelContainer];
             }
             yPosition += component.height;
         }
@@ -1623,8 +1618,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
             yPosition += component.height;
         }
-        
-        [cell.dateTimeLabelContainer.superview bringSubviewToFront:cell.dateTimeLabelContainer];
     }
     return cell;
 }
@@ -2078,7 +2071,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     localEvent.eventId = localEventId;
     localEvent.eventType = MXEventTypeRoomMessage;
     localEvent.type = kMXEventTypeStringRoomMessage;
-    localEvent.originServerTs = kMXUndefinedTimestamp;
+    localEvent.originServerTs = (uint64_t) ([[NSDate date] timeIntervalSince1970] * 1000);
     
     localEvent.userId = [MatrixHandler sharedHandler].userId;
     return localEvent;
