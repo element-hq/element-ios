@@ -1012,25 +1012,22 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Prepare video thumbnail description
         NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
         UIImage *thumbnail = [ConsoleTools resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
-        NSMutableDictionary *thumbnailInfo = [[NSMutableDictionary alloc] init];
-        [thumbnailInfo setValue:@"image/jpeg" forKey:@"mimetype"];
-        [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.width] forKey:@"w"];
-        [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.height] forKey:@"h"];
-        NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.9);
-        [thumbnailInfo setValue:[NSNumber numberWithUnsignedInteger:thumbnailData.length] forKey:@"size"];
         
         // Create the local event displayed during uploading
         MXEvent *localEvent = [self addLocalEchoEventForAttachedMedia:thumbnail];
         
+        NSMutableDictionary *thumbnailInfo = [localEvent.content valueForKey:@"info"];
+        NSData *thumbnailData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[localEvent.content valueForKey:@"url"] andType:[thumbnailInfo objectForKey:@"mimetype"]]];
+
         // Upload thumbnail
         MediaLoader *uploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:0.1];
-        [uploader uploadData:thumbnailData mimeType:@"image/jpeg" success:^(NSString *url) {
+        [uploader uploadData:thumbnailData mimeType:[thumbnailInfo valueForKey:@"mimetype"] success:^(NSString *url) {
             [MediaManager removeUploaderWithId:localEvent.eventId];
             
             // Prepare content of attached video
             NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
             NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
-            [videoContent setValue:@"m.video" forKey:@"msgtype"];
+            [videoContent setValue:kMXMessageTypeVideo forKey:@"msgtype"];
             [videoInfo setValue:url forKey:@"thumbnail_url"];
             [videoInfo setValue:thumbnailInfo forKey:@"thumbnail_info"];
             
@@ -2103,7 +2100,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // We store temporarily the image in cache, use the localId to build temporary url
     NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEvent.eventId];
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
     NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:dummyURL andType:@"image/jpeg"];
     if (cacheFilePath) {
         if (tmpCachedAttachments == nil) {
@@ -2118,7 +2115,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
     [info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
     [info setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
-    localEvent.content = @{@"msgtype":@"m.image", @"url":dummyURL, @"info":info, kRoomMessageUploadIdKey:localEvent.eventId};
+    localEvent.content = @{@"msgtype":kMXMessageTypeImage, @"url":dummyURL, @"info":info, kRoomMessageUploadIdKey:localEvent.eventId};
     // Note: we have defined here an upload id with the local event id
     
     // Add this new event
@@ -2142,14 +2139,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             if (message.messageType == RoomMessageTypeText) {
                 [message removeEvent:localEvent.eventId];
                 // defines an unique identfier to be able to resend the message
-                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)CFAbsoluteTimeGetCurrent()];
+                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
                 [message addEvent:localEvent withRoomState:self.mxRoom.state];
                 if (!message.components.count) {
                     [self removeMessageAtIndex:index];
                 }
             } else {
                 // Create a new message
-                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)CFAbsoluteTimeGetCurrent()];
+                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
                 message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
                 if (message) {
                     // Refresh table display
@@ -2388,23 +2385,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)sendImage:(UIImage*)image {
     // Add a temporary event while the image is attached (local echo)
     MXEvent *localEvent = [self addLocalEchoEventForAttachedMedia:image];
-    // Prepare message to send
-    NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc] init];
-    [imageInfo setValue:@"image/jpeg" forKey:@"mimetype"];
-    [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.width] forKey:@"w"];
-    [imageInfo setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)image.size.height] forKey:@"h"];
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
-    [imageInfo setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
+    
+    NSMutableDictionary *infoDict = [localEvent.content valueForKey:@"info"];
+    NSData *imageData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[localEvent.content valueForKey:@"url"] andType:[infoDict objectForKey:@"mimetype"]]];
     
     // Upload data
     MediaLoader *mediaLoader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:1.0];
-    [mediaLoader uploadData:imageData mimeType:@"image/jpeg" success:^(NSString *url) {
+    [mediaLoader uploadData:imageData mimeType:[infoDict objectForKey:@"mimetype"] success:^(NSString *url) {
         [MediaManager removeUploaderWithId:localEvent.eventId];
         
         NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
-        [imageMessage setValue:@"m.image" forKey:@"msgtype"];
+        [imageMessage setValue:kMXMessageTypeImage forKey:@"msgtype"];
         [imageMessage setValue:url forKey:@"url"];
-        [imageMessage setValue:imageInfo forKey:@"info"];
+        [imageMessage setValue:infoDict forKey:@"info"];
         [imageMessage setValue:@"Image" forKey:@"body"];
         // Send message for this attachment
         [self sendMessage:imageMessage withLocalEvent:localEvent];
