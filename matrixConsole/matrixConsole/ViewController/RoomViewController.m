@@ -31,7 +31,7 @@
 #import "MediaManager.h"
 #import "ConsoleTools.h"
 
-#define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS 20000
+#define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC 10
 
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
 #define ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE 20
@@ -58,7 +58,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @interface RoomViewController () {
     BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
-    NSDate *lastTypingNotificationDate;
+    
+    // Typing notification
+    NSDate *lastTypingDate;
+    NSTimer* typingTimer;
     
     // Messages
     NSMutableArray *messages;
@@ -147,7 +150,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)dealloc {
-    lastTypingNotificationDate = nil;
+    lastTypingDate = nil;
+    [typingTimer invalidate];
+    typingTimer = nil;
     
     // Release local echo resources
     pendingOutgoingEvents = nil;
@@ -1648,13 +1653,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (notification.object == _messageTextField) {
         NSString *msg = _messageTextField.text;
         if (msg.length) {
-            [self sendTypingNotification:YES];
+            [self handleTypingNotification:YES];
             _sendBtn.enabled = YES;
             _sendBtn.alpha = 1;
             // Reset potential placeholder (used in case of wrong command usage)
             _messageTextField.placeholder = nil;
         } else {
-            [self sendTypingNotification:NO];
+            [self handleTypingNotification:NO];
             _sendBtn.enabled = NO;
             _sendBtn.alpha = 0.5;
         }
@@ -1765,7 +1770,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             _roomTitleView.hiddenTopic = !topic.length;
         }
     } else if (textField == _messageTextField) {
-        [self sendTypingNotification:NO];
+        [self handleTypingNotification:NO];
     }
 }
 
@@ -1792,7 +1797,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         
         self.messageTextField.text = nil;
-        [self sendTypingNotification:NO];
+        [self handleTypingNotification:NO];
         // disable send button
         _sendBtn.enabled = NO;
         _sendBtn.alpha = 0.5;
@@ -2359,29 +2364,72 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 # pragma mark - Typing notification
 
-- (void)sendTypingNotification:(BOOL)typing {
-    NSUInteger timeout = -1;
+- (void)handleTypingNotification:(BOOL)typing {
+    NSUInteger notificationTimeoutMS = -1;
     if (typing) {
-        // Check whether a typing notification has been sent recently
-        if (lastTypingNotificationDate) {
-            // We don't send new notification if less than half of the timeout is elapsed
-            NSTimeInterval interval = -[lastTypingNotificationDate timeIntervalSinceNow];
-            if (interval < ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS / 2000) {
-                return;
-            }
+        // Check whether a typing event has been already reported to server (We wait for the end of the local timout before considering this new event)
+        if (typingTimer) {
+            // Refresh date of the last observed typing
+            lastTypingDate = [[NSDate alloc] init];
+            return;
         }
-        timeout = ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS;
+        
+        // Launch a timer to prevent sending multiple typing notifications
+        NSTimeInterval timerTimeout = ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC;
+        if (lastTypingDate) {
+            NSTimeInterval lastTypingAge = -[lastTypingDate timeIntervalSinceNow];
+            if (lastTypingAge < timerTimeout) {
+                // Subtract the time interval since last typing from the timer timeout
+                timerTimeout -= lastTypingAge;
+            } else {
+                timerTimeout = 0;
+            }
+        } else {
+            // Keep date of this typing event
+            lastTypingDate = [[NSDate alloc] init];
+        }
+        
+        if (timerTimeout) {
+            typingTimer = [NSTimer scheduledTimerWithTimeInterval:timerTimeout target:self selector:@selector(typingTimeout:) userInfo:self repeats:NO];
+            // Compute the notification timeout in ms (consider the double of the local typing timeout)
+            notificationTimeoutMS = 2000 * ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC;
+        } else {
+            // This typing event is too old, we will ignore it
+            typing = NO;
+            NSLog(@"sendTypingNotification: a typing event has been ignored");
+        }
+    } else {
+        // Cancel any typing timer
+        [typingTimer invalidate];
+        typingTimer = nil;
+        // Reset last typing date
+        lastTypingDate = nil;
     }
     
     // Send typing notification to server
-    lastTypingNotificationDate = nil;
-    [self.mxRoom sendTypingNotification:typing timeout:timeout success:^{
-        if (typing) {
-            lastTypingNotificationDate = [[NSDate alloc] init];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"sendTypingNotification (%d) failed: %@", typing, error);
-    }];
+    [self.mxRoom sendTypingNotification:typing
+                                timeout:notificationTimeoutMS
+                                success:^{
+                                    // Reset last typing date
+                                    lastTypingDate = nil;
+                                } failure:^(NSError *error) {
+                                    NSLog(@"sendTypingNotification (%d) failed: %@", typing, error);
+                                    // Cancel timer (if any)
+                                    [typingTimer invalidate];
+                                    typingTimer = nil;
+                                    // Send again
+                                    [self handleTypingNotification:typing];
+                                }];
+}
+
+- (IBAction)typingTimeout:(id)sender {
+    [typingTimer invalidate];
+    typingTimer = nil;
+    
+    // Check whether a new typing event has been observed
+    BOOL typing = (lastTypingDate != nil);
+    // Post a new typing notification
+    [self handleTypingNotification:typing];
 }
 
 
