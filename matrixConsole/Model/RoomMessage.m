@@ -19,6 +19,9 @@
 #import "MatrixHandler.h"
 #import "AppSettings.h"
 
+NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
+NSString *const kRoomMessageUploadIdKey     = @"kRoomMessageUploadIdKey";
+
 static NSAttributedString *messageSeparator = nil;
 
 @interface RoomMessage() {
@@ -33,6 +36,7 @@ static NSAttributedString *messageSeparator = nil;
 @end
 
 @implementation RoomMessage
+@synthesize uploadProgress;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
@@ -43,6 +47,7 @@ static NSAttributedString *messageSeparator = nil;
         _senderAvatarUrl = [mxHandler senderAvatarUrlForEvent:event withRoomState:roomState];
         _maxTextViewWidth = ROOM_MESSAGE_DEFAULT_MAX_TEXTVIEW_WIDTH;
         _contentSize = CGSizeZero;
+        self.uploadProgress = -1;
         currentAttributedTextMsg = nil;
         
         // Set message type (consider text by default), and check attachment if any
@@ -52,19 +57,34 @@ static NSAttributedString *messageSeparator = nil;
             NSString *msgtype =  event.content[@"msgtype"];
             if ([msgtype isEqualToString:kMXMessageTypeImage]) {
                 _messageType = RoomMessageTypeImage;
-                
+                // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
+                // Handle thumbnail url/info
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
+                if (!_thumbnailURL) {
+                    if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
+                        // Build the url to get the well adapted thumbnail from server
+                        _thumbnailURL = _attachmentURL;
+                        NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@%@/thumbnail/", [mxHandler homeServerURL], kMXMediaPathPrefix];
+                        _thumbnailURL = [_thumbnailURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxThumbnailPrefix];
+                        // Add parameters
+                        _thumbnailURL = [NSString stringWithFormat:@"%@?width=%tu&height=%tu&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
+                    } else {
+                        _thumbnailURL = _attachmentURL;
+                    }
+                }
             } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                 // Not supported yet
                 //_messageType = RoomMessageTypeAudio;
             } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
                 _messageType = RoomMessageTypeVideo;
+                // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
                 if (_attachmentInfo) {
+                    // Get video thumbnail info
                     _thumbnailURL = _attachmentInfo[@"thumbnail_url"];
                     _thumbnailInfo = _attachmentInfo[@"thumbnail_info"];
                 }
@@ -72,6 +92,10 @@ static NSAttributedString *messageSeparator = nil;
                 // Not supported yet
                 // _messageType = RoomMessageTypeLocation;
             }
+            // Retrieve local preview url (if any)
+            _previewURL = event.content[kRoomMessageLocalPreviewKey];
+            // Retrieve upload id (if any)
+            _uploadId = event.content[kRoomMessageUploadIdKey];
         }
         
         // Set first component of the current message
@@ -144,13 +168,17 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
-- (BOOL)containsEventId:(NSString *)eventId {
+- (RoomMessageComponent*)componentWithEventId:(NSString *)eventId {
     for (RoomMessageComponent* msgComponent in messageComponents) {
         if ([msgComponent.eventId isEqualToString:eventId]) {
-            return YES;
+            return msgComponent;
         }
     }
-    return NO;
+    return nil;
+}
+
+- (BOOL)containsEventId:(NSString *)eventId {
+    return nil != [self componentWithEventId:eventId];
 }
 
 - (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId {
@@ -222,9 +250,15 @@ static NSAttributedString *messageSeparator = nil;
         } else if (_messageType == RoomMessageTypeImage || _messageType == RoomMessageTypeVideo) {
             CGFloat width, height;
             width = height = 40;
-            if (_thumbnailInfo) {
-                width = [_thumbnailInfo[@"w"] integerValue];
-                height = [_thumbnailInfo[@"h"] integerValue];
+            if (_thumbnailInfo || _attachmentInfo) {
+                if (_thumbnailInfo) {
+                    width = [_thumbnailInfo[@"w"] integerValue];
+                    height = [_thumbnailInfo[@"h"] integerValue];
+                } else {
+                    width = [_attachmentInfo[@"w"] integerValue];
+                    height = [_attachmentInfo[@"h"] integerValue];
+                }
+               
                 if (width > ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH || height > ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) {
                     if (width > height) {
                         height = (height * ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH) / width;
@@ -300,6 +334,16 @@ static NSAttributedString *messageSeparator = nil;
         }
     }
     return NO;
+}
+
+- (BOOL)isHidden {
+    if (_messageType == RoomMessageTypeText) {
+        return (!self.attributedTextMessage.length);
+    } else if (messageComponents.count) {
+        RoomMessageComponent *msgComponent = [messageComponents firstObject];
+        return msgComponent.isHidden;
+    }
+    return YES;
 }
 
 #pragma mark -

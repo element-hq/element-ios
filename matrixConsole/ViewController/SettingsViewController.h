@@ -20,5 +20,8 @@
 
 - (void)reset;
 
+typedef void (^blockSettings_onCheckSave)();
+- (BOOL)checkPendingSave:(blockSettings_onCheckSave)handler;
+
 @end
 

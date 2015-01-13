@@ -30,6 +30,8 @@
     NSMutableArray  *filteredPublicRooms;
     BOOL             searchBarShouldEndEditing;
     UIView          *savedTableHeaderView;
+    
+    NSString *homeServerSuffix;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
@@ -81,9 +83,10 @@
     // Ensure to display room creation section
     [self.tableView scrollRectToVisible:_roomCreationLabel.frame animated:NO];
     
-    if ([[MatrixHandler sharedHandler] isLogged]) {
+    if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
+        homeServerSuffix = [NSString stringWithFormat:@":%@",[MatrixHandler sharedHandler].homeServer];
         // Update alias placeholder
-        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo:%@)", [MatrixHandler sharedHandler].homeServer];
+        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
         // Refresh listed public rooms
         [self refreshPublicRooms];
     }
@@ -160,9 +163,13 @@
         // Remove '#' character
         alias = [alias substringFromIndex:1];
         // Remove homeserver
-        NSString *suffix = [NSString stringWithFormat:@":%@",[MatrixHandler sharedHandler].homeServer];
-        NSRange range = [alias rangeOfString:suffix];
-        alias = [alias stringByReplacingCharactersInRange:range withString:@""];
+        NSRange range = [alias rangeOfString:homeServerSuffix];
+        if (range.location == NSNotFound) {
+            NSLog(@"Wrong room alias has been set (%@)", _roomAliasTextField.text);
+            alias = nil;
+        } else {
+            alias = [alias stringByReplacingCharactersInRange:range withString:@""];
+        }
     }
     
     if (! alias.length) {
@@ -211,10 +218,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    if (textField == _roomAliasTextField) {
-        textField.text = self.alias;
-        textField.placeholder = @"foo";
-    } else if (textField == _participantsTextField) {
+    if (textField == _participantsTextField) {
         if (textField.text.length == 0) {
             textField.text = @"@";
         }
@@ -223,14 +227,17 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == _roomAliasTextField) {
-        // Compute the new alias with this string change
-        NSString * alias = textField.text;
-        if (alias.length) {
-            // add homeserver as suffix
-            textField.text = [NSString stringWithFormat:@"#%@:%@", alias, [MatrixHandler sharedHandler].homeServer];
+        // Check whether homeserver suffix should be added
+        NSRange range = [textField.text rangeOfString:@":"];
+        if (range.location == NSNotFound) {
+            textField.text = [textField.text stringByAppendingString:homeServerSuffix];
         }
-        
-        textField.placeholder = [NSString stringWithFormat:@"(e.g. #foo:%@)", [MatrixHandler sharedHandler].homeServer];
+        // Check whether the alias is valid
+        if (!self.alias) {
+            // reset text field
+            textField.text = nil;
+            [self onTextFieldChange:nil];
+        }
     } else if (textField == _participantsTextField) {
         NSArray *participants = self.participantsList;
         textField.text = [participants componentsJoinedByString:@"; "];
@@ -242,23 +249,41 @@
     if (textField == _participantsTextField) {
         // Auto completion is active only when the change concerns the end of the current string
         if (range.location == textField.text.length) {
-            NSString *participants = [textField.text stringByReplacingCharactersInRange:range withString:string];
-            
             if ([string isEqualToString:@";"]) {
                 // Add '@' character
-                participants = [participants stringByAppendingString:@" @"];
+                textField.text = [textField.text stringByAppendingString:@"; @"];
+                // Update Create button status
+                [self onTextFieldChange:nil];
+                return NO;
             } else if ([string isEqualToString:@":"]) {
                 // Add homeserver
-                if ([MatrixHandler sharedHandler].homeServer) {
-                    participants = [participants stringByAppendingString:[MatrixHandler sharedHandler].homeServer];
-                }
+                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                // Update Create button status
+                [self onTextFieldChange:nil];
+                return NO;
             }
-            
-            textField.text = participants;
-            
-            // Update Create button status
-            [self onTextFieldChange:nil];
-            return NO;
+        }
+    } else if (textField == _roomAliasTextField) {
+        // Add # if none
+        if (!textField.text.length) {
+            if ([string isEqualToString:@"#"] == NO) {
+                if ([string isEqualToString:@":"]) {
+                    textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffix];
+                } else {
+                    textField.text = [NSString stringWithFormat:@"#%@",string];
+                }
+                // Update Create button status
+                [self onTextFieldChange:nil];
+                return NO;
+            }
+        } else {
+            // Add homeserver automatically when user adds ':' at the end
+            if (range.location == textField.text.length && [string isEqualToString:@":"]) {
+                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                // Update Create button status
+                [self onTextFieldChange:nil];
+                return NO;
+            }
         }
     }
     return YES;
@@ -315,29 +340,6 @@
              //Alert user
              [[AppDelegate theDelegate] showErrorAsAlert:error];
          }];
-    }
-}
-
-#pragma mark - scrollView delegate
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    // hide the keyboard if the user scrolls the public rooms list
-    if (!filteredPublicRooms) {
-        if ([self.roomNameTextField isFirstResponder]) {
-            [self.roomNameTextField resignFirstResponder];
-            [self.tableView becomeFirstResponder];
-        }
- 
-        if ([self.roomAliasTextField isFirstResponder]) {
-            [self.roomNameTextField resignFirstResponder];
-            [self.tableView becomeFirstResponder];
-        }
-        
-        if ([self.participantsTextField isFirstResponder]) {
-            [self.participantsTextField resignFirstResponder];
-            [self.tableView becomeFirstResponder];
-        }
     }
 }
 

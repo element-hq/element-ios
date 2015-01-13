@@ -18,7 +18,7 @@
 #import "MatrixHandler.h"
 
 NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
-NSString *const kFailedEventId = @"failedEventId";
+NSString *const kFailedEventIdPrefix = @"failedEventId-";
 
 @implementation RoomMessageComponent
 
@@ -51,9 +51,9 @@ NSString *const kFailedEventId = @"failedEventId";
             BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
                 _style = RoomMessageComponentStyleUnsupported;
-            } else if ([_eventId hasPrefix:kFailedEventId]) {
+            } else if ([_eventId hasPrefix:kFailedEventIdPrefix]) {
                 _style = RoomMessageComponentStyleFailed;
-            } else if (isIncomingMsg && !_isStateEvent && [self containsBingWord]) {
+            } else if (isIncomingMsg && !_isStateEvent && [mxHandler containsBingWord:_textMessage]) {
                 _style = RoomMessageComponentStyleBing;
             } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
                 _style = RoomMessageComponentStyleInProgress;
@@ -66,29 +66,6 @@ NSString *const kFailedEventId = @"failedEventId";
         }
     }
     return self;
-}
-
-- (BOOL)containsBingWord {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    NSString *pattern = nil;
-    if (mxHandler.mxSession.myUser.displayname.length) {
-        pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.mxSession.myUser.displayname];
-    }
-    if (mxHandler.localPartFromUserId.length) {
-        if (pattern) {
-            pattern = [NSString stringWithFormat:@"(%@|\\b%@\\b)", pattern, mxHandler.localPartFromUserId];
-        } else {
-            pattern = [NSString stringWithFormat:@"\\b%@\\b", mxHandler.localPartFromUserId];
-        }
-    }
-    
-    if (pattern) {
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
-        if ([regex numberOfMatchesInString:_textMessage options:0 range:NSMakeRange(0, [_textMessage length])]) {
-            return YES;
-        }
-    }
-    return NO;
 }
 
 - (NSDictionary*)stringAttributes {

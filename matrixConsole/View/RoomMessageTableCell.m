@@ -16,16 +16,178 @@
 
 #import "RoomMessageTableCell.h"
 #import "MediaManager.h"
+#import "PieChartView.h"
 
 @implementation RoomMessageTableCell
+
+- (void)dealloc {
+    // remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)updateProgressUI:(NSDictionary*)statisticsDict {
+    self.progressView.hidden = NO;
+    
+    NSString* downloadRate = [statisticsDict valueForKey:kMediaLoaderProgressDownloadRateKey];
+    NSString* remaingTime = [statisticsDict valueForKey:kMediaLoaderProgressRemaingTimeKey];
+    NSString* progressString = [statisticsDict valueForKey:kMediaLoaderProgressStringKey];
+    
+    NSMutableString* text = [[NSMutableString alloc] init];
+    
+    if (progressString) {
+        [text appendString:progressString];
+    }
+    
+    if (downloadRate) {
+        [text appendFormat:@"\n%@", downloadRate];
+    }
+    
+    if (remaingTime) {
+        [text appendFormat:@"\n%@", remaingTime];
+    }
+    
+    self.statsLabel.text = text;
+    
+    NSNumber* progressNumber = [statisticsDict valueForKey:kMediaLoaderProgressRateKey];
+    
+    if (progressNumber) {
+        self.progressChartView.progress = progressNumber.floatValue;
+    }
+}
+
+- (void)onMediaDownloadProgress:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:self.message.attachmentURL]) {
+            [self updateProgressUI:notif.userInfo];
+        }
+    }
+}
+
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:self.message.attachmentURL]) {
+            [self stopProgressUI];
+            
+            // the job is really over
+            if ([notif.name isEqualToString:kMediaDownloadDidFinishNotification]) {
+                // remove any pending observers
+                [[NSNotificationCenter defaultCenter] removeObserver:self];
+            }
+        }
+    }
+}
+
+- (void)startProgressUI {
+    
+    BOOL isHidden = YES;
+    
+    // remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    // there is an attachment URL
+    if (self.message.attachmentURL) {
+        
+        // check if there is a downlad in progress
+        MediaLoader *loader = [MediaManager existingDownloaderForURL:self.message.attachmentURL];
+        
+        NSDictionary *dict = loader.statisticsDict;
+        
+        if (dict) {
+            isHidden = NO;
+            
+            // defines the text to display
+            [self updateProgressUI:dict];
+        }
+        
+        // anyway listen to the progress event
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
+    }
+    
+    self.progressView.hidden = isHidden;
+}
+
+- (void)stopProgressUI {
+    self.progressView.hidden = YES;
+    
+    // do not remove the observer here
+    // the download could restart without recomposing the cell
+}
+
+- (void)cancelDownload {
+    // get the linked medida loader
+    MediaLoader *loader = [MediaManager existingDownloaderForURL:self.message.attachmentURL];
+    if (loader) {
+        [loader cancel];
+    }
+    
+    // ensure there is no more progress bar
+    [self stopProgressUI];
+}
 @end
 
 
 @implementation IncomingMessageTableCell
 @end
 
+@interface OutgoingMessageTableCell () {
+}
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@end
 
 @implementation OutgoingMessageTableCell
+
+- (void)dealloc {
+    [self stopAnimating];
+}
+
+-(void)startUploadAnimating {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUploadProgress:) name:kMediaUploadProgressNotification object:nil];
+    
+     self.activityIndicator.hidden = NO;
+    [self.activityIndicator startAnimating];
+    
+    MediaLoader *uploader = [MediaManager existingUploaderWithId:self.message.uploadId];
+    if (uploader && uploader.statisticsDict) {
+        self.activityIndicator.hidden = YES;
+        [self updateProgressUI:uploader.statisticsDict];
+    } else {
+        self.activityIndicator.hidden = NO;
+        self.progressView.hidden = YES;
+    }
+}
+
+
+-(void)stopAnimating {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaUploadProgressNotification object:nil];
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)onUploadProgress:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString *uploadId = notif.object;
+        if ([uploadId isEqualToString:self.message.uploadId]) {
+            self.activityIndicator.hidden = YES;
+            [self updateProgressUI:notif.userInfo];
+            
+            // the upload is ended
+            if (self.progressChartView.progress == 1.0) {
+                self.progressView.hidden = YES;
+            }
+        }
+    }
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     

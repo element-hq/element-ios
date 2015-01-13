@@ -89,44 +89,14 @@
 
     // display it
     self.powerContainer.hidden = NO;
-
-    // defines the view settings
-    CGFloat radius = self.powerContainer.frame.size.width / 2;
+    self.powerContainer.backgroundColor = [UIColor clearColor];
     
-    // draw a rounded view
-    [self.powerContainer.layer setCornerRadius:radius];
-    
-    // the default body color is gray
-    self.powerContainer.backgroundColor = [UIColor lightGrayColor];
-    
-    // draw the pie
-    CALayer* layer = [self.powerContainer layer];
-
-    // remove any previous drawn layer
-    if (powerContainerLayer) {
-        [powerContainerLayer removeFromSuperlayer];
+    if (!pieChartView) {
+        pieChartView = [[PieChartView alloc] initWithFrame:self.powerContainer.bounds];
+        [self.powerContainer addSubview:pieChartView];
     }
-
-    // create the red layer
-    powerContainerLayer = [CAShapeLayer layer];
-    [powerContainerLayer setZPosition:0];
-    [powerContainerLayer setStrokeColor:NULL];
-
-    // power level is drawn in red
-    powerContainerLayer.fillColor = [UIColor redColor].CGColor;
     
-    // build the path
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, radius, radius);
-    
-    CGPathAddArc(path, NULL, radius, radius, radius, -M_PI / 2, (progress * 2 * M_PI) - (M_PI / 2), 0);
-    CGPathCloseSubpath(path);
-    
-    [powerContainerLayer setPath:path];
-    CFRelease(path);
-
-    // add the sub layer
-    [layer addSublayer:powerContainerLayer];
+    pieChartView.progress = progress;
 }
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
@@ -134,9 +104,8 @@
         // set the user info
         self.userLabel.text = [room.state memberName:roomMember.userId];
         
-        // user
-        self.pictureView.placeholder = @"default-profile";
-        self.pictureView.imageURL = roomMember.avatarUrl;
+        // user thumbnail
+        [self.pictureView setImageURL:roomMember.avatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         
         // Round image view
         [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];
@@ -165,24 +134,7 @@
         } else {
             self.backgroundColor = [UIColor whiteColor];
             
-            // Handle power level display
-            //self.userPowerLevel.hidden = NO;
-            MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
-
-            int maxLevel = 0;
-            for (NSString *powerLevel in roomPowerLevels.users.allValues) {
-                int level = [powerLevel intValue];
-                if (level > maxLevel) {
-                    maxLevel = level;
-                }
-            }
-            NSUInteger userPowerLevel = [roomPowerLevels powerLevelOfUserWithUserID:roomMember.userId];
-            float userPowerLevelFloat = 0.0;
-            if (userPowerLevel) {
-                userPowerLevelFloat = userPowerLevel;
-            }
-
-            powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+            powerLevel = [[MatrixHandler sharedHandler] getPowerLevel:roomMember inRoom:room];
 
             // get the user presence and his thumbnail border color
             if (roomMember.membership == MXMembershipInvite) {

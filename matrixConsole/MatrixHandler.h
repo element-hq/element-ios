@@ -16,7 +16,16 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
+#define MX_PREFIX_CONTENT_URI  @"mxc://"
+
 extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
+
+typedef enum : NSUInteger {
+    MatrixHandlerStatusLoggedOut = 0,
+    MatrixHandlerStatusLogged,
+    MatrixHandlerStatusStoreDataReady,
+    MatrixHandlerStatusServerSyncDone
+} MatrixHandlerStatus;
 
 @interface MatrixHandler : NSObject
 
@@ -36,9 +45,12 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 // Matrix user's settings
 @property (nonatomic) MXPresence userPresence;
 
-@property (nonatomic,readonly) BOOL isLogged;
-@property (nonatomic,readonly) BOOL isInitialSyncDone;
+@property (nonatomic,readonly) MatrixHandlerStatus status;
 @property (nonatomic,readonly) BOOL isResumeDone;
+// return the MX cache size in bytes
+@property (nonatomic,readonly) NSUInteger MXCacheSize;
+// return the sum of the caches (MX cache + media cache ...)
+@property (nonatomic,readonly) NSUInteger cachesSize;
 
 + (MatrixHandler *)sharedHandler;
 
@@ -47,7 +59,7 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 - (void)logout;
 
 // Flush and restore Matrix data
-- (void)forceInitialSync;
+- (void)forceInitialSync:(BOOL)clearCache;
 
 - (void)enableInAppNotifications:(BOOL)isEnabled;
 
@@ -61,4 +73,13 @@ extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 // search if a 1:1 conversation has been started with this member
 - (NSString*) getRoomStartedWithMember:(MXRoomMember*)roomMember;
+
+- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
+
+// provide a non empty display name
+- (NSString*) getMXRoomMemberDisplayName:(MXRoomMember*)roomMember;
+
+// return YES if the text contains a bing word
+- (BOOL)containsBingWord:(NSString*)text;
+
 @end

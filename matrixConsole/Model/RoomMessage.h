@@ -20,6 +20,9 @@
 #define ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH 192
 #define ROOM_MESSAGE_TEXTVIEW_MARGIN 5
 
+extern NSString *const kRoomMessageLocalPreviewKey;
+extern NSString *const kRoomMessageUploadIdKey;
+
 typedef enum : NSUInteger {
     // Text type
     RoomMessageTypeText,
@@ -59,6 +62,14 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSDictionary *attachmentInfo;
 @property (nonatomic) NSString *thumbnailURL;
 @property (nonatomic) NSDictionary *thumbnailInfo;
+@property (nonatomic) NSString *previewURL;
+@property (nonatomic) NSString *uploadId;
+@property (nonatomic) CGFloat uploadProgress;
+
+// Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
+// In this case, some messages are temporary hidden
+// The following property is true when all components are hidden
+@property (nonatomic, readonly) BOOL isHidden;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState;
 
@@ -68,7 +79,8 @@ typedef enum : NSUInteger {
 // Remove the item defined with this event id
 // Return false if the event id is not found
 - (BOOL)removeEvent:(NSString*)eventId;
-
+// returns the component from the eventId
+- (RoomMessageComponent*)componentWithEventId:(NSString *)eventId;
 // Return true if the event id is one of the message items
 - (BOOL)containsEventId:(NSString*)eventId;
 

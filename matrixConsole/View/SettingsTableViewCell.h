@@ -27,3 +27,8 @@
 @interface SettingsTableCellWithTextView : SettingsTableViewCell
 @property (strong, nonatomic) IBOutlet UITextView *settingTextView;
 @end
+
+@interface SettingsCellWithLabelAndTextField : SettingsTableViewCell
+@property (strong, nonatomic) IBOutlet UILabel *settingLabel;
+@property (strong, nonatomic) IBOutlet UITextField *settingTextField;
+@end
