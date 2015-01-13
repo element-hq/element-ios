@@ -104,8 +104,6 @@ static APNSHandler *sharedHandler = nil;
                                @"url": @"http://localhost:5000/notify",
 #ifdef DEBUG
                                @"platform": @"sandbox",
-#else
-                               @"platform": @"prod",
 #endif
                               };
     
