@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -60,6 +60,9 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 </textView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_keyboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="eI7-Og-P0z" userLabel="typingBadge">
+                                                    <rect key="frame" x="5" y="0.0" width="20" height="20"/>
+                                                </imageView>
                                                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View" customClass="CustomImageView">
                                                     <rect key="frame" x="51" y="18" width="192" height="32"/>
                                                     <constraints>
@@ -168,6 +171,7 @@
                                             <outlet property="progressChartView" destination="pg4-aQ-7qW" id="pdM-fl-r2e"/>
                                             <outlet property="progressView" destination="yUK-od-5YZ" id="Qba-ld-tjt"/>
                                             <outlet property="statsLabel" destination="HFo-GV-TO9" id="pu0-DB-zgG"/>
+                                            <outlet property="typingBadge" destination="eI7-Og-P0z" id="4pK-nn-TBt"/>
                                             <outlet property="userNameLabel" destination="egJ-aY-QVW" id="IWg-7t-5Vp"/>
                                         </connections>
                                     </tableViewCell>
@@ -1302,6 +1306,7 @@
     </scenes>
     <resources>
         <image name="default-profile.png" width="160" height="160"/>
+        <image name="icon_keyboard.png" width="25" height="25"/>
         <image name="icon_users.png" width="35" height="25"/>
         <image name="logoHighRes.png" width="480" height="204"/>
         <image name="play.png" width="64" height="64"/>

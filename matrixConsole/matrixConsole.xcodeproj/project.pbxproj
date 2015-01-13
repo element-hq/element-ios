@@ -22,6 +22,8 @@
 		F02900BB1A63C71E00356F7D /* ConsoleTools.m in Sources */ = {isa = PBXBuildFile; fileRef = F02900BA1A63C71E00356F7D /* ConsoleTools.m */; };
 		F02BCE231A1A5A2B00543B47 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = F02BCE221A1A5A2B00543B47 /* play.png */; };
 		F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */; };
+		F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974A1A6580D70090BC00 /* icon_keyboard.png */; };
+		F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */; };
 		F03C47111A02952800E445AB /* CustomAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C47101A02952800E445AB /* CustomAlert.m */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */; };
@@ -92,6 +94,8 @@
 		F02BCE221A1A5A2B00543B47 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTableCell.h; sourceTree = "<group>"; };
 		F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTableCell.m; sourceTree = "<group>"; };
+		F030974A1A6580D70090BC00 /* icon_keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_keyboard.png; sourceTree = "<group>"; };
+		F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_keyboard@2x.png"; sourceTree = "<group>"; };
 		F03C470F1A02952800E445AB /* CustomAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAlert.h; sourceTree = "<group>"; };
 		F03C47101A02952800E445AB /* CustomAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAlert.m; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F030974A1A6580D70090BC00 /* icon_keyboard.png */,
+				F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */,
 				F05C3A3C1A3F3D7F002B698E /* icon_users.png */,
 				F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */,
 				F0F90C6A1A325ABF00455977 /* icon_search@2x.png */,
@@ -434,6 +440,8 @@
 				F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */,
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
+				F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */,
+				F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
 				F01628C319E29C660071C473 /* logo.png in Resources */,
 				F01628C119E29C660071C473 /* default-profile.png in Resources */,

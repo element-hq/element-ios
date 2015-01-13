@@ -62,6 +62,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Typing notification
     NSDate *lastTypingDate;
     NSTimer* typingTimer;
+    id typingNotifListener;
+    NSArray *typingUsers;
     
     // Back pagination
     BOOL isBackPaginationInProgress;
@@ -154,6 +156,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     lastTypingDate = nil;
     [typingTimer invalidate];
     typingTimer = nil;
+    if (typingNotifListener) {
+        [self.mxRoom removeListener:typingNotifListener];
+        typingNotifListener = nil;
+    }
+    typingUsers = nil;
     
     // Release local echo resources
     pendingOutgoingEvents = nil;
@@ -390,12 +397,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
-    // Remove potential listener
-    if (messagesListener && self.mxRoom) {
-        [self.mxRoom removeListener:messagesListener];
-        messagesListener = nil;
-        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+    if (self.mxRoom) {
+        // Remove potential listener
+        if (messagesListener){
+            [self.mxRoom removeListener:messagesListener];
+            messagesListener = nil;
+            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+            [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+        }
+        typingUsers = nil;
+        if (typingNotifListener) {
+            [self.mxRoom removeListener:typingNotifListener];
+        }
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
@@ -564,6 +577,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Display is refreshed at the end of back pagination (see onComplete block)
             }
         }];
+        
+        // Add typing notification listener
+        typingNotifListener = [self.mxRoom listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+            // Handle only live events
+            if (direction == MXEventDirectionForwards) {
+                // Refresh typing users list
+                typingUsers = self.mxRoom.typingUsers;
+                // Refresh tableView
+                [self.messagesTableView reloadData];
+            }
+        }];
+        typingUsers = self.mxRoom.typingUsers;
         
         // Trigger a back pagination by reseting first backState to get room history from live
         [self.mxRoom resetBackState];
@@ -1534,6 +1559,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Display user's display name except if the name appears in the displayed text (see emote and membership event)
         incomingMsgCell.userNameLabel.hidden = (shouldHideSenderInfo || message.startsWithSenderName);
         incomingMsgCell.userNameLabel.text = message.senderName;
+        // Set typing badge visibility
+        incomingMsgCell.typingBadge.hidden = (cell.pictureView.hidden || ([typingUsers indexOfObject:message.senderId] == NSNotFound));
     } else {
         // Add unsent label for failed components
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
