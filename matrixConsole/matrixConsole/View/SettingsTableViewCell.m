@@ -24,3 +24,6 @@
 
 @implementation SettingsTableCellWithTextView
 @end
+
+@implementation SettingsCellWithLabelAndTextField
+@end

@@ -20,6 +20,7 @@
 #import "RoomViewController.h"
 #import "MatrixHandler.h"
 #import "MediaManager.h"
+#import "SettingsViewController.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -52,6 +53,14 @@
             // IOS >= 8
             if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
                 navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+                
+                // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
+                // to avoid empty room View Controller in portrait orientation
+                // else, the user cannot select a room
+                // shouldHideViewController delegate method is also implemented
+                if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
+                    splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+                }
             }
             
             splitViewController.delegate = self;
@@ -67,8 +76,10 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if ([[MatrixHandler sharedHandler] isLogged]) {
+        if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
             [self registerUserNotificationSettings];
+            // When user is already logged, we launch the app on Recents
+            [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         }
     }
     return YES;
@@ -81,14 +92,14 @@
         [self.errorNotification dismiss:NO];
         self.errorNotification = nil;
     }
-    
-    // Suspend Matrix handler
-    [[MatrixHandler sharedHandler] pauseInBackgroundTask];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    // Suspend Matrix handler
+    [[MatrixHandler sharedHandler] pauseInBackgroundTask];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -192,7 +203,7 @@
     return self.errorNotification;
 }
 
-#pragma mark - Split view
+#pragma mark - SplitViewController delegate
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
     if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomId] == nil)) {
@@ -201,6 +212,36 @@
     } else {
         return NO;
     }
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+    // oniPad devices, force to display the primary and the secondary viewcontroller
+    // to avoid empty room View Controller in portrait orientation
+    // else, the user cannot select a room
+    return NO;
+}
+
+#pragma mark - UITabBarControllerDelegate delegate
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    BOOL res = YES;
+    UIViewController* currentViewController = [tabBarController.viewControllers objectAtIndex:tabBarController.selectedIndex];
+
+    if ([currentViewController isKindOfClass:[UINavigationController class]]) {
+        UIViewController *topViewController = ((UINavigationController*)currentViewController).topViewController;
+
+        // ask to the user to save unsaved profile updates
+        // before switching to another tab
+        if ([topViewController isKindOfClass:[SettingsViewController class]]) {
+            __block NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
+            
+            res = ![((SettingsViewController *)topViewController) checkPendingSave:^() {
+                tabBarController.selectedIndex = nextSelectedViewController;
+            }];
+        }
+    }
+    
+    return res;
 }
 
 @end

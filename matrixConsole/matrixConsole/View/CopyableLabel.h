@@ -16,23 +16,19 @@
 
 #import <UIKit/UIKit.h>
 
-// Customize UIView in order to display image defined with remote url. Zooming inside the image (Stretching) is supported.
-@interface CustomImageView : UIView <UIScrollViewDelegate>
+// Customize UIImageView in order to let UIImageView handle automatically remote url
+@interface CustomImageView : UIImageView
 
 typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
 
-- (void)setImageURL:(NSString *)imageURL withPreviewImage:(UIImage*)previewImage;
+@property (strong, nonatomic) NSString *placeholder;
+@property (strong, nonatomic) NSString *imageURL;
 
 // Use this boolean to hide activity indicator during image downloading
 @property (nonatomic) BOOL hideActivityIndicator;
 
 // Information about the media represented by this image (image, video...)
 @property (strong, nonatomic) NSDictionary *mediaInfo;
-
-@property (strong, nonatomic) UIImage *image;
-
-@property (nonatomic) BOOL stretchable;
-@property (nonatomic) BOOL fullScreen;
 
 // Let the user defines some custom buttons over the tabbar
 - (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;

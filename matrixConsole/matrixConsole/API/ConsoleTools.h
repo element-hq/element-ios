@@ -15,20 +15,13 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CustomImageView.h"
-#import "PieChartView.h"
 
-@class MXRoomMember;
-@class MXRoom;
+@interface ConsoleTools : NSObject
 
-// Room Member Table View Cell
-@interface RoomMemberTableCell : UITableViewCell {
-    PieChartView* pieChartView;
-}
-@property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
-@property (weak, nonatomic) IBOutlet UILabel *userLabel;
-@property (weak, nonatomic) IBOutlet UIView *powerContainer;
+// Time interval
++ (NSString*)formatSecondsInterval:(CGFloat)secondsInterval;
 
-- (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
+// Image
++ (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
+
 @end
-

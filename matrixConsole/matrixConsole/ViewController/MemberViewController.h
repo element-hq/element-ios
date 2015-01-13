@@ -15,20 +15,13 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CustomImageView.h"
-#import "PieChartView.h"
 
-@class MXRoomMember;
-@class MXRoom;
+#import "MatrixHandler.h"
 
-// Room Member Table View Cell
-@interface RoomMemberTableCell : UITableViewCell {
-    PieChartView* pieChartView;
-}
-@property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
-@property (weak, nonatomic) IBOutlet UILabel *userLabel;
-@property (weak, nonatomic) IBOutlet UIView *powerContainer;
+@interface MemberViewController : UITableViewController
 
-- (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
+@property (strong, nonatomic) MXRoomMember *mxRoomMember;
+@property (strong, nonatomic) MXRoom *mxRoom;
+
 @end
 

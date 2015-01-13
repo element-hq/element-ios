@@ -17,7 +17,7 @@
 #import <MatrixSDK/MatrixSDK.h>
 
 extern NSString *const kLocalEchoEventIdPrefix;
-extern NSString *const kFailedEventId;
+extern NSString *const kFailedEventIdPrefix;
 
 typedef enum : NSUInteger {
     RoomMessageComponentStyleDefault,

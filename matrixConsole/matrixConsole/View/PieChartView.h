@@ -15,20 +15,14 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CustomImageView.h"
-#import "PieChartView.h"
 
-@class MXRoomMember;
-@class MXRoom;
+@interface PieChartView : UIView
 
-// Room Member Table View Cell
-@interface RoomMemberTableCell : UITableViewCell {
-    PieChartView* pieChartView;
-}
-@property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
-@property (weak, nonatomic) IBOutlet UILabel *userLabel;
-@property (weak, nonatomic) IBOutlet UIView *powerContainer;
+// 0 -> 1
+@property (nonatomic) CGFloat progress;
 
-- (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
+@property (strong, nonatomic) UIColor* progressColor;
+@property (strong, nonatomic) UIColor* unprogressColor;
+
 @end
 

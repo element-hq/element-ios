@@ -18,7 +18,7 @@
 
 @class MXRoom;
 
-@interface RoomTitleView : UIView {
+@interface RoomTitleView : UIView<UIGestureRecognizerDelegate> {
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *displayNameTextField;
@@ -29,5 +29,11 @@
 @property (nonatomic) BOOL hiddenTopic;
 
 - (void)dismissKeyboard;
+
+// force to refresh the title display
+- (void)refreshDisplay;
+
+// return YES if the animation has been stopped
+- (BOOL)stopTopicAnimation;
 
 @end

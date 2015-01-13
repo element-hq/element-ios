@@ -27,6 +27,7 @@
     // Array of RecentRooms
     NSMutableArray  *recents;
     id               recentsListener;
+    NSUInteger       unreadCount;
     
     // Search
     UISearchBar     *recentsSearchBar;
@@ -37,6 +38,7 @@
     NSDateFormatter *dateFormatter;
     
     RoomViewController *currentRoomViewController;
+    BOOL                isVisible;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -72,6 +74,7 @@
     // Initialisation
     recents = nil;
     filteredRecents = nil;
+    unreadCount = 0;
     
     NSString *dateFormat = @"MMM dd HH:mm";
     dateFormatter = [[NSDateFormatter alloc] init];
@@ -80,7 +83,7 @@
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     [dateFormatter setDateFormat:dateFormat];
     
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isInitialSyncDone" options:0 context:nil];
+    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
 }
 
 - (void)dealloc {
@@ -100,7 +103,7 @@
     if (dateFormatter) {
         dateFormatter = nil;
     }
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isInitialSyncDone"];
+    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,11 +138,19 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    isVisible = YES;
+    
     // Release potential Room ViewController if none is visible (Note: check on room visibility is required to handle correctly splitViewController)
     if ([AppDelegate theDelegate].masterTabBarController.visibleRoomId == nil && currentRoomViewController) {
         currentRoomViewController.roomId = nil;
         currentRoomViewController = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    isVisible = NO;
 }
 
 #pragma mark -
@@ -182,15 +193,45 @@
 
 #pragma mark - Internal methods
 
+// remove the focus on a deleted room
+// when the view is splitted between the recents and the selected rooms
+- (void)checkSelectedRoomExists {
+    // IOS 8 only
+    if ([self.splitViewController respondsToSelector:@selector(isCollapsed)]) {
+        // there is a split view recents / chat view
+        if (!self.splitViewController.isCollapsed && currentRoomViewController.roomId) {
+            
+            // check if the room still exists
+            BOOL exists = NO;
+            
+            for(RecentRoom* recentRoom in recents) {
+                exists |= [recentRoom.roomId isEqualToString:currentRoomViewController.roomId];        
+            }
+            
+            // if it does not exist anymore
+            if (!exists) {
+                // release the room viewController
+                currentRoomViewController.roomId = nil;
+                currentRoomViewController = nil;
+                // delete the selected row
+                [self.tableView selectRowAtIndexPath:nil animated:NO scrollPosition: UITableViewScrollPositionNone];
+            }
+        }
+    }
+}
+
 - (void)configureView {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     [self startActivityIndicator];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kRecentRoomUpdatedByBackPagination object:nil];
     
-    if ([mxHandler isInitialSyncDone]) {
-        // Create/Update recents
-        if (mxHandler.mxSession) {
+    if (mxHandler.mxSession) {
+        // Check matrix handler status
+        if (mxHandler.status == MatrixHandlerStatusStoreDataReady) {
+            // Server sync is not complete yet
             if (!recents) {
+                // Retrieve recents from local storage (some data may not be up-to-date)
                 NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
                 recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
                 for (MXEvent *mxEvent in recentEvents) {
@@ -200,6 +241,21 @@
                         [recents addObject:recentRoom];
                     }
                 }
+                unreadCount = 0;
+            }
+        } else if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
+            // Force recents refresh and add listener to update them (if it is not already done)
+            if (!recentsListener) {
+                NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
+                recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
+                for (MXEvent *mxEvent in recentEvents) {
+                    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andRoomState:mxRoom.state markAsUnread:NO];
+                    if (recentRoom) {
+                        [recents addObject:recentRoom];
+                    }
+                }
+                unreadCount = 0;
                 
                 // Register recent listener
                 recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
@@ -227,6 +283,10 @@
                                         // Move this room at first position
                                         [recents removeObjectAtIndex:index];
                                         [recents insertObject:recentRoom atIndex:0];
+                                        if (isUnread) {
+                                            unreadCount++;
+                                            [self updateTitleView];
+                                        }
                                     }
                                 }
                                 break;
@@ -237,8 +297,14 @@
                             RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andRoomState:roomState markAsUnread:isUnread];
                             if (recentRoom) {
                                 [recents insertObject:recentRoom atIndex:0];
+                                if (isUnread) {
+                                    unreadCount++;
+                                    [self updateTitleView];
+                                }
                             }
                         }
+                        
+                        [self checkSelectedRoomExists];
                         
                         // Reload table
                         [self.tableView reloadData];
@@ -265,13 +331,31 @@
         [self.tableView reloadData];
     }
     
-    if (!recents) {
+    if (recents) {
+        // Add observer to force refresh when a recent last description is updated thanks to back pagination
+        // (This happens when the current last event description is blank, a back pagination is triggered to display non empty description)
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRecentRoomUpdatedByBackPagination) name:kRecentRoomUpdatedByBackPagination object:nil];
+    } else {
         // Remove potential listener
         if (recentsListener && mxHandler.mxSession) {
             [mxHandler.mxSession removeListener:recentsListener];
             recentsListener = nil;
         }
     }
+    
+    [self updateTitleView];
+}
+
+- (void)onRecentRoomUpdatedByBackPagination {
+    [self.tableView reloadData];
+}
+
+- (void)updateTitleView {
+    NSString *title = @"Recents";
+    if (unreadCount) {
+         title = [NSString stringWithFormat:@"Recents (%tu)", unreadCount];
+    }
+    self.navigationItem.title = title;
 }
 
 - (void)createNewRoom:(id)sender {
@@ -312,11 +396,11 @@
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"isInitialSyncDone" isEqualToString:keyPath]) {
+    if ([@"status" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
-            // Hide the activity indicator when Recents is not the current tab
-            if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX) {
+            // Hide the activity indicator when Recents is not visible
+            if (!isVisible) {
                 [self stopActivityIndicator];
             }
         });
@@ -359,7 +443,9 @@
         }
         
         // Reset unread count for this room
+        unreadCount -= recentRoom.unreadCount;
         [recentRoom resetUnreadCount];
+        [self updateTitleView];
         
         if (self.splitViewController) {
             // Refresh display (required in case of splitViewController)
@@ -440,7 +526,7 @@
     // set background color
     if (recentRoom.unreadCount) {
         cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
-        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%lu)", cell.roomTitle.text, (unsigned long)recentRoom.unreadCount];
+        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%tu)", cell.roomTitle.text, recentRoom.unreadCount];
     } else {
         cell.backgroundColor = [UIColor clearColor];
     }
@@ -454,6 +540,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         // Leave the selected room
         RecentRoom *recentRoom;
         if (filteredRecents) {
@@ -470,6 +557,8 @@
                 [recents removeObjectAtIndex:indexPath.row];
             }
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self checkSelectedRoomExists];
         } failure:^(NSError *error) {
             NSLog(@"Failed to leave room (%@) failed: %@", recentRoom.roomId, error);
             //Alert user

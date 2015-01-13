@@ -164,7 +164,10 @@
 
 - (void)dismiss:(BOOL)animated {
     if ([_alert isKindOfClass:[UIAlertController class]]) {
-        [parentViewController dismissViewControllerAnimated:animated completion:nil];
+        // only dismiss it if it is presented
+        if (parentViewController.presentedViewController == _alert) {
+            [parentViewController dismissViewControllerAnimated:animated completion:nil];
+        }
     } else if ([_alert isKindOfClass:[UIActionSheet class]]) {
         [((UIActionSheet *)_alert) dismissWithClickedButtonIndex:self.cancelButtonIndex animated:animated];
     } else if ([_alert isKindOfClass:[UIAlertView class]]) {
@@ -193,8 +196,11 @@
             block(self);
         });
     }
-    // Release alert reference
-    _alert = nil;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Release alert reference
+        _alert = nil;
+    });
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
@@ -208,8 +214,10 @@
             block(self);
         });
     }
-    // Release _alert reference
-    _alert = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Release _alert reference
+        _alert = nil;
+    });
 }
 
 @end

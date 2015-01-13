@@ -17,9 +17,12 @@
 #import "RecentRoom.h"
 #import "MatrixHandler.h"
 
+NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackPagination";
+
 @interface RecentRoom() {
     MXRoom *mxRoom;
     id backPaginationListener;
+    NSOperation *backPaginationOperation;
 }
 @end
 
@@ -40,9 +43,9 @@
                 backPaginationListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
                     // Handle only backward events (Sanity check: be sure that the description has not been set by an other way)
                     if (direction == MXEventDirectionBackwards && !_lastEventDescription.length) {
-                        if (![self updateWithLastEvent:event andRoomState:roomState markAsUnread:NO]) {
-                            // get back one more event
-                            [self triggerBackPagination];
+                        if ([self updateWithLastEvent:event andRoomState:roomState markAsUnread:NO]) {
+                            // Force recents refresh
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kRecentRoomUpdatedByBackPagination object:nil];
                         }
                     }
                 }];
@@ -83,8 +86,14 @@
 
 - (void)triggerBackPagination {
     if (mxRoom.canPaginate) {
-        [mxRoom paginateBackMessages:1 complete:^{
+        backPaginationOperation = [mxRoom paginateBackMessages:10 complete:^{
+            backPaginationOperation = nil;
+            // Check whether another back pagination is required
+            if (!_lastEventDescription.length) {
+                [self triggerBackPagination];
+            }
         } failure:^(NSError *error) {
+            backPaginationOperation = nil;
             NSLog(@"RecentRoom: Failed to paginate back: %@", error);
             [self cancelBackPagination];
         }];
@@ -98,6 +107,10 @@
         [mxRoom removeListener:backPaginationListener];
         backPaginationListener = nil;
         mxRoom = nil;
+    }
+    if (backPaginationOperation) {
+        [backPaginationOperation cancel];
+        backPaginationOperation = nil;
     }
 }
 

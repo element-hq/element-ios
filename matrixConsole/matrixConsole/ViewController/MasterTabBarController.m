@@ -60,7 +60,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (! [[MatrixHandler sharedHandler] isLogged]) {
+    if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusLoggedOut) {
         [self showLoginScreen];
     }
 }
@@ -122,6 +122,10 @@
     if (recentsViewController) {
         [recentsNavigationController popToViewController:recentsViewController animated:animated];
     }
+}
+
+- (BOOL)isPresentingMediaPicker {
+    return nil != mediaPicker;
 }
 
 - (void)presentMediaPicker:(UIImagePickerController*)aMediaPicker {
