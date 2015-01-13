@@ -16,8 +16,6 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
-#define MX_PREFIX_CONTENT_URI  @"mxc://"
-
 extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
 
 typedef enum : NSUInteger {
