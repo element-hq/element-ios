@@ -46,8 +46,9 @@
 
 - (void)refreshDisplay {
     if (_mxRoom) {
-        _displayNameTextField.text = (_mxRoom.state.displayname.length) ? _displayNameTextField.text : @" ";
-        _topicTextField.text = _mxRoom.state.topic;
+        // replace empty string by nil : avoid having the placeholder 'Room name" when there is no displayname
+        _displayNameTextField.text = (_mxRoom.state.displayname.length) ? _mxRoom.state.displayname : nil;
+        _topicTextField.text = (_mxRoom.state.topic) ? _mxRoom.state.topic : nil;
     } else {
         _displayNameTextField.text = nil;
         _topicTextField.text = nil;
