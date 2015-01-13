@@ -1080,7 +1080,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             
                             MediaLoader *videoUploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0.1 andRange:0.9];
                             [videoUploader uploadData:videoData mimeType:videoInfo[@"mimetype"] success:^(NSString *url) {
+                                // remove the related uploadLoader
                                 [MediaManager removeUploaderWithId:localEvent.eventId];
+                                // store the video file in the cache
+                                // there is no reason to download an oneself uploaded media
+                                [MediaManager cacheMediaData:videoData forURL:url andType:videoInfo[@"mimetype"]];
+                                
                                 [videoContent setValue:url forKey:@"url"];
                                 [videoContent setValue:videoInfo forKey:@"info"];
                                 [videoContent setValue:@"Video" forKey:@"body"];
