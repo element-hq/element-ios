@@ -167,9 +167,6 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 }
 
 - (IBAction)progressCheckTimeout:(id)sender {
-    // remove the bitrate -> can be invalid
-    [statisticsDict removeObjectForKey:kMediaLoaderProgressDownloadRateKey];
-        
     [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadProgressNotification object:mediaURL userInfo:statisticsDict];
     [progressCheckTimer invalidate];
     progressCheckTimer = nil;
