@@ -64,14 +64,10 @@ static NSAttributedString *messageSeparator = nil;
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
                 if (!_thumbnailURL) {
-                    if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
-                        // Build the url to get the well adapted thumbnail from server
-                        _thumbnailURL = _attachmentURL;
-                        NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@%@/thumbnail/", [mxHandler homeServerURL], kMXMediaPathPrefix];
-                        _thumbnailURL = [_thumbnailURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxThumbnailPrefix];
-                        // Add parameters
-                        _thumbnailURL = [NSString stringWithFormat:@"%@?width=%tu&height=%tu&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
-                    } else {
+                    // Build the url to get the well adapted thumbnail from server
+                    _thumbnailURL = [mxHandler.mxRestClient urlOfContentThumbnail:_attachmentURL withSize:self.contentSize andMethod:MXThumbnailingMethodScale];
+                    if (nil == _thumbnailURL) {
+                        // Manage backward compatibility. The thumbnail URL used to be an absolute HTTP URL
                         _thumbnailURL = _attachmentURL;
                     }
                 }

@@ -30,17 +30,6 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 @synthesize statisticsDict;
 
-- (NSString*)validateContentURL:(NSString*)contentURL {
-    // Detect matrix content url
-    if ([contentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
-        NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@%@/download/", [[MatrixHandler sharedHandler] homeServerURL], kMXMediaPathPrefix];
-        // Set actual url
-        return [contentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
-    }
-    
-    return contentURL;
-}
-
 - (void)cancel {
     // Cancel potential connection
     if (downloadConnection) {
@@ -83,7 +72,14 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     lastProgressEventTimeStamp = -1;
     
     // Start downloading
-    NSURL *url = [NSURL URLWithString:[self validateContentURL:aMediaURL]];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    NSString *absoluteMediaURL = [mxHandler.mxRestClient urlOfContent:aMediaURL];
+    if (nil == absoluteMediaURL) {
+        // Manage backward compatibility. The media URL used to be an absolute HTTP URL
+        absoluteMediaURL = aMediaURL;
+    }
+    NSURL *url = [NSURL URLWithString:absoluteMediaURL];
+
     downloadData = [[NSMutableData alloc] init];
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
