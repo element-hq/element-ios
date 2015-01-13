@@ -1153,6 +1153,9 @@
                                         <constraint firstItem="SAI-hV-Jai" firstAttribute="leading" secondItem="A3V-Y7-p1i" secondAttribute="leading" id="LTO-yi-5ts"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="settingTextView" destination="SAI-hV-Jai" id="7kp-Zv-MeL"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
