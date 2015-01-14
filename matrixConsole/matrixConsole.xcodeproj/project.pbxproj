@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710210691A665F7300364868 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210661A665F7300364868 /* HPGrowingTextView.m */; };
+		7102106A1A665F7300364868 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210681A665F7300364868 /* HPTextViewInternal.m */; };
 		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
@@ -69,6 +71,10 @@
 
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
+		710210651A665F7300364868 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HPGrowingTextView.h; path = External/GrowingTextView/class/HPGrowingTextView.h; sourceTree = "<group>"; };
+		710210661A665F7300364868 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HPGrowingTextView.m; path = External/GrowingTextView/class/HPGrowingTextView.m; sourceTree = "<group>"; };
+		710210671A665F7300364868 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HPTextViewInternal.h; path = External/GrowingTextView/class/HPTextViewInternal.h; sourceTree = "<group>"; };
+		710210681A665F7300364868 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HPTextViewInternal.m; path = External/GrowingTextView/class/HPTextViewInternal.m; sourceTree = "<group>"; };
 		71D2E4EA1A49814B000DE015 /* MemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberActionsCell.h; sourceTree = "<group>"; };
 		71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberActionsCell.m; sourceTree = "<group>"; };
 		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
@@ -170,6 +176,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		710210631A665F4E00364868 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				710210641A665F5C00364868 /* GrowingTextView */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
+		710210641A665F5C00364868 /* GrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				7102106B1A665FDD00364868 /* GrowingTextView */,
+				710210651A665F7300364868 /* HPGrowingTextView.h */,
+				710210661A665F7300364868 /* HPGrowingTextView.m */,
+				710210671A665F7300364868 /* HPTextViewInternal.h */,
+				710210681A665F7300364868 /* HPTextViewInternal.m */,
+			);
+			name = GrowingTextView;
+			sourceTree = "<group>";
+		};
+		7102106B1A665FDD00364868 /* GrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GrowingTextView;
+			path = External/GrowingTextView;
+			sourceTree = "<group>";
+		};
 		B18A10A9FB884DD357EBD414 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -302,6 +336,7 @@
 		F07A80D419DD9DE700B621A1 /* matrixConsole */ = {
 			isa = PBXGroup;
 			children = (
+				710210631A665F4E00364868 /* External */,
 				F021FBEC1A5EF57300EA3AE6 /* API */,
 				F0465AF71A251F85003639F9 /* Model */,
 				F03EF5FC19F1762000A0EE52 /* View */,
@@ -520,11 +555,13 @@
 				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
 				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
+				7102106A1A665F7300364868 /* HPTextViewInternal.m in Sources */,
 				F04EE51F1A3A01D500C64930 /* APNSHandler.m in Sources */,
 				F03C47111A02952800E445AB /* CustomAlert.m in Sources */,
 				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
 				F00B5DB91A1B9BCE00EA1C8D /* CustomImageView.m in Sources */,
+				710210691A665F7300364868 /* HPGrowingTextView.m in Sources */,
 				F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */,
 				F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */,
