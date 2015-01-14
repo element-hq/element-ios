@@ -586,6 +586,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 typingUsers = self.mxRoom.typingUsers;
                 // Refresh tableView
                 [self.messagesTableView reloadData];
+                if (members) {
+                    [self.membersTableView reloadData];
+                }
             }
         }];
         typingUsers = self.mxRoom.typingUsers;
@@ -1476,7 +1479,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (tableView == self.membersTableView) {
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
-            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:self.mxRoom];
+            MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
+            [memberCell setRoomMember:roomMember withRoom:self.mxRoom];
+            memberCell.typingBadge.hidden = ([typingUsers indexOfObject:roomMember.userId] == NSNotFound);
         }
         return memberCell;
     }
