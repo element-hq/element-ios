@@ -1506,7 +1506,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         if (indexPath.row < members.count) {
             MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
             [memberCell setRoomMember:roomMember withRoom:self.mxRoom];
-            memberCell.typingBadge.hidden = ([typingUsers indexOfObject:roomMember.userId] == NSNotFound);
+            if ([roomMember.userId isEqualToString:mxHandler.userId]) {
+                memberCell.typingBadge.hidden = YES; //hide typing badge for the current user
+            } else {
+                memberCell.typingBadge.hidden = ([typingUsers indexOfObject:roomMember.userId] == NSNotFound);
+            }
         }
         return memberCell;
     }
