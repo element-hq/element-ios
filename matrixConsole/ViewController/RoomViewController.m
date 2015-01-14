@@ -1377,7 +1377,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
             
             self.messagesTableView.contentInset = insets;
-            _controlViewBottomConstraint.constant = 0;
             [self.view layoutIfNeeded];
             
         } completion:^(BOOL finished) {
@@ -1912,13 +1911,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
     // margins between _messageTextView and its superview (controlView)
-    CGFloat margins = self.controlView.frame.size.height - _messageTextView.frame.size.height;
+    CGFloat controlViewHeight = height + self.controlView.frame.size.height - _messageTextView.frame.size.height;
     
     // update the controlView height
-    _controlViewHeightConstraint.constant = height + margins;
+    _controlViewHeightConstraint.constant = controlViewHeight;
     
     // the tableview must be scrolled up to adapt its size to the growing textview
-    _messagesTableViewBottomConstraint.constant = height + margins;
+    _messagesTableViewBottomConstraint.constant = controlViewHeight;
+    
+    // if the keyboard is not displayed
+    if (!isKeyboardDisplayed) {
+        // messagesTableView content inset needs to be set to the new bottom view height
+        UIEdgeInsets insets = self.messagesTableView.contentInset;
+        insets.bottom = controlViewHeight;
+        self.messagesTableView.contentInset = insets;
+    } //else self.messagesTableView.contentInset is equal to the keyboard height
     
     // scroll to bottom if the user did not scroll to the last 5 pixels of the tableview
     // add a little margin to avoid approximated values issue
