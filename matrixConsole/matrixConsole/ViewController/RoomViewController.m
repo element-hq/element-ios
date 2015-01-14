@@ -180,6 +180,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
         [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     self.mxRoom = nil;
@@ -403,6 +404,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self.mxRoom removeListener:messagesListener];
             messagesListener = nil;
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+            [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
             [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
         }
         typingUsers = nil;
@@ -447,6 +449,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
+        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
@@ -733,7 +736,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)stopActivityIndicator {
     // Check whether all conditions are satisfied before stopping loading wheel
-    if ([[MatrixHandler sharedHandler] isResumeDone] && !isBackPaginationInProgress && !isJoinRequestInProgress) {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    if (mxHandler.status == MatrixHandlerStatusServerSyncDone && mxHandler.isResumeDone && !isBackPaginationInProgress && !isJoinRequestInProgress) {
         [_activityIndicator stopAnimating];
     }
 }
@@ -745,6 +749,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
+    } else if ([@"status" isEqualToString:keyPath]) {
+        if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusServerSyncDone) {
+            [self stopActivityIndicator];
+        } else {
+            [self startActivityIndicator];
+        }
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
         if ([[MatrixHandler sharedHandler] isResumeDone]) {
             [self stopActivityIndicator];
