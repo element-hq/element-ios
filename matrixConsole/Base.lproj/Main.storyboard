@@ -60,8 +60,12 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 </textView>
-                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_keyboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="eI7-Og-P0z" userLabel="typingBadge">
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_keyboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="eI7-Og-P0z" userLabel="typingBadge">
                                                     <rect key="frame" x="5" y="0.0" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="O3f-eX-OZW"/>
+                                                        <constraint firstAttribute="width" constant="20" id="paH-au-BZZ"/>
+                                                    </constraints>
                                                 </imageView>
                                                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View" customClass="CustomImageView">
                                                     <rect key="frame" x="51" y="18" width="192" height="32"/>
@@ -150,10 +154,12 @@
                                                 <constraint firstAttribute="trailing" secondItem="Ttt-0P-dQW" secondAttribute="trailing" id="mJg-Df-CWQ"/>
                                                 <constraint firstAttribute="bottom" secondItem="mvK-ez-meg" secondAttribute="bottom" id="mPQ-LG-kca"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
+                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="5" id="oNB-8O-Q69"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="10" id="rJt-w3-D8g"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="wym-In-Raa"/>
                                                 <constraint firstAttribute="bottom" secondItem="ds0-yH-8Uu" secondAttribute="bottom" id="x7P-Ah-yBo"/>
                                                 <constraint firstAttribute="trailing" secondItem="egJ-aY-QVW" secondAttribute="trailing" constant="69" id="xbW-GK-B0H"/>
+                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="xlz-kh-vxM"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="51" id="ywS-ns-jXj"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -395,6 +401,13 @@
                                                                 <constraint firstAttribute="width" constant="14" id="pnc-pv-ZIj"/>
                                                             </constraints>
                                                         </view>
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_keyboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-Jk-E9g" userLabel="typingBadge">
+                                                            <rect key="frame" x="5" y="0.0" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="20" id="PTQ-vb-uut"/>
+                                                                <constraint firstAttribute="height" constant="20" id="kSo-JS-5Zy"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="6La-Gc-4B8"/>
@@ -405,7 +418,9 @@
                                                         <constraint firstAttribute="trailing" secondItem="wDo-tA-Ar7" secondAttribute="trailing" constant="21" id="cAm-Af-t17"/>
                                                         <constraint firstItem="uVK-4R-arl" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="cFa-Qa-p2W"/>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="8" id="hXV-sM-uhV"/>
+                                                        <constraint firstItem="Qqy-Jk-E9g" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="5" id="isg-iP-lxS"/>
                                                         <constraint firstAttribute="bottom" secondItem="uVK-4R-arl" secondAttribute="bottom" constant="10" id="l5F-M4-LOB"/>
+                                                        <constraint firstItem="Qqy-Jk-E9g" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" id="lAg-ta-D5f"/>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
@@ -417,6 +432,7 @@
                                                 <connections>
                                                     <outlet property="pictureView" destination="RW8-nh-DTj" id="1Lk-bd-tKv"/>
                                                     <outlet property="powerContainer" destination="wDo-tA-Ar7" id="sub-O0-L9d"/>
+                                                    <outlet property="typingBadge" destination="Qqy-Jk-E9g" id="I9v-f3-iFB"/>
                                                     <outlet property="userLabel" destination="uVK-4R-arl" id="OhP-VD-vj0"/>
                                                     <segue destination="qlN-Mb-ZH7" kind="show" identifier="showMemberSheet" id="QMI-Ay-tFz"/>
                                                 </connections>
