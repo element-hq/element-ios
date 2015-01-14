@@ -89,13 +89,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL isKeyboardObserver;
     BOOL isKeyboardDisplayed;
     
+    // default contraint values
+    CGFloat defaultMessagesTableViewBottomConstraint;
+    CGFloat defaultControlViewBottomConstraint;
+    
+    // save the last edited text
+    // do not send unexpected typing events
+    // HPGrowingTextView triggers growingTextViewDidChange event when it recomposes itself
+    NSString* lastEditedText;
+    
     // Date formatter (nil if dateTime info is hidden)
     NSDateFormatter *dateFormatter;
     
     // Local echo
     NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
-    
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -105,7 +113,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
 @property (weak, nonatomic) IBOutlet HPGrowingTextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messagesTableViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
@@ -152,11 +162,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // during a screen rotation for example.
     self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
+    // default contraint values
+    defaultMessagesTableViewBottomConstraint = _messagesTableViewBottomConstraint.constant;
+    defaultControlViewBottomConstraint = _controlViewBottomConstraint.constant;
+    
     // draw a rounded border around the textView
     self.messageTextView.layer.cornerRadius = 5;
     self.messageTextView.layer.borderWidth = 1;
     self.messageTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.messageTextView.clipsToBounds = YES;
+    lastEditedText = self.messageTextView.text;
 }
 
 - (void)dealloc {
@@ -1216,8 +1231,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)onOrientationChanged:(NSNotification *)notif {
     if (!isKeyboardDisplayed) {
-        _messageTextView.maxHeight = (self.view.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height) * 0.7;
-        _messageTextView.text =  _messageTextView.text;
+        // compute the visible area (tableview + text input)
+        // the tableview must use at least 50 pixels to let the user hides the keybaord
+        CGFloat maxTextHeight = (self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
+        
+        _messageTextView.maxHeight = maxTextHeight;
+        [_messageTextView refreshHeight];
         
         [self scrollToBottomAnimated:YES];
     }
@@ -1258,7 +1277,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
-    CGFloat maxTextHeight = (self.view.frame.size.height - insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height) * 0.7;
+    isKeyboardDisplayed = YES;
+    
+    // compute the visible area (tableview + text input)
+    // the tableview must use at least 50 pixels to let the user hides the keybaord
+    CGFloat maxTextHeight = (self.view.frame.size.height - insets.bottom - self.navigationController.navigationBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         
@@ -1277,14 +1300,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // update the text input frame
         _messageTextView.maxHeight = maxTextHeight;
-        _messageTextView.text =  _messageTextView.text;
+        [_messageTextView refreshHeight];
         
     } completion:^(BOOL finished) {
         // be warned when the keyboard frame is updated
+        // used to trap the slide to close the keyboard
         [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
         [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
         isKeyboardObserver = YES;
-        isKeyboardDisplayed = YES;
     }];
 }
 
@@ -1311,33 +1334,57 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     rectVal = notif.userInfo[UIKeyboardFrameBeginUserInfoKey];
     CGRect beginRect = rectVal.CGRectValue;
     
-    // IOS 8 triggers some unexpected keyboard events
-    // it makes no sense if there is no update to animate
-    if (CGRectEqualToRect(endRect, beginRect)) {
+    // IOS 7/8 triggers some unexpected keyboard events
+    if (!isKeyboardDisplayed) {
         return;
     }
-    
-    // get the animation info
-    NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    // the duration is ignored but it is better to define it
-    double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     insets.bottom = self.controlView.frame.size.height;
     
     isKeyboardDisplayed = NO;
     
-    // animate the keyboard closing
-    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
-        self.messagesTableView.contentInset = insets;
+    // do not animate if the both rect are the same
+    // but ensure that the fields are properly resetted
+    // e.g. when the user swipes to hide the keyboard
+    // this method is called with invalid rects
+    // animationDuration is ignored because of the animation curve
+    // use it to be sure that it will be broken with any new IOS update
+    if (CGRectEqualToRect(endRect, beginRect)) {
         
-        _controlViewBottomConstraint.constant = 0;
-        [self scrollToBottomAnimated:NO];
+        self.messagesTableView.contentInset = insets;
+        _controlViewBottomConstraint.constant = defaultControlViewBottomConstraint;
+        _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
+        
         [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-    }];
+        
+        // update the text input height
+        [self onOrientationChanged:nil];
+        
+    } else {
+        
+        // get the animation info
+        NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+        UIViewAnimationCurve animationCurve = curveValue.intValue;
+        
+        // the duration is ignored but it is better to define it
+        double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        // animate the keyboard closing
+        [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
+            
+            _controlViewBottomConstraint.constant = defaultControlViewBottomConstraint;
+            _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
+            
+            self.messagesTableView.contentInset = insets;
+            _controlViewBottomConstraint.constant = 0;
+            [self.view layoutIfNeeded];
+            
+        } completion:^(BOOL finished) {
+            // update the text input height
+            [self onOrientationChanged:nil];
+        }];
+    }
 }
 
 - (void)dismissKeyboard {
@@ -1803,6 +1850,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             yPosition += component.height;
         }
     }
+    
     return cell;
 }
 
@@ -1832,10 +1880,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - HPGrowingTextView delegate
 
-- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView {
-    
-}
-
 - (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView {
     if (growingTextView == _messageTextView) {
         [self handleTypingNotification:NO];
@@ -1846,93 +1890,43 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (growingTextView == _messageTextView) {
         NSString *msg = _messageTextView.text;
         
-        if (msg.length) {
-            [self handleTypingNotification:YES];
-            _sendBtn.enabled = YES;
-            _sendBtn.alpha = 1;
-            // Reset potential placeholder (used in case of wrong command usage)
-            _messageTextView.placeholder = nil;
-        } else {
-            [self handleTypingNotification:NO];
-            _sendBtn.enabled = NO;
-            _sendBtn.alpha = 0.5;
+        // save the last edited text
+        // to do not send unexpected typing events
+        // HPGrowingTextView triggers growingTextViewDidChange event when it recomposes itself
+        if (![lastEditedText isEqualToString:msg]) {
+            lastEditedText = msg;
+            if (msg.length) {
+                [self handleTypingNotification:YES];
+                _sendBtn.enabled = YES;
+                _sendBtn.alpha = 1;
+                // Reset potential placeholder (used in case of wrong command usage)
+                _messageTextView.placeholder = nil;
+            } else {
+                [self handleTypingNotification:NO];
+                _sendBtn.enabled = NO;
+                _sendBtn.alpha = 0.5;
+            }
         }
     }
 }
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
-    NSLayoutConstraint* controlViewheightCont = nil;
+    // margins between _messageTextView and its superview (controlView)
+    CGFloat margins = self.controlView.frame.size.height - _messageTextView.frame.size.height;
     
-    // textview offsets
-    CGFloat bottomOffset = 0;
-    CGFloat topOffset = 0;
+    // update the controlView height
+    _controlViewHeightConstraint.constant = height + margins;
     
-    for(NSLayoutConstraint* constraint in self.controlView.constraints)
-    {
-        if ((NSLayoutAttributeHeight == constraint.firstAttribute) && (NSLayoutAttributeNotAnAttribute == constraint.secondAttribute) && (constraint.firstItem == self.controlView) &&  (!constraint.secondItem)) {
-            controlViewheightCont = constraint;
-        }
-        else if ((constraint.firstItem == self.controlView) && (constraint.secondItem == growingTextView)) {
-            if (NSLayoutAttributeBottom == constraint.firstAttribute) {
-                bottomOffset = constraint.constant;
-            }
-        }
-        else if ((constraint.secondItem == self.controlView) && (constraint.firstItem == growingTextView)) {
-            if (NSLayoutAttributeTop == constraint.firstAttribute) {
-                topOffset = constraint.constant;
-            }
-        }
-    }
+    // the tableview must be scrolled up to adapt its size to the growing textview
+    _messagesTableViewBottomConstraint.constant = height + margins;
     
-    // sanity check
-    if (controlViewheightCont) {
-        NSLayoutConstraint* newControlHeightCont = [NSLayoutConstraint constraintWithItem:controlViewheightCont.firstItem
-                                                                         attribute:controlViewheightCont.firstAttribute
-                                                                         relatedBy:controlViewheightCont.relation
-                                                                            toItem:controlViewheightCont.secondItem
-                                                                         attribute:controlViewheightCont.secondAttribute
-                                                                        multiplier:controlViewheightCont.multiplier
-                                                                          constant:height + topOffset + bottomOffset];
-        
-        
-        // update the contrains of the controlView
-        [self.controlView removeConstraint:controlViewheightCont];
-        [self.controlView addConstraint:newControlHeightCont];
-        
-        // tableViewContrains
-        NSLayoutConstraint* bottomTableViewContrains = nil;
-        for(NSLayoutConstraint* constraint in self.view.constraints)
-        {
-            if ((constraint.firstItem == self.view) && (constraint.secondItem == self.messagesTableView)) {
-                if (NSLayoutAttributeBottom == constraint.firstAttribute) {
-                    bottomTableViewContrains = constraint;
-                    break;
-                }
-            }
-        }
-        
-        if (bottomTableViewContrains) {
-            NSLayoutConstraint* newBottomCont = [NSLayoutConstraint constraintWithItem:bottomTableViewContrains.firstItem
-                                                                                    attribute:bottomTableViewContrains.firstAttribute
-                                                                                    relatedBy:bottomTableViewContrains.relation
-                                                                                       toItem:bottomTableViewContrains.secondItem
-                                                                                    attribute:bottomTableViewContrains.secondAttribute
-                                                                                   multiplier:bottomTableViewContrains.multiplier
-                                                                                     constant:height + topOffset + bottomOffset];
-            
-            // update the contrains of the controlView
-            [self.view removeConstraint:bottomTableViewContrains];
-            [self.view addConstraint:newBottomCont];
-        }
-        
-        // scroll to bottom if the user scrolls to the last 5 pixels of the tableview
-        // add a little margin to avoid approximated values issue
-        if ((self.messagesTableView.contentSize.height - self.messagesTableView.contentOffset.y - 5) <= (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom)) {
-            // force to render the view
-            [self.view layoutIfNeeded];
-            // to have a valid sscroll to bottom
-            [self scrollToBottomAnimated:NO];
-        }
+    // scroll to bottom if the user did not scroll to the last 5 pixels of the tableview
+    // add a little margin to avoid approximated values issue
+    if ((self.messagesTableView.contentSize.height - self.messagesTableView.contentOffset.y - 5) <= (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom)) {
+        // force to render the view
+        [self.view layoutIfNeeded];
+        // to have a valid sscroll to bottom
+        [self scrollToBottomAnimated:NO];
     }
 }
 

@@ -521,11 +521,13 @@
                         <outlet property="activityIndicator" destination="dvT-c5-Ymf" id="F6h-Al-Vw6"/>
                         <outlet property="controlView" destination="6fM-aJ-d0M" id="13g-Wl-z5n"/>
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
+                        <outlet property="controlViewHeightConstraint" destination="tGp-dw-uAO" id="hx8-ri-zYa"/>
                         <outlet property="membersListButtonItem" destination="3d6-ln-ICU" id="KtB-5h-eJl"/>
                         <outlet property="membersTableView" destination="pLY-I9-ghF" id="Ioc-IJ-WYX"/>
                         <outlet property="membersView" destination="OWi-J8-sFZ" id="3n2-n5-r6B"/>
                         <outlet property="messageTextView" destination="UVo-EY-Nyg" id="zc1-ch-1Mf"/>
                         <outlet property="messagesTableView" destination="meV-kn-sxo" id="W1n-q0-ml7"/>
+                        <outlet property="messagesTableViewBottomConstraint" destination="Cos-M5-WHG" id="uv8-tO-HiR"/>
                         <outlet property="optionBtn" destination="cfF-YG-Cvg" id="Ppb-dg-Tub"/>
                         <outlet property="roomNavItem" destination="3Zt-Wl-J6o" id="gjB-fs-Whw"/>
                         <outlet property="roomTitleView" destination="aas-th-FW1" id="nN7-6S-FR3"/>
