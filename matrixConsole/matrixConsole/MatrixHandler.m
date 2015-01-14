@@ -502,6 +502,22 @@ static MatrixHandler *sharedHandler = nil;
     return NO;
 }
 
+#pragma mark -
+
+- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod {
+    // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+    // Convert first the provided size in pixels
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize sizeInPixels = CGSizeMake(viewSize.width * scale, viewSize.height * scale);
+    NSString *thumbnailURL = [self.mxRestClient urlOfContentThumbnail:contentURI withSize:sizeInPixels andMethod:thumbnailingMethod];
+    if (nil == thumbnailURL) {
+        // Manage backward compatibility. The content URL used to be an absolute HTTP URL
+        thumbnailURL = contentURI;
+    }
+    return thumbnailURL;
+}
+
+#pragma mark -
 
 - (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState {
     // Consider first the current display name defined in provided room state (Note: this room state is supposed to not take the new event into account)
@@ -833,10 +849,6 @@ static MatrixHandler *sharedHandler = nil;
     }
 
     return powerLevel;
-}
-
-- (NSString*)getMXRoomMemberDisplayName:(MXRoomMember*)roomMember {
-    return roomMember.displayname.length == 0 ? roomMember.userId : roomMember.displayname;
 }
 
 // return YES if the text contains a bing word

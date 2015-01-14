@@ -64,18 +64,19 @@ typedef enum : NSUInteger {
 - (BOOL)isSupportedAttachment:(MXEvent*)event;
 - (BOOL)isEmote:(MXEvent*)event;
 
+// Return the suitable url to display the content thumbnail into the provided view size
+// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
+- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
+
 // Note: the room state expected by the 3 following methods is the room state right before handling the event
 - (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
 
 // search if a 1:1 conversation has been started with this member
-- (NSString*) getRoomStartedWithMember:(MXRoomMember*)roomMember;
+- (NSString*)getRoomStartedWithMember:(MXRoomMember*)roomMember;
 
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
-
-// provide a non empty display name
-- (NSString*) getMXRoomMemberDisplayName:(MXRoomMember*)roomMember;
 
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text;

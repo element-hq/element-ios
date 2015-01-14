@@ -21,6 +21,7 @@
 #import "MediaManager.h"
 
 @interface MemberViewController () {
+    NSString *thumbnailURL;
     MediaLoader* imageLoader;
     id membersListener;
     
@@ -164,15 +165,19 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (_mxRoomMember.avatarUrl) {
+        // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        thumbnailURL = [mxHandler thumbnailURLForContent:_mxRoomMember.avatarUrl inViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
+        
         // Check whether the image download is in progress
-        id loader = [MediaManager existingDownloaderForURL:_mxRoomMember.avatarUrl];
+        id loader = [MediaManager existingDownloaderForURL:thumbnailURL];
         if (loader) {
             // Add observers
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
         } else {
             // Retrieve the image from cache
-            UIImage* image = [MediaManager loadCachePictureForURL:_mxRoomMember.avatarUrl];
+            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL];
             if (image) {
                 [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
                 [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
@@ -184,7 +189,7 @@
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                imageLoader = [MediaManager downloadMediaFromURL:_mxRoomMember.avatarUrl withType:@"image/jpeg"];
+                imageLoader = [MediaManager downloadMediaFromURL:thumbnailURL withType:@"image/jpeg"];
             }
         }
     } else {
@@ -203,9 +208,9 @@
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
         
-        if ([url isEqualToString:_mxRoomMember.avatarUrl]) {
+        if ([url isEqualToString:thumbnailURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:_mxRoomMember.avatarUrl];
+            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }
