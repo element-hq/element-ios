@@ -123,9 +123,9 @@ static MatrixHandler *sharedHandler = nil;
             [self.mxSession start:^{
                 self.status = MatrixHandlerStatusStoreDataReady;
             } onServerSyncDone:^{
+                _isResumeDone = YES;
                 self.status = MatrixHandlerStatusServerSyncDone;
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
-                _isResumeDone = YES;
 
                 // Register listener to update user's information
                 userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
