@@ -87,6 +87,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // used to trap the slide to close the keyboard
     UIView* inputAccessoryView;
     BOOL isKeyboardObserver;
+    BOOL isKeyboardDisplayed;
     
     // Date formatter (nil if dateTime info is hidden)
     NSDateFormatter *dateFormatter;
@@ -102,7 +103,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
-@property (weak, nonatomic) IBOutlet UITextField *messageTextField;
+@property (weak, nonatomic) IBOutlet HPGrowingTextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -145,11 +146,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // add an input to check if the keyboard is hiding with sliding it
     inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.messageTextField.inputAccessoryView = inputAccessoryView;
+    self.messageTextView.internalTextView.inputAccessoryView = inputAccessoryView;
     
     // ensure that the titleView will be scaled when it will be required
     // during a screen rotation for example.
     self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // draw a rounded border around the textView
+    self.messageTextView.layer.cornerRadius = 5;
+    self.messageTextView.layer.borderWidth = 1;
+    self.messageTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.messageTextView.clipsToBounds = YES;
 }
 
 - (void)dealloc {
@@ -204,7 +211,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         dateFormatter = nil;
     }
     
-    self.messageTextField.inputAccessoryView = inputAccessoryView = nil;
+    if (_messageTextView) {
+        
+        _messageTextView.internalTextView.inputAccessoryView = inputAccessoryView = nil;
+        _messageTextView.delegate = nil;
+        _messageTextView = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -252,10 +264,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }];
     
+    self.messageTextView.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onOrientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -271,6 +284,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Hide members by default
     [self hideRoomMembers];
     
+    self.messageTextView.delegate = nil;
+
     // slide to hide keyboard management
     if (isKeyboardObserver) {
         [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
@@ -286,9 +301,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         membersListener = nil;
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -1200,6 +1214,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - Keyboard handling
 
+- (void)onOrientationChanged:(NSNotification *)notif {
+    if (!isKeyboardDisplayed) {
+        _messageTextView.maxHeight = (self.view.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height) * 0.7;
+        _messageTextView.text =  _messageTextView.text;
+        
+        [self scrollToBottomAnimated:YES];
+    }
+}
+
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     // get the keyboard size
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
@@ -1235,6 +1258,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
+    CGFloat maxTextHeight = (self.view.frame.size.height - insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height) * 0.7;
+    
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         
         // Move up control view
@@ -1250,11 +1275,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // force to redraw the layout (else _controlViewBottomConstraint.constant will not be animated)
         [self.view layoutIfNeeded];
         
+        // update the text input frame
+        _messageTextView.maxHeight = maxTextHeight;
+        _messageTextView.text =  _messageTextView.text;
+        
     } completion:^(BOOL finished) {
         // be warned when the keyboard frame is updated
         [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
         [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
         isKeyboardObserver = YES;
+        isKeyboardDisplayed = YES;
     }];
 }
 
@@ -1297,20 +1327,22 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     insets.bottom = self.controlView.frame.size.height;
     
+    isKeyboardDisplayed = NO;
+    
     // animate the keyboard closing
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         self.messagesTableView.contentInset = insets;
         
         _controlViewBottomConstraint.constant = 0;
+        [self scrollToBottomAnimated:NO];
         [self.view layoutIfNeeded];
-        
     } completion:^(BOOL finished) {
     }];
 }
 
 - (void)dismissKeyboard {
     // Hide the keyboard
-    [_messageTextField resignFirstResponder];
+    [_messageTextView resignFirstResponder];
     [_roomTitleView dismissKeyboard];
 }
 
@@ -1798,17 +1830,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
-#pragma mark - UITextField delegate
+#pragma mark - HPGrowingTextView delegate
 
-- (void)onTextFieldChange:(NSNotification *)notification {
-    if (notification.object == _messageTextField) {
-        NSString *msg = _messageTextField.text;
+- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView {
+    
+}
+
+- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView {
+    if (growingTextView == _messageTextView) {
+        [self handleTypingNotification:NO];
+    }
+}
+
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
+    if (growingTextView == _messageTextView) {
+        NSString *msg = _messageTextView.text;
+        
         if (msg.length) {
             [self handleTypingNotification:YES];
             _sendBtn.enabled = YES;
             _sendBtn.alpha = 1;
             // Reset potential placeholder (used in case of wrong command usage)
-            _messageTextField.placeholder = nil;
+            _messageTextView.placeholder = nil;
         } else {
             [self handleTypingNotification:NO];
             _sendBtn.enabled = NO;
@@ -1816,6 +1859,84 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
 }
+
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
+    NSLayoutConstraint* controlViewheightCont = nil;
+    
+    // textview offsets
+    CGFloat bottomOffset = 0;
+    CGFloat topOffset = 0;
+    
+    for(NSLayoutConstraint* constraint in self.controlView.constraints)
+    {
+        if ((NSLayoutAttributeHeight == constraint.firstAttribute) && (NSLayoutAttributeNotAnAttribute == constraint.secondAttribute) && (constraint.firstItem == self.controlView) &&  (!constraint.secondItem)) {
+            controlViewheightCont = constraint;
+        }
+        else if ((constraint.firstItem == self.controlView) && (constraint.secondItem == growingTextView)) {
+            if (NSLayoutAttributeBottom == constraint.firstAttribute) {
+                bottomOffset = constraint.constant;
+            }
+        }
+        else if ((constraint.secondItem == self.controlView) && (constraint.firstItem == growingTextView)) {
+            if (NSLayoutAttributeTop == constraint.firstAttribute) {
+                topOffset = constraint.constant;
+            }
+        }
+    }
+    
+    // sanity check
+    if (controlViewheightCont) {
+        NSLayoutConstraint* newControlHeightCont = [NSLayoutConstraint constraintWithItem:controlViewheightCont.firstItem
+                                                                         attribute:controlViewheightCont.firstAttribute
+                                                                         relatedBy:controlViewheightCont.relation
+                                                                            toItem:controlViewheightCont.secondItem
+                                                                         attribute:controlViewheightCont.secondAttribute
+                                                                        multiplier:controlViewheightCont.multiplier
+                                                                          constant:height + topOffset + bottomOffset];
+        
+        
+        // update the contrains of the controlView
+        [self.controlView removeConstraint:controlViewheightCont];
+        [self.controlView addConstraint:newControlHeightCont];
+        
+        // tableViewContrains
+        NSLayoutConstraint* bottomTableViewContrains = nil;
+        for(NSLayoutConstraint* constraint in self.view.constraints)
+        {
+            if ((constraint.firstItem == self.view) && (constraint.secondItem == self.messagesTableView)) {
+                if (NSLayoutAttributeBottom == constraint.firstAttribute) {
+                    bottomTableViewContrains = constraint;
+                    break;
+                }
+            }
+        }
+        
+        if (bottomTableViewContrains) {
+            NSLayoutConstraint* newBottomCont = [NSLayoutConstraint constraintWithItem:bottomTableViewContrains.firstItem
+                                                                                    attribute:bottomTableViewContrains.firstAttribute
+                                                                                    relatedBy:bottomTableViewContrains.relation
+                                                                                       toItem:bottomTableViewContrains.secondItem
+                                                                                    attribute:bottomTableViewContrains.secondAttribute
+                                                                                   multiplier:bottomTableViewContrains.multiplier
+                                                                                     constant:height + topOffset + bottomOffset];
+            
+            // update the contrains of the controlView
+            [self.view removeConstraint:bottomTableViewContrains];
+            [self.view addConstraint:newBottomCont];
+        }
+        
+        // scroll to bottom if the user scrolls to the last 5 pixels of the tableview
+        // add a little margin to avoid approximated values issue
+        if ((self.messagesTableView.contentSize.height - self.messagesTableView.contentOffset.y - 5) <= (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom)) {
+            // force to render the view
+            [self.view layoutIfNeeded];
+            // to have a valid sscroll to bottom
+            [self scrollToBottomAnimated:NO];
+        }
+    }
+}
+
+#pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     NSString *alertMsg = nil;
@@ -1920,8 +2041,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Hide topic field if empty
             _roomTitleView.hiddenTopic = !topic.length;
         }
-    } else if (textField == _messageTextField) {
-        [self handleTypingNotification:NO];
     }
 }
 
@@ -1940,14 +2059,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (IBAction)onButtonPressed:(id)sender {
     if (sender == _sendBtn) {
-        NSString *msgTxt = self.messageTextField.text;
+        NSString *msgTxt = self.messageTextView.text;
         
         // Handle potential commands in room chat
         if ([self isIRCStyleCommand:msgTxt] == NO) {
             [self sendTextMessage:msgTxt];
         }
         
-        self.messageTextField.text = nil;
+        self.messageTextView.text = nil;
         [self handleTypingNotification:NO];
         // disable send button
         _sendBtn.enabled = NO;
@@ -2420,7 +2539,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } else {
             // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /nick <display_name>";
+            self.messageTextView.placeholder = @"Usage: /nick <display_name>";
         }
     } else if ([text hasPrefix:kCmdJoinRoom]) {
         // Join a room
@@ -2440,7 +2559,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } else {
             // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /join <room_alias>";
+            self.messageTextView.placeholder = @"Usage: /join <room_alias>";
         }
     } else {
         // Retrieve userId
@@ -2475,7 +2594,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /kick <userId> [<reason>]";
+                self.messageTextView.placeholder = @"Usage: /kick <userId> [<reason>]";
             }
         } else if ([cmd isEqualToString:kCmdBanUser]) {
             if (userId) {
@@ -2497,7 +2616,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /ban <userId> [<reason>]";
+                self.messageTextView.placeholder = @"Usage: /ban <userId> [<reason>]";
             }
         } else if ([cmd isEqualToString:kCmdUnbanUser]) {
             if (userId) {
@@ -2510,7 +2629,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /unban <userId>";
+                self.messageTextView.placeholder = @"Usage: /unban <userId>";
             }
         } else if ([cmd isEqualToString:kCmdSetUserPowerLevel]) {
             // Retrieve power level
@@ -2535,7 +2654,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
+                self.messageTextView.placeholder = @"Usage: /op <userId> <power level>";
             }
         } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
             if (userId) {
@@ -2548,11 +2667,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /deop <userId>";
+                self.messageTextView.placeholder = @"Usage: /deop <userId>";
             }
         } else {
             NSLog(@"Unrecognised IRC-style command: %@", text);
-            self.messageTextField.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
+            self.messageTextView.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
         }
     }
     return YES;

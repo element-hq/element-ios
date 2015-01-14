@@ -16,7 +16,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RoomViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+#import "HPGrowingTextView.h"
+
+@interface RoomViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, HPGrowingTextViewDelegate>
 
 @property (strong, nonatomic) NSString *roomId;
 
