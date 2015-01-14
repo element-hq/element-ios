@@ -71,15 +71,16 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     downloadStartTime = statsStartTime = CFAbsoluteTimeGetCurrent();
     lastProgressEventTimeStamp = -1;
     
-    // Start downloading
+    // Check provided url (it may be a matrix content uri, we use SDK to build absoluteURL)
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     NSString *absoluteMediaURL = [mxHandler.mxRestClient urlOfContent:aMediaURL];
     if (nil == absoluteMediaURL) {
-        // Manage backward compatibility. The media URL used to be an absolute HTTP URL
+        // It was not a matrix content uri, we keep the provided url
         absoluteMediaURL = aMediaURL;
     }
+    
+    // Start downloading
     NSURL *url = [NSURL URLWithString:absoluteMediaURL];
-
     downloadData = [[NSMutableData alloc] init];
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }

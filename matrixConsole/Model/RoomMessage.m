@@ -64,12 +64,8 @@ static NSAttributedString *messageSeparator = nil;
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
                 if (!_thumbnailURL) {
-                    // Build the url to get the well adapted thumbnail from server
-                    _thumbnailURL = [mxHandler.mxRestClient urlOfContentThumbnail:_attachmentURL withSize:self.contentSize andMethod:MXThumbnailingMethodScale];
-                    if (nil == _thumbnailURL) {
-                        // Manage backward compatibility. The thumbnail URL used to be an absolute HTTP URL
-                        _thumbnailURL = _attachmentURL;
-                    }
+                    // Suppose _attachmentURL is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+                    _thumbnailURL = [mxHandler thumbnailURLForContent:_attachmentURL inViewSize:self.contentSize withMethod:MXThumbnailingMethodScale];
                 }
             } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                 // Not supported yet

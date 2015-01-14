@@ -101,11 +101,17 @@
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
     if (room && roomMember) {
-        // set the user info
+        // Set the user info
         self.userLabel.text = [room.state memberName:roomMember.userId];
         
-        // user thumbnail
-        [self.pictureView setImageURL:roomMember.avatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
+        // User thumbnail
+        NSString *thumbnailURL = nil;
+        if (roomMember.avatarUrl) {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            thumbnailURL = [mxHandler thumbnailURLForContent:roomMember.avatarUrl inViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+        }
+        [self.pictureView setImageURL:thumbnailURL withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         
         // Round image view
         [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];

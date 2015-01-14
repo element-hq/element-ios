@@ -1649,7 +1649,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
         cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST;
         // Handle user's picture
-        [cell.pictureView setImageURL:message.senderAvatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
+        NSString *avatarThumbURL = nil;
+        if (message.senderAvatarUrl) {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            avatarThumbURL = [mxHandler thumbnailURLForContent:message.senderAvatarUrl inViewSize:cell.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+        }
+        [cell.pictureView setImageURL:avatarThumbURL withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
         cell.pictureView.clipsToBounds = YES;
         cell.pictureView.backgroundColor = [UIColor redColor];
