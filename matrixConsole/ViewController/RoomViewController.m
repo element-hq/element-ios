@@ -463,7 +463,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // Update Table
                 BOOL isHandled = NO;
-                BOOL shouldBeHidden = NO;
                 // For outgoing message, we update here local echo data
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
                     // Consider first the last message
@@ -514,8 +513,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // This may happen in 2 cases:
                             // - the message has been posted from another device.
                             // - the message is received from events stream whereas the app is waiting for our PUT to return (see pendingOutgoingEvents).
-                            // In this second case, the received event will be hidden until our PUT is returned.
-                            shouldBeHidden = [self isPendingEvent:event];
+                            // In this second case, the pending event is replaced here (No additional action is required when PUT will return).
+                            MXEvent *pendingEvent = [self pendingEventRelatedToEvent:event];
+                            if (pendingEvent) {
+                                // Remove this event from the pending list
+                                [pendingOutgoingEvents removeObject:pendingEvent];
+                                // Remove the local event from messages
+                                index = messages.count;
+                                while (index--) {
+                                    RoomMessage *message = [messages objectAtIndex:index];
+                                    if ([message containsEventId:pendingEvent.eventId]) {
+                                        if (message.messageType == RoomMessageTypeText) {
+                                            [message removeEvent:pendingEvent.eventId];
+                                            if (!message.components.count) {
+                                                [self removeMessageAtIndex:index];
+                                            }
+                                        } else {
+                                            [self removeMessageAtIndex:index];
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -532,10 +551,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [messages addObject:lastMessage];
                             isHandled = YES;
                         } // else ignore unsupported/unexpected events
-                    }
-                    
-                    if (isHandled && shouldBeHidden) {
-                        [lastMessage hideComponent:YES withEventId:event.eventId];
                     }
                 }
                 
@@ -2106,80 +2121,76 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Send message to the room
         [self.mxRoom sendMessageOfType:msgType content:msgContent success:^(NSString *eventId) {
-            // Keep the temporary id of this local event
-            NSString *tmpLocalEventId = localEvent.eventId;
-            
-            // Check whether this event has already been received from events listener
-            BOOL isEventAlreadyAddedToRoom = NO;
-            NSUInteger index = messages.count;
-            while (index--) {
-                RoomMessage *message = [messages objectAtIndex:index];
-                if ([message containsEventId:eventId]) {
-                    isEventAlreadyAddedToRoom = YES;
-                    // Remove hidden flag for this component into message
-                    [message hideComponent:NO withEventId:eventId];
-                    break;
-                }
-            }
-            
-            // Remove or update the temporary event
-            index = messages.count;
-            while (index--) {
-                RoomMessage *message = [messages objectAtIndex:index];
-                if ([message containsEventId:localEvent.eventId]) {
-                    if (message.messageType == RoomMessageTypeText) {
-                        [message removeEvent:localEvent.eventId];
-                        if (isEventAlreadyAddedToRoom == NO) {
-                            // Update the temporary event with the actual event id
-                            localEvent.eventId = eventId;
-                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                        }
-                        if (!message.components.count) {
-                            [self removeMessageAtIndex:index];
-                        }
-                    } else {
-                        message = nil;
-                        if (isEventAlreadyAddedToRoom == NO) {
-                            // Create a new message
-                            localEvent.eventId = eventId;
-                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                        }
-                        if (message) {
-                            // Refresh table display
-                            [messages replaceObjectAtIndex:index withObject:message];
-                        } else {
-                            [self removeMessageAtIndex:index];
-                        }
-                    }
-                    break;
-                }
-            }
-            
-            // Remove the local event from pending outgoing events list
+            // Check whether the event is still pending (It may be received from event stream)
+            NSUInteger index;
+            MXEvent *pendingEvent = nil;
             for (index = 0; index < pendingOutgoingEvents.count; index++) {
-                MXEvent *mxEvent = [pendingOutgoingEvents objectAtIndex:index];
-                if ([mxEvent.eventId isEqualToString:tmpLocalEventId]) {
+                pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+                if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
+                    // This event is not pending anymore
                     [pendingOutgoingEvents removeObjectAtIndex:index];
                     break;
                 }
             }
             
-            // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-            // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-            maxPositionY += 30;
-            BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
-            
-            // Refresh tableView
-            [self.messagesTableView reloadData];
-            
-            if (shouldScrollToBottom) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self scrollToBottomAnimated:YES];
-                });
+            if (pendingEvent) {
+                // Update local event display
+                index = messages.count;
+                while (index--) {
+                    RoomMessage *message = [messages objectAtIndex:index];
+                    if ([message containsEventId:localEvent.eventId]) {
+                        if (message.messageType == RoomMessageTypeText) {
+                            [message removeEvent:localEvent.eventId];
+                            // Update the temporary event with the actual event id
+                            localEvent.eventId = eventId;
+                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
+                            if (!message.components.count) {
+                                [self removeMessageAtIndex:index];
+                            }
+                        } else {
+                            // Create a new message
+                            localEvent.eventId = eventId;
+                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
+                            if (message) {
+                                // Refresh table display
+                                [messages replaceObjectAtIndex:index withObject:message];
+                            } else {
+                                [self removeMessageAtIndex:index];
+                            }
+                        }
+                        break;
+                    }
+                }
+                
+                // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+                CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+                maxPositionY += 30;
+                BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                
+                // Refresh tableView
+                [self.messagesTableView reloadData];
+                
+                if (shouldScrollToBottom) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self scrollToBottomAnimated:YES];
+                    });
+                }
             }
         } failure:^(NSError *error) {
-            [self handleError:error forLocalEvent:localEvent];
+            // Check whether the event is still pending (It may be received from event stream)
+            NSUInteger index;
+            MXEvent *pendingEvent = nil;
+            for (index = 0; index < pendingOutgoingEvents.count; index++) {
+                pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+                if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
+                    // This event is not pending anymore
+                    [pendingOutgoingEvents removeObjectAtIndex:index];
+                    // Handle error
+                    [self handleError:error forLocalEvent:localEvent];
+                    break;
+                }
+            }
         }];
     }
 }
@@ -2344,9 +2355,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     });
 }
 
-- (BOOL)isPendingEvent:(MXEvent*)mxEvent {
+- (MXEvent*)pendingEventRelatedToEvent:(MXEvent*)mxEvent {
     // Note: mxEvent is supposed here to be an outgoing event received from event stream.
-    // This method returns true when its content matches with the content of a pending outgoing event.
+    // This method returns a pending event (if any) whose content matches with received event content.
     NSString *msgtype = mxEvent.content[@"msgtype"];
     
     for (NSInteger index = 0; index < pendingOutgoingEvents.count; index++) {
@@ -2355,16 +2366,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         if ([msgtype isEqualToString:pendingEventType]) {
             if ([msgtype isEqualToString:kMXMessageTypeText] || [msgtype isEqualToString:kMXMessageTypeEmote]) {
-                return [mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]];
+                // Compare content body
+                if ([mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]]) {
+                    return pendingEvent;
+                }
             } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
-                return [mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]];
+                // Compare geo uri
+                if ([mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]]) {
+                    return pendingEvent;
+                }
             } else {
                 // Here the type is kMXMessageTypeImage, kMXMessageTypeAudio or kMXMessageTypeVideo
-                return [mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]];
+                if ([mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]]) {
+                    return pendingEvent;
+                }
             }
         }
     }
-    return NO;
+    return nil;
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
