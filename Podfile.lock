@@ -20,14 +20,16 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - HPGrowingTextView (1.1)
   - Mantle (1.5.3):
     - Mantle/extobjc (= 1.5.3)
   - Mantle/extobjc (1.5.3)
-  - MatrixSDK (0.2.0):
+  - MatrixSDK (0.2.1):
     - AFNetworking (~> 2.4.1)
     - Mantle (~> 1.5)
 
 DEPENDENCIES:
+  - HPGrowingTextView (~> 1.1)
   - MatrixSDK (from `../../MatrixSDK.podspec`)
 
 EXTERNAL SOURCES:
@@ -36,7 +38,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  HPGrowingTextView: 07d5ab1f1e867acfb7a6f498b819948c9e97d07c
   Mantle: 8d84cacd6c2a69ff6fbce985a2b51298a5495de3
-  MatrixSDK: 74bdc315f4f3422b7142704a5bde193583fd0a56
+  MatrixSDK: 431e5c70467fef2918fa147267c7a80ba69b48f1
 
 COCOAPODS: 0.35.0
