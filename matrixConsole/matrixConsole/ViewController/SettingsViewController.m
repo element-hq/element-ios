@@ -36,7 +36,7 @@
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                4
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      5
 
-NSString* const kConfigurationFormatText = @"Home server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
+NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
 @interface SettingsViewController () {
@@ -44,6 +44,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     NSString *currentDisplayName;
     NSString *currentPictureURL;
+    NSString *currentPictureThumbURL;
     NSString *uploadedPictureURL;
     
     // Listen user's settings change
@@ -225,6 +226,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     currentPictureURL = nil;
+    currentPictureThumbURL = nil;
     uploadedPictureURL = nil;
     
     [self updateAvatarImage:[UIImage imageNamed:@"default-profile"]];
@@ -450,15 +452,19 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
         if (currentPictureURL) {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPicture.frame.size withMethod:MXThumbnailingMethodCrop];
+            
             // Check whether the image download is in progress
-            id loader = [MediaManager existingDownloaderForURL:currentPictureURL];
+            id loader = [MediaManager existingDownloaderForURL:currentPictureThumbURL];
             if (loader) {
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
             } else {
                 // Retrieve the image from cache
-                UIImage* image = [MediaManager loadCachePictureForURL:currentPictureURL];
+                UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL];
                 if (image) {
                     [self updateAvatarImage:image];
                 } else {
@@ -469,7 +475,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     // Add observers
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    imageLoader = [MediaManager downloadMediaFromURL:currentPictureURL withType:@"image/jpeg"];
+                    imageLoader = [MediaManager downloadMediaFromURL:currentPictureThumbURL withType:@"image/jpeg"];
                 }
             }
         } else {
@@ -484,9 +490,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
         
-        if ([url isEqualToString:currentPictureURL]) {
+        if ([url isEqualToString:currentPictureThumbURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }
@@ -708,8 +714,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
         textView.font = [UIFont systemFontOfSize:14];
+        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -833,8 +840,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         SettingsTableCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        configCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        configCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         cell = configCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
         SettingsTableCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];

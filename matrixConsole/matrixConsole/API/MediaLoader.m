@@ -30,17 +30,6 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 @synthesize statisticsDict;
 
-- (NSString*)validateContentURL:(NSString*)contentURL {
-    // Detect matrix content url
-    if ([contentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
-        NSString *mxMediaPrefix = [NSString stringWithFormat:@"%@%@/download/", [[MatrixHandler sharedHandler] homeServerURL], kMXMediaPathPrefix];
-        // Set actual url
-        return [contentURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxMediaPrefix];
-    }
-    
-    return contentURL;
-}
-
 - (void)cancel {
     // Cancel potential connection
     if (downloadConnection) {
@@ -82,8 +71,16 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     downloadStartTime = statsStartTime = CFAbsoluteTimeGetCurrent();
     lastProgressEventTimeStamp = -1;
     
+    // Check provided url (it may be a matrix content uri, we use SDK to build absoluteURL)
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    NSString *absoluteMediaURL = [mxHandler.mxRestClient urlOfContent:aMediaURL];
+    if (nil == absoluteMediaURL) {
+        // It was not a matrix content uri, we keep the provided url
+        absoluteMediaURL = aMediaURL;
+    }
+    
     // Start downloading
-    NSURL *url = [NSURL URLWithString:[self validateContentURL:aMediaURL]];
+    NSURL *url = [NSURL URLWithString:absoluteMediaURL];
     downloadData = [[NSMutableData alloc] init];
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
@@ -115,20 +112,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
             rate = 1.0;
         }
         
-        CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
-        CGFloat deltaTime = currentTime - statsStartTime;
-        // in KB
-        float dataRate;
-        
-        if (deltaTime > 0)
-        {
-            dataRate = ((CGFloat)data.length) / deltaTime / 1024.0;
-        }
-        else // avoid zero div error
-        {
-            dataRate = ((CGFloat)data.length) / (0.001) / 1024.0;
-        }
-        
+        CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();        
         CGFloat meanRate = downloadData.length / (currentTime - downloadStartTime)/ 1024.0;
         CGFloat dataRemainingTime = 0;
         

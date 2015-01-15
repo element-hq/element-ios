@@ -28,6 +28,7 @@
 @property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UILabel *userLabel;
 @property (weak, nonatomic) IBOutlet UIView *powerContainer;
+@property (weak, nonatomic) IBOutlet UIImageView *typingBadge;
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room;
 @end

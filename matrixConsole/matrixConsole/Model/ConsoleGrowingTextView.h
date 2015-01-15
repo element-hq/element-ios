@@ -13,14 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-#import <UIKit/UIKit.h>
+#import <MatrixSDK/MatrixSDK.h>
 
 #import "HPGrowingTextView.h"
 
-@interface RoomViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, HPGrowingTextViewDelegate>
-
-@property (strong, nonatomic) NSString *roomId;
-
+@interface ConsoleGrowingTextView : HPGrowingTextView
 @end
-

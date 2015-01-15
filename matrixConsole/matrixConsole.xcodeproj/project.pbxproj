@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */; };
 		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
@@ -22,6 +23,8 @@
 		F02900BB1A63C71E00356F7D /* ConsoleTools.m in Sources */ = {isa = PBXBuildFile; fileRef = F02900BA1A63C71E00356F7D /* ConsoleTools.m */; };
 		F02BCE231A1A5A2B00543B47 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = F02BCE221A1A5A2B00543B47 /* play.png */; };
 		F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */; };
+		F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974A1A6580D70090BC00 /* icon_keyboard.png */; };
+		F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */; };
 		F03C47111A02952800E445AB /* CustomAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C47101A02952800E445AB /* CustomAlert.m */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */; };
@@ -67,6 +70,8 @@
 
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
+		710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleGrowingTextView.h; sourceTree = "<group>"; };
+		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
 		71D2E4EA1A49814B000DE015 /* MemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberActionsCell.h; sourceTree = "<group>"; };
 		71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberActionsCell.m; sourceTree = "<group>"; };
 		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
@@ -92,6 +97,8 @@
 		F02BCE221A1A5A2B00543B47 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTableCell.h; sourceTree = "<group>"; };
 		F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTableCell.m; sourceTree = "<group>"; };
+		F030974A1A6580D70090BC00 /* icon_keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_keyboard.png; sourceTree = "<group>"; };
+		F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_keyboard@2x.png"; sourceTree = "<group>"; };
 		F03C470F1A02952800E445AB /* CustomAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAlert.h; sourceTree = "<group>"; };
 		F03C47101A02952800E445AB /* CustomAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAlert.m; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -187,6 +194,8 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F030974A1A6580D70090BC00 /* icon_keyboard.png */,
+				F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */,
 				F05C3A3C1A3F3D7F002B698E /* icon_users.png */,
 				F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */,
 				F0F90C6A1A325ABF00455977 /* icon_search@2x.png */,
@@ -263,6 +272,8 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */,
+				710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */,
 				F0D942F41A31F3A300826CC1 /* RecentRoom.h */,
 				F0D942F51A31F3A300826CC1 /* RecentRoom.m */,
 				F0465AF81A251F85003639F9 /* RoomMessage.h */,
@@ -434,6 +445,8 @@
 				F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */,
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
+				F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */,
+				F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
 				F01628C319E29C660071C473 /* logo.png in Resources */,
 				F01628C119E29C660071C473 /* default-profile.png in Resources */,
@@ -509,6 +522,7 @@
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
 				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
+				710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */,
 				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
 				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
