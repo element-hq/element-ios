@@ -31,6 +31,8 @@
 #import "MediaManager.h"
 #import "ConsoleTools.h"
 
+#import "ConsoleGrowingTextView.h"
+
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC 10
 
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
@@ -114,7 +116,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
-@property (weak, nonatomic) IBOutlet HPGrowingTextView *messageTextView;
+@property (weak, nonatomic) IBOutlet ConsoleGrowingTextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messagesTableViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
@@ -174,6 +176,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     self.messageTextView.layer.borderWidth = 1;
     self.messageTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.messageTextView.clipsToBounds = YES;
+    self.messageTextView.backgroundColor = [UIColor whiteColor];
     lastEditedText = self.messageTextView.text;
 }
 

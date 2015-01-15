@@ -329,7 +329,7 @@
                                             <action selector="onButtonPressed:" destination="msb-ol-2LB" eventType="touchUpInside" id="YtT-Cb-ZPk"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UVo-EY-Nyg" customClass="HPGrowingTextView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UVo-EY-Nyg" customClass="ConsoleGrowingTextView">
                                         <rect key="frame" x="38" y="8" width="510" height="28"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Icg-kc-a2c">
