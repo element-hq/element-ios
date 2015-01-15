@@ -7,7 +7,7 @@ target "matrixConsole" do
 
 # Points to SDK local sources file
 pod 'MatrixSDK', :path => '../../MatrixSDK.podspec'
-
+pod 'HPGrowingTextView', '~> 1.1'
 end
 
 target "matrixConsole" do

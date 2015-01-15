@@ -31,10 +31,14 @@
 #import "MediaManager.h"
 #import "ConsoleTools.h"
 
-#define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS 20000
+#import "ConsoleGrowingTextView.h"
+
+#define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC 10
 
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
+
 #define ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE 20
+#define ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET 100
 
 #define ROOM_MESSAGE_CELL_DEFAULT_HEIGHT 50
 #define ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST 10
@@ -58,11 +62,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @interface RoomViewController () {
     BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
-    NSDate *lastTypingNotificationDate;
     
-    // Messages
-    NSMutableArray *messages;
-    id messagesListener;
+    // Typing notification
+    NSDate *lastTypingDate;
+    NSTimer* typingTimer;
+    id typingNotifListener;
+    NSArray *typingUsers;
     
     // Back pagination
     BOOL isBackPaginationInProgress;
@@ -70,6 +75,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSUInteger backPaginationAddedMsgNb;
     NSUInteger backPaginationHandledEventsNb;
     NSOperation *backPaginationOperation;
+    CGFloat backPaginationSavedFirstMsgHeight;
     
     // Members list
     NSArray *members;
@@ -86,6 +92,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // used to trap the slide to close the keyboard
     UIView* inputAccessoryView;
     BOOL isKeyboardObserver;
+    BOOL isKeyboardDisplayed;
+    
+    // default contraint values
+    CGFloat defaultMessagesTableViewBottomConstraint;
+    CGFloat defaultControlViewBottomConstraint;
+    
+    // save the last edited text
+    // do not send unexpected typing events
+    // HPGrowingTextView triggers growingTextViewDidChange event when it recomposes itself
+    NSString* lastEditedText;
     
     // Date formatter (nil if dateTime info is hidden)
     NSDateFormatter *dateFormatter;
@@ -93,7 +109,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Local echo
     NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
-    
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -101,9 +116,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
-@property (weak, nonatomic) IBOutlet UITextField *messageTextField;
+@property (weak, nonatomic) IBOutlet ConsoleGrowingTextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messagesTableViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
@@ -112,9 +129,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (strong, nonatomic) MXRoom *mxRoom;
 @property (strong, nonatomic) CustomAlert *actionMenu;
 @property (strong, nonatomic) CustomImageView* imageValidationView;
+
+// Messages
+@property (strong, nonatomic)NSMutableArray *messages;
+@property (strong, nonatomic)id messagesListener;
 @end
 
 @implementation RoomViewController
+@synthesize messages, messagesListener;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -139,15 +161,34 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // add an input to check if the keyboard is hiding with sliding it
     inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.messageTextField.inputAccessoryView = inputAccessoryView;
+    self.messageTextView.internalTextView.inputAccessoryView = inputAccessoryView;
     
     // ensure that the titleView will be scaled when it will be required
     // during a screen rotation for example.
     self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // default contraint values
+    defaultMessagesTableViewBottomConstraint = _messagesTableViewBottomConstraint.constant;
+    defaultControlViewBottomConstraint = _controlViewBottomConstraint.constant;
+    
+    // draw a rounded border around the textView
+    self.messageTextView.layer.cornerRadius = 5;
+    self.messageTextView.layer.borderWidth = 1;
+    self.messageTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.messageTextView.clipsToBounds = YES;
+    self.messageTextView.backgroundColor = [UIColor whiteColor];
+    lastEditedText = self.messageTextView.text;
 }
 
 - (void)dealloc {
-    lastTypingNotificationDate = nil;
+    lastTypingDate = nil;
+    [typingTimer invalidate];
+    typingTimer = nil;
+    if (typingNotifListener) {
+        [self.mxRoom removeListener:typingNotifListener];
+        typingNotifListener = nil;
+    }
+    typingUsers = nil;
     
     // Release local echo resources
     pendingOutgoingEvents = nil;
@@ -167,6 +208,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
         [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     self.mxRoom = nil;
@@ -190,7 +232,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         dateFormatter = nil;
     }
     
-    self.messageTextField.inputAccessoryView = inputAccessoryView = nil;
+    if (_messageTextView) {
+        
+        _messageTextView.internalTextView.inputAccessoryView = inputAccessoryView = nil;
+        _messageTextView.delegate = nil;
+        _messageTextView = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -238,10 +285,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }];
     
+    self.messageTextView.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onOrientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -257,6 +305,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Hide members by default
     [self hideRoomMembers];
     
+    self.messageTextView.delegate = nil;
+
     // slide to hide keyboard management
     if (isKeyboardObserver) {
         [inputAccessoryView.superview removeObserver:self forKeyPath:@"frame"];
@@ -272,9 +322,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         membersListener = nil;
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -384,12 +433,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
-    // Remove potential listener
-    if (messagesListener && self.mxRoom) {
-        [self.mxRoom removeListener:messagesListener];
-        messagesListener = nil;
-        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+    if (self.mxRoom) {
+        // Remove potential listener
+        if (messagesListener){
+            [self.mxRoom removeListener:messagesListener];
+            messagesListener = nil;
+            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+            [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+            [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+        }
+        typingUsers = nil;
+        if (typingNotifListener) {
+            [self.mxRoom removeListener:typingNotifListener];
+        }
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
     messages = nil;
@@ -428,6 +484,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         messages = [NSMutableArray array];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
+        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
         [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
@@ -441,7 +498,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // Update Table
                 BOOL isHandled = NO;
-                BOOL shouldBeHidden = NO;
                 // For outgoing message, we update here local echo data
                 if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
                     // Consider first the last message
@@ -492,8 +548,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             // This may happen in 2 cases:
                             // - the message has been posted from another device.
                             // - the message is received from events stream whereas the app is waiting for our PUT to return (see pendingOutgoingEvents).
-                            // In this second case, the received event will be hidden until our PUT is returned.
-                            shouldBeHidden = [self isPendingEvent:event];
+                            // In this second case, the pending event is replaced here (No additional action is required when PUT will return).
+                            MXEvent *pendingEvent = [self pendingEventRelatedToEvent:event];
+                            if (pendingEvent) {
+                                // Remove this event from the pending list
+                                [pendingOutgoingEvents removeObject:pendingEvent];
+                                // Remove the local event from messages
+                                index = messages.count;
+                                while (index--) {
+                                    RoomMessage *message = [messages objectAtIndex:index];
+                                    if ([message containsEventId:pendingEvent.eventId]) {
+                                        if (message.messageType == RoomMessageTypeText) {
+                                            [message removeEvent:pendingEvent.eventId];
+                                            if (!message.components.count) {
+                                                [self removeMessageAtIndex:index];
+                                            }
+                                        } else {
+                                            [self removeMessageAtIndex:index];
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -510,10 +586,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             [messages addObject:lastMessage];
                             isHandled = YES;
                         } // else ignore unsupported/unexpected events
-                    }
-                    
-                    if (isHandled && shouldBeHidden) {
-                        [lastMessage hideComponent:YES withEventId:event.eventId];
                     }
                 }
                 
@@ -558,6 +630,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Display is refreshed at the end of back pagination (see onComplete block)
             }
         }];
+        
+        // Add typing notification listener
+        typingNotifListener = [self.mxRoom listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+            // Handle only live events
+            if (direction == MXEventDirectionForwards) {
+                // Refresh typing users list
+                typingUsers = self.mxRoom.typingUsers;
+                // Refresh tableView
+                [self.messagesTableView reloadData];
+                if (members) {
+                    [self.membersTableView reloadData];
+                }
+            }
+        }];
+        typingUsers = self.mxRoom.typingUsers;
         
         // Trigger a back pagination by reseting first backState to get room history from live
         [self.mxRoom resetBackState];
@@ -611,6 +698,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self startActivityIndicator];
         isBackPaginationInProgress = YES;
         backPaginationAddedMsgNb = 0;
+        // Store the current height of the first message (if any)
+        backPaginationSavedFirstMsgHeight = 0;
+        if (messages.count) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            backPaginationSavedFirstMsgHeight = [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self paginateBackMessages:requestedItemsNb];
@@ -654,9 +747,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)onBackPaginationComplete {
-    if (backPaginationAddedMsgNb) {
+    if (backPaginationAddedMsgNb || backPaginationHandledEventsNb) {
         // We scroll to bottom when table is loaded for the first time
         BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
+        if (!shouldScrollToBottom) {
+            // We will scroll to bottom if the displayed content does not reach the bottom (after adding back pagination)
+            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+            // Compute the height of the blank part at the bottom
+            if (maxPositionY > self.messagesTableView.contentSize.height) {
+                CGFloat blankAreaHeight = maxPositionY - self.messagesTableView.contentSize.height;
+                // Scroll to bottom if this blank area is greater than max scrolling offet
+                shouldScrollToBottom = (blankAreaHeight >= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET);
+            }
+        }
         
         CGFloat verticalOffset = 0;
         if (shouldScrollToBottom == NO) {
@@ -667,8 +770,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                 verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
             }
+            // Add delta of the height of the first existing message
+            if (messages.count > backPaginationAddedMsgNb) {
+                indexPath = [NSIndexPath indexPathForRow:backPaginationAddedMsgNb inSection:0];
+                verticalOffset += ([self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath] - backPaginationSavedFirstMsgHeight);
+            }
             // Deduce the vertical offset from this height
-            verticalOffset -= 100;
+            verticalOffset -= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET;
         }
         // Reset count to enable tableView update
         backPaginationAddedMsgNb = 0;
@@ -699,7 +807,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)stopActivityIndicator {
     // Check whether all conditions are satisfied before stopping loading wheel
-    if ([[MatrixHandler sharedHandler] isResumeDone] && !isBackPaginationInProgress && !isJoinRequestInProgress) {
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    if (mxHandler.status == MatrixHandlerStatusServerSyncDone && mxHandler.isResumeDone && !isBackPaginationInProgress && !isJoinRequestInProgress) {
         [_activityIndicator stopAnimating];
     }
 }
@@ -711,6 +820,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
+    } else if ([@"status" isEqualToString:keyPath]) {
+        if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusServerSyncDone) {
+            [self stopActivityIndicator];
+        } else {
+            [self startActivityIndicator];
+        }
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
         if ([[MatrixHandler sharedHandler] isResumeDone]) {
             [self stopActivityIndicator];
@@ -921,7 +1036,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                              name:MPMoviePlayerWillExitFullscreenNotification
                                                            object:videoPlayer];
                 selectedVideoURL = url;
-                selectedVideoCachePath = [MediaManager cachePathForMediaURL:selectedVideoURL andType:mimetype];
+                
+                // check if the file is a local one
+                // could happen because a media upload has failed
+                if ([[NSFileManager defaultManager] fileExistsAtPath:selectedVideoURL]) {
+                    selectedVideoCachePath = selectedVideoURL;
+                } else {
+                    selectedVideoCachePath = [MediaManager cachePathForMediaURL:selectedVideoURL andType:mimetype];
+                }
+                                
                 if ([[NSFileManager defaultManager] fileExistsAtPath:selectedVideoCachePath]) {
                     videoPlayer.contentURL = [NSURL fileURLWithPath:selectedVideoCachePath];
                     [videoPlayer play];
@@ -1008,22 +1131,58 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [tmpVideoPlayer stop];
     tmpVideoPlayer = nil;
     
-    if (videoThumbnail && selectedVideo) {
+    [self sendVideo:selectedVideo withThumbnail:videoThumbnail];
+}
+
+- (void)sendVideoContent:(NSMutableDictionary*)videoContent localEvent:(MXEvent*)localEvent {
+    NSData* videoData = [NSData dataWithContentsOfFile:[videoContent valueForKey:@"url"]];
+    
+    // sanity check
+    if (videoData) {
+        NSMutableDictionary* videoInfo = [videoContent valueForKey:@"info"];
+
+        MediaLoader *videoUploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0.1 andRange:0.9];
+        [videoUploader uploadData:videoData mimeType:videoInfo[@"mimetype"] success:^(NSString *url) {
+            
+            // remove the tmp file
+            [[NSFileManager defaultManager] removeItemAtPath:[videoInfo valueForKey:@"url"] error:nil];
+            // remove the related uploadLoader
+            [MediaManager removeUploaderWithId:localEvent.eventId];
+            // store the video file in the cache
+            // there is no reason to download an oneself uploaded media
+            [MediaManager cacheMediaData:videoData forURL:url andType:videoInfo[@"mimetype"]];
+            
+            [videoContent setValue:url forKey:@"url"];
+            [self sendMessage:videoContent withLocalEvent:localEvent];
+        } failure:^(NSError *error) {
+            NSLog(@"Video upload failed");
+            [MediaManager removeUploaderWithId:localEvent.eventId];
+            [self handleError:error forLocalEvent:localEvent];
+        }];
+    }
+    else {
+        NSLog(@"Attach video failed: no data");
+        [self handleError:nil forLocalEvent:localEvent];
+    }
+}
+
+- (void) sendVideo:(NSURL*)videoURL withThumbnail:(UIImage*)videoThumbnail {
+    if (videoThumbnail && videoURL) {
         // Prepare video thumbnail description
         NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
         UIImage *thumbnail = [ConsoleTools resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
         
         // Create the local event displayed during uploading
-        MXEvent *localEvent = [self addLocalEchoEventForAttachedMedia:thumbnail];
+        MXEvent *localEvent = [self addLocalEchoEventForAttachedVideo:thumbnail videoPath:videoURL.path];
         
-        NSMutableDictionary *thumbnailInfo = [localEvent.content valueForKey:@"info"];
-        NSData *thumbnailData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[localEvent.content valueForKey:@"url"] andType:[thumbnailInfo objectForKey:@"mimetype"]]];
+        NSMutableDictionary *infoDict = [localEvent.content valueForKey:@"info"];
+        NSMutableDictionary *thumbnailInfo = [infoDict valueForKey:@"thumbnail_info"];
+        NSData *thumbnailData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[infoDict valueForKey:@"thumbnail_url"] andType:[thumbnailInfo objectForKey:@"mimetype"]]];
 
         // Upload thumbnail
         MediaLoader *uploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:0.1];
         [uploader uploadData:thumbnailData mimeType:[thumbnailInfo valueForKey:@"mimetype"] success:^(NSString *url) {
             [MediaManager removeUploaderWithId:localEvent.eventId];
-            
             // Prepare content of attached video
             NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
             NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
@@ -1032,7 +1191,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [videoInfo setValue:thumbnailInfo forKey:@"thumbnail_info"];
             
             // Convert video container to mp4
-            AVURLAsset* videoAsset = [AVURLAsset URLAssetWithURL:selectedVideo options:nil];
+            AVURLAsset* videoAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
             AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:videoAsset presetName:AVAssetExportPresetMediumQuality];
             // Set output URL
             NSString * outputFileName = [NSString stringWithFormat:@"%.0f.mp4",[[NSDate date] timeIntervalSince1970]];
@@ -1072,37 +1231,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     
                     // Upload the video
-                    NSData *videoData = [NSData dataWithContentsOfURL:tmpVideoLocation];
-                    [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
-                    if (videoData) {
-                        if (videoData.length < ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE) {
-                            [videoInfo setValue:[NSNumber numberWithUnsignedInteger:videoData.length] forKey:@"size"];
-                            
-                            MediaLoader *videoUploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0.1 andRange:0.9];
-                            [videoUploader uploadData:videoData mimeType:videoInfo[@"mimetype"] success:^(NSString *url) {
-                                // remove the related uploadLoader
-                                [MediaManager removeUploaderWithId:localEvent.eventId];
-                                // store the video file in the cache
-                                // there is no reason to download an oneself uploaded media
-                                [MediaManager cacheMediaData:videoData forURL:url andType:videoInfo[@"mimetype"]];
-                                
-                                [videoContent setValue:url forKey:@"url"];
-                                [videoContent setValue:videoInfo forKey:@"info"];
-                                [videoContent setValue:@"Video" forKey:@"body"];
-                                [self sendMessage:videoContent withLocalEvent:localEvent];
-                            } failure:^(NSError *error) {
-                                NSLog(@"Video upload failed");
-                                [MediaManager removeUploaderWithId:localEvent.eventId];
-                                [self handleError:error forLocalEvent:localEvent];
-                            }];
-                        } else {
-                            NSLog(@"Video is too large");
-                            [self handleError:nil forLocalEvent:localEvent];
-                        }
-                    } else {
-                        NSLog(@"Attach video failed: no data");
-                        [self handleError:nil forLocalEvent:localEvent];
-                    }
+                    [videoContent setValue:videoInfo forKey:@"info"];
+                    [videoContent setValue:@"Video" forKey:@"body"];
+                    [videoContent setValue:tmpVideoLocation.path forKey:@"url"];
+                    localEvent.content = videoContent;
+                    [self sendVideoContent:videoContent localEvent:localEvent];
                 }
                 else {
                     NSLog(@"Video export failed: %d", (int)[exportSession status]);
@@ -1122,6 +1255,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 #pragma mark - Keyboard handling
+
+- (void)onOrientationChanged:(NSNotification *)notif {
+    if (!isKeyboardDisplayed) {
+        // compute the visible area (tableview + text input)
+        // the tableview must use at least 50 pixels to let the user hides the keybaord
+        CGFloat maxTextHeight = (self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
+        
+        _messageTextView.maxHeight = maxTextHeight;
+        [_messageTextView refreshHeight];
+        
+        [self scrollToBottomAnimated:YES];
+    }
+}
 
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     // get the keyboard size
@@ -1158,6 +1304,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
+    isKeyboardDisplayed = YES;
+    
+    // compute the visible area (tableview + text input)
+    // the tableview must use at least 50 pixels to let the user hides the keybaord
+    CGFloat maxTextHeight = (self.view.frame.size.height - insets.bottom - self.navigationController.navigationBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
+    
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
         
         // Move up control view
@@ -1173,8 +1325,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // force to redraw the layout (else _controlViewBottomConstraint.constant will not be animated)
         [self.view layoutIfNeeded];
         
+        // update the text input frame
+        _messageTextView.maxHeight = maxTextHeight;
+        [_messageTextView refreshHeight];
+        
     } completion:^(BOOL finished) {
         // be warned when the keyboard frame is updated
+        // used to trap the slide to close the keyboard
         [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
         [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
         isKeyboardObserver = YES;
@@ -1204,36 +1361,61 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     rectVal = notif.userInfo[UIKeyboardFrameBeginUserInfoKey];
     CGRect beginRect = rectVal.CGRectValue;
     
-    // IOS 8 triggers some unexpected keyboard events
-    // it makes no sense if there is no update to animate
-    if (CGRectEqualToRect(endRect, beginRect)) {
+    // IOS 7/8 triggers some unexpected keyboard events
+    if (!isKeyboardDisplayed) {
         return;
     }
-    
-    // get the animation info
-    NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    // the duration is ignored but it is better to define it
-    double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     insets.bottom = self.controlView.frame.size.height;
     
-    // animate the keyboard closing
-    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
-        self.messagesTableView.contentInset = insets;
+    isKeyboardDisplayed = NO;
+    
+    // do not animate if the both rect are the same
+    // but ensure that the fields are properly resetted
+    // e.g. when the user swipes to hide the keyboard
+    // this method is called with invalid rects
+    // animationDuration is ignored because of the animation curve
+    // use it to be sure that it will be broken with any new IOS update
+    if (CGRectEqualToRect(endRect, beginRect)) {
         
-        _controlViewBottomConstraint.constant = 0;
+        self.messagesTableView.contentInset = insets;
+        _controlViewBottomConstraint.constant = defaultControlViewBottomConstraint;
+        _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
+        
         [self.view layoutIfNeeded];
         
-    } completion:^(BOOL finished) {
-    }];
+        // update the text input height
+        [self onOrientationChanged:nil];
+        
+    } else {
+        
+        // get the animation info
+        NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+        UIViewAnimationCurve animationCurve = curveValue.intValue;
+        
+        // the duration is ignored but it is better to define it
+        double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        // animate the keyboard closing
+        [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
+            
+            _controlViewBottomConstraint.constant = defaultControlViewBottomConstraint;
+            _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
+            
+            self.messagesTableView.contentInset = insets;
+            [self.view layoutIfNeeded];
+            
+        } completion:^(BOOL finished) {
+            // update the text input height
+            [self onOrientationChanged:nil];
+        }];
+    }
 }
 
 - (void)dismissKeyboard {
     // Hide the keyboard
-    [_messageTextField resignFirstResponder];
+    [_messageTextView resignFirstResponder];
     [_roomTitleView dismissKeyboard];
 }
 
@@ -1322,13 +1504,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 RoomMessageComponent* component =[roomMessage componentWithEventId:eventID];
                 
                 // sanity check
-                if (component && (roomMessage.messageType == RoomMessageTypeText)) {
+                if (component) {
                     NSString* textMessage = component.textMessage;
                     
                     __weak typeof(self) weakSelf = self;
                     
                     self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Resend the message"
-                                                                     message:textMessage
+                                                                 message:(roomMessage.messageType == RoomMessageTypeText) ? textMessage : nil
                                                                        style:CustomAlertStyleAlert];
                     
                     
@@ -1341,9 +1523,76 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                       style:CustomAlertActionStyleDefault
                                                     handler:^(CustomAlert *alert) {
                                                          weakSelf.actionMenu = nil;
-                                                        // remove the message
-                                                        [roomMessage removeEvent:eventID];
-                                                        [weakSelf sendTextMessage:textMessage];
+                                                        
+                                                        if (roomMessage.messageType == RoomMessageTypeText) {
+                                                            // remove the message
+                                                            [roomMessage removeEvent:eventID];
+                                                            
+                                                            [weakSelf sendTextMessage:textMessage];
+                                                        } else if (roomMessage.messageType == RoomMessageTypeImage) {
+                                                            // check if the message is still in the list
+                                                            if ([weakSelf.messages indexOfObject:roomMessage] != NSNotFound) {
+                                                                [weakSelf.messages removeObject:roomMessage];
+                                                                
+                                                                UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.attachmentURL];
+                                                                
+                                                                // if the URL is still a local one
+                                                                if (image) {
+                                                                    // it should mean that the media upload fails
+                                                                    [weakSelf sendImage:image];
+                                                                } else if (roomMessage.attachmentURL.length > 0) {
+                                                                    // build the image dict
+                                                                    NSMutableDictionary* imageMessage = [[NSMutableDictionary alloc] init];
+                                                                    [imageMessage setObject:@"Image" forKey:@"body"];
+                                                                    [imageMessage setObject:roomMessage.attachmentInfo forKey:@"info"];
+                                                                    [imageMessage setObject:kMXMessageTypeImage forKey:@"msgtype"];
+                                                                    [imageMessage setObject:roomMessage.attachmentURL forKey:@"url"];
+                                                                    
+                                                                    if (roomMessage.previewURL) {
+                                                                        [imageMessage setObject:roomMessage.previewURL forKey:kRoomMessageLocalPreviewKey];
+                                                                    }
+                                                                    
+                                                                    // send it again
+                                                                    [weakSelf sendMessage:imageMessage withLocalEvent:nil];
+                                                                }
+                                                            }
+                                                        } else if (roomMessage.messageType == RoomMessageTypeVideo) {
+                                                            // check if the message is still in the list
+                                                            if ([weakSelf.messages indexOfObject:roomMessage] != NSNotFound) {
+                                                                [weakSelf.messages removeObject:roomMessage];
+                                                                
+                                                                // if the URL is still a local one
+                                                                if (![NSURL URLWithString:roomMessage.thumbnailURL].scheme) {
+                                                                     UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.thumbnailURL];
+                                                                    // it should mean that the thumbnail upload fails
+                                                                    [weakSelf sendVideo:[NSURL fileURLWithPath:roomMessage.attachmentURL]  withThumbnail:image];
+                                                                } else {
+                                         
+                                                                    NSMutableDictionary* videoMessage = [[NSMutableDictionary alloc] init];
+                                                                    [videoMessage setObject:@"Video" forKey:@"body"];
+                                                                    [videoMessage setObject:roomMessage.attachmentInfo forKey:@"info"];
+                                                                    [videoMessage setObject:kMXMessageTypeVideo forKey:@"msgtype"];
+                                                                    [videoMessage setObject:roomMessage.attachmentURL forKey:@"url"];
+                                                                    
+                                                                    if (roomMessage.previewURL) {
+                                                                        [videoMessage setObject:roomMessage.previewURL forKey:kRoomMessageLocalPreviewKey];
+                                                                    }
+                                                                    
+                                                                    // the attachment is still a local path
+                                                                    if (![NSURL URLWithString:roomMessage.attachmentURL].scheme) {
+                                                                        // Add a new local event
+                                                                        MXEvent* localEvent = [weakSelf createLocalEchoEventWithoutContent];
+                                                                        localEvent.content = videoMessage;
+                                                                        [weakSelf addLocalEchoEvent:localEvent];
+                                                                        [weakSelf sendVideoContent:videoMessage localEvent:localEvent];
+                                                                    } else {
+                                                                        // set localEvent to nil to avoid useless search
+                                                                        [weakSelf sendMessage:videoMessage withLocalEvent:nil];
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        
                                                     }];
                     
                     [self.actionMenu showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
@@ -1360,7 +1609,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (tableView == self.membersTableView) {
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
-            [memberCell setRoomMember:[members objectAtIndex:indexPath.row] withRoom:self.mxRoom];
+            MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
+            [memberCell setRoomMember:roomMember withRoom:self.mxRoom];
+            if ([roomMember.userId isEqualToString:mxHandler.userId]) {
+                memberCell.typingBadge.hidden = YES; //hide typing badge for the current user
+            } else {
+                memberCell.typingBadge.hidden = ([typingUsers indexOfObject:roomMember.userId] == NSNotFound);
+            }
         }
         return memberCell;
     }
@@ -1421,7 +1676,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.msgTextViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST;
         cell.attachViewTopConstraint.constant = ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST;
         // Handle user's picture
-        [cell.pictureView setImageURL:message.senderAvatarUrl withPreviewImage:[UIImage imageNamed:@"default-profile"]];
+        NSString *avatarThumbURL = nil;
+        if (message.senderAvatarUrl) {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            avatarThumbURL = [mxHandler thumbnailURLForContent:message.senderAvatarUrl inViewSize:cell.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+        }
+        [cell.pictureView setImageURL:avatarThumbURL withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
         cell.pictureView.clipsToBounds = YES;
         cell.pictureView.backgroundColor = [UIColor redColor];
@@ -1435,12 +1695,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     cell.dateTimeLabelContainer.hidden = YES;
     
+    BOOL displayMsgTimestamp = (nil != dateFormatter);
+    
     // Update incoming/outgoing message layout
     if (isIncomingMsg) {
         IncomingMessageTableCell* incomingMsgCell = (IncomingMessageTableCell*)cell;
         // Display user's display name except if the name appears in the displayed text (see emote and membership event)
         incomingMsgCell.userNameLabel.hidden = (shouldHideSenderInfo || message.startsWithSenderName);
         incomingMsgCell.userNameLabel.text = message.senderName;
+        // Set typing badge visibility
+        incomingMsgCell.typingBadge.hidden = (cell.pictureView.hidden || ([typingUsers indexOfObject:message.senderId] == NSNotFound));
     } else {
         // Add unsent label for failed components
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
@@ -1453,7 +1717,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [unsentButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
                 [unsentButton setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
              
-                unsentButton.backgroundColor = [UIColor clearColor];
+                unsentButton.backgroundColor = [UIColor whiteColor];
                 unsentButton.titleLabel.font =  [UIFont systemFontOfSize:14];
                 
                 // add a dummy label to store the event ID
@@ -1474,6 +1738,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // ensure that dateTimeLabelContainer is at front to catch the the tap event 
                 [cell.dateTimeLabelContainer.superview bringSubviewToFront:cell.dateTimeLabelContainer];
+                
+                displayMsgTimestamp = NO;
             }
             yPosition += component.height;
         }
@@ -1554,7 +1820,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [cell.progressView addGestureRecognizer:longPress];
     
     // Handle timestamp display
-    if (dateFormatter) {
+    if (displayMsgTimestamp) {
         // Add datetime label for each component
         cell.dateTimeLabelContainer.hidden = NO;
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
@@ -1615,6 +1881,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             yPosition += component.height;
         }
     }
+    
     return cell;
 }
 
@@ -1642,24 +1909,67 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
-#pragma mark - UITextField delegate
+#pragma mark - HPGrowingTextView delegate
 
-- (void)onTextFieldChange:(NSNotification *)notification {
-    if (notification.object == _messageTextField) {
-        NSString *msg = _messageTextField.text;
-        if (msg.length) {
-            [self sendTypingNotification:YES];
-            _sendBtn.enabled = YES;
-            _sendBtn.alpha = 1;
-            // Reset potential placeholder (used in case of wrong command usage)
-            _messageTextField.placeholder = nil;
-        } else {
-            [self sendTypingNotification:NO];
-            _sendBtn.enabled = NO;
-            _sendBtn.alpha = 0.5;
+- (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView {
+    if (growingTextView == _messageTextView) {
+        [self handleTypingNotification:NO];
+    }
+}
+
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
+    if (growingTextView == _messageTextView) {
+        NSString *msg = _messageTextView.text;
+        
+        // save the last edited text
+        // to do not send unexpected typing events
+        // HPGrowingTextView triggers growingTextViewDidChange event when it recomposes itself
+        if (![lastEditedText isEqualToString:msg]) {
+            lastEditedText = msg;
+            if (msg.length) {
+                [self handleTypingNotification:YES];
+                _sendBtn.enabled = YES;
+                _sendBtn.alpha = 1;
+                // Reset potential placeholder (used in case of wrong command usage)
+                _messageTextView.placeholder = nil;
+            } else {
+                [self handleTypingNotification:NO];
+                _sendBtn.enabled = NO;
+                _sendBtn.alpha = 0.5;
+            }
         }
     }
 }
+
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
+    // margins between _messageTextView and its superview (controlView)
+    CGFloat controlViewHeight = height + self.controlView.frame.size.height - _messageTextView.frame.size.height;
+    
+    // update the controlView height
+    _controlViewHeightConstraint.constant = controlViewHeight;
+    
+    // the tableview must be scrolled up to adapt its size to the growing textview
+    _messagesTableViewBottomConstraint.constant = controlViewHeight;
+    
+    // if the keyboard is not displayed
+    if (!isKeyboardDisplayed) {
+        // messagesTableView content inset needs to be set to the new bottom view height
+        UIEdgeInsets insets = self.messagesTableView.contentInset;
+        insets.bottom = controlViewHeight;
+        self.messagesTableView.contentInset = insets;
+    } //else self.messagesTableView.contentInset is equal to the keyboard height
+    
+    // scroll to bottom if the user did not scroll to the last 5 pixels of the tableview
+    // add a little margin to avoid approximated values issue
+    if ((self.messagesTableView.contentSize.height - self.messagesTableView.contentOffset.y - 5) <= (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom)) {
+        // force to render the view
+        [self.view layoutIfNeeded];
+        // to have a valid sscroll to bottom
+        [self scrollToBottomAnimated:NO];
+    }
+}
+
+#pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     NSString *alertMsg = nil;
@@ -1764,8 +2074,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Hide topic field if empty
             _roomTitleView.hiddenTopic = !topic.length;
         }
-    } else if (textField == _messageTextField) {
-        [self sendTypingNotification:NO];
     }
 }
 
@@ -1784,15 +2092,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (IBAction)onButtonPressed:(id)sender {
     if (sender == _sendBtn) {
-        NSString *msgTxt = self.messageTextField.text;
+        NSString *msgTxt = self.messageTextView.text;
         
         // Handle potential commands in room chat
         if ([self isIRCStyleCommand:msgTxt] == NO) {
             [self sendTextMessage:msgTxt];
         }
         
-        self.messageTextField.text = nil;
-        [self sendTypingNotification:NO];
+        self.messageTextView.text = nil;
+        [self handleTypingNotification:NO];
         // disable send button
         _sendBtn.enabled = NO;
         _sendBtn.alpha = 0.5;
@@ -1969,80 +2277,76 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Send message to the room
         [self.mxRoom sendMessageOfType:msgType content:msgContent success:^(NSString *eventId) {
-            // Keep the temporary id of this local event
-            NSString *tmpLocalEventId = localEvent.eventId;
-            
-            // Check whether this event has already been received from events listener
-            BOOL isEventAlreadyAddedToRoom = NO;
-            NSUInteger index = messages.count;
-            while (index--) {
-                RoomMessage *message = [messages objectAtIndex:index];
-                if ([message containsEventId:eventId]) {
-                    isEventAlreadyAddedToRoom = YES;
-                    // Remove hidden flag for this component into message
-                    [message hideComponent:NO withEventId:eventId];
-                    break;
-                }
-            }
-            
-            // Remove or update the temporary event
-            index = messages.count;
-            while (index--) {
-                RoomMessage *message = [messages objectAtIndex:index];
-                if ([message containsEventId:localEvent.eventId]) {
-                    if (message.messageType == RoomMessageTypeText) {
-                        [message removeEvent:localEvent.eventId];
-                        if (isEventAlreadyAddedToRoom == NO) {
-                            // Update the temporary event with the actual event id
-                            localEvent.eventId = eventId;
-                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                        }
-                        if (!message.components.count) {
-                            [self removeMessageAtIndex:index];
-                        }
-                    } else {
-                        message = nil;
-                        if (isEventAlreadyAddedToRoom == NO) {
-                            // Create a new message
-                            localEvent.eventId = eventId;
-                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                        }
-                        if (message) {
-                            // Refresh table display
-                            [messages replaceObjectAtIndex:index withObject:message];
-                        } else {
-                            [self removeMessageAtIndex:index];
-                        }
-                    }
-                    break;
-                }
-            }
-            
-            // Remove the local event from pending outgoing events list
+            // Check whether the event is still pending (It may be received from event stream)
+            NSUInteger index;
+            MXEvent *pendingEvent = nil;
             for (index = 0; index < pendingOutgoingEvents.count; index++) {
-                MXEvent *mxEvent = [pendingOutgoingEvents objectAtIndex:index];
-                if ([mxEvent.eventId isEqualToString:tmpLocalEventId]) {
+                pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+                if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
+                    // This event is not pending anymore
                     [pendingOutgoingEvents removeObjectAtIndex:index];
                     break;
                 }
             }
             
-            // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-            // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-            maxPositionY += 30;
-            BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
-            
-            // Refresh tableView
-            [self.messagesTableView reloadData];
-            
-            if (shouldScrollToBottom) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self scrollToBottomAnimated:YES];
-                });
+            if (pendingEvent) {
+                // Update local event display
+                index = messages.count;
+                while (index--) {
+                    RoomMessage *message = [messages objectAtIndex:index];
+                    if ([message containsEventId:localEvent.eventId]) {
+                        if (message.messageType == RoomMessageTypeText) {
+                            [message removeEvent:localEvent.eventId];
+                            // Update the temporary event with the actual event id
+                            localEvent.eventId = eventId;
+                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
+                            if (!message.components.count) {
+                                [self removeMessageAtIndex:index];
+                            }
+                        } else {
+                            // Create a new message
+                            localEvent.eventId = eventId;
+                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
+                            if (message) {
+                                // Refresh table display
+                                [messages replaceObjectAtIndex:index withObject:message];
+                            } else {
+                                [self removeMessageAtIndex:index];
+                            }
+                        }
+                        break;
+                    }
+                }
+                
+                // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+                CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+                maxPositionY += 30;
+                BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                
+                // Refresh tableView
+                [self.messagesTableView reloadData];
+                
+                if (shouldScrollToBottom) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self scrollToBottomAnimated:YES];
+                    });
+                }
             }
         } failure:^(NSError *error) {
-            [self handleError:error forLocalEvent:localEvent];
+            // Check whether the event is still pending (It may be received from event stream)
+            NSUInteger index;
+            MXEvent *pendingEvent = nil;
+            for (index = 0; index < pendingOutgoingEvents.count; index++) {
+                pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+                if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
+                    // This event is not pending anymore
+                    [pendingOutgoingEvents removeObjectAtIndex:index];
+                    // Handle error
+                    [self handleError:error forLocalEvent:localEvent];
+                    break;
+                }
+            }
         }];
     }
 }
@@ -2099,20 +2403,25 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
-- (MXEvent*)addLocalEchoEventForAttachedMedia:(UIImage*)image {
-    // Create new item
-    MXEvent *localEvent = [self createLocalEchoEventWithoutContent];
-    
-    // We store temporarily the image in cache, use the localId to build temporary url
-    NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEvent.eventId];
+- (NSData*)cachedImageData:(UIImage*)image withURL:(NSString*)url {
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
-    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:dummyURL andType:@"image/jpeg"];
+    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:url andType:@"image/jpeg"];
     if (cacheFilePath) {
         if (tmpCachedAttachments == nil) {
             tmpCachedAttachments = [NSMutableArray array];
         }
         [tmpCachedAttachments addObject:cacheFilePath];
     }
+    
+    return imageData;
+}
+
+- (MXEvent*)addLocalEchoEventForAttachedImage:(UIImage*)image {
+    // Create new item
+    MXEvent *localEvent = [self createLocalEchoEventWithoutContent];
+    // We store temporarily the image in cache, use the localId to build temporary url
+    NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEvent.eventId];
+    NSData* imageData = [self cachedImageData:image withURL:dummyURL];
     
     // Prepare event content
     NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
@@ -2122,6 +2431,38 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [info setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
     localEvent.content = @{@"msgtype":kMXMessageTypeImage, @"url":dummyURL, @"info":info, kRoomMessageUploadIdKey:localEvent.eventId};
     // Note: we have defined here an upload id with the local event id
+    
+    // Add this new event
+    [self addLocalEchoEvent:localEvent];
+    return localEvent;
+}
+
+- (MXEvent*)addLocalEchoEventForAttachedVideo:(UIImage*)thumbnail videoPath:(NSString*)videoPath {
+    // Create new item
+    MXEvent *localEvent = [self createLocalEchoEventWithoutContent];
+    NSString *dummyURL = [NSString stringWithFormat:@"%@%@", kMediaManagerPrefixForDummyURL, localEvent.eventId];
+    NSData* imageData = [self cachedImageData:thumbnail withURL:dummyURL];
+    
+    NSMutableDictionary* content = [[NSMutableDictionary alloc] init];
+    
+    [content setObject:kMXMessageTypeVideo forKey:@"msgtype"];
+    [content setObject:videoPath forKey:@"url"];
+    
+    // thumbnail
+    NSMutableDictionary *thumbnail_info = [[NSMutableDictionary alloc] init];
+    [thumbnail_info setValue:@"image/jpeg" forKey:@"mimetype"];
+    [thumbnail_info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.width] forKey:@"w"];
+    [thumbnail_info setValue:[NSNumber numberWithUnsignedInteger:(NSUInteger)thumbnail.size.height] forKey:@"h"];
+    [thumbnail_info setValue:[NSNumber numberWithUnsignedInteger:imageData.length] forKey:@"size"];
+    
+    NSMutableDictionary* attachmentInfo = [[NSMutableDictionary alloc] init];
+    [attachmentInfo setValue:dummyURL forKey:@"thumbnail_url"];
+    [attachmentInfo setValue:thumbnail_info forKey:@"thumbnail_info"];
+    
+    [content setObject:attachmentInfo forKey:@"info"];
+    [content setObject:localEvent.eventId forKey:kRoomMessageUploadIdKey];
+    
+    localEvent.content = content;
     
     // Add this new event
     [self addLocalEchoEvent:localEvent];
@@ -2163,12 +2504,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             break;
         }
     }
-    [self.messagesTableView reloadData];
+    // ensure the reload is done in the right thread
+    // after video compression for example
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.messagesTableView reloadData];
+    });
 }
 
-- (BOOL)isPendingEvent:(MXEvent*)mxEvent {
+- (MXEvent*)pendingEventRelatedToEvent:(MXEvent*)mxEvent {
     // Note: mxEvent is supposed here to be an outgoing event received from event stream.
-    // This method returns true when its content matches with the content of a pending outgoing event.
+    // This method returns a pending event (if any) whose content matches with received event content.
     NSString *msgtype = mxEvent.content[@"msgtype"];
     
     for (NSInteger index = 0; index < pendingOutgoingEvents.count; index++) {
@@ -2177,16 +2522,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         if ([msgtype isEqualToString:pendingEventType]) {
             if ([msgtype isEqualToString:kMXMessageTypeText] || [msgtype isEqualToString:kMXMessageTypeEmote]) {
-                return [mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]];
+                // Compare content body
+                if ([mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]]) {
+                    return pendingEvent;
+                }
             } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
-                return [mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]];
+                // Compare geo uri
+                if ([mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]]) {
+                    return pendingEvent;
+                }
             } else {
                 // Here the type is kMXMessageTypeImage, kMXMessageTypeAudio or kMXMessageTypeVideo
-                return [mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]];
+                if ([mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]]) {
+                    return pendingEvent;
+                }
             }
         }
     }
-    return NO;
+    return nil;
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
@@ -2219,7 +2572,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } else {
             // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /nick <display_name>";
+            self.messageTextView.placeholder = @"Usage: /nick <display_name>";
         }
     } else if ([text hasPrefix:kCmdJoinRoom]) {
         // Join a room
@@ -2239,7 +2592,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } else {
             // Display cmd usage in text input as placeholder
-            self.messageTextField.placeholder = @"Usage: /join <room_alias>";
+            self.messageTextView.placeholder = @"Usage: /join <room_alias>";
         }
     } else {
         // Retrieve userId
@@ -2274,7 +2627,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /kick <userId> [<reason>]";
+                self.messageTextView.placeholder = @"Usage: /kick <userId> [<reason>]";
             }
         } else if ([cmd isEqualToString:kCmdBanUser]) {
             if (userId) {
@@ -2296,7 +2649,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /ban <userId> [<reason>]";
+                self.messageTextView.placeholder = @"Usage: /ban <userId> [<reason>]";
             }
         } else if ([cmd isEqualToString:kCmdUnbanUser]) {
             if (userId) {
@@ -2309,7 +2662,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /unban <userId>";
+                self.messageTextView.placeholder = @"Usage: /unban <userId>";
             }
         } else if ([cmd isEqualToString:kCmdSetUserPowerLevel]) {
             // Retrieve power level
@@ -2334,7 +2687,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /op <userId> <power level>";
+                self.messageTextView.placeholder = @"Usage: /op <userId> <power level>";
             }
         } else if ([cmd isEqualToString:kCmdResetUserPowerLevel]) {
             if (userId) {
@@ -2347,11 +2700,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
             } else {
                 // Display cmd usage in text input as placeholder
-                self.messageTextField.placeholder = @"Usage: /deop <userId>";
+                self.messageTextView.placeholder = @"Usage: /deop <userId>";
             }
         } else {
             NSLog(@"Unrecognised IRC-style command: %@", text);
-            self.messageTextField.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
+            self.messageTextView.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
         }
     }
     return YES;
@@ -2359,29 +2712,72 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 # pragma mark - Typing notification
 
-- (void)sendTypingNotification:(BOOL)typing {
-    NSUInteger timeout = -1;
+- (void)handleTypingNotification:(BOOL)typing {
+    NSUInteger notificationTimeoutMS = -1;
     if (typing) {
-        // Check whether a typing notification has been sent recently
-        if (lastTypingNotificationDate) {
-            // We don't send new notification if less than half of the timeout is elapsed
-            NSTimeInterval interval = -[lastTypingNotificationDate timeIntervalSinceNow];
-            if (interval < ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS / 2000) {
-                return;
-            }
+        // Check whether a typing event has been already reported to server (We wait for the end of the local timout before considering this new event)
+        if (typingTimer) {
+            // Refresh date of the last observed typing
+            lastTypingDate = [[NSDate alloc] init];
+            return;
         }
-        timeout = ROOMVIEWCONTROLLER_TYPING_TIMEOUT_MS;
+        
+        // Launch a timer to prevent sending multiple typing notifications
+        NSTimeInterval timerTimeout = ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC;
+        if (lastTypingDate) {
+            NSTimeInterval lastTypingAge = -[lastTypingDate timeIntervalSinceNow];
+            if (lastTypingAge < timerTimeout) {
+                // Subtract the time interval since last typing from the timer timeout
+                timerTimeout -= lastTypingAge;
+            } else {
+                timerTimeout = 0;
+            }
+        } else {
+            // Keep date of this typing event
+            lastTypingDate = [[NSDate alloc] init];
+        }
+        
+        if (timerTimeout) {
+            typingTimer = [NSTimer scheduledTimerWithTimeInterval:timerTimeout target:self selector:@selector(typingTimeout:) userInfo:self repeats:NO];
+            // Compute the notification timeout in ms (consider the double of the local typing timeout)
+            notificationTimeoutMS = 2000 * ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC;
+        } else {
+            // This typing event is too old, we will ignore it
+            typing = NO;
+            NSLog(@"sendTypingNotification: a typing event has been ignored");
+        }
+    } else {
+        // Cancel any typing timer
+        [typingTimer invalidate];
+        typingTimer = nil;
+        // Reset last typing date
+        lastTypingDate = nil;
     }
     
     // Send typing notification to server
-    lastTypingNotificationDate = nil;
-    [self.mxRoom sendTypingNotification:typing timeout:timeout success:^{
-        if (typing) {
-            lastTypingNotificationDate = [[NSDate alloc] init];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"sendTypingNotification (%d) failed: %@", typing, error);
-    }];
+    [self.mxRoom sendTypingNotification:typing
+                                timeout:notificationTimeoutMS
+                                success:^{
+                                    // Reset last typing date
+                                    lastTypingDate = nil;
+                                } failure:^(NSError *error) {
+                                    NSLog(@"sendTypingNotification (%d) failed: %@", typing, error);
+                                    // Cancel timer (if any)
+                                    [typingTimer invalidate];
+                                    typingTimer = nil;
+                                    // Send again
+                                    [self handleTypingNotification:typing];
+                                }];
+}
+
+- (IBAction)typingTimeout:(id)sender {
+    [typingTimer invalidate];
+    typingTimer = nil;
+    
+    // Check whether a new typing event has been observed
+    BOOL typing = (lastTypingDate != nil);
+    // Post a new typing notification
+    [self handleTypingNotification:typing];
 }
 
 
@@ -2389,8 +2785,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)sendImage:(UIImage*)image {
     // Add a temporary event while the image is attached (local echo)
-    MXEvent *localEvent = [self addLocalEchoEventForAttachedMedia:image];
+    MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:image];
     
+    // use the generated info dict to retrieve useful data
     NSMutableDictionary *infoDict = [localEvent.content valueForKey:@"info"];
     NSData *imageData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[localEvent.content valueForKey:@"url"] andType:[infoDict objectForKey:@"mimetype"]]];
     

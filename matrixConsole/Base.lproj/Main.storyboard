@@ -60,6 +60,13 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 </textView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_keyboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="eI7-Og-P0z" userLabel="typingBadge">
+                                                    <rect key="frame" x="5" y="0.0" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="O3f-eX-OZW"/>
+                                                        <constraint firstAttribute="width" constant="20" id="paH-au-BZZ"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View" customClass="CustomImageView">
                                                     <rect key="frame" x="51" y="18" width="192" height="32"/>
                                                     <constraints>
@@ -137,20 +144,26 @@
                                                 <constraint firstAttribute="bottom" secondItem="Ttt-0P-dQW" secondAttribute="bottom" id="GAU-J5-ciT"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="yUK-od-5YZ" secondAttribute="trailing" constant="5" id="HKC-g7-1nd"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="3" id="N8f-0n-ObR"/>
+                                                <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="eI7-Og-P0z" secondAttribute="trailing" constant="26" id="NQ6-4u-OfY"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="eI7-Og-P0z" secondAttribute="bottom" constant="22" id="POI-Xr-nCc"/>
                                                 <constraint firstItem="Ttt-0P-dQW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="Ptt-qa-Cg4"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="centerY" secondItem="vF4-rq-4Rn" secondAttribute="centerY" id="ROj-jF-hIQ"/>
                                                 <constraint firstAttribute="trailing" secondItem="ds0-yH-8Uu" secondAttribute="trailing" constant="8" id="S8j-em-KNk"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="SBr-0P-RGD"/>
+                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leadingMargin" constant="-3" id="Sht-Fo-Vow"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="centerX" secondItem="vF4-rq-4Rn" secondAttribute="centerX" id="VwV-of-MSN"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="8" id="fNV-Tp-p31"/>
                                                 <constraint firstAttribute="trailing" secondItem="J5R-Mh-3hV" secondAttribute="trailing" constant="69" id="lTz-aa-doa"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ttt-0P-dQW" secondAttribute="trailing" id="mJg-Df-CWQ"/>
                                                 <constraint firstAttribute="bottom" secondItem="mvK-ez-meg" secondAttribute="bottom" id="mPQ-LG-kca"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
+                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="5" id="oNB-8O-Q69"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="10" id="rJt-w3-D8g"/>
+                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="top" secondItem="Ttt-0P-dQW" secondAttribute="top" id="tLX-ty-w3v"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="wym-In-Raa"/>
                                                 <constraint firstAttribute="bottom" secondItem="ds0-yH-8Uu" secondAttribute="bottom" id="x7P-Ah-yBo"/>
                                                 <constraint firstAttribute="trailing" secondItem="egJ-aY-QVW" secondAttribute="trailing" constant="69" id="xbW-GK-B0H"/>
+                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="xlz-kh-vxM"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="51" id="ywS-ns-jXj"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -168,6 +181,7 @@
                                             <outlet property="progressChartView" destination="pg4-aQ-7qW" id="pdM-fl-r2e"/>
                                             <outlet property="progressView" destination="yUK-od-5YZ" id="Qba-ld-tjt"/>
                                             <outlet property="statsLabel" destination="HFo-GV-TO9" id="pu0-DB-zgG"/>
+                                            <outlet property="typingBadge" destination="eI7-Og-P0z" id="4pK-nn-TBt"/>
                                             <outlet property="userNameLabel" destination="egJ-aY-QVW" id="IWg-7t-5Vp"/>
                                         </connections>
                                     </tableViewCell>
@@ -315,16 +329,11 @@
                                             <action selector="onButtonPressed:" destination="msb-ol-2LB" eventType="touchUpInside" id="YtT-Cb-ZPk"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k2m-aY-U73">
-                                        <rect key="frame" x="38" y="7" width="510" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="msb-ol-2LB" id="8ag-DG-tah"/>
-                                        </connections>
-                                    </textField>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UVo-EY-Nyg" customClass="ConsoleGrowingTextView">
+                                        <rect key="frame" x="38" y="8" width="510" height="28"/>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Icg-kc-a2c">
-                                        <rect key="frame" x="556" y="7" width="36" height="30"/>
+                                        <rect key="frame" x="556" y="6" width="36" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="36" id="28c-o8-T5D"/>
                                         </constraints>
@@ -336,16 +345,17 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.89816151494565222" green="0.89816151494565222" blue="0.89816151494565222" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="k2m-aY-U73" secondAttribute="centerY" id="4K3-ik-gu9"/>
-                                    <constraint firstAttribute="centerY" secondItem="Icg-kc-a2c" secondAttribute="centerY" id="4TL-f2-HJY"/>
-                                    <constraint firstItem="Icg-kc-a2c" firstAttribute="leading" secondItem="k2m-aY-U73" secondAttribute="trailing" constant="8" id="Ha6-3C-kah"/>
+                                    <constraint firstAttribute="bottom" secondItem="UVo-EY-Nyg" secondAttribute="bottom" constant="8" id="42W-Aj-tDe"/>
+                                    <constraint firstAttribute="bottom" secondItem="cfF-YG-Cvg" secondAttribute="bottom" constant="11" id="FaK-A3-nl8"/>
+                                    <constraint firstAttribute="bottom" secondItem="Icg-kc-a2c" secondAttribute="bottom" constant="8" id="GBv-Db-4H0"/>
                                     <constraint firstItem="cfF-YG-Cvg" firstAttribute="leading" secondItem="6fM-aJ-d0M" secondAttribute="leading" constant="8" id="JLw-Kl-Rdp"/>
-                                    <constraint firstItem="k2m-aY-U73" firstAttribute="leading" secondItem="cfF-YG-Cvg" secondAttribute="trailing" constant="8" id="Rgj-Gk-R0F"/>
+                                    <constraint firstItem="Icg-kc-a2c" firstAttribute="leading" secondItem="UVo-EY-Nyg" secondAttribute="trailing" constant="8" id="lVs-Ba-j3d"/>
                                     <constraint firstAttribute="trailing" secondItem="Icg-kc-a2c" secondAttribute="trailing" constant="8" id="pQV-JJ-C09"/>
+                                    <constraint firstItem="UVo-EY-Nyg" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="top" constant="8" id="qPI-ig-yno"/>
                                     <constraint firstAttribute="height" constant="44" id="tGp-dw-uAO"/>
-                                    <constraint firstAttribute="centerY" secondItem="cfF-YG-Cvg" secondAttribute="centerY" id="ugG-2r-MsO"/>
+                                    <constraint firstItem="UVo-EY-Nyg" firstAttribute="leading" secondItem="cfF-YG-Cvg" secondAttribute="trailing" constant="8" id="u00-eB-vAB"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dvT-c5-Ymf">
@@ -391,6 +401,13 @@
                                                                 <constraint firstAttribute="width" constant="14" id="pnc-pv-ZIj"/>
                                                             </constraints>
                                                         </view>
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_keyboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-Jk-E9g" userLabel="typingBadge">
+                                                            <rect key="frame" x="5" y="0.0" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="20" id="PTQ-vb-uut"/>
+                                                                <constraint firstAttribute="height" constant="20" id="kSo-JS-5Zy"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="6La-Gc-4B8"/>
@@ -401,7 +418,9 @@
                                                         <constraint firstAttribute="trailing" secondItem="wDo-tA-Ar7" secondAttribute="trailing" constant="21" id="cAm-Af-t17"/>
                                                         <constraint firstItem="uVK-4R-arl" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" constant="5" id="cFa-Qa-p2W"/>
                                                         <constraint firstItem="RW8-nh-DTj" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="8" id="hXV-sM-uhV"/>
+                                                        <constraint firstItem="Qqy-Jk-E9g" firstAttribute="leading" secondItem="prD-ap-cDD" secondAttribute="leading" constant="5" id="isg-iP-lxS"/>
                                                         <constraint firstAttribute="bottom" secondItem="uVK-4R-arl" secondAttribute="bottom" constant="10" id="l5F-M4-LOB"/>
+                                                        <constraint firstItem="Qqy-Jk-E9g" firstAttribute="top" secondItem="prD-ap-cDD" secondAttribute="top" id="lAg-ta-D5f"/>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
@@ -413,6 +432,7 @@
                                                 <connections>
                                                     <outlet property="pictureView" destination="RW8-nh-DTj" id="1Lk-bd-tKv"/>
                                                     <outlet property="powerContainer" destination="wDo-tA-Ar7" id="sub-O0-L9d"/>
+                                                    <outlet property="typingBadge" destination="Qqy-Jk-E9g" id="I9v-f3-iFB"/>
                                                     <outlet property="userLabel" destination="uVK-4R-arl" id="OhP-VD-vj0"/>
                                                     <segue destination="qlN-Mb-ZH7" kind="show" identifier="showMemberSheet" id="QMI-Ay-tFz"/>
                                                 </connections>
@@ -501,11 +521,13 @@
                         <outlet property="activityIndicator" destination="dvT-c5-Ymf" id="F6h-Al-Vw6"/>
                         <outlet property="controlView" destination="6fM-aJ-d0M" id="13g-Wl-z5n"/>
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
+                        <outlet property="controlViewHeightConstraint" destination="tGp-dw-uAO" id="hx8-ri-zYa"/>
                         <outlet property="membersListButtonItem" destination="3d6-ln-ICU" id="KtB-5h-eJl"/>
                         <outlet property="membersTableView" destination="pLY-I9-ghF" id="Ioc-IJ-WYX"/>
                         <outlet property="membersView" destination="OWi-J8-sFZ" id="3n2-n5-r6B"/>
-                        <outlet property="messageTextField" destination="k2m-aY-U73" id="fSA-Eg-duj"/>
+                        <outlet property="messageTextView" destination="UVo-EY-Nyg" id="zc1-ch-1Mf"/>
                         <outlet property="messagesTableView" destination="meV-kn-sxo" id="W1n-q0-ml7"/>
+                        <outlet property="messagesTableViewBottomConstraint" destination="Cos-M5-WHG" id="uv8-tO-HiR"/>
                         <outlet property="optionBtn" destination="cfF-YG-Cvg" id="Ppb-dg-Tub"/>
                         <outlet property="roomNavItem" destination="3Zt-Wl-J6o" id="gjB-fs-Whw"/>
                         <outlet property="roomTitleView" destination="aas-th-FW1" id="nN7-6S-FR3"/>
@@ -1302,6 +1324,7 @@
     </scenes>
     <resources>
         <image name="default-profile.png" width="160" height="160"/>
+        <image name="icon_keyboard.png" width="25" height="25"/>
         <image name="icon_users.png" width="35" height="25"/>
         <image name="logoHighRes.png" width="480" height="204"/>
         <image name="play.png" width="64" height="64"/>

@@ -46,6 +46,7 @@
 @end
 
 @interface IncomingMessageTableCell : RoomMessageTableCell
+@property (weak, nonatomic) IBOutlet UIImageView *typingBadge;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @end
 

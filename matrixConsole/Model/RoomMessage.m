@@ -64,16 +64,8 @@ static NSAttributedString *messageSeparator = nil;
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
                 if (!_thumbnailURL) {
-                    if ([_attachmentURL hasPrefix:MX_PREFIX_CONTENT_URI]) {
-                        // Build the url to get the well adapted thumbnail from server
-                        _thumbnailURL = _attachmentURL;
-                        NSString *mxThumbnailPrefix = [NSString stringWithFormat:@"%@%@/thumbnail/", [mxHandler homeServerURL], kMXMediaPathPrefix];
-                        _thumbnailURL = [_thumbnailURL stringByReplacingOccurrencesOfString:MX_PREFIX_CONTENT_URI withString:mxThumbnailPrefix];
-                        // Add parameters
-                        _thumbnailURL = [NSString stringWithFormat:@"%@?width=%tu&height=%tu&method=scale", _thumbnailURL, (NSUInteger)self.contentSize.width, (NSUInteger)self.contentSize.height];
-                    } else {
-                        _thumbnailURL = _attachmentURL;
-                    }
+                    // Suppose _attachmentURL is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+                    _thumbnailURL = [mxHandler thumbnailURLForContent:_attachmentURL inViewSize:self.contentSize withMethod:MXThumbnailingMethodScale];
                 }
             } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                 // Not supported yet
