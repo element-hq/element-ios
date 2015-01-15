@@ -34,7 +34,9 @@
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC 10
 
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
+
 #define ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE 20
+#define ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET 100
 
 #define ROOM_MESSAGE_CELL_DEFAULT_HEIGHT 50
 #define ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST 10
@@ -71,6 +73,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSUInteger backPaginationAddedMsgNb;
     NSUInteger backPaginationHandledEventsNb;
     NSOperation *backPaginationOperation;
+    CGFloat backPaginationSavedFirstMsgHeight;
     
     // Members list
     NSArray *members;
@@ -692,6 +695,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self startActivityIndicator];
         isBackPaginationInProgress = YES;
         backPaginationAddedMsgNb = 0;
+        // Store the current height of the first message (if any)
+        backPaginationSavedFirstMsgHeight = 0;
+        if (messages.count) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            backPaginationSavedFirstMsgHeight = [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self paginateBackMessages:requestedItemsNb];
@@ -735,9 +744,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)onBackPaginationComplete {
-    if (backPaginationAddedMsgNb) {
+    if (backPaginationAddedMsgNb || backPaginationHandledEventsNb) {
         // We scroll to bottom when table is loaded for the first time
         BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
+        if (!shouldScrollToBottom) {
+            // We will scroll to bottom if the displayed content does not reach the bottom (after adding back pagination)
+            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+            // Compute the height of the blank part at the bottom
+            if (maxPositionY > self.messagesTableView.contentSize.height) {
+                CGFloat blankAreaHeight = maxPositionY - self.messagesTableView.contentSize.height;
+                // Scroll to bottom if this blank area is greater than max scrolling offet
+                shouldScrollToBottom = (blankAreaHeight >= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET);
+            }
+        }
         
         CGFloat verticalOffset = 0;
         if (shouldScrollToBottom == NO) {
@@ -748,8 +767,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                 verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
             }
+            // Add delta of the height of the first existing message
+            if (messages.count > backPaginationAddedMsgNb) {
+                indexPath = [NSIndexPath indexPathForRow:backPaginationAddedMsgNb inSection:0];
+                verticalOffset += ([self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath] - backPaginationSavedFirstMsgHeight);
+            }
             // Deduce the vertical offset from this height
-            verticalOffset -= 100;
+            verticalOffset -= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET;
         }
         // Reset count to enable tableView update
         backPaginationAddedMsgNb = 0;
