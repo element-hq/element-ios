@@ -112,9 +112,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
             rate = 1.0;
         }
         
-        CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
-        CGFloat deltaTime = currentTime - statsStartTime;
-        
+        CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();        
         CGFloat meanRate = downloadData.length / (currentTime - downloadStartTime)/ 1024.0;
         CGFloat dataRemainingTime = 0;
         
