@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -144,13 +144,10 @@
                                                 <constraint firstAttribute="bottom" secondItem="Ttt-0P-dQW" secondAttribute="bottom" id="GAU-J5-ciT"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="yUK-od-5YZ" secondAttribute="trailing" constant="5" id="HKC-g7-1nd"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="3" id="N8f-0n-ObR"/>
-                                                <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="eI7-Og-P0z" secondAttribute="trailing" constant="26" id="NQ6-4u-OfY"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="eI7-Og-P0z" secondAttribute="bottom" constant="22" id="POI-Xr-nCc"/>
                                                 <constraint firstItem="Ttt-0P-dQW" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" id="Ptt-qa-Cg4"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="centerY" secondItem="vF4-rq-4Rn" secondAttribute="centerY" id="ROj-jF-hIQ"/>
                                                 <constraint firstAttribute="trailing" secondItem="ds0-yH-8Uu" secondAttribute="trailing" constant="8" id="S8j-em-KNk"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="SBr-0P-RGD"/>
-                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leadingMargin" constant="-3" id="Sht-Fo-Vow"/>
                                                 <constraint firstItem="mvK-ez-meg" firstAttribute="centerX" secondItem="vF4-rq-4Rn" secondAttribute="centerX" id="VwV-of-MSN"/>
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="8" id="fNV-Tp-p31"/>
                                                 <constraint firstAttribute="trailing" secondItem="J5R-Mh-3hV" secondAttribute="trailing" constant="69" id="lTz-aa-doa"/>
@@ -159,7 +156,6 @@
                                                 <constraint firstItem="uhu-R0-9NH" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="5" id="mer-CT-cEg"/>
                                                 <constraint firstItem="eI7-Og-P0z" firstAttribute="leading" secondItem="iJp-sA-hG6" secondAttribute="leading" constant="5" id="oNB-8O-Q69"/>
                                                 <constraint firstItem="J5R-Mh-3hV" firstAttribute="top" secondItem="iJp-sA-hG6" secondAttribute="top" constant="10" id="rJt-w3-D8g"/>
-                                                <constraint firstItem="eI7-Og-P0z" firstAttribute="top" secondItem="Ttt-0P-dQW" secondAttribute="top" id="tLX-ty-w3v"/>
                                                 <constraint firstItem="egJ-aY-QVW" firstAttribute="leading" secondItem="uhu-R0-9NH" secondAttribute="trailing" constant="3" id="wym-In-Raa"/>
                                                 <constraint firstAttribute="bottom" secondItem="ds0-yH-8Uu" secondAttribute="bottom" id="x7P-Ah-yBo"/>
                                                 <constraint firstAttribute="trailing" secondItem="egJ-aY-QVW" secondAttribute="trailing" constant="69" id="xbW-GK-B0H"/>
@@ -1324,7 +1320,7 @@
     </scenes>
     <resources>
         <image name="default-profile.png" width="160" height="160"/>
-        <image name="icon_keyboard.png" width="25" height="25"/>
+        <image name="icon_keyboard.png" width="20" height="20"/>
         <image name="icon_users.png" width="35" height="25"/>
         <image name="logoHighRes.png" width="480" height="204"/>
         <image name="play.png" width="64" height="64"/>
