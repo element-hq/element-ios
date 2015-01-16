@@ -1256,7 +1256,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 #pragma mark - Keyboard handling
 
-- (void)onOrientationChanged:(NSNotification *)notif {
+- (void) updateMessageTextViewFrame {
     if (!isKeyboardDisplayed) {
         // compute the visible area (tableview + text input)
         // the tableview must use at least 50 pixels to let the user hides the keybaord
@@ -1264,7 +1264,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         _messageTextView.maxHeight = maxTextHeight;
         [_messageTextView refreshHeight];
-        
+    }
+}
+
+- (void)onOrientationChanged:(NSNotification *)notif {
+    if (!isKeyboardDisplayed) {
+        [self updateMessageTextViewFrame];
         [self scrollToBottomAnimated:YES];
     }
 }
@@ -1386,7 +1391,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.view layoutIfNeeded];
         
         // update the text input height
-        [self onOrientationChanged:nil];
+        [self updateMessageTextViewFrame];
         
     } else {
         
@@ -1408,7 +1413,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
         } completion:^(BOOL finished) {
             // update the text input height
-            [self onOrientationChanged:nil];
+            [self updateMessageTextViewFrame];
         }];
     }
 }
