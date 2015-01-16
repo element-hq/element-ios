@@ -27,6 +27,8 @@ typedef enum : NSUInteger {
 
 @interface MatrixHandler : NSObject
 
+@property (strong, nonatomic) dispatch_queue_t processingQueue;
+
 @property (strong, nonatomic) MXRestClient *mxRestClient;
 @property (strong, nonatomic) MXSession *mxSession;
 

@@ -68,6 +68,9 @@ static MatrixHandler *sharedHandler = nil;
         _userPresence = MXPresenceUnknown;
         notifyOpenSessionFailure = YES;
         
+        NSString *label = [NSString stringWithFormat:@"com.matrix.%@.MatrixHandler", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
+        _processingQueue = dispatch_queue_create([label UTF8String], DISPATCH_QUEUE_SERIAL);
+        
         // Read potential homeserver url in shared defaults object
         if (self.homeServerURL) {
             self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:self.homeServerURL];
@@ -199,6 +202,8 @@ static MatrixHandler *sharedHandler = nil;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    _processingQueue = nil;
     
     [self closeSession];
     self.mxSession = nil;
