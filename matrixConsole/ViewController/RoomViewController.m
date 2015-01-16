@@ -1562,141 +1562,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     return rowHeight;
 }
 
-- (IBAction)onResendToggle:(id)sender {
-    // sanity check
-    if ([sender isKindOfClass:[UIButton class]]) {
-        id hiddenLabel = [(UIButton*)sender viewWithTag:HIDDEN_UNSENT_MSG_LABEL];
-        
-        // get the hidden label where the event ID is store
-        if ([hiddenLabel isKindOfClass:[UILabel class]]) {
-            NSString* eventID =((UILabel*)hiddenLabel).text;
-            
-            // search the selected cell
-            UIView* cellView = sender;
-            while (![cellView isKindOfClass:[RoomMessageTableCell class]]) {
-                cellView = cellView.superview;
-            }
-            
-            if (cellView) {
-                RoomMessage* roomMessage = ((RoomMessageTableCell*)cellView).message;
-                RoomMessageComponent* component =[roomMessage componentWithEventId:eventID];
-                
-                // sanity check
-                if (component) {
-                    NSString* textMessage = component.textMessage;
-                    
-                    __weak typeof(self) weakSelf = self;
-                    
-                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Resend the message"
-                                                                 message:(roomMessage.messageType == RoomMessageTypeText) ? textMessage : nil
-                                                                       style:CustomAlertStyleAlert];
-                    
-                    
-                    self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel"
-                                                                                              style:CustomAlertActionStyleDefault
-                                                                                            handler:^(CustomAlert *alert) {
-                                                                                                weakSelf.actionMenu = nil;
-                                                                                            }];
-                    [self.actionMenu addActionWithTitle:@"OK"
-                                                      style:CustomAlertActionStyleDefault
-                                                    handler:^(CustomAlert *alert) {
-                                                         weakSelf.actionMenu = nil;
-                                                        
-                                                        if (roomMessage.messageType == RoomMessageTypeText) {
-                                                            // remove the message
-                                                            [roomMessage removeEvent:eventID];
-                                                            if (!roomMessage.components.count) {
-                                                                @synchronized(weakSelf) {
-                                                                    [weakSelf.messages removeObject:roomMessage];
-                                                                }
-                                                            }
-                                                            
-                                                            [weakSelf sendTextMessage:textMessage];
-                                                        } else if (roomMessage.messageType == RoomMessageTypeImage) {
-                                                            // check if the message is still in the list
-                                                            NSUInteger index;
-                                                            @synchronized(weakSelf) {
-                                                                index = [weakSelf.messages indexOfObject:roomMessage];
-                                                                if (index != NSNotFound) {
-                                                                    [weakSelf.messages removeObjectAtIndex:index];
-                                                                }
-                                                            }
-                                                            
-                                                            if (index != NSNotFound) {
-                                                                UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.attachmentURL];
-                                                                
-                                                                // if the URL is still a local one
-                                                                if (image) {
-                                                                    // it should mean that the media upload fails
-                                                                    [weakSelf sendImage:image];
-                                                                } else if (roomMessage.attachmentURL.length > 0) {
-                                                                    // build the image dict
-                                                                    NSMutableDictionary* imageMessage = [[NSMutableDictionary alloc] init];
-                                                                    [imageMessage setObject:@"Image" forKey:@"body"];
-                                                                    [imageMessage setObject:roomMessage.attachmentInfo forKey:@"info"];
-                                                                    [imageMessage setObject:kMXMessageTypeImage forKey:@"msgtype"];
-                                                                    [imageMessage setObject:roomMessage.attachmentURL forKey:@"url"];
-                                                                    
-                                                                    if (roomMessage.previewURL) {
-                                                                        [imageMessage setObject:roomMessage.previewURL forKey:kRoomMessageLocalPreviewKey];
-                                                                    }
-                                                                    
-                                                                    // send it again
-                                                                    [weakSelf sendMessage:imageMessage withLocalEvent:nil];
-                                                                }
-                                                            }
-                                                        } else if (roomMessage.messageType == RoomMessageTypeVideo) {
-                                                            // check if the message is still in the list
-                                                            NSUInteger index;
-                                                            @synchronized(weakSelf) {
-                                                                index = [weakSelf.messages indexOfObject:roomMessage];
-                                                                if (index != NSNotFound) {
-                                                                    [weakSelf.messages removeObjectAtIndex:index];
-                                                                }
-                                                            }
-                                                            
-                                                            if (index != NSNotFound) {
-                                                                // if the URL is still a local one
-                                                                if (![NSURL URLWithString:roomMessage.thumbnailURL].scheme) {
-                                                                     UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.thumbnailURL];
-                                                                    // it should mean that the thumbnail upload fails
-                                                                    [weakSelf sendVideo:[NSURL fileURLWithPath:roomMessage.attachmentURL]  withThumbnail:image];
-                                                                } else {
-                                         
-                                                                    NSMutableDictionary* videoMessage = [[NSMutableDictionary alloc] init];
-                                                                    [videoMessage setObject:@"Video" forKey:@"body"];
-                                                                    [videoMessage setObject:roomMessage.attachmentInfo forKey:@"info"];
-                                                                    [videoMessage setObject:kMXMessageTypeVideo forKey:@"msgtype"];
-                                                                    [videoMessage setObject:roomMessage.attachmentURL forKey:@"url"];
-                                                                    
-                                                                    if (roomMessage.previewURL) {
-                                                                        [videoMessage setObject:roomMessage.previewURL forKey:kRoomMessageLocalPreviewKey];
-                                                                    }
-                                                                    
-                                                                    // the attachment is still a local path
-                                                                    if (![NSURL URLWithString:roomMessage.attachmentURL].scheme) {
-                                                                        // Add a new local event
-                                                                        MXEvent* localEvent = [weakSelf createLocalEchoEventWithoutContent];
-                                                                        localEvent.content = videoMessage;
-                                                                        [weakSelf addLocalEchoEvent:localEvent];
-                                                                        [weakSelf sendVideoContent:videoMessage localEvent:localEvent];
-                                                                    } else {
-                                                                        // set localEvent to nil to avoid useless search
-                                                                        [weakSelf sendMessage:videoMessage withLocalEvent:nil];
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        
-                                                    }];
-                    
-                    [self.actionMenu showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
-                }
-            }
-        }
-    }
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
@@ -2327,6 +2192,141 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     } else {
         [self hideAttachmentView];
         [self showRoomMembers];
+    }
+}
+
+- (IBAction)onResendToggle:(id)sender {
+    // sanity check
+    if ([sender isKindOfClass:[UIButton class]]) {
+        id hiddenLabel = [(UIButton*)sender viewWithTag:HIDDEN_UNSENT_MSG_LABEL];
+        
+        // get the hidden label where the event ID is store
+        if ([hiddenLabel isKindOfClass:[UILabel class]]) {
+            NSString* eventID =((UILabel*)hiddenLabel).text;
+            
+            // search the selected cell
+            UIView* cellView = sender;
+            while (![cellView isKindOfClass:[RoomMessageTableCell class]]) {
+                cellView = cellView.superview;
+            }
+            
+            if (cellView) {
+                RoomMessage* roomMessage = ((RoomMessageTableCell*)cellView).message;
+                RoomMessageComponent* component =[roomMessage componentWithEventId:eventID];
+                
+                // sanity check
+                if (component) {
+                    NSString* textMessage = component.textMessage;
+                    
+                    __weak typeof(self) weakSelf = self;
+                    
+                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Resend the message"
+                                                                 message:(roomMessage.messageType == RoomMessageTypeText) ? textMessage : nil
+                                                                   style:CustomAlertStyleAlert];
+                    
+                    
+                    self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel"
+                                                                                      style:CustomAlertActionStyleDefault
+                                                                                    handler:^(CustomAlert *alert) {
+                                                                                        weakSelf.actionMenu = nil;
+                                                                                    }];
+                    [self.actionMenu addActionWithTitle:@"OK"
+                                                  style:CustomAlertActionStyleDefault
+                                                handler:^(CustomAlert *alert) {
+                                                    weakSelf.actionMenu = nil;
+                                                    
+                                                    if (roomMessage.messageType == RoomMessageTypeText) {
+                                                        // remove the message
+                                                        [roomMessage removeEvent:eventID];
+                                                        if (!roomMessage.components.count) {
+                                                            @synchronized(weakSelf) {
+                                                                [weakSelf.messages removeObject:roomMessage];
+                                                            }
+                                                        }
+                                                        
+                                                        [weakSelf sendTextMessage:textMessage];
+                                                    } else if (roomMessage.messageType == RoomMessageTypeImage) {
+                                                        // check if the message is still in the list
+                                                        NSUInteger index;
+                                                        @synchronized(weakSelf) {
+                                                            index = [weakSelf.messages indexOfObject:roomMessage];
+                                                            if (index != NSNotFound) {
+                                                                [weakSelf.messages removeObjectAtIndex:index];
+                                                            }
+                                                        }
+                                                        
+                                                        if (index != NSNotFound) {
+                                                            UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.attachmentURL];
+                                                            
+                                                            // if the URL is still a local one
+                                                            if (image) {
+                                                                // it should mean that the media upload fails
+                                                                [weakSelf sendImage:image];
+                                                            } else if (roomMessage.attachmentURL.length > 0) {
+                                                                // build the image dict
+                                                                NSMutableDictionary* imageMessage = [[NSMutableDictionary alloc] init];
+                                                                [imageMessage setObject:@"Image" forKey:@"body"];
+                                                                [imageMessage setObject:roomMessage.attachmentInfo forKey:@"info"];
+                                                                [imageMessage setObject:kMXMessageTypeImage forKey:@"msgtype"];
+                                                                [imageMessage setObject:roomMessage.attachmentURL forKey:@"url"];
+                                                                
+                                                                if (roomMessage.previewURL) {
+                                                                    [imageMessage setObject:roomMessage.previewURL forKey:kRoomMessageLocalPreviewKey];
+                                                                }
+                                                                
+                                                                // send it again
+                                                                [weakSelf sendMessage:imageMessage withLocalEvent:nil];
+                                                            }
+                                                        }
+                                                    } else if (roomMessage.messageType == RoomMessageTypeVideo) {
+                                                        // check if the message is still in the list
+                                                        NSUInteger index;
+                                                        @synchronized(weakSelf) {
+                                                            index = [weakSelf.messages indexOfObject:roomMessage];
+                                                            if (index != NSNotFound) {
+                                                                [weakSelf.messages removeObjectAtIndex:index];
+                                                            }
+                                                        }
+                                                        
+                                                        if (index != NSNotFound) {
+                                                            // if the URL is still a local one
+                                                            if (![NSURL URLWithString:roomMessage.thumbnailURL].scheme) {
+                                                                UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.thumbnailURL];
+                                                                // it should mean that the thumbnail upload fails
+                                                                [weakSelf sendVideo:[NSURL fileURLWithPath:roomMessage.attachmentURL]  withThumbnail:image];
+                                                            } else {
+                                                                
+                                                                NSMutableDictionary* videoMessage = [[NSMutableDictionary alloc] init];
+                                                                [videoMessage setObject:@"Video" forKey:@"body"];
+                                                                [videoMessage setObject:roomMessage.attachmentInfo forKey:@"info"];
+                                                                [videoMessage setObject:kMXMessageTypeVideo forKey:@"msgtype"];
+                                                                [videoMessage setObject:roomMessage.attachmentURL forKey:@"url"];
+                                                                
+                                                                if (roomMessage.previewURL) {
+                                                                    [videoMessage setObject:roomMessage.previewURL forKey:kRoomMessageLocalPreviewKey];
+                                                                }
+                                                                
+                                                                // the attachment is still a local path
+                                                                if (![NSURL URLWithString:roomMessage.attachmentURL].scheme) {
+                                                                    // Add a new local event
+                                                                    MXEvent* localEvent = [weakSelf createLocalEchoEventWithoutContent];
+                                                                    localEvent.content = videoMessage;
+                                                                    [weakSelf addLocalEchoEvent:localEvent];
+                                                                    [weakSelf sendVideoContent:videoMessage localEvent:localEvent];
+                                                                } else {
+                                                                    // set localEvent to nil to avoid useless search
+                                                                    [weakSelf sendMessage:videoMessage withLocalEvent:nil];
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                }];
+                    
+                    [self.actionMenu showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
+                }
+            }
+        }
     }
 }
 
