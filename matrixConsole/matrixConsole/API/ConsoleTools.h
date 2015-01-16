@@ -21,6 +21,14 @@
 // Time interval
 + (NSString*)formatSecondsInterval:(CGFloat)secondsInterval;
 
+#pragma mark - File
++ (long long)folderSize:(NSString *)folderPath;
+
+// return the list of files by name
+// isTimeSorted : the files are sorted by creation date from the oldest to the most recent one
+// largeFilesFirst: move the largest file to the list head (large > 100KB). It can be combined isTimeSorted
++ (NSArray*)listFiles:(NSString *)folderPath timeSorted:(BOOL)isTimeSorted largeFilesFirst:(BOOL)largeFilesFirst;
+
 // Image
 + (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
 
