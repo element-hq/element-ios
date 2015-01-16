@@ -143,6 +143,19 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
+- (BOOL)replaceLocalEventId:(NSString *)localEventId withEventId:(NSString *)eventId {
+    NSUInteger index = messageComponents.count;
+    while (index--) {
+        RoomMessageComponent* msgComponent = [messageComponents objectAtIndex:index];
+        if ([msgComponent.eventId isEqualToString:localEventId]) {
+            msgComponent.eventId = eventId;
+            return YES;
+        }
+    }
+    // here the provided eventId has not been found
+    return NO;
+}
+
 - (BOOL)removeEvent:(NSString *)eventId {
     if (_messageType == RoomMessageTypeText) {
         NSUInteger index = messageComponents.count;

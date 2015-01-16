@@ -76,10 +76,13 @@ typedef enum : NSUInteger {
 // Concatenates successive text messages from the same user
 // Return false if the provided event could not be added (for example the sender id is not the same, the sender name has been changed, or the messageType is not RoomMessageTypeText)
 - (BOOL)addEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
+// Search a component with the local id, and update it with the provided id
+// Return false if the local event id is not found
+- (BOOL)replaceLocalEventId:(NSString *)localEventId withEventId:(NSString *)eventId;
 // Remove the item defined with this event id
 // Return false if the event id is not found
 - (BOOL)removeEvent:(NSString*)eventId;
-// returns the component from the eventId
+// Returns the component from the eventId
 - (RoomMessageComponent*)componentWithEventId:(NSString *)eventId;
 // Return true if the event id is one of the message items
 - (BOOL)containsEventId:(NSString*)eventId;
