@@ -2414,42 +2414,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
                 
                 if (pendingEvent) {
-                    // Update local event display (Find the related message)
+                    // Replace the local event id in the related message
                     RoomMessage *message = [self messageWithEventId:localEvent.eventId];
                     if (message) {
-                        if (message.messageType == RoomMessageTypeText) {
-                            [message removeEvent:localEvent.eventId];
-                            // Update the temporary event with the actual event id
-                            localEvent.eventId = eventId;
-                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                            if (!message.components.count) {
-                                [self removeMessage:message];
-                            }
-                        } else {
-                            // Create a new message
-                            localEvent.eventId = eventId;
-                            RoomMessage *aNewMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                            if (aNewMessage) {
-                                [self replaceMessage:message withMessage:aNewMessage];
-                            } else {
-                                [self removeMessage:message];
-                            }
-                        }
+                        [message replaceLocalEventId:localEvent.eventId withEventId:eventId];
                     }
                     
-                    // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-                    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-                    // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-                    maxPositionY += 30;
-                    BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
-                    
-                    // Refresh tableView on main thread
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.messagesTableView reloadData];
-                        if (shouldScrollToBottom) {
-                            [self scrollToBottomAnimated:YES];
-                        }
-                    });
+                    // Note: Messages table will be refreshed for this outgoing event on event stream notification (see messagesListener)
                 }
             });
         } failure:^(NSError *error) {
