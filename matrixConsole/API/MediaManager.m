@@ -23,6 +23,8 @@ NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
 NSString *const kMediaDownloadDidFinishNotification = @"kMediaDownloadDidFinishNotification";
 NSString *const kMediaDownloadDidFailNotification = @"kMediaDownloadDidFailNotification";
 
+NSString *const kMediaManagerThumbnailDirectory = @"kMediaManagerThumbnailDirectory";
+
 static NSString* mediaCachePath  = nil;
 static NSString *mediaDir        = @"mediacache";
 
@@ -126,21 +128,17 @@ static NSMutableDictionary* uploadTableById = nil;
 }
 
 + (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType {
-    NSString *fileName;
-    if ([mimeType isEqualToString:@"image/jpeg"]) {
-        fileName = [NSString stringWithFormat:@"ima%lu.jpg", (unsigned long)mediaURL.hash];
-    } else if ([mimeType isEqualToString:@"video/mp4"]) {
-        fileName = [NSString stringWithFormat:@"video%lu.mp4", (unsigned long)mediaURL.hash];
-    } else if ([mimeType isEqualToString:@"video/quicktime"]) {
-        fileName = [NSString stringWithFormat:@"video%lu.mov", (unsigned long)mediaURL.hash];
-    } else {
-        NSString *extension = @"";
-        NSArray *components = [mediaURL componentsSeparatedByString:@"."];
-        if (components && components.count > 1) {
-            extension = [components lastObject];
-        }
-        fileName = [NSString stringWithFormat:@"%lu.%@", (unsigned long)mediaURL.hash, extension];
+    
+    NSString* fileExt = [ConsoleTools fileExtensionFromContentType:mimeType];
+    NSString* fileBase = @"";
+    
+    // use the mime type to extract a base filename
+    if ([mimeType rangeOfString:@"/"].location != NSNotFound){
+        NSArray *components = [mimeType componentsSeparatedByString:@"/"];
+        fileBase = [components objectAtIndex:0];
     }
+    
+    NSString *fileName = [NSString stringWithFormat:@"%@%lu%@", [fileBase substringToIndex:3], (unsigned long)mediaURL.hash, fileExt];
     
     return [[MediaManager getCachePath] stringByAppendingPathComponent:fileName];
 }

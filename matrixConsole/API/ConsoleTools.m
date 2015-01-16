@@ -16,6 +16,8 @@
 
 #import "ConsoleTools.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 @implementation ConsoleTools
 
 #pragma mark - Time interval
@@ -135,6 +137,47 @@
     } else {
         return nil;
     }
+}
+
+// return the file extension from a contentType
++ (NSString*) fileExtensionFromContentType:(NSString*)contentType
+{
+    if (!contentType)
+    {
+        return @"";
+    }
+    
+    CFStringRef mimeType = (__bridge CFStringRef)contentType;
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType, NULL);
+    
+    NSString* extension = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension);
+    
+    CFRelease(uti);
+    
+    if (extension)
+    {
+        return [NSString stringWithFormat:@".%@", extension];
+    }
+    
+    // else undefined type
+    if ([contentType isEqualToString:@"application/jpeg"])
+    {
+        return @".jpg";
+    }
+    else  if ([contentType isEqualToString:@"audio/x-alaw-basic"])
+    {
+        return @".alaw";
+    }
+    else  if ([contentType isEqualToString:@"audio/x-caf"])
+    {
+        return @".caf";
+    }
+    else  if ([contentType isEqualToString:@"audio/aac"])
+    {
+        return @".aac";
+    }
+    
+    return @"";
 }
 
 #pragma mark - Image
