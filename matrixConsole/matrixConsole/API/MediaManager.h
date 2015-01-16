@@ -18,6 +18,7 @@
 #import "MediaLoader.h"
 
 extern NSString *const kMediaManagerPrefixForDummyURL;
+extern NSString *const kMediaManagerThumbnailDirectory;
 
 // notify when a media download is finished (object: URL)
 extern NSString *const kMediaDownloadDidFinishNotification;

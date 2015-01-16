@@ -29,6 +29,9 @@
 // largeFilesFirst: move the largest file to the list head (large > 100KB). It can be combined isTimeSorted
 + (NSArray*)listFiles:(NSString *)folderPath timeSorted:(BOOL)isTimeSorted largeFilesFirst:(BOOL)largeFilesFirst;
 
+// return the file extension from a contentType
++ (NSString*) fileExtensionFromContentType:(NSString*)contentType;
+
 // Image
 + (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
 
