@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3198D9E11A68338B00556695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3198D9E31A68338B00556695 /* Localizable.strings */; };
 		710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */; };
 		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
@@ -70,6 +71,7 @@
 
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
+		3198D9E21A68338B00556695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleGrowingTextView.h; sourceTree = "<group>"; };
 		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
 		71D2E4EA1A49814B000DE015 /* MemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberActionsCell.h; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				F01628BC19E29C660071C473 /* default-profile.png */,
 				F01628BE19E29C660071C473 /* logo.png */,
 				F0CEA5AC19E6895E00E47915 /* logoHighRes.png */,
+				3198D9E31A68338B00556695 /* Localizable.strings */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */,
 				F0F90C691A32596700455977 /* icon_search.png in Resources */,
 				F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */,
+				3198D9E11A68338B00556695 /* Localizable.strings in Resources */,
 				F07A80E619DD9DE700B621A1 /* Images.xcassets in Resources */,
 				F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */,
 			);
@@ -557,6 +561,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3198D9E31A68338B00556695 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3198D9E21A68338B00556695 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		F07A80E219DD9DE700B621A1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
