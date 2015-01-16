@@ -107,8 +107,10 @@ static APNSHandler *sharedHandler = nil;
 #endif
                               };
     
+    NSString *deviceLang = [NSLocale preferredLanguages][0];
+
     MXRestClient *restCli = [MatrixHandler sharedHandler].mxRestClient;
-    [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] data:pushData success:^{
+    [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } failure:^(NSError *error) {
