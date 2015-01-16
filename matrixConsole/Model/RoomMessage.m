@@ -236,8 +236,17 @@ static NSAttributedString *messageSeparator = nil;
             if (self.attributedTextMessage.length) {
                 // Use a TextView template to compute cell height
                 UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT)];
-                dummyTextView.attributedText = self.attributedTextMessage;
-                _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+                
+                // The following code only run on the main thread
+                if([NSThread currentThread] != [NSThread mainThread]) {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        dummyTextView.attributedText = self.attributedTextMessage;
+                        _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+                    });
+                } else {
+                    dummyTextView.attributedText = self.attributedTextMessage;
+                    _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
+                }
             }
         } else if (_messageType == RoomMessageTypeImage || _messageType == RoomMessageTypeVideo) {
             CGFloat width, height;

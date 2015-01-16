@@ -448,7 +448,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
-    messages = nil;
+    @synchronized(self) {
+        messages = nil;
+    }
+    
     // Disable room title edition
     self.roomTitleView.editable = NO;
     
@@ -482,10 +485,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Enable room title edition
         self.roomTitleView.editable = YES;
         
-        messages = [NSMutableArray array];
+        @synchronized(self) {
+            messages = [NSMutableArray array];
+        }
+        
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
-        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
-        [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
+        [mxHandler addObserver:self forKeyPath:@"status" options:0 context:nil];
+        [mxHandler addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
         messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             // Handle first live events
@@ -496,39 +502,57 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     return;
                 }
                 
-                // Update Table
-                BOOL isHandled = NO;
-                // For outgoing message, we update here local echo data
-                if ([event.userId isEqualToString:[MatrixHandler sharedHandler].userId] && messages.count) {
-                    // Consider first the last message
-                    RoomMessage *message = [messages lastObject];
-                    NSUInteger index = messages.count - 1;
-                    if ([message containsEventId:event.eventId]) {
-                        // The handling of this outgoing message is complete. We remove here its local echo
-                        if (message.messageType == RoomMessageTypeText) {
-                            [message removeEvent:event.eventId];
-                            // Update message with the actual outgoing event
-                            isHandled = [message addEvent:event withRoomState:roomState];
-                            if (!message.components.count) {
-                                [self removeMessageAtIndex:index];
+                // Update Table on processing queue
+                MXRoomState *roomStateCpy = [roomState copy];
+                dispatch_async(mxHandler.processingQueue, ^{
+                    BOOL isHandled = NO;
+                    
+                    // For outgoing message, we update here local echo data
+                    if ([event.userId isEqualToString:mxHandler.userId] && messages.count) {
+                        RoomMessage *message = nil;
+                        NSUInteger index;
+                        // Consider first the last message
+                        @synchronized(self) {
+                            message = [messages lastObject];
+                            index = messages.count - 1;
+                        }
+                        
+                        if ([message containsEventId:event.eventId]) {
+                            // The handling of this outgoing message is complete. We remove here its local echo
+                            if (message.messageType == RoomMessageTypeText) {
+                                [message removeEvent:event.eventId];
+                                // Update message with the actual outgoing event
+                                isHandled = [message addEvent:event withRoomState:roomStateCpy];
+                                if (!message.components.count) {
+                                    [self removeMessageAtIndex:index];
+                                }
+                            } else {
+                                // Create a new message to handle attachment
+                                message = [[RoomMessage alloc] initWithEvent:event andRoomState:roomStateCpy];
+                                if (!message) {
+                                    // Ignore unsupported/unexpected events
+                                    [self removeMessageAtIndex:index];
+                                } else {
+                                    @synchronized(self) {
+                                        [messages replaceObjectAtIndex:index withObject:message];
+                                    }
+                                }
+                                isHandled = YES;
                             }
                         } else {
-                            // Create a new message to handle attachment
-                            message = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
-                            if (!message) {
-                                // Ignore unsupported/unexpected events
-                                [self removeMessageAtIndex:index];
-                            } else {
-                                [messages replaceObjectAtIndex:index withObject:message];
+                            // Look for the event id in other messages
+                            BOOL isFound = NO;
+                            @synchronized(self) {
+                                while (index--) {
+                                    message = [messages objectAtIndex:index];
+                                    if ([message containsEventId:event.eventId]) {
+                                        isFound = YES;
+                                        break;
+                                    }
+                                }
                             }
-                            isHandled = YES;
-                        }
-                    } else {
-                        // Look for the event id in other messages
-                        BOOL isFound = NO;
-                        while (index--) {
-                            message = [messages objectAtIndex:index];
-                            if ([message containsEventId:event.eventId]) {
+                            
+                            if (isFound) {
                                 // The handling of this outgoing message is complete. We remove here its local echo
                                 if (message.messageType == RoomMessageTypeText) {
                                     [message removeEvent:event.eventId];
@@ -538,26 +562,30 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 } else {
                                     [self removeMessageAtIndex:index];
                                 }
-                                isFound = YES;
-                                break;
-                            }
-                        }
-                        
-                        if (!isFound) {
-                            // Here the received event id has not been found in current messages list.
-                            // This may happen in 2 cases:
-                            // - the message has been posted from another device.
-                            // - the message is received from events stream whereas the app is waiting for our PUT to return (see pendingOutgoingEvents).
-                            // In this second case, the pending event is replaced here (No additional action is required when PUT will return).
-                            MXEvent *pendingEvent = [self pendingEventRelatedToEvent:event];
-                            if (pendingEvent) {
-                                // Remove this event from the pending list
-                                [pendingOutgoingEvents removeObject:pendingEvent];
-                                // Remove the local event from messages
-                                index = messages.count;
-                                while (index--) {
-                                    RoomMessage *message = [messages objectAtIndex:index];
-                                    if ([message containsEventId:pendingEvent.eventId]) {
+                            } else {
+                                // Here the received event id has not been found in current messages list.
+                                // This may happen in 2 cases:
+                                // - the message has been posted from another device.
+                                // - the message is received from events stream whereas the app is waiting for our PUT to return (see pendingOutgoingEvents).
+                                // In this second case, the pending event is replaced here (No additional action is required when PUT will return).
+                                MXEvent *pendingEvent = [self pendingEventRelatedToEvent:event];
+                                if (pendingEvent) {
+                                    RoomMessage *message = nil;
+                                    @synchronized(self) {
+                                        // Remove this event from the pending list
+                                        [pendingOutgoingEvents removeObject:pendingEvent];
+                                        // Remove the local event from messages
+                                        index = messages.count;
+                                        while (index--) {
+                                            message = [messages objectAtIndex:index];
+                                            if ([message containsEventId:pendingEvent.eventId]) {
+                                                break;
+                                            }
+                                            message = nil;
+                                        }
+                                    }
+                                    
+                                    if (message) {
                                         if (message.messageType == RoomMessageTypeText) {
                                             [message removeEvent:pendingEvent.eventId];
                                             if (!message.components.count) {
@@ -566,68 +594,80 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                         } else {
                                             [self removeMessageAtIndex:index];
                                         }
-                                        break;
                                     }
                                 }
                             }
                         }
                     }
-                }
-                
-                if (isHandled == NO) {
-                    // Check whether the event may be grouped with last message
-                    RoomMessage *lastMessage = [messages lastObject];
-                    if (lastMessage && [lastMessage addEvent:event withRoomState:roomState]) {
-                        isHandled = YES;
-                    } else {
-                        // Create a new item
-                        lastMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
-                        if (lastMessage) {
-                            [messages addObject:lastMessage];
+                    
+                    if (isHandled == NO) {
+                        // Check whether the event may be grouped with last message
+                        RoomMessage *lastMessage = nil;
+                        @synchronized(self) {
+                            lastMessage = [messages lastObject];
+                        }
+                        
+                        if (lastMessage && [lastMessage addEvent:event withRoomState:roomStateCpy]) {
                             isHandled = YES;
-                        } // else ignore unsupported/unexpected events
-                    }
-                }
-                
-                // Refresh table display except if a back pagination is in progress
-                if (!isBackPaginationInProgress) {
-                    // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-                    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-                    // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-                    maxPositionY += 30;
-                    BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
-                    // Refresh tableView
-                    [self.messagesTableView reloadData];
-                    
-                    if (shouldScrollToBottom) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self scrollToBottomAnimated:YES];
-                        });
-                    }
-                    
-                    if (isHandled) {
-                        if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
-                            // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
-                            forceScrollToBottomOnViewDidAppear = YES;
+                        } else {
+                            // Create a new item
+                            lastMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomStateCpy];
+                            if (lastMessage) {
+                                @synchronized(self) {
+                                    [messages addObject:lastMessage];
+                                }
+                                isHandled = YES;
+                            } // else ignore unsupported/unexpected events
                         }
                     }
-                }
+                    
+                    // Refresh table display except if a back pagination is in progress
+                    if (!isBackPaginationInProgress) {
+                        // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
+                        CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+                        // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+                        maxPositionY += 30;
+                        BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+                        // Refresh tableView
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.messagesTableView reloadData];
+                            if (shouldScrollToBottom) {
+                                    [self scrollToBottomAnimated:YES];
+                            }
+                        });
+                        
+                        if (isHandled) {
+                            if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:self.roomId] == NO) {
+                                // Some new events are received for this room while it is not visible, scroll to bottom on viewDidAppear to focus on them
+                                forceScrollToBottomOnViewDidAppear = YES;
+                            }
+                        }
+                    }
+                });
             } else if (isBackPaginationInProgress && direction == MXEventDirectionBackwards) {
-                // Back pagination is in progress, we add an old event at the beginning of messages
-                RoomMessage *firstMessage = [messages firstObject];
-                if (!firstMessage || [firstMessage addEvent:event withRoomState:roomState] == NO) {
-                    firstMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomState];
-                    if (firstMessage) {
-                        [messages insertObject:firstMessage atIndex:0];
-                        backPaginationAddedMsgNb ++;
+                // Back pagination is in progress, we add an old event at the beginning of messages (on processing queue)
+                MXRoomState *roomStateCpy = [roomState copy];
+                dispatch_async(mxHandler.processingQueue, ^{
+                    RoomMessage *firstMessage;
+                    @synchronized(self) {
+                        firstMessage = [messages firstObject];
+                    }
+                    if (!firstMessage || [firstMessage addEvent:event withRoomState:roomStateCpy] == NO) {
+                        firstMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomStateCpy];
+                        if (firstMessage) {
+                            @synchronized(self) {
+                                [messages insertObject:firstMessage atIndex:0];
+                            }
+                            backPaginationAddedMsgNb ++;
+                            backPaginationHandledEventsNb ++;
+                        }
+                        // Ignore unsupported/unexpected events
+                    } else {
                         backPaginationHandledEventsNb ++;
                     }
-                    // Ignore unsupported/unexpected events
-                } else {
-                    backPaginationHandledEventsNb ++;
-                }
-                
-                // Display is refreshed at the end of back pagination (see onComplete block)
+                    
+                    // Display is refreshed at the end of back pagination (see onComplete block)
+                });
             }
         }];
         
@@ -666,11 +706,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)removeMessageAtIndex:(NSUInteger)index {
-    [messages removeObjectAtIndex:index];
+    @synchronized(self) {
+        [messages removeObjectAtIndex:index];
+    }
+    
     // Check whether the removed message was neither the first nor the last one
-    if (index && index < messages.count) {
-        RoomMessage *previousMessage = [messages objectAtIndex:index - 1];
-        RoomMessage *nextMessage = [messages objectAtIndex:index];
+    RoomMessage *previousMessage = nil;
+    RoomMessage *nextMessage = nil;
+    @synchronized(self) {
+        if (index && index < messages.count) {
+            previousMessage = [messages objectAtIndex:index - 1];
+            nextMessage = [messages objectAtIndex:index];
+        }
+    }
+    if (previousMessage && nextMessage) {
         // Check whether both messages can merge
         if ([previousMessage mergeWithRoomMessage:nextMessage]) {
             [self removeMessageAtIndex:index];
@@ -705,7 +754,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             backPaginationSavedFirstMsgHeight = [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
             [self paginateBackMessages:requestedItemsNb];
         });
     }
@@ -719,34 +768,45 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             return;
         }
         
-        // Check whether we received less items than expected, and check condition to be able to ask more
-        BOOL shouldLoop = ((backPaginationHandledEventsNb < requestedItemsNb) && self.mxRoom.canPaginate);
-        if (shouldLoop) {
-            NSUInteger missingItemsNb = requestedItemsNb - backPaginationHandledEventsNb;
-            // About first pagination, we will loop only if the store has more items (except if none item has been handled, in this case loop is required)
-            if (isFirstPagination && backPaginationHandledEventsNb) {
-                if (self.mxRoom.remainingMessagesForPaginationInStore < missingItemsNb) {
-                    missingItemsNb = self.mxRoom.remainingMessagesForPaginationInStore;
+        // Check whether we received less items than expected, and check condition to be able to ask more.
+        // This operation must be done on processing queue to be sync with the events reception
+        dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+            BOOL shouldLoop = ((backPaginationHandledEventsNb < requestedItemsNb) && self.mxRoom.canPaginate);
+            if (shouldLoop) {
+                NSUInteger missingItemsNb = requestedItemsNb - backPaginationHandledEventsNb;
+                // About first pagination, we will loop only if the store has more items (except if none item has been handled, in this case loop is required)
+                if (isFirstPagination && backPaginationHandledEventsNb) {
+                    if (self.mxRoom.remainingMessagesForPaginationInStore < missingItemsNb) {
+                        missingItemsNb = self.mxRoom.remainingMessagesForPaginationInStore;
+                    }
+                }
+                
+                if (missingItemsNb) {
+                    // Ask more items
+                    [self paginateBackMessages:missingItemsNb];
+                    return;
                 }
             }
             
-            if (missingItemsNb) {
-                // Ask more items
-                [self paginateBackMessages:missingItemsNb];
-                return;
-            }
-        }
-        // Here we are done
-        [self onBackPaginationComplete];
+            // Here we are done
+            [self onBackPaginationComplete];
+        });
     } failure:^(NSError *error) {
-        [self onBackPaginationComplete];
         NSLog(@"Failed to paginate back: %@", error);
+        dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+            [self onBackPaginationComplete];
+        });
         //Alert user
         [[AppDelegate theDelegate] showErrorAsAlert:error];
     }];
 }
 
 - (void)onBackPaginationComplete {
+    // Reset
+    isFirstPagination = NO;
+    backPaginationOperation = nil;
+    
+    // Check whether some changes have been done in messages
     if (backPaginationAddedMsgNb || backPaginationHandledEventsNb) {
         // We scroll to bottom when table is loaded for the first time
         BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
@@ -780,25 +840,30 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         // Reset count to enable tableView update
         backPaginationAddedMsgNb = 0;
-        // Reload
-        [self.messagesTableView reloadData];
-        // Adjust vertical content offset
-        if (shouldScrollToBottom) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        
+        // Return on main thread to end back pagination
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Reload table
+            [self.messagesTableView reloadData];
+            // Adjust vertical content offset
+            if (shouldScrollToBottom) {
                 [self scrollToBottomAnimated:NO];
-            });
-        } else if (verticalOffset > 0) {
-            // Adjust vertical offset in order to limit scrolling down
-            CGPoint contentOffset = self.messagesTableView.contentOffset;
-            contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
-            [self.messagesTableView setContentOffset:contentOffset animated:NO];
-        }
+            } else if (verticalOffset > 0) {
+                // Adjust vertical offset in order to limit scrolling down
+                CGPoint contentOffset = self.messagesTableView.contentOffset;
+                contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
+                [self.messagesTableView setContentOffset:contentOffset animated:NO];
+            }
+            isBackPaginationInProgress = NO;
+            [self stopActivityIndicator];
+        });
+    } else {
+        // Return on main thread to end back pagination
+        dispatch_async(dispatch_get_main_queue(), ^{
+            isBackPaginationInProgress = NO;
+            [self stopActivityIndicator];
+        });
     }
-    isFirstPagination = NO;
-    isBackPaginationInProgress = NO;
-    backPaginationOperation = nil;
-    
-    [self stopActivityIndicator];
 }
 
 - (void)startActivityIndicator {
@@ -1453,9 +1518,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Compute here height of message cell
     CGFloat rowHeight;
-    RoomMessage* message = [messages objectAtIndex:indexPath.row];
+    RoomMessage* message = nil;
+    @synchronized(self) {
+        if (indexPath.row < messages.count) {
+            message = [messages objectAtIndex:indexPath.row];
+        }
+    }
+    
     // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
-    if (message.isHidden) {
+    if (!message || message.isHidden) {
         return 0;
     }
     // Else compute height of message content (The maximum width available for the textview must be updated dynamically)
@@ -1473,8 +1544,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // The user's picture and name are displayed only for the first message.
     BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
-        RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
-        shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
+        @synchronized(self) {
+            RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
+            shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
+        }
     }
     
     if (shouldHideSenderInfo) {
@@ -1532,13 +1605,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                         if (roomMessage.messageType == RoomMessageTypeText) {
                                                             // remove the message
                                                             [roomMessage removeEvent:eventID];
+                                                            if (!roomMessage.components.count) {
+                                                                @synchronized(weakSelf) {
+                                                                    [weakSelf.messages removeObject:roomMessage];
+                                                                }
+                                                            }
                                                             
                                                             [weakSelf sendTextMessage:textMessage];
                                                         } else if (roomMessage.messageType == RoomMessageTypeImage) {
                                                             // check if the message is still in the list
-                                                            if ([weakSelf.messages indexOfObject:roomMessage] != NSNotFound) {
-                                                                [weakSelf.messages removeObject:roomMessage];
-                                                                
+                                                            NSUInteger index;
+                                                            @synchronized(weakSelf) {
+                                                                index = [weakSelf.messages indexOfObject:roomMessage];
+                                                                if (index != NSNotFound) {
+                                                                    [weakSelf.messages removeObjectAtIndex:index];
+                                                                }
+                                                            }
+                                                            
+                                                            if (index != NSNotFound) {
                                                                 UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.attachmentURL];
                                                                 
                                                                 // if the URL is still a local one
@@ -1563,9 +1647,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                             }
                                                         } else if (roomMessage.messageType == RoomMessageTypeVideo) {
                                                             // check if the message is still in the list
-                                                            if ([weakSelf.messages indexOfObject:roomMessage] != NSNotFound) {
-                                                                [weakSelf.messages removeObject:roomMessage];
-                                                                
+                                                            NSUInteger index;
+                                                            @synchronized(weakSelf) {
+                                                                index = [weakSelf.messages indexOfObject:roomMessage];
+                                                                if (index != NSNotFound) {
+                                                                    [weakSelf.messages removeObjectAtIndex:index];
+                                                                }
+                                                            }
+                                                            
+                                                            if (index != NSNotFound) {
                                                                 // if the URL is still a local one
                                                                 if (![NSURL URLWithString:roomMessage.thumbnailURL].scheme) {
                                                                      UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.thumbnailURL];
@@ -1626,9 +1716,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Handle here room message cells
-    RoomMessage *message = [messages objectAtIndex:indexPath.row];
+    RoomMessage* message = nil;
+    @synchronized(self) {
+        if (indexPath.row < messages.count) {
+            message = [messages objectAtIndex:indexPath.row];
+        }
+    }
     // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
-    if (message.isHidden) {
+    if (!message || message.isHidden) {
         return [[UITableViewCell alloc] initWithFrame:CGRectZero];
     }
     // Else prepare the message cell
@@ -1668,8 +1763,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // The user's picture and name are displayed only for the first message.
     BOOL shouldHideSenderInfo = NO;
     if (indexPath.row) {
-        RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
-        shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
+        @synchronized(self) {
+            RoomMessage *previousMessage = [messages objectAtIndex:indexPath.row - 1];
+            shouldHideSenderInfo = [message hasSameSenderAsRoomMessage:previousMessage];
+        }
     }
     // Handle sender's picture and adjust view's constraints
     if (shouldHideSenderInfo) {
@@ -2239,39 +2336,49 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     MXMessageType msgType = msgContent[@"msgtype"];
     if (msgType) {
         // Check whether a temporary event has already been added for local echo (this happens on attachments)
-        RoomMessage *message = nil;
         if (localEvent) {
-            // Look for this local event in messages
-            NSUInteger index = messages.count;
-            while (index--) {
-                message = [messages objectAtIndex:index];
-                if ([message containsEventId:localEvent.eventId]) {
-                    // Update the local event with the actual msg content
-                    localEvent.content = msgContent;
-                    if (message.thumbnailURL) {
-                        // Reuse the current thumbnailURL as preview
-                        [localEvent.content setValue:message.thumbnailURL forKey:kRoomMessageLocalPreviewKey];
+            RoomMessage *message = nil;
+            NSUInteger index;
+            @synchronized(self) {
+                // Look for this local event in messages
+                index = messages.count;
+                while (index--) {
+                    message = [messages objectAtIndex:index];
+                    if ([message containsEventId:localEvent.eventId]) {
+                        break;
                     }
-                    
-                    if (message.messageType == RoomMessageTypeText) {
-                        [message removeEvent:localEvent.eventId];
-                        [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                        if (!message.components.count) {
-                            [self removeMessageAtIndex:index];
-                        }
-                    } else {
-                        // Create a new message
-                        message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                        if (message) {
-                            // Refresh table display
-                            [messages replaceObjectAtIndex:index withObject:message];
-                        } else {
-                            [self removeMessageAtIndex:index];
-                        }
-                    }
-                    break;
+                    message = nil;
                 }
             }
+            
+            if (message) {
+                // Update the local event with the actual msg content
+                localEvent.content = msgContent;
+                if (message.thumbnailURL) {
+                    // Reuse the current thumbnailURL as preview
+                    [localEvent.content setValue:message.thumbnailURL forKey:kRoomMessageLocalPreviewKey];
+                }
+                
+                if (message.messageType == RoomMessageTypeText) {
+                    [message removeEvent:localEvent.eventId];
+                    [message addEvent:localEvent withRoomState:self.mxRoom.state];
+                    if (!message.components.count) {
+                        [self removeMessageAtIndex:index];
+                    }
+                } else {
+                    // Create a new message
+                    message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
+                    if (message) {
+                        // Refresh table display
+                        @synchronized(self) {
+                            [messages replaceObjectAtIndex:index withObject:message];
+                        }
+                    } else {
+                        [self removeMessageAtIndex:index];
+                    }
+                }
+            }
+            
             [self.messagesTableView reloadData];
         } else {
             // Add a new local event
@@ -2285,41 +2392,54 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Check whether the event is still pending (It may be received from event stream)
             NSUInteger index;
             MXEvent *pendingEvent = nil;
-            for (index = 0; index < pendingOutgoingEvents.count; index++) {
-                pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
-                if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
-                    // This event is not pending anymore
-                    [pendingOutgoingEvents removeObjectAtIndex:index];
-                    break;
+            @synchronized(self) {
+                for (index = 0; index < pendingOutgoingEvents.count; index++) {
+                    pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+                    if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
+                        // This event is not pending anymore
+                        [pendingOutgoingEvents removeObjectAtIndex:index];
+                        break;
+                    }
+                    pendingEvent = nil;
                 }
             }
             
             if (pendingEvent) {
                 // Update local event display
-                index = messages.count;
-                while (index--) {
-                    RoomMessage *message = [messages objectAtIndex:index];
-                    if ([message containsEventId:localEvent.eventId]) {
-                        if (message.messageType == RoomMessageTypeText) {
-                            [message removeEvent:localEvent.eventId];
-                            // Update the temporary event with the actual event id
-                            localEvent.eventId = eventId;
-                            [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                            if (!message.components.count) {
-                                [self removeMessageAtIndex:index];
+                RoomMessage *message = nil;
+                @synchronized(self) {
+                    // Find the related message
+                    index = messages.count;
+                    while (index--) {
+                        message = [messages objectAtIndex:index];
+                        if ([message containsEventId:localEvent.eventId]) {
+                            break;
+                        }
+                        message = nil;
+                    }
+                }
+                
+                if (message) {
+                    if (message.messageType == RoomMessageTypeText) {
+                        [message removeEvent:localEvent.eventId];
+                        // Update the temporary event with the actual event id
+                        localEvent.eventId = eventId;
+                        [message addEvent:localEvent withRoomState:self.mxRoom.state];
+                        if (!message.components.count) {
+                            [self removeMessageAtIndex:index];
+                        }
+                    } else {
+                        // Create a new message
+                        localEvent.eventId = eventId;
+                        message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
+                        if (message) {
+                            // Refresh table display
+                            @synchronized(self) {
+                                [messages replaceObjectAtIndex:index withObject:message];
                             }
                         } else {
-                            // Create a new message
-                            localEvent.eventId = eventId;
-                            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                            if (message) {
-                                // Refresh table display
-                                [messages replaceObjectAtIndex:index withObject:message];
-                            } else {
-                                [self removeMessageAtIndex:index];
-                            }
+                            [self removeMessageAtIndex:index];
                         }
-                        break;
                     }
                 }
                 
@@ -2342,15 +2462,21 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Check whether the event is still pending (It may be received from event stream)
             NSUInteger index;
             MXEvent *pendingEvent = nil;
-            for (index = 0; index < pendingOutgoingEvents.count; index++) {
-                pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
-                if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
-                    // This event is not pending anymore
-                    [pendingOutgoingEvents removeObjectAtIndex:index];
-                    // Handle error
-                    [self handleError:error forLocalEvent:localEvent];
-                    break;
+            @synchronized (self) {
+                for (index = 0; index < pendingOutgoingEvents.count; index++) {
+                    pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+                    if ([pendingEvent.eventId isEqualToString:localEvent.eventId]) {
+                        // This event is not pending anymore
+                        [pendingOutgoingEvents removeObjectAtIndex:index];
+                        break;
+                    }
+                    pendingEvent = nil;
                 }
+            }
+            
+            if (pendingEvent) {
+                // Handle error
+                [self handleError:error forLocalEvent:localEvent];
             }
         }];
     }
@@ -2384,12 +2510,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)addLocalEchoEvent:(MXEvent*)mxEvent {
     // Check whether this new event may be grouped with last message
-    RoomMessage *lastMessage = [messages lastObject];
+    RoomMessage *lastMessage;
+    @synchronized (self) {
+        lastMessage = [messages lastObject];
+    }
+    
     if (lastMessage == nil || [lastMessage addEvent:mxEvent withRoomState:self.mxRoom.state] == NO) {
         // Create a new RoomMessage
         lastMessage = [[RoomMessage alloc] initWithEvent:mxEvent andRoomState:self.mxRoom.state];
         if (lastMessage) {
-            [messages addObject:lastMessage];
+            @synchronized (self) {
+                [messages addObject:lastMessage];
+            }
         } else {
             lastMessage = nil;
             NSLog(@"ERROR: Unable to add local event: %@", mxEvent.description);
@@ -2397,8 +2529,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     if (lastMessage) {
-        // Report this event as pending one
-        [pendingOutgoingEvents addObject:mxEvent];
+        @synchronized (self) {
+            // Report this event as pending one
+            [pendingOutgoingEvents addObject:mxEvent];
+        }
         
         // Refresh table display
         [self.messagesTableView reloadData];
@@ -2482,33 +2616,44 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Update the temporary event with this local event id
-    NSUInteger index = messages.count;
-    while (index--) {
-        RoomMessage *message = [messages objectAtIndex:index];
-        if ([message containsEventId:localEvent.eventId]) {
-            NSLog(@"Posted event: %@", localEvent.description);
-            if (message.messageType == RoomMessageTypeText) {
-                [message removeEvent:localEvent.eventId];
-                // defines an unique identfier to be able to resend the message
-                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
-                [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                if (!message.components.count) {
-                    [self removeMessageAtIndex:index];
-                }
-            } else {
-                // Create a new message
-                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
-                message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                if (message) {
-                    // Refresh table display
-                    [messages replaceObjectAtIndex:index withObject:message];
-                } else {
-                    [self removeMessageAtIndex:index];
-                }
+    RoomMessage *message = nil;
+    NSUInteger index;
+    @synchronized(self) {
+        index = messages.count;
+        while (index--) {
+            message = [messages objectAtIndex:index];
+            if ([message containsEventId:localEvent.eventId]) {
+                break;
             }
-            break;
+            message = nil;
         }
     }
+    
+    if (message) {
+        NSLog(@"Posted event: %@", localEvent.description);
+        if (message.messageType == RoomMessageTypeText) {
+            [message removeEvent:localEvent.eventId];
+            // defines an unique identfier to be able to resend the message
+            localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
+            [message addEvent:localEvent withRoomState:self.mxRoom.state];
+            if (!message.components.count) {
+                [self removeMessageAtIndex:index];
+            }
+        } else {
+            // Create a new message
+            localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
+            message = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
+            if (message) {
+                // Refresh table display
+                @synchronized(self) {
+                    [messages replaceObjectAtIndex:index withObject:message];
+                }
+            } else {
+                [self removeMessageAtIndex:index];
+            }
+        }
+    }
+    
     // ensure the reload is done in the right thread
     // after video compression for example
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -2521,30 +2666,35 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // This method returns a pending event (if any) whose content matches with received event content.
     NSString *msgtype = mxEvent.content[@"msgtype"];
     
-    for (NSInteger index = 0; index < pendingOutgoingEvents.count; index++) {
-        MXEvent *pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
-        NSString *pendingEventType = pendingEvent.content[@"msgtype"];
-        
-        if ([msgtype isEqualToString:pendingEventType]) {
-            if ([msgtype isEqualToString:kMXMessageTypeText] || [msgtype isEqualToString:kMXMessageTypeEmote]) {
-                // Compare content body
-                if ([mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]]) {
-                    return pendingEvent;
-                }
-            } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
-                // Compare geo uri
-                if ([mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]]) {
-                    return pendingEvent;
-                }
-            } else {
-                // Here the type is kMXMessageTypeImage, kMXMessageTypeAudio or kMXMessageTypeVideo
-                if ([mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]]) {
-                    return pendingEvent;
+    MXEvent *pendingEvent = nil;
+    @synchronized(self) {
+        for (NSInteger index = 0; index < pendingOutgoingEvents.count; index++) {
+            pendingEvent = [pendingOutgoingEvents objectAtIndex:index];
+            NSString *pendingEventType = pendingEvent.content[@"msgtype"];
+            
+            if ([msgtype isEqualToString:pendingEventType]) {
+                if ([msgtype isEqualToString:kMXMessageTypeText] || [msgtype isEqualToString:kMXMessageTypeEmote]) {
+                    // Compare content body
+                    if ([mxEvent.content[@"body"] isEqualToString:pendingEvent.content[@"body"]]) {
+                        break;
+                    }
+                } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
+                    // Compare geo uri
+                    if ([mxEvent.content[@"geo_uri"] isEqualToString:pendingEvent.content[@"geo_uri"]]) {
+                        break;
+                    }
+                } else {
+                    // Here the type is kMXMessageTypeImage, kMXMessageTypeAudio or kMXMessageTypeVideo
+                    if ([mxEvent.content[@"url"] isEqualToString:pendingEvent.content[@"url"]]) {
+                        break;
+                    }
                 }
             }
+            pendingEvent = nil;
         }
     }
-    return nil;
+    
+    return pendingEvent;
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)text{
