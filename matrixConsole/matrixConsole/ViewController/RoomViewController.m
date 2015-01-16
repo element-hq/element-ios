@@ -286,8 +286,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }];
     
     self.messageTextView.delegate = self;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onOrientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -322,7 +321,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         membersListener = nil;
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -353,6 +351,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Reset visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    if (!isKeyboardDisplayed) {
+        [self updateMessageTextViewFrame];
+        [self scrollToBottomAnimated:YES];
+    }
 }
 
 - (void)onAppDidEnterBackground {
@@ -878,6 +885,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
+- (void) updateMessageTextViewFrame {
+    if (!isKeyboardDisplayed) {
+        // compute the visible area (tableview + text input)
+        // the tableview must use at least 50 pixels to let the user hides the keybaord
+        CGFloat maxTextHeight = (self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
+        
+        _messageTextView.maxHeight = maxTextHeight;
+        [_messageTextView refreshHeight];
+    }
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -1320,24 +1338,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 #pragma mark - Keyboard handling
-
-- (void) updateMessageTextViewFrame {
-    if (!isKeyboardDisplayed) {
-        // compute the visible area (tableview + text input)
-        // the tableview must use at least 50 pixels to let the user hides the keybaord
-        CGFloat maxTextHeight = (self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
-        
-        _messageTextView.maxHeight = maxTextHeight;
-        [_messageTextView refreshHeight];
-    }
-}
-
-- (void)onOrientationChanged:(NSNotification *)notif {
-    if (!isKeyboardDisplayed) {
-        [self updateMessageTextViewFrame];
-        [self scrollToBottomAnimated:YES];
-    }
-}
 
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     // get the keyboard size
