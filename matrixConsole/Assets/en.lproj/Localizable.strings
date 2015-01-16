@@ -1,0 +1,60 @@
+/*
+ Copyright 2014 OpenMarket Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "Message from %@"
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ posted in %@"
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ new messages in %@"
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ new messages in %@"
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ new messages from %@ and %@"
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ new messages from %@, %@ and %@"
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ new messages from %@, %@ and others"
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ new messages in %@ and %@"
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ new messages in %@, %@ and others"
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Call from %@"
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Video call from %@"
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Group call from %@"
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Video group call from %@"
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Group call from %@: '%@'"
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Video group call from %@: '%@'"
