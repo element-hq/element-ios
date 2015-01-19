@@ -48,6 +48,8 @@ typedef void (^blockMediaLoader_onError)(NSError *error);
     blockMediaLoader_onSuccess onSuccess;
     blockMediaLoader_onError onError;
     
+    NSString *folder;
+    
     // Download
     NSString *mediaURL;
     long long expectedSize;
@@ -73,6 +75,7 @@ typedef void (^blockMediaLoader_onError)(NSError *error);
 // Download
 - (void)downloadMedia:(NSString *)aMediaURL
              mimeType:(NSString *)aMimeType
+               folder:(NSString*)folder
               success:(blockMediaLoader_onSuccess)success
               failure:(blockMediaLoader_onError)failure;
 
@@ -82,7 +85,7 @@ typedef void (^blockMediaLoader_onError)(NSError *error);
 // e.g. : Upload a media can be split in two parts :
 // 1 - upload the thumbnail -> initialRange = 0, range = 0.1 : assume that the thumbnail upload is 10% of the upload process
 // 2 - upload the media -> initialRange = 0.1, range = 0.9 : the media upload is 90% of the global upload
-- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange;
+- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange folder:(NSString*)aFolder;
 - (void)uploadData:(NSData *)data
           mimeType:(NSString *)aMimeType
            success:(blockMediaLoader_onSuccess)success

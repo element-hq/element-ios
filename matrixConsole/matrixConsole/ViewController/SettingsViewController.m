@@ -374,7 +374,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (uploadedPictureURL == nil) {
         // Upload picture
-        MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0];
+        MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];
         [uploader uploadData:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
             // Store uploaded picture url and trigger picture saving
             uploadedPictureURL = url;
@@ -461,14 +461,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPicture.frame.size withMethod:MXThumbnailingMethodCrop];
             
             // Check whether the image download is in progress
-            id loader = [MediaManager existingDownloaderForURL:currentPictureThumbURL];
+            id loader = [MediaManager existingDownloaderForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
             if (loader) {
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
             } else {
                 // Retrieve the image from cache
-                UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL];
+                UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
                 if (image) {
                     [self updateAvatarImage:image];
                 } else {
@@ -479,7 +479,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     // Add observers
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    imageLoader = [MediaManager downloadMediaFromURL:currentPictureThumbURL withType:@"image/jpeg"];
+                    imageLoader = [MediaManager downloadMediaFromURL:currentPictureThumbURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
                 }
             }
         } else {
@@ -496,7 +496,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         if ([url isEqualToString:currentPictureThumbURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }

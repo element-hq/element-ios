@@ -16,6 +16,7 @@
 
 #import "RoomMemberTableCell.h"
 #import "MatrixHandler.h"
+#import "MediaManager.h"
 
 @implementation RoomMemberTableCell
 
@@ -111,6 +112,7 @@
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             thumbnailURL = [mxHandler thumbnailURLForContent:roomMember.avatarUrl inViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
+        self.pictureView.mediaFolder = kMediaManagerThumbnailFolder;
         [self.pictureView setImageURL:thumbnailURL withPreviewImage:[UIImage imageNamed:@"default-profile"]];
         
         // Round image view
