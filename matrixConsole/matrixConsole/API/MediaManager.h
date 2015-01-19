@@ -56,6 +56,8 @@ extern NSString *const kMediaDownloadDidFailNotification;
 + (NSString*)cacheMediaData:(NSData *)mediaData forURL:(NSString *)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder;
 // Return the cache path deduced from media URL and type
 + (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder;
+// check if the media cache size must be reduced to fit the user expected cache size
++ (void)reduceCacheSizeToInsert:(NSUInteger)bytes;
 
 // cache size management (values are in bytes)
 + (NSUInteger)cacheSize;
