@@ -33,8 +33,9 @@
 #define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX  1
 #define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               2
 #define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       3
-#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                4
-#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      5
+#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             4
+#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                5
+#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      6
 
 NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
@@ -75,6 +76,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     int enableInAppRowIndex;
     int setInAppWordRowIndex;
     int enablePushNotificationdRowIndex;
+    
+    //
+    SettingsCellWithLabelAndSlider* maxCacheSizeCell;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -568,6 +572,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
 }
 
+- (IBAction)onSliderValueChange:(id)sender {
+    if (sender == maxCacheSizeCell.settingSlider) {
+        [[MatrixHandler sharedHandler] setCurrentMaxCachesSize:maxCacheSizeCell.settingSlider.value];
+        
+        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Set the maximum cache size (current %@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+    }
+}
+
 #pragma mark - keyboard
 
 - (void) manageSaveChangeButton {
@@ -707,9 +719,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (indexPath.row == setInAppWordRowIndex) {
             return 110;
         }
-
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
+        if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
+            return 60;
+        }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
@@ -812,9 +826,19 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
             
             cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
- ;
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
+        } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSilder" forIndexPath:indexPath];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            maxCacheSizeCell = (SettingsCellWithLabelAndSlider*)cell;
+            
+            maxCacheSizeCell.settingSlider.minimumValue = [MatrixHandler sharedHandler].minCachesSize;
+            maxCacheSizeCell.settingSlider.maximumValue = [MatrixHandler sharedHandler].maxAllowedCachesSize;
+            maxCacheSizeCell.settingSlider.value = [MatrixHandler sharedHandler].currentMaxCachesSize;
+            
+            maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Set the maximum cache size (current %@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+        
         } else {
             SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
             

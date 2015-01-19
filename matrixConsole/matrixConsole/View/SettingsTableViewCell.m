@@ -27,3 +27,7 @@
 
 @implementation SettingsCellWithLabelAndTextField
 @end
+
+@implementation SettingsCellWithLabelAndSlider
+@end
+
