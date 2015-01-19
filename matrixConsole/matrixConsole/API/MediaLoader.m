@@ -33,7 +33,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 - (void)cancel {
     // Cancel potential connection
     if (downloadConnection) {
-        NSLog(@"Image download has been cancelled (%@)", mediaURL);
+        NSLog(@"media download has been cancelled (%@)", mediaURL);
         if (onError){
             onError(nil);
         }
@@ -45,6 +45,12 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         downloadData = nil;
     }
     else {
+        if (operation.executing) {
+            NSLog(@"media upload has been cancelled (%@)", mediaURL);
+            [operation cancel];
+            operation = nil;
+        }
+
         // Reset blocks
         onSuccess = nil;
         onError = nil;
@@ -200,7 +206,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     statsStartTime = CFAbsoluteTimeGetCurrent();
     
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    [mxHandler.mxRestClient uploadContent:data mimeType:mimeType timeout:30 success:success failure:failure uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    operation = [mxHandler.mxRestClient uploadContent:data mimeType:mimeType timeout:30 success:success failure:failure uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         [self updateUploadProgressWithBytesWritten:bytesWritten totalBytesWritten:totalBytesWritten andTotalBytesExpectedToWrite:totalBytesExpectedToWrite];
     }];
     

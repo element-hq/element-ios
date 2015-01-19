@@ -1262,8 +1262,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self sendMessage:videoContent withLocalEvent:localEvent];
         } failure:^(NSError *error) {
             NSLog(@"Video upload failed");
-            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
-            [self handleError:error forLocalEvent:localEvent];
+            // check if the upload is still defined
+            // it could have been cancelled with an external events
+            if ([MediaManager existingUploaderWithId:localEvent.eventId inFolder:self.roomId]) {
+                [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
+                [self handleError:error forLocalEvent:localEvent];
+            }
         }];
     }
     else {
@@ -1351,9 +1355,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }
             }];
         } failure:^(NSError *error) {
-            NSLog(@"Video thumbnail upload failed");
-            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
-            [self handleError:error forLocalEvent:localEvent];
+            // check if the upload is still defined
+            // it could have been cancelled with an external events
+            if ([MediaManager existingUploaderWithId:localEvent.eventId inFolder:self.roomId]) {
+                NSLog(@"Video thumbnail upload failed");
+                [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
+                [self handleError:error forLocalEvent:localEvent];
+            }
         }];
     }
     
@@ -2920,9 +2928,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Send message for this attachment
         [self sendMessage:imageMessage withLocalEvent:localEvent];
     } failure:^(NSError *error) {
-        [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
-        NSLog(@"Failed to upload image: %@", error);
-        [self handleError:error forLocalEvent:localEvent];
+        // check if the upload is still defined
+        // it could have been cancelled with an external events
+        if ([MediaManager existingUploaderWithId:localEvent.eventId inFolder:self.roomId])
+        {
+            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
+            NSLog(@"Failed to upload image: %@", error);
+            [self handleError:error forLocalEvent:localEvent];
+        }
     }];
 }
 
