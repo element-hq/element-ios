@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */; };
+		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
 		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
@@ -72,6 +73,7 @@
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
 		710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleGrowingTextView.h; sourceTree = "<group>"; };
 		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
+		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		71D2E4EA1A49814B000DE015 /* MemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberActionsCell.h; sourceTree = "<group>"; };
 		71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberActionsCell.m; sourceTree = "<group>"; };
 		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */,
 				F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */,
 				D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */,
 			);
@@ -185,6 +188,7 @@
 		EAA71E3C2B16D1D86B3F5100 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				71193D231A6D64F900E59A9E /* AddressBook.framework */,
 				F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */,
 				8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */,
 			);
