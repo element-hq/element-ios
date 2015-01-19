@@ -19,6 +19,8 @@
 #import "AppSettings.h"
 #import "ConsoleTools.h"
 
+#import "AppDelegate.h"
+
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
 
 NSString *const kMediaDownloadDidFinishNotification = @"kMediaDownloadDidFinishNotification";
@@ -30,6 +32,10 @@ static NSString* mediaCachePath  = nil;
 static NSString *mediaDir        = @"mediacache";
 
 static MediaManager *sharedMediaManager = nil;
+
+// store the current cache size
+// avoid listing files because it is useless
+static NSUInteger storageCacheSize = 0;
 
 @implementation MediaManager
 
@@ -222,26 +228,67 @@ static NSMutableDictionary* uploadTableById = nil;
     return res;
 }
 
++ (void)reduceCacheSizeToInsert:(NSUInteger)bytes {
+    
+    if (([MediaManager cacheSize] + bytes) > [MediaManager maxAllowedCacheSize]) {
+        
+        NSString* thumbnailPath = [MediaManager cacheFolderPath:kMediaManagerThumbnailFolder];
+        NSString* activeRoomPath = nil;
+        
+        if ([AppDelegate theDelegate].masterTabBarController.visibleRoomId) {
+            activeRoomPath = [MediaManager cacheFolderPath:[AppDelegate theDelegate].masterTabBarController.visibleRoomId];
+        }
+        
+        // add a 50 MB margin to reduce this method call
+        NSUInteger maxSize = 0;
+        
+        // check if the cache cannot content the file
+        if ([MediaManager maxAllowedCacheSize] < (bytes - 50 * 1024 * 1024)) {
+            // delete item as much as possible
+            maxSize = 0;
+        } else {
+            maxSize = [MediaManager maxAllowedCacheSize] - bytes - 50 * 1024 * 1024;
+        }
+        
+        NSArray* filesList = [ConsoleTools listFiles:mediaCachePath timeSorted:YES largeFilesFirst:YES];
+        
+        // list the files sorted by timestamp
+        for(NSString* filepath in filesList) {
+            // do not release the contact thumbnails : they must be released by when the contacts are deleted
+            // do not release the active room medias : it could trigger weird UI effect on a tablet / iphone 6+
+            if (![filepath hasPrefix:thumbnailPath] && (!activeRoomPath || ![filepath hasPrefix:activeRoomPath])) {
+                NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filepath error:nil];
+                
+                // sanity check
+                if (fileAttributes) {
+                    // delete the files
+                    if ([[NSFileManager defaultManager] removeItemAtPath:filepath error:nil]) {
+                        storageCacheSize -= fileAttributes.fileSize;
+                    
+                        if (storageCacheSize < maxSize) {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 + (NSString*)cacheMediaData:(NSData*)mediaData forURL:(NSString *)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder {
+    [MediaManager reduceCacheSizeToInsert:mediaData.length];
+    
     NSString* filename = [MediaManager cachePathForMediaURL:mediaURL andType:mimeType inFolder:folder];
     
     if ([mediaData writeToFile:filename atomically:YES]) {
+        storageCacheSize += mediaData.length;
         return filename;
     } else {
         return nil;
     }
 }
 
-+ (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder {
-    NSString* fileExt = [ConsoleTools fileExtensionFromContentType:mimeType];
-    NSString* fileBase = @"";
-    
-    // use the mime type to extract a base filename
-    if ([mimeType rangeOfString:@"/"].location != NSNotFound){
-        NSArray *components = [mimeType componentsSeparatedByString:@"/"];
-        fileBase = [components objectAtIndex:0];
-    }
-    
++ (NSString*)cacheFolderPath:(NSString*)folder {
     NSString* path = [MediaManager getCachePath];
     
     // update the path if the folder is provided
@@ -254,7 +301,20 @@ static NSMutableDictionary* uploadTableById = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:nil];
     }
     
-    return [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%lu%@", [fileBase substringToIndex:3], (unsigned long)mediaURL.hash, fileExt]];
+    return path;
+}
+
++ (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder {
+    NSString* fileExt = [ConsoleTools fileExtensionFromContentType:mimeType];
+    NSString* fileBase = @"";
+    
+    // use the mime type to extract a base filename
+    if ([mimeType rangeOfString:@"/"].location != NSNotFound){
+        NSArray *components = [mimeType componentsSeparatedByString:@"/"];
+        fileBase = [components objectAtIndex:0];
+    }
+    
+    return [[MediaManager cacheFolderPath:folder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%lu%@", [fileBase substringToIndex:3], (unsigned long)mediaURL.hash, fileExt]];
 }
 
 + (NSUInteger)cacheSize {
@@ -263,8 +323,13 @@ static NSMutableDictionary* uploadTableById = nil;
         // compute the path
         mediaCachePath = [MediaManager getCachePath];
     }
+    
+    // assume that 0 means uninitialized
+    if (storageCacheSize == 0) {
+        storageCacheSize = (NSUInteger)[ConsoleTools folderSize:mediaCachePath];
+    }
         
-    return (NSUInteger)[ConsoleTools folderSize:mediaCachePath];
+    return storageCacheSize;
 }
 
 + (NSUInteger)minCacheSize {
