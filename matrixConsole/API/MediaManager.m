@@ -293,7 +293,7 @@ static NSMutableDictionary* uploadTableById = nil;
     
     // update the path if the folder is provided
     if (folder.length > 0) {
-        path = [[MediaManager getCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%lu", folder.hash]];
+        path = [[MediaManager getCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%lu", (unsigned long)folder.hash]];
     }
     
     // create the folder it does not exist
