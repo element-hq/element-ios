@@ -51,7 +51,7 @@
 @end
 
 @implementation CustomImageView
-@synthesize stretchable;
+@synthesize stretchable, mediaFolder;
 
 #define CUSTOM_IMAGE_VIEW_BUTTON_WIDTH 100
 
@@ -403,7 +403,7 @@
     _hideActivityIndicator = hideActivityIndicator;
     if (hideActivityIndicator) {
         [self stopActivityIndicator];
-    } else if ([MediaManager existingDownloaderForURL:imageURL]) {
+    } else if ([MediaManager existingDownloaderForURL:imageURL inFolder:mediaFolder]) {
         // Loading is in progress, start activity indicator
         [self startActivityIndicator];
     }
@@ -421,7 +421,7 @@
     }
     
     // Check whether the image download is in progress
-    MediaLoader* loader = [MediaManager existingDownloaderForURL:imageURL];
+    MediaLoader* loader = [MediaManager existingDownloaderForURL:imageURL inFolder:mediaFolder];
     if (loader) {
         // Set preview until the image is loaded
         self.image = previewImage;
@@ -434,7 +434,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
     } else {
         // Retrieve the image from cache
-        UIImage* image = [MediaManager loadCachePictureForURL:imageURL];
+        UIImage* image = [MediaManager loadCachePictureForURL:imageURL inFolder:mediaFolder];
         if (image) {
             self.image = image;
             [self stopActivityIndicator];
@@ -449,7 +449,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadProgress:) name:kMediaDownloadProgressNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-            [MediaManager downloadMediaFromURL:imageURL withType:@"image/jpeg"];
+            [MediaManager downloadMediaFromURL:imageURL withType:@"image/jpeg" inFolder:mediaFolder];
         }
     }
 }
@@ -462,7 +462,7 @@
         if ([url isEqualToString:imageURL]) {
             [self stopActivityIndicator];
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:imageURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:imageURL inFolder:mediaFolder];
             if (image) {
                 self.image = image;
             }

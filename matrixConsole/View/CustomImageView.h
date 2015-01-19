@@ -34,6 +34,9 @@ typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSStrin
 @property (nonatomic) BOOL stretchable;
 @property (nonatomic) BOOL fullScreen;
 
+// mediaManager folder where the image is stored
+@property (nonatomic, readwrite) NSString* mediaFolder;
+
 // Let the user defines some custom buttons over the tabbar
 - (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;
 - (void)setRightButtonTitle:rightButtonTitle handler:(blockCustomImageView_onClick)handler;

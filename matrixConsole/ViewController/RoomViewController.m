@@ -405,7 +405,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             __weak typeof(self) weakSelf = self;
             
             NSString* url = ((RoomMessageTableCell*)view).message.attachmentURL;
-            MediaLoader *loader = [MediaManager existingDownloaderForURL:url];
+            MediaLoader *loader = [MediaManager existingDownloaderForURL:url inFolder:self.roomId];
             
             // offer to cancel a download only if there is a pending one
             if (loader) {
@@ -416,7 +416,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
                     
                     // get again the loader, the cell could have been reused.
-                    MediaLoader *loader = [MediaManager existingDownloaderForURL:url];
+                    MediaLoader *loader = [MediaManager existingDownloaderForURL:url inFolder:weakSelf.roomId];
                     if (loader) {
                         [loader cancel];
                     }
@@ -1109,6 +1109,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             highResImageView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
             highResImageView.stretchable = YES;
             highResImageView.fullScreen = YES;
+            highResImageView.mediaFolder = self.roomId;
             [highResImageView setImageURL:url withPreviewImage:attachment.image];
             
             // Add tap recognizer to hide attachment
@@ -1147,7 +1148,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 if ([[NSFileManager defaultManager] fileExistsAtPath:selectedVideoURL]) {
                     selectedVideoCachePath = selectedVideoURL;
                 } else {
-                    selectedVideoCachePath = [MediaManager cachePathForMediaURL:selectedVideoURL andType:mimetype];
+                    selectedVideoCachePath = [MediaManager cachePathForMediaURL:selectedVideoURL andType:mimetype inFolder:self.roomId];
                 }
                                 
                 if ([[NSFileManager defaultManager] fileExistsAtPath:selectedVideoCachePath]) {
@@ -1156,7 +1157,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 } else {
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    [MediaManager downloadMediaFromURL:selectedVideoURL withType:mimetype];
+                    [MediaManager downloadMediaFromURL:selectedVideoURL withType:mimetype inFolder:self.roomId];
                 }
             }
         }
@@ -1246,22 +1247,22 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (videoData) {
         NSMutableDictionary* videoInfo = [videoContent valueForKey:@"info"];
 
-        MediaLoader *videoUploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0.1 andRange:0.9];
+        MediaLoader *videoUploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0.1 andRange:0.9 inFolder:self.roomId];
         [videoUploader uploadData:videoData mimeType:videoInfo[@"mimetype"] success:^(NSString *url) {
             
             // remove the tmp file
             [[NSFileManager defaultManager] removeItemAtPath:[videoInfo valueForKey:@"url"] error:nil];
             // remove the related uploadLoader
-            [MediaManager removeUploaderWithId:localEvent.eventId];
+            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
             // store the video file in the cache
             // there is no reason to download an oneself uploaded media
-            [MediaManager cacheMediaData:videoData forURL:url andType:videoInfo[@"mimetype"]];
+            [MediaManager cacheMediaData:videoData forURL:url andType:videoInfo[@"mimetype"] inFolder:self.roomId];
             
             [videoContent setValue:url forKey:@"url"];
             [self sendMessage:videoContent withLocalEvent:localEvent];
         } failure:^(NSError *error) {
             NSLog(@"Video upload failed");
-            [MediaManager removeUploaderWithId:localEvent.eventId];
+            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
             [self handleError:error forLocalEvent:localEvent];
         }];
     }
@@ -1282,12 +1283,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         NSMutableDictionary *infoDict = [localEvent.content valueForKey:@"info"];
         NSMutableDictionary *thumbnailInfo = [infoDict valueForKey:@"thumbnail_info"];
-        NSData *thumbnailData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[infoDict valueForKey:@"thumbnail_url"] andType:[thumbnailInfo objectForKey:@"mimetype"]]];
+        NSData *thumbnailData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[infoDict valueForKey:@"thumbnail_url"] andType:[thumbnailInfo objectForKey:@"mimetype"] inFolder:self.roomId]];
 
         // Upload thumbnail
-        MediaLoader *uploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:0.1];
+        MediaLoader *uploader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:0.1 inFolder:self.roomId];
         [uploader uploadData:thumbnailData mimeType:[thumbnailInfo valueForKey:@"mimetype"] success:^(NSString *url) {
-            [MediaManager removeUploaderWithId:localEvent.eventId];
+            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
             // Prepare content of attached video
             NSMutableDictionary *videoContent = [[NSMutableDictionary alloc] init];
             NSMutableDictionary *videoInfo = [[NSMutableDictionary alloc] init];
@@ -1351,7 +1352,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }];
         } failure:^(NSError *error) {
             NSLog(@"Video thumbnail upload failed");
-            [MediaManager removeUploaderWithId:localEvent.eventId];
+            [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
             [self handleError:error forLocalEvent:localEvent];
         }];
     }
@@ -1630,6 +1631,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Keep reference on message
     cell.message = message;
     
+    // set the media folders
+    cell.pictureView.mediaFolder = kMediaManagerThumbnailFolder;
+    cell.attachmentView.mediaFolder = self.roomId;
+    
     // Remove all gesture recognizer
     while (cell.attachmentView.gestureRecognizers.count) {
         [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
@@ -1756,7 +1761,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
         UIImage *preview = nil;
         if (message.previewURL) {
-            preview = [MediaManager loadCachePictureForURL:message.previewURL];
+            preview = [MediaManager loadCachePictureForURL:message.previewURL inFolder:self.roomId];
         }
         [cell.attachmentView setImageURL:url withPreviewImage:preview];
 
@@ -2278,7 +2283,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                         }
                                                         
                                                         if (index != NSNotFound) {
-                                                            UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.attachmentURL];
+                                                            UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.attachmentURL inFolder:weakSelf.roomId];
                                                             
                                                             // if the URL is still a local one
                                                             if (image) {
@@ -2313,7 +2318,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                         if (index != NSNotFound) {
                                                             // if the URL is still a local one
                                                             if (![NSURL URLWithString:roomMessage.thumbnailURL].scheme) {
-                                                                UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.thumbnailURL];
+                                                                UIImage* image = [MediaManager loadCachePictureForURL:roomMessage.thumbnailURL inFolder:weakSelf.roomId];
                                                                 // it should mean that the thumbnail upload fails
                                                                 [weakSelf sendVideo:[NSURL fileURLWithPath:roomMessage.attachmentURL]  withThumbnail:image];
                                                             } else {
@@ -2514,7 +2519,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (NSData*)cachedImageData:(UIImage*)image withURL:(NSString*)url {
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
-    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:url andType:@"image/jpeg"];
+    NSString *cacheFilePath = [MediaManager cacheMediaData:imageData forURL:url andType:@"image/jpeg" inFolder:self.roomId];
     if (cacheFilePath) {
         if (tmpCachedAttachments == nil) {
             tmpCachedAttachments = [NSMutableArray array];
@@ -2900,12 +2905,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // use the generated info dict to retrieve useful data
     NSMutableDictionary *infoDict = [localEvent.content valueForKey:@"info"];
-    NSData *imageData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[localEvent.content valueForKey:@"url"] andType:[infoDict objectForKey:@"mimetype"]]];
+    NSData *imageData = [NSData dataWithContentsOfFile:[MediaManager cachePathForMediaURL:[localEvent.content valueForKey:@"url"] andType:[infoDict objectForKey:@"mimetype"] inFolder:self.roomId]];
     
     // Upload data
-    MediaLoader *mediaLoader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:1.0];
+    MediaLoader *mediaLoader = [MediaManager prepareUploaderWithId:localEvent.eventId initialRange:0 andRange:1.0 inFolder:self.roomId];
     [mediaLoader uploadData:imageData mimeType:[infoDict objectForKey:@"mimetype"] success:^(NSString *url) {
-        [MediaManager removeUploaderWithId:localEvent.eventId];
+        [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
         
         NSMutableDictionary *imageMessage = [[NSMutableDictionary alloc] init];
         [imageMessage setValue:kMXMessageTypeImage forKey:@"msgtype"];
@@ -2915,7 +2920,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Send message for this attachment
         [self sendMessage:imageMessage withLocalEvent:localEvent];
     } failure:^(NSError *error) {
-        [MediaManager removeUploaderWithId:localEvent.eventId];
+        [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
         NSLog(@"Failed to upload image: %@", error);
         [self handleError:error forLocalEvent:localEvent];
     }];
@@ -2955,6 +2960,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
                     self.imageValidationView.stretchable = YES;
                     self.imageValidationView.fullScreen = YES;
+                    self.imageValidationView.mediaFolder = self.roomId;
                     
                     // the user validates the image
                     [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {

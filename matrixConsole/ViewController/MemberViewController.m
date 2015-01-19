@@ -170,14 +170,14 @@
         thumbnailURL = [mxHandler thumbnailURLForContent:_mxRoomMember.avatarUrl inViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         
         // Check whether the image download is in progress
-        id loader = [MediaManager existingDownloaderForURL:thumbnailURL];
+        id loader = [MediaManager existingDownloaderForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
         if (loader) {
             // Add observers
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
         } else {
             // Retrieve the image from cache
-            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
             if (image) {
                 [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
                 [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
@@ -189,7 +189,7 @@
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                imageLoader = [MediaManager downloadMediaFromURL:thumbnailURL withType:@"image/jpeg"];
+                imageLoader = [MediaManager downloadMediaFromURL:thumbnailURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
             }
         }
     } else {
@@ -210,7 +210,7 @@
         
         if ([url isEqualToString:thumbnailURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }

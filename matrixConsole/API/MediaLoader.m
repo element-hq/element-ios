@@ -49,6 +49,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         onSuccess = nil;
         onError = nil;
     }
+    folder = nil;
     statisticsDict = nil;
 }
 
@@ -60,11 +61,13 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 - (void)downloadMedia:(NSString*)aMediaURL
              mimeType:(NSString *)aMimeType
+               folder:(NSString*)aFolder
               success:(blockMediaLoader_onSuccess)success
               failure:(blockMediaLoader_onError)failure {
     // Report provided params
     mediaURL = aMediaURL;
     mimeType = aMimeType;
+    folder = aFolder;
     onSuccess = success;
     onError = failure;
     
@@ -82,6 +85,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     // Start downloading
     NSURL *url = [NSURL URLWithString:absoluteMediaURL];
     downloadData = [[NSMutableData alloc] init];
+    
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
 
@@ -163,7 +167,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     
     if (downloadData.length) {
         // Cache the downloaded data
-        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL andType:mimeType];
+        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL andType:mimeType inFolder:folder];
         // Call registered block
         if (onSuccess) {
             onSuccess(cacheFilePath);
@@ -181,18 +185,18 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 #pragma mark - Upload
 
-- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange {
+- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange folder:(NSString*)aFolder {
     if (self = [super init]) {
         uploadId = anUploadId;
         initialRange = anInitialRange;
         range = aRange;
+        folder = aFolder;
     }
     return self;
 }
 
 - (void)uploadData:(NSData *)data mimeType:(NSString *)aMimeType success:(blockMediaLoader_onSuccess)success failure:(blockMediaLoader_onError)failure {
     mimeType = aMimeType;
-    
     statsStartTime = CFAbsoluteTimeGetCurrent();
     
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
