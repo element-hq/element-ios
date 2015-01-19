@@ -66,6 +66,7 @@ typedef void (^blockMediaLoader_onError)(NSError *error);
     NSString *uploadId;
     CGFloat initialRange;
     CGFloat range;
+    NSOperation* operation;
 }
 
 @property (strong, readonly) NSMutableDictionary* statisticsDict;

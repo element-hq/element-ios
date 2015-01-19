@@ -23,6 +23,8 @@
 #import "AppDelegate.h"
 #import "MatrixHandler.h"
 
+#import "MediaManager.h"
+
 @interface RecentsViewController () {
     // Array of RecentRooms
     NSMutableArray  *recents;
@@ -548,7 +550,14 @@
         } else {
             recentRoom = recents[indexPath.row];
         }
+        
         MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:recentRoom.roomId];
+
+        // cancel pending uploads/downloads
+        // they are useless by now
+        [MediaManager cancelDownloadsInFolder:recentRoom.roomId];
+        [MediaManager cancelUploadsInFolder:recentRoom.roomId];
+        
         [mxRoom leave:^{
             // Refresh table display
             if (filteredRecents) {
