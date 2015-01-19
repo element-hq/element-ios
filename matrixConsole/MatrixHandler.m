@@ -826,6 +826,23 @@ static MatrixHandler *sharedHandler = nil;
     return self.MXCacheSize + [MediaManager cacheSize];
 }
 
+- (NSUInteger) minCachesSize {
+    // add a 50MB margin to avoid cache file deletion
+    return self.MXCacheSize + [MediaManager minCacheSize] + 50 * 1024 * 1024;
+}
+
+- (NSUInteger) currentMaxCachesSize {
+    return self.MXCacheSize + [MediaManager currentMaxCacheSize];
+}
+
+- (void)setCurrentMaxCachesSize:(NSUInteger)maxCachesSize {
+    [MediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
+}
+
+- (NSUInteger) maxAllowedCachesSize {
+    return self.MXCacheSize + [MediaManager maxAllowedCacheSize];
+}
+
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
     CGFloat powerLevel = 0;
     

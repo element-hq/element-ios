@@ -32,3 +32,11 @@
 @property (strong, nonatomic) IBOutlet UILabel *settingLabel;
 @property (strong, nonatomic) IBOutlet UITextField *settingTextField;
 @end
+
+
+@interface SettingsCellWithLabelAndSlider : SettingsTableViewCell
+@property (strong, nonatomic) IBOutlet UILabel *settingLabel;
+@property (strong, nonatomic) IBOutlet UISlider *settingSlider;
+
+
+@end

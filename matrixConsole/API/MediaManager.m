@@ -16,6 +16,7 @@
 
 #import "MediaManager.h"
 
+#import "AppSettings.h"
 #import "ConsoleTools.h"
 
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
@@ -143,6 +144,46 @@ static NSMutableDictionary* uploadTableById = nil;
     return [[MediaManager getCachePath] stringByAppendingPathComponent:fileName];
 }
 
++ (NSUInteger)cacheSize {
+    
+    if (!mediaCachePath) {
+        // compute the path
+        mediaCachePath = [MediaManager getCachePath];
+    }
+        
+    return (NSUInteger)[ConsoleTools folderSize:mediaCachePath];
+}
+
++ (NSUInteger)minCacheSize {
+    NSUInteger minSize = [MediaManager cacheSize];
+    NSArray* filenamesList = [ConsoleTools listFiles:mediaCachePath timeSorted:NO largeFilesFirst:YES];
+ 
+    NSFileManager* defaultManager = [NSFileManager defaultManager];
+    
+    for(NSString* filename in filenamesList) {
+        NSDictionary* attsDict = [defaultManager attributesOfItemAtPath:filename error:nil];
+        
+        if (attsDict) {
+            if (attsDict.fileSize > 100 * 1024) {
+                minSize -= attsDict.fileSize;
+            }
+        }
+    }
+    return minSize;
+}
+
++ (NSUInteger)currentMaxCacheSize {
+    return [AppSettings sharedSettings].currentMaxMediaCacheSize;
+}
+
++ (void)setCurrentMaxCacheSize:(NSUInteger)maxCacheSize {
+    [AppSettings sharedSettings].currentMaxMediaCacheSize = maxCacheSize;
+}
+
++ (NSUInteger)maxAllowedCacheSize {
+    return [AppSettings sharedSettings].maxAllowedMediaCacheSize;
+}
+
 + (void)clearCache {
     NSError *error = nil;
     
@@ -162,16 +203,6 @@ static NSMutableDictionary* uploadTableById = nil;
     }
     
     mediaCachePath = nil;
-}
-
-+ (NSUInteger)cacheSize {
-    
-    if (!mediaCachePath) {
-        // compute the path
-        mediaCachePath = [MediaManager getCachePath];
-    }
-        
-    return (NSUInteger)[ConsoleTools folderSize:mediaCachePath];
 }
 
 + (NSString*)getCachePath {

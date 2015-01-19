@@ -49,6 +49,7 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedMessages"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayLeftUsers"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"maxCacheSize"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -115,6 +116,30 @@ static AppSettings *sharedSettings = nil;
 
 - (void)setDisplayLeftUsers:(BOOL)displayLeftUsers {
     [[NSUserDefaults standardUserDefaults] setBool:displayLeftUsers forKey:@"displayLeftUsers"];
+}
+
+- (NSInteger)maxAllowedMediaCacheSize {
+    return 1024 * 1024 * 1024;
+}
+
+- (NSInteger)currentMaxMediaCacheSize {
+    
+    NSInteger res = [[NSUserDefaults standardUserDefaults] integerForKey:@"maxMediaCacheSize"];
+    
+    // no default value, assume that 1 GB is enough
+    if (res == 0) {
+        res = [AppSettings sharedSettings].maxAllowedMediaCacheSize;
+    }
+    
+    return res;
+}
+
+- (void)setCurrentMaxMediaCacheSize:(NSInteger)aMaxCacheSize {
+    if ((aMaxCacheSize == 0) && (aMaxCacheSize > [AppSettings sharedSettings].maxAllowedMediaCacheSize)) {
+        aMaxCacheSize = [AppSettings sharedSettings].maxAllowedMediaCacheSize;
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:aMaxCacheSize forKey:@"maxMediaCacheSize"];
 }
 
 @end
