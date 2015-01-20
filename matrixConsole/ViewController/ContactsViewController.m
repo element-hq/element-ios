@@ -21,6 +21,15 @@
 
 #import "ContactTableCell.h"
 
+#import "CustomAlert.h"
+
+#import "MatrixHandler.h"
+#import "AppDelegate.h"
+
+@interface ContactsViewController ()
+@property (strong, nonatomic) CustomAlert *startChatMenu;
+@end
+
 @implementation ContactsViewController
 
 - (void)viewDidLoad {
@@ -129,6 +138,68 @@
     cell.contactDisplayName.text = contact.displayName;
         
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    ConsoleContact* contact = nil;
+    
+    if (indexPath.section < sectionedContacts.sectionedContacts.count) {
+        NSArray *thisSection = [sectionedContacts.sectionedContacts objectAtIndex:indexPath.section];
+        
+        if (indexPath.row < thisSection.count) {
+            contact = [thisSection objectAtIndex:indexPath.row];
+        }
+    }
+    
+    NSArray* matrixIDs = contact.matrixIdentifiers;
+    
+    if (matrixIDs.count) {
+        // Display action menu: Add attachments, Invite user...
+        __weak typeof(self) weakSelf = self;
+        
+        NSString* matrixID = [matrixIDs objectAtIndex:0];
+        
+
+        self.startChatMenu = [[CustomAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:CustomAlertStyleAlert];
+        
+        [self.startChatMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            weakSelf.startChatMenu = nil;
+        }];
+        
+        [self.startChatMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            weakSelf.startChatMenu = nil;
+            
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            
+            // else create new room
+            [mxHandler.mxRestClient createRoom:nil
+                                    visibility:kMXRoomVisibilityPrivate
+                                     roomAlias:nil
+                                         topic:nil
+                                       success:^(MXCreateRoomResponse *response) {
+                                           // add the user
+                                           [mxHandler.mxRestClient inviteUser:matrixID toRoom:response.roomId success:^{
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"%@ invitation failed (roomId: %@): %@", matrixID, response.roomId, error);
+                                               //Alert user
+                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                           }];
+                                           
+                                           // Open created room
+                                           [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                                           
+                                       } failure:^(NSError *error) {
+                                           NSLog(@"Create room failed: %@", error);
+                                           //Alert user
+                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                       }];
+                
+        }];
+        
+        [self.startChatMenu showInViewController:self];
+    }
 }
 
 #pragma mark - Actions
