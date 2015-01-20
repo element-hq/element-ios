@@ -948,65 +948,56 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     isFirstPagination = NO;
     backPaginationOperation = nil;
     
-    // Check whether some changes have been done in messages
-    if (backPaginationAddedMsgNb || backPaginationHandledEventsNb) {
-        // We scroll to bottom when table is loaded for the first time
-        BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
-        if (!shouldScrollToBottom) {
-            // We will scroll to bottom if the displayed content does not reach the bottom (after adding back pagination)
-            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-            // Compute the height of the blank part at the bottom
-            if (maxPositionY > self.messagesTableView.contentSize.height) {
-                CGFloat blankAreaHeight = maxPositionY - self.messagesTableView.contentSize.height;
-                // Scroll to bottom if this blank area is greater than max scrolling offet
-                shouldScrollToBottom = (blankAreaHeight >= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET);
-            }
+    // We scroll to bottom when table is loaded for the first time
+    BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
+    if (!shouldScrollToBottom) {
+        // We will scroll to bottom if the displayed content does not reach the bottom (after adding back pagination)
+        CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+        // Compute the height of the blank part at the bottom
+        if (maxPositionY > self.messagesTableView.contentSize.height) {
+            CGFloat blankAreaHeight = maxPositionY - self.messagesTableView.contentSize.height;
+            // Scroll to bottom if this blank area is greater than max scrolling offet
+            shouldScrollToBottom = (blankAreaHeight >= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET);
         }
-        
-        CGFloat verticalOffset = 0;
-        if (shouldScrollToBottom == NO) {
-            // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
-            NSIndexPath *indexPath;
-            // Compute the cumulative height of the added messages
-            for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
-                indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
-            }
-            // Add delta of the height of the first existing message
-            if (messages.count > backPaginationAddedMsgNb) {
-                indexPath = [NSIndexPath indexPathForRow:backPaginationAddedMsgNb inSection:0];
-                verticalOffset += ([self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath] - backPaginationSavedFirstMsgHeight);
-            }
-            // Deduce the vertical offset from this height
-            verticalOffset -= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET;
-        }
-        // Reset count to enable tableView update
-        backPaginationAddedMsgNb = 0;
-        
-        // Return on main thread to end back pagination
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Reload table
-            [self.messagesTableView reloadData];
-            
-            // Adjust vertical content offset
-            if (shouldScrollToBottom) {
-                [self scrollToBottomAnimated:NO];
-            } else if (verticalOffset > 0) {
-                // Adjust vertical offset in order to limit scrolling down
-                CGPoint contentOffset = self.messagesTableView.contentOffset;
-                contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
-                [self.messagesTableView setContentOffset:contentOffset animated:NO];
-            }
-            isBackPaginationInProgress = NO;
-            [self stopActivityIndicator];
-        });
-    } else {
-        // Return on main thread to end back pagination
-        dispatch_async(dispatch_get_main_queue(), ^{
-            isBackPaginationInProgress = NO;
-            [self stopActivityIndicator];
-        });
     }
+    
+    CGFloat verticalOffset = 0;
+    if (shouldScrollToBottom == NO) {
+        // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
+        NSIndexPath *indexPath;
+        // Compute the cumulative height of the added messages
+        for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+        }
+        // Add delta of the height of the first existing message
+        if (messages.count > backPaginationAddedMsgNb) {
+            indexPath = [NSIndexPath indexPathForRow:backPaginationAddedMsgNb inSection:0];
+            verticalOffset += ([self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath] - backPaginationSavedFirstMsgHeight);
+        }
+        // Deduce the vertical offset from this height
+        verticalOffset -= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET;
+    }
+    // Reset count to enable tableView update
+    backPaginationAddedMsgNb = 0;
+    
+    // Return on main thread to end back pagination
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Reload table
+        [self.messagesTableView reloadData];
+        
+        // Adjust vertical content offset
+        if (shouldScrollToBottom) {
+            [self scrollToBottomAnimated:NO];
+        } else if (verticalOffset > 0) {
+            // Adjust vertical offset in order to limit scrolling down
+            CGPoint contentOffset = self.messagesTableView.contentOffset;
+            contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
+            [self.messagesTableView setContentOffset:contentOffset animated:NO];
+        }
+        isBackPaginationInProgress = NO;
+        [self stopActivityIndicator];
+    });
 }
 
 # pragma mark - Room members
