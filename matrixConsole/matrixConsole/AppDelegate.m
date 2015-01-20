@@ -21,6 +21,7 @@
 #import "MatrixHandler.h"
 #import "MediaManager.h"
 #import "SettingsViewController.h"
+#import "ContactManager.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -81,6 +82,9 @@
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         }
+        
+        // refresh the contacts list
+        [[ContactManager sharedManager] refresh];
     }
     return YES;
 }
@@ -112,6 +116,9 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     // Resume Matrix handler
     [[MatrixHandler sharedHandler] resume];
+    
+    // refresh the contacts list
+    [[ContactManager sharedManager] refresh];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
