@@ -20,11 +20,15 @@
 // the contactID is provided in parameter
 NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleContactMatrixIdentifierUpdateNotification";
 
+// warn when the contact thumbnail is updated
+// the contactID is provided in parameter
+NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactThumbnailUpdateNotification";
+
 #import "ConsoleEmail.h"
 #import "ConsolePhoneNumber.h"
 
 @implementation ConsoleContact
-@synthesize displayName, phoneNumbers, emailAddresses, thumbnail, contactID;
+@synthesize displayName, phoneNumbers, emailAddresses, contactID;
 
 - (id) initWithABRecord:(ABRecordRef)record {
     self = [super init];
@@ -157,7 +161,7 @@ NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleCo
             dataRef = ABPersonCopyImageDataWithFormat(record, kABPersonImageFormatThumbnail);
             if (dataRef)
             {
-                thumbnail = [UIImage imageWithData:(__bridge NSData*)dataRef];
+                contactBookThumbnail = [UIImage imageWithData:(__bridge NSData*)dataRef];
                 CFRelease(dataRef);
             }
         }
@@ -172,26 +176,50 @@ NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleCo
 - (NSArray*) matrixIdentifiers {
     NSMutableArray* identifiers = [[NSMutableArray alloc] init];
     
-    for(ConsolePhoneNumber* pn in self.phoneNumbers) {
-        if (pn.matrixUserID) {
-            [identifiers addObject:pn];
-        }
-    }
-    
     for(ConsoleEmail* email in self.emailAddresses) {
-        if (email.matrixUserID) {
-            [identifiers addObject:email];
+        if (email.matrixUserID && ([identifiers indexOfObject:email.matrixUserID] == NSNotFound)) {
+            [identifiers addObject:email.matrixUserID];
         }
     }
 
     return identifiers;
 }
 
-- (void)checkMatrixIdentifiers {
-    for(ConsolePhoneNumber* pn in self.phoneNumbers) {
-        [pn getMatrixID];
+- (UIImage*)thumbnail {
+    // already found a matrix thumbnail
+    if (matrixThumbnail) {
+        return matrixThumbnail;
+    } else {
+        
+        // try to replace the thumbnail by the matrix one
+        if (self.emailAddresses.count > 0) {
+            //
+            ConsoleEmail* firstEmail = nil;
+            
+            // list the linked email
+            // search if one email field has a dedicated thumbnail
+            for(ConsoleEmail* email in self.emailAddresses) {
+                if (email.avatarImage) {
+                    matrixThumbnail = email.avatarImage;
+                    return matrixThumbnail;
+                } else if (!firstEmail) {
+                    firstEmail = email;
+                }
+            }
+            
+            // if no thumbnail has been found
+            // try to load the first email one
+            if (firstEmail) {
+                // should be retrieved by the cell info
+                [firstEmail loadAvatarWithSize:CGSizeMake(80, 80)];
+            }
+        }
+        
+        return contactBookThumbnail;
     }
-    
+}
+
+- (void)checkMatrixIdentifiers {
     for(ConsoleEmail* email in self.emailAddresses) {
         [email getMatrixID];
     }
