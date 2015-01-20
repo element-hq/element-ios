@@ -353,6 +353,28 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (!isKeyboardDisplayed) {
+            [self updateMessageTextViewFrame];
+            [self scrollToBottomAnimated:YES];
+        }
+        // Cell width will be updated, force table refresh to take into account changes of message components
+        [self.messagesTableView reloadData];
+    });
+}
+
+// The 2 following methods are deprecated since iOS 8
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    // Cell width will be updated, force table refresh to take into account changes of message components
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.messagesTableView reloadData];
+    });
+}
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
@@ -1557,7 +1579,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
-    if (!message || message.isHidden) {
+    if (!message) {
         return 0;
     }
     // Else compute height of message content (The maximum width available for the textview must be updated dynamically)
@@ -1619,7 +1641,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
-    if (!message || message.isHidden) {
+    if (!message) {
         return [[UITableViewCell alloc] initWithFrame:CGRectZero];
     }
     // Else prepare the message cell
@@ -1710,6 +1732,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     } else {
         // Add unsent label for failed components
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
+        [message checkComponentsHeight];
         for (RoomMessageComponent *component in message.components) {
             if (component.style == RoomMessageComponentStyleFailed) {
                 UIButton *unsentButton = [[UIButton alloc] initWithFrame:CGRectMake(0, yPosition, 58 , 20)];
@@ -1825,9 +1848,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (displayMsgTimestamp) {
         // Add datetime label for each component
         cell.dateTimeLabelContainer.hidden = NO;
+        [message checkComponentsHeight];
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
-            if (component.date && !component.isHidden) {
+            if (component.date) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
                 dateTimeLabel.text = [dateFormatter stringFromDate:component.date];
                 if (isIncomingMsg) {
@@ -2603,24 +2627,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         RoomMessage *message = [self messageWithEventId:localEvent.eventId];
         if (message) {
             NSLog(@"Posted event: %@", localEvent.description);
-            if (message.messageType == RoomMessageTypeText) {
-                [message removeEvent:localEvent.eventId];
-                // defines an unique identfier to be able to resend the message
-                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
-                [message addEvent:localEvent withRoomState:self.mxRoom.state];
-                if (!message.components.count) {
-                    [self removeMessage:message];
-                }
-            } else {
-                // Create a new message
-                localEvent.eventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
-                RoomMessage *aNewMessage = [[RoomMessage alloc] initWithEvent:localEvent andRoomState:self.mxRoom.state];
-                if (aNewMessage) {
-                    [self replaceMessage:message withMessage:aNewMessage];
-                } else {
-                    [self removeMessage:message];
-                }
-            }
+            NSString *failedEventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
+            [message replaceLocalEventId:localEvent.eventId withEventId:failedEventId];
         }
         
         // Reload on the right thread

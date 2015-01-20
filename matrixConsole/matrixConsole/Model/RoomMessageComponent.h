@@ -34,10 +34,12 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSDate   *date;
 @property (nonatomic) RoomMessageComponentStyle style;
 @property (nonatomic) BOOL isStateEvent;
+@property (nonatomic) BOOL isIncomingMsg;
+
+// The following properties are defined to store information on component.
+// They must be handled by the object which creates the RoomMessageComponent instance.
 @property (nonatomic) CGFloat height;
-// Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
-// In this case, the message is temporary hidden
-@property (nonatomic,getter=isHidden) BOOL hidden; // default is NO.
+@property (nonatomic) NSRange range;
 
 // True if text message starts with the sender name (see membership events, emote ...)
 @property (nonatomic) BOOL startsWithSenderName;
