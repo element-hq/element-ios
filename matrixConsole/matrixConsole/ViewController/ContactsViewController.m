@@ -27,7 +27,10 @@
     [super viewDidLoad];
     
     sectionedContacts = nil;
-        
+    
+    // get the system collation titles
+    collationTitles = [[UILocalizedIndexedCollation currentCollation]sectionTitles];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerRefreshNotification object:nil];
 }
 
@@ -55,6 +58,48 @@
     }
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)aTableView
+{
+    NSMutableArray* titles = [[NSMutableArray alloc] initWithCapacity:10];
+    
+    [titles addObjectsFromArray:[[UILocalizedIndexedCollation currentCollation] sectionIndexTitles]];
+    
+    // force the background color
+    if ([self.tableView respondsToSelector:@selector(setSectionIndexBackgroundColor:)]) {
+        [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+    }
+    
+    return titles;
+}
+
+- (NSInteger)tableView:(UITableView *)aTableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    NSUInteger section;
+    
+    @synchronized(self)
+    {
+        section = [sectionedContacts.sectionTitles indexOfObject:title];
+    }
+    
+    // undefined title -> jump to the first valid non empty section
+    if (NSNotFound == section) {
+        NSUInteger systemCollationIndex = [collationTitles indexOfObject:title];
+        
+        // find in the system collation
+        if (NSNotFound != systemCollationIndex) {
+            systemCollationIndex--;
+            
+            while ((systemCollationIndex == 0) && (NSNotFound == section)) {
+                NSString* systemTitle = [collationTitles objectAtIndex:systemCollationIndex];
+                section = [sectionedContacts.sectionTitles indexOfObject:systemTitle];
+                systemCollationIndex--;
+            }
+        }
+    }
+
+    return section;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     ContactTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     
@@ -67,6 +112,8 @@
             contact = [thisSection objectAtIndex:indexPath.row];
         }
     }
+    
+    cell.contact = contact;
     
     // set the thumbnail
     if (contact.thumbnail) {

@@ -1371,14 +1371,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B4B-GZ-atv" customClass="CustomImageView">
-                                            <rect key="frame" x="16" y="7" width="30" height="30"/>
+                                            <rect key="frame" x="12" y="3" width="38" height="38"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="F3r-c8-zTQ"/>
-                                                <constraint firstAttribute="width" constant="30" id="ewx-39-TQ9"/>
+                                                <constraint firstAttribute="height" constant="38" id="F3r-c8-zTQ"/>
+                                                <constraint firstAttribute="width" constant="38" id="ewx-39-TQ9"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzg-dr-os0">
-                                            <rect key="frame" x="58" y="8" width="526" height="30"/>
+                                            <rect key="frame" x="62" y="8" width="510" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="92u-Am-XY3"/>
                                             </constraints>
@@ -1386,17 +1388,28 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="matrixUser.png" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-gD-7yP">
+                                            <rect key="frame" x="576" y="14" width="16" height="16"/>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="16" id="RkA-cA-qCQ"/>
+                                                <constraint firstAttribute="height" constant="16" id="Y21-Gt-uRM"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="B4B-GZ-atv" firstAttribute="leading" secondItem="uEH-gd-MNN" secondAttribute="leadingMargin" constant="8" id="9iE-X4-ZUS"/>
+                                        <constraint firstAttribute="centerY" secondItem="fJ6-gD-7yP" secondAttribute="centerY" id="2Su-DN-jCW"/>
+                                        <constraint firstItem="B4B-GZ-atv" firstAttribute="leading" secondItem="uEH-gd-MNN" secondAttribute="leadingMargin" constant="4" id="9iE-X4-ZUS"/>
                                         <constraint firstAttribute="centerY" secondItem="B4B-GZ-atv" secondAttribute="centerY" id="HhS-o6-BrA"/>
                                         <constraint firstItem="nzg-dr-os0" firstAttribute="top" secondItem="uEH-gd-MNN" secondAttribute="topMargin" id="M18-xH-iYO"/>
                                         <constraint firstItem="nzg-dr-os0" firstAttribute="leading" secondItem="B4B-GZ-atv" secondAttribute="trailing" constant="12" id="hNL-Kh-Wga"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="nzg-dr-os0" secondAttribute="trailing" constant="8" id="x1k-qP-Mig"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="fJ6-gD-7yP" secondAttribute="trailing" id="pYO-iK-Sb7"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="nzg-dr-os0" secondAttribute="trailing" constant="20" id="x1k-qP-Mig"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="contactDisplayName" destination="nzg-dr-os0" id="2Ce-Xv-mPM"/>
+                                    <outlet property="matrixUserIconView" destination="fJ6-gD-7yP" id="hBT-VO-KJD"/>
                                     <outlet property="thumbnail" destination="B4B-GZ-atv" id="jDt-mM-3TL"/>
                                 </connections>
                             </tableViewCell>
@@ -1436,6 +1449,7 @@
         <image name="icon_keyboard.png" width="20" height="20"/>
         <image name="icon_users.png" width="35" height="25"/>
         <image name="logoHighRes.png" width="480" height="204"/>
+        <image name="matrixUser.png" width="16" height="16"/>
         <image name="play.png" width="64" height="64"/>
         <image name="tab_home.ico" width="16" height="16"/>
     </resources>

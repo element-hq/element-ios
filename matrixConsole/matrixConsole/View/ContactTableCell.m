@@ -17,4 +17,32 @@
 #import "ContactTableCell.h"
 
 @implementation ContactTableCell
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setContact:(ConsoleContact *)aContact {
+    _contact = aContact;
+    
+    [_contact checkMatrixIdentifiers];
+    self.matrixUserIconView.hidden = (0 == aContact.matrixIdentifiers.count);
+    
+    // remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:) name:kConsoleContactMatrixIdentifierUpdateNotification object:nil];
+}
+
+- (void)onMatrixIdUpdate:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* matrixID = notif.object;
+        
+        if ([matrixID isEqualToString:self.contact.contactID]) {
+            self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
+        }
+    }
+}
+
+
 @end

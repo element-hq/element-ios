@@ -17,8 +17,12 @@
 
 @interface ConsolePhoneNumber : NSObject
 
-@property (nonatomic, readwrite)  NSString  *type;
-@property (nonatomic, readwrite)  NSString  *textNumber;
-@property (nonatomic, readwrite) BOOL isMatrixIdentifier;
+@property (nonatomic, readwrite) NSString *type;
+@property (nonatomic, readwrite) NSString *textNumber;
+@property (nonatomic, readwrite) NSString *contactID;
+@property (nonatomic, readwrite) NSString *matrixUserID;
 
+- (id)initWithTextNumber:(NSString*)textNumber andType:(NSString*)aType within:(NSString*)aContactID;
+
+- (void)getMatrixID;
 @end

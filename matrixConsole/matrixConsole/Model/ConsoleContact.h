@@ -17,20 +17,28 @@
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
 
+// warn when a contact has a new matrix identifier
+// the contactID is provided in parameter
+extern NSString *const kConsoleContactMatrixIdentifierUpdateNotification;
+
 @interface ConsoleContact : NSObject
 
+// unique identifier
+@property (nonatomic, copy, readwrite) NSString * contactID;
 // display name
 @property (nonatomic, copy, readwrite) NSString *displayName;
-
+// contact thumbnail
 @property (nonatomic, copy, readwrite) UIImage *thumbnail;
-
 // array of ConsolePhoneNumber
 @property (nonatomic, readwrite) NSArray *phoneNumbers;
 // array of ConsoleEmail
 @property (nonatomic, readwrite) NSArray *emailAddresses;
-// array of strings
+// array of ConsoleContact / ConsoleEmail with contains a matrix identifer
 @property (nonatomic, readonly) NSArray* matrixIdentifiers;
 
-- (id) initWithABRecord:(ABRecordRef)record;
+- (id)initWithABRecord:(ABRecordRef)record;
+
+// check if there is any matrix identifier updates
+- (void)checkMatrixIdentifiers;
 
 @end
