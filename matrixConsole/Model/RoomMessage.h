@@ -66,11 +66,6 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSString *uploadId;
 @property (nonatomic) CGFloat uploadProgress;
 
-// Patch: Outgoing messages may be received from events stream whereas the app is waiting for our PUT to return.
-// In this case, some messages are temporary hidden
-// The following property is true when all components are hidden
-@property (nonatomic, readonly) BOOL isHidden;
-
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState;
 
 // Concatenates successive text messages from the same user
@@ -87,13 +82,14 @@ typedef enum : NSUInteger {
 // Return true if the event id is one of the message items
 - (BOOL)containsEventId:(NSString*)eventId;
 
-// Show/Hide the component related to the provided event id (available only for type = RoomMessageTypeText)
-- (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId;
-
 // Return true if the provided message has the same sender as the receiver (same sender means here same id, same name and same avatar)
 - (BOOL)hasSameSenderAsRoomMessage:(RoomMessage*)roomMessage;
 
 // Add component(s) of the provided message to the receiver, return true on success (failed if one of the message type is not RoomMessageTypeText)
 - (BOOL)mergeWithRoomMessage:(RoomMessage*)roomMessage;
+
+// Compute height of each component if they are not already available (relevant only when type = RoomMessageTypeText)
+- (void)checkComponentsHeight;
+
 
 @end
