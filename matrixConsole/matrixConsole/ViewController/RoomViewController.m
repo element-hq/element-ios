@@ -1763,8 +1763,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // ensure that dateTimeLabelContainer is at front to catch the the tap event 
                 [cell.dateTimeLabelContainer.superview bringSubviewToFront:cell.dateTimeLabelContainer];
-                
-                displayMsgTimestamp = NO;
             }
             yPosition += component.height;
         }
@@ -1851,7 +1849,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [message checkComponentsHeight];
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
-            if (component.date) {
+            if (component.date && (component.style != RoomMessageComponentStyleFailed)) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
                 dateTimeLabel.text = [dateFormatter stringFromDate:component.date];
                 if (isIncomingMsg) {
