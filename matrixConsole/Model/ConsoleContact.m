@@ -16,24 +16,31 @@
 
 #import "ConsoleContact.h"
 
+// warn when a contact has a new matrix identifier
+// the contactID is provided in parameter
+NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleContactMatrixIdentifierUpdateNotification";
+
 #import "ConsoleEmail.h"
 #import "ConsolePhoneNumber.h"
 
 @implementation ConsoleContact
-@synthesize displayName, phoneNumbers, emailAddresses, thumbnail;
+@synthesize displayName, phoneNumbers, emailAddresses, thumbnail, contactID;
 
 - (id) initWithABRecord:(ABRecordRef)record {
-    
     self = [super init];
     
     if (self) {
-        
+
+        // compute a contact ID
+        self.contactID = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(record)];
+
+        // use the contact book display name
         self.displayName = (__bridge NSString*) ABRecordCopyCompositeName(record);
         
         // avoid nil display name
         // the display name is used to sort contacts
         if (!self.displayName) {
-            self.displayName = @"";
+            displayName = @"";
         }
         
         // extract the phone numbers and their related label
@@ -86,7 +93,7 @@
         }
         
         CFRelease(multi);
-        self.phoneNumbers = pns;
+        phoneNumbers = pns;
         
         // extract the emails
         multi = ABRecordCopyValue(record, kABPersonEmailProperty);
@@ -120,10 +127,7 @@
                     }
                 }
                 
-                ConsoleEmail* email = [[ConsoleEmail alloc] init];
-                email.type = lbl;
-                email.emailAddress = emailVal;
-                
+                ConsoleEmail* email = [[ConsoleEmail alloc] initWithEmailAddress:emailVal andType:lbl within:self.contactID];                
                 [emails addObject: email];
                 
                 if (lblRef) {
@@ -142,7 +146,7 @@
         
         CFRelease(multi);
 
-        self.emailAddresses = emails;
+        emailAddresses = emails;
         
         // thumbnail/picture
         // check whether the contact has a picture
@@ -153,10 +157,14 @@
             dataRef = ABPersonCopyImageDataWithFormat(record, kABPersonImageFormatThumbnail);
             if (dataRef)
             {
-                self.thumbnail = [UIImage imageWithData:(__bridge NSData*)dataRef];
+                thumbnail = [UIImage imageWithData:(__bridge NSData*)dataRef];
                 CFRelease(dataRef);
             }
         }
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+            [self checkMatrixIdentifiers];
+        });
     }
     return self;
 }
@@ -165,18 +173,28 @@
     NSMutableArray* identifiers = [[NSMutableArray alloc] init];
     
     for(ConsolePhoneNumber* pn in self.phoneNumbers) {
-        if (pn.isMatrixIdentifier) {
-            [identifiers addObject:pn.textNumber];
+        if (pn.matrixUserID) {
+            [identifiers addObject:pn];
         }
     }
     
     for(ConsoleEmail* email in self.emailAddresses) {
-        if (email.isMatrixIdentifier) {
-            [identifiers addObject:email.emailAddress];
+        if (email.matrixUserID) {
+            [identifiers addObject:email];
         }
     }
 
     return identifiers;
+}
+
+- (void)checkMatrixIdentifiers {
+    for(ConsolePhoneNumber* pn in self.phoneNumbers) {
+        [pn getMatrixID];
+    }
+    
+    for(ConsoleEmail* email in self.emailAddresses) {
+        [email getMatrixID];
+    }
 }
 
 @end

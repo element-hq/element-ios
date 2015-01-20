@@ -16,10 +16,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ConsoleEmail : NSObject
+@interface ConsoleEmail : NSObject {
+    BOOL pendingMatrixIDRequest;
+    BOOL gotMatrixID;
+}
 
 @property (nonatomic, readwrite) NSString *type;
 @property (nonatomic, readwrite) NSString *emailAddress;
-@property (nonatomic, readwrite) BOOL isMatrixIdentifier;
+@property (nonatomic, readwrite) NSString *contactID;
+@property (nonatomic, readwrite) NSString *matrixUserID;
 
+- (id)initWithEmailAddress:(NSString*)anEmailAddress andType:(NSString*)aType within:(NSString*)aContactID;
+
+- (void)getMatrixID;
 @end

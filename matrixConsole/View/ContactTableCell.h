@@ -16,9 +16,16 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomImageView.h"
+#import "ConsoleContact.h"
 
 @interface ContactTableCell : UITableViewCell
+
 @property (strong, nonatomic) IBOutlet CustomImageView *thumbnail;
 @property (strong, nonatomic) IBOutlet UILabel *contactDisplayName;
+@property (strong, nonatomic) IBOutlet UIImageView *matrixUserIconView;
+
+// reference to the linked message
+@property (strong, nonatomic) ConsoleContact *contact;
+
 @end
 

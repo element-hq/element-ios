@@ -20,6 +20,8 @@
 
 @interface ContactsViewController : UITableViewController <UINavigationControllerDelegate> {
     SectionedContacts *sectionedContacts;
+    
+    NSArray* collationTitles;
 }
 
 @end
