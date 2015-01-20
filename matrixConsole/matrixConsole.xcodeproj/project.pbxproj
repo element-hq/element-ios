@@ -83,7 +83,7 @@
 		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
 		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsViewController.h; path = ViewController/ContactsViewController.h; sourceTree = "<group>"; };
+		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		71193D281A6E3DC000E59A9E /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		71193D2A1A6E433900E59A9E /* ContactTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableCell.h; sourceTree = "<group>"; };
 		71193D2B1A6E433900E59A9E /* ContactTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableCell.m; sourceTree = "<group>"; };
@@ -258,6 +258,7 @@
 		F03EF5E919F171EB00A0EE52 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				71193D271A6E3DC000E59A9E /* ContactsViewController.h */,
 				71193D281A6E3DC000E59A9E /* ContactsViewController.m */,
 				F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */,
 				F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */,
@@ -356,7 +357,6 @@
 				F04EE51E1A3A01D500C64930 /* APNSHandler.m */,
 				F07A80D919DD9DE700B621A1 /* AppDelegate.h */,
 				F07A80DA19DD9DE700B621A1 /* AppDelegate.m */,
-				71193D271A6E3DC000E59A9E /* ContactsViewController.h */,
 				F0D3C30A1A011EF10000D49E /* AppSettings.h */,
 				F0D3C30B1A011EF10000D49E /* AppSettings.m */,
 				F03C470F1A02952800E445AB /* CustomAlert.h */,
