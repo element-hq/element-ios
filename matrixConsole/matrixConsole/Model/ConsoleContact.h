@@ -20,20 +20,26 @@
 // warn when a contact has a new matrix identifier
 // the contactID is provided in parameter
 extern NSString *const kConsoleContactMatrixIdentifierUpdateNotification;
+// warn when the contact thumbnail is updated
+// the contactID is provided in parameter
+extern NSString *const kConsoleContactThumbnailUpdateNotification;
 
-@interface ConsoleContact : NSObject
+@interface ConsoleContact : NSObject {
+    UIImage* contactBookThumbnail;
+    UIImage* matrixThumbnail;
+}
 
 // unique identifier
 @property (nonatomic, copy, readwrite) NSString * contactID;
 // display name
 @property (nonatomic, copy, readwrite) NSString *displayName;
 // contact thumbnail
-@property (nonatomic, copy, readwrite) UIImage *thumbnail;
+@property (nonatomic, copy, readonly) UIImage *thumbnail;
 // array of ConsolePhoneNumber
 @property (nonatomic, readwrite) NSArray *phoneNumbers;
 // array of ConsoleEmail
 @property (nonatomic, readwrite) NSArray *emailAddresses;
-// array of ConsoleContact / ConsoleEmail with contains a matrix identifer
+// array of matrix identifiers
 @property (nonatomic, readonly) NSArray* matrixIdentifiers;
 
 - (id)initWithABRecord:(ABRecordRef)record;

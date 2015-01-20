@@ -30,7 +30,11 @@
     
     // remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:) name:kConsoleContactMatrixIdentifierUpdateNotification object:nil];
+    
+    // add contact update info
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:) name:kConsoleContactMatrixIdentifierUpdateNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kConsoleContactThumbnailUpdateNotification object:nil];
 }
 
 - (void)onMatrixIdUpdate:(NSNotification *)notif {
@@ -40,6 +44,22 @@
         
         if ([matrixID isEqualToString:self.contact.contactID]) {
             self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
+            
+            // try to update the thumbnail with the matrix thumbnail
+            if (_contact.matrixIdentifiers) {
+                self.matrixUserIconView.image = self.contact.thumbnail;
+            }
+        }
+    }
+}
+
+- (void)onThumbnailUpdate:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* matrixID = notif.object;
+        
+        if ([matrixID isEqualToString:self.contact.contactID]) {
+            self.thumbnail.image = self.contact.thumbnail;
         }
     }
 }

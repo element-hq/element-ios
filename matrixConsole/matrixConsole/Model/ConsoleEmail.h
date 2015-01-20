@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface ConsoleEmail : NSObject {
     BOOL pendingMatrixIDRequest;
@@ -25,8 +25,11 @@
 @property (nonatomic, readwrite) NSString *emailAddress;
 @property (nonatomic, readwrite) NSString *contactID;
 @property (nonatomic, readwrite) NSString *matrixUserID;
+@property (nonatomic, readwrite) NSString *avatarURL;
+@property (nonatomic, readwrite) UIImage  *avatarImage;
 
 - (id)initWithEmailAddress:(NSString*)anEmailAddress andType:(NSString*)aType within:(NSString*)aContactID;
 
 - (void)getMatrixID;
+- (void)loadAvatarWithSize:(CGSize)avatarSize;
 @end

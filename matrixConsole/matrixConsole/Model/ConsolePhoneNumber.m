@@ -17,7 +17,7 @@
 #import "ConsolePhoneNumber.h"
 
 @implementation ConsolePhoneNumber
-@synthesize type, textNumber, contactID, matrixUserID;
+@synthesize type, textNumber, contactID;
 
 - (id)initWithTextNumber:(NSString*)aTextNumber andType:(NSString*)aType within:(NSString*)aContactID {
     self = [super init];
@@ -26,14 +26,9 @@
         self.type = aType;
         self.textNumber = aTextNumber;
         self.contactID = aContactID;
-        self.matrixUserID = nil;
     }
     
     return self;
-}
-
-- (void)getMatrixID {
-    // NOP
 }
 
 @end
