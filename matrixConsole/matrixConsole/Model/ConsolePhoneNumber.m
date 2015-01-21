@@ -16,22 +16,15 @@
 
 #import "ConsolePhoneNumber.h"
 
-@interface ConsolePhoneNumber()
-@property (nonatomic, readwrite) NSString *type;
-@property (nonatomic, readwrite) NSString *textNumber;
-@property (nonatomic, readwrite) NSString *contactID;
-@end
-
 @implementation ConsolePhoneNumber
-@synthesize type, textNumber, contactID;
 
 - (id)initWithTextNumber:(NSString*)aTextNumber andType:(NSString*)aType within:(NSString*)aContactID {
     self = [super init];
     
     if (self) {
-        self.type = aType;
-        self.textNumber = aTextNumber;
-        self.contactID = aContactID;
+        _type = aType;
+        _textNumber = aTextNumber;
+        _contactID = aContactID;
     }
     
     return self;
