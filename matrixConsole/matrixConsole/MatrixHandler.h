@@ -84,7 +84,12 @@ typedef enum : NSUInteger {
 // search if a 1:1 conversation has been started with this member
 - (NSString*)getRoomStartedWithMember:(MXRoomMember*)roomMember;
 
+// user power level in a dedicated room
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
+
+// return the presence ring color
+// nil means there is no ring to display
+- (UIColor*)getPresenceRingColor:(MXPresence)presence;
 
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text;

@@ -873,6 +873,25 @@ static MatrixHandler *sharedHandler = nil;
     return powerLevel;
 }
 
+
+// return the presence ring color
+// nil means there is no ring to display
+- (UIColor*)getPresenceRingColor:(MXPresence)presence {
+    switch (presence) {
+        case MXPresenceOnline:
+            return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+        case MXPresenceUnavailable:
+            return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
+        case MXPresenceOffline:
+            return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
+        case MXPresenceUnknown:
+        case MXPresenceFreeForChat:
+        case MXPresenceHidden:
+        default:
+            return nil;
+    }
+}
+
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
