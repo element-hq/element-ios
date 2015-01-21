@@ -135,7 +135,9 @@
                                                       self.avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
                                                       [self downloadAvatarImage];
                                                   }
-                                                  failure:nil];
+                                                     failure:^(NSError *error) {
+                                                         // 
+                                                     }];
                 }
             }
         }
