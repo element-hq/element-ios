@@ -948,65 +948,56 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     isFirstPagination = NO;
     backPaginationOperation = nil;
     
-    // Check whether some changes have been done in messages
-    if (backPaginationAddedMsgNb || backPaginationHandledEventsNb) {
-        // We scroll to bottom when table is loaded for the first time
-        BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
-        if (!shouldScrollToBottom) {
-            // We will scroll to bottom if the displayed content does not reach the bottom (after adding back pagination)
-            CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-            // Compute the height of the blank part at the bottom
-            if (maxPositionY > self.messagesTableView.contentSize.height) {
-                CGFloat blankAreaHeight = maxPositionY - self.messagesTableView.contentSize.height;
-                // Scroll to bottom if this blank area is greater than max scrolling offet
-                shouldScrollToBottom = (blankAreaHeight >= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET);
-            }
+    // We scroll to bottom when table is loaded for the first time
+    BOOL shouldScrollToBottom = (self.messagesTableView.contentSize.height == 0);
+    if (!shouldScrollToBottom) {
+        // We will scroll to bottom if the displayed content does not reach the bottom (after adding back pagination)
+        CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+        // Compute the height of the blank part at the bottom
+        if (maxPositionY > self.messagesTableView.contentSize.height) {
+            CGFloat blankAreaHeight = maxPositionY - self.messagesTableView.contentSize.height;
+            // Scroll to bottom if this blank area is greater than max scrolling offet
+            shouldScrollToBottom = (blankAreaHeight >= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET);
         }
-        
-        CGFloat verticalOffset = 0;
-        if (shouldScrollToBottom == NO) {
-            // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
-            NSIndexPath *indexPath;
-            // Compute the cumulative height of the added messages
-            for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
-                indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
-            }
-            // Add delta of the height of the first existing message
-            if (messages.count > backPaginationAddedMsgNb) {
-                indexPath = [NSIndexPath indexPathForRow:backPaginationAddedMsgNb inSection:0];
-                verticalOffset += ([self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath] - backPaginationSavedFirstMsgHeight);
-            }
-            // Deduce the vertical offset from this height
-            verticalOffset -= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET;
-        }
-        // Reset count to enable tableView update
-        backPaginationAddedMsgNb = 0;
-        
-        // Return on main thread to end back pagination
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Reload table
-            [self.messagesTableView reloadData];
-            
-            // Adjust vertical content offset
-            if (shouldScrollToBottom) {
-                [self scrollToBottomAnimated:NO];
-            } else if (verticalOffset > 0) {
-                // Adjust vertical offset in order to limit scrolling down
-                CGPoint contentOffset = self.messagesTableView.contentOffset;
-                contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
-                [self.messagesTableView setContentOffset:contentOffset animated:NO];
-            }
-            isBackPaginationInProgress = NO;
-            [self stopActivityIndicator];
-        });
-    } else {
-        // Return on main thread to end back pagination
-        dispatch_async(dispatch_get_main_queue(), ^{
-            isBackPaginationInProgress = NO;
-            [self stopActivityIndicator];
-        });
     }
+    
+    CGFloat verticalOffset = 0;
+    if (shouldScrollToBottom == NO) {
+        // In this case, we will adjust the vertical offset in order to make visible only a few part of added messages (at the top of the table)
+        NSIndexPath *indexPath;
+        // Compute the cumulative height of the added messages
+        for (NSUInteger index = 0; index < backPaginationAddedMsgNb; index++) {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            verticalOffset += [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
+        }
+        // Add delta of the height of the first existing message
+        if (messages.count > backPaginationAddedMsgNb) {
+            indexPath = [NSIndexPath indexPathForRow:backPaginationAddedMsgNb inSection:0];
+            verticalOffset += ([self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath] - backPaginationSavedFirstMsgHeight);
+        }
+        // Deduce the vertical offset from this height
+        verticalOffset -= ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET;
+    }
+    // Reset count to enable tableView update
+    backPaginationAddedMsgNb = 0;
+    
+    // Return on main thread to end back pagination
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Reload table
+        [self.messagesTableView reloadData];
+        
+        // Adjust vertical content offset
+        if (shouldScrollToBottom) {
+            [self scrollToBottomAnimated:NO];
+        } else if (verticalOffset > 0) {
+            // Adjust vertical offset in order to limit scrolling down
+            CGPoint contentOffset = self.messagesTableView.contentOffset;
+            contentOffset.y = verticalOffset - self.messagesTableView.contentInset.top;
+            [self.messagesTableView setContentOffset:contentOffset animated:NO];
+        }
+        isBackPaginationInProgress = NO;
+        [self stopActivityIndicator];
+    });
 }
 
 # pragma mark - Room members
@@ -1114,6 +1105,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)hideRoomMembers {
     self.membersView.hidden = YES;
     members = nil;
+    // Force a reload to release all table cells (and then stop running timer)
+    [self.membersTableView reloadData];
 }
 
 # pragma mark - Attachment handling
@@ -1578,7 +1571,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }
     
-    // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
+    // Sanity check
     if (!message) {
         return 0;
     }
@@ -1640,19 +1633,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             message = [messages objectAtIndex:indexPath.row];
         }
     }
-    // Consider the specific case where the message is hidden (see outgoing messages temporarily hidden until our PUT is returned)
+    // Sanity check
     if (!message) {
         return [[UITableViewCell alloc] initWithFrame:CGRectZero];
     }
     // Else prepare the message cell
     RoomMessageTableCell *cell;
     BOOL isIncomingMsg = NO;
-    
     if ([message.senderId isEqualToString:mxHandler.userId]) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"OutgoingMessageCell" forIndexPath:indexPath];
-        OutgoingMessageTableCell* outgoingMsgCell = (OutgoingMessageTableCell*)cell;
-        // Hide potential loading wheel
-        [outgoingMsgCell stopAnimating];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"IncomingMessageCell" forIndexPath:indexPath];
         isIncomingMsg = YES;
@@ -1664,22 +1653,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // set the media folders
     cell.pictureView.mediaFolder = kMediaManagerThumbnailFolder;
     cell.attachmentView.mediaFolder = self.roomId;
-    
-    // Remove all gesture recognizer
-    while (cell.attachmentView.gestureRecognizers.count) {
-        [cell.attachmentView removeGestureRecognizer:cell.attachmentView.gestureRecognizers[0]];
-    }
-    // Remove potential dateTime (or unsent) label(s)
-    if (cell.dateTimeLabelContainer.subviews.count > 0) {
-        if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
-            [NSLayoutConstraint deactivateConstraints:cell.dateTimeLabelContainer.constraints];
-        } else {
-            [cell.dateTimeLabelContainer removeConstraints:cell.dateTimeLabelContainer.constraints];
-        }
-        for (UIView *view in cell.dateTimeLabelContainer.subviews) {
-            [view removeFromSuperview];
-        }
-    }
     
     // Check whether the previous message has been sent by the same user.
     // The user's picture and name are displayed only for the first message.
@@ -1763,14 +1736,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // ensure that dateTimeLabelContainer is at front to catch the the tap event 
                 [cell.dateTimeLabelContainer.superview bringSubviewToFront:cell.dateTimeLabelContainer];
-                
-                displayMsgTimestamp = NO;
             }
             yPosition += component.height;
         }
     }
-    
-    [cell stopProgressUI];
     
     // Set message content
     message.maxTextViewWidth = self.messagesTableView.frame.size.width - ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW;
@@ -1833,14 +1802,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.messageTextView.attributedText = message.attributedTextMessage;
     }
     
-    // add a long tap gesture on the progressView
+    // Add a long tap gesture on the progressView
     // manage it in the storyboard does not work properly
     // -> The gesture view is always the same i.e. the latest composed one.
-    while (cell.progressView.gestureRecognizers.count) {
-        [cell.progressView removeGestureRecognizer:cell.progressView.gestureRecognizers[0]];
-    }
-
-    // only the download can be cancelled
+    // Note: only the download can be cancelled
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onProgressLongTap:)];
     [cell.progressView addGestureRecognizer:longPress];
     
@@ -1851,7 +1816,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [message checkComponentsHeight];
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
         for (RoomMessageComponent *component in message.components) {
-            if (component.date) {
+            if (component.date && (component.style != RoomMessageComponentStyleFailed)) {
                 UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yPosition, cell.dateTimeLabelContainer.frame.size.width , 20)];
                 dateTimeLabel.text = [dateFormatter stringFromDate:component.date];
                 if (isIncomingMsg) {
@@ -1920,6 +1885,48 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     } else if (tableView == self.messagesTableView) {
         // Dismiss keyboard when user taps on messages table view content
         [self dismissKeyboard];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
+    // Release here resources, and restore reusable cells
+    
+    // Check table view members vs messages
+    if (tableView == self.membersTableView) {
+        RoomMemberTableCell *memberCell = (RoomMemberTableCell*)cell;
+        // Stop potential timer used to refresh member's presence
+        [memberCell setRoomMember:nil withRoom:nil];
+    } else if (tableView == self.messagesTableView) {
+        RoomMessageTableCell *msgCell = (RoomMessageTableCell*)cell;
+        if ([cell isKindOfClass:[OutgoingMessageTableCell class]]) {
+            OutgoingMessageTableCell *outgoingMsgCell = (OutgoingMessageTableCell*)cell;
+            // Hide potential loading wheel
+            [outgoingMsgCell stopAnimating];
+        }
+        msgCell.message = nil;
+        
+        // Remove all gesture recognizer
+        while (msgCell.attachmentView.gestureRecognizers.count) {
+            [msgCell.attachmentView removeGestureRecognizer:msgCell.attachmentView.gestureRecognizers[0]];
+        }
+        // Remove potential dateTime (or unsent) label(s)
+        if (msgCell.dateTimeLabelContainer.subviews.count > 0) {
+            if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
+                [NSLayoutConstraint deactivateConstraints:msgCell.dateTimeLabelContainer.constraints];
+            } else {
+                [msgCell.dateTimeLabelContainer removeConstraints:msgCell.dateTimeLabelContainer.constraints];
+            }
+            for (UIView *view in msgCell.dateTimeLabelContainer.subviews) {
+                [view removeFromSuperview];
+            }
+        }
+        
+        [msgCell stopProgressUI];
+        
+        // Remove long tap gesture on the progressView
+        while (msgCell.progressView.gestureRecognizers.count) {
+            [msgCell.progressView removeGestureRecognizer:msgCell.progressView.gestureRecognizers[0]];
+        }
     }
 }
 
