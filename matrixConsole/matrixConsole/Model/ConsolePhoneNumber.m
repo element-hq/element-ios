@@ -16,6 +16,12 @@
 
 #import "ConsolePhoneNumber.h"
 
+@interface ConsolePhoneNumber()
+@property (nonatomic, readwrite) NSString *type;
+@property (nonatomic, readwrite) NSString *textNumber;
+@property (nonatomic, readwrite) NSString *contactID;
+@end
+
 @implementation ConsolePhoneNumber
 @synthesize type, textNumber, contactID;
 

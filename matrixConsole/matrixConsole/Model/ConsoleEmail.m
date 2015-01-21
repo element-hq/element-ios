@@ -21,6 +21,20 @@
 
 #import "MediaManager.h"
 
+@interface ConsoleEmail() {
+    BOOL pendingMatrixIDRequest;
+    BOOL gotMatrixID;
+}
+
+@property (nonatomic, readwrite) NSString *type;
+@property (nonatomic, readwrite) NSString *emailAddress;
+@property (nonatomic, readwrite) NSString *contactID;
+@property (nonatomic, readwrite) NSString *matrixUserID;
+@property (nonatomic, readwrite) NSString *avatarURL;
+@property (nonatomic, readwrite) UIImage  *avatarImage;
+
+@end
+
 @implementation ConsoleEmail
 @synthesize type, emailAddress, contactID, matrixUserID, avatarImage, avatarURL;
 
@@ -131,12 +145,12 @@
                 
                 if (mxHandler.mxRestClient) {
                     [mxHandler.mxRestClient avatarUrlForUser:self.matrixUserID
-                                                  success:^(NSString *avatarUrl) {
-                                                      self.avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
-                                                      [self downloadAvatarImage];
-                                                  }
+                                                     success:^(NSString *avatarUrl) {
+                                                         self.avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
+                                                         [self downloadAvatarImage];
+                                                     }
                                                      failure:^(NSError *error) {
-                                                         // 
+                                                         //
                                                      }];
                 }
             }

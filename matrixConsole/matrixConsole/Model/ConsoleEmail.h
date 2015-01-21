@@ -16,17 +16,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConsoleEmail : NSObject {
-    BOOL pendingMatrixIDRequest;
-    BOOL gotMatrixID;
-}
+@interface ConsoleEmail : NSObject
 
-@property (nonatomic, readwrite) NSString *type;
-@property (nonatomic, readwrite) NSString *emailAddress;
-@property (nonatomic, readwrite) NSString *contactID;
-@property (nonatomic, readwrite) NSString *matrixUserID;
-@property (nonatomic, readwrite) NSString *avatarURL;
-@property (nonatomic, readwrite) UIImage  *avatarImage;
+// email info
+@property (nonatomic, readonly) NSString *type;
+@property (nonatomic, readonly) NSString *emailAddress;
+// contact ID where the email has been found
+@property (nonatomic, readonly) NSString *contactID;
+// linked matrix account
+@property (nonatomic, readonly) NSString *matrixUserID;
+@property (nonatomic, readonly) NSString *avatarURL;
+@property (nonatomic, readonly) UIImage  *avatarImage;
 
 - (id)initWithEmailAddress:(NSString*)anEmailAddress andType:(NSString*)aType within:(NSString*)aContactID;
 

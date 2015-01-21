@@ -44,7 +44,14 @@ extern NSString *const kConsoleContactThumbnailUpdateNotification;
 
 - (id)initWithABRecord:(ABRecordRef)record;
 
+// return thumbnail with a prefered size
+// if the thumbnail is already loaded, this method returns this one
+// if the thumbnail must trigger a server request, the expected size will be size
+// self.thumbnail triggered a request with a 256 X 256 pixels
+- (UIImage*)thumbnailWithPreferedSize:(CGSize)size;
+
 // check if there is any matrix identifier updates
 - (void)checkMatrixIdentifiers;
+
 
 @end

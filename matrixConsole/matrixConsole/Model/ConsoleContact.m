@@ -75,12 +75,8 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                         lbl = (__bridge NSString*)localizedLblRef;
                     }
                 }
-                
-                ConsolePhoneNumber* pn = [[ConsolePhoneNumber alloc] init];
-                pn.type = lbl;
-                pn.textNumber = phoneVal;
-                
-                [pns addObject:pn];
+        
+                [pns addObject:[[ConsolePhoneNumber alloc] initWithTextNumber:phoneVal andType:lbl within:self.contactID]];
                 
                 if (lblRef)  {
                     CFRelease(lblRef);
@@ -131,8 +127,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                     }
                 }
                 
-                ConsoleEmail* email = [[ConsoleEmail alloc] initWithEmailAddress:emailVal andType:lbl within:self.contactID];                
-                [emails addObject: email];
+                [emails addObject: [[ConsoleEmail alloc] initWithEmailAddress:emailVal andType:lbl within:self.contactID]];
                 
                 if (lblRef) {
                     CFRelease(lblRef);
@@ -185,7 +180,11 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
     return identifiers;
 }
 
-- (UIImage*)thumbnail {
+// return thumbnail with a prefered size
+// if the thumbnail is already loaded, this method returns this one
+// if the thumbnail must trigger a server request, the expected size will be size
+// self.thumbnail triggered a request with a 256 X 256 pixels
+- (UIImage*)thumbnailWithPreferedSize:(CGSize)size {
     // already found a matrix thumbnail
     if (matrixThumbnail) {
         return matrixThumbnail;
@@ -211,12 +210,16 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
             // try to load the first email one
             if (firstEmail) {
                 // should be retrieved by the cell info
-                [firstEmail loadAvatarWithSize:CGSizeMake(80, 80)];
+                [firstEmail loadAvatarWithSize:size];
             }
         }
         
         return contactBookThumbnail;
     }
+}
+
+- (UIImage*)thumbnail {
+    return [self thumbnailWithPreferedSize:CGSizeMake(256, 256)];
 }
 
 - (void)checkMatrixIdentifiers {

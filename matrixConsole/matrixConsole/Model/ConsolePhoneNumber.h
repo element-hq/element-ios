@@ -17,9 +17,12 @@
 
 @interface ConsolePhoneNumber : NSObject
 
-@property (nonatomic, readwrite) NSString *type;
-@property (nonatomic, readwrite) NSString *textNumber;
-@property (nonatomic, readwrite) NSString *contactID;
+// phonenumber info
+@property (nonatomic, readonly) NSString *type;
+@property (nonatomic, readonly) NSString *textNumber;
+// contact ID where the phonenumber has been found
+@property (nonatomic, readonly) NSString *contactID;
 
 - (id)initWithTextNumber:(NSString*)textNumber andType:(NSString*)aType within:(NSString*)aContactID;
+
 @end

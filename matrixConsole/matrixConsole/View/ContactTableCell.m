@@ -52,11 +52,10 @@
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
-    self.thumbnail.layer.borderWidth = 0;
+    self.thumbnailView.layer.borderWidth = 0;
     
-    // add contact update info
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:) name:kConsoleContactMatrixIdentifierUpdateNotification object:nil];
-    
+    // be warned when the matrix ID and the thumbnail is updated
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:)  name:kConsoleContactMatrixIdentifierUpdateNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kConsoleContactThumbnailUpdateNotification object:nil];
     
     // Register a listener for events that concern room members
@@ -82,7 +81,10 @@
         }
     }];
     
-    [self refreshUserPresence];
+    // init the contact info
+    self.contactDisplayNameLabel.text = _contact.displayName;
+    [self refreshContactThumbnail];
+    [self manageMatrixIcon];
 }
 
 - (void)refreshUserPresence {
@@ -100,20 +102,27 @@
         // check if already known as a Matrix user
         MXUser* mxUser = [mxHandler.mxSession userWithUserId:matrixUserID];
         
-        // unknown user
-        if (!mxUser) {
-            // request his presence
-            [mxHandler.mxRestClient presence:matrixUserID
-                                     success:^(MXPresenceResponse *presence) {
-                                        [self refreshPresenceUserRing:presence.presenceStatus];
-                                     }
-                                     failure:^ (NSError *error) {
-                                     }
-             ];
-            
-        } else {
-             [self refreshPresenceUserRing:mxUser.presence];
+        // check if the mxUser is known
+        // if it is not known, the presence cannot be retrieved
+        if (mxUser) {
+            [self refreshPresenceUserRing:mxUser.presence];
+            // we know that this user is a matrix one
+            self.matrixUserIconView.hidden = NO;
         }
+    }
+}
+
+- (void)refreshContactThumbnail {
+    self.thumbnailView.image = [self.contact thumbnailWithPreferedSize:self.thumbnailView.frame.size];
+    
+    if (!self.thumbnailView.image) {
+        self.thumbnailView.image = [UIImage imageNamed:@"default-profile"];
+    }
+    
+    // display the thumbnail in a circle
+    if (self.thumbnailView.layer.cornerRadius  != self.thumbnailView.frame.size.width / 2) {
+        self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
+        self.thumbnailView.clipsToBounds = YES;
     }
 }
 
@@ -122,13 +131,24 @@
     
     // if the thumbnail is defined
     if (ringColor) {
-        self.thumbnail.layer.borderWidth = 2;
-        self.thumbnail.layer.borderColor = ringColor.CGColor;
+        self.thumbnailView.layer.borderWidth = 2;
+        self.thumbnailView.layer.borderColor = ringColor.CGColor;
     } else {
         // remove the border
         // else it draws black border
-        self.thumbnail.layer.borderWidth = 0;
+        self.thumbnailView.layer.borderWidth = 0;
     }
+}
+
+- (void)manageMatrixIcon {
+    self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
+    
+    // try to update the thumbnail with the matrix thumbnail
+    if (_contact.matrixIdentifiers) {
+        [self refreshContactThumbnail];
+    }
+    
+    [self refreshUserPresence];
 }
 
 - (void)onMatrixIdUpdate:(NSNotification *)notif {
@@ -137,14 +157,7 @@
         NSString* matrixID = notif.object;
         
         if ([matrixID isEqualToString:self.contact.contactID]) {
-            self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
-            
-            // try to update the thumbnail with the matrix thumbnail
-            if (_contact.matrixIdentifiers) {
-                self.matrixUserIconView.image = self.contact.thumbnail;
-            }
-            
-            [self refreshUserPresence];
+            [self manageMatrixIcon];
         }
     }
 }
@@ -155,7 +168,8 @@
         NSString* matrixID = notif.object;
         
         if ([matrixID isEqualToString:self.contact.contactID]) {
-            self.thumbnail.image = self.contact.thumbnail;
+            [self refreshContactThumbnail];
+            self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
         }
     }
 }
