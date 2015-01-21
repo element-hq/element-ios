@@ -16,15 +16,27 @@
 
 #import "ContactsViewController.h"
 
+// SDK api
+#import "MatrixHandler.h"
+
+// application info
+#import "AppDelegate.h"
+
+// contacts management
 #import "ContactManager.h"
 #import "ConsoleContact.h"
+#import "ConsoleEmail.h"
+#import "ConsolePhoneNumber.h"
 
+// contact cell
 #import "ContactTableCell.h"
 
+// alert
 #import "CustomAlert.h"
 
-#import "MatrixHandler.h"
-#import "AppDelegate.h"
+
+
+NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
 @interface ContactsViewController ()
 @property (strong, nonatomic) CustomAlert *startChatMenu;
@@ -144,14 +156,15 @@
         }
     }
     
+    __weak typeof(self) weakSelf = self;
+    
     NSArray* matrixIDs = contact.matrixIdentifiers;
     
+    // matrix user ?
     if (matrixIDs.count) {
         // Display action menu: Add attachments, Invite user...
-        __weak typeof(self) weakSelf = self;
         
         NSString* matrixID = [matrixIDs objectAtIndex:0];
-        
 
         self.startChatMenu = [[CustomAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:CustomAlertStyleAlert];
         
@@ -190,6 +203,59 @@
         }];
         
         [self.startChatMenu showInViewController:self];
+    } else {
+        // invite to use matrix
+        if (([MFMessageComposeViewController canSendText] ? contact.emailAddresses.count : 0) + (contact.phoneNumbers.count > 0)) {
+        
+            self.startChatMenu = [[CustomAlert alloc] initWithTitle:[NSString stringWithFormat:@"Invite this user to use matrix with"]  message:nil style:CustomAlertStyleActionSheet];
+            
+            // check if the target can send SMSes
+            if ([MFMessageComposeViewController canSendText]) {
+                // list phonenumbers
+                for(ConsolePhoneNumber* phonenumber in contact.phoneNumbers) {
+                    
+                    [self.startChatMenu addActionWithTitle:phonenumber.textNumber style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                        weakSelf.startChatMenu = nil;
+                        
+                        // launch SMS composer
+                        MFMessageComposeViewController *messageComposer = [[MFMessageComposeViewController alloc] init];
+                        
+                        if (messageComposer)
+                        {
+                            messageComposer.messageComposeDelegate = weakSelf;
+                            messageComposer.body =kInvitationMessage;
+                            messageComposer.recipients = [NSArray arrayWithObject:phonenumber.textNumber];
+
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [weakSelf presentViewController:messageComposer animated:YES completion:nil];
+                            });
+                        }
+                    }];
+                }
+            }
+            
+            // list emails
+            for(ConsoleEmail* email in contact.emailAddresses) {
+                
+                [self.startChatMenu addActionWithTitle:email.emailAddress style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    weakSelf.startChatMenu = nil;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        NSString* subject = [ @"Matrix.org is magic" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSString* body = [kInvitationMessage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", email.emailAddress, subject, body]]];
+                    });
+                }];
+            }
+            
+            [self.startChatMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.startChatMenu = nil;
+            }];
+            
+            [self.startChatMenu showInViewController:self];
+        }
     }
 }
 
@@ -198,6 +264,12 @@
 - (void)onContactsRefresh:(NSNotification *)notif {
     sectionedContacts = nil;
     [self.tableView reloadData];
+}
+
+#pragma mark MFMessageComposeViewControllerDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

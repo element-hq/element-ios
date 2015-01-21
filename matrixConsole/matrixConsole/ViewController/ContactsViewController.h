@@ -16,9 +16,13 @@
 
 #import <UIKit/UIKit.h>
 
+// SMS
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
+
 #import "SectionedContacts.h"
 
-@interface ContactsViewController : UITableViewController <UINavigationControllerDelegate> {
+@interface ContactsViewController : UITableViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate> {
     SectionedContacts *sectionedContacts;
     
     NSArray* collationTitles;
