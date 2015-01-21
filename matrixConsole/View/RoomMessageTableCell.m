@@ -158,10 +158,14 @@
     
     MediaLoader *uploader = [MediaManager existingUploaderWithId:self.message.uploadId inFolder:self.attachmentView.mediaFolder];
     if (uploader && uploader.statisticsDict) {
-        self.activityIndicator.hidden = YES;
+        [self.activityIndicator stopAnimating];
         [self updateProgressUI:uploader.statisticsDict];
+        
+        // Check whether the upload is ended
+        if (self.progressChartView.progress == 1.0) {
+            self.progressView.hidden = YES;
+        }
     } else {
-        self.activityIndicator.hidden = NO;
         self.progressView.hidden = YES;
     }
 }
@@ -177,7 +181,7 @@
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString *uploadId = notif.object;
         if ([uploadId isEqualToString:self.message.uploadId]) {
-            self.activityIndicator.hidden = YES;
+            [self.activityIndicator stopAnimating];
             [self updateProgressUI:notif.userInfo];
             
             // the upload is ended

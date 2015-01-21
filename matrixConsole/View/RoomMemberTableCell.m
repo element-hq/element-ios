@@ -18,12 +18,26 @@
 #import "MatrixHandler.h"
 #import "MediaManager.h"
 
+@interface RoomMemberTableCell () {
+    NSString *roomMemberUserId;
+    NSRange lastSeenRange;
+    NSTimer* lastSeenTimer;
+}
+
+@end
+
 @implementation RoomMemberTableCell
+
+- (void)dealloc {
+    roomMemberUserId = nil;
+    
+    [lastSeenTimer invalidate];
+    lastSeenTimer = nil;
+}
 
 // returns the presence color
 // nil if there is no valid one
-- (UIColor*) getUserPresenceColor:(MXUser*) user
-{
+- (UIColor*)getUserPresenceColor:(MXUser*)user {
     if (user) {
         return [[MatrixHandler sharedHandler] getPresenceRingColor:user.presence];
     }
@@ -32,7 +46,6 @@
 }
 
 - (NSString*)getLastPresenceText:(MXUser*)user {
-
     NSString* presenceText = nil;
     
     // Prepare last active ago string
@@ -68,8 +81,7 @@
     return presenceText;
 }
 
-- (void) setPowerContainerValue:(CGFloat)progress
-{
+- (void)setPowerContainerValue:(CGFloat)progress {
     // no power level -> hide the pie
     if (0 == progress) {
         self.powerContainer.hidden = YES;
@@ -89,6 +101,11 @@
 }
 
 - (void)setRoomMember:(MXRoomMember *)roomMember withRoom:(MXRoom *)room {
+    if (lastSeenTimer) {
+        [lastSeenTimer invalidate];
+        lastSeenTimer = nil;
+    }
+    
     if (room && roomMember) {
         // Set the user info
         self.userLabel.text = [room.state memberName:roomMember.userId];
@@ -137,14 +154,21 @@
                 thumbnailBorderColor = [UIColor lightGrayColor];
                 presenceText = @"invited";
             } else {
+                roomMemberUserId = roomMember.userId;
+                
                 // Get the user that corresponds to this member
                 MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-                MXUser *user = [mxHandler.mxSession userWithUserId:roomMember.userId];
+                MXUser *user = [mxHandler.mxSession userWithUserId:roomMemberUserId];
                 
                 // existing user ?
                 if (user) {
                     thumbnailBorderColor = [self getUserPresenceColor:user];
                     presenceText = [self getLastPresenceText:user];
+                    if (presenceText) {
+                        // Trigger a timer to update last seen information
+                        lastSeenRange = NSMakeRange(self.userLabel.text.length + 2, presenceText.length);
+                        lastSeenTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateLastSeen:) userInfo:self repeats:NO];
+                    }
                 }
             }
         }
@@ -186,6 +210,33 @@
             // Set it in our UILabel and we are done!
             [self.userLabel setAttributedText:attributedText];
         }
+    }
+}
+
+- (void)updateLastSeen:(id)sender {
+    [lastSeenTimer invalidate];
+    lastSeenTimer = nil;
+    
+    // Get the user that corresponds to this member
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MXUser *user = [mxHandler.mxSession userWithUserId:roomMemberUserId];
+    
+    // existing user ?
+    if (user) {
+        NSString *presenceText = [self getLastPresenceText:user];
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithAttributedString:self.userLabel.attributedText];
+        if (presenceText.length) {
+            [attributedText replaceCharactersInRange:lastSeenRange withString:presenceText];
+            // Trigger a timer to update last seen information
+            lastSeenRange.length = presenceText.length;
+            lastSeenTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateLastSeen:) userInfo:self repeats:NO];
+        } else {
+            // remove presence info
+            lastSeenRange.location -= 1;
+            lastSeenRange.length += 2;
+            [attributedText deleteCharactersInRange:lastSeenRange];
+        }
+        [self.userLabel setAttributedText:attributedText];
     }
 }
 @end
