@@ -58,6 +58,10 @@
     return [[sectionedContacts.sectionedContacts objectAtIndex:section] count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
+}
+
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
     if (sectionedContacts.sectionTitles.count <= section) {
         return nil;
@@ -123,20 +127,7 @@
     }
     
     cell.contact = contact;
-    
-    // set the thumbnail
-    if (contact.thumbnail) {
-        cell.thumbnail.image = contact.thumbnail;
-    } else {
-        cell.thumbnail.image = [UIImage imageNamed:@"default-profile"];
-    }
-    
-    cell.thumbnail.layer.cornerRadius = cell.thumbnail.frame.size.width / 2;
-    cell.thumbnail.clipsToBounds = YES;
-    
-    // and the displayname
-    cell.contactDisplayName.text = contact.displayName;
-        
+                
     return cell;
 }
 

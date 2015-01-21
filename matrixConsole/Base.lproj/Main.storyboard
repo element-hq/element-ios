@@ -1360,27 +1360,27 @@
         <scene sceneID="bcI-aR-NZT">
             <objects>
                 <tableViewController id="cpU-dg-M33" userLabel="Contacts" customClass="ContactsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jgs-c1-w97">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="jgs-c1-w97">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" id="Qu4-km-MZA" customClass="ContactTableCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" rowHeight="50" id="Qu4-km-MZA" customClass="ContactTableCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qu4-km-MZA" id="uEH-gd-MNN">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B4B-GZ-atv" customClass="CustomImageView">
-                                            <rect key="frame" x="12" y="3" width="38" height="38"/>
+                                            <rect key="frame" x="12" y="5" width="40" height="40"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="38" id="F3r-c8-zTQ"/>
-                                                <constraint firstAttribute="width" constant="38" id="ewx-39-TQ9"/>
+                                                <constraint firstAttribute="height" constant="40" id="F3r-c8-zTQ"/>
+                                                <constraint firstAttribute="width" constant="40" id="ewx-39-TQ9"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzg-dr-os0">
-                                            <rect key="frame" x="62" y="8" width="510" height="30"/>
+                                            <rect key="frame" x="64" y="8" width="508" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="92u-Am-XY3"/>
                                             </constraints>
@@ -1389,7 +1389,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="matrixUser.png" translatesAutoresizingMaskIntoConstraints="NO" id="fJ6-gD-7yP">
-                                            <rect key="frame" x="576" y="14" width="16" height="16"/>
+                                            <rect key="frame" x="576" y="17" width="16" height="16"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="16" id="RkA-cA-qCQ"/>
@@ -1408,9 +1408,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="contactDisplayName" destination="nzg-dr-os0" id="2Ce-Xv-mPM"/>
+                                    <outlet property="contactDisplayNameLabel" destination="nzg-dr-os0" id="K2D-4d-5Tb"/>
                                     <outlet property="matrixUserIconView" destination="fJ6-gD-7yP" id="hBT-VO-KJD"/>
-                                    <outlet property="thumbnail" destination="B4B-GZ-atv" id="jDt-mM-3TL"/>
+                                    <outlet property="thumbnailView" destination="B4B-GZ-atv" id="jwY-xh-asO"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

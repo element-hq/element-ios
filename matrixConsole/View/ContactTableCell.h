@@ -20,8 +20,8 @@
 
 @interface ContactTableCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet CustomImageView *thumbnail;
-@property (strong, nonatomic) IBOutlet UILabel *contactDisplayName;
+@property (strong, nonatomic) IBOutlet CustomImageView *thumbnailView;
+@property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *matrixUserIconView;
 
 // reference to the linked message
