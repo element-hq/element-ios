@@ -38,7 +38,6 @@ static NSAttributedString *messageSeparator = nil;
 @end
 
 @implementation RoomMessage
-@synthesize uploadProgress;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
@@ -49,7 +48,7 @@ static NSAttributedString *messageSeparator = nil;
         _senderAvatarUrl = [mxHandler senderAvatarUrlForEvent:event withRoomState:roomState];
         _maxTextViewWidth = ROOM_MESSAGE_DEFAULT_MAX_TEXTVIEW_WIDTH;
         _contentSize = CGSizeZero;
-        self.uploadProgress = -1;
+        _uploadProgress = -1;
         currentAttributedTextMsg = nil;
         
         // Set message type (consider text by default), and check attachment if any
