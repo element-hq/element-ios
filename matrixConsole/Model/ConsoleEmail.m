@@ -26,17 +26,9 @@
     BOOL gotMatrixID;
 }
 
-@property (nonatomic, readwrite) NSString *type;
-@property (nonatomic, readwrite) NSString *emailAddress;
-@property (nonatomic, readwrite) NSString *contactID;
-@property (nonatomic, readwrite) NSString *matrixUserID;
-@property (nonatomic, readwrite) NSString *avatarURL;
-@property (nonatomic, readwrite) UIImage  *avatarImage;
-
 @end
 
 @implementation ConsoleEmail
-@synthesize type, emailAddress, contactID, matrixUserID, avatarImage, avatarURL;
 
 - (void) commonInit {
     // init statuses
@@ -44,11 +36,11 @@
     pendingMatrixIDRequest = NO;
     
     // init members
-    self.emailAddress = nil;
-    self.type = nil;
-    self.contactID = nil;
-    self.matrixUserID = nil;
-    self.avatarURL = @"";
+    _emailAddress = nil;
+    _type = nil;
+    _contactID = nil;
+    _matrixUserID = nil;
+    _avatarURL = @"";
 }
 
 - (id)init {
@@ -66,9 +58,9 @@
     
     if (self) {
         [self commonInit];
-        self.emailAddress = anEmailAddress;
-        self.type = aType;
-        self.contactID = aContactID;
+        _emailAddress = anEmailAddress;
+        _type = aType;
+        _contactID = aContactID;
     }
     
     return self;
@@ -95,7 +87,7 @@
                                       forMedium:@"email"
                                         success:^(NSString *userId) {
                                             pendingMatrixIDRequest = NO;
-                                            self.matrixUserID = userId;
+                                            _matrixUserID = userId;
                                             gotMatrixID = YES;
                                             
                                             if (self.matrixUserID) {
@@ -138,7 +130,7 @@
             MXUser* user = [mxHandler.mxSession userWithUserId:self.matrixUserID];
             
             if (user) {
-                self.avatarURL = [mxHandler thumbnailURLForContent:user.avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
+                _avatarURL = [mxHandler thumbnailURLForContent:user.avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
                 [self downloadAvatarImage];
                 
             } else {
@@ -146,7 +138,7 @@
                 if (mxHandler.mxRestClient) {
                     [mxHandler.mxRestClient avatarUrlForUser:self.matrixUserID
                                                      success:^(NSString *avatarUrl) {
-                                                         self.avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
+                                                         _avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
                                                          [self downloadAvatarImage];
                                                      }
                                                      failure:^(NSError *error) {
@@ -167,7 +159,7 @@
     
     if (self.avatarURL.length > 0) {
      
-        self.avatarImage = [MediaManager loadCachePictureForURL:self.avatarURL inFolder:kMediaManagerThumbnailFolder];
+        _avatarImage = [MediaManager loadCachePictureForURL:self.avatarURL inFolder:kMediaManagerThumbnailFolder];
         
         // the image is already in the cache
         if (self.avatarImage) {
@@ -195,7 +187,7 @@
             // update the image
             UIImage* image = [MediaManager loadCachePictureForURL:self.avatarURL inFolder:kMediaManagerThumbnailFolder];
             if (image) {
-                self.avatarImage = image;
+                _avatarImage = image;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactThumbnailUpdateNotification object:self.contactID userInfo:nil];

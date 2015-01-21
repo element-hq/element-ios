@@ -16,6 +16,9 @@
 
 #import "ConsoleContact.h"
 
+#import "ConsoleEmail.h"
+#import "ConsolePhoneNumber.h"
+
 // warn when a contact has a new matrix identifier
 // the contactID is provided in parameter
 NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleContactMatrixIdentifierUpdateNotification";
@@ -24,27 +27,28 @@ NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleCo
 // the contactID is provided in parameter
 NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactThumbnailUpdateNotification";
 
-#import "ConsoleEmail.h"
-#import "ConsolePhoneNumber.h"
+@interface ConsoleContact() {
+    UIImage* contactBookThumbnail;
+    UIImage* matrixThumbnail;
+}
+@end
 
 @implementation ConsoleContact
-@synthesize displayName, phoneNumbers, emailAddresses, contactID;
 
 - (id) initWithABRecord:(ABRecordRef)record {
     self = [super init];
     
     if (self) {
-
         // compute a contact ID
-        self.contactID = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(record)];
+        _contactID = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(record)];
 
         // use the contact book display name
-        self.displayName = (__bridge NSString*) ABRecordCopyCompositeName(record);
+        _displayName = (__bridge NSString*) ABRecordCopyCompositeName(record);
         
         // avoid nil display name
         // the display name is used to sort contacts
         if (!self.displayName) {
-            displayName = @"";
+            _displayName = @"";
         }
         
         // extract the phone numbers and their related label
@@ -93,7 +97,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
         }
         
         CFRelease(multi);
-        phoneNumbers = pns;
+        _phoneNumbers = pns;
         
         // extract the emails
         multi = ABRecordCopyValue(record, kABPersonEmailProperty);
@@ -145,7 +149,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
         
         CFRelease(multi);
 
-        emailAddresses = emails;
+        _emailAddresses = emails;
         
         // thumbnail/picture
         // check whether the contact has a picture

@@ -24,21 +24,18 @@ extern NSString *const kConsoleContactMatrixIdentifierUpdateNotification;
 // the contactID is provided in parameter
 extern NSString *const kConsoleContactThumbnailUpdateNotification;
 
-@interface ConsoleContact : NSObject {
-    UIImage* contactBookThumbnail;
-    UIImage* matrixThumbnail;
-}
+@interface ConsoleContact : NSObject
 
 // unique identifier
-@property (nonatomic, copy, readwrite) NSString * contactID;
+@property (nonatomic, readonly) NSString * contactID;
 // display name
-@property (nonatomic, copy, readwrite) NSString *displayName;
+@property (nonatomic, readonly) NSString *displayName;
 // contact thumbnail
 @property (nonatomic, copy, readonly) UIImage *thumbnail;
 // array of ConsolePhoneNumber
-@property (nonatomic, readwrite) NSArray *phoneNumbers;
+@property (nonatomic, readonly) NSArray *phoneNumbers;
 // array of ConsoleEmail
-@property (nonatomic, readwrite) NSArray *emailAddresses;
+@property (nonatomic, readonly) NSArray *emailAddresses;
 // array of matrix identifiers
 @property (nonatomic, readonly) NSArray* matrixIdentifiers;
 
