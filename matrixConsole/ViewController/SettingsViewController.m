@@ -574,9 +574,23 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (IBAction)onSliderValueChange:(id)sender {
     if (sender == maxCacheSizeCell.settingSlider) {
-        [[MatrixHandler sharedHandler] setCurrentMaxCachesSize:maxCacheSizeCell.settingSlider.value];
         
-        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Set the maximum cache size (current %@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+        MatrixHandler* mxHandler = [MatrixHandler sharedHandler];
+        UISlider* slider = maxCacheSizeCell.settingSlider;
+        
+        // check if the upper bounds have been updated
+        if (slider.maximumValue != mxHandler.maxAllowedCachesSize) {
+            slider.maximumValue = mxHandler.maxAllowedCachesSize;
+        }
+        
+        // check if the value does not exceed the bounds
+        if (slider.value < mxHandler.minCachesSize) {
+            slider.value = mxHandler.minCachesSize;
+        }
+        
+        [[MatrixHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
+        
+        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
     }
 }
 
@@ -722,7 +736,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
-            return 60;
+            return 88;
         }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
@@ -833,11 +847,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             maxCacheSizeCell = (SettingsCellWithLabelAndSlider*)cell;
             
-            maxCacheSizeCell.settingSlider.minimumValue = [MatrixHandler sharedHandler].minCachesSize;
-            maxCacheSizeCell.settingSlider.maximumValue = [MatrixHandler sharedHandler].maxAllowedCachesSize;
+            maxCacheSizeCell.settingSlider.minimumValue = 0;
             maxCacheSizeCell.settingSlider.value = [MatrixHandler sharedHandler].currentMaxCachesSize;
             
-            maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Set the maximum cache size (current %@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+            [self onSliderValueChange:maxCacheSizeCell.settingSlider];
         
         } else {
             SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
