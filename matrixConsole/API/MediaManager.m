@@ -384,6 +384,8 @@ static NSMutableDictionary* uploadTableById = nil;
     }
     
     mediaCachePath = nil;
+    // force to recompute the cache size at next cacheSize call
+    storageCacheSize = 0;
 }
 
 + (NSString*)getCachePath {
