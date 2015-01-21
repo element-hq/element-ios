@@ -1395,14 +1395,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
-    UIEdgeInsets insets = self.messagesTableView.contentInset;
-    // Handle portrait/landscape mode
-    insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
+    CGFloat keyboardHeight = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
     
     // bottom view offset
     // Don't forget the offset related to tabBar
-    CGFloat nextBottomViewContanst = insets.bottom - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
-    
+    CGFloat nextBottomViewContanst = keyboardHeight - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+
+    // the tableview bottom inset must also be updated
+    UIEdgeInsets insets = self.messagesTableView.contentInset;
+    // insets.bottom is the bottom part of the tableview content size which is not displayed
+    // The bottom margin is equal to the keyboard height + controlview part which is greather than the tableview bottom margin.
+    // The tableview bottom margin has the same value as the defauft bottom view height;
+    insets.bottom = keyboardHeight + self.controlView.frame.size.height - defaultMessagesTableViewBottomConstraint;
+
     // get the animation info
     NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
@@ -1483,7 +1488,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     UIEdgeInsets insets = self.messagesTableView.contentInset;
-    insets.bottom = self.controlView.frame.size.height;
+    // insets.bottom is the bottom part of the tableview content size which is not displayed
+    // The bottom margin is equal to the tabbar height + controlview part which is greather than the tableview bottom margin.
+    // The tableview bottom margin has the same value as the defauft bottom view height.
+    insets.bottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + (self.controlView.frame.size.height - defaultMessagesTableViewBottomConstraint);
     
     isKeyboardDisplayed = NO;
     
