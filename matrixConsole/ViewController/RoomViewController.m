@@ -340,10 +340,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.messagesTableView.hidden = NO;
     }
 
-    // manage the room membes button
-    // disable it if there is no member
-    [self updateRoomMembers];
-    members = nil;
+    [self updateUI];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -388,6 +385,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self dismissCustomImageView];
 }
 
+- (void)updateUI {
+    // Check whether a room is selected to show/hide UI items
+    if (self.mxRoom) {
+        self.controlView.hidden = NO;
+        // Check room members to enable/disable members button in nav bar
+        self.membersListButtonItem.enabled = ([self.mxRoom.state members].count != 0);
+    } else {
+        self.controlView.hidden = YES;
+        self.membersListButtonItem.enabled = NO;
+    }
+    [self.roomTitleView refreshDisplay];
+}
+
 #pragma mark - room ID
 
 - (void)setRoomId:(NSString *)roomId {
@@ -395,6 +405,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         _roomId = roomId;
         // Reload room data here
         [self configureView];
+        // Update UI
+        [self updateUI];
     }
 }
 
