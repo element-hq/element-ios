@@ -195,31 +195,18 @@
 
 #pragma mark - Internal methods
 
-// remove the focus on a deleted room
-// when the view is splitted between the recents and the selected rooms
-- (void)checkSelectedRoomExists {
-    // IOS 8 only
-    if ([self.splitViewController respondsToSelector:@selector(isCollapsed)]) {
-        // there is a split view recents / chat view
-        if (!self.splitViewController.isCollapsed && currentRoomViewController.roomId) {
-            
-            // check if the room still exists
-            BOOL exists = NO;
-            
-            for(RecentRoom* recentRoom in recents) {
-                exists |= [recentRoom.roomId isEqualToString:currentRoomViewController.roomId];        
-            }
-            
-            // if it does not exist anymore
-            if (!exists) {
-                // release the room viewController
-                currentRoomViewController.roomId = nil;
-                currentRoomViewController = nil;
-                // delete the selected row
-                [self.tableView selectRowAtIndexPath:nil animated:NO scrollPosition: UITableViewScrollPositionNone];
-            }
+- (void)refreshRecentsDisplay {
+    // Check whether the current selected room has not been left
+    if (currentRoomViewController.roomId) {
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomId];
+        if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
+            // release the room viewController
+            currentRoomViewController.roomId = nil;
+            currentRoomViewController = nil;
         }
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)configureView {
@@ -280,11 +267,28 @@
                                 if (isLeft) {
                                     // Remove left room
                                     [recents removeObjectAtIndex:index];
+                                    if (filteredRecents) {
+                                        NSUInteger filteredIndex = [filteredRecents indexOfObject:recentRoom];
+                                        if (filteredIndex != NSNotFound) {
+                                            [filteredRecents removeObjectAtIndex:filteredIndex];
+                                        }
+                                    }
                                 } else {
                                     if ([recentRoom updateWithLastEvent:event andRoomState:roomState markAsUnread:isUnread]) {
-                                        // Move this room at first position
-                                        [recents removeObjectAtIndex:index];
-                                        [recents insertObject:recentRoom atIndex:0];
+                                        if (index) {
+                                            // Move this room at first position
+                                            [recents removeObjectAtIndex:index];
+                                            [recents insertObject:recentRoom atIndex:0];
+                                        }
+                                        // Update filtered recents (if any)
+                                        if (filteredRecents) {
+                                            NSUInteger filteredIndex = [filteredRecents indexOfObject:recentRoom];
+                                            if (filteredIndex && filteredIndex != NSNotFound) {
+                                                [filteredRecents removeObjectAtIndex:filteredIndex];
+                                                [filteredRecents insertObject:recentRoom atIndex:0];
+                                            }
+                                        }
+                                        
                                         if (isUnread) {
                                             unreadCount++;
                                             [self updateTitleView];
@@ -306,10 +310,8 @@
                             }
                         }
                         
-                        [self checkSelectedRoomExists];
-                        
                         // Reload table
-                        [self.tableView reloadData];
+                        [self refreshRecentsDisplay];
                     }
                 }];
             }
@@ -542,34 +544,40 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
         // Leave the selected room
-        RecentRoom *recentRoom;
+        RecentRoom *selectedRoom;
         if (filteredRecents) {
-            recentRoom = filteredRecents[indexPath.row];
+            selectedRoom = filteredRecents[indexPath.row];
         } else {
-            recentRoom = recents[indexPath.row];
+            selectedRoom = recents[indexPath.row];
         }
         
-        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:recentRoom.roomId];
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:selectedRoom.roomId];
 
         // cancel pending uploads/downloads
         // they are useless by now
-        [MediaManager cancelDownloadsInFolder:recentRoom.roomId];
-        [MediaManager cancelUploadsInFolder:recentRoom.roomId];
+        [MediaManager cancelDownloadsInFolder:selectedRoom.roomId];
+        [MediaManager cancelUploadsInFolder:selectedRoom.roomId];
         
         [mxRoom leave:^{
-            // Refresh table display
-            if (filteredRecents) {
-                [filteredRecents removeObjectAtIndex:indexPath.row];
-            } else {
-                [recents removeObjectAtIndex:indexPath.row];
+            // Remove the selected room (if it is not already done by recents listener)
+            for (NSUInteger index = 0; index < recents.count; index++) {
+                RecentRoom *recentRoom = [recents objectAtIndex:index];
+                if ([recentRoom.roomId isEqualToString:selectedRoom.roomId]) {
+                    [recents removeObjectAtIndex:index];
+                    if (filteredRecents) {
+                        NSUInteger filteredIndex = [filteredRecents indexOfObject:selectedRoom];
+                        if (filteredIndex != NSNotFound) {
+                            [filteredRecents removeObjectAtIndex:filteredIndex];
+                        }
+                    }
+                    break;
+                }
             }
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            
-            [self checkSelectedRoomExists];
+            // Refresh table display
+            [self refreshRecentsDisplay];
         } failure:^(NSError *error) {
-            NSLog(@"Failed to leave room (%@) failed: %@", recentRoom.roomId, error);
+            NSLog(@"Failed to leave room (%@) failed: %@", selectedRoom.roomId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
