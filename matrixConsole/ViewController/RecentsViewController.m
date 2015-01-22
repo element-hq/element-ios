@@ -185,7 +185,7 @@
             [self performSegueWithIdentifier:@"showDetail" sender:recentCell];
         } else {
             NSLog(@"We are not able to open room (%@) because it does not appear in recents yet", roomId);
-            // Postpone room details display. We run activity indicator until recents are updated
+            // Postpone room details display. We run activity indicator until recents are updated (thanks to recents listener)
             _preSelectedRoomId = roomId;
             // Start activity indicator
             [self startActivityIndicator];
@@ -306,6 +306,14 @@
                                 if (isUnread) {
                                     unreadCount++;
                                     [self updateTitleView];
+                                }
+                                
+                                // Check whether we were waiting for this room
+                                if (_preSelectedRoomId) {
+                                    if ([recentRoom.roomId isEqualToString:_preSelectedRoomId]) {
+                                        [self stopActivityIndicator];
+                                        self.preSelectedRoomId = _preSelectedRoomId;
+                                    }
                                 }
                             }
                         }
