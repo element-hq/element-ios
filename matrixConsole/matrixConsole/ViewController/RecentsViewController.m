@@ -190,6 +190,10 @@
             // Start activity indicator
             [self startActivityIndicator];
         }
+    } else if (currentRoomViewController) {
+        // Release the current selected room
+        currentRoomViewController.roomId = nil;
+        currentRoomViewController = nil;
     }
 }
 
@@ -339,6 +343,13 @@
             self.preSelectedRoomId = _preSelectedRoomId;
         }
     } else {
+        if (mxHandler.status == MatrixHandlerStatusLoggedOut) {
+            [self stopActivityIndicator];
+            // Update title
+            unreadCount = 0;
+            [self updateTitleView];
+        }
+        
         recents = nil;
         [self.tableView reloadData];
     }

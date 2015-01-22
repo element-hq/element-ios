@@ -394,6 +394,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     } else {
         self.controlView.hidden = YES;
         self.membersListButtonItem.enabled = NO;
+        _activityIndicator.hidden = YES;
     }
     [self.roomTitleView refreshDisplay];
 }
