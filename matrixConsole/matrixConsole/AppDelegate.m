@@ -82,9 +82,6 @@
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         }
-        
-        // refresh the contacts list
-        [[ContactManager sharedManager] refresh];
     }
     return YES;
 }

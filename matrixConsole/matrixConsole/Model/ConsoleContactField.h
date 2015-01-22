@@ -14,25 +14,18 @@
  limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "SectionedContacts.h"
+#import <UIKit/UIKit.h>
 
-// warn when there is a contacts list refresh
-extern NSString *const kContactManagerRefreshNotification;
+@interface ConsoleContactField : NSObject
 
-@interface ContactManager : NSObject {
-    dispatch_queue_t processingQueue;
-    NSMutableDictionary* matrixIDBy3PID;
-}
+// contact ID where the email has been found
+@property (nonatomic, readonly) NSString *contactID;
+// linked matrix account
+@property (nonatomic, readwrite) NSString *matrixID;
+@property (nonatomic, readonly) UIImage  *avatarImage;
 
-+ (id)sharedManager;
+- (id)initWithContactID:(NSString*)contactID matrixID:(NSString*)matrixID;
 
-@property (nonatomic, readonly) NSMutableArray *contacts;
-
-// refresh self.contacts
-- (void)refresh;
-
-// sort the contacts in sectioned arrays to be displayable in a UITableview
-- (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList;
+- (void)loadAvatarWithSize:(CGSize)avatarSize;
 
 @end

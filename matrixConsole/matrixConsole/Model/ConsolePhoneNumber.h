@@ -15,14 +15,14 @@
  */
 #import <Foundation/Foundation.h>
 
-@interface ConsolePhoneNumber : NSObject
+#import "ConsoleContactField.h"
+
+@interface ConsolePhoneNumber : ConsoleContactField
 
 // phonenumber info
 @property (nonatomic, readonly) NSString *type;
 @property (nonatomic, readonly) NSString *textNumber;
-// contact ID where the phonenumber has been found
-@property (nonatomic, readonly) NSString *contactID;
 
-- (id)initWithTextNumber:(NSString*)textNumber andType:(NSString*)aType within:(NSString*)aContactID;
+- (id)initWithTextNumber:(NSString*)textNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
 
 @end

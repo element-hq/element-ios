@@ -18,13 +18,12 @@
 
 @implementation ConsolePhoneNumber
 
-- (id)initWithTextNumber:(NSString*)aTextNumber andType:(NSString*)aType within:(NSString*)aContactID {
-    self = [super init];
+- (id)initWithTextNumber:(NSString*)aTextNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID {
+    self = [super initWithContactID:aContactID matrixID:matrixID];
     
     if (self) {
         _type = aType;
         _textNumber = aTextNumber;
-        _contactID = aContactID;
     }
     
     return self;

@@ -15,21 +15,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "ConsoleContactField.h"
 
-@interface ConsoleEmail : NSObject
+@interface ConsoleEmail : ConsoleContactField
 
 // email info
 @property (nonatomic, readonly) NSString *type;
 @property (nonatomic, readonly) NSString *emailAddress;
-// contact ID where the email has been found
-@property (nonatomic, readonly) NSString *contactID;
-// linked matrix account
-@property (nonatomic, readonly) NSString *matrixUserID;
-@property (nonatomic, readonly) NSString *avatarURL;
-@property (nonatomic, readonly) UIImage  *avatarImage;
 
-- (id)initWithEmailAddress:(NSString*)anEmailAddress andType:(NSString*)aType within:(NSString*)aContactID;
 
-- (void)getMatrixID;
-- (void)loadAvatarWithSize:(CGSize)avatarSize;
+- (id)initWithEmailAddress:(NSString*)anEmailAddress type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
+
 @end
