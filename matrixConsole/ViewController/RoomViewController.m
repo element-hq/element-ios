@@ -2003,6 +2003,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // to have a valid sscroll to bottom
             [self scrollToBottomAnimated:NO];
         }
+    } else {
+        // force to render the view
+        [self.view layoutIfNeeded];
     }
 }
 
