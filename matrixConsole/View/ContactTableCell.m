@@ -40,9 +40,6 @@
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     _contact = aContact;
-
-    [_contact checkMatrixIdentifiers];
-    self.matrixUserIconView.hidden = (0 == aContact.matrixIdentifiers.count);
     
     // remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -170,6 +167,8 @@
         if ([matrixID isEqualToString:self.contact.contactID]) {
             [self refreshContactThumbnail];
             self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
+            
+            [self refreshUserPresence];
         }
     }
 }

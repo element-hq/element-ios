@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */; };
 		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
+		710CC3C21A70F28F006EE973 /* ConsoleContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* ConsoleContactField.m */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
 		71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D281A6E3DC000E59A9E /* ContactsViewController.m */; };
 		71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D2B1A6E433900E59A9E /* ContactTableCell.m */; };
@@ -82,6 +83,8 @@
 		710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleGrowingTextView.h; sourceTree = "<group>"; };
 		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
+		710CC3C01A70F28F006EE973 /* ConsoleContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleContactField.h; sourceTree = "<group>"; };
+		710CC3C11A70F28F006EE973 /* ConsoleContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleContactField.m; sourceTree = "<group>"; };
 		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		71193D281A6E3DC000E59A9E /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
@@ -308,6 +311,8 @@
 			children = (
 				71193D301A6E49F000E59A9E /* ConsoleContact.h */,
 				71193D311A6E49F000E59A9E /* ConsoleContact.m */,
+				710CC3C01A70F28F006EE973 /* ConsoleContactField.h */,
+				710CC3C11A70F28F006EE973 /* ConsoleContactField.m */,
 				71193D321A6E49F000E59A9E /* ConsoleEmail.h */,
 				71193D331A6E49F000E59A9E /* ConsoleEmail.m */,
 				710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */,
@@ -561,6 +566,7 @@
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
 				F02900BB1A63C71E00356F7D /* ConsoleTools.m in Sources */,
 				71193D361A6E49F000E59A9E /* ConsoleContact.m in Sources */,
+				710CC3C21A70F28F006EE973 /* ConsoleContactField.m in Sources */,
 				F01A0FF31A27314B009FAE2F /* RoomMessageComponent.m in Sources */,
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,

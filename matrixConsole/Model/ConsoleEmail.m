@@ -21,26 +21,15 @@
 
 #import "MediaManager.h"
 
-@interface ConsoleEmail() {
-    BOOL pendingMatrixIDRequest;
-    BOOL gotMatrixID;
-}
-
+@interface ConsoleEmail()
 @end
 
 @implementation ConsoleEmail
 
 - (void) commonInit {
-    // init statuses
-    gotMatrixID = NO;
-    pendingMatrixIDRequest = NO;
-    
     // init members
     _emailAddress = nil;
     _type = nil;
-    _contactID = nil;
-    _matrixUserID = nil;
-    _avatarURL = @"";
 }
 
 - (id)init {
@@ -53,149 +42,16 @@
     return self;
 }
 
-- (id)initWithEmailAddress:(NSString*)anEmailAddress andType:(NSString*)aType within:(NSString*)aContactID {
-    self = [super init];
+- (id)initWithEmailAddress:(NSString*)anEmailAddress type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID {
+    self = [super initWithContactID:aContactID matrixID:matrixID];
     
     if (self) {
         [self commonInit];
         _emailAddress = anEmailAddress;
         _type = aType;
-        _contactID = aContactID;
     }
     
     return self;
 }
-
-- (void)dealloc {
-    // remove the observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)getMatrixID {
-    
-    // sanity check
-    if ((self.emailAddress.length > 0) && (self.contactID.length > 0)) {
-        
-        // check if the matrix id was not requested
-        if (!gotMatrixID && !pendingMatrixIDRequest) {
-            MatrixHandler *matrix = [MatrixHandler sharedHandler];
-        
-            if (matrix.mxRestClient) {
-                pendingMatrixIDRequest = YES;
-                
-                [matrix.mxRestClient lookup3pid:self.emailAddress
-                                      forMedium:@"email"
-                                        success:^(NSString *userId) {
-                                            pendingMatrixIDRequest = NO;
-                                            _matrixUserID = userId;
-                                            gotMatrixID = YES;
-                                            
-                                            if (self.matrixUserID) {
-                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactMatrixIdentifierUpdateNotification object:self.contactID userInfo:nil];
-                                                });
-                                            }
-                                        }
-                                        failure:^(NSError *error) {
-                                            pendingMatrixIDRequest = NO;
-                                        }
-                 ];
-            }
-        }
-    }
-}
-
-- (void)loadAvatarWithSize:(CGSize)avatarSize {
-    
-    // the avatar image is already done
-    if (self.avatarImage) {
-        return;
-    }
-    
-    // sanity check
-    if (self.matrixUserID) {
-        
-        // nil -> there is no avatar
-        if (!self.avatarURL) {
-            return;
-        }
-        
-        // empty string means not yet initialized
-        if (self.avatarURL.length > 0) {
-            [self downloadAvatarImage];
-        } else {
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-            
-            // check if the user is already known
-            MXUser* user = [mxHandler.mxSession userWithUserId:self.matrixUserID];
-            
-            if (user) {
-                _avatarURL = [mxHandler thumbnailURLForContent:user.avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
-                [self downloadAvatarImage];
-                
-            } else {
-                
-                if (mxHandler.mxRestClient) {
-                    [mxHandler.mxRestClient avatarUrlForUser:self.matrixUserID
-                                                     success:^(NSString *avatarUrl) {
-                                                         _avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
-                                                         [self downloadAvatarImage];
-                                                     }
-                                                     failure:^(NSError *error) {
-                                                         //
-                                                     }];
-                }
-            }
-        }
-    }
-}
-
-- (void)downloadAvatarImage {
-    
-    // the avatar image is already done
-    if (self.avatarImage) {
-        return;
-    }
-    
-    if (self.avatarURL.length > 0) {
-     
-        _avatarImage = [MediaManager loadCachePictureForURL:self.avatarURL inFolder:kMediaManagerThumbnailFolder];
-        
-        // the image is already in the cache
-        if (self.avatarImage) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactThumbnailUpdateNotification object:self.contactID userInfo:nil];
-            });
-        } else  {
-            MediaLoader* loader = [MediaManager existingDownloaderForURL:self.avatarURL inFolder:kMediaManagerThumbnailFolder];
-            
-            if (!loader) {
-                loader = [MediaManager downloadMediaFromURL:self.avatarURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
-            }
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
-        }
-    }
-}
-
-- (void)onMediaDownloadEnd:(NSNotification *)notif {
-    // sanity check
-    if ([notif.object isKindOfClass:[NSString class]]) {
-        NSString* url = notif.object;
-        
-        if ([url isEqualToString:self.avatarURL]) {
-            // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:self.avatarURL inFolder:kMediaManagerThumbnailFolder];
-            if (image) {
-                _avatarImage = image;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactThumbnailUpdateNotification object:self.contactID userInfo:nil];
-                });
-            }
-        }
-    }
-}
-
 
 @end

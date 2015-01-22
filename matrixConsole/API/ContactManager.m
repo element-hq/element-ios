@@ -17,6 +17,10 @@
 #import "ContactManager.h"
 
 #import "ConsoleContact.h"
+#import "ConsolePhoneNumber.h"
+#import "ConsoleEmail.h"
+
+#import "MatrixHandler.h"
 
 // warn when there is a contacts list refresh
 NSString *const kContactManagerRefreshNotification = @"kContactManagerRefreshNotification";
@@ -64,10 +68,6 @@ static ContactManager* sharedContactManager = nil;
                 
                 CFRelease(ab);
             }
-        } else if (cbStatus == kABAuthorizationStatusAuthorized) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self refresh];
-            });
         }
     }
     
@@ -84,6 +84,9 @@ static ContactManager* sharedContactManager = nil;
         // wait that the user gives the Authorization
         return;
     }
+    
+    //
+    matrixIDBy3PID = [[NSMutableDictionary alloc] init];
     
     dispatch_async(processingQueue, ^{
         ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
@@ -113,9 +116,122 @@ static ContactManager* sharedContactManager = nil;
         contacts = contactsList;
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self refreshMatrixIDs];
             [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerRefreshNotification object:nil userInfo:nil];
         });
     });
+}
+
+- (void)refreshMatrixIDs {
+    
+    // build the request parameters
+    NSMutableArray* pids = [[NSMutableArray alloc] init];
+    NSMutableArray* medias = [[NSMutableArray alloc] init];
+    
+    for(ConsoleContact* contact in contacts) {
+        // the phonenumbers are not managed
+        /*for(ConsolePhoneNumber* pn in contact.phoneNumbers) {
+            if (pn.textNumber.length > 0) {
+                
+                // not yet added
+                if ([pids indexOfObject:pn.textNumber] == NSNotFound) {
+                    [pids addObject:pn.textNumber];
+                    [medias addObject:@"msisdn"];
+                }
+            }
+        }*/
+        
+        for(ConsoleEmail* email in contact.emailAddresses) {
+            if (email.emailAddress.length > 0) {
+                
+                // not yet added
+                if ([pids indexOfObject:email.emailAddress] == NSNotFound) {
+                    [pids addObject:email.emailAddress];
+                    [medias addObject:@"email"];
+                }
+            }
+        }
+    }
+    
+    // get some pids
+    if (pids.count > 0) {
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    
+        if (mxHandler.mxRestClient) {
+            [mxHandler.mxRestClient lookup3pids:pids
+                                       forMedia:medias
+                                        success:^(NSArray *userIds) {
+                                            // sanity check
+                                            if (userIds.count == pids.count) {
+                                                
+                                                matrixIDBy3PID = [[NSMutableDictionary alloc] initWithObjects:userIds forKeys:pids];
+                                                
+                                                for(ConsoleContact* contact in contacts) {
+                                                    // the phonenumbers wil be managed later
+                                                    /*for(ConsolePhoneNumber* pn in contact.phoneNumbers) {
+                                                        if (pn.textNumber.length > 0) {
+                                                            
+                                                            // not yet added
+                                                            if ([pids indexOfObject:pn.textNumber] == NSNotFound) {
+                                                                [pids addObject:pn.textNumber];
+                                                                [medias addObject:@"msisdn"];
+                                                            }
+                                                        }
+                                                    }*/
+                                                    
+                                                    for(ConsoleEmail* email in contact.emailAddresses) {
+                                                        if (email.emailAddress.length > 0) {
+                                                            id matrixID = [matrixIDBy3PID valueForKey:email.emailAddress];
+                                                            
+                                                            if ([matrixID isKindOfClass:[NSString class]]) {
+                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                    [email setMatrixID:matrixID];
+                                                                });
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                // check if the some room users are not defined in the local contacts book
+                                                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                                                
+                                                // check if the user is already known
+                                                NSArray* users = [mxHandler.mxSession users];
+                                                
+                                                NSMutableArray* unknownRoomContacts = [[NSMutableArray alloc] init];
+                                                
+                                                for(MXUser* user in users) {
+                                                    
+                                                    if ([userIds indexOfObject:user.userId] == NSNotFound) {
+                                                        NSString* dummyContactID = [NSString stringWithFormat:@"%lu", (unsigned long)user.userId.hash];
+                                                        
+                                                        // with the current API, there is no way to get the email from the matrxID
+                                                        ConsoleEmail* email = [[ConsoleEmail alloc] initWithEmailAddress:user.userId type:@"" contactID:dummyContactID matrixID:user.userId];
+                                                        ConsoleContact* contact = [[ConsoleContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) contactID:dummyContactID emails:@[email] phonenumbers:nil];
+                                                        
+                                                        [unknownRoomContacts addObject:contact];
+                                                    }
+                                                }
+                                                
+                                                // some members are not listed in the contacts
+                                                if (unknownRoomContacts.count > 0) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        [self.contacts addObjectsFromArray:unknownRoomContacts];
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerRefreshNotification object:nil userInfo:nil];
+                                                    });
+                                                    
+                                                }
+                                            }
+                                        }
+                                        failure:^(NSError *error) {
+                                            // try later
+                                            dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                [self refreshMatrixIDs];
+                                            });
+                                        }
+             ];
+        }
+    }
 }
 
 - (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList {

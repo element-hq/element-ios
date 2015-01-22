@@ -47,7 +47,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
         
         // avoid nil display name
         // the display name is used to sort contacts
-        if (!self.displayName) {
+        if (!_displayName) {
             _displayName = @"";
         }
         
@@ -80,7 +80,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                     }
                 }
         
-                [pns addObject:[[ConsolePhoneNumber alloc] initWithTextNumber:phoneVal andType:lbl within:self.contactID]];
+                [pns addObject:[[ConsolePhoneNumber alloc] initWithTextNumber:phoneVal type:lbl contactID:_contactID matrixID:nil]];
                 
                 if (lblRef)  {
                     CFRelease(lblRef);
@@ -131,7 +131,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                     }
                 }
                 
-                [emails addObject: [[ConsoleEmail alloc] initWithEmailAddress:emailVal andType:lbl within:self.contactID]];
+                [emails addObject: [[ConsoleEmail alloc] initWithEmailAddress:emailVal type:lbl contactID:_contactID matrixID:nil]];
                 
                 if (lblRef) {
                     CFRelease(lblRef);
@@ -164,20 +164,45 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                 CFRelease(dataRef);
             }
         }
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
-            [self checkMatrixIdentifiers];
-        });
     }
+    return self;
+}
+
+// create a contact with the dedicated info
+- (id)initWithDisplayName:(NSString*)aDisplayName contactID:(NSString*)aContactID emails:(NSArray*)emails phonenumbers:(NSArray*)phonenumbers
+{
+    self = [super init];
+    
+    if (self) {
+        _contactID = aContactID;
+        
+        // _displayName must not be nil
+        // it is used to sort the contacts
+        if (aDisplayName) {
+            _displayName = aDisplayName;
+        } else {
+            _displayName = @"";
+        }
+        
+        _phoneNumbers = phonenumbers;
+        _emailAddresses = emails;        
+    }
+    
     return self;
 }
 
 - (NSArray*) matrixIdentifiers {
     NSMutableArray* identifiers = [[NSMutableArray alloc] init];
     
-    for(ConsoleEmail* email in self.emailAddresses) {
-        if (email.matrixUserID && ([identifiers indexOfObject:email.matrixUserID] == NSNotFound)) {
-            [identifiers addObject:email.matrixUserID];
+    for(ConsoleEmail* email in _emailAddresses) {
+        if (email.matrixID && ([identifiers indexOfObject:email.matrixID] == NSNotFound)) {
+            [identifiers addObject:email.matrixID];
+        }
+    }
+    
+    for(ConsolePhoneNumber* pn in _phoneNumbers) {
+        if (pn.matrixID && ([identifiers indexOfObject:pn.matrixID] == NSNotFound)) {
+            [identifiers addObject:pn.matrixID];
         }
     }
 
@@ -195,13 +220,13 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
     } else {
         
         // try to replace the thumbnail by the matrix one
-        if (self.emailAddresses.count > 0) {
+        if (_emailAddresses.count > 0) {
             //
             ConsoleEmail* firstEmail = nil;
             
             // list the linked email
             // search if one email field has a dedicated thumbnail
-            for(ConsoleEmail* email in self.emailAddresses) {
+            for(ConsoleEmail* email in _emailAddresses) {
                 if (email.avatarImage) {
                     matrixThumbnail = email.avatarImage;
                     return matrixThumbnail;
@@ -224,12 +249,6 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
 
 - (UIImage*)thumbnail {
     return [self thumbnailWithPreferedSize:CGSizeMake(256, 256)];
-}
-
-- (void)checkMatrixIdentifiers {
-    for(ConsoleEmail* email in self.emailAddresses) {
-        [email getMatrixID];
-    }
 }
 
 @end
