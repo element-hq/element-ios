@@ -178,6 +178,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     self.messageTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.messageTextView.clipsToBounds = YES;
     self.messageTextView.backgroundColor = [UIColor whiteColor];
+    // on IOS 8, the growing textview animation could trigger weird UI animations
+    // indeed, the messages tableView can be refreshed while its height is updated (e.g. when setting a message)
+    self.messageTextView.animateHeightChange = NO;
     lastEditedText = self.messageTextView.text;
 }
 
