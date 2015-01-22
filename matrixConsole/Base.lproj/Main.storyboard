@@ -1151,33 +1151,34 @@
                                     <outlet property="settingTextField" destination="am8-vZ-baW" id="Wnw-CQ-Pe5"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCellWithLabelAndSilder" rowHeight="66" id="QHY-hk-WMS" customClass="SettingsCellWithLabelAndSlider">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCellWithLabelAndSilder" rowHeight="88" id="QHY-hk-WMS" customClass="SettingsCellWithLabelAndSlider">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QHY-hk-WMS" id="AJT-tP-w9Q">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="584" translatesAutoresizingMaskIntoConstraints="NO" id="cpJ-Gb-hqD">
-                                            <rect key="frame" x="8" y="0.0" width="584" height="21"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <rect key="frame" x="8" y="8" width="584" height="34"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="34" id="IuS-DP-f6G"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pc0-6Y-bpz">
-                                            <rect key="frame" x="6" y="31" width="588" height="31"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <rect key="frame" x="6" y="49" width="588" height="31"/>
                                             <color key="minimumTrackTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <color key="maximumTrackTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
                                                 <action selector="onSliderValueChange:" destination="1TJ-Md-cjN" eventType="valueChanged" id="3CN-Yi-B4y"/>
                                             </connections>
                                         </slider>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="cpJ-Gb-hqD" firstAttribute="top" secondItem="AJT-tP-w9Q" secondAttribute="topMargin" constant="-8" id="0M8-6y-nCA"/>
+                                        <constraint firstItem="cpJ-Gb-hqD" firstAttribute="top" secondItem="AJT-tP-w9Q" secondAttribute="topMargin" id="0M8-6y-nCA"/>
                                         <constraint firstItem="cpJ-Gb-hqD" firstAttribute="leading" secondItem="AJT-tP-w9Q" secondAttribute="leadingMargin" id="78n-1f-l1M"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="pc0-6Y-bpz" secondAttribute="bottom" constant="-4" id="SFS-Sa-IVI"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="pc0-6Y-bpz" secondAttribute="bottom" id="SFS-Sa-IVI"/>
                                         <constraint firstItem="pc0-6Y-bpz" firstAttribute="leading" secondItem="AJT-tP-w9Q" secondAttribute="leadingMargin" id="SL5-aC-2l1"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="pc0-6Y-bpz" secondAttribute="trailing" id="W7H-4p-ebK"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="cpJ-Gb-hqD" secondAttribute="trailing" id="Xxa-YE-kZ3"/>
