@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		710210A41A67A4B600364868 /* MXCGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* MXCGrowingTextView.m */; };
 		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
 		710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* MXCContactField.m */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
@@ -35,7 +34,6 @@
 		F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */; };
 		F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974A1A6580D70090BC00 /* icon_keyboard.png */; };
 		F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */; };
-		F03C47111A02952800E445AB /* MXCAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C47101A02952800E445AB /* MXCAlert.m */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */; };
 		F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */; };
@@ -45,8 +43,10 @@
 		F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */; };
 		F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0465AF91A251F85003639F9 /* RoomMessage.m */; };
 		F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */; };
-		F04EE51F1A3A01D500C64930 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F04EE51E1A3A01D500C64930 /* APNSHandler.m */; };
-		F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05B955E19DEED8A008761B0 /* MatrixHandler.m */; };
+		F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237791A7289F00079F3E0 /* APNSHandler.m */; };
+		F052377D1A7289F00079F3E0 /* MatrixHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F052377B1A7289F00079F3E0 /* MatrixHandler.m */; };
+		F05237801A728A010079F3E0 /* MXCAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F052377F1A728A010079F3E0 /* MXCAlert.m */; };
+		F05237831A728A0A0079F3E0 /* MXCGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */; };
 		F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3C1A3F3D7F002B698E /* icon_users.png */; };
 		F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
@@ -80,8 +80,6 @@
 
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
-		710210A21A67A4B600364868 /* MXCGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCGrowingTextView.h; sourceTree = "<group>"; };
-		710210A31A67A4B600364868 /* MXCGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCGrowingTextView.m; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
 		710CC3C01A70F28F006EE973 /* MXCContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContactField.h; sourceTree = "<group>"; };
 		710CC3C11A70F28F006EE973 /* MXCContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContactField.m; sourceTree = "<group>"; };
@@ -127,8 +125,6 @@
 		F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTableCell.m; sourceTree = "<group>"; };
 		F030974A1A6580D70090BC00 /* icon_keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_keyboard.png; sourceTree = "<group>"; };
 		F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_keyboard@2x.png"; sourceTree = "<group>"; };
-		F03C470F1A02952800E445AB /* MXCAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCAlert.h; sourceTree = "<group>"; };
-		F03C47101A02952800E445AB /* MXCAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCAlert.m; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F03EF5EC19F171EB00A0EE52 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -147,10 +143,14 @@
 		F0465AF91A251F85003639F9 /* RoomMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessage.m; sourceTree = "<group>"; };
 		F04A8AD61A3B3DF4008AC915 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTitleView.h; sourceTree = "<group>"; };
 		F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTitleView.m; sourceTree = "<group>"; };
-		F04EE51D1A3A01D500C64930 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
-		F04EE51E1A3A01D500C64930 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
-		F05B955D19DEED8A008761B0 /* MatrixHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixHandler.h; sourceTree = "<group>"; };
-		F05B955E19DEED8A008761B0 /* MatrixHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixHandler.m; sourceTree = "<group>"; };
+		F05237781A7289F00079F3E0 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
+		F05237791A7289F00079F3E0 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
+		F052377A1A7289F00079F3E0 /* MatrixHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixHandler.h; sourceTree = "<group>"; };
+		F052377B1A7289F00079F3E0 /* MatrixHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixHandler.m; sourceTree = "<group>"; };
+		F052377E1A728A010079F3E0 /* MXCAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCAlert.h; sourceTree = "<group>"; };
+		F052377F1A728A010079F3E0 /* MXCAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCAlert.m; sourceTree = "<group>"; };
+		F05237811A728A0A0079F3E0 /* MXCGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCGrowingTextView.h; sourceTree = "<group>"; };
+		F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCGrowingTextView.m; sourceTree = "<group>"; };
 		F05C3A3C1A3F3D7F002B698E /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_users@2x.png"; sourceTree = "<group>"; };
 		F07A80D219DD9DE700B621A1 /* matrixConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matrixConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,8 +246,12 @@
 		F021FBEC1A5EF57300EA3AE6 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				F05237781A7289F00079F3E0 /* APNSHandler.h */,
+				F05237791A7289F00079F3E0 /* APNSHandler.m */,
 				71193D391A6E50EC00E59A9E /* ContactManager.h */,
 				71193D3A1A6E50EC00E59A9E /* ContactManager.m */,
+				F052377A1A7289F00079F3E0 /* MatrixHandler.h */,
+				F052377B1A7289F00079F3E0 /* MatrixHandler.m */,
 				F021FBED1A5EF57300EA3AE6 /* MediaLoader.h */,
 				F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */,
 				F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */,
@@ -286,6 +290,8 @@
 			children = (
 				71193D2A1A6E433900E59A9E /* ContactTableCell.h */,
 				71193D2B1A6E433900E59A9E /* ContactTableCell.m */,
+				F05237811A728A0A0079F3E0 /* MXCGrowingTextView.h */,
+				F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */,
 				F00B5DB71A1B9BCE00EA1C8D /* MXCImageView.h */,
 				F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */,
 				71E94A751A5C4020009F52E5 /* PieChartView.h */,
@@ -309,14 +315,14 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F052377E1A728A010079F3E0 /* MXCAlert.h */,
+				F052377F1A728A010079F3E0 /* MXCAlert.m */,
 				71193D301A6E49F000E59A9E /* MXCContact.h */,
 				71193D311A6E49F000E59A9E /* MXCContact.m */,
 				710CC3C01A70F28F006EE973 /* MXCContactField.h */,
 				710CC3C11A70F28F006EE973 /* MXCContactField.m */,
 				71193D321A6E49F000E59A9E /* MXCEmail.h */,
 				71193D331A6E49F000E59A9E /* MXCEmail.m */,
-				710210A21A67A4B600364868 /* MXCGrowingTextView.h */,
-				710210A31A67A4B600364868 /* MXCGrowingTextView.m */,
 				71193D341A6E49F000E59A9E /* MXCPhoneNumber.h */,
 				71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */,
 				F0D942F41A31F3A300826CC1 /* RecentRoom.h */,
@@ -358,16 +364,10 @@
 				F0465AF71A251F85003639F9 /* Model */,
 				F03EF5FC19F1762000A0EE52 /* View */,
 				F03EF5E919F171EB00A0EE52 /* ViewController */,
-				F04EE51D1A3A01D500C64930 /* APNSHandler.h */,
-				F04EE51E1A3A01D500C64930 /* APNSHandler.m */,
 				F07A80D919DD9DE700B621A1 /* AppDelegate.h */,
 				F07A80DA19DD9DE700B621A1 /* AppDelegate.m */,
 				F0D3C30A1A011EF10000D49E /* AppSettings.h */,
 				F0D3C30B1A011EF10000D49E /* AppSettings.m */,
-				F03C470F1A02952800E445AB /* MXCAlert.h */,
-				F03C47101A02952800E445AB /* MXCAlert.m */,
-				F05B955D19DEED8A008761B0 /* MatrixHandler.h */,
-				F05B955E19DEED8A008761B0 /* MatrixHandler.m */,
 				F07A80E219DD9DE700B621A1 /* Main.storyboard */,
 				F07A80E519DD9DE700B621A1 /* Images.xcassets */,
 				F07A80E719DD9DE700B621A1 /* LaunchScreen.xib */,
@@ -557,10 +557,11 @@
 			files = (
 				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
+				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
 				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
+				F052377D1A7289F00079F3E0 /* MatrixHandler.m in Sources */,
 				71193D371A6E49F000E59A9E /* MXCEmail.m in Sources */,
-				F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */,
 				71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */,
 				F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
@@ -574,20 +575,19 @@
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
 				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
-				710210A41A67A4B600364868 /* MXCGrowingTextView.m in Sources */,
 				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
 				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
-				F04EE51F1A3A01D500C64930 /* APNSHandler.m in Sources */,
 				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
-				F03C47111A02952800E445AB /* MXCAlert.m in Sources */,
 				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
 				71193D381A6E49F000E59A9E /* MXCPhoneNumber.m in Sources */,
 				71193D3B1A6E50EC00E59A9E /* ContactManager.m in Sources */,
 				71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
+				F05237801A728A010079F3E0 /* MXCAlert.m in Sources */,
 				F00B5DB91A1B9BCE00EA1C8D /* MXCImageView.m in Sources */,
 				F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */,
+				F05237831A728A0A0079F3E0 /* MXCGrowingTextView.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */,
 				F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */,
 				71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */,
