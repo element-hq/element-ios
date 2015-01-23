@@ -187,7 +187,7 @@
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (CustomAlert*)showErrorAsAlert:(NSError*)error {
+- (MXCAlert*)showErrorAsAlert:(NSError*)error {
     if (self.errorNotification) {
         [self.errorNotification dismiss:NO];
     }
@@ -199,8 +199,8 @@
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    self.errorNotification = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+    self.errorNotification = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         [AppDelegate theDelegate].errorNotification = nil;
     }];
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];

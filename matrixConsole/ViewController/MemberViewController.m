@@ -17,7 +17,7 @@
 #import "MemberViewController.h"
 
 #import "AppDelegate.h"
-#import "MemberActionsCell.h"
+#import "RoomMemberActionsCell.h"
 #import "MediaManager.h"
 
 @interface MemberViewController () {
@@ -37,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *memberThumbnailButton;
 @property (weak, nonatomic) IBOutlet UITextView *roomMemberMID;
 
-@property (strong, nonatomic) CustomAlert *actionMenu;
+@property (strong, nonatomic) MXCAlert *actionMenu;
 
 - (IBAction)onButtonToggle:(id)sender;
 
@@ -314,7 +314,7 @@
     
     if (self.tableView == aTableView) {
         NSInteger row = indexPath.row;
-        MemberActionsCell* memberActionsCell = (MemberActionsCell*)[aTableView dequeueReusableCellWithIdentifier:@"MemberActionsCell" forIndexPath:indexPath];
+        RoomMemberActionsCell* memberActionsCell = (RoomMemberActionsCell*)[aTableView dequeueReusableCellWithIdentifier:@"MemberActionsCell" forIndexPath:indexPath];
         
         NSString* leftTitle = nil;
         NSString* rightTitle = nil;
@@ -393,10 +393,10 @@
     __weak typeof(self) weakSelf = self;
     
     // Ask for userId to invite
-    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];
+    self.actionMenu = [[MXCAlert alloc] initWithTitle:@"Power Level"  message:nil style:MXCAlertStyleAlert];
     
     if (![mxHandler.userId isEqualToString:roomMember.userId]) {
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.actionMenu = nil;
             
             [weakSelf setUserPowerLevel:roomMember to:0];
@@ -408,7 +408,7 @@
         textField.placeholder = nil;
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
-    [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+    [self.actionMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         UITextField *textField = [alert textFieldAtIndex:0];
         weakSelf.actionMenu = nil;
         

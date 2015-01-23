@@ -14,12 +14,12 @@
  limitations under the License.
  */
 
-#import "CustomImageView.h"
+#import "MXCImageView.h"
 #import "MediaManager.h"
 #import "AppDelegate.h"
 #import "PieChartView.h"
 
-@interface CustomImageView () {
+@interface MXCImageView () {
     NSString *imageURL;
     UIImage  *currentImage;
     
@@ -37,8 +37,8 @@
     NSString *leftButtonTitle;
     NSString *rightButtonTitle;
     
-    blockCustomImageView_onClick leftHandler;
-    blockCustomImageView_onClick rightHandler;
+    blockMXCImageView_onClick leftHandler;
+    blockMXCImageView_onClick rightHandler;
     
     UIView* bottomBarView;
 
@@ -50,7 +50,7 @@
 }
 @end
 
-@implementation CustomImageView
+@implementation MXCImageView
 @synthesize stretchable, mediaFolder;
 
 #define CUSTOM_IMAGE_VIEW_BUTTON_WIDTH 100
@@ -533,12 +533,12 @@
 
 #pragma mark - buttons management
 
-- (void)setLeftButtonTitle: aLeftButtonTitle handler:(blockCustomImageView_onClick)handler {
+- (void)setLeftButtonTitle: aLeftButtonTitle handler:(blockMXCImageView_onClick)handler {
     leftButtonTitle = aLeftButtonTitle;
     leftHandler = handler;
 }
 
-- (void)setRightButtonTitle:aRightButtonTitle handler:(blockCustomImageView_onClick)handler {
+- (void)setRightButtonTitle:aRightButtonTitle handler:(blockMXCImageView_onClick)handler {
     rightButtonTitle = aRightButtonTitle;
     rightHandler = handler;
 }

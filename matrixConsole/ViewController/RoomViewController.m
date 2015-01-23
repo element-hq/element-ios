@@ -29,9 +29,9 @@
 #import "AppSettings.h"
 
 #import "MediaManager.h"
-#import "ConsoleTools.h"
+#import "MXCTools.h"
 
-#import "ConsoleGrowingTextView.h"
+#import "MXCGrowingTextView.h"
 
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC 10
 
@@ -82,7 +82,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     id membersListener;
     
     // Attachment handling
-    CustomImageView *highResImageView;
+    MXCImageView *highResImageView;
     NSString *AVAudioSessionCategory;
     MPMoviePlayerController *videoPlayer;
     MPMoviePlayerController *tmpVideoPlayer;
@@ -117,7 +117,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
-@property (weak, nonatomic) IBOutlet ConsoleGrowingTextView *messageTextView;
+@property (weak, nonatomic) IBOutlet MXCGrowingTextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messagesTableViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
@@ -128,8 +128,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *membersListButtonItem;
 
 @property (strong, nonatomic) MXRoom *mxRoom;
-@property (strong, nonatomic) CustomAlert *actionMenu;
-@property (strong, nonatomic) CustomImageView* imageValidationView;
+@property (strong, nonatomic) MXCAlert *actionMenu;
+@property (strong, nonatomic) MXCImageView* imageValidationView;
 
 // Messages
 @property (strong, nonatomic)NSMutableArray *messages;
@@ -317,7 +317,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         isKeyboardObserver = NO;
     }
     
-    [self dismissCustomImageView];
+    [self dismissAttachmentImageViews];
     
     if (membersListener) {
         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -384,7 +384,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)onAppDidEnterBackground {
-    [self dismissCustomImageView];
+    [self dismissAttachmentImageViews];
 }
 
 - (void)updateUI {
@@ -446,11 +446,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             // offer to cancel a download only if there is a pending one
             if (loader) {
-                self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:@"Cancel the download ?" style:CustomAlertStyleAlert];
-                self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                self.actionMenu = [[MXCAlert alloc] initWithTitle:nil message:@"Cancel the download ?" style:MXCAlertStyleAlert];
+                self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.actionMenu = nil;
                 }];
-                self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     
                     // get again the loader, the cell could have been reused.
                     MediaLoader *loader = [MediaManager existingDownloaderForURL:url inFolder:weakSelf.roomId];
@@ -1115,7 +1115,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 # pragma mark - Attachment handling
 
 - (void)showAttachmentView:(UIGestureRecognizer *)gestureRecognizer {
-    CustomImageView *attachment = (CustomImageView*)gestureRecognizer.view;
+    MXCImageView *attachment = (MXCImageView*)gestureRecognizer.view;
     [self dismissKeyboard];
     
     // Retrieve attachment information
@@ -1124,7 +1124,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (msgtype == RoomMessageTypeImage) {
         NSString *url = content[@"url"];
         if (url.length) {
-            highResImageView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+            highResImageView = [[MXCImageView alloc] initWithFrame:self.membersView.frame];
             highResImageView.stretchable = YES;
             highResImageView.fullScreen = YES;
             highResImageView.mediaFolder = self.roomId;
@@ -1211,7 +1211,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMediaDownloadDidFailNotification object:nil];
     
-    [self dismissCustomImageView];
+    [self dismissAttachmentImageViews];
     
     // Restore audio category
     if (AVAudioSessionCategory) {
@@ -1298,7 +1298,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (videoThumbnail && videoURL) {
         // Prepare video thumbnail description
         NSUInteger thumbnailSize = ROOM_MESSAGE_MAX_ATTACHMENTVIEW_WIDTH;
-        UIImage *thumbnail = [ConsoleTools resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
+        UIImage *thumbnail = [MXCTools resize:videoThumbnail toFitInSize:CGSizeMake(thumbnailSize, thumbnailSize)];
         
         // Create the local event displayed during uploading
         MXEvent *localEvent = [self addLocalEchoEventForAttachedVideo:thumbnail videoPath:videoURL.path];
@@ -2058,8 +2058,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         if (self.actionMenu) {
             [self.actionMenu dismiss:NO];
         }
-        self.actionMenu = [[CustomAlert alloc] initWithTitle:nil message:alertMsg style:CustomAlertStyleAlert];
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        self.actionMenu = [[MXCAlert alloc] initWithTitle:nil message:alertMsg style:MXCAlertStyleAlert];
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.actionMenu = nil;
         }];
         [self.actionMenu showInViewController:self];
@@ -2152,19 +2152,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Display action menu: Add attachments, Invite user...
         __weak typeof(self) weakSelf = self;
-        self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an action:" message:nil style:CustomAlertStyleActionSheet];
+        self.actionMenu = [[MXCAlert alloc] initWithTitle:@"Select an action:" message:nil style:MXCAlertStyleActionSheet];
         // Attachments
-        [self.actionMenu addActionWithTitle:@"Attach" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [self.actionMenu addActionWithTitle:@"Attach" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             if (weakSelf) {
                 // Ask for attachment type
-                weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Select an attachment type:" message:nil style:CustomAlertStyleActionSheet];
-                [weakSelf.actionMenu addActionWithTitle:@"Media" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu = [[MXCAlert alloc] initWithTitle:@"Select an attachment type:" message:nil style:MXCAlertStyleActionSheet];
+                [weakSelf.actionMenu addActionWithTitle:@"Media" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     if (weakSelf) {
                         weakSelf.actionMenu = nil;
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"Media:" message:nil style:CustomAlertStyleActionSheet];
+                            weakSelf.actionMenu = [[MXCAlert alloc] initWithTitle:@"Media:" message:nil style:MXCAlertStyleActionSheet];
                             
-                            [weakSelf.actionMenu addActionWithTitle:@"Photo Library" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            [weakSelf.actionMenu addActionWithTitle:@"Photo Library" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                                 if (weakSelf) {
                                     weakSelf.actionMenu = nil;
                                     
@@ -2178,7 +2178,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 }
                             }];
                             
-                            [weakSelf.actionMenu addActionWithTitle:@"Take Photo or Video" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            [weakSelf.actionMenu addActionWithTitle:@"Take Photo or Video" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                                 if (weakSelf) {
                                     weakSelf.actionMenu = nil;
                                     
@@ -2192,7 +2192,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                 }
                             }];
                             
-                            weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                            weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                                 weakSelf.actionMenu = nil;
                             }];
                             [weakSelf.actionMenu showInViewController:weakSelf];
@@ -2201,25 +2201,25 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     
                 }];
-                weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.actionMenu = nil;
                 }];
                 [weakSelf.actionMenu showInViewController:weakSelf];
             }
         }];
         // Invitation
-        [self.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [self.actionMenu addActionWithTitle:@"Invite" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             if (weakSelf) {
                 // Ask for userId to invite
-                weakSelf.actionMenu = [[CustomAlert alloc] initWithTitle:@"User ID:" message:nil style:CustomAlertStyleAlert];
-                weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                weakSelf.actionMenu = [[MXCAlert alloc] initWithTitle:@"User ID:" message:nil style:MXCAlertStyleAlert];
+                weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.actionMenu = nil;
                 }];
                 [weakSelf.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
                     textField.secureTextEntry = NO;
                     textField.placeholder = @"ex: @bob:homeserver";
                 }];
-                [weakSelf.actionMenu addActionWithTitle:@"Invite" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                [weakSelf.actionMenu addActionWithTitle:@"Invite" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     UITextField *textField = [alert textFieldAtIndex:0];
                     NSString *userId = textField.text;
                     weakSelf.actionMenu = nil;
@@ -2236,7 +2236,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [weakSelf.actionMenu showInViewController:weakSelf];
             }
         }];
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.actionMenu = nil;
         }];
         weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
@@ -2296,19 +2296,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     
                     __weak typeof(self) weakSelf = self;
                     
-                    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Resend the message"
+                    self.actionMenu = [[MXCAlert alloc] initWithTitle:@"Resend the message"
                                                                  message:(roomMessage.messageType == RoomMessageTypeText) ? textMessage : nil
-                                                                   style:CustomAlertStyleAlert];
+                                                                   style:MXCAlertStyleAlert];
                     
                     
                     self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel"
-                                                                                      style:CustomAlertActionStyleDefault
-                                                                                    handler:^(CustomAlert *alert) {
+                                                                                      style:MXCAlertActionStyleDefault
+                                                                                    handler:^(MXCAlert *alert) {
                                                                                         weakSelf.actionMenu = nil;
                                                                                     }];
                     [self.actionMenu addActionWithTitle:@"OK"
-                                                  style:CustomAlertActionStyleDefault
-                                                handler:^(CustomAlert *alert) {
+                                                  style:MXCAlertActionStyleDefault
+                                                handler:^(MXCAlert *alert) {
                                                     weakSelf.actionMenu = nil;
                                                     
                                                     if (roomMessage.messageType == RoomMessageTypeText) {
@@ -2964,7 +2964,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }];
 }
 
-- (void)dismissCustomImageView {
+- (void)dismissAttachmentImageViews {
     if (self.imageValidationView) {
         [self.imageValidationView dismissSelection];
         [self.imageValidationView removeFromSuperview];
@@ -2995,24 +2995,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // wait that the media picker is dismissed to have the valid membersView frame
                 // else it would include a status bar height offset
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.imageValidationView = [[CustomImageView alloc] initWithFrame:self.membersView.frame];
+                    self.imageValidationView = [[MXCImageView alloc] initWithFrame:self.membersView.frame];
                     self.imageValidationView.stretchable = YES;
                     self.imageValidationView.fullScreen = YES;
                     self.imageValidationView.mediaFolder = self.roomId;
                     
                     // the user validates the image
-                    [self.imageValidationView setRightButtonTitle:@"OK" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
+                    [self.imageValidationView setRightButtonTitle:@"OK" handler:^(MXCImageView* imageView, NSString* buttonTitle) {
                         // dismiss the image view
-                        [weakSelf dismissCustomImageView];
+                        [weakSelf dismissAttachmentImageViews];
                         
                         [weakSelf sendImage:selectedImage];
                     }];
                     
                     // the user wants to use an other image
-                    [self.imageValidationView setLeftButtonTitle:@"Cancel" handler:^(CustomImageView* imageView, NSString* buttonTitle) {
+                    [self.imageValidationView setLeftButtonTitle:@"Cancel" handler:^(MXCImageView* imageView, NSString* buttonTitle) {
                         
                         // dismiss the image view
-                        [weakSelf dismissCustomImageView];
+                        [weakSelf dismissAttachmentImageViews];
                         
                         // Open again media gallery
                         UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];

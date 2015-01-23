@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConsoleTools : NSObject
+@interface MXCTools : NSObject
 
 // Time interval
 + (NSString*)formatSecondsInterval:(CGFloat)secondsInterval;

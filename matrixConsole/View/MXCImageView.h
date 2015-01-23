@@ -17,9 +17,9 @@
 #import <UIKit/UIKit.h>
 
 // Customize UIView in order to display image defined with remote url. Zooming inside the image (Stretching) is supported.
-@interface CustomImageView : UIView <UIScrollViewDelegate>
+@interface MXCImageView : UIView <UIScrollViewDelegate>
 
-typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
+typedef void (^blockMXCImageView_onClick)(MXCImageView *imageView, NSString* title);
 
 - (void)setImageURL:(NSString *)imageURL withPreviewImage:(UIImage*)previewImage;
 
@@ -38,8 +38,8 @@ typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSStrin
 @property (nonatomic, readwrite) NSString* mediaFolder;
 
 // Let the user defines some custom buttons over the tabbar
-- (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;
-- (void)setRightButtonTitle:rightButtonTitle handler:(blockCustomImageView_onClick)handler;
+- (void)setLeftButtonTitle :leftButtonTitle handler:(blockMXCImageView_onClick)handler;
+- (void)setRightButtonTitle:rightButtonTitle handler:(blockMXCImageView_onClick)handler;
 
 - (void)dismissSelection;
 
