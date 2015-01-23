@@ -16,7 +16,7 @@
 
 #import "ContactTableCell.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 #import "MXTools.h"
 
@@ -31,13 +31,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (membersListener) {
-        [[MatrixHandler sharedHandler].mxSession removeListener:membersListener];
+        [[MatrixSDKHandler sharedHandler].mxSession removeListener:membersListener];
         membersListener = nil;
     }
 }
 
 - (void)setContact:(MXCContact *)aContact {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     _contact = aContact;
     
@@ -86,7 +86,7 @@
 
 - (void)refreshUserPresence {
     // search the linked mxUser
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // get the matrix identifiers
     NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
@@ -124,7 +124,7 @@
 }
 
 - (void)refreshPresenceUserRing:(MXPresence)presenceStatus {
-    UIColor* ringColor = [[MatrixHandler sharedHandler] getPresenceRingColor:presenceStatus];
+    UIColor* ringColor = [[MatrixSDKHandler sharedHandler] getPresenceRingColor:presenceStatus];
     
     // if the thumbnail is defined
     if (ringColor) {

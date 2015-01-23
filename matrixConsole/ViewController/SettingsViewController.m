@@ -19,7 +19,7 @@
 #import "AppDelegate.h"
 #import "AppSettings.h"
 #import "APNSHandler.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 
 #import "SettingsTableViewCell.h"
@@ -114,7 +114,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [[self.userPicture imageView] setClipsToBounds:YES];
     
     errorAlerts = [NSMutableArray array];
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
+    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
     
     isAvatarUpdated = NO;
     isDisplayNameUpdated = NO;
@@ -148,7 +148,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -157,14 +157,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Refresh display
     [self startUserInfoUploadAnimation];
     [self configureView];
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
+    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
@@ -225,7 +225,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Remove listener
     if (userUpdateListener) {
-        [[MatrixHandler sharedHandler].mxSession.myUser removeListener:userUpdateListener];
+        [[MatrixSDKHandler sharedHandler].mxSession.myUser removeListener:userUpdateListener];
         userUpdateListener = nil;
     }
     
@@ -261,13 +261,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         return;
     }
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // Disable user's interactions
     _userPicture.enabled = NO;
     _userDisplayName.enabled = NO;
     
-    if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
+    if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) {
         if (!userUpdateListener) {
             // Set current user's information and add observers
             [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
@@ -293,12 +293,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // TODO display user's presence
             }];
         }
-    } else if (mxHandler.status == MatrixHandlerStatusStoreDataReady) {
+    } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) {
         // Set local user's information (the data may not be up-to-date)
         [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
         currentDisplayName = mxHandler.mxSession.myUser.displayname;
         self.userDisplayName.text = currentDisplayName;
-    } else if (mxHandler.status == MatrixHandlerStatusLoggedOut) {
+    } else if (mxHandler.status == MatrixSDKHandlerStatusLoggedOut) {
         [self reset];
     }
     
@@ -319,7 +319,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         _userDisplayName.enabled = NO;
         isDisplayNameUploading = YES;
 
-         MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession.myUser setDisplayName:displayname success:^{
             // save the current displayname
             currentDisplayName = displayname;
@@ -365,7 +365,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)savePicture {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // Save picture
     [self startUserInfoUploadAnimation];
@@ -434,7 +434,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [errorAlerts removeObject:alert];
         // Remove change
         uploadedPictureURL = nil;
-        [self updateUserPicture:[MatrixHandler sharedHandler].mxSession.myUser.avatarUrl];
+        [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl];
     }];
     [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         [errorAlerts removeObject:alert];
@@ -457,7 +457,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
         if (currentPictureURL) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPicture.frame.size withMethod:MXThumbnailingMethodCrop];
             
             // Check whether the image download is in progress
@@ -522,7 +522,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             [self configureView];
         });
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixHandler sharedHandler] isResumeDone]) {
+        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
             [self stopUserInfoUploadAnimation];
             _userPicture.enabled = YES;
             _userDisplayName.enabled = YES;
@@ -575,7 +575,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (IBAction)onSliderValueChange:(id)sender {
     if (sender == maxCacheSizeCell.settingSlider) {
         
-        MatrixHandler* mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
         UISlider* slider = maxCacheSizeCell.settingSlider;
         
         // check if the upper bounds have been updated
@@ -588,7 +588,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             slider.value = mxHandler.minCachesSize;
         }
         
-        [[MatrixHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
+        [[MatrixSDKHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
         
         maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
     }
@@ -624,7 +624,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)manageWordsList {
     NSArray* words = [wordsListTextField.text componentsSeparatedByString:@","];
     NSMutableArray* fiteredWords = [[NSMutableArray alloc] init];
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // theses both items are implicitly checked
     NSString* displayname = nil;
@@ -687,7 +687,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // tap on clear application cache
         if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
             // clear caches
-            [[MatrixHandler sharedHandler] forceInitialSync:YES];
+            [[MatrixSDKHandler sharedHandler] forceInitialSync:YES];
         }
         
         [aTableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -743,7 +743,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
         textView.font = [UIFont systemFontOfSize:14];
         NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
@@ -839,7 +839,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
             
-            cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:[MatrixHandler sharedHandler].cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+            cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:[MatrixSDKHandler sharedHandler].cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
         } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
@@ -848,7 +848,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             maxCacheSizeCell = (SettingsCellWithLabelAndSlider*)cell;
             
             maxCacheSizeCell.settingSlider.minimumValue = 0;
-            maxCacheSizeCell.settingSlider.value = [MatrixHandler sharedHandler].currentMaxCachesSize;
+            maxCacheSizeCell.settingSlider.value = [MatrixSDKHandler sharedHandler].currentMaxCachesSize;
             
             [self onSliderValueChange:maxCacheSizeCell.settingSlider];
         
@@ -878,7 +878,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         SettingsTableCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
         NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         configCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         cell = configCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {

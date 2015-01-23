@@ -17,7 +17,7 @@
 #import "ContactsViewController.h"
 
 // SDK api
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 // application info
 #import "AppDelegate.h"
@@ -175,7 +175,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.startChatMenu = nil;
             
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             
             // else create new room
             [mxHandler.mxRestClient createRoom:nil

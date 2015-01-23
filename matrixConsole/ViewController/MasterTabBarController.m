@@ -15,7 +15,7 @@
  */
 
 #import "MasterTabBarController.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 #import "RecentsViewController.h"
 
@@ -60,7 +60,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusLoggedOut) {
+    if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusLoggedOut) {
         [self showLoginScreen];
     }
 }

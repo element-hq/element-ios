@@ -15,7 +15,7 @@
  */
 
 #import "RoomMessageComponent.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
 NSString *const kFailedEventIdPrefix = @"failedEventId-";
@@ -24,7 +24,7 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         
         // Build text component related to this event
         NSString* textMessage = [mxHandler displayTextForEvent:event withRoomState:roomState inSubtitleMode:NO];
@@ -59,8 +59,8 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
     _eventId = eventId;
     
     // Update component style
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    if ([_textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    if ([_textMessage hasPrefix:kMatrixSDKHandlerUnsupportedMessagePrefix]) {
         _style = RoomMessageComponentStyleUnsupported;
     } else if ([_eventId hasPrefix:kFailedEventIdPrefix]) {
         _style = RoomMessageComponentStyleFailed;
