@@ -395,9 +395,18 @@
             recentsSearchBar.returnKeyType = UIReturnKeyDone;
             recentsSearchBar.delegate = self;
             searchBarShouldEndEditing = NO;
+            // add it to the tableHeaderView
+            // do not create a header view
+            // the header view is refreshed every time there is a [tableView reloaddata]
+            // i.e. there is a removeFromSuperView call, the view is added to the tableview..
+            // with a first respondable view, IOS seems lost to find the first responder
+            // so, the keyboard is always displayed and can not be dismissed
+            // tableHeaderView is never removed from superview so the first responder is not lost
+            self.tableView.tableHeaderView = recentsSearchBar;
+
             [recentsSearchBar becomeFirstResponder];
-            // Reload table in order to display search bar as section header
-            [self.tableView reloadData];
+            
+            [self scrollToTop];
         }
     } else {
         [self searchBarCancelButtonClicked: recentsSearchBar];
@@ -414,6 +423,14 @@
 - (void)stopActivityIndicator {
     [_activityIndicator stopAnimating];
     [_activityIndicator removeFromSuperview];
+}
+
+- (void)scrollToTop {
+    // stop any scrolling effect
+    [UIView setAnimationsEnabled:NO];
+    // before scrolling to the tableview top
+    self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
+    [UIView setAnimationsEnabled:YES];
 }
 
 #pragma mark - KVO
@@ -471,20 +488,25 @@
         [self updateTitleView];
         
         if (self.splitViewController) {
-            // Refresh display (required in case of splitViewController)
-            [self.tableView reloadData];
-            
             // IOS >= 8
             if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
                 controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
             }
             
+            // hide the keyboard when opening a new controller
+            // do not hide the searchBar until the RecentsViewController is dismissed
+            // on tablets / iphone 6+, the user could expect to search again while looking at a room
+            if ([recentsSearchBar isFirstResponder]) {
+                searchBarShouldEndEditing = YES;
+                [recentsSearchBar resignFirstResponder];
+            }
+    
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
         
         // Hide back button title
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
@@ -503,17 +525,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (recentsSearchBar) {
-        return recentsSearchBar.frame.size.height;
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return recentsSearchBar;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -634,9 +645,7 @@
     }
     // Refresh display
     [self.tableView reloadData];
-    if (filteredRecents.count) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+    [self scrollToTop];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -651,7 +660,9 @@
     [searchBar resignFirstResponder];
     recentsSearchBar = nil;
     filteredRecents = nil;
+    self.tableView.tableHeaderView = nil;
     [self.tableView reloadData];
+    [self scrollToTop];
 }
 
 @end
