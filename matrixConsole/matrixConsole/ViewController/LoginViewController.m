@@ -18,12 +18,12 @@
 
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
-#import "CustomAlert.h"
+#import "MXCAlert.h"
 
 @interface LoginViewController ()
 {
     // reference to any opened alert view
-    CustomAlert *alert;
+    MXCAlert *alert;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewBottomConstraint;
 
@@ -255,8 +255,8 @@
                                          }
 
                                          //Alert user
-                                          alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:message style:CustomAlertStyleAlert];
-                                         [alert addActionWithTitle:@"Dismiss" style:CustomAlertActionStyleCancel handler:^(CustomAlert *alert) {}];
+                                          alert = [[MXCAlert alloc] initWithTitle:@"Login Failed" message:message style:MXCAlertStyleAlert];
+                                         [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleCancel handler:^(MXCAlert *alert) {}];
                                          [alert showInViewController:self];
                                      }];
         }

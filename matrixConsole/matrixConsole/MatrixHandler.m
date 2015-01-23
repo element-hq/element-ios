@@ -17,7 +17,7 @@
 #import "MatrixHandler.h"
 #import "AppDelegate.h"
 #import "AppSettings.h"
-#import "CustomAlert.h"
+#import "MXCAlert.h"
 
 #import "MXFileStore.h"
 #import "MXTools.h"
@@ -41,7 +41,7 @@ static MatrixHandler *sharedHandler = nil;
 @property (strong, nonatomic) MXFileStore *mxFileStore;
 @property (nonatomic,readwrite) MatrixHandlerStatus status;
 @property (nonatomic,readwrite) BOOL isResumeDone;
-@property (strong, nonatomic) CustomAlert *mxNotification;
+@property (strong, nonatomic) MXCAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 @end
 
@@ -328,17 +328,17 @@ static MatrixHandler *sharedHandler = nil;
                             [self.mxNotification dismiss:NO];
                         }
                         
-                        self.mxNotification = [[CustomAlert alloc] initWithTitle:roomState.displayname
+                        self.mxNotification = [[MXCAlert alloc] initWithTitle:roomState.displayname
                                                                          message:messageText
-                                                                           style:CustomAlertStyleAlert];
+                                                                           style:MXCAlertStyleAlert];
                         self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
-                                                                                                  style:CustomAlertActionStyleDefault
-                                                                                                handler:^(CustomAlert *alert) {
+                                                                                                  style:MXCAlertActionStyleDefault
+                                                                                                handler:^(MXCAlert *alert) {
                                                                                                     [MatrixHandler sharedHandler].mxNotification = nil;
                                                                                                 }];
                         [self.mxNotification addActionWithTitle:@"View"
-                                                          style:CustomAlertActionStyleDefault
-                                                        handler:^(CustomAlert *alert) {
+                                                          style:MXCAlertActionStyleDefault
+                                                        handler:^(MXCAlert *alert) {
                                                             [MatrixHandler sharedHandler].mxNotification = nil;
                                                             // Show the room
                                                             [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
