@@ -15,7 +15,7 @@
  */
 
 #import "RoomMemberTableCell.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 
 @interface RoomMemberTableCell () {
@@ -126,7 +126,7 @@
         NSString *thumbnailURL = nil;
         if (roomMember.avatarUrl) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             thumbnailURL = [mxHandler thumbnailURLForContent:roomMember.avatarUrl inViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
         self.pictureView.mediaFolder = kMediaManagerThumbnailFolder;
@@ -159,7 +159,7 @@
         } else {
             self.backgroundColor = [UIColor whiteColor];
             
-            powerLevel = [[MatrixHandler sharedHandler] getPowerLevel:roomMember inRoom:room];
+            powerLevel = [[MatrixSDKHandler sharedHandler] getPowerLevel:roomMember inRoom:room];
 
             // get the user presence and his thumbnail border color
             if (roomMember.membership == MXMembershipInvite) {
@@ -169,7 +169,7 @@
                 roomMemberUserId = roomMember.userId;
                 
                 // Get the user that corresponds to this member
-                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
                 MXUser *user = [mxHandler.mxSession userWithUserId:roomMemberUserId];
                 
                 // existing user ?
@@ -230,7 +230,7 @@
     lastSeenTimer = nil;
     
     // Get the user that corresponds to this member
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     MXUser *user = [mxHandler.mxSession userWithUserId:roomMemberUserId];
     
     // existing user ?

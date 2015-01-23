@@ -15,7 +15,7 @@
  */
 
 #import "AppSettings.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 static AppSettings *sharedSettings = nil;
 
@@ -60,7 +60,7 @@ static AppSettings *sharedSettings = nil;
 }
 
 - (void)setEnableInAppNotifications:(BOOL)notifications {
-    [[MatrixHandler sharedHandler] enableInAppNotifications:notifications];
+    [[MatrixSDKHandler sharedHandler] enableInAppNotifications:notifications];
     [[NSUserDefaults standardUserDefaults] setBool:notifications forKey:@"enableInAppNotifications"];
 }
 
@@ -91,7 +91,7 @@ static AppSettings *sharedSettings = nil;
 - (void)setDisplayAllEvents:(BOOL)displayAllEvents {
     [[NSUserDefaults standardUserDefaults] setBool:displayAllEvents forKey:@"displayAllEvents"];
     // Flush and restore Matrix data
-    [[MatrixHandler sharedHandler] forceInitialSync:NO];
+    [[MatrixSDKHandler sharedHandler] forceInitialSync:NO];
 }
 
 - (BOOL)hideUnsupportedMessages {

@@ -24,7 +24,7 @@
 #import "RoomMemberTableCell.h"
 #import "RoomTitleView.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "AppSettings.h"
 
@@ -212,8 +212,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
-        [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+        [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+        [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
     self.mxRoom = nil;
     
@@ -258,7 +258,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     // Register a listener for events that concern room members
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
                                  kMXEventTypeStringRoomPowerLevels,
@@ -320,7 +320,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self dismissAttachmentImageViews];
     
     if (membersListener) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -483,8 +483,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self.mxRoom removeListener:messagesListener];
             messagesListener = nil;
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
-            [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
-            [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+            [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+            [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
         }
         currentTypingUsers = nil;
         if (typingNotifListener) {
@@ -500,7 +500,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     self.roomTitleView.editable = NO;
     
     // Update room data
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     self.mxRoom = nil;
     if (self.roomId) {
         self.mxRoom = [mxHandler.mxSession roomWithRoomId:self.roomId];
@@ -745,8 +745,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)stopActivityIndicator {
     // Check whether all conditions are satisfied before stopping loading wheel
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    if (mxHandler.status == MatrixHandlerStatusServerSyncDone && mxHandler.isResumeDone && !isBackPaginationInProgress && !isJoinRequestInProgress) {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone && mxHandler.isResumeDone && !isBackPaginationInProgress && !isJoinRequestInProgress) {
         [_activityIndicator stopAnimating];
     }
 }
@@ -770,13 +770,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self configureView];
         });
     } else if ([@"status" isEqualToString:keyPath]) {
-        if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusServerSyncDone) {
+        if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusServerSyncDone) {
             [self stopActivityIndicator];
         } else {
             [self startActivityIndicator];
         }
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixHandler sharedHandler] isResumeDone]) {
+        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
             [self stopActivityIndicator];
         } else {
             [self startActivityIndicator];
@@ -899,7 +899,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             backPaginationSavedFirstMsgHeight = [self tableView:self.messagesTableView heightForRowAtIndexPath:indexPath];
         }
         
-        dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+        dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
             [self paginateBackMessages:requestedItemsNb];
         });
     }
@@ -915,7 +915,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Check whether we received less items than expected, and check condition to be able to ask more.
         // This operation must be done on processing queue to be sync with the events reception
-        dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+        dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
             BOOL shouldLoop = ((backPaginationHandledEventsNb < requestedItemsNb) && self.mxRoom.canPaginate);
             if (shouldLoop) {
                 NSUInteger missingItemsNb = requestedItemsNb - backPaginationHandledEventsNb;
@@ -938,7 +938,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         });
     } failure:^(NSError *error) {
         NSLog(@"Failed to paginate back: %@", error);
-        dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+        dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
             [self onBackPaginationComplete];
         });
         //Alert user
@@ -1041,7 +1041,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
             // Get the users that correspond to these members
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             MXUser *user1 = [mxHandler.mxSession userWithUserId:member1.userId];
             MXUser *user2 = [mxHandler.mxSession userWithUserId:member2.userId];
             
@@ -1614,7 +1614,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // Check table view members vs messages
     if (tableView == self.membersTableView) {
@@ -2020,7 +2020,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (textField == _roomTitleView.displayNameTextField) {
         // Check whether the user has enough power to rename the room
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
+        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixSDKHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]) {
             // Only the room name is edited here, update the text field with the room name
             textField.text = self.mxRoom.state.name;
@@ -2043,7 +2043,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     } else if (textField == _roomTitleView.topicTextField) {
         // Check whether the user has enough power to edit room topic
         MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
+        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixSDKHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
             textField.backgroundColor = [UIColor whiteColor];
             [self.roomTitleView stopTopicAnimation];
@@ -2451,7 +2451,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Send message to the room
         [self.mxRoom sendMessageOfType:msgType content:msgContent success:^(NSString *eventId) {
             // Switch on processing queue
-            dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+            dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
                 // Check whether the event is still pending (It may be received from event stream)
                 NSUInteger index;
                 MXEvent *pendingEvent = nil;
@@ -2479,7 +2479,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             });
         } failure:^(NSError *error) {
             // Switch on processing queue to serialize this operation with the message handling
-            dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+            dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
                 // Check whether the event is still pending (It may be received from event stream)
                 NSUInteger index;
                 MXEvent *pendingEvent = nil;
@@ -2528,7 +2528,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     localEvent.type = kMXEventTypeStringRoomMessage;
     localEvent.originServerTs = (uint64_t) ([[NSDate date] timeIntervalSince1970] * 1000);
     
-    localEvent.userId = [MatrixHandler sharedHandler].userId;
+    localEvent.userId = [MatrixSDKHandler sharedHandler].userId;
     return localEvent;
 }
 
@@ -2639,7 +2639,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [[AppDelegate theDelegate] showErrorAsAlert:error];
     }
     
-    dispatch_async([MatrixHandler sharedHandler].processingQueue, ^{
+    dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
         // Update the temporary event with this local event id
         RoomMessage *message = [self messageWithEventId:localEvent.eventId];
         if (message) {
@@ -2712,7 +2712,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         displayName = [displayName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         if (displayName.length) {
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             [mxHandler.mxRestClient setDisplayName:displayName success:^{
             } failure:^(NSError *error) {
                 NSLog(@"Set displayName failed: %@", error);
@@ -2731,7 +2731,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Check
         if (roomAlias.length) {
-            [[MatrixHandler sharedHandler].mxSession joinRoom:roomAlias success:^(MXRoom *room) {
+            [[MatrixSDKHandler sharedHandler].mxSession joinRoom:roomAlias success:^(MXRoom *room) {
                 // Show the room
                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
             } failure:^(NSError *error) {
