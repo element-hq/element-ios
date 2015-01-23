@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -1078,7 +1078,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithSwitch" id="XUG-wd-Xsh" customClass="SettingsTableCellWithSwitch">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithSwitch" id="XUG-wd-Xsh" customClass="SettingsCellWithSwitch">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XUG-wd-Xsh" id="Rsx-dG-Pfj">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -1134,6 +1134,9 @@
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="1TJ-Md-cjN" id="oQr-w7-qXB"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -1189,7 +1192,7 @@
                                     <outlet property="settingSlider" destination="pc0-6Y-bpz" id="q1c-Y1-xHU"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithTextView" id="YFJ-c6-8tp" customClass="SettingsTableCellWithTextView">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithTextView" id="YFJ-c6-8tp" customClass="SettingsCellWithTextView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YFJ-c6-8tp" id="A3V-Y7-p1i">
@@ -1214,6 +1217,43 @@
                                     <outlet property="settingTextView" destination="SAI-hV-Jai" id="7kp-Zv-MeL"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithTextFieldAndButton" id="PvQ-jA-WZh" userLabel="SettingsCellWithTextFieldAndButton" customClass="SettingsCellWithTextFieldAndButton">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PvQ-jA-WZh" id="cCE-J3-7Yw">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BUG-4i-zBj">
+                                            <rect key="frame" x="8" y="7" width="505" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                            <connections>
+                                                <action selector="textFieldDidChange:" destination="1TJ-Md-cjN" eventType="editingChanged" id="ubm-tG-rW8"/>
+                                                <outlet property="delegate" destination="1TJ-Md-cjN" id="boy-mz-rOm"/>
+                                            </connections>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGh-5l-ZpI">
+                                            <rect key="frame" x="521" y="7" width="71" height="30"/>
+                                            <state key="normal" title="Link Email">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="touchUpInside" id="pY7-iy-ztk"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="BUG-4i-zBj" secondAttribute="centerY" id="AZY-bQ-zZM"/>
+                                        <constraint firstAttribute="trailing" secondItem="IGh-5l-ZpI" secondAttribute="trailing" constant="8" id="Tre-8P-eAU"/>
+                                        <constraint firstItem="BUG-4i-zBj" firstAttribute="leading" secondItem="cCE-J3-7Yw" secondAttribute="leading" constant="8" id="Yqk-kh-lQ4"/>
+                                        <constraint firstItem="IGh-5l-ZpI" firstAttribute="leading" secondItem="BUG-4i-zBj" secondAttribute="trailing" constant="8" id="seb-u7-RWw"/>
+                                        <constraint firstAttribute="centerY" secondItem="IGh-5l-ZpI" secondAttribute="centerY" id="ulB-Wn-aba"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="settingButton" destination="IGh-5l-ZpI" id="ayC-IV-ME8"/>
+                                    <outlet property="settingTextField" destination="BUG-4i-zBj" id="xu3-OG-Qtu"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="1TJ-Md-cjN" id="Lqt-w3-NjQ"/>
@@ -1228,7 +1268,7 @@
                         <outlet property="tableHeader" destination="ZP5-e3-ge9" id="nd0-lU-aW3"/>
                         <outlet property="tableView" destination="etG-ZU-b2r" id="5hz-jQ-qVT"/>
                         <outlet property="userDisplayName" destination="8M9-ZM-efS" id="rAQ-cX-3Ay"/>
-                        <outlet property="userPicture" destination="5Dl-D7-ahX" id="KRL-gn-0HP"/>
+                        <outlet property="userPictureButton" destination="5Dl-D7-ahX" id="gTE-rx-FjE"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKJ-22-Asy" userLabel="First Responder" sceneMemberID="firstResponder"/>

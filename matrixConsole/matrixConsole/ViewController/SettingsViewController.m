@@ -24,10 +24,12 @@
 
 #import "SettingsTableViewCell.h"
 
-#define SETTINGS_SECTION_NOTIFICATIONS_INDEX 0
-#define SETTINGS_SECTION_ROOMS_INDEX         1
-#define SETTINGS_SECTION_CONFIGURATION_INDEX 2
-#define SETTINGS_SECTION_COMMANDS_INDEX      3
+#define SETTINGS_SECTION_LINKED_EMAILS_INDEX 0
+#define SETTINGS_SECTION_NOTIFICATIONS_INDEX 1
+#define SETTINGS_SECTION_ROOMS_INDEX         2
+#define SETTINGS_SECTION_CONFIGURATION_INDEX 3
+#define SETTINGS_SECTION_COMMANDS_INDEX      4
+#define SETTINGS_SECTION_COUNT               5
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
 #define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX  1
@@ -41,25 +43,39 @@ NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK ve
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
 @interface SettingsViewController () {
-    MediaLoader *imageLoader;
+    NSMutableArray *errorAlerts;
     
+    // Navigation Bar button
+    UIButton *logoutBtn;
+    
+    // User's profile
+    MediaLoader *imageLoader;
     NSString *currentDisplayName;
     NSString *currentPictureURL;
     NSString *currentPictureThumbURL;
     NSString *uploadedPictureURL;
-    
     // Listen user's settings change
     id userUpdateListener;
     
-    NSMutableArray *errorAlerts;
+    // Linked emails
+    NSMutableArray *linkedEmails;
+    SettingsCellWithTextFieldAndButton* linkedEmailCell;
     
-    UIButton *logoutBtn;
+    // Notifications
     UISwitch *apnsNotificationsSwitch;
     UISwitch *inAppNotificationsSwitch;
+    UITextField* wordsListTextField;
+    // Dynamic rows in the Notifications section
+    int enableInAppRowIndex;
+    int setInAppWordRowIndex;
+    int enablePushNotificationdRowIndex;
+    
+    // Rooms settings
     UISwitch *allEventsSwitch;
     UISwitch *unsupportedMsgSwitch;
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
+    SettingsCellWithLabelAndSlider* maxCacheSizeCell;
     
     // user info update
     BOOL isAvatarUpdated;
@@ -68,21 +84,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // do not hide the spinner while switching between viewcontroller
     BOOL isAvatarUploading;
     BOOL isDisplayNameUploading;
-
-    //
-    UITextField* wordsListTextField;
-    
-    // dynamic rows in the notification settings
-    int enableInAppRowIndex;
-    int setInAppWordRowIndex;
-    int enablePushNotificationdRowIndex;
-    
-    //
-    SettingsCellWithLabelAndSlider* maxCacheSizeCell;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
-@property (weak, nonatomic) IBOutlet UIButton *userPicture;
+@property (weak, nonatomic) IBOutlet UIButton *userPictureButton;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
 @property (weak, nonatomic) IBOutlet UIButton *saveUserInfoButton;
 @property (strong, nonatomic) IBOutlet UIView *activityIndicatorBackgroundView;
@@ -110,8 +115,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // keep the aspect ratio of the contact thumbnail
     // scale it to fit the button frame
-    [[self.userPicture imageView] setContentMode: UIViewContentModeScaleAspectFill];
-    [[self.userPicture imageView] setClipsToBounds:YES];
+    [[self.userPictureButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
+    [[self.userPictureButton imageView] setClipsToBounds:YES];
     
     errorAlerts = [NSMutableArray array];
     [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
@@ -203,12 +208,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self.tableView reloadData];
 }
 
-- (void)updateAvatarImage:(UIImage*)image {
-    [self.userPicture setImage:image forState:UIControlStateNormal];
-    [self.userPicture setImage:image forState:UIControlStateHighlighted];
-    [self.userPicture setImage:image forState:UIControlStateDisabled];
-}
-
 - (void)reset {
     // Remove observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -233,13 +232,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     currentPictureThumbURL = nil;
     uploadedPictureURL = nil;
     
-    [self updateAvatarImage:[UIImage imageNamed:@"default-profile"]];
+    [self updateUserPictureButton:[UIImage imageNamed:@"default-profile"]];
     
     currentDisplayName = nil;
     self.userDisplayName.text = nil;
+    
+    linkedEmails = nil;
 }
 
-- (void) startUserInfoUploadAnimation {
+- (void)startUserInfoUploadAnimation {
     if (_activityIndicatorBackgroundView.hidden) {
         _activityIndicatorBackgroundView.hidden = NO;
         [_activityIndicator startAnimating];
@@ -264,7 +265,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // Disable user's interactions
-    _userPicture.enabled = NO;
+    _userPictureButton.enabled = NO;
     _userDisplayName.enabled = NO;
     
     if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) {
@@ -304,7 +305,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if ([mxHandler isResumeDone]) {
         [self stopUserInfoUploadAnimation];
-        _userPicture.enabled = YES;
+        _userPictureButton.enabled = YES;
         _userDisplayName.enabled = YES;
     }
     [self.tableView reloadData];
@@ -369,20 +370,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Save picture
     [self startUserInfoUploadAnimation];
-    _userPicture.enabled = NO;
+    _userPictureButton.enabled = NO;
     isAvatarUploading = YES;
     
     if (uploadedPictureURL == nil) {
         // Upload picture
         MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];
-        [uploader uploadData:UIImageJPEGRepresentation([self.userPicture imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
+        [uploader uploadData:UIImageJPEGRepresentation([self.userPictureButton imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
             // Store uploaded picture url and trigger picture saving
             uploadedPictureURL = url;
             [self savePicture];
         } failure:^(NSError *error) {
             NSLog(@"Upload image failed: %@", error);
             [self stopUserInfoUploadAnimation];
-            _userPicture.enabled = YES;
+            _userPictureButton.enabled = YES;
             isAvatarUploading = NO;
             [self handleErrorDuringPictureSaving:error];
         }];
@@ -405,14 +406,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                          }
                                          
                                          // update statuses
-                                         _userPicture.enabled = YES;
+                                         _userPictureButton.enabled = YES;
                                          isAvatarUploading = NO;
                                          
                                      } failure:^(NSError *error) {
                                          NSLog(@"Set avatar url failed: %@", error);
                                          [self stopUserInfoUploadAnimation];
                                          
-                                         _userPicture.enabled = YES;
+                                         _userPictureButton.enabled = YES;
                                          isAvatarUploading = NO;
                                          
                                          // update statuses
@@ -458,7 +459,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (currentPictureURL) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
             MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPicture.frame.size withMethod:MXThumbnailingMethodCrop];
+            currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPictureButton.frame.size withMethod:MXThumbnailingMethodCrop];
             
             // Check whether the image download is in progress
             id loader = [MediaManager existingDownloaderForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
@@ -470,7 +471,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // Retrieve the image from cache
                 UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
                 if (image) {
-                    [self updateAvatarImage:image];
+                    [self updateUserPictureButton:image];
                 } else {
                     // Cancel potential download in progress
                     if (imageLoader) {
@@ -484,119 +485,18 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
         } else {
             // Set placeholder
-            [self updateAvatarImage:[UIImage imageNamed:@"default-profile"]];
+            [self updateUserPictureButton:[UIImage imageNamed:@"default-profile"]];
         }
     }
 }
 
-- (void)onMediaDownloadEnd:(NSNotification *)notif {
-    // sanity check
-    if ([notif.object isKindOfClass:[NSString class]]) {
-        NSString* url = notif.object;
-        
-        if ([url isEqualToString:currentPictureThumbURL]) {
-            // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
-            if (image == nil) {
-                image = [UIImage imageNamed:@"default-profile"];
-            }
-            [self updateAvatarImage:image];
-            
-            // remove the observers
-            [[NSNotificationCenter defaultCenter] removeObserver:self];
-            imageLoader = nil;
-            
-            if ([notif.name isEqualToString:kMediaDownloadDidFailNotification]) {
-                // Reset picture URL in order to try next time
-                currentPictureURL = nil;
-            }
-        }
-    }
+- (void)updateUserPictureButton:(UIImage*)image {
+    [self.userPictureButton setImage:image forState:UIControlStateNormal];
+    [self.userPictureButton setImage:image forState:UIControlStateHighlighted];
+    [self.userPictureButton setImage:image forState:UIControlStateDisabled];
 }
 
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"status" isEqualToString:keyPath]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self configureView];
-        });
-    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
-            [self stopUserInfoUploadAnimation];
-            _userPicture.enabled = YES;
-            _userDisplayName.enabled = YES;
-        } else {
-            [self startUserInfoUploadAnimation];
-            _userPicture.enabled = NO;
-            _userDisplayName.enabled = NO;
-        }
-    }
-}
-
-#pragma mark - Actions
-
-- (IBAction)onButtonPressed:(id)sender {
-    [self dismissKeyboard];
-    
-    if (sender == _saveUserInfoButton) {
-        if (isDisplayNameUpdated) {
-            _saveUserInfoButton.enabled = NO;
-            [self saveDisplayName];
-        } else if (isAvatarUpdated) {
-            _saveUserInfoButton.enabled = NO;
-            [self savePicture];
-        }
-    } else if (sender == _userPicture) {
-        // Open picture gallery
-        UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
-        mediaPicker.delegate = self;
-        mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        mediaPicker.allowsEditing = NO;
-        [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
-    } else if (sender == logoutBtn) {
-        [[AppDelegate theDelegate] logout];
-    } else if (sender == apnsNotificationsSwitch) {
-        [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
-    } else if (sender == inAppNotificationsSwitch) {
-        [AppSettings sharedSettings].enableInAppNotifications = inAppNotificationsSwitch.on;
-        [self.tableView reloadData];
-    } else if (sender == allEventsSwitch) {
-        [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
-    } else if (sender == unsupportedMsgSwitch) {
-        [AppSettings sharedSettings].hideUnsupportedMessages = unsupportedMsgSwitch.on;
-    } else if (sender == sortMembersSwitch) {
-        [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
-    } else if (sender == displayLeftMembersSwitch) {
-        [AppSettings sharedSettings].displayLeftUsers = displayLeftMembersSwitch.on;
-    }
-}
-
-- (IBAction)onSliderValueChange:(id)sender {
-    if (sender == maxCacheSizeCell.settingSlider) {
-        
-        MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
-        UISlider* slider = maxCacheSizeCell.settingSlider;
-        
-        // check if the upper bounds have been updated
-        if (slider.maximumValue != mxHandler.maxAllowedCachesSize) {
-            slider.maximumValue = mxHandler.maxAllowedCachesSize;
-        }
-        
-        // check if the value does not exceed the bounds
-        if (slider.value < mxHandler.minCachesSize) {
-            slider.value = mxHandler.minCachesSize;
-        }
-        
-        [[MatrixSDKHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
-        
-        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
-    }
-}
-
-#pragma mark - keyboard
-
-- (void) manageSaveChangeButton {
+- (void)manageSaveChangeButton {
     // check if there is a displayname update
     NSString *displayname = self.userDisplayName.text;
     isDisplayNameUpdated = ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO);
@@ -651,57 +551,175 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self refreshWordsList];
 }
 
+- (void)refreshWordsList {
+    NSMutableString* wordsList = [[NSMutableString alloc] init];
+    NSArray* patterns = [AppSettings sharedSettings].specificWordsToAlertOn;
+    
+    for(NSString* string in patterns) {
+        [wordsList appendFormat:@"%@,", string];
+    }
+    
+    if (wordsList.length > 0) {
+        wordsListTextField.text = [wordsList substringToIndex:wordsList.length - 1];
+    }
+    else {
+        wordsListTextField.text = nil;
+    }
+}
+
+- (void)onMediaDownloadEnd:(NSNotification *)notif {
+    // sanity check
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* url = notif.object;
+        
+        if ([url isEqualToString:currentPictureThumbURL]) {
+            // update the image
+            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
+            if (image == nil) {
+                image = [UIImage imageNamed:@"default-profile"];
+            }
+            [self updateUserPictureButton:image];
+            
+            // remove the observers
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            imageLoader = nil;
+            
+            if ([notif.name isEqualToString:kMediaDownloadDidFailNotification]) {
+                // Reset picture URL in order to try next time
+                currentPictureURL = nil;
+            }
+        }
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"status" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configureView];
+        });
+    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
+        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
+            [self stopUserInfoUploadAnimation];
+            _userPictureButton.enabled = YES;
+            _userDisplayName.enabled = YES;
+        } else {
+            [self startUserInfoUploadAnimation];
+            _userPictureButton.enabled = NO;
+            _userDisplayName.enabled = NO;
+        }
+    }
+}
+
+#pragma mark - Actions
+
+- (IBAction)onButtonPressed:(id)sender {
+    [self dismissKeyboard];
+    
+    if (sender == _saveUserInfoButton) {
+        if (isDisplayNameUpdated) {
+            _saveUserInfoButton.enabled = NO;
+            [self saveDisplayName];
+        } else if (isAvatarUpdated) {
+            _saveUserInfoButton.enabled = NO;
+            [self savePicture];
+        }
+    } else if (sender == _userPictureButton) {
+        // Open picture gallery
+        UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
+        mediaPicker.delegate = self;
+        mediaPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        mediaPicker.allowsEditing = NO;
+        [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
+    } else if (sender == logoutBtn) {
+        [[AppDelegate theDelegate] logout];
+    } else if (sender == linkedEmailCell.settingButton) {
+        // FIXME
+        NSLog(@"link email is not supported yet (%@)", linkedEmailCell.settingTextField.text);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"link is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+        linkedEmailCell.settingTextField.text = nil;
+        linkedEmailCell.settingButton.enabled = NO;
+    } else if (sender == apnsNotificationsSwitch) {
+        [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
+    } else if (sender == inAppNotificationsSwitch) {
+        [AppSettings sharedSettings].enableInAppNotifications = inAppNotificationsSwitch.on;
+        [self.tableView reloadData];
+    } else if (sender == allEventsSwitch) {
+        [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
+    } else if (sender == unsupportedMsgSwitch) {
+        [AppSettings sharedSettings].hideUnsupportedMessages = unsupportedMsgSwitch.on;
+    } else if (sender == sortMembersSwitch) {
+        [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
+    } else if (sender == displayLeftMembersSwitch) {
+        [AppSettings sharedSettings].displayLeftUsers = displayLeftMembersSwitch.on;
+    }
+}
+
+- (IBAction)onSliderValueChange:(id)sender {
+    if (sender == maxCacheSizeCell.settingSlider) {
+        
+        MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
+        UISlider* slider = maxCacheSizeCell.settingSlider;
+        
+        // check if the upper bounds have been updated
+        if (slider.maximumValue != mxHandler.maxAllowedCachesSize) {
+            slider.maximumValue = mxHandler.maxAllowedCachesSize;
+        }
+        
+        // check if the value does not exceed the bounds
+        if (slider.value < mxHandler.minCachesSize) {
+            slider.value = mxHandler.minCachesSize;
+        }
+        
+        [[MatrixSDKHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
+        
+        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+    }
+}
+
+#pragma mark - keyboard
+
 - (void)dismissKeyboard {
     if ([_userDisplayName isFirstResponder]) {
         // Hide the keyboard
         [_userDisplayName resignFirstResponder];
         [self manageSaveChangeButton];
-    }
-    
-    if ([wordsListTextField isFirstResponder]) {
+    } else if ([wordsListTextField isFirstResponder]) {
         [self manageWordsList];
         [wordsListTextField resignFirstResponder];
+    } else if ([linkedEmailCell.settingTextField isFirstResponder]) {
+        [linkedEmailCell.settingTextField resignFirstResponder];
     }
 }
 
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField {
-    if ((_userDisplayName == textField) || (wordsListTextField == textField)) {
-        // "Done" key has been pressed
-        [self dismissKeyboard];
-    }
+    // "Done" key has been pressed
+    [self dismissKeyboard];
     return YES;
 }
 
 - (IBAction)textFieldDidChange:(id)sender {
     if (sender == _userDisplayName) {
         [self manageSaveChangeButton];
+    } else if (sender == linkedEmailCell.settingTextField) {
+        linkedEmailCell.settingButton.enabled = (linkedEmailCell.settingTextField.text.length != 0);
     }
 }
 
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.tableView == aTableView) {
-        // tap on clear application cache
-        if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
-            // clear caches
-            [[MatrixSDKHandler sharedHandler] forceInitialSync:YES];
-        }
-        
-        [aTableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
-}
-
-#pragma mark - Table view data source
+#pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return SETTINGS_SECTION_COUNT;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+    if (section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
+        return linkedEmails.count + 1;
+    } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         
         enableInAppRowIndex = setInAppWordRowIndex = enablePushNotificationdRowIndex = -1;
         
@@ -729,7 +747,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+    if (indexPath.section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
+        return 44;
+    } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         if (indexPath.row == setInAppWordRowIndex) {
             return 110;
         }
@@ -770,7 +790,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     sectionHeader.font = [UIFont boldSystemFontOfSize:16];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     
-    if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+    if (section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
+        sectionHeader.text = @" Linked emails";
+    } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         sectionHeader.text = @" Notifications";
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
         sectionHeader.text = @" Rooms";
@@ -784,31 +806,23 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     return sectionHeader;
 }
 
-- (void)refreshWordsList {
-    NSMutableString* wordsList = [[NSMutableString alloc] init];
-    NSArray* patterns = [AppSettings sharedSettings].specificWordsToAlertOn;
-    
-    for(NSString* string in patterns) {
-        [wordsList appendFormat:@"%@,", string];
-    }
-    
-    if (wordsList.length > 0) {
-        wordsListTextField.text = [wordsList substringToIndex:wordsList.length - 1];
-    }
-    else {
-        wordsListTextField.text = nil;
-    }
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
     
-    if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        
+    if (indexPath.section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
+        // Report the current email value (if any)
+        NSString *currentEmail = nil;
+        if (linkedEmailCell) {
+            currentEmail = linkedEmailCell.settingTextField.text;
+        }
+        linkedEmailCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextFieldAndButton" forIndexPath:indexPath];
+        linkedEmailCell.settingTextField.text = currentEmail;
+        linkedEmailCell.settingButton.enabled = (currentEmail.length != 0);
+        cell = linkedEmailCell;
+    } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         if (indexPath.row == setInAppWordRowIndex) {
             SettingsCellWithLabelAndTextField* settingsCellWithLabelAndTextField = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndTextField" forIndexPath:indexPath];
             
-            settingsCellWithLabelAndTextField.settingTextField.delegate = self;
             wordsListTextField = settingsCellWithLabelAndTextField.settingTextField;
             
             // update the text only if it is not the first responder
@@ -817,9 +831,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
         
             cell = settingsCellWithLabelAndTextField;
-        }
-        else {
-            SettingsTableCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+        } else {
+            SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
             if (indexPath.row == enableInAppRowIndex) {
                 notificationsCell.settingLabel.text = @"Enable In-App notifications";
                 notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
@@ -834,7 +847,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
-            
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
@@ -853,7 +865,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             [self onSliderValueChange:maxCacheSizeCell.settingSlider];
         
         } else {
-            SettingsTableCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            SettingsCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
             
             if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Display all events";
@@ -876,13 +888,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell = roomsSettingCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
-        SettingsTableCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+        SettingsCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
         NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         configCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         cell = configCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
-        SettingsTableCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+        SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
         commandsCell.settingTextView.text = kCommandsDescriptionText;
         cell = commandsCell;
     }
@@ -890,12 +902,26 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     return cell;
 }
 
+#pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.tableView == aTableView) {
+        // tap on clear application cache
+        if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
+            // clear caches
+            [[MatrixSDKHandler sharedHandler] forceInitialSync:YES];
+        }
+        
+        [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
 # pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     if (selectedImage) {
-        [self updateAvatarImage:selectedImage];
+        [self updateUserPictureButton:selectedImage];
         isAvatarUpdated = YES;
         _saveUserInfoButton.enabled = YES;
     }
@@ -909,7 +935,5 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)dismissMediaPicker {
     [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
 }
-
-# pragma mark - UITextViewDelegate
 
 @end
