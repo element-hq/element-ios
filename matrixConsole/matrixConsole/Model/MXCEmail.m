@@ -15,7 +15,7 @@
  */
 
 #import "MXCEmail.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 #import "MXCContact.h"
 

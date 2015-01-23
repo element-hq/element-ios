@@ -20,7 +20,7 @@
 #import "MXCPhoneNumber.h"
 #import "MXCEmail.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 // warn when there is a contacts list refresh
 NSString *const kContactManagerRefreshNotification = @"kContactManagerRefreshNotification";
@@ -155,7 +155,7 @@ static ContactManager* sharedContactManager = nil;
     
     // get some pids
     if (pids.count > 0) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
         if (mxHandler.mxRestClient) {
             [mxHandler.mxRestClient lookup3pids:pids
@@ -193,7 +193,7 @@ static ContactManager* sharedContactManager = nil;
                                                 }
                                                 
                                                 // check if the some room users are not defined in the local contacts book
-                                                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+                                                MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
                                                 
                                                 // check if the user is already known
                                                 NSArray* users = [mxHandler.mxSession users];

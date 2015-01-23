@@ -61,7 +61,7 @@
     }
     
     if (membersListener) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -86,7 +86,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
@@ -148,7 +148,7 @@
     }
     
     if (membersListener) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -166,7 +166,7 @@
     
     if (_mxRoomMember.avatarUrl) {
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         thumbnailURL = [mxHandler thumbnailURLForContent:_mxRoomMember.avatarUrl inViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         
         // Check whether the image download is in progress
@@ -239,7 +239,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
@@ -367,7 +367,7 @@
 }
 
 - (void) setUserPowerLevel:(MXRoomMember*)roomMember to:(int)value {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     int currentPowerLevel = (int)([mxHandler getPowerLevel:roomMember inRoom:self.mxRoom] * 100);
     
     // check if the power level has not yet been set to 0
@@ -389,7 +389,7 @@
 }
 
 - (void) updateUserPowerLevel:(MXRoomMember*)roomMember {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     __weak typeof(self) weakSelf = self;
     
     // Ask for userId to invite
@@ -500,7 +500,7 @@
         } else if ([text isEqualToString:@"Start chat"]) {
             [self addPendingActionMask];
             
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             NSString* roomId = [mxHandler getRoomStartedWithMember:_mxRoomMember];
             
             // if the room has already been started

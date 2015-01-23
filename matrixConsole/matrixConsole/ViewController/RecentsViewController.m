@@ -21,7 +21,7 @@
 #import "RecentsTableViewCell.h"
 
 #import "AppDelegate.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 #import "MediaManager.h"
 
@@ -85,7 +85,7 @@
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     [dateFormatter setDateFormat:dateFormat];
     
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
+    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
 }
 
 - (void)dealloc {
@@ -94,7 +94,7 @@
         currentRoomViewController = nil;
     }
     if (recentsListener) {
-        [[MatrixHandler sharedHandler].mxSession removeListener:recentsListener];
+        [[MatrixSDKHandler sharedHandler].mxSession removeListener:recentsListener];
         recentsListener = nil;
     }
     recents = nil;
@@ -105,7 +105,7 @@
     if (dateFormatter) {
         dateFormatter = nil;
     }
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,7 +118,7 @@
     
     // Refresh display
     [self configureView];
-    [[MatrixHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
+    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -134,7 +134,7 @@
     [self stopActivityIndicator];
     
     _preSelectedRoomId = nil;
-    [[MatrixHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -202,7 +202,7 @@
 - (void)refreshRecentsDisplay {
     // Check whether the current selected room has not been left
     if (currentRoomViewController.roomId) {
-        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomId];
+        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomId];
         if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
             // release the room viewController
             currentRoomViewController.roomId = nil;
@@ -214,14 +214,14 @@
 }
 
 - (void)configureView {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     [self startActivityIndicator];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kRecentRoomUpdatedByBackPagination object:nil];
     
     if (mxHandler.mxSession) {
         // Check matrix handler status
-        if (mxHandler.status == MatrixHandlerStatusStoreDataReady) {
+        if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) {
             // Server sync is not complete yet
             if (!recents) {
                 // Retrieve recents from local storage (some data may not be up-to-date)
@@ -236,7 +236,7 @@
                 }
                 unreadCount = 0;
             }
-        } else if (mxHandler.status == MatrixHandlerStatusServerSyncDone) {
+        } else if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) {
             // Force recents refresh and add listener to update them (if it is not already done)
             if (!recentsListener) {
                 NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
@@ -343,7 +343,7 @@
             self.preSelectedRoomId = _preSelectedRoomId;
         }
     } else {
-        if (mxHandler.status == MatrixHandlerStatusLoggedOut) {
+        if (mxHandler.status == MatrixSDKHandlerStatusLoggedOut) {
             [self stopActivityIndicator];
             // Update title
             unreadCount = 0;
@@ -445,7 +445,7 @@
             }
         });
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixHandler sharedHandler] isResumeDone]) {
+        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
             [self stopActivityIndicator];
         } else {
             [self startActivityIndicator];
@@ -537,7 +537,7 @@
         recentRoom = recents[indexPath.row];
     }
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
     
     cell.roomTitle.text = [mxRoom.state displayname];
@@ -582,7 +582,7 @@
             selectedRoom = recents[indexPath.row];
         }
         
-        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:selectedRoom.roomId];
+        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:selectedRoom.roomId];
 
         // cancel pending uploads/downloads
         // they are useless by now
@@ -633,7 +633,7 @@
         } else {
             filteredRecents = [NSMutableArray arrayWithCapacity:recents.count];
         }
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         for (RecentRoom *recentRoom in recents) {
             MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
             if ([[mxRoom.state displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {

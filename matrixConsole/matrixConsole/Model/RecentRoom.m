@@ -15,7 +15,7 @@
  */
 
 #import "RecentRoom.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackPagination";
 
@@ -30,7 +30,7 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
 
 - (id)initWithLastEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState markAsUnread:(BOOL)isUnread {
     if (self = [super init]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         _roomId = event.roomId;
         _lastEventDescription = [mxHandler displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
         _lastEventOriginServerTs = event.originServerTs;
@@ -61,7 +61,7 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
 
 - (BOOL)updateWithLastEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState markAsUnread:(BOOL)isUnread {
     // Check whether the description of the provided event is not empty
-    NSString *description = [[MatrixHandler sharedHandler] displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
+    NSString *description = [[MatrixSDKHandler sharedHandler] displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
     if (description.length) {
         [self cancelBackPagination];
         // Update current last event

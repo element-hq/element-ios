@@ -20,7 +20,7 @@
 #import "MXCContact.h"
 
 // image URL
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 // get the thumbnail
 #import "MediaManager.h"
@@ -87,7 +87,7 @@
         if (avatarURL.length > 0) {
             [self downloadAvatarImage];
         } else {
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             
             // check if the user is already known
             MXUser* user = [mxHandler.mxSession userWithUserId:_matrixID];

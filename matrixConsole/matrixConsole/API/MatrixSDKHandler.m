@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "AppSettings.h"
 #import "MXCAlert.h"
@@ -24,11 +24,11 @@
 
 #import "MediaManager.h"
 
-NSString *const kMatrixHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
+NSString *const kMatrixSDKHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
 
-static MatrixHandler *sharedHandler = nil;
+static MatrixSDKHandler *sharedHandler = nil;
 
-@interface MatrixHandler () {
+@interface MatrixSDKHandler () {
     // We will notify user only once on session failure
     BOOL notifyOpenSessionFailure;
     
@@ -39,17 +39,17 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 @property (strong, nonatomic) MXFileStore *mxFileStore;
-@property (nonatomic,readwrite) MatrixHandlerStatus status;
+@property (nonatomic,readwrite) MatrixSDKHandlerStatus status;
 @property (nonatomic,readwrite) BOOL isResumeDone;
 @property (strong, nonatomic) MXCAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 @end
 
-@implementation MatrixHandler
+@implementation MatrixSDKHandler
 
 @synthesize homeServerURL, homeServer, userLogin, userId, accessToken;
 
-+ (MatrixHandler *)sharedHandler {
++ (MatrixSDKHandler *)sharedHandler {
     @synchronized(self) {
         if(sharedHandler == nil)
         {
@@ -61,14 +61,14 @@ static MatrixHandler *sharedHandler = nil;
 
 #pragma  mark - 
 
--(MatrixHandler *)init {
+-(MatrixSDKHandler *)init {
     if (self = [super init]) {
-        _status = (self.accessToken != nil) ? MatrixHandlerStatusLogged : MatrixHandlerStatusLoggedOut;
+        _status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
         _isResumeDone = NO;
         _userPresence = MXPresenceUnknown;
         notifyOpenSessionFailure = YES;
         
-        NSString *label = [NSString stringWithFormat:@"com.matrix.%@.MatrixHandler", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
+        NSString *label = [NSString stringWithFormat:@"com.matrix.%@.MatrixSDKHandler", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
         _processingQueue = dispatch_queue_create([label UTF8String], DISPATCH_QUEUE_SERIAL);
         
         // Read potential homeserver url in shared defaults object
@@ -124,10 +124,10 @@ static MatrixHandler *sharedHandler = nil;
 
             // Launch mxSession
             [self.mxSession start:^{
-                self.status = MatrixHandlerStatusStoreDataReady;
+                self.status = MatrixSDKHandlerStatusStoreDataReady;
             } onServerSyncDone:^{
                 _isResumeDone = YES;
-                self.status = MatrixHandlerStatusServerSyncDone;
+                self.status = MatrixSDKHandlerStatusServerSyncDone;
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
 
                 // Register listener to update user's information
@@ -225,7 +225,7 @@ static MatrixHandler *sharedHandler = nil;
 #pragma mark -
 
 - (void)pauseInBackgroundTask {
-    if (self.mxSession && self.status == MatrixHandlerStatusServerSyncDone) {
+    if (self.mxSession && self.status == MatrixSDKHandlerStatusServerSyncDone) {
         _bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
@@ -249,7 +249,7 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)resume {
-    if (self.mxSession && self.status == MatrixHandlerStatusServerSyncDone) {
+    if (self.mxSession && self.status == MatrixSDKHandlerStatusServerSyncDone) {
         if (!self.isResumeDone) {
             // Resume SDK and update user presence
             [self.mxSession resume:^{
@@ -278,8 +278,8 @@ static MatrixHandler *sharedHandler = nil;
 }
 
 - (void)forceInitialSync:(BOOL)clearCache {
-    if (self.status == MatrixHandlerStatusServerSyncDone || self.status == MatrixHandlerStatusStoreDataReady) {
-        self.status = MatrixHandlerStatusLogged;
+    if (self.status == MatrixSDKHandlerStatusServerSyncDone || self.status == MatrixSDKHandlerStatusStoreDataReady) {
+        self.status = MatrixSDKHandlerStatusLogged;
         [self closeSession];
         notifyOpenSessionFailure = NO;
         
@@ -334,12 +334,12 @@ static MatrixHandler *sharedHandler = nil;
                         self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
                                                                                                   style:MXCAlertActionStyleDefault
                                                                                                 handler:^(MXCAlert *alert) {
-                                                                                                    [MatrixHandler sharedHandler].mxNotification = nil;
+                                                                                                    [MatrixSDKHandler sharedHandler].mxNotification = nil;
                                                                                                 }];
                         [self.mxNotification addActionWithTitle:@"View"
                                                           style:MXCAlertActionStyleDefault
                                                         handler:^(MXCAlert *alert) {
-                                                            [MatrixHandler sharedHandler].mxNotification = nil;
+                                                            [MatrixSDKHandler sharedHandler].mxNotification = nil;
                                                             // Show the room
                                                             [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
                                                         }];
@@ -442,11 +442,11 @@ static MatrixHandler *sharedHandler = nil;
     if (inAccessToken.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
         [[AppDelegate theDelegate] registerUserNotificationSettings];
-        self.status = MatrixHandlerStatusLogged;
+        self.status = MatrixSDKHandlerStatusLogged;
         [self openSession];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
-        self.status = MatrixHandlerStatusLoggedOut;
+        self.status = MatrixSDKHandlerStatusLoggedOut;
         [self closeSession];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -713,7 +713,7 @@ static MatrixHandler *sharedHandler = nil;
                         displayText = @"invalid image attachment";
                     } else {
                         // Display event content as unsupported message
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, event.description];
+                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
                     }
                 }
             } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
@@ -723,7 +723,7 @@ static MatrixHandler *sharedHandler = nil;
                     if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
                         displayText = @"invalid audio attachment";
                     } else {
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, event.description];
+                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
                     }
                 }
             } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
@@ -733,7 +733,7 @@ static MatrixHandler *sharedHandler = nil;
                     if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
                         displayText = @"invalid video attachment";
                     } else {
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, event.description];
+                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
                     }
                 }
             } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
@@ -743,7 +743,7 @@ static MatrixHandler *sharedHandler = nil;
                     if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
                         displayText = @"invalid location attachment";
                     } else {
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, event.description];
+                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
                     }
                 }
             }
@@ -773,7 +773,7 @@ static MatrixHandler *sharedHandler = nil;
         NSLog(@"ERROR: Unsupported event %@)", event.description);
         if (!isSubtitle && ![AppSettings sharedSettings].hideUnsupportedMessages) {
             // Return event content as unsupported event
-            displayText = [NSString stringWithFormat:@"%@%@", kMatrixHandlerUnsupportedMessagePrefix, event.description];
+            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
         }
     }
     
@@ -894,7 +894,7 @@ static MatrixHandler *sharedHandler = nil;
 
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     NSMutableArray* wordsList = [[AppSettings sharedSettings].specificWordsToAlertOn mutableCopy];
     
