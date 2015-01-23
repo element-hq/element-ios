@@ -185,41 +185,32 @@
             [self performSegueWithIdentifier:@"showDetail" sender:recentCell];
         } else {
             NSLog(@"We are not able to open room (%@) because it does not appear in recents yet", roomId);
-            // Postpone room details display. We run activity indicator until recents are updated
+            // Postpone room details display. We run activity indicator until recents are updated (thanks to recents listener)
             _preSelectedRoomId = roomId;
             // Start activity indicator
             [self startActivityIndicator];
         }
+    } else if (currentRoomViewController) {
+        // Release the current selected room
+        currentRoomViewController.roomId = nil;
+        currentRoomViewController = nil;
     }
 }
 
 #pragma mark - Internal methods
 
-// remove the focus on a deleted room
-// when the view is splitted between the recents and the selected rooms
-- (void)checkSelectedRoomExists {
-    // IOS 8 only
-    if ([self.splitViewController respondsToSelector:@selector(isCollapsed)]) {
-        // there is a split view recents / chat view
-        if (!self.splitViewController.isCollapsed && currentRoomViewController.roomId) {
-            
-            // check if the room still exists
-            BOOL exists = NO;
-            
-            for(RecentRoom* recentRoom in recents) {
-                exists |= [recentRoom.roomId isEqualToString:currentRoomViewController.roomId];        
-            }
-            
-            // if it does not exist anymore
-            if (!exists) {
-                // release the room viewController
-                currentRoomViewController.roomId = nil;
-                currentRoomViewController = nil;
-                // delete the selected row
-                [self.tableView selectRowAtIndexPath:nil animated:NO scrollPosition: UITableViewScrollPositionNone];
-            }
+- (void)refreshRecentsDisplay {
+    // Check whether the current selected room has not been left
+    if (currentRoomViewController.roomId) {
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomId];
+        if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
+            // release the room viewController
+            currentRoomViewController.roomId = nil;
+            currentRoomViewController = nil;
         }
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)configureView {
@@ -280,11 +271,28 @@
                                 if (isLeft) {
                                     // Remove left room
                                     [recents removeObjectAtIndex:index];
+                                    if (filteredRecents) {
+                                        NSUInteger filteredIndex = [filteredRecents indexOfObject:recentRoom];
+                                        if (filteredIndex != NSNotFound) {
+                                            [filteredRecents removeObjectAtIndex:filteredIndex];
+                                        }
+                                    }
                                 } else {
                                     if ([recentRoom updateWithLastEvent:event andRoomState:roomState markAsUnread:isUnread]) {
-                                        // Move this room at first position
-                                        [recents removeObjectAtIndex:index];
-                                        [recents insertObject:recentRoom atIndex:0];
+                                        if (index) {
+                                            // Move this room at first position
+                                            [recents removeObjectAtIndex:index];
+                                            [recents insertObject:recentRoom atIndex:0];
+                                        }
+                                        // Update filtered recents (if any)
+                                        if (filteredRecents) {
+                                            NSUInteger filteredIndex = [filteredRecents indexOfObject:recentRoom];
+                                            if (filteredIndex && filteredIndex != NSNotFound) {
+                                                [filteredRecents removeObjectAtIndex:filteredIndex];
+                                                [filteredRecents insertObject:recentRoom atIndex:0];
+                                            }
+                                        }
+                                        
                                         if (isUnread) {
                                             unreadCount++;
                                             [self updateTitleView];
@@ -303,13 +311,19 @@
                                     unreadCount++;
                                     [self updateTitleView];
                                 }
+                                
+                                // Check whether we were waiting for this room
+                                if (_preSelectedRoomId) {
+                                    if ([recentRoom.roomId isEqualToString:_preSelectedRoomId]) {
+                                        [self stopActivityIndicator];
+                                        self.preSelectedRoomId = _preSelectedRoomId;
+                                    }
+                                }
                             }
                         }
                         
-                        [self checkSelectedRoomExists];
-                        
                         // Reload table
-                        [self.tableView reloadData];
+                        [self refreshRecentsDisplay];
                     }
                 }];
             }
@@ -329,6 +343,13 @@
             self.preSelectedRoomId = _preSelectedRoomId;
         }
     } else {
+        if (mxHandler.status == MatrixHandlerStatusLoggedOut) {
+            [self stopActivityIndicator];
+            // Update title
+            unreadCount = 0;
+            [self updateTitleView];
+        }
+        
         recents = nil;
         [self.tableView reloadData];
     }
@@ -374,9 +395,18 @@
             recentsSearchBar.returnKeyType = UIReturnKeyDone;
             recentsSearchBar.delegate = self;
             searchBarShouldEndEditing = NO;
+            // add it to the tableHeaderView
+            // do not create a header view
+            // the header view is refreshed every time there is a [tableView reloaddata]
+            // i.e. there is a removeFromSuperView call, the view is added to the tableview..
+            // with a first respondable view, IOS seems lost to find the first responder
+            // so, the keyboard is always displayed and can not be dismissed
+            // tableHeaderView is never removed from superview so the first responder is not lost
+            self.tableView.tableHeaderView = recentsSearchBar;
+
             [recentsSearchBar becomeFirstResponder];
-            // Reload table in order to display search bar as section header
-            [self.tableView reloadData];
+            
+            [self scrollToTop];
         }
     } else {
         [self searchBarCancelButtonClicked: recentsSearchBar];
@@ -393,6 +423,14 @@
 - (void)stopActivityIndicator {
     [_activityIndicator stopAnimating];
     [_activityIndicator removeFromSuperview];
+}
+
+- (void)scrollToTop {
+    // stop any scrolling effect
+    [UIView setAnimationsEnabled:NO];
+    // before scrolling to the tableview top
+    self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
+    [UIView setAnimationsEnabled:YES];
 }
 
 #pragma mark - KVO
@@ -450,20 +488,25 @@
         [self updateTitleView];
         
         if (self.splitViewController) {
-            // Refresh display (required in case of splitViewController)
-            [self.tableView reloadData];
-            
             // IOS >= 8
             if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
                 controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
             }
             
+            // hide the keyboard when opening a new controller
+            // do not hide the searchBar until the RecentsViewController is dismissed
+            // on tablets / iphone 6+, the user could expect to search again while looking at a room
+            if ([recentsSearchBar isFirstResponder]) {
+                searchBarShouldEndEditing = YES;
+                [recentsSearchBar resignFirstResponder];
+            }
+    
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
         
         // Hide back button title
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
@@ -482,17 +525,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (recentsSearchBar) {
-        return recentsSearchBar.frame.size.height;
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return recentsSearchBar;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -542,34 +574,40 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
         // Leave the selected room
-        RecentRoom *recentRoom;
+        RecentRoom *selectedRoom;
         if (filteredRecents) {
-            recentRoom = filteredRecents[indexPath.row];
+            selectedRoom = filteredRecents[indexPath.row];
         } else {
-            recentRoom = recents[indexPath.row];
+            selectedRoom = recents[indexPath.row];
         }
         
-        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:recentRoom.roomId];
+        MXRoom *mxRoom = [[MatrixHandler sharedHandler].mxSession roomWithRoomId:selectedRoom.roomId];
 
         // cancel pending uploads/downloads
         // they are useless by now
-        [MediaManager cancelDownloadsInFolder:recentRoom.roomId];
-        [MediaManager cancelUploadsInFolder:recentRoom.roomId];
+        [MediaManager cancelDownloadsInFolder:selectedRoom.roomId];
+        [MediaManager cancelUploadsInFolder:selectedRoom.roomId];
         
         [mxRoom leave:^{
-            // Refresh table display
-            if (filteredRecents) {
-                [filteredRecents removeObjectAtIndex:indexPath.row];
-            } else {
-                [recents removeObjectAtIndex:indexPath.row];
+            // Remove the selected room (if it is not already done by recents listener)
+            for (NSUInteger index = 0; index < recents.count; index++) {
+                RecentRoom *recentRoom = [recents objectAtIndex:index];
+                if ([recentRoom.roomId isEqualToString:selectedRoom.roomId]) {
+                    [recents removeObjectAtIndex:index];
+                    if (filteredRecents) {
+                        NSUInteger filteredIndex = [filteredRecents indexOfObject:selectedRoom];
+                        if (filteredIndex != NSNotFound) {
+                            [filteredRecents removeObjectAtIndex:filteredIndex];
+                        }
+                    }
+                    break;
+                }
             }
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            
-            [self checkSelectedRoomExists];
+            // Refresh table display
+            [self refreshRecentsDisplay];
         } failure:^(NSError *error) {
-            NSLog(@"Failed to leave room (%@) failed: %@", recentRoom.roomId, error);
+            NSLog(@"Failed to leave room (%@) failed: %@", selectedRoom.roomId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
@@ -607,9 +645,7 @@
     }
     // Refresh display
     [self.tableView reloadData];
-    if (filteredRecents.count) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+    [self scrollToTop];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -624,7 +660,9 @@
     [searchBar resignFirstResponder];
     recentsSearchBar = nil;
     filteredRecents = nil;
+    self.tableView.tableHeaderView = nil;
     [self.tableView reloadData];
+    [self scrollToTop];
 }
 
 @end

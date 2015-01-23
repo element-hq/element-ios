@@ -188,36 +188,45 @@
 #pragma mark - UIAlertViewDelegate (iOS < 8)
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Retrieve the callback
-    blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
-    if ([block isEqual:[NSNull null]] == NO) {
-        // And call it
+    // sanity check
+    // the user could have forgotten to set the cancel button index
+    if (buttonIndex < actions.count) {
+        // Retrieve the callback
+        blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
+        if ([block isEqual:[NSNull null]] == NO) {
+            // And call it
+            dispatch_async(dispatch_get_main_queue(), ^{
+                block(self);
+            });
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            block(self);
+            // Release alert reference
+            _alert = nil;
         });
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Release alert reference
-        _alert = nil;
-    });
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Retrieve the callback
-    blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
-    if ([block isEqual:[NSNull null]] == NO) {
-        // And call it
+    
+    // sanity check
+    // the user could have forgotten to set the cancel button index
+    if (buttonIndex < actions.count) {
+        // Retrieve the callback
+        blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
+        if ([block isEqual:[NSNull null]] == NO) {
+            // And call it
+            dispatch_async(dispatch_get_main_queue(), ^{
+                block(self);
+            });
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
-            block(self);
+            // Release _alert reference
+            _alert = nil;
         });
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Release _alert reference
-        _alert = nil;
-    });
 }
 
 @end
