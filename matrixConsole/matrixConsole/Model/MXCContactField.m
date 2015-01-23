@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
-#import "ConsoleContactField.h"
+#import "MXCContactField.h"
 
 // wanr when there is a contact update
-#import "ConsoleContact.h"
+#import "MXCContact.h"
 
 // image URL
 #import "MatrixHandler.h"
@@ -26,12 +26,12 @@
 #import "MediaManager.h"
 
 
-@interface ConsoleContactField() {
+@interface MXCContactField() {
     NSString* avatarURL;
 }
 @end
 
-@implementation ConsoleContactField
+@implementation MXCContactField
 
 - (void) fieldInit {
     // init members
@@ -63,7 +63,7 @@
         _matrixID = aMatrixID;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactMatrixIdentifierUpdateNotification object:_contactID userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXCContactMatrixIdentifierUpdateNotification object:_contactID userInfo:nil];
         });
     }
 }
@@ -127,7 +127,7 @@
         // the image is already in the cache
         if (_avatarImage) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactThumbnailUpdateNotification object:_contactID userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXCContactThumbnailUpdateNotification object:_contactID userInfo:nil];
             });
         } else  {
             MediaLoader* loader = [MediaManager existingDownloaderForURL:avatarURL inFolder:kMediaManagerThumbnailFolder];
@@ -153,7 +153,7 @@
                 _avatarImage = image;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kConsoleContactThumbnailUpdateNotification object:_contactID userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXCContactThumbnailUpdateNotification object:_contactID userInfo:nil];
                 });
             }
         }

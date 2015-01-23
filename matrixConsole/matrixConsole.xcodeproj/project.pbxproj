@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		710210A41A67A4B600364868 /* MXCGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* MXCGrowingTextView.m */; };
 		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
-		710CC3C21A70F28F006EE973 /* ConsoleContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* ConsoleContactField.m */; };
+		710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* MXCContactField.m */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
 		71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D281A6E3DC000E59A9E /* ContactsViewController.m */; };
 		71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D2B1A6E433900E59A9E /* ContactTableCell.m */; };
-		71193D361A6E49F000E59A9E /* ConsoleContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D311A6E49F000E59A9E /* ConsoleContact.m */; };
-		71193D371A6E49F000E59A9E /* ConsoleEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D331A6E49F000E59A9E /* ConsoleEmail.m */; };
-		71193D381A6E49F000E59A9E /* ConsolePhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D351A6E49F000E59A9E /* ConsolePhoneNumber.m */; };
+		71193D361A6E49F000E59A9E /* MXCContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D311A6E49F000E59A9E /* MXCContact.m */; };
+		71193D371A6E49F000E59A9E /* MXCEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D331A6E49F000E59A9E /* MXCEmail.m */; };
+		71193D381A6E49F000E59A9E /* MXCPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */; };
 		71193D3B1A6E50EC00E59A9E /* ContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D3A1A6E50EC00E59A9E /* ContactManager.m */; };
 		71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D3D1A6E61AD00E59A9E /* SectionedContacts.m */; };
 		71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */; };
@@ -83,19 +83,19 @@
 		710210A21A67A4B600364868 /* MXCGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCGrowingTextView.h; sourceTree = "<group>"; };
 		710210A31A67A4B600364868 /* MXCGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCGrowingTextView.m; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
-		710CC3C01A70F28F006EE973 /* ConsoleContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleContactField.h; sourceTree = "<group>"; };
-		710CC3C11A70F28F006EE973 /* ConsoleContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleContactField.m; sourceTree = "<group>"; };
+		710CC3C01A70F28F006EE973 /* MXCContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContactField.h; sourceTree = "<group>"; };
+		710CC3C11A70F28F006EE973 /* MXCContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContactField.m; sourceTree = "<group>"; };
 		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		71193D281A6E3DC000E59A9E /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		71193D2A1A6E433900E59A9E /* ContactTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableCell.h; sourceTree = "<group>"; };
 		71193D2B1A6E433900E59A9E /* ContactTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableCell.m; sourceTree = "<group>"; };
-		71193D301A6E49F000E59A9E /* ConsoleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleContact.h; sourceTree = "<group>"; };
-		71193D311A6E49F000E59A9E /* ConsoleContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleContact.m; sourceTree = "<group>"; };
-		71193D321A6E49F000E59A9E /* ConsoleEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleEmail.h; sourceTree = "<group>"; };
-		71193D331A6E49F000E59A9E /* ConsoleEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleEmail.m; sourceTree = "<group>"; };
-		71193D341A6E49F000E59A9E /* ConsolePhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsolePhoneNumber.h; sourceTree = "<group>"; };
-		71193D351A6E49F000E59A9E /* ConsolePhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsolePhoneNumber.m; sourceTree = "<group>"; };
+		71193D301A6E49F000E59A9E /* MXCContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContact.h; sourceTree = "<group>"; };
+		71193D311A6E49F000E59A9E /* MXCContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContact.m; sourceTree = "<group>"; };
+		71193D321A6E49F000E59A9E /* MXCEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCEmail.h; sourceTree = "<group>"; };
+		71193D331A6E49F000E59A9E /* MXCEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCEmail.m; sourceTree = "<group>"; };
+		71193D341A6E49F000E59A9E /* MXCPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCPhoneNumber.h; sourceTree = "<group>"; };
+		71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCPhoneNumber.m; sourceTree = "<group>"; };
 		71193D391A6E50EC00E59A9E /* ContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactManager.h; sourceTree = "<group>"; };
 		71193D3A1A6E50EC00E59A9E /* ContactManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactManager.m; sourceTree = "<group>"; };
 		71193D3C1A6E61AD00E59A9E /* SectionedContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionedContacts.h; sourceTree = "<group>"; };
@@ -309,16 +309,16 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				71193D301A6E49F000E59A9E /* ConsoleContact.h */,
-				71193D311A6E49F000E59A9E /* ConsoleContact.m */,
-				710CC3C01A70F28F006EE973 /* ConsoleContactField.h */,
-				710CC3C11A70F28F006EE973 /* ConsoleContactField.m */,
-				71193D321A6E49F000E59A9E /* ConsoleEmail.h */,
-				71193D331A6E49F000E59A9E /* ConsoleEmail.m */,
+				71193D301A6E49F000E59A9E /* MXCContact.h */,
+				71193D311A6E49F000E59A9E /* MXCContact.m */,
+				710CC3C01A70F28F006EE973 /* MXCContactField.h */,
+				710CC3C11A70F28F006EE973 /* MXCContactField.m */,
+				71193D321A6E49F000E59A9E /* MXCEmail.h */,
+				71193D331A6E49F000E59A9E /* MXCEmail.m */,
 				710210A21A67A4B600364868 /* MXCGrowingTextView.h */,
 				710210A31A67A4B600364868 /* MXCGrowingTextView.m */,
-				71193D341A6E49F000E59A9E /* ConsolePhoneNumber.h */,
-				71193D351A6E49F000E59A9E /* ConsolePhoneNumber.m */,
+				71193D341A6E49F000E59A9E /* MXCPhoneNumber.h */,
+				71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */,
 				F0D942F41A31F3A300826CC1 /* RecentRoom.h */,
 				F0D942F51A31F3A300826CC1 /* RecentRoom.m */,
 				F0465AF81A251F85003639F9 /* RoomMessage.h */,
@@ -559,14 +559,14 @@
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
-				71193D371A6E49F000E59A9E /* ConsoleEmail.m in Sources */,
+				71193D371A6E49F000E59A9E /* MXCEmail.m in Sources */,
 				F05B955F19DEED8A008761B0 /* MatrixHandler.m in Sources */,
 				71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */,
 				F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
 				F02900BB1A63C71E00356F7D /* MXCTools.m in Sources */,
-				71193D361A6E49F000E59A9E /* ConsoleContact.m in Sources */,
-				710CC3C21A70F28F006EE973 /* ConsoleContactField.m in Sources */,
+				71193D361A6E49F000E59A9E /* MXCContact.m in Sources */,
+				710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */,
 				F01A0FF31A27314B009FAE2F /* RoomMessageComponent.m in Sources */,
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
@@ -582,7 +582,7 @@
 				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
 				F03C47111A02952800E445AB /* MXCAlert.m in Sources */,
 				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
-				71193D381A6E49F000E59A9E /* ConsolePhoneNumber.m in Sources */,
+				71193D381A6E49F000E59A9E /* MXCPhoneNumber.m in Sources */,
 				71193D3B1A6E50EC00E59A9E /* ContactManager.m in Sources */,
 				71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,

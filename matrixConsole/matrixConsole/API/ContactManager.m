@@ -16,9 +16,9 @@
 
 #import "ContactManager.h"
 
-#import "ConsoleContact.h"
-#import "ConsolePhoneNumber.h"
-#import "ConsoleEmail.h"
+#import "MXCContact.h"
+#import "MXCPhoneNumber.h"
+#import "MXCEmail.h"
 
 #import "MatrixHandler.h"
 
@@ -103,7 +103,7 @@ static ContactManager* sharedContactManager = nil;
             
             for (index = 0; index < peopleCount; index++) {
                 contactRecord = (ABRecordRef)CFArrayGetValueAtIndex(people, index);
-                [contactsList addObject:[[ConsoleContact alloc] initWithABRecord:contactRecord]];
+                [contactsList addObject:[[MXCContact alloc] initWithABRecord:contactRecord]];
             }
             
             CFRelease(people);
@@ -128,7 +128,7 @@ static ContactManager* sharedContactManager = nil;
     NSMutableArray* pids = [[NSMutableArray alloc] init];
     NSMutableArray* medias = [[NSMutableArray alloc] init];
     
-    for(ConsoleContact* contact in contacts) {
+    for(MXCContact* contact in contacts) {
         // the phonenumbers are not managed
         /*for(ConsolePhoneNumber* pn in contact.phoneNumbers) {
             if (pn.textNumber.length > 0) {
@@ -141,7 +141,7 @@ static ContactManager* sharedContactManager = nil;
             }
         }*/
         
-        for(ConsoleEmail* email in contact.emailAddresses) {
+        for(MXCEmail* email in contact.emailAddresses) {
             if (email.emailAddress.length > 0) {
                 
                 // not yet added
@@ -166,7 +166,7 @@ static ContactManager* sharedContactManager = nil;
                                                 
                                                 matrixIDBy3PID = [[NSMutableDictionary alloc] initWithObjects:userIds forKeys:pids];
                                                 
-                                                for(ConsoleContact* contact in contacts) {
+                                                for(MXCContact* contact in contacts) {
                                                     // the phonenumbers wil be managed later
                                                     /*for(ConsolePhoneNumber* pn in contact.phoneNumbers) {
                                                         if (pn.textNumber.length > 0) {
@@ -179,7 +179,7 @@ static ContactManager* sharedContactManager = nil;
                                                         }
                                                     }*/
                                                     
-                                                    for(ConsoleEmail* email in contact.emailAddresses) {
+                                                    for(MXCEmail* email in contact.emailAddresses) {
                                                         if (email.emailAddress.length > 0) {
                                                             id matrixID = [matrixIDBy3PID valueForKey:email.emailAddress];
                                                             
@@ -206,8 +206,8 @@ static ContactManager* sharedContactManager = nil;
                                                         NSString* dummyContactID = [NSString stringWithFormat:@"%lu", (unsigned long)user.userId.hash];
                                                         
                                                         // with the current API, there is no way to get the email from the matrxID
-                                                        ConsoleEmail* email = [[ConsoleEmail alloc] initWithEmailAddress:user.userId type:@"" contactID:dummyContactID matrixID:user.userId];
-                                                        ConsoleContact* contact = [[ConsoleContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) contactID:dummyContactID emails:@[email] phonenumbers:nil];
+                                                        MXCEmail* email = [[MXCEmail alloc] initWithEmailAddress:user.userId type:@"" contactID:dummyContactID matrixID:user.userId];
+                                                        MXCContact* contact = [[MXCContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) contactID:dummyContactID emails:@[email] phonenumbers:nil];
                                                         
                                                         [unknownRoomContacts addObject:contact];
                                                     }
@@ -251,7 +251,7 @@ static ContactManager* sharedContactManager = nil;
     
     int contactsCount = 0;
     
-    for (ConsoleContact *aContact in contactsList)
+    for (MXCContact *aContact in contactsList)
     {
         NSInteger section = [collation sectionForObject:aContact collationStringSelector:@selector(displayName)] + indexOffset;
         

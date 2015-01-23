@@ -19,12 +19,12 @@
 
 // warn when a contact has a new matrix identifier
 // the contactID is provided in parameter
-extern NSString *const kConsoleContactMatrixIdentifierUpdateNotification;
+extern NSString *const kMXCContactMatrixIdentifierUpdateNotification;
 // warn when the contact thumbnail is updated
 // the contactID is provided in parameter
-extern NSString *const kConsoleContactThumbnailUpdateNotification;
+extern NSString *const kMXCContactThumbnailUpdateNotification;
 
-@interface ConsoleContact : NSObject
+@interface MXCContact : NSObject
 
 // unique identifier
 @property (nonatomic, readonly) NSString * contactID;
@@ -32,9 +32,9 @@ extern NSString *const kConsoleContactThumbnailUpdateNotification;
 @property (nonatomic, readonly) NSString *displayName;
 // contact thumbnail
 @property (nonatomic, copy, readonly) UIImage *thumbnail;
-// array of ConsolePhoneNumber
+// array of MXCPhoneNumber
 @property (nonatomic, readonly) NSArray *phoneNumbers;
-// array of ConsoleEmail
+// array of MXCEmail
 @property (nonatomic, readonly) NSArray *emailAddresses;
 // array of matrix identifiers
 @property (nonatomic, readonly) NSArray* matrixIdentifiers;

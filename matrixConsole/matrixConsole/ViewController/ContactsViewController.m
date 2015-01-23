@@ -24,22 +24,22 @@
 
 // contacts management
 #import "ContactManager.h"
-#import "ConsoleContact.h"
-#import "ConsoleEmail.h"
-#import "ConsolePhoneNumber.h"
+#import "MXCContact.h"
+#import "MXCEmail.h"
+#import "MXCPhoneNumber.h"
 
 // contact cell
 #import "ContactTableCell.h"
 
 // alert
-#import "CustomAlert.h"
+#import "MXCAlert.h"
 
 
 
 NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
 @interface ContactsViewController ()
-@property (strong, nonatomic) CustomAlert *startChatMenu;
+@property (strong, nonatomic) MXCAlert *startChatMenu;
 @end
 
 @implementation ContactsViewController
@@ -128,7 +128,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     ContactTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     
-    ConsoleContact* contact = nil;
+    MXCContact* contact = nil;
     
     if (indexPath.section < sectionedContacts.sectionedContacts.count) {
         NSArray *thisSection = [sectionedContacts.sectionedContacts objectAtIndex:indexPath.section];
@@ -146,7 +146,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    ConsoleContact* contact = nil;
+    MXCContact* contact = nil;
     
     if (indexPath.section < sectionedContacts.sectionedContacts.count) {
         NSArray *thisSection = [sectionedContacts.sectionedContacts objectAtIndex:indexPath.section];
@@ -166,13 +166,13 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         
         NSString* matrixID = [matrixIDs objectAtIndex:0];
 
-        self.startChatMenu = [[CustomAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:CustomAlertStyleAlert];
+        self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:MXCAlertStyleAlert];
         
-        [self.startChatMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.startChatMenu = nil;
         }];
         
-        [self.startChatMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.startChatMenu = nil;
             
             MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
@@ -207,14 +207,14 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         // invite to use matrix
         if (([MFMessageComposeViewController canSendText] ? contact.emailAddresses.count : 0) + (contact.phoneNumbers.count > 0)) {
         
-            self.startChatMenu = [[CustomAlert alloc] initWithTitle:[NSString stringWithFormat:@"Invite this user to use matrix with"]  message:nil style:CustomAlertStyleActionSheet];
+            self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Invite this user to use matrix with"]  message:nil style:MXCAlertStyleActionSheet];
             
             // check if the target can send SMSes
             if ([MFMessageComposeViewController canSendText]) {
                 // list phonenumbers
-                for(ConsolePhoneNumber* phonenumber in contact.phoneNumbers) {
+                for(MXCPhoneNumber* phonenumber in contact.phoneNumbers) {
                     
-                    [self.startChatMenu addActionWithTitle:phonenumber.textNumber style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                    [self.startChatMenu addActionWithTitle:phonenumber.textNumber style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                         weakSelf.startChatMenu = nil;
                         
                         // launch SMS composer
@@ -235,9 +235,9 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             }
             
             // list emails
-            for(ConsoleEmail* email in contact.emailAddresses) {
+            for(MXCEmail* email in contact.emailAddresses) {
                 
-                [self.startChatMenu addActionWithTitle:email.emailAddress style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+                [self.startChatMenu addActionWithTitle:email.emailAddress style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.startChatMenu = nil;
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -250,7 +250,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 }];
             }
             
-            [self.startChatMenu addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                 weakSelf.startChatMenu = nil;
             }];
             

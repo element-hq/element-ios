@@ -36,7 +36,7 @@
     }
 }
 
-- (void)setContact:(ConsoleContact *)aContact {
+- (void)setContact:(MXCContact *)aContact {
     MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     _contact = aContact;
@@ -52,8 +52,8 @@
     self.thumbnailView.layer.borderWidth = 0;
     
     // be warned when the matrix ID and the thumbnail is updated
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:)  name:kConsoleContactMatrixIdentifierUpdateNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kConsoleContactThumbnailUpdateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:)  name:kMXCContactMatrixIdentifierUpdateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXCContactThumbnailUpdateNotification object:nil];
     
     // Register a listener for events that concern room members
     NSArray *mxMembersEvents = @[
