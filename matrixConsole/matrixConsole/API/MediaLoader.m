@@ -15,7 +15,7 @@
  */
 
 #import "MediaManager.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "MXCTools.h"
 
 NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
@@ -81,7 +81,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     lastProgressEventTimeStamp = -1;
     
     // Check provided url (it may be a matrix content uri, we use SDK to build absoluteURL)
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     NSString *absoluteMediaURL = [mxHandler.mxRestClient urlOfContent:aMediaURL];
     if (nil == absoluteMediaURL) {
         // It was not a matrix content uri, we keep the provided url
@@ -205,7 +205,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     mimeType = aMimeType;
     statsStartTime = CFAbsoluteTimeGetCurrent();
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     operation = [mxHandler.mxRestClient uploadContent:data mimeType:mimeType timeout:30 success:success failure:failure uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         [self updateUploadProgressWithBytesWritten:bytesWritten totalBytesWritten:totalBytesWritten andTotalBytesExpectedToWrite:totalBytesExpectedToWrite];
     }];

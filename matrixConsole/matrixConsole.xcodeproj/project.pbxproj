@@ -36,7 +36,7 @@
 		F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */; };
 		F052376E1A72851A0079F3E0 /* MXCGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F052376D1A72851A0079F3E0 /* MXCGrowingTextView.m */; };
 		F05237711A7285280079F3E0 /* MXCAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237701A7285280079F3E0 /* MXCAlert.m */; };
-		F05237741A7285F10079F3E0 /* MatrixHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237731A7285F10079F3E0 /* MatrixHandler.m */; };
+		F05237741A7285F10079F3E0 /* MatrixSDKHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237731A7285F10079F3E0 /* MatrixSDKHandler.m */; };
 		F05237771A7286160079F3E0 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237761A7286160079F3E0 /* APNSHandler.m */; };
 		F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3C1A3F3D7F002B698E /* icon_users.png */; };
 		F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */; };
@@ -121,8 +121,8 @@
 		F052376D1A72851A0079F3E0 /* MXCGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCGrowingTextView.m; sourceTree = "<group>"; };
 		F052376F1A7285280079F3E0 /* MXCAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCAlert.h; sourceTree = "<group>"; };
 		F05237701A7285280079F3E0 /* MXCAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCAlert.m; sourceTree = "<group>"; };
-		F05237721A7285F10079F3E0 /* MatrixHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixHandler.h; sourceTree = "<group>"; };
-		F05237731A7285F10079F3E0 /* MatrixHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixHandler.m; sourceTree = "<group>"; };
+		F05237721A7285F10079F3E0 /* MatrixSDKHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixSDKHandler.h; sourceTree = "<group>"; };
+		F05237731A7285F10079F3E0 /* MatrixSDKHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixSDKHandler.m; sourceTree = "<group>"; };
 		F05237751A7286160079F3E0 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
 		F05237761A7286160079F3E0 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
 		F05C3A3C1A3F3D7F002B698E /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
@@ -221,8 +221,8 @@
 			children = (
 				F05237751A7286160079F3E0 /* APNSHandler.h */,
 				F05237761A7286160079F3E0 /* APNSHandler.m */,
-				F05237721A7285F10079F3E0 /* MatrixHandler.h */,
-				F05237731A7285F10079F3E0 /* MatrixHandler.m */,
+				F05237721A7285F10079F3E0 /* MatrixSDKHandler.h */,
+				F05237731A7285F10079F3E0 /* MatrixSDKHandler.m */,
 				F021FBED1A5EF57300EA3AE6 /* MediaLoader.h */,
 				F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */,
 				F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */,
@@ -516,7 +516,7 @@
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
-				F05237741A7285F10079F3E0 /* MatrixHandler.m in Sources */,
+				F05237741A7285F10079F3E0 /* MatrixSDKHandler.m in Sources */,
 				F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
 				F02900BB1A63C71E00356F7D /* MXCTools.m in Sources */,

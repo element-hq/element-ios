@@ -18,7 +18,7 @@
 #import "APNSHandler.h"
 #import "AppSettings.h"
 #import "RoomViewController.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 #import "SettingsViewController.h"
 
@@ -76,7 +76,7 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
+        if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusLoggedOut) {
             [self registerUserNotificationSettings];
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
@@ -101,7 +101,7 @@
     // check if some media msut be released to reduce the cache size
     [MediaManager reduceCacheSizeToInsert:0];
     // Suspend Matrix handler
-    [[MatrixHandler sharedHandler] pauseInBackgroundTask];
+    [[MatrixSDKHandler sharedHandler] pauseInBackgroundTask];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -111,7 +111,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     // Resume Matrix handler
-    [[MatrixHandler sharedHandler] resume];
+    [[MatrixSDKHandler sharedHandler] resume];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -179,7 +179,7 @@
     // Clear cache
     [MediaManager clearCache];
     // Logout Matrix
-    [[MatrixHandler sharedHandler] logout];
+    [[MatrixSDKHandler sharedHandler] logout];
     [self.masterTabBarController showLoginScreen];
     // Reset App settings
     [[AppSettings sharedSettings] reset];

@@ -16,7 +16,7 @@
 
 #import "RoomMessage.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "AppSettings.h"
 
 NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
@@ -41,7 +41,7 @@ static NSAttributedString *messageSeparator = nil;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         
         _senderId = event.userId;
         _senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
@@ -120,7 +120,7 @@ static NSAttributedString *messageSeparator = nil;
     // We group together text messages from the same user
     if ([event.userId isEqualToString:_senderId] && (_messageType == RoomMessageTypeText)) {
         // Attachments (image, video ...) cannot be added here
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         if ([mxHandler isSupportedAttachment:event]) {
             return NO;
         }
