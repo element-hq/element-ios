@@ -226,7 +226,7 @@ static ContactManager* sharedContactManager = nil;
     
     for(MXUser* user in users) {
         
-        if ([knownUserIDs indexOfObject:user.userId] == NSNotFound) {
+        if (!knownUserIDs || [knownUserIDs indexOfObject:user.userId] == NSNotFound) {
             NSString* dummyContactID = [NSString stringWithFormat:@"%lu", (unsigned long)user.userId.hash];
             
             // with the current API, there is no way to get the email from the matrxID
