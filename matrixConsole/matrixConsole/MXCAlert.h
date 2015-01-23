@@ -20,30 +20,30 @@
 // with a preferredStyle of UIAlertControllerStyleAlert.
 
 typedef enum : NSUInteger {
-    CustomAlertActionStyleDefault = 0,
-    CustomAlertActionStyleCancel,
-    CustomAlertActionStyleDestructive
-} CustomAlertActionStyle;
+    MXCAlertActionStyleDefault = 0,
+    MXCAlertActionStyleCancel,
+    MXCAlertActionStyleDestructive
+} MXCAlertActionStyle;
 
 typedef enum : NSUInteger {
-    CustomAlertStyleActionSheet = 0,
-    CustomAlertStyleAlert
-} CustomAlertStyle;
+    MXCAlertStyleActionSheet = 0,
+    MXCAlertStyleAlert
+} MXCAlertStyle;
 
-@interface CustomAlert : NSObject <UIActionSheetDelegate> {
+@interface MXCAlert : NSObject <UIActionSheetDelegate> {
 }
 
-typedef void (^blockCustomAlert_onClick)(CustomAlert *alert);
-typedef void (^blockCustomAlert_textFieldHandler)(UITextField *textField);
+typedef void (^blockMXCAlert_onClick)(MXCAlert *alert);
+typedef void (^blockMXCAlert_textFieldHandler)(UITextField *textField);
 
 @property(nonatomic) NSInteger cancelButtonIndex; // required to dismiss cusmtomAlert on iOS < 8 (default is -1).
 @property(nonatomic, weak) UIView *sourceView;
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message style:(CustomAlertStyle)style;
+- (id)initWithTitle:(NSString *)title message:(NSString *)message style:(MXCAlertStyle)style;
 // adds a button with the title. returns the index (0 based) of where it was added.
-- (NSInteger)addActionWithTitle:(NSString *)title style:(CustomAlertActionStyle)style handler:(blockCustomAlert_onClick)handler;
-// Adds a text field to an alert (Note: You can add a text field only if the style property is set to CustomAlertStyleAlert).
-- (void)addTextFieldWithConfigurationHandler:(blockCustomAlert_textFieldHandler)configurationHandler;
+- (NSInteger)addActionWithTitle:(NSString *)title style:(MXCAlertActionStyle)style handler:(blockMXCAlert_onClick)handler;
+// Adds a text field to an alert (Note: You can add a text field only if the style property is set to MXCAlertStyleAlert).
+- (void)addTextFieldWithConfigurationHandler:(blockMXCAlert_textFieldHandler)configurationHandler;
 
 - (void)showInViewController:(UIViewController*)viewController;
 

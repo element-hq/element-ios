@@ -15,15 +15,15 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CustomImageView.h"
+#import "MXCImageView.h"
 #import "RoomMessage.h"
 #import "PieChartView.h"
 
 // Room Message Table View Cell
 @interface RoomMessageTableCell : UITableViewCell
-@property (strong, nonatomic) IBOutlet CustomImageView *pictureView;
+@property (strong, nonatomic) IBOutlet MXCImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UITextView  *messageTextView;
-@property (strong, nonatomic) IBOutlet CustomImageView *attachmentView;
+@property (strong, nonatomic) IBOutlet MXCImageView *attachmentView;
 @property (strong, nonatomic) IBOutlet UIImageView *playIconView;
 @property (weak, nonatomic) IBOutlet UIView *dateTimeLabelContainer;
 

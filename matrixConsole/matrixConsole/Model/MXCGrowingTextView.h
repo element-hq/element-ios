@@ -17,5 +17,5 @@
 
 #import "HPGrowingTextView.h"
 
-@interface ConsoleGrowingTextView : HPGrowingTextView
+@interface MXCGrowingTextView : HPGrowingTextView
 @end
