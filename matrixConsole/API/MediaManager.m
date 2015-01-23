@@ -17,7 +17,7 @@
 #import "MediaManager.h"
 
 #import "AppSettings.h"
-#import "ConsoleTools.h"
+#import "MXCTools.h"
 
 #import "AppDelegate.h"
 
@@ -250,7 +250,7 @@ static NSMutableDictionary* uploadTableById = nil;
             maxSize = [MediaManager maxAllowedCacheSize] - bytes - 50 * 1024 * 1024;
         }
         
-        NSArray* filesList = [ConsoleTools listFiles:mediaCachePath timeSorted:YES largeFilesFirst:YES];
+        NSArray* filesList = [MXCTools listFiles:mediaCachePath timeSorted:YES largeFilesFirst:YES];
         
         // list the files sorted by timestamp
         for(NSString* filepath in filesList) {
@@ -305,7 +305,7 @@ static NSMutableDictionary* uploadTableById = nil;
 }
 
 + (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder {
-    NSString* fileExt = [ConsoleTools fileExtensionFromContentType:mimeType];
+    NSString* fileExt = [MXCTools fileExtensionFromContentType:mimeType];
     NSString* fileBase = @"";
     
     // use the mime type to extract a base filename
@@ -326,7 +326,7 @@ static NSMutableDictionary* uploadTableById = nil;
     
     // assume that 0 means uninitialized
     if (storageCacheSize == 0) {
-        storageCacheSize = (NSUInteger)[ConsoleTools folderSize:mediaCachePath];
+        storageCacheSize = (NSUInteger)[MXCTools folderSize:mediaCachePath];
     }
         
     return storageCacheSize;
@@ -334,7 +334,7 @@ static NSMutableDictionary* uploadTableById = nil;
 
 + (NSUInteger)minCacheSize {
     NSUInteger minSize = [MediaManager cacheSize];
-    NSArray* filenamesList = [ConsoleTools listFiles:mediaCachePath timeSorted:NO largeFilesFirst:YES];
+    NSArray* filenamesList = [MXCTools listFiles:mediaCachePath timeSorted:NO largeFilesFirst:YES];
  
     NSFileManager* defaultManager = [NSFileManager defaultManager];
     

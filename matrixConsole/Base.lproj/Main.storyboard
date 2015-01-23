@@ -46,7 +46,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lq0-jR-3i5" id="iJp-sA-hG6">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="uhu-R0-9NH" customClass="CustomImageView">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="uhu-R0-9NH" customClass="MXCImageView">
                                                     <rect key="frame" x="8" y="5" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="ZJO-eO-xOQ"/>
@@ -67,7 +67,7 @@
                                                         <constraint firstAttribute="width" constant="20" id="paH-au-BZZ"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View" customClass="CustomImageView">
+                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mvK-ez-meg" userLabel="Attachment View" customClass="MXCImageView">
                                                     <rect key="frame" x="51" y="18" width="192" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="192" id="Ui5-gH-5Oe"/>
@@ -194,7 +194,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                 </textView>
-                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QZT-V8-yqJ" userLabel="Attachment View" customClass="CustomImageView">
+                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QZT-V8-yqJ" userLabel="Attachment View" customClass="MXCImageView">
                                                     <rect key="frame" x="357" y="18" width="192" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="192" id="GvD-tV-Uc3"/>
@@ -239,7 +239,7 @@
                                                         <constraint firstAttribute="centerX" secondItem="lTG-14-OWN" secondAttribute="centerX" id="weT-lI-eKE"/>
                                                     </constraints>
                                                 </view>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ" customClass="CustomImageView">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="mks-jh-AiZ" customClass="MXCImageView">
                                                     <rect key="frame" x="552" y="5" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="sGR-sG-6fA"/>
@@ -325,7 +325,7 @@
                                             <action selector="onButtonPressed:" destination="msb-ol-2LB" eventType="touchUpInside" id="YtT-Cb-ZPk"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UVo-EY-Nyg" customClass="ConsoleGrowingTextView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UVo-EY-Nyg" customClass="MXCGrowingTextView">
                                         <rect key="frame" x="38" y="8" width="510" height="28"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Icg-kc-a2c">
@@ -374,7 +374,7 @@
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kac-Vi-XbY" id="prD-ap-cDD">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="RW8-nh-DTj" customClass="CustomImageView">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="RW8-nh-DTj" customClass="MXCImageView">
                                                             <rect key="frame" x="8" y="5" width="40" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="4c3-8w-4Tg"/>
@@ -575,7 +575,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="MemberActionsCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemberActionsCell" id="zRe-DS-U67" customClass="MemberActionsCell">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="MemberActionsCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemberActionsCell" id="zRe-DS-U67" customClass="RoomMemberActionsCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zRe-DS-U67" id="C5i-Xc-2Zi">
                                     <autoresizingMask key="autoresizingMask"/>

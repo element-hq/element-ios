@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import "ConsoleTools.h"
+#import "MXCTools.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
-@implementation ConsoleTools
+@implementation MXCTools
 
 #pragma mark - Time interval
 
@@ -66,7 +66,7 @@
         // is directory
         if ([[fileAttributes objectForKey:NSFileType] isEqual:NSFileTypeDirectory])
         {
-            [res addObjectsFromArray:[ConsoleTools listAttributesFiles:itemPath]];
+            [res addObjectsFromArray:[MXCTools listAttributesFiles:itemPath]];
         }
         else
         {
@@ -84,7 +84,7 @@
 + (long long)folderSize:(NSString *)folderPath
 {
     long long folderSize = 0;
-    NSArray *fileAtts = [ConsoleTools listAttributesFiles:folderPath];
+    NSArray *fileAtts = [MXCTools listAttributesFiles:folderPath];
     
     for(NSDictionary *fileAtt in fileAtts) {
         folderSize += [[fileAtt objectForKey:NSFileSize] intValue];
@@ -98,7 +98,7 @@
 // largeFilesFirst: move the largest file to the list head (large > 100KB). It can be combined isTimeSorted
 + (NSArray*)listFiles:(NSString *)folderPath timeSorted:(BOOL)isTimeSorted largeFilesFirst:(BOOL)largeFilesFirst {
     
-    NSArray* attFilesList = [ConsoleTools listAttributesFiles:folderPath];
+    NSArray* attFilesList = [MXCTools listAttributesFiles:folderPath];
     
     if (attFilesList.count > 0) {
         

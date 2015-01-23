@@ -88,7 +88,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 @property (strong, nonatomic) IBOutlet UIView *activityIndicatorBackgroundView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (strong, nonatomic) CustomAlert* customAlert;
+@property (strong, nonatomic) MXCAlert* customAlert;
 
 - (IBAction)onButtonPressed:(id)sender;
 
@@ -174,13 +174,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         dispatch_async(dispatch_get_main_queue(), ^{
             __weak typeof(self) weakSelf = self;
             
-            self.customAlert  = [[CustomAlert alloc] initWithTitle:nil message:@"Save profile update" style:CustomAlertStyleAlert];
-            self.customAlert.cancelButtonIndex = [self.customAlert addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            self.customAlert  = [[MXCAlert alloc] initWithTitle:nil message:@"Save profile update" style:MXCAlertStyleAlert];
+            self.customAlert.cancelButtonIndex = [self.customAlert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                 handler();
                 weakSelf.customAlert = nil;
             }];
             
-            [self.customAlert addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            [self.customAlert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                 [weakSelf saveDisplayName];
                 
                 weakSelf.customAlert = nil;
@@ -219,7 +219,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     // Cancel potential error alerts
-    for (CustomAlert *alert in errorAlerts){
+    for (MXCAlert *alert in errorAlerts){
         [alert dismiss:NO];
     }
     
@@ -348,14 +348,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
             NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
             
-            CustomAlert *alert = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
+            MXCAlert *alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
             [errorAlerts addObject:alert];
-            alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                 [errorAlerts removeObject:alert];
                 // Remove change
                 self.userDisplayName.text = currentDisplayName;
             }];
-            [alert addActionWithTitle:@"Retry" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+            [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                 [errorAlerts removeObject:alert];
                 [self saveDisplayName];
             }];
@@ -428,15 +428,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    CustomAlert *alert = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
+    MXCAlert *alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
     [errorAlerts addObject:alert];
-    alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         [errorAlerts removeObject:alert];
         // Remove change
         uploadedPictureURL = nil;
         [self updateUserPicture:[MatrixHandler sharedHandler].mxSession.myUser.avatarUrl];
     }];
-    [alert addActionWithTitle:@"Retry" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+    [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         [errorAlerts removeObject:alert];
         [self savePicture];
     }];

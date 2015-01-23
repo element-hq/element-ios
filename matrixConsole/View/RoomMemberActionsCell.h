@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MemberActionsCell : UITableViewCell
+@interface RoomMemberActionsCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 
