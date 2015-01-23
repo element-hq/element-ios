@@ -14,26 +14,26 @@
  limitations under the License.
  */
 
-#import "ConsoleContact.h"
+#import "MXCContact.h"
 
-#import "ConsoleEmail.h"
-#import "ConsolePhoneNumber.h"
+#import "MXCEmail.h"
+#import "MXCPhoneNumber.h"
 
 // warn when a contact has a new matrix identifier
 // the contactID is provided in parameter
-NSString *const kConsoleContactMatrixIdentifierUpdateNotification = @"kConsoleContactMatrixIdentifierUpdateNotification";
+NSString *const kMXCContactMatrixIdentifierUpdateNotification = @"kMXCContactMatrixIdentifierUpdateNotification";
 
 // warn when the contact thumbnail is updated
 // the contactID is provided in parameter
-NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactThumbnailUpdateNotification";
+NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailUpdateNotification";
 
-@interface ConsoleContact() {
+@interface MXCContact() {
     UIImage* contactBookThumbnail;
     UIImage* matrixThumbnail;
 }
 @end
 
-@implementation ConsoleContact
+@implementation MXCContact
 
 - (id) initWithABRecord:(ABRecordRef)record {
     self = [super init];
@@ -80,7 +80,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                     }
                 }
         
-                [pns addObject:[[ConsolePhoneNumber alloc] initWithTextNumber:phoneVal type:lbl contactID:_contactID matrixID:nil]];
+                [pns addObject:[[MXCPhoneNumber alloc] initWithTextNumber:phoneVal type:lbl contactID:_contactID matrixID:nil]];
                 
                 if (lblRef)  {
                     CFRelease(lblRef);
@@ -131,7 +131,7 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
                     }
                 }
                 
-                [emails addObject: [[ConsoleEmail alloc] initWithEmailAddress:emailVal type:lbl contactID:_contactID matrixID:nil]];
+                [emails addObject: [[MXCEmail alloc] initWithEmailAddress:emailVal type:lbl contactID:_contactID matrixID:nil]];
                 
                 if (lblRef) {
                     CFRelease(lblRef);
@@ -194,13 +194,13 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
 - (NSArray*) matrixIdentifiers {
     NSMutableArray* identifiers = [[NSMutableArray alloc] init];
     
-    for(ConsoleEmail* email in _emailAddresses) {
+    for(MXCEmail* email in _emailAddresses) {
         if (email.matrixID && ([identifiers indexOfObject:email.matrixID] == NSNotFound)) {
             [identifiers addObject:email.matrixID];
         }
     }
     
-    for(ConsolePhoneNumber* pn in _phoneNumbers) {
+    for(MXCPhoneNumber* pn in _phoneNumbers) {
         if (pn.matrixID && ([identifiers indexOfObject:pn.matrixID] == NSNotFound)) {
             [identifiers addObject:pn.matrixID];
         }
@@ -222,11 +222,11 @@ NSString *const kConsoleContactThumbnailUpdateNotification = @"kConsoleContactTh
         // try to replace the thumbnail by the matrix one
         if (_emailAddresses.count > 0) {
             //
-            ConsoleEmail* firstEmail = nil;
+            MXCEmail* firstEmail = nil;
             
             // list the linked email
             // search if one email field has a dedicated thumbnail
-            for(ConsoleEmail* email in _emailAddresses) {
+            for(MXCEmail* email in _emailAddresses) {
                 if (email.avatarImage) {
                     matrixThumbnail = email.avatarImage;
                     return matrixThumbnail;

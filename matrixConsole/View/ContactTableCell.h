@@ -15,17 +15,17 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "CustomImageView.h"
-#import "ConsoleContact.h"
+#import "MXCImageView.h"
+#import "MXCContact.h"
 
 @interface ContactTableCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet CustomImageView *thumbnailView;
+@property (strong, nonatomic) IBOutlet MXCImageView *thumbnailView;
 @property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *matrixUserIconView;
 
 // reference to the linked message
-@property (strong, nonatomic) ConsoleContact *contact;
+@property (strong, nonatomic) MXCContact *contact;
 
 @end
 

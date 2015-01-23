@@ -14,17 +14,17 @@
  limitations under the License.
  */
 
-#import "ConsoleEmail.h"
+#import "MXCEmail.h"
 #import "MatrixHandler.h"
 
-#import "ConsoleContact.h"
+#import "MXCContact.h"
 
 #import "MediaManager.h"
 
-@interface ConsoleEmail()
+@interface MXCEmail()
 @end
 
-@implementation ConsoleEmail
+@implementation MXCEmail
 
 - (void) commonInit {
     // init members

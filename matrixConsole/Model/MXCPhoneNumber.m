@@ -13,16 +13,20 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-#import <Foundation/Foundation.h>
 
-#import "ConsoleContactField.h"
+#import "MXCPhoneNumber.h"
 
-@interface ConsolePhoneNumber : ConsoleContactField
+@implementation MXCPhoneNumber
 
-// phonenumber info
-@property (nonatomic, readonly) NSString *type;
-@property (nonatomic, readonly) NSString *textNumber;
-
-- (id)initWithTextNumber:(NSString*)textNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
+- (id)initWithTextNumber:(NSString*)aTextNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID {
+    self = [super initWithContactID:aContactID matrixID:matrixID];
+    
+    if (self) {
+        _type = aType;
+        _textNumber = aTextNumber;
+    }
+    
+    return self;
+}
 
 @end

@@ -15,17 +15,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "MXCContactField.h"
 
-@interface ConsoleContactField : NSObject
+@interface MXCEmail : MXCContactField
 
-// contact ID where the email has been found
-@property (nonatomic, readonly) NSString *contactID;
-// linked matrix account
-@property (nonatomic, readwrite) NSString *matrixID;
-@property (nonatomic, readonly) UIImage  *avatarImage;
+// email info
+@property (nonatomic, readonly) NSString *type;
+@property (nonatomic, readonly) NSString *emailAddress;
 
-- (id)initWithContactID:(NSString*)contactID matrixID:(NSString*)matrixID;
 
-- (void)loadAvatarWithSize:(CGSize)avatarSize;
+- (id)initWithEmailAddress:(NSString*)anEmailAddress type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
 
 @end
