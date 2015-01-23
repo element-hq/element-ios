@@ -121,6 +121,8 @@
     // Force back to recents list if room details is displayed in Recents Tab
     if (recentsViewController) {
         [recentsNavigationController popToViewController:recentsViewController animated:animated];
+        // Release the current selected room
+        recentsViewController.preSelectedRoomId = nil;
     }
 }
 

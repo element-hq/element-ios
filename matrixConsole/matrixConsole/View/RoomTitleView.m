@@ -50,7 +50,8 @@
         _displayNameTextField.text = (_mxRoom.state.displayname.length) ? _mxRoom.state.displayname : nil;
         _topicTextField.text = (_mxRoom.state.topic) ? _mxRoom.state.topic : nil;
     } else {
-        _displayNameTextField.text = nil;
+        _displayNameTextField.text = @"Please select a room";
+        _displayNameTextField.enabled = NO;
         _topicTextField.text = nil;
     }
     
