@@ -120,6 +120,13 @@ static ContactManager* sharedContactManager = nil;
     pending3PIDs = [[NSMutableArray alloc] init];
     checked3PIDs = [[NSMutableArray alloc] init];
 
+    // cold start
+    // launch the dict from the file system
+    // It is cached to improve UX.
+    if (!matrixIDBy3PID) {
+        [self loadMatrixIDsDict];
+    }
+
     dispatch_async(processingQueue, ^{
         NSMutableArray* contactsList = [[NSMutableArray alloc] init];
         
@@ -310,7 +317,7 @@ static ContactManager* sharedContactManager = nil;
                                             if (userIds.count == pids.count) {
                                                 
                                                 matrixIDBy3PID = [[NSMutableDictionary alloc] initWithObjects:userIds forKeys:pids];
-                                                
+                                                [self saveMatrixIDsDict];
                                                 [self updateMatrixIDDeviceContactsList];
                                                 
                                                 // add the MX users
@@ -368,27 +375,50 @@ static ContactManager* sharedContactManager = nil;
                                                     for(NSString* pid in pids) {
                                                         [pending3PIDs removeObject:pid];
                                                     }
-
+                                                    
+                                                    BOOL isUpdated = NO;
                                                     NSMutableArray* matrixContactsToRemove = [[NSMutableArray alloc] init];
                                                     
-                                                    // search if there is an update
-                                                    for(int index = 0; index < pids.count; index++) {
-                                                        NSString* matrixID = [userIds objectAtIndex:index];
-                                                        NSString* pid = [pids objectAtIndex:index];
-                                                        
-                                                        // the dict is created on demand
-                                                        if (!matrixIDBy3PID) {
-                                                            matrixIDBy3PID = [[NSMutableDictionary alloc] init];
+                                                    // apply updates
+                                                    if (pids.count > 0) {
+                                                        for(int index = 0; index < pids.count; index++) {
+                                                            NSString* matrixID = [userIds objectAtIndex:index];
+                                                            NSString* pid = [pids objectAtIndex:index];
+                                                            
+                                                            // the dict is created on demand
+                                                            if (!matrixIDBy3PID) {
+                                                                [self loadMatrixIDsDict];
+                                                            }
+                                                         
+                                                            id currentMatrixID = [matrixIDBy3PID valueForKey:pid];
+                                                            
+                                                            // do not keep useless info
+                                                            if ([matrixID isKindOfClass:[NSString class]]) {
+                                                                
+                                                                // do not update if not required
+                                                                if (![currentMatrixID isKindOfClass:[NSString class]] || ![(NSString*)currentMatrixID isEqualToString:matrixID]) {
+                                                                    [matrixIDBy3PID setValue:matrixID forKey:pid];
+                                                                    isUpdated = YES;
+                                                                }
+                                                                
+                                                            } else {
+                                                                if (currentMatrixID) {
+                                                                    [matrixIDBy3PID removeObjectForKey:pid];
+                                                                    isUpdated = YES;
+                                                                }
+                                                            }
+                                                            
+                                                            // is there a matrix contact with the same
+                                                            if ([matrixContactByMatrixUserID objectForKey:matrixID]) {
+                                                                [matrixContactsToRemove addObject:[matrixContactByMatrixUserID objectForKey:matrixID]];
+                                                            }
                                                         }
-                                                     
-                                                        [matrixIDBy3PID setValue:matrixID forKey:pid];
                                                         
-                                                        // is there a matrix contact with the same
-                                                        if ([matrixContactByMatrixUserID objectForKey:matrixID]) {
-                                                            [matrixContactsToRemove addObject:[matrixContactByMatrixUserID objectForKey:matrixID]];
+                                                        if (isUpdated) {
+                                                            [self saveMatrixIDsDict];
                                                         }
                                                     }
-                                                    
+
                                                     // some matrix contacts will be replaced by this contact
                                                     if (matrixContactsToRemove.count > 0) {
                                                         [self updateContactMatrixIDs:contact];
@@ -440,7 +470,6 @@ static ContactManager* sharedContactManager = nil;
     }
 }
 
-
 - (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList {
     UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
     
@@ -482,5 +511,65 @@ static ContactManager* sharedContactManager = nil;
     
     return [[SectionedContacts alloc] initWithContacts:shortSectionsArray andTitles:tmpSectionedContactsTitle andCount:contactsCount];
 }
+
+#pragma mark - file caches
+
+static NSString *matrixIDsDictFile = @"matrixIDsDict";
+
+- (void)saveMatrixIDsDict
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:matrixIDsDictFile];
+    
+    if (matrixIDBy3PID)
+    {
+        NSMutableData *theData = [NSMutableData data];
+        NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:theData];
+        
+        [encoder encodeObject:matrixIDBy3PID forKey:@"matrixIDsDict"];
+        [encoder finishEncoding];
+        
+        [theData writeToFile:dataFilePath atomically:YES];
+    }
+    else
+    {
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        [fileManager removeItemAtPath:dataFilePath error:nil];
+    }
+}
+
+- (void)loadMatrixIDsDict
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:matrixIDsDictFile];
+    
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    if ([fileManager fileExistsAtPath:dataFilePath])
+    {
+        // the file content could be corrupted
+        @try {
+            NSData* filecontent = [NSData dataWithContentsOfFile:dataFilePath options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
+            
+            NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:filecontent];
+            
+            id object = [decoder decodeObjectForKey:@"matrixIDsDict"];
+            
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                matrixIDBy3PID = [object mutableCopy];
+            }
+                
+            [decoder finishDecoding];
+        } @catch (NSException *exception) {
+        }
+    }
+
+    if (!matrixIDBy3PID) {
+        matrixIDBy3PID = [[NSMutableDictionary alloc] init];
+    }
+}
+
 
 @end
