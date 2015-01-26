@@ -20,6 +20,8 @@
 
 #import "MXTools.h"
 
+#import "ContactManager.h"
+
 @interface ContactTableCell() {
     id membersListener;
 }
@@ -79,6 +81,7 @@
     }];
     
     // init the contact info
+    [[ContactManager sharedManager] refreshContactMatrixIDs:_contact];
     self.contactDisplayNameLabel.text = _contact.displayName;
     [self refreshContactThumbnail];
     [self manageMatrixIcon];

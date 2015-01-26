@@ -115,7 +115,7 @@
     [[MatrixSDKHandler sharedHandler] resume];
     
     // refresh the contacts list
-    [[ContactManager sharedManager] refresh];
+    [[ContactManager sharedManager] fullRefresh];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

@@ -15,10 +15,12 @@
  */
 
 #import <Foundation/Foundation.h>
+
 #import "SectionedContacts.h"
+#import "MXCContact.h" 
 
 // warn when there is a contacts list refresh
-extern NSString *const kContactManagerRefreshNotification;
+extern NSString *const kContactManagerContactsListRefreshNotification;
 
 @interface ContactManager : NSObject {
     dispatch_queue_t processingQueue;
@@ -30,7 +32,10 @@ extern NSString *const kContactManagerRefreshNotification;
 @property (nonatomic, readonly) NSMutableArray *contacts;
 
 // refresh self.contacts
-- (void)refresh;
+- (void)fullRefresh;
+
+// refresh matrix IDs
+- (void)refreshContactMatrixIDs:(MXCContact*)contact;
 
 // sort the contacts in sectioned arrays to be displayable in a UITableview
 - (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList;
