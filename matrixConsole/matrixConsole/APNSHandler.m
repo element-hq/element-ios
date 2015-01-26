@@ -108,9 +108,24 @@ static APNSHandler *sharedHandler = nil;
                               };
     
     NSString *deviceLang = [NSLocale preferredLanguages][0];
+    
+    NSString * instanceHandle = [[NSUserDefaults standardUserDefaults] valueForKey:@"pusherInstanceHandle"];
+    if (!instanceHandle) {
+        instanceHandle = @"";
+        NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 16; ++i) {
+            unsigned char c = [alphabet characterAtIndex:arc4random() % alphabet.length];
+            instanceHandle = [instanceHandle stringByAppendingFormat:@"%c", c];
+        }
+        NSLog(@"Generated fresh instance handle: %@", instanceHandle);
+        [[NSUserDefaults standardUserDefaults] setValue:instanceHandle forKey:@"pusherInstanceHandle"];
+    } else {
+        NSLog(@"Using existing instance handle: %@", instanceHandle);
+    }
+    
 
     MXRestClient *restCli = [MatrixHandler sharedHandler].mxRestClient;
-    [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] lang:deviceLang data:pushData success:^{
+    [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } failure:^(NSError *error) {
