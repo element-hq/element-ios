@@ -30,6 +30,9 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
 @interface MXCContact() {
     UIImage* contactBookThumbnail;
     UIImage* matrixThumbnail;
+    
+    // used when the contact is not defined in the contacts book
+    MXCContactField * dummyField;
 }
 @end
 
@@ -50,6 +53,8 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
         if (!_displayName) {
             _displayName = @"";
         }
+        
+        dummyField = nil;
         
         // extract the phone numbers and their related label
         ABMultiValueRef multi = ABRecordCopyValue(record, kABPersonPhoneProperty);
@@ -169,12 +174,15 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
 }
 
 // create a contact with the dedicated info
-- (id)initWithDisplayName:(NSString*)aDisplayName contactID:(NSString*)aContactID emails:(NSArray*)emails phonenumbers:(NSArray*)phonenumbers
+- (id)initWithDisplayName:(NSString*)aDisplayName matrixID:(NSString*)matrixID
 {
     self = [super init];
     
     if (self) {
-        _contactID = aContactID;
+        _contactID = [[NSUUID UUID] UUIDString];
+        
+        // used when the contact is not defined in the contacts book
+        dummyField = [[MXCContactField alloc] initWithContactID:_contactID matrixID:matrixID];
         
         // _displayName must not be nil
         // it is used to sort the contacts
@@ -183,16 +191,21 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
         } else {
             _displayName = @"";
         }
-        
-        _phoneNumbers = phonenumbers;
-        _emailAddresses = emails;        
     }
     
     return self;
 }
 
+- (BOOL) isMatrixContact {
+    return (nil != dummyField);
+}
+
 - (NSArray*) matrixIdentifiers {
     NSMutableArray* identifiers = [[NSMutableArray alloc] init];
+    
+    if (dummyField) {
+        [identifiers addObject:dummyField.matrixID];
+    }
     
     for(MXCEmail* email in _emailAddresses) {
         if (email.matrixID && ([identifiers indexOfObject:email.matrixID] == NSNotFound)) {
@@ -218,29 +231,35 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
     if (matrixThumbnail) {
         return matrixThumbnail;
     } else {
+        //
+        MXCContactField* firstField = dummyField;
+        
+        if (firstField) {
+            if (firstField.avatarImage) {
+                matrixThumbnail = firstField.avatarImage;
+                return matrixThumbnail;
+            }
+        }
         
         // try to replace the thumbnail by the matrix one
         if (_emailAddresses.count > 0) {
-            //
-            MXCEmail* firstEmail = nil;
-            
             // list the linked email
             // search if one email field has a dedicated thumbnail
             for(MXCEmail* email in _emailAddresses) {
                 if (email.avatarImage) {
                     matrixThumbnail = email.avatarImage;
                     return matrixThumbnail;
-                } else if (!firstEmail) {
-                    firstEmail = email;
+                } else if (!firstField) {
+                    firstField = email;
                 }
             }
-            
-            // if no thumbnail has been found
-            // try to load the first email one
-            if (firstEmail) {
-                // should be retrieved by the cell info
-                [firstEmail loadAvatarWithSize:size];
-            }
+        }
+        
+        // if no thumbnail has been found
+        // try to load the first field one
+        if (firstField) {
+            // should be retrieved by the cell info
+            [firstField loadAvatarWithSize:size];
         }
         
         return contactBookThumbnail;

@@ -32,6 +32,9 @@ extern NSString *const kMXCContactThumbnailUpdateNotification;
 @property (nonatomic, readonly) NSString *displayName;
 // contact thumbnail
 @property (nonatomic, copy, readonly) UIImage *thumbnail;
+// YES if the contact does not exist in the contacts book
+// the contact has been created from a MXUser
+@property (nonatomic, readonly) BOOL isMatrixContact;
 // array of MXCPhoneNumber
 @property (nonatomic, readonly) NSArray *phoneNumbers;
 // array of MXCEmail
@@ -43,7 +46,7 @@ extern NSString *const kMXCContactThumbnailUpdateNotification;
 - (id)initWithABRecord:(ABRecordRef)record;
 
 // create a contact with the dedicated info
-- (id)initWithDisplayName:(NSString*)displayName contactID:(NSString*)contactID emails:(NSArray*)emails phonenumbers:(NSArray*)phonenumbers;
+- (id)initWithDisplayName:(NSString*)displayName matrixID:(NSString*)matrixID;
 
 // return thumbnail with a prefered size
 // if the thumbnail is already loaded, this method returns this one
