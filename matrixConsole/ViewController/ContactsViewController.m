@@ -34,12 +34,11 @@
 // alert
 #import "MXCAlert.h"
 
-
-
 NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
 @interface ContactsViewController ()
 @property (strong, nonatomic) MXCAlert *startChatMenu;
+@property (weak, nonatomic) IBOutlet UITableView* tableView;
 @end
 
 @implementation ContactsViewController
