@@ -16,16 +16,16 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
-extern NSString *const kMatrixHandlerUnsupportedMessagePrefix;
+extern NSString *const kMatrixSDKHandlerUnsupportedMessagePrefix;
 
 typedef enum : NSUInteger {
-    MatrixHandlerStatusLoggedOut = 0,
-    MatrixHandlerStatusLogged,
-    MatrixHandlerStatusStoreDataReady,
-    MatrixHandlerStatusServerSyncDone
-} MatrixHandlerStatus;
+    MatrixSDKHandlerStatusLoggedOut = 0,
+    MatrixSDKHandlerStatusLogged,
+    MatrixSDKHandlerStatusStoreDataReady,
+    MatrixSDKHandlerStatusServerSyncDone
+} MatrixSDKHandlerStatus;
 
-@interface MatrixHandler : NSObject
+@interface MatrixSDKHandler : NSObject
 
 @property (strong, nonatomic) dispatch_queue_t processingQueue;
 
@@ -45,14 +45,20 @@ typedef enum : NSUInteger {
 // Matrix user's settings
 @property (nonatomic) MXPresence userPresence;
 
-@property (nonatomic,readonly) MatrixHandlerStatus status;
+@property (nonatomic,readonly) MatrixSDKHandlerStatus status;
 @property (nonatomic,readonly) BOOL isResumeDone;
 // return the MX cache size in bytes
 @property (nonatomic,readonly) NSUInteger MXCacheSize;
-// return the sum of the caches (MX cache + media cache ...)
+// return the sum of the caches (MX cache + media cache ...) in bytes
 @property (nonatomic,readonly) NSUInteger cachesSize;
+// defines the min allow cache size in bytes
+@property (nonatomic,readonly) NSUInteger minCachesSize;
+// defines the current max caches size in bytes
+@property (nonatomic,readwrite) NSUInteger currentMaxCachesSize;
+// defines the max allowed caches size in bytes
+@property (nonatomic,readonly) NSUInteger maxAllowedCachesSize;
 
-+ (MatrixHandler *)sharedHandler;
++ (MatrixSDKHandler *)sharedHandler;
 
 - (void)pauseInBackgroundTask;
 - (void)resume;

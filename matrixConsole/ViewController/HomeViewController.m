@@ -16,7 +16,7 @@
 
 #import "HomeViewController.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 
 @interface HomeViewController () {
@@ -83,8 +83,8 @@
     // Ensure to display room creation section
     [self.tableView scrollRectToVisible:_roomCreationLabel.frame animated:NO];
     
-    if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
-        homeServerSuffix = [NSString stringWithFormat:@":%@",[MatrixHandler sharedHandler].homeServer];
+    if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusLoggedOut) {
+        homeServerSuffix = [NSString stringWithFormat:@":%@",[MatrixSDKHandler sharedHandler].homeServer];
         // Update alias placeholder
         _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
         // Refresh listed public rooms
@@ -108,7 +108,7 @@
 
 - (void)refreshPublicRooms {
     // Retrieve public rooms
-    [[MatrixHandler sharedHandler].mxRestClient publicRooms:^(NSArray *rooms){
+    [[MatrixSDKHandler sharedHandler].mxRestClient publicRooms:^(NSArray *rooms){
         publicRooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
             
             MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
@@ -310,7 +310,7 @@
         }
         
         // Create new room
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxRestClient createRoom:roomName
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
          roomAlias:self.alias
@@ -372,7 +372,7 @@
     [sectionHeader addSubview:sectionLabel];
     
     if (publicRooms) {
-        NSString *homeserver = [MatrixHandler sharedHandler].homeServerURL;
+        NSString *homeserver = [MatrixSDKHandler sharedHandler].homeServerURL;
         if (homeserver.length) {
             sectionLabel.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
         } else {
@@ -457,7 +457,7 @@
     }
     
     // Check whether the user has already joined the selected public room
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     if ([mxHandler.mxSession roomWithRoomId:publicRoom.roomId]) {
         // Open selected room
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];

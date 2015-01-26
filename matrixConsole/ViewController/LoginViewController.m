@@ -16,14 +16,14 @@
 
 #import "LoginViewController.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
-#import "CustomAlert.h"
+#import "MXCAlert.h"
 
 @interface LoginViewController ()
 {
     // reference to any opened alert view
-    CustomAlert *alert;
+    MXCAlert *alert;
 }
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewBottomConstraint;
 
@@ -70,8 +70,8 @@
     [self.view addConstraint:rightConstraint];
 
     // Prefill text field
-    _userLoginTextField.text = [[MatrixHandler sharedHandler] userLogin];
-    _homeServerTextField.text = [[MatrixHandler sharedHandler] homeServerURL];
+    _userLoginTextField.text = [[MatrixSDKHandler sharedHandler] userLogin];
+    _homeServerTextField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
     _passWordTextField.text = nil;
     _loginBtn.enabled = NO;
     _loginBtn.alpha = 0.5;
@@ -153,7 +153,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    MatrixHandler *matrix = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *matrix = [MatrixSDKHandler sharedHandler];
     
     if (textField == _userLoginTextField) {
         [matrix setUserLogin:textField.text];
@@ -162,7 +162,7 @@
         [matrix setHomeServerURL:textField.text];
         if (!textField.text.length) {
             // Force refresh with default value
-            textField.text = [[MatrixHandler sharedHandler] homeServerURL];
+            textField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
         }
     }
 }
@@ -191,7 +191,7 @@
     [self dismissKeyboard];
     
     if (sender == _loginBtn) {
-        MatrixHandler *matrix = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *matrix = [MatrixSDKHandler sharedHandler];
         
         if (matrix.mxRestClient)
         {
@@ -255,8 +255,8 @@
                                          }
 
                                          //Alert user
-                                          alert = [[CustomAlert alloc] initWithTitle:@"Login Failed" message:message style:CustomAlertStyleAlert];
-                                         [alert addActionWithTitle:@"Dismiss" style:CustomAlertActionStyleCancel handler:^(CustomAlert *alert) {}];
+                                          alert = [[MXCAlert alloc] initWithTitle:@"Login Failed" message:message style:MXCAlertStyleAlert];
+                                         [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleCancel handler:^(MXCAlert *alert) {}];
                                          [alert showInViewController:self];
                                      }];
         }

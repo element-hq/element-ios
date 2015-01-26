@@ -16,7 +16,7 @@
 
 #import "APNSHandler.h"
 #import "AppDelegate.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 NSString *const kAPNSHandlerHasBeenUpdated = @"kAPNSHandlerHasBeenUpdated";
 
@@ -91,7 +91,7 @@ static APNSHandler *sharedHandler = nil;
 
 - (void)setIsActive:(BOOL)isActive {
     // Refuse to try & turn push on if we're not logged in, it's nonsensical.
-    if ([MatrixHandler sharedHandler].status == MatrixHandlerStatusLoggedOut) {
+    if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusLoggedOut) {
         NSLog(@"Not logged in: not setting push token because we're not logged in");
         return;
     }

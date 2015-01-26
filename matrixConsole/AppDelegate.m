@@ -18,7 +18,7 @@
 #import "APNSHandler.h"
 #import "AppSettings.h"
 #import "RoomViewController.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 #import "SettingsViewController.h"
 
@@ -76,7 +76,7 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if ([MatrixHandler sharedHandler].status != MatrixHandlerStatusLoggedOut) {
+        if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusLoggedOut) {
             [self registerUserNotificationSettings];
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
@@ -98,8 +98,10 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
+    // check if some media msut be released to reduce the cache size
+    [MediaManager reduceCacheSizeToInsert:0];
     // Suspend Matrix handler
-    [[MatrixHandler sharedHandler] pauseInBackgroundTask];
+    [[MatrixSDKHandler sharedHandler] pauseInBackgroundTask];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -109,7 +111,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     // Resume Matrix handler
-    [[MatrixHandler sharedHandler] resume];
+    [[MatrixSDKHandler sharedHandler] resume];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -174,7 +176,7 @@
     // Clear cache
     [MediaManager clearCache];
     // Logout Matrix
-    [[MatrixHandler sharedHandler] logout];
+    [[MatrixSDKHandler sharedHandler] logout];
     [self.masterTabBarController showLoginScreen];
     // Reset App settings
     [[AppSettings sharedSettings] reset];
@@ -182,7 +184,7 @@
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (CustomAlert*)showErrorAsAlert:(NSError*)error {
+- (MXCAlert*)showErrorAsAlert:(NSError*)error {
     if (self.errorNotification) {
         [self.errorNotification dismiss:NO];
     }
@@ -194,8 +196,8 @@
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    self.errorNotification = [[CustomAlert alloc] initWithTitle:title message:msg style:CustomAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+    self.errorNotification = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         [AppDelegate theDelegate].errorNotification = nil;
     }];
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
@@ -225,22 +227,21 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     BOOL res = YES;
-    UIViewController* currentViewController = [tabBarController.viewControllers objectAtIndex:tabBarController.selectedIndex];
-
-    if ([currentViewController isKindOfClass:[UINavigationController class]]) {
-        UIViewController *topViewController = ((UINavigationController*)currentViewController).topViewController;
-
-        // ask to the user to save unsaved profile updates
-        // before switching to another tab
-        if ([topViewController isKindOfClass:[SettingsViewController class]]) {
-            __block NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
-            
-            res = ![((SettingsViewController *)topViewController) checkPendingSave:^() {
-                tabBarController.selectedIndex = nextSelectedViewController;
-            }];
-        }
-    }
     
+    if (tabBarController.selectedIndex == TABBAR_SETTINGS_INDEX) {
+        // Prompt user to save unsaved profile changes before switching to another tab
+        UIViewController* selectedViewController = [tabBarController selectedViewController];
+        if ([selectedViewController isKindOfClass:[UINavigationController class]]) {
+            UIViewController *topViewController = ((UINavigationController*)selectedViewController).topViewController;
+            if ([topViewController isKindOfClass:[SettingsViewController class]]) {
+                res = [((SettingsViewController *)topViewController) shouldLeave:^() {
+                    // This block is called when tab change is delayed to prompt user about his profile changes
+                    NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
+                    tabBarController.selectedIndex = nextSelectedViewController;
+                }];
+            }
+        }
+    }    
     return res;
 }
 

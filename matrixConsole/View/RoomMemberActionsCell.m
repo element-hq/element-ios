@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import "MemberActionsCell.h"
+#import "RoomMemberActionsCell.h"
 
-@implementation MemberActionsCell
+@implementation RoomMemberActionsCell
 
 - (void)initButton:(UIButton*)button withText:(NSString*)text {
     

@@ -15,11 +15,11 @@
  limitations under the License.
  */
 
-#import "CustomAlert.h"
+#import "MXCAlert.h"
 
 #import <objc/runtime.h>
 
-@interface CustomAlert()
+@interface MXCAlert()
 {
     UIViewController* parentViewController;
     NSMutableArray *actions; // use only for iOS < 8
@@ -28,7 +28,7 @@
 @property(nonatomic, strong) id alert; // alert is kind of UIAlertController for IOS 8 and later, in other cases it's kind of UIAlertView or UIActionSheet.
 @end
 
-@implementation CustomAlert
+@implementation MXCAlert
 
 - (void)dealloc {
     // iOS < 8
@@ -42,14 +42,14 @@
     actions = nil;
 }
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message style:(CustomAlertStyle)style {
+- (id)initWithTitle:(NSString *)title message:(NSString *)message style:(MXCAlertStyle)style {
     if (self = [super init]) {
         // Check iOS version
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8) {
             _alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:(UIAlertControllerStyle)style];
         } else {
             // Use legacy objects
-            if (style == CustomAlertStyleActionSheet) {
+            if (style == MXCAlertStyleActionSheet) {
                 _alert = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
             } else {
                 _alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
@@ -62,7 +62,7 @@
 }
 
 
-- (NSInteger)addActionWithTitle:(NSString *)title style:(CustomAlertActionStyle)style handler:(blockCustomAlert_onClick)handler {
+- (NSInteger)addActionWithTitle:(NSString *)title style:(MXCAlertActionStyle)style handler:(blockMXCAlert_onClick)handler {
     NSInteger index = 0;
     if ([_alert isKindOfClass:[UIAlertController class]]) {
         index = [(UIAlertController *)_alert actions].count;
@@ -99,7 +99,7 @@
     return index;
 }
 
-- (void)addTextFieldWithConfigurationHandler:(blockCustomAlert_textFieldHandler)configurationHandler {
+- (void)addTextFieldWithConfigurationHandler:(blockMXCAlert_textFieldHandler)configurationHandler {
     if ([_alert isKindOfClass:[UIAlertController class]]) {
         [(UIAlertController *)_alert addTextFieldWithConfigurationHandler:configurationHandler];
     } else if ([_alert isKindOfClass:[UIAlertView class]]) {
@@ -146,13 +146,13 @@
         if (alertView.alertViewStyle != UIAlertViewStyleDefault) {
             // Call here textField handlers
             UITextField *textField = [alertView textFieldAtIndex:0];
-            blockCustomAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(textField, "configurationHandler");
+            blockMXCAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(textField, "configurationHandler");
             if (configurationHandler) {
                 configurationHandler (textField);
             }
             if (alertView.alertViewStyle == UIAlertViewStyleLoginAndPasswordInput) {
                 textField = [alertView textFieldAtIndex:1];
-                blockCustomAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(textField, "configurationHandler");
+                blockMXCAlert_textFieldHandler configurationHandler = objc_getAssociatedObject(textField, "configurationHandler");
                 if (configurationHandler) {
                     configurationHandler (textField);
                 }
@@ -188,36 +188,45 @@
 #pragma mark - UIAlertViewDelegate (iOS < 8)
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Retrieve the callback
-    blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
-    if ([block isEqual:[NSNull null]] == NO) {
-        // And call it
+    // sanity check
+    // the user could have forgotten to set the cancel button index
+    if (buttonIndex < actions.count) {
+        // Retrieve the callback
+        blockMXCAlert_onClick block = [actions objectAtIndex:buttonIndex];
+        if ([block isEqual:[NSNull null]] == NO) {
+            // And call it
+            dispatch_async(dispatch_get_main_queue(), ^{
+                block(self);
+            });
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            block(self);
+            // Release alert reference
+            _alert = nil;
         });
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Release alert reference
-        _alert = nil;
-    });
 }
 
 #pragma mark - UIActionSheetDelegate (iOS < 8)
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Retrieve the callback
-    blockCustomAlert_onClick block = [actions objectAtIndex:buttonIndex];
-    if ([block isEqual:[NSNull null]] == NO) {
-        // And call it
+    
+    // sanity check
+    // the user could have forgotten to set the cancel button index
+    if (buttonIndex < actions.count) {
+        // Retrieve the callback
+        blockMXCAlert_onClick block = [actions objectAtIndex:buttonIndex];
+        if ([block isEqual:[NSNull null]] == NO) {
+            // And call it
+            dispatch_async(dispatch_get_main_queue(), ^{
+                block(self);
+            });
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
-            block(self);
+            // Release _alert reference
+            _alert = nil;
         });
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Release _alert reference
-        _alert = nil;
-    });
 }
 
 @end

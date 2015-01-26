@@ -18,10 +18,10 @@
 
 @interface SettingsViewController : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-- (void)reset;
+typedef void (^blockSettings_onReadyToLeave)();
 
-typedef void (^blockSettings_onCheckSave)();
-- (BOOL)checkPendingSave:(blockSettings_onCheckSave)handler;
+- (void)reset;
+- (BOOL)shouldLeave:(blockSettings_onReadyToLeave)handler;
 
 @end
 
