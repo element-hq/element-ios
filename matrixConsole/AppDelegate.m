@@ -230,22 +230,21 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     BOOL res = YES;
-    UIViewController* currentViewController = [tabBarController.viewControllers objectAtIndex:tabBarController.selectedIndex];
-
-    if ([currentViewController isKindOfClass:[UINavigationController class]]) {
-        UIViewController *topViewController = ((UINavigationController*)currentViewController).topViewController;
-
-        // ask to the user to save unsaved profile updates
-        // before switching to another tab
-        if ([topViewController isKindOfClass:[SettingsViewController class]]) {
-            __block NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
-            
-            res = ![((SettingsViewController *)topViewController) checkPendingSave:^() {
-                tabBarController.selectedIndex = nextSelectedViewController;
-            }];
-        }
-    }
     
+    if (tabBarController.selectedIndex == TABBAR_SETTINGS_INDEX) {
+        // Prompt user to save unsaved profile changes before switching to another tab
+        UIViewController* selectedViewController = [tabBarController selectedViewController];
+        if ([selectedViewController isKindOfClass:[UINavigationController class]]) {
+            UIViewController *topViewController = ((UINavigationController*)selectedViewController).topViewController;
+            if ([topViewController isKindOfClass:[SettingsViewController class]]) {
+                res = [((SettingsViewController *)topViewController) shouldLeave:^() {
+                    // This block is called when tab change is delayed to prompt user about his profile changes
+                    NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
+                    tabBarController.selectedIndex = nextSelectedViewController;
+                }];
+            }
+        }
+    }    
     return res;
 }
 

@@ -43,7 +43,7 @@ NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK ve
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
 @interface SettingsViewController () {
-    NSMutableArray *errorAlerts;
+    NSMutableArray *alertsArray;
     
     // Navigation Bar button
     UIButton *logoutBtn;
@@ -54,7 +54,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSString *currentPictureURL;
     NSString *currentPictureThumbURL;
     NSString *uploadedPictureURL;
-    // Listen user's settings change
+    // Local changes
+    BOOL isAvatarUpdated;
+    BOOL isSavingInProgress;
+    // Listen user's profile changes
     id userUpdateListener;
     
     // Linked emails
@@ -76,14 +79,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
     SettingsCellWithLabelAndSlider* maxCacheSizeCell;
-    
-    // user info update
-    BOOL isAvatarUpdated;
-    BOOL isDisplayNameUpdated;
-    
-    // do not hide the spinner while switching between viewcontroller
-    BOOL isAvatarUploading;
-    BOOL isDisplayNameUploading;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -92,8 +87,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 @property (weak, nonatomic) IBOutlet UIButton *saveUserInfoButton;
 @property (strong, nonatomic) IBOutlet UIView *activityIndicatorBackgroundView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-@property (strong, nonatomic) MXCAlert* customAlert;
 
 - (IBAction)onButtonPressed:(id)sender;
 
@@ -118,14 +111,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [[self.userPictureButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     [[self.userPictureButton imageView] setClipsToBounds:YES];
     
-    errorAlerts = [NSMutableArray array];
+    alertsArray = [NSMutableArray array];
     [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
     
     isAvatarUpdated = NO;
-    isDisplayNameUpdated = NO;
-    
-    isAvatarUploading = NO;
-    isDisplayNameUploading = NO;
+    isSavingInProgress = NO;
     
     _saveUserInfoButton.enabled = NO;
     _activityIndicatorBackgroundView.hidden = YES;
@@ -144,7 +134,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)dealloc {
     [self reset];
     
-    errorAlerts = nil;
+    alertsArray = nil;
     
     logoutBtn = nil;
     apnsNotificationsSwitch = nil;
@@ -160,7 +150,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [super viewWillAppear:animated];
     
     // Refresh display
-    [self startUserInfoUploadAnimation];
+    [self startActivityIndicator];
     [self configureView];
     [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
@@ -173,31 +163,37 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
-- (BOOL)checkPendingSave:(blockSettings_onCheckSave)handler {
-    // there is a profile update and there is no pending update
-    if ((isAvatarUpdated || isDisplayNameUpdated) && (!isDisplayNameUploading) && (!isAvatarUploading)) {
+- (BOOL)shouldLeave:(blockSettings_onReadyToLeave)handler {
+    // Check whether some local changes have not been saved
+    if (_saveUserInfoButton.enabled) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            __weak typeof(self) weakSelf = self;
-            
-            self.customAlert  = [[MXCAlert alloc] initWithTitle:nil message:@"Save profile update" style:MXCAlertStyleAlert];
-            self.customAlert.cancelButtonIndex = [self.customAlert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-                handler();
-                weakSelf.customAlert = nil;
+            MXCAlert *alert = [[MXCAlert alloc] initWithTitle:nil message:@"Changes will be discarded"  style:MXCAlertStyleAlert];
+            [alertsArray addObject:alert];
+            alert.cancelButtonIndex = [alert addActionWithTitle:@"Discard" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [alertsArray removeObject:alert];
+                // Discard changes
+                self.userDisplayName.text = currentDisplayName;
+                [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl force:YES];
+                // Ready to leave
+                if (handler) {
+                    handler();
+                }
             }];
-            
-            [self.customAlert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-                [weakSelf saveDisplayName];
-                
-                weakSelf.customAlert = nil;
-                handler();
+            [alert addActionWithTitle:@"Save" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [alertsArray removeObject:alert];
+                // Start saving
+                [self saveUserInfo];
+                // Ready to leave
+                if (handler) {
+                    handler();
+                }
             }];
-            
-            [self.customAlert showInViewController:self];
+            [alert showInViewController:self];
         });
                        
-        return YES;
+        return NO;
     }
-    return NO;
+    return YES;
 }
 
 #pragma mark - Internal methods
@@ -217,8 +213,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         imageLoader = nil;
     }
     
-    // Cancel potential error alerts
-    for (MXCAlert *alert in errorAlerts){
+    // Cancel potential alerts
+    for (MXCAlert *alert in alertsArray){
         [alert dismiss:NO];
     }
     
@@ -231,34 +227,40 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     currentPictureURL = nil;
     currentPictureThumbURL = nil;
     uploadedPictureURL = nil;
-    
+    isAvatarUpdated = NO;
     [self updateUserPictureButton:[UIImage imageNamed:@"default-profile"]];
     
     currentDisplayName = nil;
     self.userDisplayName.text = nil;
     
+    _saveUserInfoButton.enabled = NO;
+    
     linkedEmails = nil;
 }
 
-- (void)startUserInfoUploadAnimation {
+- (void)startActivityIndicator {
     if (_activityIndicatorBackgroundView.hidden) {
         _activityIndicatorBackgroundView.hidden = NO;
         [_activityIndicator startAnimating];
     }
+    _userPictureButton.enabled = NO;
+    _userDisplayName.enabled = NO;
     _saveUserInfoButton.enabled = NO;
 }
 
-- (void) stopUserInfoUploadAnimation {
+- (void)stopActivityIndicator {
     if (!_activityIndicatorBackgroundView.hidden) {
         _activityIndicatorBackgroundView.hidden = YES;
         [_activityIndicator stopAnimating];
     }
-    _saveUserInfoButton.enabled = isAvatarUpdated || isDisplayNameUpdated;
+    _userPictureButton.enabled = YES;
+    _userDisplayName.enabled = YES;
+    [self updateSaveUserInfoButtonStatus];
 }
 
 - (void)configureView {
-    // ignore any refresh until there is a pending upload
-    if (isDisplayNameUploading || isAvatarUploading) {
+    // Ignore any refresh when saving is in progress
+    if (isSavingInProgress) {
         return;
     }
     
@@ -271,11 +273,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) {
         if (!userUpdateListener) {
             // Set current user's information and add observers
-            [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
+            [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:YES];
             currentDisplayName = mxHandler.mxSession.myUser.displayname;
             self.userDisplayName.text = currentDisplayName;
             
-            [self stopUserInfoUploadAnimation];
+            [self stopActivityIndicator];
             
             // Register listener to update user's information
             userUpdateListener = [mxHandler.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
@@ -285,18 +287,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     self.userDisplayName.text = mxHandler.mxSession.myUser.displayname;
                 }
                 // Update user's avatar
-                [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
-               
-                // update button management
-                isDisplayNameUpdated = isAvatarUpdated = NO;
-                _saveUserInfoButton.enabled = NO;
+                [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:NO];
+                
+                // Update button management
+                [self updateSaveUserInfoButtonStatus];
                 
                 // TODO display user's presence
             }];
         }
     } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) {
         // Set local user's information (the data may not be up-to-date)
-        [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl];
+        [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:NO];
         currentDisplayName = mxHandler.mxSession.myUser.displayname;
         self.userDisplayName.text = currentDisplayName;
     } else if (mxHandler.status == MatrixSDKHandlerStatusLoggedOut) {
@@ -304,44 +305,31 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     if ([mxHandler isResumeDone]) {
-        [self stopUserInfoUploadAnimation];
-        _userPictureButton.enabled = YES;
-        _userDisplayName.enabled = YES;
+        [self stopActivityIndicator];
     }
+    // Restore user's interactions
+    _userPictureButton.enabled = YES;
+    _userDisplayName.enabled = YES;
+    
     [self.tableView reloadData];
 }
 
-- (void)saveDisplayName {
+- (void)saveUserInfo {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    [self startActivityIndicator];
+    isSavingInProgress = YES;
+    
     // Check whether the display name has been changed
     NSString *displayname = self.userDisplayName.text;
     if ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO) {
         // Save display name
-        [self startUserInfoUploadAnimation];
-        _userDisplayName.enabled = NO;
-        isDisplayNameUploading = YES;
-
-         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession.myUser setDisplayName:displayname success:^{
-            // save the current displayname
+            // Update the current displayname
             currentDisplayName = displayname;
-            // no more update in progress
-            isDisplayNameUpdated = NO;
-            
-            // need to uploaded the avatar
-            if (isAvatarUpdated) {
-                [self savePicture];
-            } else {
-                // the job is ended
-                [self stopUserInfoUploadAnimation];
-            }
-            _userDisplayName.enabled = YES;
-            isDisplayNameUploading = NO;
+            // Go to the next change saving step
+            [self saveUserInfo];
         } failure:^(NSError *error) {
             NSLog(@"Set displayName failed: %@", error);
-            [self stopUserInfoUploadAnimation];
-            _userDisplayName.enabled = YES;
-            isDisplayNameUploading = NO;
-            
             //Alert user
             NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
             if (!title) {
@@ -350,75 +338,58 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
             
             MXCAlert *alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
-            [errorAlerts addObject:alert];
-            alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-                [errorAlerts removeObject:alert];
-                // Remove change
+            [alertsArray addObject:alert];
+            alert.cancelButtonIndex = [alert addActionWithTitle:@"Abort" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [alertsArray removeObject:alert];
+                // Discard changes
                 self.userDisplayName.text = currentDisplayName;
+                [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl force:YES];
+                // Loop to end saving
+                [self saveUserInfo];
             }];
             [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-                [errorAlerts removeObject:alert];
-                [self saveDisplayName];
+                [alertsArray removeObject:alert];
+                // Loop to retry saving
+                [self saveUserInfo];
             }];
             [alert showInViewController:self];
         }];
+        return;
     }
-}
-
-- (void)savePicture {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
-    // Save picture
-    [self startUserInfoUploadAnimation];
-    _userPictureButton.enabled = NO;
-    isAvatarUploading = YES;
+    // Check whether avatar has been updated
+    if (isAvatarUpdated) {
+        if (uploadedPictureURL == nil) {
+            // Upload picture
+            MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];
+            [uploader uploadData:UIImageJPEGRepresentation([self.userPictureButton imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
+                // Store uploaded picture url and trigger picture saving
+                uploadedPictureURL = url;
+                [self saveUserInfo];
+            } failure:^(NSError *error) {
+                NSLog(@"Upload image failed: %@", error);
+                [self handleErrorDuringPictureSaving:error];
+            }];
+        } else {
+            [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
+                                             success:^{
+                                                 // uploadedPictureURL becomes the user's picture
+                                                 [self updateUserPicture:uploadedPictureURL force:YES];
+                                                 // Loop to end saving
+                                                 [self saveUserInfo];
+                                             } failure:^(NSError *error) {
+                                                 NSLog(@"Set avatar url failed: %@", error);
+                                                 [self handleErrorDuringPictureSaving:error];
+                                             }];
+        }
+        return;
+    }
     
-    if (uploadedPictureURL == nil) {
-        // Upload picture
-        MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];
-        [uploader uploadData:UIImageJPEGRepresentation([self.userPictureButton imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
-            // Store uploaded picture url and trigger picture saving
-            uploadedPictureURL = url;
-            [self savePicture];
-        } failure:^(NSError *error) {
-            NSLog(@"Upload image failed: %@", error);
-            [self stopUserInfoUploadAnimation];
-            _userPictureButton.enabled = YES;
-            isAvatarUploading = NO;
-            [self handleErrorDuringPictureSaving:error];
-        }];
-    } else {
-        [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
-                                     success:^{
-                                         // uploadedPictureURL becomes the uploaded picture
-                                         currentPictureURL = uploadedPictureURL;
-                                         // manage the nil case.
-                                         [self updateUserPicture:uploadedPictureURL];
-                                         uploadedPictureURL = nil;
-                                         
-                                         isAvatarUpdated = NO;
-                                         
-                                         if (isDisplayNameUpdated) {
-                                             [self saveDisplayName];
-                                         } else {
-                                             _saveUserInfoButton.enabled = NO;
-                                             [self stopUserInfoUploadAnimation];
-                                         }
-                                         
-                                         // update statuses
-                                         _userPictureButton.enabled = YES;
-                                         isAvatarUploading = NO;
-                                         
-                                     } failure:^(NSError *error) {
-                                         NSLog(@"Set avatar url failed: %@", error);
-                                         [self stopUserInfoUploadAnimation];
-                                         
-                                         _userPictureButton.enabled = YES;
-                                         isAvatarUploading = NO;
-                                         
-                                         // update statuses
-                                         [self handleErrorDuringPictureSaving:error];
-                                     }];
+    // Backup is complete
+    isSavingInProgress = NO;
+    // Stop animation (except if the app is resuming)
+    if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
+        [self stopActivityIndicator];
     }
 }
 
@@ -430,23 +401,26 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     MXCAlert *alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
-    [errorAlerts addObject:alert];
-    alert.cancelButtonIndex = [alert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-        [errorAlerts removeObject:alert];
+    [alertsArray addObject:alert];
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"Abort" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+        [alertsArray removeObject:alert];
         // Remove change
-        uploadedPictureURL = nil;
-        [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl];
+        self.userDisplayName.text = currentDisplayName;
+        [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl force:YES];
+        // Loop to end saving
+        [self saveUserInfo];
     }];
     [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-        [errorAlerts removeObject:alert];
-        [self savePicture];
+        [alertsArray removeObject:alert];
+        // Loop to retry saving
+        [self saveUserInfo];
     }];
     
     [alert showInViewController:self];
 }
 
-- (void)updateUserPicture:(NSString *)avatar_url {
-    if (currentPictureURL == nil || [currentPictureURL isEqualToString:avatar_url] == NO) {
+- (void)updateUserPicture:(NSString *)avatar_url force:(BOOL)force {
+    if (force || currentPictureURL == nil || [currentPictureURL isEqualToString:avatar_url] == NO) {
         // Remove any pending observers
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         // Cancel previous loader (if any)
@@ -454,6 +428,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             [imageLoader cancel];
             imageLoader = nil;
         }
+        // Cancel any local change
+        isAvatarUpdated = NO;
+        uploadedPictureURL = nil;
         
         currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
         if (currentPictureURL) {
@@ -496,10 +473,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self.userPictureButton setImage:image forState:UIControlStateDisabled];
 }
 
-- (void)manageSaveChangeButton {
-    // check if there is a displayname update
+- (void)updateSaveUserInfoButtonStatus {
+    // Check whether display name has been changed
     NSString *displayname = self.userDisplayName.text;
-    isDisplayNameUpdated = ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO);
+    BOOL isDisplayNameUpdated = ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO);
     
     _saveUserInfoButton.enabled = isDisplayNameUpdated || isAvatarUpdated;
 }
@@ -600,14 +577,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             [self configureView];
         });
     } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
-            [self stopUserInfoUploadAnimation];
-            _userPictureButton.enabled = YES;
-            _userDisplayName.enabled = YES;
+        if ([[MatrixSDKHandler sharedHandler] isResumeDone] && !isSavingInProgress) {
+            [self stopActivityIndicator];
         } else {
-            [self startUserInfoUploadAnimation];
-            _userPictureButton.enabled = NO;
-            _userDisplayName.enabled = NO;
+            [self startActivityIndicator];
         }
     }
 }
@@ -618,13 +591,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self dismissKeyboard];
     
     if (sender == _saveUserInfoButton) {
-        if (isDisplayNameUpdated) {
-            _saveUserInfoButton.enabled = NO;
-            [self saveDisplayName];
-        } else if (isAvatarUpdated) {
-            _saveUserInfoButton.enabled = NO;
-            [self savePicture];
-        }
+        [self saveUserInfo];
     } else if (sender == _userPictureButton) {
         // Open picture gallery
         UIImagePickerController *mediaPicker = [[UIImagePickerController alloc] init];
@@ -685,7 +652,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if ([_userDisplayName isFirstResponder]) {
         // Hide the keyboard
         [_userDisplayName resignFirstResponder];
-        [self manageSaveChangeButton];
+        [self updateSaveUserInfoButtonStatus];
     } else if ([wordsListTextField isFirstResponder]) {
         [self manageWordsList];
         [wordsListTextField resignFirstResponder];
@@ -704,7 +671,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (IBAction)textFieldDidChange:(id)sender {
     if (sender == _userDisplayName) {
-        [self manageSaveChangeButton];
+        [self updateSaveUserInfoButtonStatus];
     } else if (sender == linkedEmailCell.settingTextField) {
         linkedEmailCell.settingButton.enabled = (linkedEmailCell.settingTextField.text.length != 0);
     }
