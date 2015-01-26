@@ -20,6 +20,8 @@
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ posted in %@";
 
+/** Coalesced messages **/
+
 /* Multiple unread messages in a room */
 "UNREAD_IN_ROOM" = "%@ new messages in %@";
 
@@ -40,6 +42,19 @@
 
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ new messages in %@, %@ and others";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ has invited you to chat";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ has invited you to a group chat";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ has invited you to %@";
+
+/** Calls **/
 
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "Call from %@";
