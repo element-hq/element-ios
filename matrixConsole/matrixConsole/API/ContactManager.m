@@ -227,11 +227,7 @@ static ContactManager* sharedContactManager = nil;
     for(MXUser* user in users) {
         
         if (!knownUserIDs || [knownUserIDs indexOfObject:user.userId] == NSNotFound) {
-            NSString* dummyContactID = [NSString stringWithFormat:@"%lu", (unsigned long)user.userId.hash];
-            
-            // with the current API, there is no way to get the email from the matrxID
-            MXCEmail* email = [[MXCEmail alloc] initWithEmailAddress:user.userId type:@"" contactID:dummyContactID matrixID:user.userId];
-            MXCContact* contact = [[MXCContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) contactID:dummyContactID emails:@[email] phonenumbers:nil];
+            MXCContact* contact = [[MXCContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) matrixID:user.userId];
             
             [contactsList addObject:contact];
             count++;
