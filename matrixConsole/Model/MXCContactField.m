@@ -56,7 +56,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setMatrixUserID:(NSString*)aMatrixID {
+- (void)setMatrixID:(NSString*)aMatrixID {
     // check if there is an update
     // nil test + string comparison
     if ((aMatrixID != _matrixID) && ![aMatrixID isEqualToString:_matrixID]) {

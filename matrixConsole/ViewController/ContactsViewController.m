@@ -52,7 +52,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     // get the system collation titles
     collationTitles = [[UILocalizedIndexedCollation currentCollation]sectionTitles];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerRefreshNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerContactsListRefreshNotification object:nil];
 }
 
 #pragma mark - UITableView delegate
