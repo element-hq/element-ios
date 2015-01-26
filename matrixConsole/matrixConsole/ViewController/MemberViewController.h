@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 @interface MemberViewController : UITableViewController
 

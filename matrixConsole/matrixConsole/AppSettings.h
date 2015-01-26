@@ -23,6 +23,9 @@
 @property (nonatomic) BOOL hideUnsupportedMessages;
 @property (nonatomic) BOOL sortMembersUsingLastSeenTime;
 @property (nonatomic) BOOL displayLeftUsers;
+// cache sizes in bytes
+@property (nonatomic) NSInteger currentMaxMediaCacheSize;
+@property (nonatomic, readonly) NSInteger maxAllowedMediaCacheSize;
 
 + (AppSettings *)sharedSettings;
 

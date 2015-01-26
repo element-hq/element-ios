@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import "ConsoleGrowingTextView.h"
+#import "MXCGrowingTextView.h"
 
-@implementation ConsoleGrowingTextView
+@implementation MXCGrowingTextView
 
 // override theses two methods to fix a weird IOS 8 issue
 // it seems that the textview must be a little smaller than its superview
@@ -25,8 +25,7 @@
 // 2 - with the right content : resetScrollPositionForIOS7 fix the content Offset
 // so center the textView in its superView
 
--(void)resizeTextView:(NSInteger)newSizeH
-{
+-(void)resizeTextView:(NSInteger)newSizeH {
     if ([delegate respondsToSelector:@selector(growingTextView:willChangeHeight:)]) {
         [delegate growingTextView:self willChangeHeight:newSizeH + self.layer.cornerRadius];
     }
@@ -45,8 +44,7 @@
     }
 }
 
--(void)layoutSubviews
-{
+-(void)layoutSubviews {
     [super layoutSubviews];
     
     CGRect r = self.bounds;

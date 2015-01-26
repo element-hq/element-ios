@@ -16,13 +16,12 @@
 
 #import <UIKit/UIKit.h>
 
-// Customize UIImageView in order to let UIImageView handle automatically remote url
-@interface CustomImageView : UIImageView
+// Customize UIView in order to display image defined with remote url. Zooming inside the image (Stretching) is supported.
+@interface MXCImageView : UIView <UIScrollViewDelegate>
 
-typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSString* title);
+typedef void (^blockMXCImageView_onClick)(MXCImageView *imageView, NSString* title);
 
-@property (strong, nonatomic) NSString *placeholder;
-@property (strong, nonatomic) NSString *imageURL;
+- (void)setImageURL:(NSString *)imageURL withPreviewImage:(UIImage*)previewImage;
 
 // Use this boolean to hide activity indicator during image downloading
 @property (nonatomic) BOOL hideActivityIndicator;
@@ -30,9 +29,17 @@ typedef void (^blockCustomImageView_onClick)(CustomImageView *imageView, NSStrin
 // Information about the media represented by this image (image, video...)
 @property (strong, nonatomic) NSDictionary *mediaInfo;
 
+@property (strong, nonatomic) UIImage *image;
+
+@property (nonatomic) BOOL stretchable;
+@property (nonatomic) BOOL fullScreen;
+
+// mediaManager folder where the image is stored
+@property (nonatomic, readwrite) NSString* mediaFolder;
+
 // Let the user defines some custom buttons over the tabbar
-- (void)setLeftButtonTitle :leftButtonTitle handler:(blockCustomImageView_onClick)handler;
-- (void)setRightButtonTitle:rightButtonTitle handler:(blockCustomImageView_onClick)handler;
+- (void)setLeftButtonTitle :leftButtonTitle handler:(blockMXCImageView_onClick)handler;
+- (void)setRightButtonTitle:rightButtonTitle handler:(blockMXCImageView_onClick)handler;
 
 - (void)dismissSelection;
 

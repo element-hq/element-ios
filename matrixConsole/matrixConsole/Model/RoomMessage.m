@@ -16,7 +16,7 @@
 
 #import "RoomMessage.h"
 
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 #import "AppSettings.h"
 
 NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
@@ -29,6 +29,8 @@ static NSAttributedString *messageSeparator = nil;
     NSMutableArray *messageComponents;
     // Current text message reset at each component change (see attributedTextMessage property)
     NSMutableAttributedString *currentAttributedTextMsg;
+    
+    BOOL shouldUpdateComponentsHeight;
 }
 
 + (NSAttributedString *)messageSeparator;
@@ -36,18 +38,17 @@ static NSAttributedString *messageSeparator = nil;
 @end
 
 @implementation RoomMessage
-@synthesize uploadProgress;
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         
         _senderId = event.userId;
         _senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
         _senderAvatarUrl = [mxHandler senderAvatarUrlForEvent:event withRoomState:roomState];
         _maxTextViewWidth = ROOM_MESSAGE_DEFAULT_MAX_TEXTVIEW_WIDTH;
         _contentSize = CGSizeZero;
-        self.uploadProgress = -1;
+        _uploadProgress = -1;
         currentAttributedTextMsg = nil;
         
         // Set message type (consider text by default), and check attachment if any
@@ -95,8 +96,14 @@ static NSAttributedString *messageSeparator = nil;
         if (msgComponent) {
             messageComponents = [NSMutableArray array];
             [messageComponents addObject:msgComponent];
-            // Store the actual height of the text by removing textview margin from content height
-            msgComponent.height = self.contentSize.height - (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+            if (_messageType == RoomMessageTypeText) {
+                // Set text range
+                msgComponent.range = NSMakeRange(0, msgComponent.textMessage.length);
+                
+                // Compute the height of the text component
+                msgComponent.height = [self rawTextHeight:self.attributedTextMessage];
+                shouldUpdateComponentsHeight = NO;
+            }
         } else {
             // Ignore this event
             self = nil;
@@ -113,7 +120,7 @@ static NSAttributedString *messageSeparator = nil;
     // We group together text messages from the same user
     if ([event.userId isEqualToString:_senderId] && (_messageType == RoomMessageTypeText)) {
         // Attachments (image, video ...) cannot be added here
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         if ([mxHandler isSupportedAttachment:event]) {
             return NO;
         }
@@ -133,13 +140,32 @@ static NSAttributedString *messageSeparator = nil;
         // Create new message component
         RoomMessageComponent *addedComponent = [[RoomMessageComponent alloc] initWithEvent:event andRoomState:roomState];
         if (addedComponent) {
-            [messageComponents addObject:addedComponent];
-            // Sort components and update resulting text message
-            [self sortComponents];
+            [self addComponent:addedComponent];
         }
         // else the event is ignored, we consider it as handled
         return YES;
     }
+    return NO;
+}
+
+- (BOOL)replaceLocalEventId:(NSString *)localEventId withEventId:(NSString *)eventId {
+    NSUInteger index = messageComponents.count;
+    while (index--) {
+        RoomMessageComponent* msgComponent = [messageComponents objectAtIndex:index];
+        if ([msgComponent.eventId isEqualToString:localEventId]) {
+            msgComponent.eventId = eventId;
+            // Refresh global attributed string (if any) to take into account potential component style change
+            if (currentAttributedTextMsg) {
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
+                [currentAttributedTextMsg replaceCharactersInRange:msgComponent.range withAttributedString:attributedString];
+                
+                // Reset content size
+                _contentSize = CGSizeZero;
+            } // else let the getter "attributedTextMessage" build it
+            return YES;
+        }
+    }
+    // here the provided eventId has not been found
     return NO;
 }
 
@@ -150,8 +176,43 @@ static NSAttributedString *messageSeparator = nil;
             RoomMessageComponent* msgComponent = [messageComponents objectAtIndex:index];
             if ([msgComponent.eventId isEqualToString:eventId]) {
                 [messageComponents removeObjectAtIndex:index];
-                // Force text message refresh
-                [self refreshMessageComponentsHeight];
+                
+                // Refresh global attributed string (if any)
+                if (currentAttributedTextMsg) {
+                    if (!messageComponents.count) {
+                        // The message is now empty - Reset
+                        self.attributedTextMessage = nil;
+                    } else {
+                        // Update
+                        [currentAttributedTextMsg deleteCharactersInRange:msgComponent.range];
+                        // Remove a separator
+                        NSRange separatorRange = NSMakeRange(0, [RoomMessage messageSeparator].length);
+                        if (msgComponent.range.location) {
+                            separatorRange.location = msgComponent.range.location - [RoomMessage messageSeparator].length;
+                        }
+                        [currentAttributedTextMsg deleteCharactersInRange:separatorRange];
+                        
+                        // Reset content size
+                        _contentSize = CGSizeZero;
+                    }
+                } // else let the getter "attributedTextMessage" build it
+                
+                // Adjust range for components displayed after this removed component
+                NSUInteger deletedLength = msgComponent.range.length + [RoomMessage messageSeparator].length;
+                for (; index < messageComponents.count; index++) {
+                    msgComponent = [messageComponents objectAtIndex:index];
+                    NSRange range = msgComponent.range;
+                    NSAssert(range.location >= deletedLength, @"RoomMessage: the ranges of msg components are corrupted");
+                    if (range.location >= deletedLength) {
+                        range.location -= deletedLength;
+                    } else {
+                        range.location = 0;
+                    }
+                    msgComponent.range = range;
+                }
+                
+                // Height of each components should be updated
+                shouldUpdateComponentsHeight = YES;
                 return YES;
             }
         }
@@ -171,17 +232,6 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)containsEventId:(NSString *)eventId {
     return nil != [self componentWithEventId:eventId];
-}
-
-- (void)hideComponent:(BOOL)isHidden withEventId:(NSString*)eventId {
-    for (RoomMessageComponent *msgComponent in messageComponents) {
-        if ([msgComponent.eventId isEqualToString:eventId]) {
-            msgComponent.hidden = isHidden;
-            // Force attributed string refresh
-            [self refreshMessageComponentsHeight];
-            break;
-        }
-    }
 }
 
 - (BOOL)hasSameSenderAsRoomMessage:(RoomMessage*)roomMessage {
@@ -207,14 +257,48 @@ static NSAttributedString *messageSeparator = nil;
         if ((_messageType == RoomMessageTypeText) && (roomMessage.messageType == RoomMessageTypeText)) {
             // Add all components of the provided message
             for (RoomMessageComponent* msgComponent in roomMessage.components) {
-                [messageComponents addObject:msgComponent];
+                [self addComponent:msgComponent];
             }
-            // Sort components and update resulting text message
-            [self sortComponents];
             return YES;
         }
     }
     return NO;
+}
+
+- (void)checkComponentsHeight {
+    // Check conditions to ignore this action
+    if (_messageType != RoomMessageTypeText || !shouldUpdateComponentsHeight || !messageComponents.count) {
+        return;
+    }
+    
+    // This method should run on main thread
+    if ([NSThread currentThread] != [NSThread mainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self checkComponentsHeight];
+        });
+        return;
+    }
+    
+    // Compute height of the first component
+    RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:0];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
+    CGSize textContentSize = [self textContentSize:attributedString];
+    if (textContentSize.height) {
+        msgComponent.height = textContentSize.height - (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+    } else {
+        msgComponent.height = 0;
+    }
+    // Compute height of other components
+    for (NSUInteger index = 1; index < messageComponents.count; index++) {
+        CGFloat previousContentHeight = textContentSize.height ? textContentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
+        msgComponent = [messageComponents objectAtIndex:index];
+        // Append attributed text
+        [attributedString appendAttributedString:[RoomMessage messageSeparator]];
+        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]]];
+        textContentSize = [self textContentSize:attributedString];
+        msgComponent.height = textContentSize.height - previousContentHeight;
+    }
+    shouldUpdateComponentsHeight = NO;
 }
 
 #pragma mark - Properties
@@ -224,8 +308,10 @@ static NSAttributedString *messageSeparator = nil;
         // Check change
         if (_maxTextViewWidth != maxTextViewWidth) {
             _maxTextViewWidth = maxTextViewWidth;
-            // Refresh height for all message components
-            [self refreshMessageComponentsHeight];
+            // Reset content size
+            _contentSize = CGSizeZero;
+            // Invalidate existing height for components
+            shouldUpdateComponentsHeight = YES;
         }
     }
 }
@@ -233,20 +319,12 @@ static NSAttributedString *messageSeparator = nil;
 - (CGSize)contentSize {
     if (CGSizeEqualToSize(_contentSize, CGSizeZero)) {
         if (_messageType == RoomMessageTypeText) {
-            if (self.attributedTextMessage.length) {
-                // Use a TextView template to compute cell height
-                // The following code only run on the main thread
-                if([NSThread currentThread] != [NSThread mainThread]) {
-                    dispatch_sync(dispatch_get_main_queue(), ^{
-                        UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT)];
-                        dummyTextView.attributedText = self.attributedTextMessage;
-                        _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
-                    });
-                } else {
-                    UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT)];
-                    dummyTextView.attributedText = self.attributedTextMessage;
-                    _contentSize = [dummyTextView sizeThatFits:dummyTextView.frame.size];
-                }
+            if ([NSThread currentThread] != [NSThread mainThread]) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    _contentSize = [self textContentSize:self.attributedTextMessage];
+                });
+            } else {
+                _contentSize = [self textContentSize:self.attributedTextMessage];
             }
         } else if (_messageType == RoomMessageTypeImage || _messageType == RoomMessageTypeVideo) {
             CGFloat width, height;
@@ -298,15 +376,13 @@ static NSAttributedString *messageSeparator = nil;
     if (!currentAttributedTextMsg && messageComponents.count) {
         // Create attributed string
         for (RoomMessageComponent* msgComponent in messageComponents) {
-            if (!msgComponent.isHidden) {
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
-                if (!currentAttributedTextMsg) {
-                    currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-                } else {
-                    // Append attributed text
-                    [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
-                    [currentAttributedTextMsg appendAttributedString:attributedString];
-                }
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
+            if (!currentAttributedTextMsg) {
+                currentAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+            } else {
+                // Append attributed text
+                [currentAttributedTextMsg appendAttributedString:[RoomMessage messageSeparator]];
+                [currentAttributedTextMsg appendAttributedString:attributedString];
             }
         }
     }
@@ -315,13 +391,9 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)startsWithSenderName {
     if (_messageType == RoomMessageTypeText) {
-        NSUInteger index = 0;
-        while (index < messageComponents.count) {
-            RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:index];
-            if (!msgComponent.isHidden) {
-                return msgComponent.startsWithSenderName;
-            }
-            index++;
+        if (messageComponents.count) {
+            RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:0];
+            return msgComponent.startsWithSenderName;
         }
     }
     return NO;
@@ -337,53 +409,102 @@ static NSAttributedString *messageSeparator = nil;
     return NO;
 }
 
-- (BOOL)isHidden {
-    if (_messageType == RoomMessageTypeText) {
-        return (!self.attributedTextMessage.length);
-    } else if (messageComponents.count) {
-        RoomMessageComponent *msgComponent = [messageComponents firstObject];
-        return msgComponent.isHidden;
+#pragma mark - Privates
+
+- (void)addComponent:(RoomMessageComponent*)addedComponent {
+    // Check date of existing components to insert this new one
+    NSUInteger addedTextLength = addedComponent.textMessage.length;
+    NSUInteger addedTextLocation = 0;
+    NSUInteger separatorLocation = 0;
+    NSUInteger index = messageComponents.count;
+    while (index) {
+        RoomMessageComponent *msgComponent = [messageComponents objectAtIndex:(--index)];
+        if ([msgComponent.date compare:addedComponent.date] == NSOrderedDescending) {
+            // New component will be inserted before this one -> Adjust text range
+            NSRange range = msgComponent.range;
+            range.location += (addedTextLength + [RoomMessage messageSeparator].length);
+            msgComponent.range = range;
+        } else {
+            // New component will be inserted here
+            index ++;
+            addedTextLocation = msgComponent.range.location + msgComponent.range.length;
+            break;
+        }
     }
-    return YES;
+    // Insert new component
+    [messageComponents insertObject:addedComponent atIndex:index];
+    
+    // Adjust added component location
+    if (addedTextLocation) {
+        // We will insert separator before adding new component
+        separatorLocation = addedTextLocation;
+        addedTextLocation += [RoomMessage messageSeparator].length;
+    } else {
+        // The new component is inserted in first position, separator will be inserted after it
+        separatorLocation = addedTextLength;
+    }
+    
+    // Update global attributed string (if any)
+    if (currentAttributedTextMsg) {
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:addedComponent.textMessage attributes:[addedComponent stringAttributes]];
+        if (addedTextLocation) {
+            // Add separator before added text component
+            [currentAttributedTextMsg insertAttributedString:[RoomMessage messageSeparator] atIndex:separatorLocation];
+            [currentAttributedTextMsg insertAttributedString:attributedString atIndex:addedTextLocation];
+        } else {
+            // The new component is inserted in first position
+            [currentAttributedTextMsg insertAttributedString:attributedString atIndex:addedTextLocation];
+            // Check whether a separator is required
+            if (messageComponents.count > 1) {
+                [currentAttributedTextMsg insertAttributedString:[RoomMessage messageSeparator] atIndex:separatorLocation];
+            }
+        }
+        
+        // Reset content size
+        _contentSize = CGSizeZero;
+        
+    } // Else let the getter "attributedTextMessage" build it
+    
+    // Set text range
+    addedComponent.range = NSMakeRange(addedTextLocation, addedTextLength);
+    
+    // Height of each components should be computed again
+    shouldUpdateComponentsHeight = YES;
+}
+
+#pragma mark - Text measuring
+
+// Return the raw height of the provided text by removing any margin
+- (CGFloat)rawTextHeight: (NSAttributedString*)attributedText {
+    __block CGSize textSize;
+    if ([NSThread currentThread] != [NSThread mainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            textSize = [self textContentSize:attributedText];
+        });
+    } else {
+        textSize = [self textContentSize:attributedText];
+    }
+    
+    if (textSize.height) {
+        // Return the actual height of the text by removing textview margin from content height
+        return (textSize.height - (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN));
+    }
+    return 0;
+}
+
+// Return the content size of a text view initialized with the provided attributed text
+// CAUTION: This method runs only on main thread
+- (CGSize)textContentSize: (NSAttributedString*)attributedText {
+    if (attributedText.length) {
+        // Use a TextView template
+        UITextView *dummyTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT)];
+        dummyTextView.attributedText = attributedText;
+        return [dummyTextView sizeThatFits:dummyTextView.frame.size];
+    }
+    return CGSizeZero;
 }
 
 #pragma mark -
-
-- (void)sortComponents {
-    // Sort components according to their date
-    [messageComponents sortUsingComparator:^NSComparisonResult(RoomMessageComponent *obj1, RoomMessageComponent *obj2) {
-        if (obj1.date) {
-            if (obj2.date) {
-                return [obj1.date compare:obj2.date];
-            } else {
-                return NSOrderedAscending;
-            }
-        } else if (obj2.date) {
-            return NSOrderedDescending;
-        }
-        return NSOrderedSame;
-    }];
-    
-    // Force text message refresh after sorting
-    [self refreshMessageComponentsHeight];
-}
-
-- (void)refreshMessageComponentsHeight {
-    NSMutableArray *components = messageComponents;
-    messageComponents = [NSMutableArray arrayWithCapacity:components.count];
-    self.attributedTextMessage = nil;
-    for (RoomMessageComponent *msgComponent in components) {
-        CGFloat previousTextViewHeight = self.contentSize.height ? self.contentSize.height : (2 * ROOM_MESSAGE_TEXTVIEW_MARGIN);
-        [messageComponents addObject:msgComponent];
-        if (msgComponent.isHidden) {
-            msgComponent.height = 0;
-        } else {
-            // Force text message refresh
-            self.attributedTextMessage = nil;
-            msgComponent.height = self.contentSize.height - previousTextViewHeight;
-        }
-    }
-}
 
 + (NSAttributedString *)messageSeparator {
     @synchronized(self) {

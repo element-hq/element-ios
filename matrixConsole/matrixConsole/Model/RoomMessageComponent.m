@@ -15,7 +15,7 @@
  */
 
 #import "RoomMessageComponent.h"
-#import "MatrixHandler.h"
+#import "MatrixSDKHandler.h"
 
 NSString *const kLocalEchoEventIdPrefix = @"localEcho-";
 NSString *const kFailedEventIdPrefix = @"failedEventId-";
@@ -24,15 +24,12 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState {
     if (self = [super init]) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         
         // Build text component related to this event
         NSString* textMessage = [mxHandler displayTextForEvent:event withRoomState:roomState inSubtitleMode:NO];
         if (textMessage) {
             _textMessage = textMessage;
-            _eventId = event.eventId;
-            _height = 0;
-            _hidden = NO;
             
             NSString *senderName = [mxHandler senderDisplayNameForEvent:event withRoomState:roomState];
             _startsWithSenderName = ([textMessage hasPrefix:senderName] || [mxHandler isEmote:event]);
@@ -44,28 +41,36 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
                 _date = nil;
             }
             
-            // Set state event flag
+            // Set component flags
             _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
+            _isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             
-            // Set style
-            BOOL isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
-            if ([textMessage hasPrefix:kMatrixHandlerUnsupportedMessagePrefix]) {
-                _style = RoomMessageComponentStyleUnsupported;
-            } else if ([_eventId hasPrefix:kFailedEventIdPrefix]) {
-                _style = RoomMessageComponentStyleFailed;
-            } else if (isIncomingMsg && !_isStateEvent && [mxHandler containsBingWord:_textMessage]) {
-                _style = RoomMessageComponentStyleBing;
-            } else if (!isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
-                _style = RoomMessageComponentStyleInProgress;
-            } else {
-                _style = RoomMessageComponentStyleDefault;
-            }
+            // Set eventId -> set the component style
+            self.eventId = event.eventId;
         } else {
             // Ignore this event
             self = nil;
         }
     }
     return self;
+}
+
+- (void)setEventId:(NSString *)eventId {
+    _eventId = eventId;
+    
+    // Update component style
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    if ([_textMessage hasPrefix:kMatrixSDKHandlerUnsupportedMessagePrefix]) {
+        _style = RoomMessageComponentStyleUnsupported;
+    } else if ([_eventId hasPrefix:kFailedEventIdPrefix]) {
+        _style = RoomMessageComponentStyleFailed;
+    } else if (_isIncomingMsg && !_isStateEvent && [mxHandler containsBingWord:_textMessage]) {
+        _style = RoomMessageComponentStyleBing;
+    } else if (!_isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
+        _style = RoomMessageComponentStyleInProgress;
+    } else {
+        _style = RoomMessageComponentStyleDefault;
+    }
 }
 
 - (NSDictionary*)stringAttributes {

@@ -15,8 +15,8 @@
  */
 
 #import "MediaManager.h"
-#import "MatrixHandler.h"
-#import "ConsoleTools.h"
+#import "MatrixSDKHandler.h"
+#import "MXCTools.h"
 
 NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
 NSString *const kMediaUploadProgressNotification = @"kMediaUploadProgressNotification";
@@ -33,7 +33,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 - (void)cancel {
     // Cancel potential connection
     if (downloadConnection) {
-        NSLog(@"Image download has been cancelled (%@)", mediaURL);
+        NSLog(@"media download has been cancelled (%@)", mediaURL);
         if (onError){
             onError(nil);
         }
@@ -45,10 +45,17 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         downloadData = nil;
     }
     else {
+        if (operation.executing) {
+            NSLog(@"media upload has been cancelled (%@)", mediaURL);
+            [operation cancel];
+            operation = nil;
+        }
+
         // Reset blocks
         onSuccess = nil;
         onError = nil;
     }
+    folder = nil;
     statisticsDict = nil;
 }
 
@@ -60,11 +67,13 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 - (void)downloadMedia:(NSString*)aMediaURL
              mimeType:(NSString *)aMimeType
+               folder:(NSString*)aFolder
               success:(blockMediaLoader_onSuccess)success
               failure:(blockMediaLoader_onError)failure {
     // Report provided params
     mediaURL = aMediaURL;
     mimeType = aMimeType;
+    folder = aFolder;
     onSuccess = success;
     onError = failure;
     
@@ -72,7 +81,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     lastProgressEventTimeStamp = -1;
     
     // Check provided url (it may be a matrix content uri, we use SDK to build absoluteURL)
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     NSString *absoluteMediaURL = [mxHandler.mxRestClient urlOfContent:aMediaURL];
     if (nil == absoluteMediaURL) {
         // It was not a matrix content uri, we keep the provided url
@@ -82,6 +91,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     // Start downloading
     NSURL *url = [NSURL URLWithString:absoluteMediaURL];
     downloadData = [[NSMutableData alloc] init];
+    
     downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url] delegate:self];
 }
 
@@ -130,7 +140,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:downloadData.length countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:expectedSize countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:progressString forKey:kMediaLoaderProgressStringKey];
                 
-        [dict setValue:[ConsoleTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+        [dict setValue:[MXCTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
         
         NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:meanRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];
@@ -163,7 +173,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     
     if (downloadData.length) {
         // Cache the downloaded data
-        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL andType:mimeType];
+        NSString *cacheFilePath = [MediaManager cacheMediaData:downloadData forURL:mediaURL andType:mimeType inFolder:folder];
         // Call registered block
         if (onSuccess) {
             onSuccess(cacheFilePath);
@@ -181,22 +191,22 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 
 #pragma mark - Upload
 
-- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange {
+- (id)initWithUploadId:(NSString *)anUploadId initialRange:(CGFloat)anInitialRange andRange:(CGFloat)aRange folder:(NSString*)aFolder {
     if (self = [super init]) {
         uploadId = anUploadId;
         initialRange = anInitialRange;
         range = aRange;
+        folder = aFolder;
     }
     return self;
 }
 
 - (void)uploadData:(NSData *)data mimeType:(NSString *)aMimeType success:(blockMediaLoader_onSuccess)success failure:(blockMediaLoader_onError)failure {
     mimeType = aMimeType;
-    
     statsStartTime = CFAbsoluteTimeGetCurrent();
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    [mxHandler.mxRestClient uploadContent:data mimeType:mimeType timeout:30 success:success failure:failure uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    operation = [mxHandler.mxRestClient uploadContent:data mimeType:mimeType timeout:30 success:success failure:failure uploadProgress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         [self updateUploadProgressWithBytesWritten:bytesWritten totalBytesWritten:totalBytesWritten andTotalBytesExpectedToWrite:totalBytesExpectedToWrite];
     }];
     
@@ -232,7 +242,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:totalBytesWritten countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:totalBytesExpectedToWrite countStyle:NSByteCountFormatterCountStyleFile]];
     
     [statisticsDict setValue:progressString forKey:kMediaLoaderProgressStringKey];
-    [statisticsDict setValue:[ConsoleTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+    [statisticsDict setValue:[MXCTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
     
     NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:dataRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
     [statisticsDict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];

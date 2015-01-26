@@ -17,7 +17,7 @@
 #import "MemberViewController.h"
 
 #import "AppDelegate.h"
-#import "MemberActionsCell.h"
+#import "RoomMemberActionsCell.h"
 #import "MediaManager.h"
 
 @interface MemberViewController () {
@@ -37,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *memberThumbnailButton;
 @property (weak, nonatomic) IBOutlet UITextView *roomMemberMID;
 
-@property (strong, nonatomic) CustomAlert *actionMenu;
+@property (strong, nonatomic) MXCAlert *actionMenu;
 
 - (IBAction)onButtonToggle:(id)sender;
 
@@ -61,7 +61,7 @@
     }
     
     if (membersListener) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -86,7 +86,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
@@ -148,7 +148,7 @@
     }
     
     if (membersListener) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -166,18 +166,18 @@
     
     if (_mxRoomMember.avatarUrl) {
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         thumbnailURL = [mxHandler thumbnailURLForContent:_mxRoomMember.avatarUrl inViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         
         // Check whether the image download is in progress
-        id loader = [MediaManager existingDownloaderForURL:thumbnailURL];
+        id loader = [MediaManager existingDownloaderForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
         if (loader) {
             // Add observers
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
         } else {
             // Retrieve the image from cache
-            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
             if (image) {
                 [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
                 [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
@@ -189,7 +189,7 @@
                 // Add observers
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                imageLoader = [MediaManager downloadMediaFromURL:thumbnailURL withType:@"image/jpeg"];
+                imageLoader = [MediaManager downloadMediaFromURL:thumbnailURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
             }
         }
     } else {
@@ -210,7 +210,7 @@
         
         if ([url isEqualToString:thumbnailURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL];
+            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }
@@ -239,7 +239,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
@@ -314,7 +314,7 @@
     
     if (self.tableView == aTableView) {
         NSInteger row = indexPath.row;
-        MemberActionsCell* memberActionsCell = (MemberActionsCell*)[aTableView dequeueReusableCellWithIdentifier:@"MemberActionsCell" forIndexPath:indexPath];
+        RoomMemberActionsCell* memberActionsCell = (RoomMemberActionsCell*)[aTableView dequeueReusableCellWithIdentifier:@"MemberActionsCell" forIndexPath:indexPath];
         
         NSString* leftTitle = nil;
         NSString* rightTitle = nil;
@@ -367,7 +367,7 @@
 }
 
 - (void) setUserPowerLevel:(MXRoomMember*)roomMember to:(int)value {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     int currentPowerLevel = (int)([mxHandler getPowerLevel:roomMember inRoom:self.mxRoom] * 100);
     
     // check if the power level has not yet been set to 0
@@ -389,14 +389,14 @@
 }
 
 - (void) updateUserPowerLevel:(MXRoomMember*)roomMember {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     __weak typeof(self) weakSelf = self;
     
     // Ask for userId to invite
-    self.actionMenu = [[CustomAlert alloc] initWithTitle:@"Power Level"  message:nil style:CustomAlertStyleAlert];
+    self.actionMenu = [[MXCAlert alloc] initWithTitle:@"Power Level"  message:nil style:MXCAlertStyleAlert];
     
     if (![mxHandler.userId isEqualToString:roomMember.userId]) {
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.actionMenu = nil;
             
             [weakSelf setUserPowerLevel:roomMember to:0];
@@ -408,7 +408,7 @@
         textField.placeholder = nil;
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
-    [self.actionMenu addActionWithTitle:@"OK" style:CustomAlertActionStyleDefault handler:^(CustomAlert *alert) {
+    [self.actionMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
         UITextField *textField = [alert textFieldAtIndex:0];
         weakSelf.actionMenu = nil;
         
@@ -500,7 +500,7 @@
         } else if ([text isEqualToString:@"Start chat"]) {
             [self addPendingActionMask];
             
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             NSString* roomId = [mxHandler getRoomStartedWithMember:_mxRoomMember];
             
             // if the room has already been started
