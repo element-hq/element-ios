@@ -1415,6 +1415,9 @@
                                     <segment title="Matrix Users"/>
                                     <segment title="Local contacts"/>
                                 </segments>
+                                <connections>
+                                    <action selector="onSegmentValueChange:" destination="T6e-9y-AqE" eventType="valueChanged" id="U89-7D-KKY"/>
+                                </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GiR-2B-wso">
                                 <rect key="frame" x="0.0" y="106" width="600" height="445"/>
@@ -1427,8 +1430,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rWk-dE-7zn" id="v9Y-63-Ibb">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="matrixUser.png" translatesAutoresizingMaskIntoConstraints="NO" id="3kn-zR-L3N">
-                                                    <rect key="frame" x="572" y="17" width="16" height="16"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="matrixUser.png" translatesAutoresizingMaskIntoConstraints="NO" id="3kn-zR-L3N">
+                                                    <rect key="frame" x="576" y="17" width="16" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="16" id="If1-6i-aFs"/>
                                                         <constraint firstAttribute="height" constant="16" id="JSX-S5-Smq"/>
@@ -1442,7 +1445,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6eg-4L-YQr">
-                                                    <rect key="frame" x="64" y="10" width="504" height="30"/>
+                                                    <rect key="frame" x="64" y="10" width="508" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="qcl-Jj-7af"/>
                                                     </constraints>
@@ -1452,7 +1455,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3kn-zR-L3N" secondAttribute="trailing" constant="4" id="NuH-hp-M9P"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="3kn-zR-L3N" secondAttribute="trailing" id="NuH-hp-M9P"/>
                                                 <constraint firstAttribute="centerY" secondItem="3kn-zR-L3N" secondAttribute="centerY" id="YOd-9L-HCn"/>
                                                 <constraint firstItem="3kn-zR-L3N" firstAttribute="leading" secondItem="6eg-4L-YQr" secondAttribute="trailing" constant="4" id="n8z-VP-fkH"/>
                                                 <constraint firstAttribute="centerY" secondItem="jld-N3-vJN" secondAttribute="centerY" id="qC5-pH-SEb"/>
@@ -1473,12 +1476,23 @@
                                     <outlet property="delegate" destination="T6e-9y-AqE" id="qbn-NG-2oW"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="OWX-v0-faA">
+                                <rect key="frame" x="275" y="275" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="e0i-Ar-tnQ"/>
+                                    <constraint firstAttribute="height" constant="50" id="eCx-pZ-Aug"/>
+                                </constraints>
+                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerY" secondItem="OWX-v0-faA" secondAttribute="centerY" id="3iG-60-3sk"/>
                             <constraint firstItem="GiR-2B-wso" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="42" id="7L2-mw-dWo"/>
                             <constraint firstAttribute="centerX" secondItem="GiR-2B-wso" secondAttribute="centerX" id="BXv-w3-LS1"/>
                             <constraint firstAttribute="centerX" secondItem="gMZ-iG-iB5" secondAttribute="centerX" id="WIY-IA-T10"/>
+                            <constraint firstAttribute="centerX" secondItem="OWX-v0-faA" secondAttribute="centerX" id="ZxB-pu-Yac"/>
                             <constraint firstItem="FkA-Yc-vh2" firstAttribute="top" secondItem="GiR-2B-wso" secondAttribute="bottom" id="krK-n7-1p5"/>
                             <constraint firstAttribute="width" secondItem="GiR-2B-wso" secondAttribute="width" id="sAo-JV-zW1"/>
                             <constraint firstItem="gMZ-iG-iB5" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="6" id="v8x-IF-zFQ"/>
@@ -1486,6 +1500,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Contacts" id="CVL-bD-nUg"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="OWX-v0-faA" id="vXQ-cW-GRq"/>
+                        <outlet property="contactsControls" destination="gMZ-iG-iB5" id="MbP-gm-SP2"/>
                         <outlet property="tableView" destination="GiR-2B-wso" id="lQe-yC-KZP"/>
                     </connections>
                 </viewController>

@@ -26,10 +26,11 @@
 
 #define SETTINGS_SECTION_LINKED_EMAILS_INDEX 0
 #define SETTINGS_SECTION_NOTIFICATIONS_INDEX 1
-#define SETTINGS_SECTION_ROOMS_INDEX         2
-#define SETTINGS_SECTION_CONFIGURATION_INDEX 3
-#define SETTINGS_SECTION_COMMANDS_INDEX      4
-#define SETTINGS_SECTION_COUNT               5
+#define SETTINGS_SECTION_CONTACTS_INDEX      2
+#define SETTINGS_SECTION_ROOMS_INDEX         3
+#define SETTINGS_SECTION_CONFIGURATION_INDEX 4
+#define SETTINGS_SECTION_COMMANDS_INDEX      5
+#define SETTINGS_SECTION_COUNT               6
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
 #define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX  1
@@ -63,6 +64,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Linked emails
     NSMutableArray *linkedEmails;
     SettingsCellWithTextFieldAndButton* linkedEmailCell;
+    
+    // contacts
+    UISwitch *contactsSyncSwitch;
     
     // Notifications
     UISwitch *apnsNotificationsSwitch;
@@ -143,6 +147,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     unsupportedMsgSwitch = nil;
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
+    contactsSyncSwitch = nil;
     [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
@@ -621,6 +626,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
     } else if (sender == displayLeftMembersSwitch) {
         [AppSettings sharedSettings].displayLeftUsers = displayLeftMembersSwitch.on;
+    } else if (sender == contactsSyncSwitch) {
+    	[AppSettings sharedSettings].syncLocalContacts = contactsSyncSwitch.on;
     }
 }
 
@@ -702,6 +709,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         
         return count;
+    } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
+        return 1;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
         return SETTINGS_SECTION_ROOMS_INDEX_COUNT;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
@@ -720,6 +729,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (indexPath.row == setInAppWordRowIndex) {
             return 110;
         }
+        return 44;
+    } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
@@ -761,6 +772,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         sectionHeader.text = @" Linked emails";
     } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         sectionHeader.text = @" Notifications";
+    } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
+        sectionHeader.text = @" Contacts";
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
         sectionHeader.text = @" Rooms";
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
@@ -811,6 +824,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
             cell = notificationsCell;
         }
+    } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
+         SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+        
+         contactsCell.settingLabel.text = @"Sync local contacts";
+         contactsCell.settingSwitch.on = [[AppSettings sharedSettings] syncLocalContacts];
+         contactsSyncSwitch = contactsCell.settingSwitch;
+         cell = contactsCell;
+        
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];

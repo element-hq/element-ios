@@ -222,6 +222,16 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
     return identifiers;
 }
 
+- (void)setDisplayName:(NSString *)displayName {
+    // a display name must not be emptied
+    // it is used to sort the contacts
+    if (displayName.length == 0) {
+        _displayName = _contactID;
+    } else {
+        _displayName = displayName;
+    }
+}
+
 // return thumbnail with a prefered size
 // if the thumbnail is already loaded, this method returns this one
 // if the thumbnail must trigger a server request, the expected size will be size

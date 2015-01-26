@@ -49,7 +49,8 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedMessages"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayLeftUsers"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"maxCacheSize"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"maxMediaCacheSize"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"syncLocalContacts"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -116,6 +117,26 @@ static AppSettings *sharedSettings = nil;
 
 - (void)setDisplayLeftUsers:(BOOL)displayLeftUsers {
     [[NSUserDefaults standardUserDefaults] setBool:displayLeftUsers forKey:@"displayLeftUsers"];
+}
+
+
+- (BOOL)requestedLocalContactsSync {
+    id val = [[NSUserDefaults standardUserDefaults] valueForKey:@"syncLocalContacts"];
+    
+    // the value has never been set
+    if (!val) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"syncLocalContacts"];
+    }
+    
+    return (nil != val);
+}
+
+- (BOOL)syncLocalContacts {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"syncLocalContacts"];
+}
+
+- (void)setSyncLocalContacts:(BOOL)syncLocalContacts {
+    [[NSUserDefaults standardUserDefaults] setBool:syncLocalContacts forKey:@"syncLocalContacts"];
 }
 
 - (NSInteger)maxAllowedMediaCacheSize {

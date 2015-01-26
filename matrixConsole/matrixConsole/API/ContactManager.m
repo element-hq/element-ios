@@ -22,6 +22,8 @@
 
 #import "MatrixSDKHandler.h"
 
+#import "AppSettings.h"
+
 // warn when there is a contacts list refresh
 NSString *const kContactManagerContactsListRefreshNotification = @"kContactManagerContactsListRefreshNotification";
 
@@ -75,28 +77,8 @@ static ContactManager* sharedContactManager = nil;
         // to avoid resync the whole phonebook
         lastSyncDate = nil;
         
-        // check if the application is allowed to list the contacts
-        ABAuthorizationStatus cbStatus = ABAddressBookGetAuthorizationStatus();
-        
-        //
-        hasStatusObserver = NO;
-        
-        // did not yet request the access
-        if (cbStatus == kABAuthorizationStatusNotDetermined) {
-            // request address book access
-            ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
-            
-            if (ab) {
-                ABAddressBookRequestAccessWithCompletion(ab, ^(bool granted, CFErrorRef error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self fullRefresh];
-                    });
-                    
-                });
-                
-                CFRelease(ab);
-            }
-        }
+        // wait that the mxSession is ready
+        [[AppSettings sharedSettings]  addObserver:self forKeyPath:@"syncLocalContacts" options:0 context:nil];
     }
     
     return self;
@@ -105,10 +87,59 @@ static ContactManager* sharedContactManager = nil;
 -(void)dealloc {
     if (hasStatusObserver) {
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"syncLocalContacts"];
     }
 }
 
+// delete contacts info
+- (void)reset {
+    contacts = nil;
+    
+    lastSyncDate = nil;
+    deviceContactsList = nil;
+    matrixContactByMatrixUserID = nil;
+    if (hasStatusObserver) {
+        [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+        hasStatusObserver = NO;
+    }
+    
+    [self saveMatrixIDsDict];
+}
+
 - (void)fullRefresh {
+    
+    // check if the user allowed to sync local contacts
+    if (![[AppSettings sharedSettings] syncLocalContacts]) {
+        // if the user did not allow to sync local contacts
+        // ignore this sync
+        return;
+    }
+    
+    // check if the application is allowed to list the contacts
+    ABAuthorizationStatus cbStatus = ABAddressBookGetAuthorizationStatus();
+    
+    //
+    hasStatusObserver = NO;
+    
+    // did not yet request the access
+    if (cbStatus == kABAuthorizationStatusNotDetermined) {
+        // request address book access
+        ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
+        
+        if (ab) {
+            ABAddressBookRequestAccessWithCompletion(ab, ^(bool granted, CFErrorRef error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self fullRefresh];
+                });
+                
+            });
+            
+            CFRelease(ab);
+        }
+        
+        return;
+    }
+    
     MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
     
     // remove any observer
@@ -259,7 +290,6 @@ static ContactManager* sharedContactManager = nil;
     int count = 0;
     
     for(MXUser* user in users) {
-        
         if (!knownUserIDs || [knownUserIDs indexOfObject:user.userId] == NSNotFound) {
             MXCContact* contact = [[MXCContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) matrixID:user.userId];
             [matrixContactByMatrixUserID setValue:contact forKey:user.userId];
@@ -466,6 +496,10 @@ static ContactManager* sharedContactManager = nil;
                 
                 [self manage3PIDS];
             }
+        });
+    } else if ([@"syncLocalContacts" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self fullRefresh];
         });
     }
 }

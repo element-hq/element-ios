@@ -179,6 +179,7 @@
 - (void)logout {
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [[APNSHandler sharedHandler] reset];
+    [[ContactManager sharedManager] reset];
     isAPNSRegistered = NO;
     // Clear cache
     [MediaManager clearCache];
