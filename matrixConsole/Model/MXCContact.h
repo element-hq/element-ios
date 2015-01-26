@@ -29,7 +29,7 @@ extern NSString *const kMXCContactThumbnailUpdateNotification;
 // unique identifier
 @property (nonatomic, readonly) NSString * contactID;
 // display name
-@property (nonatomic, readonly) NSString *displayName;
+@property (nonatomic, readwrite) NSString *displayName;
 // contact thumbnail
 @property (nonatomic, copy, readonly) UIImage *thumbnail;
 // YES if the contact does not exist in the contacts book

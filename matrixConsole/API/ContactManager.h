@@ -31,6 +31,9 @@ extern NSString *const kContactManagerContactsListRefreshNotification;
 
 @property (nonatomic, readonly) NSMutableArray *contacts;
 
+// delete contacts info
+- (void)reset;
+
 // refresh self.contacts
 - (void)fullRefresh;
 

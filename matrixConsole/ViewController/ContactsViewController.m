@@ -34,11 +34,30 @@
 // alert
 #import "MXCAlert.h"
 
+// settings
+#import "AppSettings.h"
+
 NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
-@interface ContactsViewController ()
+@interface ContactsViewController () {
+    // YES -> only matrix users
+    // NO -> display local contacts
+    BOOL displayMatrixUsers;
+    
+    // screenshot of the local contacts
+    NSMutableArray* localContacts;
+    SectionedContacts* sectionedLocalContacts;
+    
+    // screenshot of the matrix users
+    NSMutableDictionary* matrixUserByMatrixID;
+    SectionedContacts* sectionedMatrixContacts;
+    
+}
 @property (strong, nonatomic) MXCAlert *startChatMenu;
+@property (strong, nonatomic) MXCAlert *allowContactSyncAlert;
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl* contactsControls;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation ContactsViewController
@@ -46,27 +65,96 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    sectionedContacts = nil;
-    
     // get the system collation titles
     collationTitles = [[UILocalizedIndexedCollation currentCollation]sectionTitles];
+    
+    // global init
+    displayMatrixUsers = (0 == self.contactsControls.selectedSegmentIndex);
+    matrixUserByMatrixID = [[NSMutableDictionary alloc] init];
+    
+    // event listener
+    [[MatrixSDKHandler sharedHandler]  addObserver:self forKeyPath:@"status" options:0 context:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerContactsListRefreshNotification object:nil];
 }
 
+- (void)startActivityIndicator {
+    [_activityIndicator.layer setCornerRadius:5];
+    _activityIndicator.hidden = NO;
+    [_activityIndicator startAnimating];
+}
+
+- (void)stopActivityIndicator {
+    [_activityIndicator stopAnimating];
+    _activityIndicator.hidden = YES;
+}
+
+
 #pragma mark - UITableView delegate
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (!sectionedContacts) {
+    if (displayMatrixUsers) {
+        if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusServerSyncDone) {
+            [self startActivityIndicator];
+            return 0;
+        } else {
+            [self stopActivityIndicator];
+            
+            // check if the user is already known
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+            NSArray* users = [mxHandler.mxSession users];
+            NSMutableArray* knownUserIDs = [[matrixUserByMatrixID allKeys] mutableCopy];
+            
+            // list the contacts IDs
+            // avoid delete and create the same ones
+            // it could save thumbnail downloads
+            for(MXUser* user in users) {
+                [knownUserIDs removeObject:user.userId];
+                
+                MXCContact* contact = [matrixUserByMatrixID objectForKey:user.userId];
+                
+                if (contact) {
+                    contact.displayName = (user.displayname.length > 0) ? user.displayname : user.userId;
+                } else {
+                    contact = [[MXCContact alloc] initWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) matrixID:user.userId];
+                    [matrixUserByMatrixID setValue:contact forKey:user.userId];
+                }
+            }
+            
+            // some userIDs don't exist anymore
+            for (NSString* userID in knownUserIDs) {
+                [matrixUserByMatrixID removeObjectForKey:userID];
+            }
+            
+            sectionedMatrixContacts = [[ContactManager sharedManager] getSectionedContacts:[matrixUserByMatrixID allValues]];
+            
+            return sectionedMatrixContacts.sectionedContacts.count;
+        }
+        
+    } else {
+        [self stopActivityIndicator];
+        
         ContactManager* sharedManager = [ContactManager sharedManager];
         
-        sectionedContacts = [sharedManager getSectionedContacts:sharedManager.contacts];
+        if (!localContacts) {
+            localContacts = sharedManager.contacts;
+        }
+        
+        if (!sectionedLocalContacts) {
+            sectionedLocalContacts = [sharedManager getSectionedContacts:sharedManager.contacts];
+        }
+        
+        return sectionedLocalContacts.sectionedContacts.count;
     }
-    
-    return sectionedContacts.sectionedContacts.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[sectionedContacts.sectionedContacts objectAtIndex:section] count];
+    
+    if (displayMatrixUsers) {
+        return [[sectionedMatrixContacts.sectionedContacts objectAtIndex:section] count];
+    } else {
+        return [[sectionedLocalContacts.sectionedContacts objectAtIndex:section] count];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -74,6 +162,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 }
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
+    SectionedContacts* sectionedContacts = displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts;
+    
     if (sectionedContacts.sectionTitles.count <= section) {
         return nil;
     }
@@ -98,6 +188,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (NSInteger)tableView:(UITableView *)aTableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
+    SectionedContacts* sectionedContacts = displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts;
     NSUInteger section;
     
     @synchronized(self)
@@ -126,6 +217,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     ContactTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
+    SectionedContacts* sectionedContacts = displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts;
     
     MXCContact* contact = nil;
     
@@ -145,6 +237,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    SectionedContacts* sectionedContacts = displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts;
     MXCContact* contact = nil;
     
     if (indexPath.section < sectionedContacts.sectionedContacts.count) {
@@ -258,13 +351,57 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     }
 }
 
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"status" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (displayMatrixUsers) {
+                [self.tableView reloadData];
+            }
+        });
+    }
+}
+
 #pragma mark - Actions
 
 - (void)onContactsRefresh:(NSNotification *)notif {
-    sectionedContacts = nil;
+    localContacts = nil;
+    sectionedLocalContacts = nil;
     [self.tableView reloadData];
 }
 
+- (IBAction)onSegmentValueChange:(id)sender {
+    if (sender == self.contactsControls) {
+        displayMatrixUsers = (0 == self.contactsControls.selectedSegmentIndex);
+        [self.tableView reloadData];
+        
+        if (!displayMatrixUsers) {
+            AppSettings* appSettings = [AppSettings sharedSettings];
+            
+            if (!appSettings.requestedLocalContactsSync) {
+                __weak typeof(self) weakSelf = self;
+                
+                self.allowContactSyncAlert = [[MXCAlert alloc] initWithTitle:@"Allow local contacts synchronization ?"  message:nil style:MXCAlertStyleAlert];
+                
+                [self.allowContactSyncAlert addActionWithTitle:@"NO" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    weakSelf.allowContactSyncAlert = nil;
+                }];
+                
+                [self.allowContactSyncAlert addActionWithTitle:@"YES" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                        weakSelf.allowContactSyncAlert = nil;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        appSettings.syncLocalContacts = YES;
+                        [weakSelf.tableView reloadData];
+                    });
+                }];
+                
+                [self.allowContactSyncAlert showInViewController:self];
+            }
+        }
+    }
+}
 #pragma mark MFMessageComposeViewControllerDelegate
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
