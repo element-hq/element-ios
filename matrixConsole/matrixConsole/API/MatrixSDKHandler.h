@@ -75,8 +75,16 @@ typedef enum : NSUInteger {
 // return a MatrixIDs list of 1:1 room members
 - (NSArray*)oneToOneRoomMemberMatrixIDs;
 
+// search if a private room has been started with this user
+// returns the room ID
+// nil if not found
+- (NSString*) privateRoomIdWith:(NSString*)otherMatrixID;
+    
+// check first if there no room between the both users
+// if there is one, open it
+// else create a new one
 // create a private one to one chat room
-- (void)createPrivateOneToOneRoomWith:(NSString*)otherMatrixID;
+- (void)startPrivateOneToOneRoomWith:(NSString*)otherMatrixID;
 
 // Return the suitable url to display the content thumbnail into the provided view size
 // Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
@@ -86,9 +94,6 @@ typedef enum : NSUInteger {
 - (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
-
-// search if a 1:1 conversation has been started with this member
-- (NSString*)getRoomStartedWithMember:(MXRoomMember*)roomMember;
 
 // user power level in a dedicated room
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
