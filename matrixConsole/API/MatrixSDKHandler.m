@@ -542,6 +542,38 @@ static MatrixSDKHandler *sharedHandler = nil;
     return matrixIDs;
 }
 
+// create a private one to one chat room
+- (void)createPrivateOneToOneRoomWith:(NSString*)otherMatrixID {
+    // sanity check
+    if (self.mxRestClient) {
+        [self.mxRestClient createRoom:nil
+                                visibility:kMXRoomVisibilityPrivate
+                                 roomAlias:nil
+                                     topic:nil
+                                   success:^(MXCreateRoomResponse *response) {
+                                       
+                                       // invite the other user only if it is defined and not onself
+                                       if (otherMatrixID && ![self.userId isEqualToString:otherMatrixID]) {
+                                           // add the user
+                                           [self.mxRestClient inviteUser:otherMatrixID toRoom:response.roomId success:^{
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"%@ invitation failed (roomId: %@): %@", otherMatrixID, response.roomId, error);
+                                               //Alert user
+                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                           }];
+                                       }
+                                       
+                                       // Open created room
+                                       [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                                       
+                                   } failure:^(NSError *error) {
+                                       NSLog(@"Create room failed: %@", error);
+                                       //Alert user
+                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                   }];
+    }
+}
+
 - (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod {
     // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
     // Convert first the provided size in pixels
