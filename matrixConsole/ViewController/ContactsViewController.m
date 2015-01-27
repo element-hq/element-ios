@@ -94,30 +94,42 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (displayMatrixUsers) {
-        if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusServerSyncDone) {
+        // check if the user is already known
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        
+        if ((mxHandler.status != MatrixSDKHandlerStatusServerSyncDone) && (mxHandler.status != MatrixSDKHandlerStatusStoreDataReady)) {
             [self startActivityIndicator];
             return 0;
         } else {
             [self stopActivityIndicator];
+
+            //NSArray* users = [mxHandler.mxSession users];
+            NSArray* usersIDs = [mxHandler oneToOneRoomMemberMatrixIDs];
+            // return a MatrixIDs list of 1:1 room members
             
-            // check if the user is already known
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            NSArray* users = [mxHandler.mxSession users];
             NSMutableArray* knownUserIDs = [[matrixUserByMatrixID allKeys] mutableCopy];
             
             // list the contacts IDs
             // avoid delete and create the same ones
             // it could save thumbnail downloads
-            for(MXUser* user in users) {
-                [knownUserIDs removeObject:user.userId];
+            for(NSString* userID in usersIDs) {
+                //
+                MXUser* user = [mxHandler.mxSession userWithUserId:userID];
                 
-                MXCContact* contact = [matrixUserByMatrixID objectForKey:user.userId];
-                
-                if (contact) {
-                    contact.displayName = (user.displayname.length > 0) ? user.displayname : user.userId;
-                } else {
-                    contact = [[MXCContact alloc] initWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) matrixID:user.userId];
-                    [matrixUserByMatrixID setValue:contact forKey:user.userId];
+                // sanity check
+                if (user) {
+                    // managed UserID
+                    [knownUserIDs removeObject:userID];
+                    
+                    MXCContact* contact = [matrixUserByMatrixID objectForKey:userID];
+                    
+                    // already defined
+                    if (contact) {
+                        contact.displayName = (user.displayname.length > 0) ? user.displayname : user.userId;
+                    } else {
+                        contact = [[MXCContact alloc] initWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) matrixID:user.userId];
+                        [matrixUserByMatrixID setValue:contact forKey:userID];
+                    }
                 }
             }
             

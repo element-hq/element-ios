@@ -72,6 +72,9 @@ typedef enum : NSUInteger {
 - (BOOL)isSupportedAttachment:(MXEvent*)event;
 - (BOOL)isEmote:(MXEvent*)event;
 
+// return a MatrixIDs list of 1:1 room members
+- (NSArray*)oneToOneRoomMemberMatrixIDs;
+
 // Return the suitable url to display the content thumbnail into the provided view size
 // Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
 - (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
