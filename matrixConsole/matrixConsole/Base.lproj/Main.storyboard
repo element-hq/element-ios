@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -326,7 +326,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UVo-EY-Nyg" customClass="MXCGrowingTextView">
-                                        <rect key="frame" x="38" y="8" width="510" height="28"/>
+                                        <rect key="frame" x="38" y="4" width="510" height="36"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Icg-kc-a2c">
                                         <rect key="frame" x="556" y="6" width="36" height="30"/>
@@ -343,13 +343,13 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.89816151494565222" green="0.89816151494565222" blue="0.89816151494565222" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="UVo-EY-Nyg" secondAttribute="bottom" constant="8" id="42W-Aj-tDe"/>
+                                    <constraint firstAttribute="bottom" secondItem="UVo-EY-Nyg" secondAttribute="bottom" constant="4" id="42W-Aj-tDe"/>
                                     <constraint firstAttribute="bottom" secondItem="cfF-YG-Cvg" secondAttribute="bottom" constant="11" id="FaK-A3-nl8"/>
                                     <constraint firstAttribute="bottom" secondItem="Icg-kc-a2c" secondAttribute="bottom" constant="8" id="GBv-Db-4H0"/>
                                     <constraint firstItem="cfF-YG-Cvg" firstAttribute="leading" secondItem="6fM-aJ-d0M" secondAttribute="leading" constant="8" id="JLw-Kl-Rdp"/>
                                     <constraint firstItem="Icg-kc-a2c" firstAttribute="leading" secondItem="UVo-EY-Nyg" secondAttribute="trailing" constant="8" id="lVs-Ba-j3d"/>
                                     <constraint firstAttribute="trailing" secondItem="Icg-kc-a2c" secondAttribute="trailing" constant="8" id="pQV-JJ-C09"/>
-                                    <constraint firstItem="UVo-EY-Nyg" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="top" constant="8" id="qPI-ig-yno"/>
+                                    <constraint firstItem="UVo-EY-Nyg" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="top" constant="4" id="qPI-ig-yno"/>
                                     <constraint firstAttribute="height" constant="44" id="tGp-dw-uAO"/>
                                     <constraint firstItem="UVo-EY-Nyg" firstAttribute="leading" secondItem="cfF-YG-Cvg" secondAttribute="trailing" constant="8" id="u00-eB-vAB"/>
                                 </constraints>
