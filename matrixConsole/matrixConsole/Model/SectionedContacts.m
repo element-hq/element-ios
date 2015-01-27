@@ -13,27 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import "SectionedContacts.h"
 
-#import "SettingsTableViewCell.h"
+@implementation SectionedContacts
 
-@implementation SettingsTableViewCell
+@synthesize contactsCount, sectionTitles, sectionedContacts;
+
+-(id)initWithContacts:(NSArray *)_sectionedContacts andTitles:(NSArray *)titles andCount:(int)count {
+    if (self = [super init]) {
+        contactsCount = count;
+        sectionedContacts = _sectionedContacts;
+        sectionTitles = titles;
+    }
+    return self;
+}
+
 @end
-
-@implementation SettingsCellWithSwitch
-@end
-
-@implementation SettingsCellWithTextView
-@end
-
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
-@end
-

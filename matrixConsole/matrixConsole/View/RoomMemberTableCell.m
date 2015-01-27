@@ -39,19 +39,7 @@
 // nil if there is no valid one
 - (UIColor*)getUserPresenceColor:(MXUser*)user {
     if (user) {
-        switch (user.presence) {
-            case MXPresenceOnline:
-                return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-            case MXPresenceUnavailable:
-                return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
-            case MXPresenceOffline:
-                return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
-            case MXPresenceUnknown:
-            case MXPresenceFreeForChat:
-            case MXPresenceHidden:
-            default:
-                return nil;
-        }
+        return [[MatrixSDKHandler sharedHandler] getPresenceRingColor:user.presence];
     }
     
     return nil;

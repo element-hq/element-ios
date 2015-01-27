@@ -14,26 +14,16 @@
  limitations under the License.
  */
 
-#import "SettingsTableViewCell.h"
+#import <UIKit/UIKit.h>
+#import "MXCContactField.h"
 
-@implementation SettingsTableViewCell
+@interface MXCEmail : MXCContactField
+
+// email info
+@property (nonatomic, readonly) NSString *type;
+@property (nonatomic, readonly) NSString *emailAddress;
+
+
+- (id)initWithEmailAddress:(NSString*)anEmailAddress type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
+
 @end
-
-@implementation SettingsCellWithSwitch
-@end
-
-@implementation SettingsCellWithTextView
-@end
-
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
-@end
-

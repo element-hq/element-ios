@@ -10,7 +10,16 @@
 		3198D9E11A68338B00556695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3198D9E31A68338B00556695 /* Localizable.strings */; };
 		710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */; };
 		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
+		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
+		710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* MXCContactField.m */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
+		71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D281A6E3DC000E59A9E /* ContactsViewController.m */; };
+		71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D2B1A6E433900E59A9E /* ContactTableCell.m */; };
+		71193D361A6E49F000E59A9E /* MXCContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D311A6E49F000E59A9E /* MXCContact.m */; };
+		71193D371A6E49F000E59A9E /* MXCEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D331A6E49F000E59A9E /* MXCEmail.m */; };
+		71193D381A6E49F000E59A9E /* MXCPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */; };
+		71193D3B1A6E50EC00E59A9E /* ContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D3A1A6E50EC00E59A9E /* ContactManager.m */; };
+		71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D3D1A6E61AD00E59A9E /* SectionedContacts.m */; };
 		71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
@@ -37,12 +46,12 @@
 		F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */; };
 		F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0465AF91A251F85003639F9 /* RoomMessage.m */; };
 		F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */; };
-		F052376E1A72851A0079F3E0 /* MXCGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F052376D1A72851A0079F3E0 /* MXCGrowingTextView.m */; };
-		F05237711A7285280079F3E0 /* MXCAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237701A7285280079F3E0 /* MXCAlert.m */; };
-		F05237741A7285F10079F3E0 /* MatrixSDKHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237731A7285F10079F3E0 /* MatrixSDKHandler.m */; };
-		F05237771A7286160079F3E0 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237761A7286160079F3E0 /* APNSHandler.m */; };
+		F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237791A7289F00079F3E0 /* APNSHandler.m */; };
+		F05237801A728A010079F3E0 /* MXCAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = F052377F1A728A010079F3E0 /* MXCAlert.m */; };
+		F05237831A728A0A0079F3E0 /* MXCGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */; };
 		F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3C1A3F3D7F002B698E /* icon_users.png */; };
 		F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */; };
+		F077E6491A72966F008D5AD5 /* MatrixSDKHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F077E6481A72966F008D5AD5 /* MatrixSDKHandler.m */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
 		F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80DA19DD9DE700B621A1 /* AppDelegate.m */; };
 		F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E219DD9DE700B621A1 /* Main.storyboard */; };
@@ -79,7 +88,24 @@
 		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
 		71D2E4EA1A49814B000DE015 /* MemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberActionsCell.h; sourceTree = "<group>"; };
 		71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberActionsCell.m; sourceTree = "<group>"; };
+		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
+		710CC3C01A70F28F006EE973 /* MXCContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContactField.h; sourceTree = "<group>"; };
+		710CC3C11A70F28F006EE973 /* MXCContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContactField.m; sourceTree = "<group>"; };
 		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
+		71193D281A6E3DC000E59A9E /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
+		71193D2A1A6E433900E59A9E /* ContactTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableCell.h; sourceTree = "<group>"; };
+		71193D2B1A6E433900E59A9E /* ContactTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableCell.m; sourceTree = "<group>"; };
+		71193D301A6E49F000E59A9E /* MXCContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContact.h; sourceTree = "<group>"; };
+		71193D311A6E49F000E59A9E /* MXCContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContact.m; sourceTree = "<group>"; };
+		71193D321A6E49F000E59A9E /* MXCEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCEmail.h; sourceTree = "<group>"; };
+		71193D331A6E49F000E59A9E /* MXCEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCEmail.m; sourceTree = "<group>"; };
+		71193D341A6E49F000E59A9E /* MXCPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCPhoneNumber.h; sourceTree = "<group>"; };
+		71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCPhoneNumber.m; sourceTree = "<group>"; };
+		71193D391A6E50EC00E59A9E /* ContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactManager.h; sourceTree = "<group>"; };
+		71193D3A1A6E50EC00E59A9E /* ContactManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactManager.m; sourceTree = "<group>"; };
+		71193D3C1A6E61AD00E59A9E /* SectionedContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionedContacts.h; sourceTree = "<group>"; };
+		71193D3D1A6E61AD00E59A9E /* SectionedContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionedContacts.m; sourceTree = "<group>"; };
 		71D2E4EA1A49814B000DE015 /* RoomMemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberActionsCell.h; sourceTree = "<group>"; };
 		71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberActionsCell.m; sourceTree = "<group>"; };
 		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
@@ -125,16 +151,16 @@
 		F0465AF91A251F85003639F9 /* RoomMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessage.m; sourceTree = "<group>"; };
 		F04A8AD61A3B3DF4008AC915 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTitleView.h; sourceTree = "<group>"; };
 		F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTitleView.m; sourceTree = "<group>"; };
-		F052376C1A72851A0079F3E0 /* MXCGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCGrowingTextView.h; sourceTree = "<group>"; };
-		F052376D1A72851A0079F3E0 /* MXCGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCGrowingTextView.m; sourceTree = "<group>"; };
-		F052376F1A7285280079F3E0 /* MXCAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCAlert.h; sourceTree = "<group>"; };
-		F05237701A7285280079F3E0 /* MXCAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCAlert.m; sourceTree = "<group>"; };
-		F05237721A7285F10079F3E0 /* MatrixSDKHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixSDKHandler.h; sourceTree = "<group>"; };
-		F05237731A7285F10079F3E0 /* MatrixSDKHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixSDKHandler.m; sourceTree = "<group>"; };
-		F05237751A7286160079F3E0 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
-		F05237761A7286160079F3E0 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
+		F05237781A7289F00079F3E0 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
+		F05237791A7289F00079F3E0 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
+		F052377E1A728A010079F3E0 /* MXCAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCAlert.h; sourceTree = "<group>"; };
+		F052377F1A728A010079F3E0 /* MXCAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCAlert.m; sourceTree = "<group>"; };
+		F05237811A728A0A0079F3E0 /* MXCGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCGrowingTextView.h; sourceTree = "<group>"; };
+		F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCGrowingTextView.m; sourceTree = "<group>"; };
 		F05C3A3C1A3F3D7F002B698E /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_users@2x.png"; sourceTree = "<group>"; };
+		F077E6471A72966F008D5AD5 /* MatrixSDKHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixSDKHandler.h; sourceTree = "<group>"; };
+		F077E6481A72966F008D5AD5 /* MatrixSDKHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatrixSDKHandler.m; sourceTree = "<group>"; };
 		F07A80D219DD9DE700B621A1 /* matrixConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matrixConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F07A80D619DD9DE700B621A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F07A80D719DD9DE700B621A1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -206,6 +232,7 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				710CC3BE1A6E9F14006EE973 /* matrixUser.png */,
 				F030974A1A6580D70090BC00 /* icon_keyboard.png */,
 				F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */,
 				F05C3A3C1A3F3D7F002B698E /* icon_users.png */,
@@ -228,10 +255,12 @@
 		F021FBEC1A5EF57300EA3AE6 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				F05237751A7286160079F3E0 /* APNSHandler.h */,
-				F05237761A7286160079F3E0 /* APNSHandler.m */,
-				F05237721A7285F10079F3E0 /* MatrixSDKHandler.h */,
-				F05237731A7285F10079F3E0 /* MatrixSDKHandler.m */,
+				F077E6471A72966F008D5AD5 /* MatrixSDKHandler.h */,
+				F077E6481A72966F008D5AD5 /* MatrixSDKHandler.m */,
+				F05237781A7289F00079F3E0 /* APNSHandler.h */,
+				F05237791A7289F00079F3E0 /* APNSHandler.m */,
+				71193D391A6E50EC00E59A9E /* ContactManager.h */,
+				71193D3A1A6E50EC00E59A9E /* ContactManager.m */,
 				F021FBED1A5EF57300EA3AE6 /* MediaLoader.h */,
 				F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */,
 				F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */,
@@ -245,6 +274,8 @@
 		F03EF5E919F171EB00A0EE52 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				71193D271A6E3DC000E59A9E /* ContactsViewController.h */,
+				71193D281A6E3DC000E59A9E /* ContactsViewController.m */,
 				F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */,
 				F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */,
 				F03EF5EC19F171EB00A0EE52 /* LoginViewController.h */,
@@ -266,8 +297,10 @@
 		F03EF5FC19F1762000A0EE52 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F052376C1A72851A0079F3E0 /* MXCGrowingTextView.h */,
-				F052376D1A72851A0079F3E0 /* MXCGrowingTextView.m */,
+				71193D2A1A6E433900E59A9E /* ContactTableCell.h */,
+				71193D2B1A6E433900E59A9E /* ContactTableCell.m */,
+				F05237811A728A0A0079F3E0 /* MXCGrowingTextView.h */,
+				F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */,
 				F00B5DB71A1B9BCE00EA1C8D /* MXCImageView.h */,
 				F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */,
 				71E94A751A5C4020009F52E5 /* PieChartView.h */,
@@ -291,14 +324,24 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F052376F1A7285280079F3E0 /* MXCAlert.h */,
-				F05237701A7285280079F3E0 /* MXCAlert.m */,
+				F052377E1A728A010079F3E0 /* MXCAlert.h */,
+				F052377F1A728A010079F3E0 /* MXCAlert.m */,
+				71193D301A6E49F000E59A9E /* MXCContact.h */,
+				71193D311A6E49F000E59A9E /* MXCContact.m */,
+				710CC3C01A70F28F006EE973 /* MXCContactField.h */,
+				710CC3C11A70F28F006EE973 /* MXCContactField.m */,
+				71193D321A6E49F000E59A9E /* MXCEmail.h */,
+				71193D331A6E49F000E59A9E /* MXCEmail.m */,
+				71193D341A6E49F000E59A9E /* MXCPhoneNumber.h */,
+				71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */,
 				F0D942F41A31F3A300826CC1 /* RecentRoom.h */,
 				F0D942F51A31F3A300826CC1 /* RecentRoom.m */,
 				F0465AF81A251F85003639F9 /* RoomMessage.h */,
 				F0465AF91A251F85003639F9 /* RoomMessage.m */,
 				F01A0FF11A27314B009FAE2F /* RoomMessageComponent.h */,
 				F01A0FF21A27314B009FAE2F /* RoomMessageComponent.m */,
+				71193D3C1A6E61AD00E59A9E /* SectionedContacts.h */,
+				71193D3D1A6E61AD00E59A9E /* SectionedContacts.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -459,6 +502,7 @@
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
 				F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */,
+				710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */,
 				F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
 				F01628C319E29C660071C473 /* logo.png in Resources */,
@@ -522,15 +566,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
-				F05237711A7285280079F3E0 /* MXCAlert.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
+				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
 				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
-				F05237741A7285F10079F3E0 /* MatrixSDKHandler.m in Sources */,
+				71193D371A6E49F000E59A9E /* MXCEmail.m in Sources */,
+				F077E6491A72966F008D5AD5 /* MatrixSDKHandler.m in Sources */,
+				71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */,
 				F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
 				F02900BB1A63C71E00356F7D /* MXCTools.m in Sources */,
-				F052376E1A72851A0079F3E0 /* MXCGrowingTextView.m in Sources */,
+				71193D361A6E49F000E59A9E /* MXCContact.m in Sources */,
+				710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */,
 				F01A0FF31A27314B009FAE2F /* RoomMessageComponent.m in Sources */,
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
@@ -541,11 +588,16 @@
 				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
 				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
-				F05237771A7286160079F3E0 /* APNSHandler.m in Sources */,
+				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
 				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
+				71193D381A6E49F000E59A9E /* MXCPhoneNumber.m in Sources */,
+				71193D3B1A6E50EC00E59A9E /* ContactManager.m in Sources */,
+				71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
+				F05237801A728A010079F3E0 /* MXCAlert.m in Sources */,
 				F00B5DB91A1B9BCE00EA1C8D /* MXCImageView.m in Sources */,
 				F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */,
+				F05237831A728A0A0079F3E0 /* MXCGrowingTextView.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */,
 				F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */,
 				71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */,

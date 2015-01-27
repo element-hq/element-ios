@@ -13,27 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <Foundation/Foundation.h>
 
-#import "SettingsTableViewCell.h"
+#import "MXCContactField.h"
 
-@implementation SettingsTableViewCell
+@interface MXCPhoneNumber : MXCContactField
+
+// phonenumber info
+@property (nonatomic, readonly) NSString *type;
+@property (nonatomic, readonly) NSString *textNumber;
+
+- (id)initWithTextNumber:(NSString*)textNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
+
 @end
-
-@implementation SettingsCellWithSwitch
-@end
-
-@implementation SettingsCellWithTextView
-@end
-
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
-@end
-

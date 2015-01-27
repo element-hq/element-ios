@@ -23,9 +23,14 @@
 @property (nonatomic) BOOL hideUnsupportedMessages;
 @property (nonatomic) BOOL sortMembersUsingLastSeenTime;
 @property (nonatomic) BOOL displayLeftUsers;
+// return YES if the user got an alertView to allow or not the local contacts sync
+@property (nonatomic, readonly) BOOL requestedLocalContactsSync;
+// return YES if the user allows the local contacts sync
+@property (nonatomic) BOOL syncLocalContacts;
 // cache sizes in bytes
 @property (nonatomic) NSInteger currentMaxMediaCacheSize;
 @property (nonatomic, readonly) NSInteger maxAllowedMediaCacheSize;
+
 
 + (AppSettings *)sharedSettings;
 
