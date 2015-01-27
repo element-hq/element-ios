@@ -218,10 +218,7 @@ static ContactManager* sharedContactManager = nil;
             // update with the known dict 3PID -> matrix ID
             [self updateMatrixIDDeviceContactsList];
             
-            // build a merged contacts list until the 3PIDs lookups are performed
-            NSMutableArray* mergedContactsList = [deviceContactsList mutableCopy];
-            [self mergeMXUsers:mergedContactsList];
-            tmpContacts = mergedContactsList;
+            tmpContacts = [deviceContactsList mutableCopy];
         }
         lastSyncDate = [NSDate date];
         
@@ -232,10 +229,8 @@ static ContactManager* sharedContactManager = nil;
             // refresh the 3PIDS -> matrix IDs
             [self refreshMatrixIDs];
 #else
-            // add the MX users
-            NSMutableArray* tmpContacts = [deviceContactsList mutableCopy];
-            [self mergeMXUsers:tmpContacts];
-            contacts = tmpContacts;
+            // nop
+            // wait that refreshContactMatrixIDs  is called 
             
 #endif
             // at least, display the known contacts
@@ -275,30 +270,6 @@ static ContactManager* sharedContactManager = nil;
     for(MXCContact* contact in deviceContactsList) {
         [self updateContactMatrixIDs:contact];
     }
-}
-
-// merge the knowns MXUsers with the contacts list
-// return the number of modified / added contacts
-- (int) mergeMXUsers:(NSMutableArray*)contactsList {
-    // check if the some room users are not defined in the local contacts book
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    // check if the user is already known
-    NSArray* users = [mxHandler.mxSession users];
-    NSArray* knownUserIDs = [matrixIDBy3PID allValues];
-    
-    int count = 0;
-    
-    for(MXUser* user in users) {
-        if (!knownUserIDs || [knownUserIDs indexOfObject:user.userId] == NSNotFound) {
-            MXCContact* contact = [[MXCContact alloc] initWithDisplayName:(user.displayname ? user.displayname : user.userId) matrixID:user.userId];
-            [matrixContactByMatrixUserID setValue:contact forKey:user.userId];
-            [contactsList addObject:contact];
-            count++;
-        }
-    }
-    
-    return count;
 }
 
 #ifdef CONTACTS_3PIDS_SYNC
