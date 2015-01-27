@@ -184,29 +184,16 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     }
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)aTableView
-{
-    NSMutableArray* titles = [[NSMutableArray alloc] initWithCapacity:10];
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)aTableView {
+    [self.tableView setSectionIndexColor:[AppDelegate theDelegate].masterTabBarController.tabBar.tintColor];
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     
-    [titles addObjectsFromArray:[[UILocalizedIndexedCollation currentCollation] sectionIndexTitles]];
-    
-    // force the background color
-    if ([self.tableView respondsToSelector:@selector(setSectionIndexBackgroundColor:)]) {
-        [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
-    }
-    
-    return titles;
+    return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
 }
 
-- (NSInteger)tableView:(UITableView *)aTableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
+- (NSInteger)tableView:(UITableView *)aTableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     SectionedContacts* sectionedContacts = displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts;
-    NSUInteger section;
-    
-    @synchronized(self)
-    {
-        section = [sectionedContacts.sectionTitles indexOfObject:title];
-    }
+    NSUInteger section = [sectionedContacts.sectionTitles indexOfObject:title];
     
     // undefined title -> jump to the first valid non empty section
     if (NSNotFound == section) {
