@@ -405,7 +405,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             if (matrixIDs.count == 1) {
                 NSString* matrixID = [matrixIDs objectAtIndex:0];
 
-                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:MXCAlertStyleAlert];
+                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with %@", matrixID]  message:nil style:MXCAlertStyleAlert];
                 
                 [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.startChatMenu = nil;
@@ -414,16 +414,16 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.startChatMenu = nil;
                     
-                    [mxHandler createPrivateOneToOneRoomWith:matrixID];
+                    [mxHandler startPrivateOneToOneRoomWith:matrixID];
                 }];
             } else {
-                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with "]  message:nil style:MXCAlertStyleActionSheet];
+                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with "]  message:nil style:MXCAlertStyleActionSheet];
                 
                 for(NSString* matrixID in matrixIDs) {
                     [self.startChatMenu addActionWithTitle:matrixID style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                         weakSelf.startChatMenu = nil;
                         
-                        [mxHandler createPrivateOneToOneRoomWith:matrixID];
+                        [mxHandler startPrivateOneToOneRoomWith:matrixID];
                     }];
                 }
                 
