@@ -104,6 +104,9 @@ static ContactManager* sharedContactManager = nil;
     }
     
     [self saveMatrixIDsDict];
+
+    // warn of the contacts list update
+    [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
 }
 
 - (void)fullRefresh {

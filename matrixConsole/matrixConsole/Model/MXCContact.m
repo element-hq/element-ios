@@ -196,6 +196,48 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
     return self;
 }
 
+// check if the patterns can match with this contact
+- (BOOL) matchedWithPatterns:(NSArray*)patterns {
+    
+    BOOL matched = NO;
+    
+    if (patterns.count > 0) {
+        
+        matched = YES;
+        
+        // test first display name
+        for(NSString* pattern in patterns) {
+            if ([_displayName rangeOfString:pattern options:NSCaseInsensitiveSearch].location == NSNotFound) {
+                matched = NO;
+                break;
+            }
+        }
+        
+        if (!matched && _phoneNumbers.count > 0) {
+            for(MXCPhoneNumber* phonenumber in _phoneNumbers) {
+                if ([phonenumber matchedWithPatterns:patterns]) {
+                    matched = YES;
+                    break;
+                }
+            }
+        }
+        
+        if (!matched && _emailAddresses.count > 0) {
+            for(MXCEmail* email in _emailAddresses) {
+                if ([email matchedWithPatterns:patterns]) {
+                    matched = YES;
+                    break;
+                }
+            }
+        }
+    } else {
+        // if there is no pattern to search, it should always matched
+        matched = YES;
+    }
+    
+    return matched;
+}
+
 - (BOOL) isMatrixContact {
     return (nil != dummyField);
 }

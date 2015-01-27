@@ -16,6 +16,12 @@
 
 #import "MXCPhoneNumber.h"
 
+@interface MXCPhoneNumber() {
+    // for search purpose
+    NSString* cleanedPhonenumber;
+}
+@end
+
 @implementation MXCPhoneNumber
 
 - (id)initWithTextNumber:(NSString*)aTextNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID {
@@ -24,9 +30,57 @@
     if (self) {
         _type = aType;
         _textNumber = aTextNumber;
+        cleanedPhonenumber = nil;
     }
     
     return self;
+}
+
+// remove the unuseful characters in a phonenumber
++ (NSString*) cleanPhonenumber:(NSString*)phoneNumber {
+    
+    // sanity check
+    if (nil == phoneNumber)
+    {
+        return nil;
+    }
+    
+    // empty string
+    if (0 == [phoneNumber length])
+    {
+        return @"";
+    }
+    
+    static NSCharacterSet *invertedPhoneCharSet = nil;
+    
+    if (!invertedPhoneCharSet)
+    {
+        invertedPhoneCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789+*#,"] invertedSet];
+    }
+    
+    return  [[phoneNumber componentsSeparatedByCharactersInSet:invertedPhoneCharSet] componentsJoinedByString:@""];
+}
+
+
+- (BOOL)matchedWithPatterns:(NSArray*)patterns {
+    // no number -> cannot match
+    if (_textNumber.length == 0) {
+        return NO;
+    }
+    
+    if (!cleanedPhonenumber) {
+        cleanedPhonenumber = [MXCPhoneNumber cleanPhonenumber:_textNumber];
+    }
+    
+    if (patterns.count > 0) {
+        for(NSString *pattern in patterns) {
+            if (([_textNumber rangeOfString:pattern].location == NSNotFound) && ([cleanedPhonenumber rangeOfString:pattern].location == NSNotFound)) {
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
 }
 
 @end

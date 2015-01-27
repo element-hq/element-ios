@@ -22,7 +22,7 @@
 
 #import "SectionedContacts.h"
 
-@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate> {    
+@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate> {
     NSArray* collationTitles;
 }
 
