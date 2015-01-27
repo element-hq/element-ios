@@ -248,52 +248,48 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     }
     
     __weak typeof(self) weakSelf = self;
-    
     NSArray* matrixIDs = contact.matrixIdentifiers;
-    
+
     // matrix user ?
     if (matrixIDs.count) {
-        // Display action menu: Add attachments, Invite user...
         
-        NSString* matrixID = [matrixIDs objectAtIndex:0];
+        MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
+        
+        // display only if the matrix SDk is ready 
+        if ((mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) || (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady)) {
+            // only 1 matrix ID
+            if (matrixIDs.count == 1) {
+                NSString* matrixID = [matrixIDs objectAtIndex:0];
 
-        self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:MXCAlertStyleAlert];
-        
-        [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-            weakSelf.startChatMenu = nil;
-        }];
-        
-        [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
-            weakSelf.startChatMenu = nil;
-            
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            
-            // else create new room
-            [mxHandler.mxRestClient createRoom:nil
-                                    visibility:kMXRoomVisibilityPrivate
-                                     roomAlias:nil
-                                         topic:nil
-                                       success:^(MXCreateRoomResponse *response) {
-                                           // add the user
-                                           [mxHandler.mxRestClient inviteUser:matrixID toRoom:response.roomId success:^{
-                                           } failure:^(NSError *error) {
-                                               NSLog(@"%@ invitation failed (roomId: %@): %@", matrixID, response.roomId, error);
-                                               //Alert user
-                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                           }];
-                                           
-                                           // Open created room
-                                           [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
-                                           
-                                       } failure:^(NSError *error) {
-                                           NSLog(@"Create room failed: %@", error);
-                                           //Alert user
-                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                       }];
+                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with %@", matrixID]  message:nil style:MXCAlertStyleAlert];
                 
-        }];
-        
-        [self.startChatMenu showInViewController:self];
+                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    weakSelf.startChatMenu = nil;
+                }];
+                
+                [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    weakSelf.startChatMenu = nil;
+                    
+                    [mxHandler createPrivateOneToOneRoomWith:matrixID];
+                }];
+            } else {
+                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Start chat with "]  message:nil style:MXCAlertStyleActionSheet];
+                
+                for(NSString* matrixID in matrixIDs) {
+                    [self.startChatMenu addActionWithTitle:matrixID style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                        weakSelf.startChatMenu = nil;
+                        
+                        [mxHandler createPrivateOneToOneRoomWith:matrixID];
+                    }];
+                }
+                
+                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    weakSelf.startChatMenu = nil;
+                }];
+            }
+            
+            [self.startChatMenu showInViewController:self];
+        }
     } else {
         // invite to use matrix
         if (([MFMessageComposeViewController canSendText] ? contact.emailAddresses.count : 0) + (contact.phoneNumbers.count > 0)) {
