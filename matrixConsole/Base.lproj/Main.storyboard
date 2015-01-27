@@ -1460,10 +1460,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gMZ-iG-iB5">
-                                <rect key="frame" x="197" y="70" width="207" height="29"/>
+                                <rect key="frame" x="195" y="70" width="211" height="29"/>
                                 <segments>
                                     <segment title="Matrix Users"/>
-                                    <segment title="Local contacts"/>
+                                    <segment title="Local Contacts"/>
                                 </segments>
                                 <connections>
                                     <action selector="onSegmentValueChange:" destination="T6e-9y-AqE" eventType="valueChanged" id="U89-7D-KKY"/>
