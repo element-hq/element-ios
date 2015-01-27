@@ -1487,7 +1487,7 @@
                                                         <constraint firstAttribute="height" constant="16" id="JSX-S5-Smq"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jld-N3-vJN" customClass="MXCImageView">
+                                                <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="jld-N3-vJN" customClass="MXCImageView">
                                                     <rect key="frame" x="12" y="5" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="2As-na-nDF"/>
