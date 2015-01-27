@@ -14,26 +14,18 @@
  limitations under the License.
  */
 
-#import "SettingsTableViewCell.h"
+#import <UIKit/UIKit.h>
+#import "MXCImageView.h"
+#import "MXCContact.h"
 
-@implementation SettingsTableViewCell
-@end
+@interface ContactTableCell : UITableViewCell
 
-@implementation SettingsCellWithSwitch
-@end
+@property (strong, nonatomic) IBOutlet MXCImageView *thumbnailView;
+@property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *matrixUserIconView;
 
-@implementation SettingsCellWithTextView
-@end
+// reference to the linked message
+@property (strong, nonatomic) MXCContact *contact;
 
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
 @end
 

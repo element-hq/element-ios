@@ -509,32 +509,7 @@
                 [[AppDelegate theDelegate].masterTabBarController showRoom:roomId];
             }
             else {
-                // else create new room
-                [mxHandler.mxRestClient createRoom:nil
-                                        visibility:kMXRoomVisibilityPrivate
-                                         roomAlias:nil
-                                             topic:nil
-                                           success:^(MXCreateRoomResponse *response) {
-                                               [self removePendingActionMask];
-                                               
-                                               // add the user
-                                               [mxHandler.mxRestClient inviteUser:_mxRoomMember.userId toRoom:response.roomId success:^{
-                                                   //NSLog(@"%@ has been invited (roomId: %@)", roomMember.userId, response.roomId);
-                                               } failure:^(NSError *error) {
-                                                   NSLog(@"%@ invitation failed (roomId: %@): %@", _mxRoomMember.userId, response.roomId, error);
-                                                   //Alert user
-                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                               }];
-                                               
-                                               // Open created room
-                                               [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
-                                               
-                                           } failure:^(NSError *error) {
-                                               [self removePendingActionMask];
-                                               NSLog(@"Create room failed: %@", error);
-                                               //Alert user
-                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                           }];
+                [mxHandler createPrivateOneToOneRoomWith:_mxRoomMember.userId];
             }
         }
     }

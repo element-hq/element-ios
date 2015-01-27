@@ -72,6 +72,12 @@ typedef enum : NSUInteger {
 - (BOOL)isSupportedAttachment:(MXEvent*)event;
 - (BOOL)isEmote:(MXEvent*)event;
 
+// return a MatrixIDs list of 1:1 room members
+- (NSArray*)oneToOneRoomMemberMatrixIDs;
+
+// create a private one to one chat room
+- (void)createPrivateOneToOneRoomWith:(NSString*)otherMatrixID;
+
 // Return the suitable url to display the content thumbnail into the provided view size
 // Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
 - (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
@@ -84,7 +90,12 @@ typedef enum : NSUInteger {
 // search if a 1:1 conversation has been started with this member
 - (NSString*)getRoomStartedWithMember:(MXRoomMember*)roomMember;
 
+// user power level in a dedicated room
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
+
+// return the presence ring color
+// nil means there is no ring to display
+- (UIColor*)getPresenceRingColor:(MXPresence)presence;
 
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text;

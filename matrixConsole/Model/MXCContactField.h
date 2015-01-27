@@ -14,26 +14,18 @@
  limitations under the License.
  */
 
-#import "SettingsTableViewCell.h"
+#import <UIKit/UIKit.h>
 
-@implementation SettingsTableViewCell
+@interface MXCContactField : NSObject
+
+// contact ID where the email has been found
+@property (nonatomic, readonly) NSString *contactID;
+// linked matrix account
+@property (nonatomic, readwrite) NSString *matrixID;
+@property (nonatomic, readonly) UIImage  *avatarImage;
+
+- (id)initWithContactID:(NSString*)contactID matrixID:(NSString*)matrixID;
+
+- (void)loadAvatarWithSize:(CGSize)avatarSize;
+
 @end
-
-@implementation SettingsCellWithSwitch
-@end
-
-@implementation SettingsCellWithTextView
-@end
-
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
-@end
-

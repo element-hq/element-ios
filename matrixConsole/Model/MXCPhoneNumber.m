@@ -14,26 +14,19 @@
  limitations under the License.
  */
 
-#import "SettingsTableViewCell.h"
+#import "MXCPhoneNumber.h"
 
-@implementation SettingsTableViewCell
+@implementation MXCPhoneNumber
+
+- (id)initWithTextNumber:(NSString*)aTextNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID {
+    self = [super initWithContactID:aContactID matrixID:matrixID];
+    
+    if (self) {
+        _type = aType;
+        _textNumber = aTextNumber;
+    }
+    
+    return self;
+}
+
 @end
-
-@implementation SettingsCellWithSwitch
-@end
-
-@implementation SettingsCellWithTextView
-@end
-
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
-@end
-

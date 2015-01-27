@@ -14,26 +14,18 @@
  limitations under the License.
  */
 
-#import "SettingsTableViewCell.h"
+#import <Foundation/Foundation.h>
 
-@implementation SettingsTableViewCell
+@interface SectionedContacts : NSObject {
+    int contactsCount;
+    NSArray *sectionTitles;
+    NSArray *sectionedContacts;
+}
+
+@property (nonatomic, readonly) int contactsCount;
+@property (nonatomic, readonly) NSArray *sectionTitles;
+@property (nonatomic, readonly) NSArray *sectionedContacts;
+
+-(id)initWithContacts:(NSArray *)_sectionedContacts andTitles:(NSArray *)titles andCount:(int)count;
+
 @end
-
-@implementation SettingsCellWithSwitch
-@end
-
-@implementation SettingsCellWithTextView
-@end
-
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
-@end
-

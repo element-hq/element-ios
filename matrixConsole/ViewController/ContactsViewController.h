@@ -14,26 +14,17 @@
  limitations under the License.
  */
 
-#import "SettingsTableViewCell.h"
+#import <UIKit/UIKit.h>
 
-@implementation SettingsTableViewCell
-@end
+// SMS
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
-@implementation SettingsCellWithSwitch
-@end
+#import "SectionedContacts.h"
 
-@implementation SettingsCellWithTextView
-@end
+@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate> {    
+    NSArray* collationTitles;
+}
 
-@implementation SettingsCellWithLabelAndTextField
-@end
-
-@implementation SettingsCellWithLabelAndSlider
-@end
-
-@implementation SettingsCellWithTextFieldAndButton
-@end
-
-@implementation SettingsCellWithLabelTextFieldAndButton
 @end
 

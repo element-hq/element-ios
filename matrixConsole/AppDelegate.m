@@ -21,6 +21,7 @@
 #import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 #import "SettingsViewController.h"
+#import "ContactManager.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -112,6 +113,9 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     // Resume Matrix handler
     [[MatrixSDKHandler sharedHandler] resume];
+    
+    // refresh the contacts list
+    [[ContactManager sharedManager] fullRefresh];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -172,6 +176,7 @@
 - (void)logout {
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [[APNSHandler sharedHandler] reset];
+    [[ContactManager sharedManager] reset];
     isAPNSRegistered = NO;
     // Clear cache
     [MediaManager clearCache];

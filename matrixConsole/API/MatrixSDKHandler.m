@@ -509,6 +509,71 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 #pragma mark -
 
+// return a MatrixIDs list of 1:1 room members
+- (NSArray*)oneToOneRoomMemberMatrixIDs {
+    
+    NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    
+     if ((mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) || (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone)) {
+      
+         NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
+         
+         for (MXEvent *mxEvent in recentEvents) {
+             MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
+             
+             NSArray* membersList = [mxRoom.state members];
+             
+             // keep only 1:1 chat
+             if ([mxRoom.state members].count <= 2) {
+                 
+                 for (MXRoomMember* member in membersList) {
+                     // not myself
+                     if (![member.userId isEqualToString:mxHandler.userId]) {
+                         if ([matrixIDs indexOfObject:member.userId] == NSNotFound) {
+                             [matrixIDs addObject:member.userId];
+                         }
+                     }
+                 }
+             }
+         }
+     }
+    
+    return matrixIDs;
+}
+
+// create a private one to one chat room
+- (void)createPrivateOneToOneRoomWith:(NSString*)otherMatrixID {
+    // sanity check
+    if (self.mxRestClient) {
+        [self.mxRestClient createRoom:nil
+                                visibility:kMXRoomVisibilityPrivate
+                                 roomAlias:nil
+                                     topic:nil
+                                   success:^(MXCreateRoomResponse *response) {
+                                       
+                                       // invite the other user only if it is defined and not onself
+                                       if (otherMatrixID && ![self.userId isEqualToString:otherMatrixID]) {
+                                           // add the user
+                                           [self.mxRestClient inviteUser:otherMatrixID toRoom:response.roomId success:^{
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"%@ invitation failed (roomId: %@): %@", otherMatrixID, response.roomId, error);
+                                               //Alert user
+                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                           }];
+                                       }
+                                       
+                                       // Open created room
+                                       [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                                       
+                                   } failure:^(NSError *error) {
+                                       NSLog(@"Create room failed: %@", error);
+                                       //Alert user
+                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                   }];
+    }
+}
+
 - (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod {
     // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
     // Convert first the provided size in pixels
@@ -871,6 +936,25 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
 
     return powerLevel;
+}
+
+
+// return the presence ring color
+// nil means there is no ring to display
+- (UIColor*)getPresenceRingColor:(MXPresence)presence {
+    switch (presence) {
+        case MXPresenceOnline:
+            return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
+        case MXPresenceUnavailable:
+            return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
+        case MXPresenceOffline:
+            return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
+        case MXPresenceUnknown:
+        case MXPresenceFreeForChat:
+        case MXPresenceHidden:
+        default:
+            return nil;
+    }
 }
 
 // return YES if the text contains a bing word
