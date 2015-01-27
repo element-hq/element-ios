@@ -787,6 +787,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     UITableViewCell *cell = nil;
     
     if (indexPath.section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
@@ -839,7 +840,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
             
-            cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:[MatrixSDKHandler sharedHandler].cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+            cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
         } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
@@ -848,7 +849,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             maxCacheSizeCell = (SettingsCellWithLabelAndSlider*)cell;
             
             maxCacheSizeCell.settingSlider.minimumValue = 0;
-            maxCacheSizeCell.settingSlider.value = [MatrixSDKHandler sharedHandler].currentMaxCachesSize;
+            maxCacheSizeCell.settingSlider.maximumValue = mxHandler.maxAllowedCachesSize;
+            maxCacheSizeCell.settingSlider.value = mxHandler.currentMaxCachesSize;
             
             [self onSliderValueChange:maxCacheSizeCell.settingSlider];
         
@@ -878,7 +880,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         SettingsCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
         NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         configCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         cell = configCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
