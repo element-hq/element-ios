@@ -21,6 +21,7 @@
 #import "APNSHandler.h"
 #import "MatrixSDKHandler.h"
 #import "MediaManager.h"
+#import "MXC3PID.h"
 
 #import "SettingsTableViewCell.h"
 
@@ -63,7 +64,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Linked emails
     NSMutableArray *linkedEmails;
-    SettingsCellWithTextFieldAndButton* linkedEmailCell;
+    MXC3PID        *submittedEmail;
+    SettingsCellWithTextFieldAndButton* submittedEmailCell;
     SettingsCellWithLabelTextFieldAndButton* emailTokenCell;
     // Dynamic rows in the Linked emails section
     int submittedEmailRowIndex;
@@ -87,6 +89,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
     SettingsCellWithLabelAndSlider* maxCacheSizeCell;
+    
+    // Configuration
+    SettingsCellWithTextView *configurationCell;
+    
+    // Commands
+    SettingsCellWithTextView *commandsCell;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -141,22 +149,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)dealloc {
     [self reset];
-    
     alertsArray = nil;
-    
     logoutBtn = nil;
-    apnsNotificationsSwitch = nil;
-    inAppNotificationsSwitch = nil;
-    allEventsSwitch = nil;
-    unsupportedMsgSwitch = nil;
-    sortMembersSwitch = nil;
-    displayLeftMembersSwitch = nil;
-    contactsSyncSwitch = nil;
     
-    inAppNotificationsRulesCell = nil;
-    linkedEmailCell = nil;
-    emailTokenCell = nil;
-    maxCacheSizeCell = nil;
     [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
@@ -250,6 +245,24 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     _saveUserInfoButton.enabled = NO;
     
     linkedEmails = nil;
+    submittedEmail = nil;
+    submittedEmailCell = nil;
+    emailTokenCell = nil;
+    
+    contactsSyncSwitch = nil;
+    
+    apnsNotificationsSwitch = nil;
+    inAppNotificationsSwitch = nil;
+    inAppNotificationsRulesCell = nil;
+    
+    allEventsSwitch = nil;
+    unsupportedMsgSwitch = nil;
+    sortMembersSwitch = nil;
+    displayLeftMembersSwitch = nil;
+    maxCacheSizeCell = nil;
+    
+    configurationCell = nil;
+    commandsCell = nil;
 }
 
 - (void)startActivityIndicator {
@@ -615,13 +628,65 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [[AppDelegate theDelegate].masterTabBarController presentMediaPicker:mediaPicker];
     } else if (sender == logoutBtn) {
         [[AppDelegate theDelegate] logout];
-    } else if (sender == linkedEmailCell.settingButton) {
-        // FIXME
-        NSLog(@"link email is not supported yet (%@)", linkedEmailCell.settingTextField.text);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"link is not supported yet" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-        linkedEmailCell.settingTextField.text = nil;
-        linkedEmailCell.settingButton.enabled = NO;
+    } else if (sender == submittedEmailCell.settingButton) {
+        if (!submittedEmail || ![submittedEmail.address isEqualToString:submittedEmailCell.settingTextField.text]) {
+            submittedEmail = [[MXC3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:submittedEmailCell.settingTextField.text];
+        }
+        
+        submittedEmailCell.settingButton.enabled = NO;
+        [submittedEmail requestValidationToken:^{
+            // Reset email field
+            submittedEmailCell.settingTextField.text = nil;
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            NSLog(@"Request email token failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+            submittedEmailCell.settingButton.enabled = YES;
+        }];
+    } else if (sender == emailTokenCell.settingButton) {
+        emailTokenCell.settingButton.enabled = NO;
+        [submittedEmail validateWithToken:emailTokenCell.settingTextField.text success:^(BOOL success) {
+            if (success) {
+                // The email has been "Authenticated"
+                // Link the email with user's account
+                MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+                [submittedEmail bindWithUserId:mxHandler.userId success:^{
+                    // Add new linked email
+                    if (!linkedEmails) {
+                        linkedEmails = [NSMutableArray array];
+                    }
+                    [linkedEmails addObject:submittedEmail.address];
+                    
+                    // Release pending email and refresh table to remove related cell
+                    submittedEmail = nil;
+                    [self.tableView reloadData];
+                } failure:^(NSError *error) {
+                    NSLog(@"Link email failed: %@", error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    
+                    // Release the pending email (even if it is Authenticated)
+                    submittedEmail = nil;
+                    [self.tableView reloadData];
+                }];
+            } else {
+                NSLog(@"Failed to link email");
+                MXCAlert *alert = [[MXCAlert alloc] initWithTitle:nil message:@"Failed to link email"  style:MXCAlertStyleAlert];
+                [alertsArray addObject:alert];
+                alert.cancelButtonIndex = [alert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    [alertsArray removeObject:alert];
+                }];
+                [alert showInViewController:self];
+                // Reset wrong token
+                emailTokenCell.settingTextField.text = nil;
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"Submitted email token failed: %@", error);
+            //Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+            emailTokenCell.settingButton.enabled = YES;
+        }];
     } else if (sender == apnsNotificationsSwitch) {
         [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
     } else if (sender == inAppNotificationsSwitch) {
@@ -672,8 +737,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (inAppNotificationsRulesCell && [inAppNotificationsRulesCell.settingTextField isFirstResponder]) {
         [self manageWordsList];
         [inAppNotificationsRulesCell.settingTextField resignFirstResponder];
-    } else if ([linkedEmailCell.settingTextField isFirstResponder]) {
-        [linkedEmailCell.settingTextField resignFirstResponder];
+    } else if ([submittedEmailCell.settingTextField isFirstResponder]) {
+        [submittedEmailCell.settingTextField resignFirstResponder];
+    } else if ([emailTokenCell.settingTextField isFirstResponder]) {
+        [emailTokenCell.settingTextField resignFirstResponder];
     }
 }
 
@@ -688,8 +755,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (IBAction)textFieldDidChange:(id)sender {
     if (sender == _userDisplayName) {
         [self updateSaveUserInfoButtonStatus];
-    } else if (sender == linkedEmailCell.settingTextField) {
-        linkedEmailCell.settingButton.enabled = (linkedEmailCell.settingTextField.text.length != 0);
+    } else if (sender == submittedEmailCell.settingTextField) {
+        submittedEmailCell.settingButton.enabled = (submittedEmailCell.settingTextField.text.length != 0);
+    } else if (sender == emailTokenCell.settingTextField) {
+        emailTokenCell.settingButton.enabled = (emailTokenCell.settingTextField.text.length != 0);
     }
 }
 
@@ -700,38 +769,45 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger count = 0;
     if (section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
-        return linkedEmails.count + 1;
-    } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+        submittedEmailRowIndex = emailTokenRowIndex = -1;
         
+        count = linkedEmails.count;
+        submittedEmailRowIndex = count++;
+        if (submittedEmail && submittedEmail.validationState >= MXC3PIDAuthStateTokenReceived) {
+            emailTokenRowIndex = count++;
+        } else {
+            emailTokenCell = nil;
+        }
+    } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         enableInAppNotifRowIndex = inAppNotifRulesRowIndex = enablePushNotifRowIndex = -1;
         
-        int count = 0;
         if ([APNSHandler sharedHandler].isAvailable) {
             enablePushNotifRowIndex = count++;
         }
-        
         enableInAppNotifRowIndex = count++;
         if ([[AppSettings sharedSettings] enableInAppNotifications]) {
             inAppNotifRulesRowIndex = count++;
         }
-        
-        return count;
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
-        return 1;
+        count = 1;
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
-        return SETTINGS_SECTION_ROOMS_INDEX_COUNT;
+        count = SETTINGS_SECTION_ROOMS_INDEX_COUNT;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
-        return 1;
+        count = 1;
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
-        return 1;
+        count = 1;
     }
     
-    return 0;
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
+        if (indexPath.row == emailTokenRowIndex) {
+            return 70;
+        }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         if (indexPath.row == inAppNotifRulesRowIndex) {
@@ -799,18 +875,48 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UITableViewCell *cell = nil;
     
     if (indexPath.section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
-        // Report the current email value (if any)
-        NSString *currentEmail = nil;
-        if (linkedEmailCell) {
-            currentEmail = linkedEmailCell.settingTextField.text;
+        if (indexPath.row < linkedEmails.count) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LinkedEmailCell"];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LinkedEmailCell"];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = [linkedEmails objectAtIndex:indexPath.row];
+        } else if (indexPath.row == submittedEmailRowIndex) {
+            // Report the current email value (if any)
+            NSString *currentEmail = nil;
+            if (submittedEmailCell) {
+                currentEmail = submittedEmailCell.settingTextField.text;
+            }
+            submittedEmailCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextFieldAndButton" forIndexPath:indexPath];
+            submittedEmailCell.settingTextField.text = currentEmail;
+            submittedEmailCell.settingButton.enabled = (currentEmail.length != 0);
+            [submittedEmailCell.settingButton setTitle:@"Link Email" forState:UIControlStateNormal];
+            [submittedEmailCell.settingButton setTitle:@"Link Email" forState:UIControlStateHighlighted];
+            if (emailTokenRowIndex != -1) {
+                // Hide the separator
+                CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+                CGFloat rightInset = (screenSize.width < screenSize.height) ? screenSize.height : screenSize.width;
+                submittedEmailCell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, rightInset);
+            }
+            cell = submittedEmailCell;
+        } else if (indexPath.row == emailTokenRowIndex) {
+            // Report the current token value (if any)
+            NSString *currentToken = nil;
+            if (emailTokenCell) {
+                currentToken = emailTokenCell.settingTextField.text;
+            }
+            emailTokenCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelTextFieldAndButton" forIndexPath:indexPath];
+            emailTokenCell.settingLabel.text = [NSString stringWithFormat:@"Enter validation token for %@:", submittedEmail.address];
+            emailTokenCell.settingTextField.text = currentToken;
+            emailTokenCell.settingButton.enabled = (currentToken.length != 0);
+            [emailTokenCell.settingButton setTitle:@"Submit code" forState:UIControlStateNormal];
+            [emailTokenCell.settingButton setTitle:@"Submit code" forState:UIControlStateHighlighted];
+            cell = emailTokenCell;
         }
-        linkedEmailCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextFieldAndButton" forIndexPath:indexPath];
-        linkedEmailCell.settingTextField.text = currentEmail;
-        linkedEmailCell.settingButton.enabled = (currentEmail.length != 0);
-        cell = linkedEmailCell;
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         if (indexPath.row == inAppNotifRulesRowIndex) {
-            // Report the current email value (if any)
+            // Report the current value (if any)
             NSString *currentRules = nil;
             BOOL isFirstResponder = NO;
             if (inAppNotificationsRulesCell) {
@@ -854,21 +960,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
-            
             cell.textLabel.text = [NSString stringWithFormat:@"Clear cache (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
         } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSilder" forIndexPath:indexPath];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            maxCacheSizeCell = (SettingsCellWithLabelAndSlider*)cell;
-            
+            maxCacheSizeCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSilder" forIndexPath:indexPath];
             maxCacheSizeCell.settingSlider.minimumValue = 0;
             maxCacheSizeCell.settingSlider.maximumValue = mxHandler.maxAllowedCachesSize;
             maxCacheSizeCell.settingSlider.value = mxHandler.currentMaxCachesSize;
             
             [self onSliderValueChange:maxCacheSizeCell.settingSlider];
-        
+            cell = maxCacheSizeCell;
         } else {
             SettingsCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
             
@@ -893,13 +995,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell = roomsSettingCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
-        SettingsCellWithTextView *configCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        configCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
-        cell = configCell;
+        if (!configurationCell) {
+            configurationCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+            NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+            configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        }
+        cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
-        SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-        commandsCell.settingTextView.text = kCommandsDescriptionText;
+        if (!commandsCell) {
+            commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+            commandsCell.settingTextView.text = kCommandsDescriptionText;
+        }
         cell = commandsCell;
     }
     
