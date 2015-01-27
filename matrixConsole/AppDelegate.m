@@ -179,7 +179,6 @@
 - (void)logout {
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [[APNSHandler sharedHandler] reset];
-    [[ContactManager sharedManager] reset];
     isAPNSRegistered = NO;
     // Clear cache
     [MediaManager clearCache];
@@ -188,6 +187,8 @@
     [self.masterTabBarController showLoginScreen];
     // Reset App settings
     [[AppSettings sharedSettings] reset];
+    //  reset the contact manager
+    [[ContactManager sharedManager] reset];
     // By default the "Home" tab is focussed
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }

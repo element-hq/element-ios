@@ -54,4 +54,20 @@
     return self;
 }
 
+- (BOOL)matchedWithPatterns:(NSArray*)patterns {
+    // no number -> cannot match
+    if (_emailAddress.length == 0) {
+        return NO;
+    }
+    if (patterns.count > 0) {
+        for(NSString *pattern in patterns) {
+            if ([_emailAddress rangeOfString:pattern options:NSCaseInsensitiveSearch].location == NSNotFound) {
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
+}
+
 @end

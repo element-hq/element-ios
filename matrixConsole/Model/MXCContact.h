@@ -54,4 +54,7 @@ extern NSString *const kMXCContactThumbnailUpdateNotification;
 // self.thumbnail triggered a request with a 256 X 256 pixels
 - (UIImage*)thumbnailWithPreferedSize:(CGSize)size;
 
+// check if the patterns can match with this contact
+- (BOOL) matchedWithPatterns:(NSArray*)patterns;
+
 @end
