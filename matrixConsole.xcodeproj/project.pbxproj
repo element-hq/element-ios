@@ -57,6 +57,7 @@
 		F07A80F519DD9DE700B621A1 /* matrixConsoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */; };
 		F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */; };
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
+		F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E67931A77965A00AABD4C /* MXC3PID.m */; };
 		F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AC19E6895E00E47915 /* logoHighRes.png */; };
 		F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AD19E6895E00E47915 /* tab_recents.png */; };
 		F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5B019E6898800E47915 /* tab_home.ico */; };
@@ -166,6 +167,8 @@
 		F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = matrixConsoleTests.m; sourceTree = "<group>"; };
 		F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrixConsole.jpg; sourceTree = "<group>"; };
 		F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		F08E67921A77965A00AABD4C /* MXC3PID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXC3PID.h; sourceTree = "<group>"; };
+		F08E67931A77965A00AABD4C /* MXC3PID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXC3PID.m; sourceTree = "<group>"; };
 		F0CEA5AC19E6895E00E47915 /* logoHighRes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoHighRes.png; sourceTree = "<group>"; };
 		F0CEA5AD19E6895E00E47915 /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
 		F0CEA5B019E6898800E47915 /* tab_home.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = tab_home.ico; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 		F0465AF71A251F85003639F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F08E67921A77965A00AABD4C /* MXC3PID.h */,
+				F08E67931A77965A00AABD4C /* MXC3PID.m */,
 				F052377E1A728A010079F3E0 /* MXCAlert.h */,
 				F052377F1A728A010079F3E0 /* MXCAlert.m */,
 				71193D301A6E49F000E59A9E /* MXCContact.h */,
@@ -575,6 +580,7 @@
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
 				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
+				F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */,
 				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
 				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
