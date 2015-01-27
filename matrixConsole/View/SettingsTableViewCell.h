@@ -42,3 +42,9 @@
 @property (strong, nonatomic) IBOutlet UITextField *settingTextField;
 @property (strong, nonatomic) IBOutlet UIButton *settingButton;
 @end
+
+@interface SettingsCellWithLabelTextFieldAndButton : SettingsTableViewCell
+@property (strong, nonatomic) IBOutlet UILabel *settingLabel;
+@property (strong, nonatomic) IBOutlet UITextField *settingTextField;
+@property (strong, nonatomic) IBOutlet UIButton *settingButton;
+@end
