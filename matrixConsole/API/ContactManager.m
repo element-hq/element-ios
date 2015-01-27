@@ -166,11 +166,11 @@ static ContactManager* sharedContactManager = nil;
             
             ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
             ABRecordRef      contactRecord;
-            int              index;
+            CFIndex          index;
             CFMutableArrayRef people = (CFMutableArrayRef)ABAddressBookCopyArrayOfAllPeople(ab);
             
             if (nil != people) {
-                int peopleCount = CFArrayGetCount(people);
+                CFIndex peopleCount = CFArrayGetCount(people);
                 
                 for (index = 0; index < peopleCount; index++) {
                     contactRecord = (ABRecordRef)CFArrayGetValueAtIndex(people, index);
