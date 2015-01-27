@@ -1255,6 +1255,56 @@
                                     <outlet property="settingTextField" destination="BUG-4i-zBj" id="xu3-OG-Qtu"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithLabelTextFieldAndButton" rowHeight="70" id="x8a-PY-AjS" userLabel="SettingsCellWithLabelTextFieldAndButton" customClass="SettingsCellWithLabelTextFieldAndButton">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x8a-PY-AjS" id="4zF-EO-KhE">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2U4-Eu-nZy">
+                                            <rect key="frame" x="8" y="33" width="505" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                            <connections>
+                                                <action selector="textFieldDidChange:" destination="1TJ-Md-cjN" eventType="editingChanged" id="jTc-sL-Zml"/>
+                                                <outlet property="delegate" destination="1TJ-Md-cjN" id="6nG-uV-x4q"/>
+                                            </connections>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPh-39-Atp">
+                                            <rect key="frame" x="521" y="33" width="71" height="30"/>
+                                            <state key="normal" title="Link Email">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="touchUpInside" id="wqw-um-zU6"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dym-9X-Gxs">
+                                            <rect key="frame" x="8" y="8" width="584" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="YPh-39-Atp" secondAttribute="bottom" constant="6" id="4Fc-hy-u5f"/>
+                                        <constraint firstItem="2U4-Eu-nZy" firstAttribute="leading" secondItem="4zF-EO-KhE" secondAttribute="leading" constant="8" id="Dup-b1-18G"/>
+                                        <constraint firstAttribute="bottom" secondItem="2U4-Eu-nZy" secondAttribute="bottom" constant="6" id="FfL-E1-f7x"/>
+                                        <constraint firstItem="Dym-9X-Gxs" firstAttribute="top" secondItem="4zF-EO-KhE" secondAttribute="top" constant="8" id="Fi6-Fb-9lp"/>
+                                        <constraint firstAttribute="trailing" secondItem="Dym-9X-Gxs" secondAttribute="trailing" constant="8" id="Iev-cQ-cqA"/>
+                                        <constraint firstItem="YPh-39-Atp" firstAttribute="leading" secondItem="2U4-Eu-nZy" secondAttribute="trailing" constant="8" id="MiS-9q-833"/>
+                                        <constraint firstItem="YPh-39-Atp" firstAttribute="top" secondItem="Dym-9X-Gxs" secondAttribute="bottom" constant="4" id="SKH-YX-z6x"/>
+                                        <constraint firstItem="YPh-39-Atp" firstAttribute="top" secondItem="4zF-EO-KhE" secondAttribute="top" constant="33" id="STo-GW-b1n"/>
+                                        <constraint firstItem="Dym-9X-Gxs" firstAttribute="leading" secondItem="4zF-EO-KhE" secondAttribute="leading" constant="8" id="qTf-Sg-KfQ"/>
+                                        <constraint firstItem="2U4-Eu-nZy" firstAttribute="top" secondItem="4zF-EO-KhE" secondAttribute="top" constant="33" id="rqz-Ek-FDJ"/>
+                                        <constraint firstAttribute="trailing" secondItem="YPh-39-Atp" secondAttribute="trailing" constant="8" id="tou-J5-btE"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="settingButton" destination="YPh-39-Atp" id="bYu-cz-syd"/>
+                                    <outlet property="settingLabel" destination="Dym-9X-Gxs" id="xCN-eI-YSp"/>
+                                    <outlet property="settingTextField" destination="2U4-Eu-nZy" id="jVP-oe-1Yk"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="1TJ-Md-cjN" id="Lqt-w3-NjQ"/>

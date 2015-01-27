@@ -34,3 +34,6 @@
 @implementation SettingsCellWithTextFieldAndButton
 @end
 
+@implementation SettingsCellWithLabelTextFieldAndButton
+@end
+
