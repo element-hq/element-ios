@@ -16,7 +16,7 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
-extern NSString *const kMatrixSDKHandlerUnsupportedMessagePrefix;
+extern NSString *const kMatrixSDKHandlerUnsupportedEventDescriptionPrefix;
 
 typedef enum : NSUInteger {
     MatrixSDKHandlerStatusLoggedOut = 0,

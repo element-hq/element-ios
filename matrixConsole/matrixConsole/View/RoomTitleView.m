@@ -99,6 +99,10 @@
     }
 }
 
+- (BOOL)isEditing {
+    return (_displayNameTextField.isEditing || _topicTextField.isEditing);
+}
+
 // start with delay
 - (void)startTopicAnimation {
     // stop any pending timer

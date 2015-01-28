@@ -44,6 +44,7 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
             // Set component flags
             _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
             _isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
+            _isRedactedEvent = (event.redactedBecause != nil);
             
             // Set eventId -> set the component style
             self.eventId = event.eventId;
@@ -60,11 +61,11 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
     
     // Update component style
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    if ([_textMessage hasPrefix:kMatrixSDKHandlerUnsupportedMessagePrefix]) {
+    if ([_textMessage hasPrefix:kMatrixSDKHandlerUnsupportedEventDescriptionPrefix]) {
         _style = RoomMessageComponentStyleUnsupported;
     } else if ([_eventId hasPrefix:kFailedEventIdPrefix]) {
         _style = RoomMessageComponentStyleFailed;
-    } else if (_isIncomingMsg && !_isStateEvent && [mxHandler containsBingWord:_textMessage]) {
+    } else if (_isIncomingMsg && !_isStateEvent && !_isRedactedEvent && [mxHandler containsBingWord:_textMessage]) {
         _style = RoomMessageComponentStyleBing;
     } else if (!_isIncomingMsg && [_eventId hasPrefix:kLocalEchoEventIdPrefix]) {
         _style = RoomMessageComponentStyleInProgress;

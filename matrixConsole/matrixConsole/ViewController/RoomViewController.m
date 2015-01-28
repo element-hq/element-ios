@@ -214,7 +214,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (messagesListener) {
         [self.mxRoom removeListener:messagesListener];
         messagesListener = nil;
-        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     }
@@ -276,7 +277,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 return;
             }
             
-            [self.roomTitleView refreshDisplay];
+            // Check whether no text field is editing before refreshing title view
+            if (!self.roomTitleView.isEditing) {
+                [self.roomTitleView refreshDisplay];
+            }
 
             // refresh the
             if (members.count > 0) {
@@ -542,7 +546,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         if (messagesListener){
             [self.mxRoom removeListener:messagesListener];
             messagesListener = nil;
-            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedMessages"];
+            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
+            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
             [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
             [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
         }
@@ -593,7 +598,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             messages = [NSMutableArray array];
         }
         
-        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedMessages" options:0 context:nil];
+        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideRedactedInformation" options:0 context:nil];
+        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedEvents" options:0 context:nil];
         [mxHandler addObserver:self forKeyPath:@"status" options:0 context:nil];
         [mxHandler addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
@@ -825,11 +831,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"hideUnsupportedMessages" isEqualToString:keyPath]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self configureView];
-        });
-    } else if ([@"status" isEqualToString:keyPath]) {
+    if ([@"status" isEqualToString:keyPath]) {
         if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusServerSyncDone) {
             [self stopActivityIndicator];
         } else {
@@ -876,6 +878,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             self.messagesTableView.contentInset = insets;
             _controlViewBottomConstraint.constant = newConstant;
         }
+    } else if ([@"hideUnsupportedEvents" isEqualToString:keyPath] || [@"hideRedactedInformation" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configureView];
+        });
     }
 }
 

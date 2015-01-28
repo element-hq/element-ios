@@ -14,7 +14,9 @@
 	<false/>
 	<key>displayAllEvents</key>
 	<false/>
-	<key>hideUnsupportedMessages</key>
+	<key>hideRedactedInformation</key>
+	<false/>
+	<key>hideUnsupportedEvents</key>
 	<true/>
 	<key>sortMembersUsingLastSeenTime</key>
 	<true/>

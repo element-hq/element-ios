@@ -24,7 +24,7 @@
 
 #import "MediaManager.h"
 
-NSString *const kMatrixSDKHandlerUnsupportedMessagePrefix = @"UNSUPPORTED MSG: ";
+NSString *const kMatrixSDKHandlerUnsupportedEventDescriptionPrefix = @"Unsupported event: ";
 
 static MatrixSDKHandler *sharedHandler = nil;
 
@@ -109,7 +109,8 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                  kMXEventTypeStringRoomPowerLevels,
                                                  kMXEventTypeStringRoomAliases,
                                                  kMXEventTypeStringRoomMessage,
-                                                 kMXEventTypeStringRoomMessageFeedback
+                                                 kMXEventTypeStringRoomMessageFeedback,
+                                                 kMXEventTypeStringRoomRedaction
                                                  ];
             }
             else {
@@ -118,7 +119,8 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                  kMXEventTypeStringRoomName,
                                                  kMXEventTypeStringRoomTopic,
                                                  kMXEventTypeStringRoomMember,
-                                                 kMXEventTypeStringRoomMessage
+                                                 kMXEventTypeStringRoomMessage,
+                                                 kMXEventTypeStringRoomRedaction
                                                  ];
             }
 
@@ -654,6 +656,35 @@ static MatrixSDKHandler *sharedHandler = nil;
 }
 
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle {
+    // Check first whether the event has been redacted
+    NSString *redactedInfo = nil;
+    BOOL isRedacted = (event.redactedBecause != nil);
+    if (isRedacted) {
+        NSLog(@"Redacted event %@ (%@)", event.description, event.redactedBecause);
+        // Check whether redacted information is required
+        if (!isSubtitle && ![AppSettings sharedSettings].hideRedactedInformation) {
+            redactedInfo = @"<redacted>";
+            if ([event.redactedBecause isKindOfClass:[NSDictionary class]]) {
+                NSString *redactedBy = [roomState memberName:event.redactedBecause[@"user_id"]];
+                NSString *redactedReason = event.redactedBecause[@"reason"];
+                if (redactedReason.length) {
+                    if (redactedBy.length) {
+                        redactedBy = [NSString stringWithFormat:@"by %@ (reason: %@)", redactedBy, redactedReason];
+                    } else {
+                        redactedBy = [NSString stringWithFormat:@"(reason: %@)", redactedReason];
+                    }
+                } else if (redactedBy.length) {
+                    redactedBy = [NSString stringWithFormat:@"by %@", redactedBy];
+                }
+                
+                if (redactedBy.length) {
+                    redactedInfo = [NSString stringWithFormat:@"<redacted %@>", redactedBy];
+                }
+            }
+        }
+    }
+    
+    // Prepare returned description
     NSString *displayText = nil;
     // Prepare display name for concerned users
     NSString *senderDisplayName = [self senderDisplayNameForEvent:event withRoomState:roomState];
@@ -664,11 +695,38 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     switch (event.eventType) {
         case MXEventTypeRoomName: {
-            displayText = [NSString stringWithFormat:@"%@ changed the room name to: %@", senderDisplayName, event.content[@"name"]];
+            NSString *roomName = event.content[@"name"];
+            if (isRedacted) {
+                if (!redactedInfo) {
+                    // Here the event is ignored (no display)
+                    return nil;
+                }
+                roomName = redactedInfo;
+            }
+            
+            if (roomName.length) {
+                displayText = [NSString stringWithFormat:@"%@ changed the room name to: %@", senderDisplayName, roomName];
+            } else {
+                displayText = [NSString stringWithFormat:@"%@ removed the room name", senderDisplayName];
+            }
             break;
         }
         case MXEventTypeRoomTopic: {
-            displayText = [NSString stringWithFormat:@"%@ changed the topic to: %@", senderDisplayName, event.content[@"topic"]];
+            NSString *roomTopic = event.content[@"topic"];
+            if (isRedacted) {
+                if (!redactedInfo) {
+                    // Here the event is ignored (no display)
+                    return nil;
+                }
+                roomTopic = redactedInfo;
+            }
+            
+            if (roomTopic.length) {
+                displayText = [NSString stringWithFormat:@"%@ changed the topic to: %@", senderDisplayName, roomTopic];
+            } else {
+                displayText = [NSString stringWithFormat:@"%@ removed the topic", senderDisplayName];
+            }
+            
             break;
         }
         case MXEventTypeRoomMember: {
@@ -681,41 +739,50 @@ static MatrixSDKHandler *sharedHandler = nil;
                 prevMembership = event.prevContent[@"membership"];
             }
             
-            // Check whether the membership is unchanged
+            // Check whether the sender has updated his profile (the membership is then unchanged)
             if (prevMembership && membership && [membership isEqualToString:prevMembership]) {
-                // Check whether the display name has been changed
-                NSString *displayname = event.content[@"displayname"];
-                NSString *prevDisplayname =  event.prevContent[@"displayname"];
-                if (!displayname.length) {
-                    displayname = nil;
-                }
-                if (!prevDisplayname.length) {
-                    prevDisplayname = nil;
-                }
-                if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
-                    if (!prevDisplayname) {
-                        displayText = [NSString stringWithFormat:@"%@ set their display name to %@", event.userId, displayname];
-                    } else if (!displayname) {
-                        displayText = [NSString stringWithFormat:@"%@ removed their display name (previouly named %@)", event.userId, prevDisplayname];
-                    } else {
-                        displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", event.userId, prevDisplayname, displayname];
+                // Is redacted event?
+                if (isRedacted) {
+                    if (!redactedInfo) {
+                        // Here the event is ignored (no display)
+                        return nil;
                     }
-                }
-                
-                // Check whether the avatar has been changed
-                NSString *avatar = event.content[@"avatar_url"];
-                NSString *prevAvatar = event.prevContent[@"avatar_url"];
-                if (!avatar.length) {
-                    avatar = nil;
-                }
-                if (!prevAvatar.length) {
-                    prevAvatar = nil;
-                }
-                if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
-                    if (displayText) {
-                        displayText = [NSString stringWithFormat:@"%@ (picture profile was changed too)", displayText];
-                    } else {
-                        displayText = [NSString stringWithFormat:@"%@ changed their picture profile", senderDisplayName];
+                    displayText = [NSString stringWithFormat:@"%@ updated their profile %@", senderDisplayName, redactedInfo];;
+                } else {
+                    // Check whether the display name has been changed
+                    NSString *displayname = event.content[@"displayname"];
+                    NSString *prevDisplayname =  event.prevContent[@"displayname"];
+                    if (!displayname.length) {
+                        displayname = nil;
+                    }
+                    if (!prevDisplayname.length) {
+                        prevDisplayname = nil;
+                    }
+                    if ((displayname || prevDisplayname) && ([displayname isEqualToString:prevDisplayname] == NO)) {
+                        if (!prevDisplayname) {
+                            displayText = [NSString stringWithFormat:@"%@ set their display name to %@", event.userId, displayname];
+                        } else if (!displayname) {
+                            displayText = [NSString stringWithFormat:@"%@ removed their display name (previouly named %@)", event.userId, prevDisplayname];
+                        } else {
+                            displayText = [NSString stringWithFormat:@"%@ changed their display name from %@ to %@", event.userId, prevDisplayname, displayname];
+                        }
+                    }
+                    
+                    // Check whether the avatar has been changed
+                    NSString *avatar = event.content[@"avatar_url"];
+                    NSString *prevAvatar = event.prevContent[@"avatar_url"];
+                    if (!avatar.length) {
+                        avatar = nil;
+                    }
+                    if (!prevAvatar.length) {
+                        prevAvatar = nil;
+                    }
+                    if ((prevAvatar || avatar) && ([avatar isEqualToString:prevAvatar] == NO)) {
+                        if (displayText) {
+                            displayText = [NSString stringWithFormat:@"%@ (picture profile was changed too)", displayText];
+                        } else {
+                            displayText = [NSString stringWithFormat:@"%@ changed their picture profile", senderDisplayName];
+                        }
                     }
                 }
             } else {
@@ -743,6 +810,11 @@ static MatrixSDKHandler *sharedHandler = nil;
                         displayText = [NSString stringWithFormat:@"%@: %@", displayText, event.content[@"reason"]];
                     }
                 }
+                
+                // Append redacted info if any
+                if (redactedInfo) {
+                    displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
+                }
             }
             break;
         }
@@ -750,6 +822,10 @@ static MatrixSDKHandler *sharedHandler = nil;
             NSString *creatorId = event.content[@"creator"];
             if (creatorId) {
                 displayText = [NSString stringWithFormat:@"%@ created the room", [roomState memberName:creatorId]];
+                // Append redacted info if any
+                if (redactedInfo) {
+                    displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
+                }
             }
             break;
         }
@@ -757,6 +833,10 @@ static MatrixSDKHandler *sharedHandler = nil;
             NSString *joinRule = event.content[@"join_rule"];
             if (joinRule) {
                 displayText = [NSString stringWithFormat:@"The join rule is: %@", joinRule];
+                // Append redacted info if any
+                if (redactedInfo) {
+                    displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
+                }
             }
             break;
         }
@@ -795,71 +875,88 @@ static MatrixSDKHandler *sharedHandler = nil;
             if (event.content[@"state_default"]) {
                 displayText = [NSString stringWithFormat:@"%@\r\n\u2022 %@: %@", displayText, @"state_default", event.content[@"state_default"]];
             }
+            
+            // Append redacted info if any
+            if (redactedInfo) {
+                displayText = [NSString stringWithFormat:@"%@\r\n %@", displayText, redactedInfo];
+            }
             break;
         }
         case MXEventTypeRoomAliases: {
             NSArray *aliases = event.content[@"aliases"];
             if (aliases) {
                 displayText = [NSString stringWithFormat:@"The room aliases are: %@", aliases];
+                // Append redacted info if any
+                if (redactedInfo) {
+                    displayText = [NSString stringWithFormat:@"%@\r\n %@", displayText, redactedInfo];
+                }
             }
             break;
         }
         case MXEventTypeRoomMessage: {
-            NSString *msgtype = event.content[@"msgtype"];
-            displayText = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
-            
-            if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
-                displayText = [NSString stringWithFormat:@"* %@ %@", senderDisplayName, displayText];
-            } else if ([msgtype isEqualToString:kMXMessageTypeImage]) {
-                displayText = displayText? displayText : @"image attachment";
-                // Check attachment validity
-                if (![self isSupportedAttachment:event]) {
-                    NSLog(@"ERROR: Unsupported attachment %@", event.description);
-                    // Check whether unsupported/unexpected messages should be exposed
-                    if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
-                        displayText = @"invalid image attachment";
-                    } else {
-                        // Display event content as unsupported message
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
+            // Is redacted?
+            if (isRedacted) {
+                if (!redactedInfo) {
+                    // Here the event is ignored (no display)
+                    return nil;
+                }
+                displayText = redactedInfo;
+            } else {
+                NSString *msgtype = event.content[@"msgtype"];
+                displayText = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
+                
+                if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
+                    displayText = [NSString stringWithFormat:@"* %@ %@", senderDisplayName, displayText];
+                } else if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+                    displayText = displayText? displayText : @"image attachment";
+                    // Check attachment validity
+                    if (![self isSupportedAttachment:event]) {
+                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        // Check whether unsupported/unexpected messages should be exposed
+                        if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
+                            displayText = @"invalid image attachment";
+                        } else {
+                            // Display event content as unsupported event
+                            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedEventDescriptionPrefix, event.description];
+                        }
+                    }
+                } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
+                    displayText = displayText? displayText : @"audio attachment";
+                    if (![self isSupportedAttachment:event]) {
+                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
+                            displayText = @"invalid audio attachment";
+                        } else {
+                            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedEventDescriptionPrefix, event.description];
+                        }
+                    }
+                } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+                    displayText = displayText? displayText : @"video attachment";
+                    if (![self isSupportedAttachment:event]) {
+                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
+                            displayText = @"invalid video attachment";
+                        } else {
+                            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedEventDescriptionPrefix, event.description];
+                        }
+                    }
+                } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
+                    displayText = displayText? displayText : @"location attachment";
+                    if (![self isSupportedAttachment:event]) {
+                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
+                            displayText = @"invalid location attachment";
+                        } else {
+                            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedEventDescriptionPrefix, event.description];
+                        }
                     }
                 }
-            } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
-                displayText = displayText? displayText : @"audio attachment";
-                if (![self isSupportedAttachment:event]) {
-                    NSLog(@"ERROR: Unsupported attachment %@", event.description);
-                    if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
-                        displayText = @"invalid audio attachment";
-                    } else {
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
-                    }
-                }
-            } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
-                displayText = displayText? displayText : @"video attachment";
-                if (![self isSupportedAttachment:event]) {
-                    NSLog(@"ERROR: Unsupported attachment %@", event.description);
-                    if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
-                        displayText = @"invalid video attachment";
-                    } else {
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
-                    }
-                }
-            } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
-                displayText = displayText? displayText : @"location attachment";
-                if (![self isSupportedAttachment:event]) {
-                    NSLog(@"ERROR: Unsupported attachment %@", event.description);
-                    if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedMessages) {
-                        displayText = @"invalid location attachment";
-                    } else {
-                        displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
-                    }
+                
+                // Check whether the sender name has to be added
+                if (displayText && isSubtitle && [msgtype isEqualToString:kMXMessageTypeEmote] == NO) {
+                    displayText = [NSString stringWithFormat:@"%@: %@", senderDisplayName, displayText];
                 }
             }
-            
-            // Check whether the sender name has to be added
-            if (isSubtitle && [msgtype isEqualToString:kMXMessageTypeEmote] == NO) {
-                displayText = [NSString stringWithFormat:@"%@: %@", senderDisplayName, displayText];
-            }
-            
             break;
         }
         case MXEventTypeRoomMessageFeedback: {
@@ -867,8 +964,21 @@ static MatrixSDKHandler *sharedHandler = nil;
             NSString *eventId = event.content[@"target_event_id"];
             if (type && eventId) {
                 displayText = [NSString stringWithFormat:@"Feedback event (id: %@): %@", eventId, type];
+                // Append redacted info if any
+                if (redactedInfo) {
+                    displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
+                }
             }
             break;
+        }
+        case MXEventTypeRoomRedaction: {
+            if ([AppSettings sharedSettings].displayAllEvents) {
+                NSString *eventId = event.redacts;
+                displayText = [NSString stringWithFormat:@"%@ redacted an event (id: %@)", senderDisplayName, eventId];
+            } else {
+                // No description
+                return nil;
+            }
         }
         case MXEventTypeCustom:
             break;
@@ -878,9 +988,9 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     if (!displayText) {
         NSLog(@"ERROR: Unsupported event %@)", event.description);
-        if (!isSubtitle && ![AppSettings sharedSettings].hideUnsupportedMessages) {
+        if (!isSubtitle && ![AppSettings sharedSettings].hideUnsupportedEvents) {
             // Return event content as unsupported event
-            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedMessagePrefix, event.description];
+            displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedEventDescriptionPrefix, event.description];
         }
     }
     

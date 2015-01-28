@@ -34,6 +34,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSDate   *date;
 @property (nonatomic) RoomMessageComponentStyle style;
 @property (nonatomic) BOOL isStateEvent;
+@property (nonatomic) BOOL isRedactedEvent;
 @property (nonatomic) BOOL isIncomingMsg;
 
 // The following properties are defined to store information on component.

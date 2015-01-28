@@ -46,7 +46,8 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"enableInAppNotifications"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"specificWordsToAlertOn"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayAllEvents"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedMessages"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideRedactedInformation"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedEvents"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayLeftUsers"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"maxMediaCacheSize"];
@@ -95,12 +96,20 @@ static AppSettings *sharedSettings = nil;
     [[MatrixSDKHandler sharedHandler] forceInitialSync:NO];
 }
 
-- (BOOL)hideUnsupportedMessages {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hideUnsupportedMessages"];
+- (BOOL)hideRedactedInformation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hideRedactedInformation"];
 }
 
-- (void)setHideUnsupportedMessages:(BOOL)hideUnsupportedMessages {
-    [[NSUserDefaults standardUserDefaults] setBool:hideUnsupportedMessages forKey:@"hideUnsupportedMessages"];
+- (void)setHideRedactedInformation:(BOOL)hideRedactedInformation {
+    [[NSUserDefaults standardUserDefaults] setBool:hideRedactedInformation forKey:@"hideRedactedInformation"];
+}
+
+- (BOOL)hideUnsupportedEvents {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hideUnsupportedEvents"];
+}
+
+- (void)setHideUnsupportedEvents:(BOOL)hideUnsupportedEvents {
+    [[NSUserDefaults standardUserDefaults] setBool:hideUnsupportedEvents forKey:@"hideUnsupportedEvents"];
 }
 
 - (BOOL)sortMembersUsingLastSeenTime {

@@ -27,6 +27,7 @@
 @property (strong, nonatomic) MXRoom *mxRoom;
 @property (nonatomic) BOOL editable;
 @property (nonatomic) BOOL hiddenTopic;
+@property (nonatomic) BOOL isEditing;
 
 - (void)dismissKeyboard;
 
