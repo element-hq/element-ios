@@ -22,6 +22,9 @@
 // warn when there is a contacts list refresh
 extern NSString *const kContactManagerContactsListRefreshNotification;
 
+// the phonenumber has been internationalized
+extern NSString *const kContactsDidInternationalizeNotification;
+
 @interface ContactManager : NSObject {
     dispatch_queue_t processingQueue;
     NSMutableDictionary* matrixIDBy3PID;
@@ -33,6 +36,9 @@ extern NSString *const kContactManagerContactsListRefreshNotification;
 
 // delete contacts info
 - (void)reset;
+
+// refresh the international phonenumber of the contacts
+- (void)internationalizePhoneNumbers:(NSString*)countryCode;
 
 // refresh self.contacts
 - (void)fullRefresh;

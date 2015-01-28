@@ -24,7 +24,7 @@ extern NSString *const kMXCContactMatrixIdentifierUpdateNotification;
 // the contactID is provided in parameter
 extern NSString *const kMXCContactThumbnailUpdateNotification;
 
-@interface MXCContact : NSObject
+@interface MXCContact : NSObject<NSCoding>
 
 // unique identifier
 @property (nonatomic, readonly) NSString * contactID;
@@ -42,6 +42,9 @@ extern NSString *const kMXCContactThumbnailUpdateNotification;
 // array of matrix identifiers
 @property (nonatomic, readonly) NSArray* matrixIdentifiers;
 
+// return the contact ID from native phonebook record
++ (NSString*)contactID:(ABRecordRef)record;
+
 // create a contact from a local contact
 - (id)initWithABRecord:(ABRecordRef)record;
 
@@ -56,5 +59,8 @@ extern NSString *const kMXCContactThumbnailUpdateNotification;
 
 // check if the patterns can match with this contact
 - (BOOL) matchedWithPatterns:(NSArray*)patterns;
+
+// internationalize the contact phonenumbers
+- (void)internationalizePhonenumbers:(NSString*)countryCode;
 
 @end

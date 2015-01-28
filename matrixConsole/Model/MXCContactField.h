@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MXCContactField : NSObject
+@interface MXCContactField : NSObject<NSCoding>
 
 // contact ID where the email has been found
 @property (nonatomic, readonly) NSString *contactID;

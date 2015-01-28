@@ -69,5 +69,24 @@
     
     return YES;
 }
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    
+    if (self) {
+        _type = [coder decodeObjectForKey:@"type"];
+        _emailAddress = [coder decodeObjectForKey:@"emailAddress"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
+    
+    [coder encodeObject:_type forKey:@"type"];
+    [coder encodeObject:_emailAddress forKey:@"emailAddress"];
+}
 
 @end
