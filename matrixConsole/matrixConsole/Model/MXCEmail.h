@@ -23,7 +23,8 @@
 @property (nonatomic, readonly) NSString *type;
 @property (nonatomic, readonly) NSString *emailAddress;
 
-
 - (id)initWithEmailAddress:(NSString*)anEmailAddress type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
+
+- (BOOL)matchedWithPatterns:(NSArray*)patterns;
 
 @end
