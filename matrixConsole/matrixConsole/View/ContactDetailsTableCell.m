@@ -14,17 +14,7 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "ContactDetailsTableCell.h"
 
-// SMS
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMessageComposeViewController.h>
-
-#import "SectionedContacts.h"
-
-@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
-    NSArray* collationTitles;
-}
-
+@implementation ContactDetailsTableCell
 @end
-
