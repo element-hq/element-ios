@@ -100,8 +100,7 @@ static APNSHandler *sharedHandler = nil;
     
     NSString *b64Token = [self.deviceToken base64EncodedStringWithOptions:0];
     NSDictionary *pushData = @{
-                               // no push gateway set up for matrix console yet
-                               @"url": @"http://localhost:5000/notify",
+                               @"url": @"https://matrix.org/_matrix/push/v1/notify",
 #ifdef DEBUG
                                @"platform": @"sandbox",
 #endif
@@ -124,7 +123,7 @@ static APNSHandler *sharedHandler = nil;
     }
     
 
-    MXRestClient *restCli = [MatrixHandler sharedHandler].mxRestClient;
+    MXRestClient *restCli = [MatrixSDKHandler sharedHandler].mxRestClient;
     [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];
