@@ -16,15 +16,10 @@
 
 #import <UIKit/UIKit.h>
 
-// SMS
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMessageComposeViewController.h>
+#import "MXCContact.h"
 
-#import "SectionedContacts.h"
+@interface ContactDetailsViewController : UITableViewController
 
-@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
-    NSArray* collationTitles;
-}
-
+@property (strong, nonatomic) MXCContact* contact;
 @end
 

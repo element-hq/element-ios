@@ -37,6 +37,9 @@
 // settings
 #import "AppSettings.h"
 
+//
+#import "ContactDetailsViewController.h"
+
 NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
 @interface ContactsViewController () {
@@ -51,6 +54,9 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     // screenshot of the matrix users
     NSMutableDictionary* matrixUserByMatrixID;
     SectionedContacts* sectionedMatrixContacts;
+    
+    // tap on thumbnail to display contact info
+    MXCContact* selectedContact;
     
     // Search
     UISearchBar     *contactsSearchBar;
@@ -372,6 +378,29 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         }
     }
     
+    // tap on matrix user thumbnail -> open a detailled sheet
+    UITapGestureRecognizer* tapGesture = nil;
+    
+    // check if it is already defined
+    // gesture in storyboard does not seem to work properly
+    // it always triggers a tap event on the first cell
+    for (UIGestureRecognizer* gesture in cell.thumbnailView.gestureRecognizers) {
+        
+        if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
+            tapGesture = (UITapGestureRecognizer*)gesture;
+            break;
+        }
+    }
+
+    // add it if it is not yet defined
+    if (!tapGesture) {
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onContactThumbnailTap:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [cell.thumbnailView addGestureRecognizer:tap];
+    }
+    
     cell.contact = contact;
                 
     return cell;
@@ -574,6 +603,40 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 [self.allowContactSyncAlert showInViewController:self];
             }
         }
+    }
+}
+
+- (IBAction)onContactThumbnailTap:(id)sender {
+    
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UIView* tappedView = ((UITapGestureRecognizer*)sender).view;
+        
+        // search the parentce cell
+        while (tappedView && ![tappedView isKindOfClass:[ContactTableCell class]]) {
+            tappedView = tappedView.superview;
+        }
+        
+        // find it ?
+        if ([tappedView isKindOfClass:[ContactTableCell class]]) {
+            MXCContact* contact = ((ContactTableCell*)tappedView).contact;
+            
+            // open detailled sheet if there
+            if (contact.matrixIdentifiers.count > 0) {
+                selectedContact = ((ContactTableCell*)tappedView).contact;
+                [self performSegueWithIdentifier:@"showContactDetails" sender:self];
+            }
+        }
+        
+    }
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showContactDetails"]) {
+        ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+        contactDetailsViewController.contact = selectedContact;
+        selectedContact = nil;
     }
 }
 

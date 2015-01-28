@@ -16,15 +16,10 @@
 
 #import <UIKit/UIKit.h>
 
-// SMS
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMessageComposeViewController.h>
+@interface ContactDetailsTableCell : UITableViewCell
 
-#import "SectionedContacts.h"
-
-@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
-    NSArray* collationTitles;
-}
+@property (strong, nonatomic) IBOutlet UILabel *matrixUserIDLabel;
+@property (strong, nonatomic) IBOutlet UIButton *startChatButton;
 
 @end
 
