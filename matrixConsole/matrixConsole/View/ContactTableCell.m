@@ -82,7 +82,25 @@
     
     // init the contact info
     [[ContactManager sharedManager] refreshContactMatrixIDs:_contact];
-    self.contactDisplayNameLabel.text = _contact.displayName;
+    
+    NSArray* matrixIDs = _contact.matrixIdentifiers;
+    
+    if (matrixIDs.count == 1) {
+        self.contactDisplayNameLabel.hidden = YES;
+        
+        self.matrixDisplayNameLabel.hidden = NO;
+        self.matrixDisplayNameLabel.text = _contact.displayName;
+        self.matrixIDLabel.hidden = NO;
+        self.matrixIDLabel.text = [ _contact.matrixIdentifiers objectAtIndex:0];
+        
+    } else {
+        self.contactDisplayNameLabel.hidden = NO;
+        self.contactDisplayNameLabel.text = _contact.displayName;
+        
+        self.matrixDisplayNameLabel.hidden = YES;
+        self.matrixIDLabel.hidden = YES;
+    }
+    
     [self refreshContactThumbnail];
     [self manageMatrixIcon];
 }

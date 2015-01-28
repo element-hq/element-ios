@@ -22,6 +22,8 @@
 
 @property (strong, nonatomic) IBOutlet MXCImageView *thumbnailView;
 @property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *matrixDisplayNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *matrixIDLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *matrixUserIconView;
 
 // reference to the linked message
