@@ -38,12 +38,16 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
 
 @implementation MXCContact
 
++ (NSString*)contactID:(ABRecordRef)record {
+    return [NSString stringWithFormat:@"%d", ABRecordGetRecordID(record)];
+}
+
 - (id) initWithABRecord:(ABRecordRef)record {
     self = [super init];
     
     if (self) {
         // compute a contact ID
-        _contactID = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(record)];
+        _contactID = [MXCContact contactID:record];
 
         // use the contact book display name
         _displayName = (__bridge NSString*) ABRecordCopyCompositeName(record);
@@ -238,6 +242,15 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
     return matched;
 }
 
+// internationalize the contact phonenumbers
+- (void)internationalizePhonenumbers:(NSString*)countryCode {
+    for(MXCPhoneNumber* phonenumber in _phoneNumbers) {
+        [phonenumber internationalize:countryCode];
+    }
+}
+
+#pragma mark - getter/setter
+
 - (BOOL) isMatrixContact {
     return (nil != dummyField);
 }
@@ -320,6 +333,37 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
 
 - (UIImage*)thumbnail {
     return [self thumbnailWithPreferedSize:CGSizeMake(256, 256)];
+}
+
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+    _contactID = [coder decodeObjectForKey:@"contactID"];
+    _displayName = [coder decodeObjectForKey:@"displayName"];
+    
+    _phoneNumbers = [coder decodeObjectForKey:@"phoneNumbers"];
+    _emailAddresses = [coder decodeObjectForKey:@"emailAddresses"];
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    
+    [coder encodeObject:_contactID forKey:@"contactID"];
+    [coder encodeObject:_displayName forKey:@"displayName"];
+    
+    if (_phoneNumbers) {
+        [coder encodeObject:_phoneNumbers forKey:@"phoneNumbers"];
+    } else {
+        [coder setNilValueForKey:@"phoneNumbers"];
+    }
+    
+    if (_emailAddresses) {
+        [coder encodeObject:_emailAddresses forKey:@"emailAddresses"];
+    } else {
+        [coder setNilValueForKey:@"emailAddresses"];
+    }
 }
 
 @end

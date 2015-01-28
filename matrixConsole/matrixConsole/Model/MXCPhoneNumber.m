@@ -16,10 +16,8 @@
 
 #import "MXCPhoneNumber.h"
 
-@interface MXCPhoneNumber() {
-    // for search purpose
-    NSString* cleanedPhonenumber;
-}
+@interface MXCPhoneNumber ()
+@property (nonatomic, readonly) NSString *cleanedPhonenumber;
 @end
 
 @implementation MXCPhoneNumber
@@ -28,9 +26,10 @@
     self = [super initWithContactID:aContactID matrixID:matrixID];
     
     if (self) {
-        _type = aType;
-        _textNumber = aTextNumber;
-        cleanedPhonenumber = nil;
+        _type = aType ? aType : @"";
+        _textNumber = aTextNumber ? aTextNumber : @"" ;
+        _cleanedPhonenumber = [MXCPhoneNumber cleanPhonenumber:_textNumber];
+        _internationalPhoneNumber = _cleanedPhonenumber;
     }
     
     return self;
@@ -68,19 +67,44 @@
         return NO;
     }
     
-    if (!cleanedPhonenumber) {
-        cleanedPhonenumber = [MXCPhoneNumber cleanPhonenumber:_textNumber];
-    }
-    
     if (patterns.count > 0) {
         for(NSString *pattern in patterns) {
-            if (([_textNumber rangeOfString:pattern].location == NSNotFound) && ([cleanedPhonenumber rangeOfString:pattern].location == NSNotFound)) {
+            if (([_textNumber rangeOfString:pattern].location == NSNotFound) && ([_cleanedPhonenumber rangeOfString:pattern].location == NSNotFound)) {
                 return NO;
             }
         }
     }
     
     return YES;
+}
+
+- (void)internationalize:(NSString*)countryCode {    
+    // need to plug to libphonenumber
+    _internationalPhoneNumber = _cleanedPhonenumber;
+}
+
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    
+    if (self) {
+        _type = [coder decodeObjectForKey:@"type"];
+        _textNumber = [coder decodeObjectForKey:@"textNumber"];
+        _cleanedPhonenumber = [coder decodeObjectForKey:@"cleanedPhonenumber"];
+        _internationalPhoneNumber = [coder decodeObjectForKey:@"internationalPhoneNumber"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
+    
+    [coder encodeObject:_type forKey:@"type"];
+    [coder encodeObject:_textNumber forKey:@"textNumber"];
+    [coder encodeObject:_cleanedPhonenumber forKey:@"cleanedPhonenumber"];
+    [coder encodeObject:_internationalPhoneNumber forKey:@"internationalPhoneNumber"];
 }
 
 @end

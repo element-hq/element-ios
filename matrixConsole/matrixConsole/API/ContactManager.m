@@ -27,13 +27,16 @@
 // warn when there is a contacts list refresh
 NSString *const kContactManagerContactsListRefreshNotification = @"kContactManagerContactsListRefreshNotification";
 
+// the phonenumber has been internationalized
+NSString *const kContactsDidInternationalizeNotification = @"kContactsDidInternationalizeNotification";
+
 // get the 3PIDS in one requests
 //#define CONTACTS_3PIDS_SYNC 1
 // else checks the matrix IDs for each displayed contact
 
 @interface ContactManager() {
     NSDate *lastSyncDate;
-    NSMutableArray* deviceContactsList;
+    NSMutableDictionary* deviceContactByContactID;
     
     //
     NSMutableArray* pending3PIDs;
@@ -93,10 +96,11 @@ static ContactManager* sharedContactManager = nil;
 
 // delete contacts info
 - (void)reset {
+    
     contacts = nil;
     
     lastSyncDate = nil;
-    deviceContactsList = nil;
+    deviceContactByContactID = nil;
     matrixContactByMatrixUserID = nil;
     if (hasStatusObserver) {
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
@@ -104,9 +108,22 @@ static ContactManager* sharedContactManager = nil;
     }
     
     [self saveMatrixIDsDict];
+    [self saveDeviceContacts];
+    [self saveContactBookInfo];
 
     // warn of the contacts list update
     [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
+}
+
+// refresh the international phonenumber of the contacts
+- (void)internationalizePhoneNumbers:(NSString*)countryCode {
+    NSArray* contactsSnapshot = self.contacts;
+    
+    for(MXCContact* contact in contactsSnapshot) {
+        [contact internationalizePhonenumbers:countryCode];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kContactsDidInternationalizeNotification object:nil userInfo:nil];
 }
 
 - (void)fullRefresh {
@@ -162,7 +179,23 @@ static ContactManager* sharedContactManager = nil;
     }
 
     dispatch_async(processingQueue, ^{
-        NSMutableArray* contactsList = [[NSMutableArray alloc] init];
+
+        // in case of cold start
+        // get the info from the file system
+        if (!lastSyncDate) {
+            // load cached contacts
+            [self loadDeviceContacts];
+            [self loadContactBookInfo];
+            
+            // no local contact -> assume that the last sync date is useless
+            if (deviceContactByContactID.count == 0) {
+                lastSyncDate = nil;
+            }
+        }
+        
+        BOOL contactBookUpdate = NO;
+        
+        NSMutableArray* deletedContactIDs = [[deviceContactByContactID allKeys] mutableCopy];
         
         // can list tocal contacts
         if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
@@ -176,8 +209,28 @@ static ContactManager* sharedContactManager = nil;
                 CFIndex peopleCount = CFArrayGetCount(people);
                 
                 for (index = 0; index < peopleCount; index++) {
+                    
                     contactRecord = (ABRecordRef)CFArrayGetValueAtIndex(people, index);
-                    [contactsList addObject:[[MXCContact alloc] initWithABRecord:contactRecord]];
+                    
+                    NSString* contactID = [MXCContact contactID:contactRecord];
+                    
+                    // the contact still exists
+                    [deletedContactIDs removeObject:contactID];
+                    
+                    if (lastSyncDate) {
+                        // ignore unchanged contacts since the previous sync
+                        CFDateRef lastModifDate = ABRecordCopyValue(contactRecord, kABPersonModificationDateProperty);
+                        if (kCFCompareGreaterThan != CFDateCompare (lastModifDate, (__bridge CFDateRef)lastSyncDate, nil))
+                        {
+                            CFRelease(lastModifDate);
+                            continue;
+                        }
+                        CFRelease(lastModifDate);
+                    }
+                    
+                    contactBookUpdate = YES;
+                    // update the contact
+                    [deviceContactByContactID setValue:[[MXCContact alloc] initWithABRecord:contactRecord] forKey:contactID];
                 }
                 
                 CFRelease(people);
@@ -188,14 +241,28 @@ static ContactManager* sharedContactManager = nil;
             }
         }
         
-        deviceContactsList = contactsList;
+        // some contacts have been deleted
+        for (NSString* contactID in deletedContactIDs) {
+            contactBookUpdate = YES;
+            [deviceContactByContactID removeObjectForKey:contactID];
+        }
+
+        // something has been modified in the device contact book
+        if (contactBookUpdate) {
+            [self saveDeviceContacts];
+        }
+        
+        lastSyncDate = [NSDate date];
+        [self saveContactBookInfo];
+    
+        NSMutableArray* deviceContacts = [[deviceContactByContactID allValues] mutableCopy];
         
         if (mxHandler.mxSession) {
             [self manage3PIDS];
         } else {
             // display what you could have read
             dispatch_async(dispatch_get_main_queue(), ^{
-                contacts = deviceContactsList;
+                contacts = deviceContacts;
                 
                 hasStatusObserver = YES;
                 // wait that the mxSession is ready
@@ -213,17 +280,10 @@ static ContactManager* sharedContactManager = nil;
     dispatch_async(processingQueue, ^{
         NSMutableArray* tmpContacts = nil;
         
-        // initial sync
-        if (!lastSyncDate) {
-            // display the current device contacts
-            tmpContacts = deviceContactsList;
-        } else {
-            // update with the known dict 3PID -> matrix ID
-            [self updateMatrixIDDeviceContactsList];
-            
-            tmpContacts = [deviceContactsList mutableCopy];
-        }
-        lastSyncDate = [NSDate date];
+        // update with the known dict 3PID -> matrix ID
+        [self updateMatrixIDDeviceContacts];
+        
+        tmpContacts = [[deviceContactByContactID allValues] mutableCopy];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             // stored self.contacts in the right thread
@@ -268,9 +328,12 @@ static ContactManager* sharedContactManager = nil;
     }
 }
 
-- (void) updateMatrixIDDeviceContactsList {
+- (void) updateMatrixIDDeviceContacts {
+    
+    NSArray* deviceContacts = [deviceContactByContactID allValues];
+    
     // update the contacts info
-    for(MXCContact* contact in deviceContactsList) {
+    for(MXCContact* contact in deviceContacts) {
         [self updateContactMatrixIDs:contact];
     }
 }
@@ -523,6 +586,8 @@ static ContactManager* sharedContactManager = nil;
 #pragma mark - file caches
 
 static NSString *matrixIDsDictFile = @"matrixIDsDict";
+static NSString *localContactsFile = @"localContacts";
+static NSString *contactsBookInfoFile = @"contacts";
 
 - (void)saveMatrixIDsDict
 {
@@ -576,6 +641,108 @@ static NSString *matrixIDsDictFile = @"matrixIDsDict";
 
     if (!matrixIDBy3PID) {
         matrixIDBy3PID = [[NSMutableDictionary alloc] init];
+    }
+}
+
+- (void) saveDeviceContacts {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:localContactsFile];
+    
+    if (deviceContactByContactID && (deviceContactByContactID.count > 0))
+    {
+        NSMutableData *theData = [NSMutableData data];
+        NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:theData];
+        
+        [encoder encodeObject:deviceContactByContactID forKey:@"deviceContactByContactID"];
+        
+        [encoder finishEncoding];
+        
+        [theData writeToFile:dataFilePath atomically:YES];
+    }
+    else
+    {
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        [fileManager removeItemAtPath:dataFilePath error:nil];
+    }
+}
+
+- (void) loadDeviceContacts {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:localContactsFile];
+    
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    if ([fileManager fileExistsAtPath:dataFilePath])
+    {
+        // the file content could be corrupted
+        @try {
+            NSData* filecontent = [NSData dataWithContentsOfFile:dataFilePath options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
+            
+            NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:filecontent];
+            
+            id object = [decoder decodeObjectForKey:@"deviceContactByContactID"];
+            
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                deviceContactByContactID = [object mutableCopy];
+            }
+            
+            [decoder finishDecoding];
+        } @catch (NSException *exception) {
+            lastSyncDate = nil;
+        }
+    }
+    
+    if (!deviceContactByContactID) {
+        deviceContactByContactID = [[NSMutableDictionary alloc] init];
+    }
+}
+
+- (void) saveContactBookInfo {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:contactsBookInfoFile];
+    
+    if (lastSyncDate)
+    {
+        NSMutableData *theData = [NSMutableData data];
+        NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:theData];
+        
+        [encoder encodeObject:lastSyncDate forKey:@"lastSyncDate"];
+        
+        [encoder finishEncoding];
+        
+        [theData writeToFile:dataFilePath atomically:YES];
+    }
+    else
+    {
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        [fileManager removeItemAtPath:dataFilePath error:nil];
+    }
+}
+
+- (void) loadContactBookInfo {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:contactsBookInfoFile];
+    
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    if ([fileManager fileExistsAtPath:dataFilePath])
+    {
+        // the file content could be corrupted
+        @try {
+            NSData* filecontent = [NSData dataWithContentsOfFile:dataFilePath options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:nil];
+            
+            NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:filecontent];
+            
+            lastSyncDate = [decoder decodeObjectForKey:@"lastSyncDate"];
+            
+            [decoder finishDecoding];
+        } @catch (NSException *exception) {
+            lastSyncDate = nil;
+        }
     }
 }
 

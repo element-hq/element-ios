@@ -33,7 +33,7 @@
 
 @implementation MXCContactField
 
-- (void) fieldInit {
+- (void)initFields {
     // init members
     _contactID = nil;
     _matrixID = nil;
@@ -44,7 +44,7 @@
     self = [super init];
     
     if (self) {
-        [self fieldInit];
+        [self initFields];
         _contactID = contactID;
         _matrixID = matrixID;
     }
@@ -160,5 +160,22 @@
     }
 }
 
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+    if (self) {
+        [self initFields];
+        _contactID = [coder decodeObjectForKey:@"contactID"];
+        _matrixID = [coder decodeObjectForKey:@"matrixID"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:_contactID forKey:@"contactID"];
+    [coder encodeObject:_matrixID forKey:@"matrixID"];
+}
 
 @end

@@ -22,8 +22,11 @@
 // phonenumber info
 @property (nonatomic, readonly) NSString *type;
 @property (nonatomic, readonly) NSString *textNumber;
+@property (nonatomic, readonly) NSString *internationalPhoneNumber;
 
 - (id)initWithTextNumber:(NSString*)textNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
+
+- (void)internationalize:(NSString*)countryCode;
 
 - (BOOL)matchedWithPatterns:(NSArray*)patterns;
 
