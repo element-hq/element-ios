@@ -34,12 +34,13 @@
 #define SETTINGS_SECTION_COUNT               6
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
-#define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX  1
-#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               2
-#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       3
-#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             4
-#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                5
-#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      6
+#define SETTINGS_SECTION_ROOMS_HIDE_REDACTED_INFO_INDEX         1
+#define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX    2
+#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
+#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
+#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             5
+#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
+#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
 NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
@@ -85,7 +86,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Rooms settings
     UISwitch *allEventsSwitch;
-    UISwitch *unsupportedMsgSwitch;
+    UISwitch *redactedInfoSwitch;
+    UISwitch *unsupportedEventsSwitch;
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
     SettingsCellWithLabelAndSlider* maxCacheSizeCell;
@@ -256,7 +258,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     inAppNotificationsRulesCell = nil;
     
     allEventsSwitch = nil;
-    unsupportedMsgSwitch = nil;
+    unsupportedEventsSwitch = nil;
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
     maxCacheSizeCell = nil;
@@ -694,8 +696,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [self.tableView reloadData];
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
-    } else if (sender == unsupportedMsgSwitch) {
-        [AppSettings sharedSettings].hideUnsupportedMessages = unsupportedMsgSwitch.on;
+    } else if (sender == redactedInfoSwitch) {
+        [AppSettings sharedSettings].hideRedactedInformation = redactedInfoSwitch.on;
+    } else if (sender == unsupportedEventsSwitch) {
+        [AppSettings sharedSettings].hideUnsupportedEvents = unsupportedEventsSwitch.on;
     } else if (sender == sortMembersSwitch) {
         [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
     } else if (sender == displayLeftMembersSwitch) {
@@ -978,10 +982,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 roomsSettingCell.settingLabel.text = @"Display all events";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
                 allEventsSwitch = roomsSettingCell.settingSwitch;
-            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_MESSAGES_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Hide unsupported messages";
-                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedMessages];
-                unsupportedMsgSwitch = roomsSettingCell.settingSwitch;
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_REDACTED_INFO_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Hide redacted information";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideRedactedInformation];
+                redactedInfoSwitch = roomsSettingCell.settingSwitch;
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Hide unsupported events";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedEvents];
+                unsupportedEventsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] sortMembersUsingLastSeenTime];
