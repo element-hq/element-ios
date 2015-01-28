@@ -25,4 +25,6 @@
 
 - (id)initWithTextNumber:(NSString*)textNumber type:(NSString*)aType contactID:(NSString*)aContactID matrixID:(NSString*)matrixID;
 
+- (BOOL)matchedWithPatterns:(NSArray*)patterns;
+
 @end

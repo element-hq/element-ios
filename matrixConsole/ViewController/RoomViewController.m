@@ -110,6 +110,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Local echo
     NSMutableArray *pendingOutgoingEvents;
     NSMutableArray *tmpCachedAttachments;
+    
+    // the user taps on a member thumbnail
+    MXRoomMember *selectedRoomMember;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -325,6 +328,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         membersListener = nil;
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -401,6 +405,36 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self.roomTitleView refreshDisplay];
 }
 
+- (void)addPictureViewTapGesture:(RoomMessageTableCell*)cell {
+    if (!cell.pictureView.hidden) {
+        UITapGestureRecognizer* tapGesture = nil;
+
+        // check if it is already defined
+        // gesture in storyboard does not seem to work properly
+        // it always triggers a tap event on the first cell
+        for (UIGestureRecognizer* gesture in cell.pictureView.gestureRecognizers) {
+            
+            if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
+                tapGesture = (UITapGestureRecognizer*)gesture;
+                break;
+            }
+        }
+        
+        // add it if it is not yet defined
+        if (!tapGesture) {
+            tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onContactThumbnailTap:)];
+            [tapGesture setNumberOfTouchesRequired:1];
+            [tapGesture setNumberOfTapsRequired:1];
+            [tapGesture setDelegate:self];
+            [cell.pictureView addGestureRecognizer:tapGesture];
+            cell.pictureView.userInteractionEnabled = YES;
+
+            // ensure that nothing will hide this view
+            [cell.pictureView.superview bringSubviewToFront:cell.pictureView];
+        }
+    }
+}
+
 #pragma mark - room ID
 
 - (void)setRoomId:(NSString *)roomId {
@@ -462,6 +496,32 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 }];
                 
                 [self.actionMenu showInViewController:self];
+            }
+        }
+    }
+}
+- (IBAction)onContactThumbnailTap:(UITapGestureRecognizer*)sender {
+    UIView* view = sender.view;
+    
+    while (view && ![view isKindOfClass:[RoomMessageTableCell class]]) {
+        view = view.superview;
+    }
+    
+    if ([view isKindOfClass:[RoomMessageTableCell class]]) {
+        NSIndexPath *indexPath = [self.messagesTableView indexPathForCell:(RoomMessageTableCell*)view];
+        RoomMessage* message = nil;
+        
+        @synchronized(self) {
+            if (indexPath.row < messages.count) {
+                message = [messages objectAtIndex:indexPath.row];
+            }
+        }
+        
+        if (message) {
+            selectedRoomMember = [self.mxRoom.state memberWithUserId:message.senderId];
+        
+            if (selectedRoomMember) {
+                [self performSegueWithIdentifier:@"showMemberSheet" sender:self];
             }
         }
     }
@@ -1688,6 +1748,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         cell.pictureView.clipsToBounds = YES;
         cell.pictureView.backgroundColor = [UIColor redColor];
     }
+    
+    [self addPictureViewTapGesture:cell];
     
     // Adjust top constraint constant for dateTime labels container, and hide it by default
     if (message.messageType == RoomMessageTypeText) {
@@ -3063,10 +3125,15 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showMemberSheet"]) {
-        NSIndexPath *indexPath = [self.membersTableView indexPathForSelectedRow];
-        
         MemberViewController* controller = [segue destinationViewController];
-        controller.mxRoomMember = [members objectAtIndex:indexPath.row];
+        
+        if (selectedRoomMember) {
+            controller.mxRoomMember = selectedRoomMember;
+            selectedRoomMember = nil;
+        } else {
+            NSIndexPath *indexPath = [self.membersTableView indexPathForSelectedRow];
+            controller.mxRoomMember = [members objectAtIndex:indexPath.row];
+        }
         controller.mxRoom = self.mxRoom;
     }
 }
