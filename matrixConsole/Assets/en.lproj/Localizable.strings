@@ -14,11 +14,21 @@
  limitations under the License.
  */
 
+/* Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "Message from %@";
 
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ posted in %@";
+
+/* Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ in %@: %@";
 
 /** Coalesced messages **/
 
