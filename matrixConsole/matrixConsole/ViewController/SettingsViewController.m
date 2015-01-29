@@ -210,6 +210,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 #pragma mark - Internal methods
 
 - (void)onAPNSHandlerHasBeenUpdated {
+    apnsNotificationsSwitch.enabled = YES;
     // Force table reload to update notifications section
     apnsNotificationsSwitch = nil;
     [self.tableView reloadData];
@@ -691,6 +692,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }];
     } else if (sender == apnsNotificationsSwitch) {
         [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
+        apnsNotificationsSwitch.enabled = NO;
     } else if (sender == inAppNotificationsSwitch) {
         [AppSettings sharedSettings].enableInAppNotifications = inAppNotificationsSwitch.on;
         [self.tableView reloadData];
