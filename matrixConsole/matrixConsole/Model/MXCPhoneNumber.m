@@ -16,6 +16,8 @@
 
 #import "MXCPhoneNumber.h"
 
+#import "NBPhoneNumberUtil.h"
+
 @interface MXCPhoneNumber ()
 @property (nonatomic, readonly) NSString *cleanedPhonenumber;
 @end
@@ -29,9 +31,10 @@
         _type = aType ? aType : @"";
         _textNumber = aTextNumber ? aTextNumber : @"" ;
         _cleanedPhonenumber = [MXCPhoneNumber cleanPhonenumber:_textNumber];
-        _internationalPhoneNumber = _cleanedPhonenumber;
+        _internationalPhoneNumber = nil;
+        _countryCode = nil;
     }
-    
+
     return self;
 }
 
@@ -78,9 +81,38 @@
     return YES;
 }
 
-- (void)internationalize:(NSString*)countryCode {    
-    // need to plug to libphonenumber
-    _internationalPhoneNumber = _cleanedPhonenumber;
+- (void)setCountryCode:(NSString *)aCountryCode {
+    if (![aCountryCode isEqualToString:_countryCode]) {
+        _internationalPhoneNumber = nil;
+        _countryCode = aCountryCode;
+        
+        NSError* error = nil;
+        NBPhoneNumberUtil *phoneUtil = [NBPhoneNumberUtil sharedInstance];
+        NBPhoneNumber* nbPhoneNumber = [phoneUtil parse:_cleanedPhonenumber defaultRegion:aCountryCode error:&error];
+        
+        if (!error && [phoneUtil isValidNumber:nbPhoneNumber])
+        {
+            NSString* e164Number = [phoneUtil format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:&error];
+            
+            if (!error && (e164Number.length > 0))
+            {
+                // need to plug to libphonenumber
+                _internationalPhoneNumber = e164Number;
+            }
+        }
+    }
+}
+
+- (BOOL)isValidPhonenumber {
+    if (_countryCode) {
+        return (nil != _internationalPhoneNumber);
+    } else {
+        NSError* error = nil;
+        NBPhoneNumberUtil *phoneUtil = [NBPhoneNumberUtil sharedInstance];
+        NBPhoneNumber* nbPhoneNumber = [phoneUtil parse:_cleanedPhonenumber defaultRegion:nil error:&error];
+        
+        return (!error && [phoneUtil isValidNumber:nbPhoneNumber]);
+    }
 }
 
 #pragma mark NSCoding
@@ -93,6 +125,7 @@
         _textNumber = [coder decodeObjectForKey:@"textNumber"];
         _cleanedPhonenumber = [coder decodeObjectForKey:@"cleanedPhonenumber"];
         _internationalPhoneNumber = [coder decodeObjectForKey:@"internationalPhoneNumber"];
+        _countryCode = [coder decodeObjectForKey:@"countryCode"];
     }
     
     return self;
@@ -105,6 +138,7 @@
     [coder encodeObject:_textNumber forKey:@"textNumber"];
     [coder encodeObject:_cleanedPhonenumber forKey:@"cleanedPhonenumber"];
     [coder encodeObject:_internationalPhoneNumber forKey:@"internationalPhoneNumber"];
+    [coder encodeObject:_countryCode forKey:@"countryCode"];
 }
 
 @end

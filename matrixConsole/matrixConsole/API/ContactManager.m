@@ -200,6 +200,9 @@ static ContactManager* sharedContactManager = nil;
         // can list tocal contacts
         if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
             
+            NSString* countryCode = [[AppSettings sharedSettings] countryCode];
+            
+            
             ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
             ABRecordRef      contactRecord;
             CFIndex          index;
@@ -229,8 +232,15 @@ static ContactManager* sharedContactManager = nil;
                     }
                     
                     contactBookUpdate = YES;
+                    
+                    MXCContact* contact = [[MXCContact alloc] initWithABRecord:contactRecord];
+                    
+                    if (countryCode) {
+                        [contact internationalizePhonenumbers:countryCode];
+                    }
+                    
                     // update the contact
-                    [deviceContactByContactID setValue:[[MXCContact alloc] initWithABRecord:contactRecord] forKey:contactID];
+                    [deviceContactByContactID setValue:contact forKey:contactID];;
                 }
                 
                 CFRelease(people);
