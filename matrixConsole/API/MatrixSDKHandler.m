@@ -646,6 +646,16 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
 }
 
+// the pushes could have disabled for a dedicated room
+// reenable them
+- (void)allowRoomPushes:(NSString*)roomID {
+    if (roomID) {
+        [self.unnotifiedRooms removeObject:roomID];
+    }
+}
+
+// Return the suitable url to display the content thumbnail into the provided view size
+// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
 - (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod {
     // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
     // Convert first the provided size in pixels

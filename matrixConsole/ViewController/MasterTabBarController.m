@@ -30,8 +30,6 @@
 
 @implementation MasterTabBarController
 
-@synthesize visibleRoomId;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -142,6 +140,11 @@
         mediaPicker.delegate = nil;
         mediaPicker = nil;
     }
+}
+
+- (void)setVisibleRoomId:(NSString *)aVisibleRoomId {
+    [[MatrixSDKHandler sharedHandler] allowRoomPushes:aVisibleRoomId];
+    _visibleRoomId = aVisibleRoomId;
 }
 
 @end
