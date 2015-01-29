@@ -122,16 +122,19 @@ static APNSHandler *sharedHandler = nil;
         NSLog(@"Using existing instance handle: %@", instanceHandle);
     }
     
+    NSObject *kind = isActive ? @"http" : [NSNull null];
 
     MXRestClient *restCli = [MatrixSDKHandler sharedHandler].mxRestClient;
-    [restCli setPusherWithPushkey:b64Token kind:@"http" appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
+    [restCli setPusherWithPushkey:b64Token kind:kind appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
     } failure:^(NSError *error) {
         NSLog(@"Failed to send APNS token!");
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 @end
