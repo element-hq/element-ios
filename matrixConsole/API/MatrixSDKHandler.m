@@ -43,6 +43,11 @@ static MatrixSDKHandler *sharedHandler = nil;
 @property (nonatomic,readwrite) BOOL isResumeDone;
 @property (strong, nonatomic) MXCAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
+
+// when the user cancels a notification
+// assume that any messagge room will be ignored
+// until the next launch / debackground
+@property (nonatomic,readwrite) NSMutableArray* unnotifiedRooms;
 @end
 
 @implementation MatrixSDKHandler
@@ -79,6 +84,8 @@ static MatrixSDKHandler *sharedHandler = nil;
                 [self openSession];
             }
         }
+        
+        _unnotifiedRooms = [[NSMutableArray alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
@@ -222,6 +229,8 @@ static MatrixSDKHandler *sharedHandler = nil;
         [self.mxNotification dismiss:NO];
         self.mxNotification = nil;
     }
+    
+    _unnotifiedRooms = [[NSMutableArray alloc] init];
 }
 
 #pragma mark -
@@ -317,8 +326,8 @@ static MatrixSDKHandler *sharedHandler = nil;
                     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
                 } else if (![event.userId isEqualToString:self.userId]
                            && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                           && ![[AppDelegate theDelegate].masterTabBarController isPresentingMediaPicker]) {
-                    
+                           && ![[AppDelegate theDelegate].masterTabBarController isPresentingMediaPicker]
+                           && ([self.unnotifiedRooms indexOfObject:event.roomId] == NSNotFound)) {
                     
                     NSString* messageText = [self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
                     
@@ -330,13 +339,17 @@ static MatrixSDKHandler *sharedHandler = nil;
                             [self.mxNotification dismiss:NO];
                         }
                         
+                        __weak typeof(self) weakSelf = self;
+                        
                         self.mxNotification = [[MXCAlert alloc] initWithTitle:roomState.displayname
                                                                          message:messageText
                                                                            style:MXCAlertStyleAlert];
-                        self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"OK"
+                        self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"Cancel"
                                                                                                   style:MXCAlertActionStyleDefault
                                                                                                 handler:^(MXCAlert *alert) {
                                                                                                     [MatrixSDKHandler sharedHandler].mxNotification = nil;
+                                                                                                    
+                                                                                                    [weakSelf.unnotifiedRooms addObject:event.roomId];
                                                                                                 }];
                         [self.mxNotification addActionWithTitle:@"View"
                                                           style:MXCAlertActionStyleDefault
