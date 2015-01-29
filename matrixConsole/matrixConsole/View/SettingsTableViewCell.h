@@ -48,3 +48,12 @@
 @property (strong, nonatomic) IBOutlet UITextField *settingTextField;
 @property (strong, nonatomic) IBOutlet UIButton *settingButton;
 @end
+
+@interface SettingsCellWithPicker : SettingsTableViewCell
+@property (strong, nonatomic) IBOutlet UIPickerView* pickerView;
+@end
+
+@interface SettingsCellWithLabelAndSubLabel : SettingsTableViewCell
+@property (strong, nonatomic) IBOutlet UILabel* label;
+@property (strong, nonatomic) IBOutlet UILabel* sublabel;
+@end

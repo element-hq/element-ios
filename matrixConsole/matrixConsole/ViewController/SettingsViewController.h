@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface SettingsViewController : UITableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 typedef void (^blockSettings_onReadyToLeave)();
 

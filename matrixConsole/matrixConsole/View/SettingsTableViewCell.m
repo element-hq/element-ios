@@ -37,3 +37,9 @@
 @implementation SettingsCellWithLabelTextFieldAndButton
 @end
 
+@implementation SettingsCellWithPicker
+@end
+
+@implementation SettingsCellWithLabelAndSubLabel
+@end
+
