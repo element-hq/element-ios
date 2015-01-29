@@ -117,21 +117,30 @@ static ContactManager* sharedContactManager = nil;
 
 // refresh the international phonenumber of the contacts
 - (void)internationalizePhoneNumbers:(NSString*)countryCode {
-    NSArray* contactsSnapshot = self.contacts;
     
-    for(MXCContact* contact in contactsSnapshot) {
-        [contact internationalizePhonenumbers:countryCode];
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kContactsDidInternationalizeNotification object:nil userInfo:nil];
+    dispatch_async(processingQueue, ^{
+        NSArray* contactsSnapshot = [deviceContactByContactID allValues];
+        
+        for(MXCContact* contact in contactsSnapshot) {
+            [contact internationalizePhonenumbers:countryCode];
+        }
+        
+        [self saveDeviceContacts];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kContactsDidInternationalizeNotification object:nil userInfo:nil];
+    });
 }
 
 - (void)fullRefresh {
     
     // check if the user allowed to sync local contacts
     if (![[AppSettings sharedSettings] syncLocalContacts]) {
+        contacts = nil;
         // if the user did not allow to sync local contacts
         // ignore this sync
+        
+        // at least, display the known contacts
+        [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
         return;
     }
     

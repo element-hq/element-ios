@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3198D9E11A68338B00556695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3198D9E31A68338B00556695 /* Localizable.strings */; };
-		710210A41A67A4B600364868 /* ConsoleGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */; };
-		71D2E4EC1A49814B000DE015 /* MemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */; };
 		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
 		710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* MXCContactField.m */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
@@ -22,6 +20,7 @@
 		71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D3D1A6E61AD00E59A9E /* SectionedContacts.m */; };
 		7176294C1A77F5D000927125 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7176294B1A77F5D000927125 /* ContactDetailsViewController.m */; };
 		7176294F1A77FED800927125 /* ContactDetailsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7176294E1A77FED800927125 /* ContactDetailsTableCell.m */; };
+		717629521A7A682A00927125 /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 717629511A7A682A00927125 /* countryCodes.plist */; };
 		71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
@@ -87,10 +86,6 @@
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
 		3198D9E21A68338B00556695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		710210A21A67A4B600364868 /* ConsoleGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleGrowingTextView.h; sourceTree = "<group>"; };
-		710210A31A67A4B600364868 /* ConsoleGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleGrowingTextView.m; sourceTree = "<group>"; };
-		71D2E4EA1A49814B000DE015 /* MemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberActionsCell.h; sourceTree = "<group>"; };
-		71D2E4EB1A49814B000DE015 /* MemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberActionsCell.m; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
 		710CC3C01A70F28F006EE973 /* MXCContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContactField.h; sourceTree = "<group>"; };
 		710CC3C11A70F28F006EE973 /* MXCContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContactField.m; sourceTree = "<group>"; };
@@ -113,6 +108,7 @@
 		7176294B1A77F5D000927125 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
 		7176294D1A77FED800927125 /* ContactDetailsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsTableCell.h; sourceTree = "<group>"; };
 		7176294E1A77FED800927125 /* ContactDetailsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsTableCell.m; sourceTree = "<group>"; };
+		717629511A7A682A00927125 /* countryCodes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = countryCodes.plist; path = Resources/countryCodes.plist; sourceTree = "<group>"; };
 		71D2E4EA1A49814B000DE015 /* RoomMemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberActionsCell.h; sourceTree = "<group>"; };
 		71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberActionsCell.m; sourceTree = "<group>"; };
 		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
@@ -219,6 +215,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		717629501A7A681B00927125 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				717629511A7A682A00927125 /* countryCodes.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		B18A10A9FB884DD357EBD414 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,6 +388,7 @@
 		F07A80D419DD9DE700B621A1 /* matrixConsole */ = {
 			isa = PBXGroup;
 			children = (
+				717629501A7A681B00927125 /* Resources */,
 				F021FBEC1A5EF57300EA3AE6 /* API */,
 				F0465AF71A251F85003639F9 /* Model */,
 				F03EF5FC19F1762000A0EE52 /* View */,
@@ -517,6 +522,7 @@
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
 				F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */,
+				717629521A7A682A00927125 /* countryCodes.plist in Resources */,
 				710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */,
 				F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,

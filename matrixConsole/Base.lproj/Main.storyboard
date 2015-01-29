@@ -1399,6 +1399,66 @@
                                     <outlet property="settingTextField" destination="2U4-Eu-nZy" id="jVP-oe-1Yk"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCellWithLabelAndSubLabel" id="vwB-5U-2au" customClass="SettingsCellWithLabelAndSubLabel">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vwB-5U-2au" id="3Jy-jm-jho">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bdx-9d-Pt7">
+                                            <rect key="frame" x="8" y="7" width="584" height="18"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="18" id="JQP-1L-KCB"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sublabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GT-Mo-bvD">
+                                            <rect key="frame" x="8" y="24" width="584" height="13"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="13" id="3ZP-Nr-iG5"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Bdx-9d-Pt7" firstAttribute="top" secondItem="3Jy-jm-jho" secondAttribute="topMargin" constant="-1" id="IBX-DB-70T"/>
+                                        <constraint firstItem="Bdx-9d-Pt7" firstAttribute="leading" secondItem="3Jy-jm-jho" secondAttribute="leadingMargin" id="OuD-IE-yEc"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Bdx-9d-Pt7" secondAttribute="trailing" id="Shi-gA-mWo"/>
+                                        <constraint firstItem="1GT-Mo-bvD" firstAttribute="leading" secondItem="3Jy-jm-jho" secondAttribute="leadingMargin" id="bww-Rv-m9u"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="1GT-Mo-bvD" secondAttribute="bottom" constant="-2" id="mGe-94-q9r"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="1GT-Mo-bvD" secondAttribute="trailing" id="wqD-eZ-K55"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="label" destination="Bdx-9d-Pt7" id="H2I-i2-Qcx"/>
+                                    <outlet property="sublabel" destination="1GT-Mo-bvD" id="4TV-vI-Scq"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCellWithPicker" rowHeight="164" id="dJj-Fq-MsZ" customClass="SettingsCellWithPicker">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dJj-Fq-MsZ" id="6Up-pB-3oa">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gjC-YN-wTo">
+                                            <rect key="frame" x="8" y="1" width="584" height="162"/>
+                                        </pickerView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="gjC-YN-wTo" secondAttribute="trailing" id="515-2g-BoK"/>
+                                        <constraint firstItem="gjC-YN-wTo" firstAttribute="leading" secondItem="6Up-pB-3oa" secondAttribute="leadingMargin" id="PWi-oY-ZAN"/>
+                                        <constraint firstItem="gjC-YN-wTo" firstAttribute="top" secondItem="6Up-pB-3oa" secondAttribute="topMargin" id="YY5-id-bmd"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="gjC-YN-wTo" secondAttribute="bottom" id="qCg-bu-lWf"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="pickerView" destination="gjC-YN-wTo" id="czJ-16-VyF"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="1TJ-Md-cjN" id="Lqt-w3-NjQ"/>

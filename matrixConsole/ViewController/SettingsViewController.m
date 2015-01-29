@@ -23,6 +23,8 @@
 #import "MediaManager.h"
 #import "MXC3PID.h"
 
+#import "ContactManager.h"
+
 #import "SettingsTableViewCell.h"
 
 #define SETTINGS_SECTION_LINKED_EMAILS_INDEX 0
@@ -97,6 +99,16 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Commands
     SettingsCellWithTextView *commandsCell;
+    
+    // country codes management
+    NSArray* countryCodes;
+    NSString* countryCode;
+    NSString* selectedCountryCode;
+    BOOL isSelectingCountryCode;
+    
+    // Dynamic rows in the Notifications section
+    int syncLocalContactsRowIndex;
+    int countryCodeRowIndex;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -137,6 +149,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     _saveUserInfoButton.enabled = NO;
     _activityIndicatorBackgroundView.hidden = YES;
+
+    // country selection
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"countryCodes" ofType:@"plist"];
+    countryCodes = [NSArray arrayWithContentsOfFile:path];
+    isSelectingCountryCode = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,6 +177,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    selectedCountryCode = countryCode = [[AppSettings sharedSettings] countryCode];
+    
     // Refresh display
     [self startActivityIndicator];
     [self configureView];
@@ -169,6 +188,19 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+
+    // if country has been updated
+    // update the contact phonenumbers
+    // and check if they match now to Matrix Users
+    if (![countryCode isEqualToString:selectedCountryCode]) {
+        
+        [[AppSettings sharedSettings] setCountryCode:selectedCountryCode];
+        countryCode = selectedCountryCode;
+        
+        [[ContactManager sharedManager] internationalizePhoneNumbers:countryCode];
+        [[ContactManager sharedManager] fullRefresh];
+    }
+        countryCode = [[AppSettings sharedSettings] countryCode];
     
     [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
@@ -708,6 +740,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [AppSettings sharedSettings].displayLeftUsers = displayLeftMembersSwitch.on;
     } else if (sender == contactsSyncSwitch) {
     	[AppSettings sharedSettings].syncLocalContacts = contactsSyncSwitch.on;
+        isSelectingCountryCode = NO;
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.tableView reloadData];
+         });
     }
 }
 
@@ -797,7 +833,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             inAppNotifRulesRowIndex = count++;
         }
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
-        count = 1;
+        countryCodeRowIndex = syncLocalContactsRowIndex = -1;
+
+        // init row index
+        syncLocalContactsRowIndex = count++;
+        if ([[AppSettings sharedSettings] syncLocalContacts]) {
+            countryCodeRowIndex = count++;
+        }
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
         count = SETTINGS_SECTION_ROOMS_INDEX_COUNT;
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
@@ -821,6 +863,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
+        
+        if ((indexPath.row == countryCodeRowIndex) && isSelectingCountryCode) {
+            
+            return 164;
+        }
+        
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
@@ -953,12 +1001,53 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell = notificationsCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
-         SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+        if (indexPath.row  == syncLocalContactsRowIndex) {
+            SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            
+            contactsCell.settingLabel.text = @"Sync local contacts";
+            contactsCell.settingSwitch.on = [[AppSettings sharedSettings] syncLocalContacts];
+            contactsSyncSwitch = contactsCell.settingSwitch;
+            cell = contactsCell;
+        } else if (indexPath.row  == countryCodeRowIndex) {
+            
+            int index = 0;
+            NSString* countryName = @"";
+            
+            for(NSDictionary* dict in countryCodes) {
+                if ([[dict valueForKey:@"id"] isEqualToString:selectedCountryCode]) {
+                    countryName = [dict valueForKey:@"country"];
+                    break;
+                }
+                
+                index++;
+            }
         
-         contactsCell.settingLabel.text = @"Sync local contacts";
-         contactsCell.settingSwitch.on = [[AppSettings sharedSettings] syncLocalContacts];
-         contactsSyncSwitch = contactsCell.settingSwitch;
-         cell = contactsCell;
+            // there is no country code selection
+            if (!isSelectingCountryCode) {
+                SettingsCellWithLabelAndSubLabel *countryCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSubLabel" forIndexPath:indexPath];
+               
+                countryCell.label.text = @"Select your country";
+                countryCell.sublabel.text = countryName;
+                countryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell = countryCell;
+                
+            } else {
+                // there is a selection in progress
+                SettingsCellWithPicker *pickerCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithPicker" forIndexPath:indexPath];
+                
+                // display a picker
+                pickerCell.pickerView.delegate = self;
+                pickerCell.pickerView.dataSource = self;
+                
+                if (countryName.length > 0) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [pickerCell.pickerView selectRow:index inComponent:0 animated:NO];
+                    });
+                }
+                
+                cell = pickerCell;
+            }
+        }
         
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
@@ -1031,7 +1120,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             // clear caches
             [[MatrixSDKHandler sharedHandler] forceInitialSync:YES];
         }
-        
+        else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
+            
+            if (indexPath.row == countryCodeRowIndex) {
+                isSelectingCountryCode = YES;
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
+
+        }
         [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -1054,6 +1153,38 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)dismissMediaPicker {
     [[AppDelegate theDelegate].masterTabBarController dismissMediaPicker];
+}
+
+
+#pragma mark UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return [countryCodes count];
+}
+
+#pragma mark UIPickerViewDelegate
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [[countryCodes objectAtIndex:row] valueForKey:@"country"];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    
+    // sanity check
+    if ((row >= 0) && (row < countryCodes.count)) {
+        NSDictionary* dict = [countryCodes objectAtIndex:row];
+        selectedCountryCode = [dict valueForKey:@"id"];
+    }
+    
+    isSelectingCountryCode = NO;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 @end
