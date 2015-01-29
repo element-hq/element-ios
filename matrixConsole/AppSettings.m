@@ -17,6 +17,11 @@
 #import "AppSettings.h"
 #import "MatrixSDKHandler.h"
 
+
+// get ISO country name
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+
 static AppSettings *sharedSettings = nil;
 
 @implementation AppSettings
@@ -146,6 +151,31 @@ static AppSettings *sharedSettings = nil;
 
 - (void)setSyncLocalContacts:(BOOL)syncLocalContacts {
     [[NSUserDefaults standardUserDefaults] setBool:syncLocalContacts forKey:@"syncLocalContacts"];
+}
+
+- (NSString*)countryCode {
+    NSString* res = [[NSUserDefaults standardUserDefaults] stringForKey:@"countryCode"];
+    
+    // does not exist : try to get the SIM card information
+    if (!res) {
+        // get the current MCC
+        CTTelephonyNetworkInfo *netInfo = [[CTTelephonyNetworkInfo alloc] init];
+        CTCarrier *carrier = [netInfo subscriberCellularProvider];
+        
+        if (carrier) {
+            res = [[carrier isoCountryCode] uppercaseString];
+            
+            if (res) {
+                [self setCountryCode:res];
+            }
+        }
+    }
+    
+    return res;
+}
+
+- (void)setCountryCode:(NSString *)countryCode{
+    [[NSUserDefaults standardUserDefaults] setObject:countryCode forKey:@"countryCode"];
 }
 
 - (NSInteger)maxAllowedMediaCacheSize {

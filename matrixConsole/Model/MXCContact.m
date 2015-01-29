@@ -245,7 +245,7 @@ NSString *const kMXCContactThumbnailUpdateNotification = @"kMXCContactThumbnailU
 // internationalize the contact phonenumbers
 - (void)internationalizePhonenumbers:(NSString*)countryCode {
     for(MXCPhoneNumber* phonenumber in _phoneNumbers) {
-        [phonenumber internationalize:countryCode];
+        phonenumber.countryCode = countryCode;
     }
 }
 

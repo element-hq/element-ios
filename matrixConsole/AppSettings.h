@@ -30,6 +30,8 @@
 @property (nonatomic, readonly) BOOL requestedLocalContactsSync;
 // return YES if the user allows the local contacts sync
 @property (nonatomic) BOOL syncLocalContacts;
+// phonebook country code
+@property (nonatomic) NSString* countryCode;
 
 // cache sizes in bytes
 @property (nonatomic) NSInteger currentMaxMediaCacheSize;
