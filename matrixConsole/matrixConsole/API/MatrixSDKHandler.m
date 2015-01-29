@@ -285,6 +285,8 @@ static MatrixSDKHandler *sharedHandler = nil;
     self.accessToken = nil;
     self.userId = nil;
     self.homeServer = nil;
+    
+    _unnotifiedRooms = [[NSMutableArray alloc] init];
     // Keep userLogin, homeServerUrl
 }
 
@@ -347,14 +349,27 @@ static MatrixSDKHandler *sharedHandler = nil;
                         self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"Cancel"
                                                                                                   style:MXCAlertActionStyleDefault
                                                                                                 handler:^(MXCAlert *alert) {
-                                                                                                    [MatrixSDKHandler sharedHandler].mxNotification = nil;
+                                                                                                    weakSelf.mxNotification = nil;
                                                                                                     
                                                                                                     [weakSelf.unnotifiedRooms addObject:event.roomId];
+                                                                                                    
+                                                                                                    weakSelf.mxNotification = [[MXCAlert alloc] initWithTitle:nil
+                                                                                                                                                  message:@"Any message from this room will trigger no alert until the application is backgrounded or restarted."
+                                                                                                                                                    style:MXCAlertStyleAlert];
+                                                                                                    
+                                                                                                    [weakSelf.mxNotification addActionWithTitle:@"OK"
+                                                                                                                                      style:MXCAlertActionStyleDefault
+                                                                                                                                    handler:^(MXCAlert *alert) {
+                                                                                                                                        weakSelf.mxNotification = nil;
+                                                                                                                                    }];
+                                                                                                    
+                                                                                                    [weakSelf.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
+                                                                                                    
                                                                                                 }];
                         [self.mxNotification addActionWithTitle:@"View"
                                                           style:MXCAlertActionStyleDefault
                                                         handler:^(MXCAlert *alert) {
-                                                            [MatrixSDKHandler sharedHandler].mxNotification = nil;
+                                                            weakSelf.mxNotification = nil;
                                                             // Show the room
                                                             [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
                                                         }];
