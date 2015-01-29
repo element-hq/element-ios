@@ -350,21 +350,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                                                                   style:MXCAlertActionStyleDefault
                                                                                                 handler:^(MXCAlert *alert) {
                                                                                                     weakSelf.mxNotification = nil;
-                                                                                                    
                                                                                                     [weakSelf.unnotifiedRooms addObject:event.roomId];
-                                                                                                    
-                                                                                                    weakSelf.mxNotification = [[MXCAlert alloc] initWithTitle:nil
-                                                                                                                                                  message:@"Any message from this room will trigger no alert until the application is backgrounded or restarted."
-                                                                                                                                                    style:MXCAlertStyleAlert];
-                                                                                                    
-                                                                                                    [weakSelf.mxNotification addActionWithTitle:@"OK"
-                                                                                                                                      style:MXCAlertActionStyleDefault
-                                                                                                                                    handler:^(MXCAlert *alert) {
-                                                                                                                                        weakSelf.mxNotification = nil;
-                                                                                                                                    }];
-                                                                                                    
-                                                                                                    [weakSelf.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
-                                                                                                    
                                                                                                 }];
                         [self.mxNotification addActionWithTitle:@"View"
                                                           style:MXCAlertActionStyleDefault
