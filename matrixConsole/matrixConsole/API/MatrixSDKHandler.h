@@ -86,6 +86,10 @@ typedef enum : NSUInteger {
 // create a private one to one chat room
 - (void)startPrivateOneToOneRoomWith:(NSString*)otherMatrixID;
 
+// the pushes could have disabled for a dedicated room
+// reenable them
+- (void)allowRoomPushes:(NSString*)roomID;
+
 // Return the suitable url to display the content thumbnail into the provided view size
 // Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
 - (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
