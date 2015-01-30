@@ -71,20 +71,28 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     SettingsCellWithTextFieldAndButton* submittedEmailCell;
     SettingsCellWithLabelTextFieldAndButton* emailTokenCell;
     // Dynamic rows in the Linked emails section
-    int submittedEmailRowIndex;
-    int emailTokenRowIndex;
-    
-    // contacts
-    UISwitch *contactsSyncSwitch;
+    NSInteger submittedEmailRowIndex;
+    NSInteger emailTokenRowIndex;
     
     // Notifications
     UISwitch *apnsNotificationsSwitch;
     UISwitch *inAppNotificationsSwitch;
     SettingsCellWithLabelAndTextField* inAppNotificationsRulesCell;
     // Dynamic rows in the Notifications section
-    int enablePushNotifRowIndex;
-    int enableInAppNotifRowIndex;
-    int inAppNotifRulesRowIndex;
+    NSInteger enablePushNotifRowIndex;
+    NSInteger enableInAppNotifRowIndex;
+    NSInteger inAppNotifRulesRowIndex;
+    
+    // Contacts
+    UISwitch *contactsSyncSwitch;
+    // Country codes management
+    NSArray* countryCodes;
+    NSString* countryCode;
+    NSString* selectedCountryCode;
+    BOOL isSelectingCountryCode;
+    // Dynamic rows in Contacts section
+    NSInteger syncLocalContactsRowIndex;
+    NSInteger countryCodeRowIndex;
     
     // Rooms settings
     UISwitch *allEventsSwitch;
@@ -99,16 +107,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Commands
     SettingsCellWithTextView *commandsCell;
-    
-    // country codes management
-    NSArray* countryCodes;
-    NSString* countryCode;
-    NSString* selectedCountryCode;
-    BOOL isSelectingCountryCode;
-    
-    // Dynamic rows in the Notifications section
-    int syncLocalContactsRowIndex;
-    int countryCodeRowIndex;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
