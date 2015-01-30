@@ -23,6 +23,9 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
     MXRoom *mxRoom;
     id backPaginationListener;
     NSOperation *backPaginationOperation;
+    
+    // Keep reference on last event (used in case of redaction)
+    MXEvent *lastEvent;
 }
 @end
 
@@ -36,24 +39,12 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
         _lastEventOriginServerTs = event.originServerTs;
         _unreadCount = isUnread ? 1 : 0;
         
+        // Keep ref on event
+        lastEvent = event;
+        
         if (!_lastEventDescription.length) {
             // Trigger back pagination to get an event with a non empty description
-            mxRoom = [mxHandler.mxSession roomWithRoomId:event.roomId];
-            if (mxRoom) {
-                backPaginationListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
-                    // Handle only backward events (Sanity check: be sure that the description has not been set by an other way)
-                    if (direction == MXEventDirectionBackwards && !_lastEventDescription.length) {
-                        if ([self updateWithLastEvent:event andRoomState:roomState markAsUnread:NO]) {
-                            // Force recents refresh
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kRecentRoomUpdatedByBackPagination object:nil];
-                        }
-                    }
-                }];
-                
-                // Trigger a back pagination by reseting first backState to get room history from live
-                [mxRoom resetBackState];
-                [self triggerBackPagination];
-            }
+            [self triggerBackPagination];
         }
     }
     return self;
@@ -65,12 +56,35 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
     if (description.length) {
         [self cancelBackPagination];
         // Update current last event
+        lastEvent = event;
         _lastEventDescription = description;
         _lastEventOriginServerTs = event.originServerTs;
         if (isUnread) {
             _unreadCount ++;
         }
         return YES;
+    } else if (_lastEventDescription.length) {
+        // Here we tried to update the last event with a new live one, but the description of this new one is empty.
+        // Consider the specific case of redaction event
+        if (event.eventType == MXEventTypeRoomRedaction) {
+            // Check whether the redacted event is the current last event
+            if ([event.redacts isEqualToString:lastEvent.eventId]) {
+                // Update last event description
+                MXEvent *redactedEvent = [lastEvent prune];
+                redactedEvent.redactedBecause = event.originalDictionary;
+                
+                _lastEventDescription = [[MatrixSDKHandler sharedHandler] displayTextForEvent:redactedEvent withRoomState:nil inSubtitleMode:YES];
+                if (!_lastEventDescription.length) {
+                    // The current last event must be removed, decrement the unread count (if not null)
+                    if (_unreadCount) {
+                        _unreadCount--;
+                    }
+                    // Trigger back pagination to get an event with a non empty description
+                    [self triggerBackPagination];
+                }
+                return YES;
+            }
+        }
     }
     return NO;
 }
@@ -81,10 +95,33 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
 
 - (void)dealloc {
     [self cancelBackPagination];
+    lastEvent = nil;
     _lastEventDescription = nil;
 }
 
 - (void)triggerBackPagination {
+    // Add listener if it is not already done
+    if (!backPaginationListener) {
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        mxRoom = [mxHandler.mxSession roomWithRoomId:_roomId];
+        if (mxRoom) {
+            backPaginationListener = [mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+                // Handle only backward events (Sanity check: be sure that the description has not been set by an other way)
+                if (direction == MXEventDirectionBackwards && !_lastEventDescription.length) {
+                    if ([self updateWithLastEvent:event andRoomState:roomState markAsUnread:NO]) {
+                        // Force recents refresh
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kRecentRoomUpdatedByBackPagination object:_roomId];
+                    }
+                }
+            }];
+            
+            // Trigger a back pagination by reseting first backState to get room history from live
+            [mxRoom resetBackState];
+        } else {
+            return;
+        }
+    }
+    
     if (mxRoom.canPaginate) {
         backPaginationOperation = [mxRoom paginateBackMessages:10 complete:^{
             backPaginationOperation = nil;
@@ -98,6 +135,8 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
             [self cancelBackPagination];
         }];
     } else {
+        // Force recents refresh
+        [[NSNotificationCenter defaultCenter] postNotificationName:kRecentRoomUpdatedByBackPagination object:_roomId];
         [self cancelBackPagination];
     }
 }

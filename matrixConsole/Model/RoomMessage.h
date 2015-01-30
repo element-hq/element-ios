@@ -77,6 +77,10 @@ typedef enum : NSUInteger {
 // Remove the item defined with this event id
 // Return false if the event id is not found
 - (BOOL)removeEvent:(NSString*)eventId;
+// Looks for the item defined with the same id than the provided event, then updates it with the redacted event.
+// Return false if the event id is not found
+- (BOOL)updateRedactedEvent:(MXEvent*)redactedEvent;
+
 // Returns the component from the eventId
 - (RoomMessageComponent*)componentWithEventId:(NSString *)eventId;
 // Return true if the event id is one of the message items

@@ -217,6 +217,101 @@ static NSAttributedString *messageSeparator = nil;
             }
         }
         // here the provided eventId has not been found
+    } else {
+        // Consider here message with no more than one element
+        if (messageComponents.count) {
+            RoomMessageComponent *msgComponent = [messageComponents firstObject];
+            if ([msgComponent.eventId isEqualToString:eventId]) {
+                [messageComponents removeObjectAtIndex:0];
+                // Reset content size
+                _contentSize = CGSizeZero;
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+- (BOOL)updateRedactedEvent:(MXEvent*)redactedEvent {
+    // Check whether the provided event is a redacted one
+    if (!redactedEvent.redactedBecause) {
+        return NO;
+    }
+    
+    if (_messageType == RoomMessageTypeText) {
+        NSUInteger index = messageComponents.count;
+        while (index--) {
+            RoomMessageComponent* msgComponent = [messageComponents objectAtIndex:index];
+            if ([msgComponent.eventId isEqualToString:redactedEvent.eventId]) {
+                // Update component with redacted event, remove it if the resulting string is empty
+                [msgComponent updateWithRedactedEvent:redactedEvent];
+                if (!msgComponent.textMessage.length) {
+                    [self removeEvent:redactedEvent.eventId];
+                } else {
+                    // Compute the SIGNED difference of length (old length - new length)
+                    NSInteger diffLength = msgComponent.range.length - msgComponent.textMessage.length;
+                    
+                    // Refresh global attributed string (if any)
+                    if (currentAttributedTextMsg) {
+                        // Replace the component string
+                        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:msgComponent.textMessage attributes:[msgComponent stringAttributes]];
+                        [currentAttributedTextMsg replaceCharactersInRange:msgComponent.range withAttributedString:attributedString];
+                        
+                        // Update the component range
+                        NSRange updatedRange = msgComponent.range;
+                        updatedRange.length = msgComponent.textMessage.length;
+                        msgComponent.range = updatedRange;
+                        
+                        // Reset content size
+                        _contentSize = CGSizeZero;
+                    } // else let the getter "attributedTextMessage" build it
+                    
+                    // Adjust range for components displayed after this updated component
+                    for (index++; index < messageComponents.count; index++) {
+                        msgComponent = [messageComponents objectAtIndex:index];
+                        NSRange range = msgComponent.range;
+                        NSAssert((diffLength < 0) || (range.location >= diffLength), @"RoomMessage: the ranges of msg components are corrupted");
+                        range.location -= diffLength;
+                        msgComponent.range = range;
+                    }
+                    
+                    // Height of each components should be updated
+                    shouldUpdateComponentsHeight = YES;
+                }
+                return YES;
+            }
+        }
+    } else {
+        // Consider here message related to attachment (This message has no more than one element)
+        if (messageComponents.count) {
+            RoomMessageComponent *msgComponent = [messageComponents firstObject];
+            if ([msgComponent.eventId isEqualToString:redactedEvent.eventId]) {
+                // Redaction removes the attachment information, the message becomes a text message
+                _messageType = RoomMessageTypeText;
+                _attachmentURL = nil;
+                _attachmentInfo = nil;
+                _thumbnailURL = nil;
+                _thumbnailInfo = nil;
+                _previewURL = nil;
+                _uploadId = nil;
+                _uploadProgress = -1;
+                
+                [msgComponent updateWithRedactedEvent:redactedEvent];
+                if (!msgComponent.textMessage.length) {
+                    [self removeEvent:redactedEvent.eventId];
+                } else {
+                    // Set text range
+                    msgComponent.range = NSMakeRange(0, msgComponent.textMessage.length);
+                    
+                    // Compute the height of the text component
+                    msgComponent.height = [self rawTextHeight:self.attributedTextMessage];
+                    shouldUpdateComponentsHeight = NO;
+                    // Reset content size
+                    _contentSize = CGSizeZero;
+                }
+                return YES;
+            }
+        }
     }
     return NO;
 }

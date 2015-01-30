@@ -22,5 +22,7 @@
 
 @property (strong, nonatomic) NSString *roomId;
 
+- (void)forceRefresh;
+
 @end
 

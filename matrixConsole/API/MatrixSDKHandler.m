@@ -126,8 +126,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                  kMXEventTypeStringRoomName,
                                                  kMXEventTypeStringRoomTopic,
                                                  kMXEventTypeStringRoomMember,
-                                                 kMXEventTypeStringRoomMessage,
-                                                 kMXEventTypeStringRoomRedaction
+                                                 kMXEventTypeStringRoomMessage
                                                  ];
             }
 
@@ -689,7 +688,9 @@ static MatrixSDKHandler *sharedHandler = nil;
         if (!isSubtitle && ![AppSettings sharedSettings].hideRedactedInformation) {
             redactedInfo = @"<redacted>";
             if ([event.redactedBecause isKindOfClass:[NSDictionary class]]) {
-                NSString *redactedBy = [roomState memberName:event.redactedBecause[@"user_id"]];
+                // Consider live room state to resolve redactor name if no roomState is provided
+                MXRoomState *aRoomState = roomState ? roomState : [self.mxSession roomWithRoomId:event.roomId].state;
+                NSString *redactedBy = [aRoomState memberName:event.redactedBecause[@"user_id"]];
                 NSString *redactedReason = event.redactedBecause[@"reason"];
                 if (redactedReason.length) {
                     if (redactedBy.length) {
@@ -711,10 +712,10 @@ static MatrixSDKHandler *sharedHandler = nil;
     // Prepare returned description
     NSString *displayText = nil;
     // Prepare display name for concerned users
-    NSString *senderDisplayName = [self senderDisplayNameForEvent:event withRoomState:roomState];
+    NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.userId;
     NSString *targetDisplayName = nil;
     if (event.stateKey) {
-        targetDisplayName = [roomState memberName:event.stateKey];
+        targetDisplayName = roomState ? [roomState memberName:event.stateKey] : event.stateKey;
     }
     
     switch (event.eventType) {
@@ -845,7 +846,7 @@ static MatrixSDKHandler *sharedHandler = nil;
         case MXEventTypeRoomCreate: {
             NSString *creatorId = event.content[@"creator"];
             if (creatorId) {
-                displayText = [NSString stringWithFormat:@"%@ created the room", [roomState memberName:creatorId]];
+                displayText = [NSString stringWithFormat:@"%@ created the room", (roomState ? [roomState memberName:creatorId] : creatorId)];
                 // Append redacted info if any
                 if (redactedInfo) {
                     displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
@@ -996,7 +997,7 @@ static MatrixSDKHandler *sharedHandler = nil;
             break;
         }
         case MXEventTypeRoomRedaction: {
-            if ([AppSettings sharedSettings].displayAllEvents) {
+            if ([self.eventsFilterForMessages indexOfObject:kMXEventTypeStringRoomRedaction] != NSNotFound) {
                 NSString *eventId = event.redacts;
                 displayText = [NSString stringWithFormat:@"%@ redacted an event (id: %@)", senderDisplayName, eventId];
             } else {

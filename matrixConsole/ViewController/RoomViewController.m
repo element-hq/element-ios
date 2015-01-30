@@ -137,10 +137,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 // Messages
 @property (strong, nonatomic)NSMutableArray *messages;
 @property (strong, nonatomic)id messagesListener;
+@property (strong, nonatomic)id redactionListener;
 @end
 
 @implementation RoomViewController
-@synthesize messages, messagesListener;
+@synthesize messages;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -211,9 +212,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self hideAttachmentView];
     
     messages = nil;
-    if (messagesListener) {
-        [self.mxRoom removeListener:messagesListener];
-        messagesListener = nil;
+    if (_messagesListener) {
+        [self.mxRoom removeListener:_messagesListener];
+        _messagesListener = nil;
+        [self.mxRoom removeListener:_redactionListener];
+        _redactionListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
@@ -439,16 +442,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
-#pragma mark - room ID
+#pragma mark -
 
 - (void)setRoomId:(NSString *)roomId {
     if ([self.roomId isEqualToString:roomId] == NO) {
         _roomId = roomId;
-        // Reload room data here
-        [self configureView];
-        // Update UI
-        [self updateUI];
+        [self forceRefresh];
     }
+}
+
+- (void)forceRefresh {
+    // Reload room data here
+    [self configureView];
+    // Update UI
+    [self updateUI];
 }
 
 #pragma mark - UIGestureRecognizer delegate
@@ -543,9 +550,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     if (self.mxRoom) {
         // Remove potential listener
-        if (messagesListener){
-            [self.mxRoom removeListener:messagesListener];
-            messagesListener = nil;
+        if (_messagesListener){
+            [self.mxRoom removeListener:_messagesListener];
+            _messagesListener = nil;
+            [self.mxRoom removeListener:_redactionListener];
+            _redactionListener = nil;
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
             [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
@@ -603,7 +612,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [mxHandler addObserver:self forKeyPath:@"status" options:0 context:nil];
         [mxHandler addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
         // Register a listener to handle messages
-        messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+        _messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             // Handle first live events
             if (direction == MXEventDirectionForwards) {
                 // Check user's membership in live room state (Indeed we have to go back on recents when user leaves, or is kicked/banned)
@@ -754,6 +763,42 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     }
                     
                     // Display is refreshed at the end of back pagination (see onComplete block)
+                });
+            }
+        }];
+        
+        // Register a listener to handle redaction in live stream
+        _redactionListener = [self.mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomRedaction] onEvent:^(MXEvent *redactionEvent, MXEventDirection direction, MXRoomState *roomState) {
+            // Consider only live redaction events
+            if (direction == MXEventDirectionForwards) {
+                // Update Table on processing queue
+                dispatch_async(mxHandler.processingQueue, ^{
+                    // Check whether a message contains the redacted event
+                    RoomMessage *message = [self messageWithEventId:redactionEvent.redacts];
+                    if (message) {
+                        // Retrieve the original to redact it
+                        MXEvent *originalEvent = [message componentWithEventId:redactionEvent.redacts].event;
+                        MXEvent *redactedEvent = [originalEvent prune];
+                        redactedEvent.redactedBecause = redactionEvent.originalDictionary;
+                        
+                        if (redactedEvent.isState) {
+                            // FIXME: The room state must be refreshed here since this redacted event.
+                            NSLog(@"CAUTION: a state event has been redacted, room state may not be up to date");
+                        }
+                        
+                        // We replace the event with the redacted one
+                        [message updateRedactedEvent:redactedEvent];
+                        if (!message.components.count) {
+                            [self removeMessage:message];
+                        }
+                    }
+                    
+                    // Refresh table display except if a back pagination is in progress
+                    if (!isBackPaginationInProgress) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.messagesTableView reloadData];
+                        });
+                    }
                 });
             }
         }];
@@ -2356,7 +2401,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             if (cellView) {
                 RoomMessage* roomMessage = ((RoomMessageTableCell*)cellView).message;
-                RoomMessageComponent* component =[roomMessage componentWithEventId:eventID];
+                RoomMessageComponent* component = [roomMessage componentWithEventId:eventID];
                 
                 // sanity check
                 if (component) {

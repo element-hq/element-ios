@@ -37,6 +37,9 @@ typedef enum : NSUInteger {
 @property (nonatomic) BOOL isRedactedEvent;
 @property (nonatomic) BOOL isIncomingMsg;
 
+// Keep a reference on related event (used in case of redaction)
+@property (nonatomic, readonly) MXEvent *event;
+
 // The following properties are defined to store information on component.
 // They must be handled by the object which creates the RoomMessageComponent instance.
 @property (nonatomic) CGFloat height;
@@ -47,5 +50,7 @@ typedef enum : NSUInteger {
 
 - (id)initWithEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState;
 - (NSDictionary *)stringAttributes;
+
+- (void)updateWithRedactedEvent:(MXEvent*)redactedEvent;
 
 @end

@@ -993,7 +993,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 notificationsCell.settingLabel.text = @"Enable In-App notifications";
                 notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
                 inAppNotificationsSwitch = notificationsCell.settingSwitch;
-            } else /* SETTINGS_SECTION_NOTIFICATIONS_PUSH_NOTIFICATION_INDEX */{
+            } else /* enablePushNotifRowIndex */{
                 notificationsCell.settingLabel.text = @"Enable push notifications";
                 notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
                 apnsNotificationsSwitch = notificationsCell.settingSwitch;
