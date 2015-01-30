@@ -250,8 +250,16 @@
                 }
                 unreadCount = 0;
                 
+                // Check whether redaction event belongs to the listened events list
+                NSArray *listenedEventTypes = mxHandler.eventsFilterForMessages;
+                BOOL hideRedactionEvent = ([listenedEventTypes indexOfObject:kMXEventTypeStringRoomRedaction] == NSNotFound);
+                if (hideRedactionEvent) {
+                    // Add redaction event to the listened events list in order to take into account redaction of the last event in recents.
+                    // (See [RecentRoom updateWithLastEvent:...] for more details)
+                    listenedEventTypes = [listenedEventTypes arrayByAddingObject:kMXEventTypeStringRoomRedaction];
+                }
                 // Register recent listener
-                recentsListener = [mxHandler.mxSession listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+                recentsListener = [mxHandler.mxSession listenToEventsOfTypes:listenedEventTypes onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
                     // Consider first live event
                     if (direction == MXEventDirectionForwards) {
                         // Check user's membership in live room state (We will remove left rooms from recents)
@@ -268,6 +276,9 @@
                             RecentRoom *recentRoom = [recents objectAtIndex:index];
                             if ([event.roomId isEqualToString:recentRoom.roomId]) {
                                 isFound = YES;
+                                // Decrement here unreads count for this recent (we will add later the refreshed count)
+                                unreadCount -= recentRoom.unreadCount;
+                                
                                 if (isLeft) {
                                     // Remove left room
                                     [recents removeObjectAtIndex:index];
@@ -292,13 +303,13 @@
                                                 [filteredRecents insertObject:recentRoom atIndex:0];
                                             }
                                         }
-                                        
-                                        if (isUnread) {
-                                            unreadCount++;
-                                            [self updateTitleView];
-                                        }
                                     }
+                                    // Refresh global unreads count
+                                    unreadCount += recentRoom.unreadCount;
                                 }
+                                
+                                // Refresh title
+                                [self updateTitleView];
                                 break;
                             }
                         }
@@ -357,7 +368,7 @@
     if (recents) {
         // Add observer to force refresh when a recent last description is updated thanks to back pagination
         // (This happens when the current last event description is blank, a back pagination is triggered to display non empty description)
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRecentRoomUpdatedByBackPagination) name:kRecentRoomUpdatedByBackPagination object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRecentRoomUpdatedByBackPagination:) name:kRecentRoomUpdatedByBackPagination object:nil];
     } else {
         // Remove potential listener
         if (recentsListener && mxHandler.mxSession) {
@@ -369,8 +380,20 @@
     [self updateTitleView];
 }
 
-- (void)onRecentRoomUpdatedByBackPagination {
+- (void)onRecentRoomUpdatedByBackPagination:(NSNotification *)notif{
     [self.tableView reloadData];
+    [self updateTitleView];
+    
+    if ([notif.object isKindOfClass:[NSString class]]) {
+        NSString* roomId = notif.object;
+        // Check whether this room is currently displayed in RoomViewController
+        if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:roomId]) {
+            // For sanity reason, we have to force a full refresh in order to restore back state of the room
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [currentRoomViewController forceRefresh];
+            });
+        }
+    }
 }
 
 - (void)updateTitleView {

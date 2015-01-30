@@ -48,12 +48,23 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
             
             // Set eventId -> set the component style
             self.eventId = event.eventId;
+            // Keep ref on event (used in case of redaction)
+            _event = event;
         } else {
             // Ignore this event
             self = nil;
         }
     }
     return self;
+}
+
+- (void)updateWithRedactedEvent:(MXEvent*)redactedEvent {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    
+    // Build text component related to this event (Note: we don't have valid room state here, userId will be used as display name)
+    _textMessage = [mxHandler displayTextForEvent:redactedEvent withRoomState:nil inSubtitleMode:NO];
+    _isRedactedEvent = YES;
+    _event = redactedEvent;
 }
 
 - (void)setEventId:(NSString *)eventId {
@@ -72,6 +83,9 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
     } else {
         _style = RoomMessageComponentStyleDefault;
     }
+    
+    // Update stored event id (Note: Only local event Ids are supposed to change)
+    _event.eventId = eventId;
 }
 
 - (NSDictionary*)stringAttributes {
