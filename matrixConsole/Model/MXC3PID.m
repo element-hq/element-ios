@@ -72,7 +72,7 @@
             NSLog(@"MXC3PID requestValidationToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         }
     } else {
-        NSLog(@"MXC3PID requestValidationToken: Wrong validation flow for this 3PID: %@ (%@), state: %d", self.address, self.medium, _validationState);
+        NSLog(@"MXC3PID requestValidationToken: Wrong validation flow for this 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
     }
     
 }
@@ -113,7 +113,7 @@
             NSLog(@"MXC3PID validateWithToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         }
     } else {
-        NSLog(@"MXC3PID validateWithToken: Wrong validation flow for this 3PID: %@ (%@), state: %d", self.address, self.medium, _validationState);
+        NSLog(@"MXC3PID validateWithToken: Wrong validation flow for this 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
     }
     
     // Here the validation process failed
@@ -146,7 +146,7 @@
             NSLog(@"MXC3PID bindWithUserId: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         }
     } else {
-        NSLog(@"MXC3PID bindWithUserId: Wrong validation flow for this 3PID: %@ (%@), state: %d", self.address, self.medium, _validationState);
+        NSLog(@"MXC3PID bindWithUserId: Wrong validation flow for this 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
     }
     
     // Here the validation process failed
