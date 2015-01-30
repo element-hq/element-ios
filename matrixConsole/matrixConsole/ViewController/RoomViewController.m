@@ -1737,6 +1737,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 memberCell.typingBadge.hidden = YES; //hide typing badge for the current user
             } else {
                 memberCell.typingBadge.hidden = ([currentTypingUsers indexOfObject:roomMember.userId] == NSNotFound);
+                if (!memberCell.typingBadge.hidden) {
+                    [memberCell.typingBadge.superview bringSubviewToFront:memberCell.typingBadge];
+                }
             }
         }
         return memberCell;
@@ -1820,6 +1823,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         incomingMsgCell.userNameLabel.text = message.senderName;
         // Set typing badge visibility
         incomingMsgCell.typingBadge.hidden = (cell.pictureView.hidden || ([currentTypingUsers indexOfObject:message.senderId] == NSNotFound));
+        if (!incomingMsgCell.typingBadge.hidden) {
+            [incomingMsgCell.typingBadge.superview bringSubviewToFront:incomingMsgCell.typingBadge];
+        }
     } else {
         // Add unsent label for failed components
         CGFloat yPosition = (message.messageType == RoomMessageTypeText) ? ROOM_MESSAGE_TEXTVIEW_MARGIN : -ROOM_MESSAGE_TEXTVIEW_MARGIN;
