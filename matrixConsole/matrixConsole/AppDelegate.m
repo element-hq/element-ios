@@ -83,6 +83,10 @@
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         }
     }
+
+    // clear the notifications counter
+    [self clearNotifications];
+    
     return YES;
 }
 
@@ -103,10 +107,15 @@
     [MediaManager reduceCacheSizeToInsert:0];
     // Suspend Matrix handler
     [[MatrixSDKHandler sharedHandler] pauseInBackgroundTask];
+    
+    // clear the notifications counter
+    [self clearNotifications];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    // clear the notifications counter
+    [self clearNotifications];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -209,6 +218,17 @@
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
     
     return self.errorNotification;
+}
+
+- (void)clearNotifications
+{
+    // force to clear the notification center
+    // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
+    // so resetting it does not clear the notifications center.
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 #pragma mark - SplitViewController delegate
