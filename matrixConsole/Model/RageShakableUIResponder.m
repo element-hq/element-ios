@@ -20,6 +20,8 @@
 
 #import "MXCAlert.h"
 
+#import "MatrixSDKHandler.h"
+
 @interface RageShakableUIResponder() {
     MXCAlert *confirmationAlert;
     double startShakingTimeStamp;
@@ -164,7 +166,29 @@ static RageShakableUIResponder* sharedInstance = nil;
         
         [sharedInstance->mailComposer setSubject:@"Matrix bug report"];
         [sharedInstance->mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@matrix.org"]];
-        [sharedInstance->mailComposer setMessageBody:@"Something went wrong on my Matrix client." isHTML:NO];
+        
+        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        
+        NSMutableString* message = [[NSMutableString alloc] init];
+        
+        [message appendFormat:@"Something went wrong on my Matrix client : \n\n\n"];
+        
+        [message appendFormat:@"-----> my comments <-----\n\n\n"];
+        
+        [message appendFormat:@"------------------------------\n"];
+        [message appendFormat:@"Application info\n"];
+        [message appendFormat:@"userId : %@\n", mxHandler.userId];
+        [message appendFormat:@"displayname : %@\n", mxHandler.mxSession.myUser.displayname];
+        [message appendFormat:@"\n"];
+        [message appendFormat:@"homeServerURL : %@\n", mxHandler.homeServerURL];
+        [message appendFormat:@"homeServer : %@\n", mxHandler.homeServer];
+        [message appendFormat:@"accessToken : %@\n", mxHandler.accessToken];
+        [message appendFormat:@"\n"];
+        [message appendFormat:@"matrixConsole version: %@\n", appVersion];
+        [message appendFormat:@"SDK version: %@\n", MatrixSDKVersion];
+        
+        [sharedInstance->mailComposer setMessageBody:message isHTML:NO];
         [sharedInstance->mailComposer addAttachmentData:UIImageJPEGRepresentation(image, 1.0) mimeType:@"image/jpg" fileName:@"screenshot.jpg"];
         sharedInstance->mailComposer.mailComposeDelegate = sharedInstance;
         [controller presentViewController:sharedInstance->mailComposer animated:YES completion:nil];
