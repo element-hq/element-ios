@@ -35,7 +35,9 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
-@property (weak, nonatomic) IBOutlet UILabel *roomCreationLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *roomCreationSectionLabel;
+@property (weak, nonatomic) IBOutlet UIView *roomCreationSectionView;
 @property (weak, nonatomic) IBOutlet UILabel *roomNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roomAliasLabel;
 @property (weak, nonatomic) IBOutlet UILabel *participantsLabel;
@@ -44,6 +46,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *participantsTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *roomVisibilityControl;
 @property (weak, nonatomic) IBOutlet UIButton *createRoomBtn;
+
+@property (weak, nonatomic) IBOutlet UILabel *joinRoomSectionLabel;
+@property (weak, nonatomic) IBOutlet UITextField *joinRoomAliasTextField;
+@property (weak, nonatomic) IBOutlet UIButton *joinRoomBtn;
+
 - (IBAction)onButtonPressed:(id)sender;
 
 @end
@@ -54,9 +61,11 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view, typically from a nib.
-    _roomCreationLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+    _roomCreationSectionLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     _createRoomBtn.enabled = NO;
-    _createRoomBtn.alpha = 0.5;
+    
+    _joinRoomSectionLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+    _joinRoomBtn.enabled = NO;
     
     // Init
     publicRooms = nil;
@@ -81,7 +90,7 @@
     [super viewWillAppear:animated];
     
     // Ensure to display room creation section
-    [self.tableView scrollRectToVisible:_roomCreationLabel.frame animated:NO];
+    [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
     
     if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusLoggedOut) {
         homeServerSuffix = [NSString stringWithFormat:@":%@",[MatrixSDKHandler sharedHandler].homeServer];
@@ -154,6 +163,7 @@
     [_roomNameTextField resignFirstResponder];
     [_roomAliasTextField resignFirstResponder];
     [_participantsTextField resignFirstResponder];
+    [_joinRoomAliasTextField resignFirstResponder];
 }
 
 - (NSString*)alias {
@@ -204,17 +214,19 @@
 #pragma mark - UITextField delegate
 
 - (void)onTextFieldChange:(NSNotification *)notif {
+    // Update Create Room button
     NSString *roomName = _roomNameTextField.text;
     NSString *roomAlias = _roomAliasTextField.text;
     NSString *participants = _participantsTextField.text;
     
     if (roomName.length || roomAlias.length || participants.length) {
         _createRoomBtn.enabled = YES;
-        _createRoomBtn.alpha = 1;
     } else {
         _createRoomBtn.enabled = NO;
-        _createRoomBtn.alpha = 0.5;
     }
+    
+    // Update Join Room button
+    _joinRoomBtn.enabled = (_joinRoomAliasTextField.text.length != 0);
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -241,6 +253,12 @@
     } else if (textField == _participantsTextField) {
         NSArray *participants = self.participantsList;
         textField.text = [participants componentsJoinedByString:@"; "];
+    } else if (textField == _joinRoomAliasTextField) {
+        // Add homeserver suffix if none
+        NSRange range = [textField.text rangeOfString:@":"];
+        if (range.location == NSNotFound) {
+            textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+        }
     }
 }
 
@@ -266,7 +284,7 @@
     } else if (textField == _roomAliasTextField) {
         // Add # if none
         if (!textField.text.length) {
-            if ([string isEqualToString:@"#"] == NO) {
+            if ([string hasPrefix:@"#"] == NO) {
                 if ([string isEqualToString:@":"]) {
                     textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffix];
                 } else {
@@ -280,6 +298,16 @@
             // Add homeserver automatically when user adds ':' at the end
             if (range.location == textField.text.length && [string isEqualToString:@":"]) {
                 textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                // Update Create button status
+                [self onTextFieldChange:nil];
+                return NO;
+            }
+        }
+    } else if (textField == _joinRoomAliasTextField) {
+        // Add # if none
+        if (!textField.text.length) {
+            if ([string hasPrefix:@"#"] == NO) {
+                textField.text = [NSString stringWithFormat:@"#%@",string];
                 // Update Create button status
                 [self onTextFieldChange:nil];
                 return NO;
@@ -340,6 +368,31 @@
              //Alert user
              [[AppDelegate theDelegate] showErrorAsAlert:error];
          }];
+    } else if (sender == _joinRoomBtn) {
+        // Disable button to prevent multiple request
+        _joinRoomBtn.enabled = NO;
+        
+        NSString *roomAlias = _joinRoomAliasTextField.text;
+        // Remove white space from both ends
+        roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        // Check
+        if (roomAlias.length) {
+            [[MatrixSDKHandler sharedHandler].mxSession joinRoom:roomAlias success:^(MXRoom *room) {
+                // Reset text fields
+                _joinRoomAliasTextField.text = nil;
+                // Show the room
+                [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
+            } failure:^(NSError *error) {
+                _joinRoomBtn.enabled = YES;
+                NSLog(@"Join roomAlias (%@) failed: %@", roomAlias, error);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        } else {
+            // Reset text fields
+            _joinRoomAliasTextField.text = nil;
+        }
     }
 }
 
