@@ -78,7 +78,7 @@ static RageShakableUIResponder* sharedInstance = nil;
     
     RageShakableUIResponder* rageShakableUIResponder = [responder isKindOfClass:[RageShakableUIResponder class]] ? (RageShakableUIResponder*)responder : sharedInstance;
     
-    if (rageShakableUIResponder && [AppDelegate theDelegate].isAppForeground && (([[NSDate date] timeIntervalSince1970] - rageShakableUIResponder->startShakingTimeStamp) > 1.5) && !rageShakableUIResponder->confirmationAlert) {
+    if (rageShakableUIResponder && [AppDelegate theDelegate].isAppForeground && (([[NSDate date] timeIntervalSince1970] - rageShakableUIResponder->startShakingTimeStamp) > 1) && !rageShakableUIResponder->confirmationAlert) {
         if (!rageShakableUIResponder->ignoreShakeEnd) {
             rageShakableUIResponder->startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
             
@@ -127,8 +127,9 @@ static RageShakableUIResponder* sharedInstance = nil;
 }
 
 + (void)takeScreenshot:(UIViewController*)controller {
+    
     AppDelegate* theDelegate = [AppDelegate theDelegate];
-    UIGraphicsBeginImageContext(theDelegate.window.bounds.size);
+    UIGraphicsBeginImageContextWithOptions(theDelegate.window.bounds.size, NO, [UIScreen mainScreen].scale);
     
     // Iterate over every window from back to front
     for (UIWindow *window in [[UIApplication sharedApplication] windows])
@@ -161,6 +162,9 @@ static RageShakableUIResponder* sharedInstance = nil;
     [UIPasteboard generalPasteboard].image = image;
     
     if (controller) {
+        
+        [controller.view snapshotViewAfterScreenUpdates:YES];
+        
         sharedInstance->parentViewController = controller;
         sharedInstance->mailComposer = [[MFMailComposeViewController alloc] init];
         
