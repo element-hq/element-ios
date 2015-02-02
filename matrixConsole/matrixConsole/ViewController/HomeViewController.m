@@ -26,7 +26,7 @@
     NSArray* highlightedPublicRooms;
     
     // Search in public room
-    UISearchBar     *recentsSearchBar;
+    UISearchBar     *publicRoomsSearchBar;
     NSMutableArray  *filteredPublicRooms;
     BOOL             searchBarShouldEndEditing;
     UIView          *savedTableHeaderView;
@@ -81,7 +81,7 @@
     publicRooms = nil;
     highlightedPublicRooms = nil;
     
-    recentsSearchBar = nil;
+    publicRoomsSearchBar = nil;
     filteredPublicRooms = nil;
     savedTableHeaderView = nil;
 }
@@ -106,8 +106,8 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     // Leave potential search session
-    if (recentsSearchBar) {
-        [self searchBarCancelButtonClicked:recentsSearchBar];
+    if (publicRoomsSearchBar) {
+        [self searchBarCancelButtonClicked:publicRoomsSearchBar];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
@@ -136,15 +136,16 @@
 }
 
 - (void)search:(id)sender {
-    if (!recentsSearchBar) {
+    if (!publicRoomsSearchBar) {
         // Check whether there are data in which search
         if (publicRooms.count) {
             // Create search bar
-            recentsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-            recentsSearchBar.showsCancelButton = YES;
-            recentsSearchBar.returnKeyType = UIReturnKeyDone;
-            recentsSearchBar.delegate = self;
-            [recentsSearchBar becomeFirstResponder];
+            publicRoomsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+            publicRoomsSearchBar.showsCancelButton = YES;
+            publicRoomsSearchBar.returnKeyType = UIReturnKeyDone;
+            publicRoomsSearchBar.delegate = self;
+            [publicRoomsSearchBar becomeFirstResponder];
+            publicRoomsSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             // Hide table header during search session
             savedTableHeaderView = self.tableView.tableHeaderView;
             self.tableView.tableHeaderView = nil;
@@ -154,7 +155,7 @@
             
         }
     } else {
-        [self searchBarCancelButtonClicked: recentsSearchBar];
+        [self searchBarCancelButtonClicked: publicRoomsSearchBar];
     }
 }
 
@@ -253,7 +254,7 @@
     } else if (textField == _participantsTextField) {
         NSArray *participants = self.participantsList;
         textField.text = [participants componentsJoinedByString:@"; "];
-    } else if (textField == _joinRoomAliasTextField) {
+    } else if (textField == _joinRoomAliasTextField && textField.text.length) {
         // Add homeserver suffix if none
         NSRange range = [textField.text rangeOfString:@":"];
         if (range.location == NSNotFound) {
@@ -410,8 +411,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (recentsSearchBar) {
-        return (recentsSearchBar.frame.size.height + 40);
+    if (publicRoomsSearchBar) {
+        return (publicRoomsSearchBar.frame.size.height + 40);
     }
     return 40;
 }
@@ -437,13 +438,15 @@
         [searchButton setImage:[UIImage imageNamed:@"icon_search"] forState:UIControlStateHighlighted];
         [searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
         searchButton.frame = CGRectMake(sectionLabel.frame.size.width - 45, 0, 40, 40);
+        searchButton.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         [sectionHeader addSubview:searchButton];
         sectionHeader.userInteractionEnabled = YES;
-        if (recentsSearchBar) {
-            CGRect frame = recentsSearchBar.frame;
+        
+        if (publicRoomsSearchBar) {
+            CGRect frame = publicRoomsSearchBar.frame;
             frame.origin.y = 40;
-            recentsSearchBar.frame = frame;
-            [sectionHeader addSubview:recentsSearchBar];
+            publicRoomsSearchBar.frame = frame;
+            [sectionHeader addSubview:publicRoomsSearchBar];
         }
     } else {
         sectionLabel.text = @" No Public Rooms";
@@ -585,7 +588,7 @@
     // Leave search
     searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
-    recentsSearchBar = nil;
+    publicRoomsSearchBar = nil;
     filteredPublicRooms = nil;
     // Restore table header and refresh table display
     self.tableView.tableHeaderView = savedTableHeaderView;
