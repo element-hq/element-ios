@@ -14,9 +14,15 @@
  limitations under the License.
  */
 
-#import "RageShakableTableViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface HomeViewController : RageShakableTableViewController <UITextFieldDelegate, UISearchBarDelegate>
+#import <MessageUI/MessageUI.h>
+
+@interface RageShakableUIResponder : UIResponder<MFMailComposeViewControllerDelegate>
+
++ (void)startShaking:(UIResponder*)controller;
++ (void)stopShaking:(UIResponder*)controller;
++ (void)cancel:(UIResponder*)controller;
++ (void)applicationBecomesActive;
 
 @end
-

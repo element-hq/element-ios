@@ -70,6 +70,8 @@
             recents.tabBarItem.image = [[UIImage imageNamed:@"tab_recents"] imageWithRenderingMode:UIImageRenderingModeAutomatic];
         }
         
+        _isAppForeground = NO;
+        
         // Retrieve custom configuration
         NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
         NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
@@ -110,12 +112,16 @@
     
     // clear the notifications counter
     [self clearNotifications];
+    
+    _isAppForeground = NO;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
+    
+    _isAppForeground = YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -125,6 +131,8 @@
     
     // refresh the contacts list
     [[ContactManager sharedManager] fullRefresh];
+    
+    _isAppForeground = YES;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
