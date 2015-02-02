@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "RageShakableTableViewController.h"
 
 #import "MXCContact.h"
 
-@interface ContactDetailsViewController : UITableViewController
+@interface ContactDetailsViewController : RageShakableTableViewController
 
 @property (strong, nonatomic) MXCContact* contact;
 @end

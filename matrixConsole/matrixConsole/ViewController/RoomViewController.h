@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "RageShakableViewController.h"
 
 #import "HPGrowingTextView.h"
 
-@interface RoomViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, HPGrowingTextViewDelegate>
+@interface RoomViewController : RageShakableViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, HPGrowingTextViewDelegate>
 
 @property (strong, nonatomic) NSString *roomId;
 

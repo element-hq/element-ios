@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import "RageShakableTableViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface HomeViewController : RageShakableTableViewController <UITextFieldDelegate, UISearchBarDelegate>
+@interface RageShakableViewController : UIViewController
 
 @end
 

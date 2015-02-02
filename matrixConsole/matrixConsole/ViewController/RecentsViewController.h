@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "RageShakableTableViewController.h"
 
 @class RoomViewController;
 
-@interface RecentsViewController : UITableViewController <UISearchBarDelegate>
+@interface RecentsViewController : RageShakableTableViewController <UISearchBarDelegate>
 
 @property (strong, nonatomic) NSString *preSelectedRoomId; // set a non-nil value to this property will open room details
 

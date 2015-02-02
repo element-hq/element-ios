@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import "RageShakableViewController.h"
 
-@interface LoginViewController : UIViewController <UITextFieldDelegate>
+@interface LoginViewController : RageShakableViewController <UITextFieldDelegate>
 
 @end
 

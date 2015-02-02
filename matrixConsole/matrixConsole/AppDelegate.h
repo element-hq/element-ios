@@ -28,6 +28,8 @@
 
 @property (strong, nonatomic) MXCAlert *errorNotification;
 
+@property (nonatomic) BOOL isAppForeground;
+
 + (AppDelegate*)theDelegate;
 
 - (void)registerUserNotificationSettings;
