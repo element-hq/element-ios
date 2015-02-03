@@ -26,6 +26,17 @@
 
 @implementation MXC3PID
 
+- (instancetype)initWithMedium:(NSString *)medium andAddress:(NSString *)address
+{
+    self = [super init];
+    if (self)
+    {
+        _medium = [medium copy];
+        _address = [address copy];
+    }
+    return self;
+}
+
 - (void)resetValidationParameters {
     _validationState = MXC3PIDAuthStateUnknown;
     self.clientSecret = nil;

@@ -15,7 +15,8 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "MX3PID.h"
+
+#import "MXRestClient.h"
 
 typedef enum : NSUInteger {
     MXC3PIDAuthStateUnknown,
@@ -26,9 +27,34 @@ typedef enum : NSUInteger {
 } MXC3PIDAuthState;
 
 
-@interface MXC3PID : MX3PID
+@interface MXC3PID : NSObject
+
+/**
+ The 3rd party system where the user is defined.
+ */
+@property (nonatomic, readonly) MX3PIDMedium medium;
+
+/**
+ The id of the user in the 3rd party system.
+ */
+@property (nonatomic, readonly) NSString *address;
+
+/**
+ The id of the user on Matrix.
+ nil if unknown or not yet resolved.
+ */
+@property (nonatomic) NSString *userId;
 
 @property (nonatomic, readonly) MXC3PIDAuthState validationState;
+
+/**
+ Initialise the instance with a 3PID.
+
+ @param medium the medium.
+ @param address the id of the contact on this medium.
+ @return the new instance.
+ */
+- (instancetype)initWithMedium:(NSString*)medium andAddress:(NSString*)address;
 
 /**
  Start the validation process 
