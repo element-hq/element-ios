@@ -541,10 +541,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 
                 // Look for the selected component
                 CGPoint longPressPoint = [longPressGestureRecognizer locationInView:view];
-                
                 CGFloat yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
                 RoomMessageComponent *component = [message.components objectAtIndex:0];
                 selectedEvent = component.event;
+                [message checkComponentsHeight];
                 for (component in message.components) {
                     if (longPressPoint.y < yPosition) {
                         break;
