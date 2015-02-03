@@ -33,6 +33,8 @@
 
 #import "MXCGrowingTextView.h"
 
+#import "EventDetailsView.h"
+
 #define ROOMVIEWCONTROLLER_TYPING_TIMEOUT_SEC 10
 
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
@@ -47,7 +49,10 @@
 
 #define ROOM_MESSAGE_CELL_TEXTVIEW_LEADING_AND_TRAILING_CONSTRAINT_TO_SUPERVIEW 120 // (51 + 69)
 
-#define HIDDEN_UNSENT_MSG_LABEL 12012015
+#define ROOM_MESSAGE_CELL_TEXTVIEW_TAG                1
+#define ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TAG          2
+#define ROOM_MESSAGE_CELL_PROGRESSVIEW_TAG            3
+#define ROOM_MESSAGE_CELL_HIDDEN_UNSENT_MSG_LABEL_TAG 4
 
 NSString *const kCmdChangeDisplayName = @"/nick";
 NSString *const kCmdEmote = @"/me";
@@ -129,6 +134,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *membersListButtonItem;
+@property (weak, nonatomic) IBOutlet EventDetailsView *eventDetailsView;
 
 @property (strong, nonatomic) MXRoom *mxRoom;
 @property (strong, nonatomic) MXCAlert *actionMenu;
@@ -156,6 +162,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [self.membersView addGestureRecognizer:tap];
+    
+    // Add shadow on event details view
+    _eventDetailsView.layer.cornerRadius = 5;
+    _eventDetailsView.layer.shadowOffset = CGSizeMake(0, 1);
+    _eventDetailsView.layer.shadowOpacity = 0.5f;
     
     isKeyboardObserver = NO;
     
@@ -315,6 +326,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.actionMenu = nil;
     }
     
+    // Hide event details by default
+    [self hideEventDetails];
+    
     // Hide members by default
     [self hideRoomMembers];
     
@@ -473,24 +487,32 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     return YES;
 }
 
-- (IBAction)onProgressLongTap:(UILongPressGestureRecognizer*)sender {
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        // find out the linked uitableviewcell
-        UIView* view = sender.view;
-        
-        while(view && ![view isKindOfClass:[UITableViewCell class]]) {
+- (IBAction)onLongPressGesture:(UILongPressGestureRecognizer*)longPressGestureRecognizer {
+    if (longPressGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        // Find out the related RoomMessageTableCell
+        RoomMessageTableCell *messageTableCell = nil;
+        UIView* view = longPressGestureRecognizer.view;
+        while (view) {
+            if ([view isKindOfClass:[RoomMessageTableCell class]]) {
+                messageTableCell = (RoomMessageTableCell*)view;
+                break;
+            }
             view = view.superview;
         }
         
-        // if it is a RoomMessageTableCell
-        if ([view isKindOfClass:[RoomMessageTableCell class]]) {
-            __weak typeof(self) weakSelf = self;
-            
-            NSString* url = ((RoomMessageTableCell*)view).message.attachmentURL;
+        if (!messageTableCell) {
+            return;
+        }
+        view = longPressGestureRecognizer.view;
+        
+        // Check the view on which long press has been detected
+        if (view.tag == ROOM_MESSAGE_CELL_PROGRESSVIEW_TAG) {
+            NSString* url = messageTableCell.message.attachmentURL;
             MediaLoader *loader = [MediaManager existingDownloaderForURL:url inFolder:self.roomId];
             
             // offer to cancel a download only if there is a pending one
             if (loader) {
+                __weak typeof(self) weakSelf = self;
                 self.actionMenu = [[MXCAlert alloc] initWithTitle:nil message:@"Cancel the download ?" style:MXCAlertStyleAlert];
                 self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.actionMenu = nil;
@@ -502,11 +524,38 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (loader) {
                         [loader cancel];
                     }
-
+                    
                     weakSelf.actionMenu = nil;
                 }];
                 
                 [self.actionMenu showInViewController:self];
+            }
+        } else if (view.tag == ROOM_MESSAGE_CELL_TEXTVIEW_TAG || view.tag == ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TAG) {
+            RoomMessage *message = messageTableCell.message;
+            MXEvent *selectedEvent = nil;
+            if (message.components.count == 1) {
+                RoomMessageComponent *component = [message.components objectAtIndex:0];
+                selectedEvent = component.event;
+            } else if (message.components.count) {
+                // Here the selected view is a textView (attachment has no more than one component)
+                
+                // Look for the selected component
+                CGPoint longPressPoint = [longPressGestureRecognizer locationInView:view];
+                
+                CGFloat yPosition = ROOM_MESSAGE_TEXTVIEW_MARGIN;
+                RoomMessageComponent *component = [message.components objectAtIndex:0];
+                selectedEvent = component.event;
+                for (component in message.components) {
+                    if (longPressPoint.y < yPosition) {
+                        break;
+                    }
+                    yPosition += component.height;
+                    selectedEvent = component.event;
+                }
+            }
+            
+            if (selectedEvent) {
+                [self showEventDetails:selectedEvent];
             }
         }
     }
@@ -981,6 +1030,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
+# pragma mark - Event details
+
+- (void)showEventDetails:(MXEvent *)event {
+    [self dismissKeyboard];
+    
+    _eventDetailsView.event = event;
+    _eventDetailsView.hidden = NO;
+}
+
+- (void)hideEventDetails {
+    _eventDetailsView.event = nil;
+    _eventDetailsView.hidden = YES;
+}
+
 #pragma mark - Back pagination
 
 - (void)triggerBackPagination {
@@ -1203,6 +1266,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)showRoomMembers {
     // Dismiss keyboard
     [self dismissKeyboard];
+    // Hide potential event details
+    [self hideEventDetails];
     
     [self updateRoomMembers];
     
@@ -1845,7 +1910,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // add a dummy label to store the event ID
                 // so the message will be easily found when the button will be tapped
                 UILabel* hiddenLabel = [[UILabel alloc] init];
-                hiddenLabel.tag = HIDDEN_UNSENT_MSG_LABEL;
+                hiddenLabel.tag = ROOM_MESSAGE_CELL_HIDDEN_UNSENT_MSG_LABEL_TAG;
                 hiddenLabel.text = component.eventId;
                 hiddenLabel.hidden = YES;
                 hiddenLabel.frame = CGRectZero;
@@ -1871,6 +1936,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (message.messageType != RoomMessageTypeText) {
         cell.messageTextView.hidden = YES;
         cell.attachmentView.hidden = NO;
+        
         // Update image view frame in order to center loading wheel (if any)
         CGRect frame = cell.attachmentView.frame;
         frame.size.width = contentSize.width;
@@ -1914,6 +1980,16 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Adjust Attachment width constant
         cell.attachViewWidthConstraint.constant = contentSize.width;
+        
+        // Add a long gesture recognizer on attachment view in order to display event details
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+        cell.attachmentView.tag = ROOM_MESSAGE_CELL_ATTACHMENTVIEW_TAG;
+        [cell.attachmentView addGestureRecognizer:longPress];
+        // Add another long gesture recognizer on progressView to cancel the current operation (Note: only the download can be cancelled).
+        // Note2: It is not possible to manage this gesture recognizer from the storyboard -> The gesture view is always the same i.e. the latest composed one.
+        longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+        cell.progressView.tag = ROOM_MESSAGE_CELL_PROGRESSVIEW_TAG;
+        [cell.progressView addGestureRecognizer:longPress];
     } else {
         cell.attachmentView.hidden = YES;
         cell.playIconView.hidden = YES;
@@ -1924,14 +2000,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             cell.messageTextView.contentInset = UIEdgeInsetsMake(0, leftInset, 0, -leftInset);
         }
         cell.messageTextView.attributedText = message.attributedTextMessage;
+        
+        // Add a long gesture recognizer on text view in order to display event details
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+        cell.messageTextView.tag = ROOM_MESSAGE_CELL_TEXTVIEW_TAG;
+        [cell.messageTextView addGestureRecognizer:longPress];
     }
-    
-    // Add a long tap gesture on the progressView
-    // manage it in the storyboard does not work properly
-    // -> The gesture view is always the same i.e. the latest composed one.
-    // Note: only the download can be cancelled
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onProgressLongTap:)];
-    [cell.progressView addGestureRecognizer:longPress];
     
     // Handle timestamp display
     if (displayMsgTimestamp) {
@@ -2393,7 +2467,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (IBAction)onResendToggle:(id)sender {
     // sanity check
     if ([sender isKindOfClass:[UIButton class]]) {
-        id hiddenLabel = [(UIButton*)sender viewWithTag:HIDDEN_UNSENT_MSG_LABEL];
+        id hiddenLabel = [(UIButton*)sender viewWithTag:ROOM_MESSAGE_CELL_HIDDEN_UNSENT_MSG_LABEL_TAG];
         
         // get the hidden label where the event ID is store
         if ([hiddenLabel isKindOfClass:[UILabel class]]) {

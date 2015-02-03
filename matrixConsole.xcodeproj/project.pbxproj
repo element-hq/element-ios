@@ -65,6 +65,7 @@
 		F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */; };
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
 		F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E67931A77965A00AABD4C /* MXC3PID.m */; };
+		F0CA8D3D1A80DE08004320A4 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CA8D3C1A80DE08004320A4 /* EventDetailsView.m */; };
 		F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AC19E6895E00E47915 /* logoHighRes.png */; };
 		F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AD19E6895E00E47915 /* tab_recents.png */; };
 		F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5B019E6898800E47915 /* tab_home.ico */; };
@@ -188,6 +189,8 @@
 		F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F08E67921A77965A00AABD4C /* MXC3PID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXC3PID.h; sourceTree = "<group>"; };
 		F08E67931A77965A00AABD4C /* MXC3PID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXC3PID.m; sourceTree = "<group>"; };
+		F0CA8D3B1A80DE08004320A4 /* EventDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsView.h; sourceTree = "<group>"; };
+		F0CA8D3C1A80DE08004320A4 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
 		F0CEA5AC19E6895E00E47915 /* logoHighRes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoHighRes.png; sourceTree = "<group>"; };
 		F0CEA5AD19E6895E00E47915 /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
 		F0CEA5B019E6898800E47915 /* tab_home.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = tab_home.ico; sourceTree = "<group>"; };
@@ -329,6 +332,8 @@
 				7176294E1A77FED800927125 /* ContactDetailsTableCell.m */,
 				71193D2A1A6E433900E59A9E /* ContactTableCell.h */,
 				71193D2B1A6E433900E59A9E /* ContactTableCell.m */,
+				F0CA8D3B1A80DE08004320A4 /* EventDetailsView.h */,
+				F0CA8D3C1A80DE08004320A4 /* EventDetailsView.m */,
 				F05237811A728A0A0079F3E0 /* MXCGrowingTextView.h */,
 				F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */,
 				F00B5DB71A1B9BCE00EA1C8D /* MXCImageView.h */,
@@ -623,6 +628,7 @@
 				710CA4C51A7FC27100EEFB96 /* RageShakableTableViewController.m in Sources */,
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
+				F0CA8D3D1A80DE08004320A4 /* EventDetailsView.m in Sources */,
 				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -448,15 +448,64 @@
                                     <constraint firstAttribute="bottom" secondItem="pLY-I9-ghF" secondAttribute="bottom" id="lMV-nK-DVn"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C67-FD-9VY" userLabel="EventDetailsView" customClass="EventDetailsView">
+                                <rect key="frame" x="10" y="74" width="580" height="467"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lu1-hf-uyx">
+                                        <rect key="frame" x="10" y="10" width="560" height="407"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rr2-uC-ye2">
+                                        <rect key="frame" x="121" y="427" width="49" height="30"/>
+                                        <state key="normal" title="Redact">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonPressed:" destination="C67-FD-9VY" eventType="touchUpInside" id="jeD-Hi-ZmO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="arJ-9W-dYT">
+                                        <rect key="frame" x="418" y="427" width="40" height="30"/>
+                                        <state key="normal" title="Close">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonPressed:" destination="C67-FD-9VY" eventType="touchUpInside" id="HYm-hX-Jdw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Lu1-hf-uyx" firstAttribute="leading" secondItem="C67-FD-9VY" secondAttribute="leading" constant="10" id="4Rb-zA-MGE"/>
+                                    <constraint firstItem="Lu1-hf-uyx" firstAttribute="top" secondItem="C67-FD-9VY" secondAttribute="top" constant="10" id="75Q-KG-2e2"/>
+                                    <constraint firstAttribute="centerX" secondItem="arJ-9W-dYT" secondAttribute="centerX" multiplier="0.66" id="BKC-E2-dPf"/>
+                                    <constraint firstAttribute="bottom" secondItem="rr2-uC-ye2" secondAttribute="bottom" constant="10" id="PDg-Dp-fKf"/>
+                                    <constraint firstItem="arJ-9W-dYT" firstAttribute="top" secondItem="Lu1-hf-uyx" secondAttribute="bottom" constant="10" id="XoV-8G-EpS"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lu1-hf-uyx" secondAttribute="trailing" constant="10" id="j2N-Ws-oAy"/>
+                                    <constraint firstAttribute="bottom" secondItem="arJ-9W-dYT" secondAttribute="bottom" constant="10" id="jb9-Fe-Bek"/>
+                                    <constraint firstAttribute="centerX" secondItem="rr2-uC-ye2" secondAttribute="centerX" multiplier="2" id="vYG-Us-zFx"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="closeButton" destination="arJ-9W-dYT" id="OzZ-Tr-49t"/>
+                                    <outlet property="redactButton" destination="rr2-uC-ye2" id="wet-uc-gdI"/>
+                                    <outlet property="textView" destination="Lu1-hf-uyx" id="mNv-97-fV6"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6fM-aJ-d0M" secondAttribute="trailing" id="0Mo-aQ-iwZ"/>
+                            <constraint firstAttribute="trailing" secondItem="C67-FD-9VY" secondAttribute="trailing" constant="10" id="1rB-i0-chP"/>
                             <constraint firstItem="6fM-aJ-d0M" firstAttribute="leading" secondItem="1BF-nV-MTf" secondAttribute="leading" id="7eH-ST-BbY"/>
                             <constraint firstItem="nNf-bE-8dQ" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="bottom" id="C5t-bm-3s8"/>
                             <constraint firstAttribute="bottom" secondItem="meV-kn-sxo" secondAttribute="bottom" constant="44" id="Cos-M5-WHG"/>
                             <constraint firstItem="dvT-c5-Ymf" firstAttribute="top" secondItem="it4-Tc-q7z" secondAttribute="bottom" constant="36" id="FV3-P0-ekh"/>
+                            <constraint firstItem="nNf-bE-8dQ" firstAttribute="top" secondItem="C67-FD-9VY" secondAttribute="bottom" constant="10" id="Idf-pn-dAs"/>
                             <constraint firstItem="meV-kn-sxo" firstAttribute="top" secondItem="1BF-nV-MTf" secondAttribute="top" id="OWt-4M-1DF"/>
+                            <constraint firstItem="C67-FD-9VY" firstAttribute="leading" secondItem="1BF-nV-MTf" secondAttribute="leading" constant="10" id="Rmv-s4-OCJ"/>
                             <constraint firstItem="OWi-J8-sFZ" firstAttribute="leading" secondItem="1BF-nV-MTf" secondAttribute="leading" id="TAa-Ov-DlQ"/>
                             <constraint firstItem="OWi-J8-sFZ" firstAttribute="top" secondItem="it4-Tc-q7z" secondAttribute="bottom" id="YkW-6x-JOH"/>
                             <constraint firstItem="nNf-bE-8dQ" firstAttribute="top" secondItem="OWi-J8-sFZ" secondAttribute="bottom" id="ddz-rI-Y8M"/>
@@ -464,6 +513,7 @@
                             <constraint firstAttribute="trailing" secondItem="OWi-J8-sFZ" secondAttribute="trailing" id="sew-P4-axR"/>
                             <constraint firstAttribute="centerX" secondItem="dvT-c5-Ymf" secondAttribute="centerX" id="u9d-Bd-6Ci"/>
                             <constraint firstAttribute="trailing" secondItem="meV-kn-sxo" secondAttribute="trailing" id="vBl-Ri-4Hb"/>
+                            <constraint firstItem="C67-FD-9VY" firstAttribute="top" secondItem="it4-Tc-q7z" secondAttribute="bottom" constant="10" id="xSE-zV-d0d"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3Zt-Wl-J6o">
@@ -518,6 +568,7 @@
                         <outlet property="controlView" destination="6fM-aJ-d0M" id="13g-Wl-z5n"/>
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
                         <outlet property="controlViewHeightConstraint" destination="tGp-dw-uAO" id="hx8-ri-zYa"/>
+                        <outlet property="eventDetailsView" destination="C67-FD-9VY" id="KnV-we-fd5"/>
                         <outlet property="membersListButtonItem" destination="3d6-ln-ICU" id="KtB-5h-eJl"/>
                         <outlet property="membersTableView" destination="pLY-I9-ghF" id="Ioc-IJ-WYX"/>
                         <outlet property="membersView" destination="OWi-J8-sFZ" id="3n2-n5-r6B"/>
