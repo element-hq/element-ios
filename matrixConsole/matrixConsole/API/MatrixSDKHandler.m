@@ -687,24 +687,22 @@ static MatrixSDKHandler *sharedHandler = nil;
         // Check whether redacted information is required
         if (!isSubtitle && ![AppSettings sharedSettings].hideRedactedInformation) {
             redactedInfo = @"<redacted>";
-            if ([event.redactedBecause isKindOfClass:[NSDictionary class]]) {
-                // Consider live room state to resolve redactor name if no roomState is provided
-                MXRoomState *aRoomState = roomState ? roomState : [self.mxSession roomWithRoomId:event.roomId].state;
-                NSString *redactedBy = [aRoomState memberName:event.redactedBecause[@"user_id"]];
-                NSString *redactedReason = event.redactedBecause[@"reason"];
-                if (redactedReason.length) {
-                    if (redactedBy.length) {
-                        redactedBy = [NSString stringWithFormat:@"by %@ (reason: %@)", redactedBy, redactedReason];
-                    } else {
-                        redactedBy = [NSString stringWithFormat:@"(reason: %@)", redactedReason];
-                    }
-                } else if (redactedBy.length) {
-                    redactedBy = [NSString stringWithFormat:@"by %@", redactedBy];
-                }
-                
+            // Consider live room state to resolve redactor name if no roomState is provided
+            MXRoomState *aRoomState = roomState ? roomState : [self.mxSession roomWithRoomId:event.roomId].state;
+            NSString *redactedBy = [aRoomState memberName:event.redactedBecause[@"user_id"]];
+            NSString *redactedReason = (event.redactedBecause[@"content"])[@"reason"];
+            if (redactedReason.length) {
                 if (redactedBy.length) {
-                    redactedInfo = [NSString stringWithFormat:@"<redacted %@>", redactedBy];
+                    redactedBy = [NSString stringWithFormat:@"by %@ [reason: %@]", redactedBy, redactedReason];
+                } else {
+                    redactedBy = [NSString stringWithFormat:@"[reason: %@]", redactedReason];
                 }
+            } else if (redactedBy.length) {
+                redactedBy = [NSString stringWithFormat:@"by %@", redactedBy];
+            }
+            
+            if (redactedBy.length) {
+                redactedInfo = [NSString stringWithFormat:@"<redacted %@>", redactedBy];
             }
         }
     }

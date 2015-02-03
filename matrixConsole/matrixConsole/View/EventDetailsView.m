@@ -18,11 +18,21 @@
 
 #import "RoomMessageComponent.h"
 #import "MatrixSDKHandler.h"
+#import "AppDelegate.h"
+
+@interface EventDetailsView () {
+    // Manage the reuse of the view whereas requests are still in progress
+    NSUInteger redactionRequestCount;
+    BOOL shouldKeepVisible;
+}
+@end
 
 @implementation EventDetailsView
 
 - (void)setEvent:(MXEvent *)event {
     _event = event;
+    // Disable redact button by default
+    _redactButton.enabled = NO;
     
     if (event) {
         NSMutableDictionary *eventDict = [NSMutableDictionary dictionaryWithDictionary:event.originalDictionary];
@@ -40,6 +50,14 @@
                 NSDictionary *dict = [eventDict objectForKey:key];
                 if (!dict.count) {
                     [eventDict removeObjectForKey:key];
+                } else {
+                    NSMutableDictionary *updatedDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+                    for (NSString *subKey in dict.allKeys) {
+                        if ([[dict objectForKey:subKey] isEqual:[NSNull null]]) {
+                            [updatedDict removeObjectForKey:subKey];
+                        }
+                    }
+                    [eventDict setObject:updatedDict forKey:key];
                 }
             }
         }
@@ -50,24 +68,79 @@
                                                            options:NSJSONWritingPrettyPrinted
                                                              error:&error];
         _textView.text = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        // Check whether the user can redact this event
+        if (!event.redactedBecause) {
+            // Here the event has not been already redacted, check the user's power level
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:event.roomId];
+            if (mxRoom) {
+                MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+                NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
+                if (powerLevels.redact) {
+                    if (userPowerLevel >= powerLevels.redact) {
+                        _redactButton.enabled = YES;
+                    }
+                } else if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomRedaction]) {
+                    _redactButton.enabled = YES;
+                }
+            }
+        }
     } else {
         _textView.text = nil;
     }
     
-    // FIXME enable Redact button
-    _redactButton.enabled = NO;
+    // Hide potential activity indicator
+    [_activityIndicator stopAnimating];
 }
 
 - (void)dealloc {
     _event = nil;
 }
 
+- (void)setHidden:(BOOL)hidden {
+    if (hidden) {
+        // The view will be hidden, release the event
+        self.event = nil;
+        shouldKeepVisible = NO;
+    }
+    else if (self.isHidden && redactionRequestCount) {
+        // Here we will show a view which was hidden whereas at least a redaction request is in progress.
+        // We must keep visible the view when the request(s) will answer.
+        shouldKeepVisible = YES;
+    }
+    
+    super.hidden = hidden;
+}
+
 #pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender {
     if (sender == _redactButton) {
-        // FIXME
-        self.hidden = YES;
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:_event.roomId];
+        if (mxRoom) {
+            [_activityIndicator startAnimating];
+            redactionRequestCount++;
+            shouldKeepVisible = NO;
+            [mxRoom redactEvent:_event.eventId reason:nil success:^{
+                [_activityIndicator stopAnimating];
+                redactionRequestCount--;
+                if (!shouldKeepVisible && !redactionRequestCount) {
+                    self.hidden = YES;
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"Redact event failed: %@", error);
+                // Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [_activityIndicator stopAnimating];
+                redactionRequestCount--;
+                if (!shouldKeepVisible && !redactionRequestCount) {
+                    self.hidden = YES;
+                }
+            }];
+        }
+        
     } else if (sender == _closeButton) {
         self.hidden = YES;
     }
