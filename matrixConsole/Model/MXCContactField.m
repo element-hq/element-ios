@@ -133,7 +133,7 @@
             MediaLoader* loader = [MediaManager existingDownloaderForURL:avatarURL inFolder:kMediaManagerThumbnailFolder];
             
             if (!loader) {
-                loader = [MediaManager downloadMediaFromURL:avatarURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
+                [MediaManager downloadMediaFromURL:avatarURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
             }
             
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
