@@ -98,12 +98,15 @@ static APNSHandler *sharedHandler = nil;
     
     transientActivity = isActive;
     
+#ifdef DEBUG
+    NSString *appId = @"org.matrix.matrixConsole.iosdev";
+#else
+    NSString *appId = @"org.matrix.matrixConsole.ios";
+#endif
+    
     NSString *b64Token = [self.deviceToken base64EncodedStringWithOptions:0];
     NSDictionary *pushData = @{
                                @"url": @"https://matrix.org/_matrix/push/v1/notify",
-#ifdef DEBUG
-                               @"platform": @"sandbox",
-#endif
                               };
     
     NSString *deviceLang = [NSLocale preferredLanguages][0];
@@ -125,7 +128,7 @@ static APNSHandler *sharedHandler = nil;
     NSObject *kind = isActive ? @"http" : [NSNull null];
 
     MXRestClient *restCli = [MatrixSDKHandler sharedHandler].mxRestClient;
-    [restCli setPusherWithPushkey:b64Token kind:kind appId:@"org.matrix.matrixConsole.ios" appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
+    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
