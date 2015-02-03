@@ -111,24 +111,24 @@ static APNSHandler *sharedHandler = nil;
     
     NSString *deviceLang = [NSLocale preferredLanguages][0];
     
-    NSString * instanceHandle = [[NSUserDefaults standardUserDefaults] valueForKey:@"pusherInstanceHandle"];
-    if (!instanceHandle) {
-        instanceHandle = @"";
+    NSString * profileTag = [[NSUserDefaults standardUserDefaults] valueForKey:@"pusherProfileTag"];
+    if (!profileTag) {
+        profileTag = @"";
         NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (int i = 0; i < 16; ++i) {
             unsigned char c = [alphabet characterAtIndex:arc4random() % alphabet.length];
-            instanceHandle = [instanceHandle stringByAppendingFormat:@"%c", c];
+            profileTag = [profileTag stringByAppendingFormat:@"%c", c];
         }
-        NSLog(@"Generated fresh instance handle: %@", instanceHandle);
-        [[NSUserDefaults standardUserDefaults] setValue:instanceHandle forKey:@"pusherInstanceHandle"];
+        NSLog(@"Generated fresh profile tag: %@", profileTag);
+        [[NSUserDefaults standardUserDefaults] setValue:profileTag forKey:@"pusherProfileTag"];
     } else {
-        NSLog(@"Using existing instance handle: %@", instanceHandle);
+        NSLog(@"Using existing profile tag: %@", profileTag);
     }
     
     NSObject *kind = isActive ? @"http" : [NSNull null];
 
     MXRestClient *restCli = [MatrixSDKHandler sharedHandler].mxRestClient;
-    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] instanceHandle:instanceHandle lang:deviceLang data:pushData success:^{
+    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
