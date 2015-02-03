@@ -2717,7 +2717,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     MXEvent *localEvent = [[MXEvent alloc] init];
     localEvent.roomId = self.roomId;
     localEvent.eventId = localEventId;
-    localEvent.eventType = MXEventTypeRoomMessage;
     localEvent.type = kMXEventTypeStringRoomMessage;
     localEvent.originServerTs = (uint64_t) ([[NSDate date] timeIntervalSince1970] * 1000);
     
