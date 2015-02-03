@@ -453,11 +453,14 @@
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lu1-hf-uyx">
                                         <rect key="frame" x="10" y="10" width="560" height="407"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.90000000000000002" green="0.90000000000000002" blue="0.90000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Whb-sl-Pvp">
+                                        <rect key="frame" x="280" y="224" width="20" height="20"/>
+                                    </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rr2-uC-ye2">
                                         <rect key="frame" x="121" y="427" width="49" height="30"/>
                                         <state key="normal" title="Redact">
@@ -481,14 +484,17 @@
                                 <constraints>
                                     <constraint firstItem="Lu1-hf-uyx" firstAttribute="leading" secondItem="C67-FD-9VY" secondAttribute="leading" constant="10" id="4Rb-zA-MGE"/>
                                     <constraint firstItem="Lu1-hf-uyx" firstAttribute="top" secondItem="C67-FD-9VY" secondAttribute="top" constant="10" id="75Q-KG-2e2"/>
+                                    <constraint firstAttribute="centerX" secondItem="Whb-sl-Pvp" secondAttribute="centerX" id="AQ3-ZW-HDb"/>
                                     <constraint firstAttribute="centerX" secondItem="arJ-9W-dYT" secondAttribute="centerX" multiplier="0.66" id="BKC-E2-dPf"/>
                                     <constraint firstAttribute="bottom" secondItem="rr2-uC-ye2" secondAttribute="bottom" constant="10" id="PDg-Dp-fKf"/>
                                     <constraint firstItem="arJ-9W-dYT" firstAttribute="top" secondItem="Lu1-hf-uyx" secondAttribute="bottom" constant="10" id="XoV-8G-EpS"/>
                                     <constraint firstAttribute="trailing" secondItem="Lu1-hf-uyx" secondAttribute="trailing" constant="10" id="j2N-Ws-oAy"/>
                                     <constraint firstAttribute="bottom" secondItem="arJ-9W-dYT" secondAttribute="bottom" constant="10" id="jb9-Fe-Bek"/>
+                                    <constraint firstAttribute="centerY" secondItem="Whb-sl-Pvp" secondAttribute="centerY" id="udT-aa-nbR"/>
                                     <constraint firstAttribute="centerX" secondItem="rr2-uC-ye2" secondAttribute="centerX" multiplier="2" id="vYG-Us-zFx"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="activityIndicator" destination="Whb-sl-Pvp" id="XMb-eU-och"/>
                                     <outlet property="closeButton" destination="arJ-9W-dYT" id="OzZ-Tr-49t"/>
                                     <outlet property="redactButton" destination="rr2-uC-ye2" id="wet-uc-gdI"/>
                                     <outlet property="textView" destination="Lu1-hf-uyx" id="mNv-97-fV6"/>
