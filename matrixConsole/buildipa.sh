@@ -13,10 +13,20 @@ outdir="out"
 
 sdk="iphoneos"
 basecmd="xcodebuild -scheme matrixConsole -workspace matrixConsole.xcworkspace -configuration Release -sdk $sdk -derivedDataPath $builddir"
+vars=""
+
+if [ -n "$GIT_BRANCH" ]
+then
+	vars="$vars GIT_BRANCH=$GIT_BRANCH"
+fi
+if [ -n "$BUILD_NUMBER" ]
+then
+	vars="$vars BUILD_NUMBER=$BUILD_NUMBER"
+fi
 
 if [ $# == 0 ]
 then
-	$basecmd -archivePath "out/matrixConsole.xcarchive" archive 
+	$basecmd -archivePath "out/matrixConsole.xcarchive" archive $vars
 	xcrun -sdk $sdk PackageApplication -v $outdir/matrixConsole.xcarchive/Products/Applications/matrixConsole.app -o `pwd`/out/matrixConsole.ipa
 elif [ $1 == 'clean' ]
 then
