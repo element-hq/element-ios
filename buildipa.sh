@@ -17,7 +17,7 @@ vars=""
 
 if [ -n "$GIT_BRANCH" ]
 then
-	vars="$vars GIT_BRANCH=$GIT_BRANCH"
+	vars="$vars GIT_BRANCH=`echo $GIT_BRANCH | sed -e '#origin\/##'`"
 fi
 if [ -n "$BUILD_NUMBER" ]
 then
