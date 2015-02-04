@@ -101,12 +101,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
     SettingsCellWithLabelAndSlider* maxCacheSizeCell;
-    
-    // Configuration
-    SettingsCellWithTextView *configurationCell;
-    
-    // Commands
-    SettingsCellWithTextView *commandsCell;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -292,9 +286,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
     maxCacheSizeCell = nil;
-    
-    configurationCell = nil;
-    commandsCell = nil;
 }
 
 - (void)startActivityIndicator {
@@ -1092,17 +1083,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell = roomsSettingCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
-        if (!configurationCell) {
-            configurationCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-            NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-            configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
-        }
+        SettingsCellWithTextView *configurationCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
-        if (!commandsCell) {
-            commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-            commandsCell.settingTextView.text = kCommandsDescriptionText;
-        }
+        SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+        commandsCell.settingTextView.text = kCommandsDescriptionText;
         cell = commandsCell;
     }
     
