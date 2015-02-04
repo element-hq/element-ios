@@ -53,10 +53,10 @@
         NSString *buildBranch = nil;
         NSString *buildNumber = nil;
         // Check whether GIT_BRANCH and BUILD_NUMBER were provided during compilation in command line argument.
-#if !(MACRO_GIT_BRANCH == null)
+#if MACRO_GIT_BRANCH
         buildBranch = NSStringize(MACRO_GIT_BRANCH);
 #endif
-#if MACRO_BUILD_NUMBER != 0
+#if MACRO_BUILD_NUMBER
         buildNumber = [NSString stringWithFormat:@"#%d", MACRO_BUILD_NUMBER];
 #endif
         if (buildBranch && buildNumber) {
