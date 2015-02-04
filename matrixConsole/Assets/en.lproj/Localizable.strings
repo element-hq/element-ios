@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/* Single, end-to-end encrypted messages (ie. we don't know what they say) */
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
 
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "Message from %@";
@@ -22,7 +22,7 @@
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ posted in %@";
 
-/* Single, unencrypted messages (where we can include the content */
+/** Single, unencrypted messages (where we can include the content */
 
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
@@ -31,10 +31,18 @@
 "MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ in %@: %@";
 
 /* New action message from a specific person, not referencing a room. */
-"ACTION_MSG_FROM_USER" = "* %@ %@";
+"ACTION_FROM_USER" = "* %@ %@";
 
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/** Image Messages **/
+
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ sent you a picture";
+
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture in %@";
 
 /** Coalesced messages **/
 
