@@ -171,7 +171,8 @@ static RageShakableUIResponder* sharedInstance = nil;
         [sharedInstance->mailComposer setSubject:@"Matrix bug report"];
         [sharedInstance->mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@matrix.org"]];
         
-        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        NSString* appVersion = [AppDelegate theDelegate].appVersion;
+        NSString* build = [AppDelegate theDelegate].build;
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         
         NSMutableString* message = [[NSMutableString alloc] init];
@@ -187,10 +188,12 @@ static RageShakableUIResponder* sharedInstance = nil;
         [message appendFormat:@"\n"];
         [message appendFormat:@"homeServerURL : %@\n", mxHandler.homeServerURL];
         [message appendFormat:@"homeServer : %@\n", mxHandler.homeServer];
-        [message appendFormat:@"accessToken : %@\n", mxHandler.accessToken];
         [message appendFormat:@"\n"];
         [message appendFormat:@"matrixConsole version: %@\n", appVersion];
         [message appendFormat:@"SDK version: %@\n", MatrixSDKVersion];
+        if (build.length) {
+            [message appendFormat:@"Build: %@\n", build];
+        }
         
         [sharedInstance->mailComposer setMessageBody:message isHTML:NO];
         [sharedInstance->mailComposer addAttachmentData:UIImageJPEGRepresentation(image, 1.0) mimeType:@"image/jpg" fileName:@"screenshot.jpg"];

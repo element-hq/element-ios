@@ -44,7 +44,8 @@
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
-NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
+NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
+NSString* const kBuildFormatText = @"Build: %@\r\n";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
 @interface SettingsViewController () {
@@ -866,9 +867,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
         textView.font = [UIFont systemFontOfSize:14];
-        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        NSString* appVersion = [AppDelegate theDelegate].appVersion;
+        NSString* build = [AppDelegate theDelegate].build;
+        if (build.length) {
+            build = [NSString stringWithFormat:kBuildFormatText, build];
+        }
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -1084,8 +1089,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
         SettingsCellWithTextView *configurationCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-        NSString* appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        NSString* appVersion = [AppDelegate theDelegate].appVersion;
+        NSString* build = [AppDelegate theDelegate].build;
+        if (build.length) {
+            build = [NSString stringWithFormat:kBuildFormatText, build];
+        }
+        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
         SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
