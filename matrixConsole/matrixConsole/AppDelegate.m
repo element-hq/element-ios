@@ -23,8 +23,8 @@
 #import "SettingsViewController.h"
 #import "ContactManager.h"
 
-#define NSStringize_helper(x) #x
-#define NSStringize(x) @NSStringize_helper(x)
+#define MAKE_STRING(x) #x
+#define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
@@ -53,18 +53,18 @@
         NSString *buildBranch = nil;
         NSString *buildNumber = nil;
         // Check whether GIT_BRANCH and BUILD_NUMBER were provided during compilation in command line argument.
-#if MACRO_GIT_BRANCH
-        buildBranch = NSStringize(MACRO_GIT_BRANCH);
+#ifdef GIT_BRANCH
+        buildBranch = MAKE_NS_STRING(GIT_BRANCH);
 #endif
-#if MACRO_BUILD_NUMBER
-        buildNumber = [NSString stringWithFormat:@"#%d", MACRO_BUILD_NUMBER];
+#ifdef BUILD_NUMBER
+        buildNumber = [NSString stringWithFormat:@"#%d", BUILD_NUMBER];
 #endif
         if (buildBranch && buildNumber) {
             _build = [NSString stringWithFormat:@"%@ %@", buildBranch, buildNumber];
         } else if (buildNumber){
             _build = buildNumber;
         } else {
-            _build = buildBranch ? buildBranch : @"";
+            _build = buildBranch ? buildBranch : @"(no build info)";
         }
     }
     return _build;

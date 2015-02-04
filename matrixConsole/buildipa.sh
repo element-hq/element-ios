@@ -26,7 +26,7 @@ fi
 
 if [ $# == 0 ]
 then
-	$basecmd -archivePath "out/matrixConsole.xcarchive" archive $vars
+	$basecmd -archivePath "out/matrixConsole.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars"
 	xcrun -sdk $sdk PackageApplication -v $outdir/matrixConsole.xcarchive/Products/Applications/matrixConsole.app -o `pwd`/out/matrixConsole.ipa
 elif [ $1 == 'clean' ]
 then
