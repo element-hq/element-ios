@@ -240,7 +240,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 #pragma mark - Internal methods
 
 - (void)onAPNSHandlerHasBeenUpdated {
-    apnsNotificationsSwitch.enabled = YES;
     // Force table reload to update notifications section
     apnsNotificationsSwitch = nil;
     [self.tableView reloadData];
@@ -994,6 +993,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             } else /* enablePushNotifRowIndex */{
                 notificationsCell.settingLabel.text = @"Enable push notifications";
                 notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
+                notificationsCell.settingSwitch.enabled = YES;
                 apnsNotificationsSwitch = notificationsCell.settingSwitch;
             }
             cell = notificationsCell;

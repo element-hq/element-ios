@@ -134,7 +134,7 @@ static APNSHandler *sharedHandler = nil;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
     } failure:^(NSError *error) {
-        NSLog(@"Failed to send APNS token!");
+        NSLog(@"Failed to send APNS token! (%@)", error);
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
     }];
