@@ -23,6 +23,9 @@
 #import "SettingsViewController.h"
 #import "ContactManager.h"
 
+#define NSStringize_helper(x) #x
+#define NSStringize(x) @NSStringize_helper(x)
+
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
 @end
@@ -34,6 +37,39 @@
 + (AppDelegate*)theDelegate {
     return (AppDelegate*)[[UIApplication sharedApplication] delegate];
 }
+
+#pragma mark -
+
+- (NSString*)appVersion {
+    if (!_appVersion) {
+        _appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    }
+    
+    return _appVersion;
+}
+
+- (NSString*)build {
+    if (!_build) {
+        NSString *buildBranch = nil;
+        NSString *buildNumber = nil;
+        // Check whether GIT_BRANCH and BUILD_NUMBER were provided during compilation in command line argument.
+#if !(MACRO_GIT_BRANCH == null)
+        buildBranch = NSStringize(MACRO_GIT_BRANCH);
+#endif
+#if MACRO_BUILD_NUMBER != 0
+        buildNumber = [NSString stringWithFormat:@"#%d", MACRO_BUILD_NUMBER];
+#endif
+        if (buildBranch && buildNumber) {
+            _build = [NSString stringWithFormat:@"%@ %@", buildBranch, buildNumber];
+        } else if (buildNumber){
+            _build = buildNumber;
+        } else {
+            _build = buildBranch ? buildBranch : @"";
+        }
+    }
+    return _build;
+}
+
 #pragma mark -
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
