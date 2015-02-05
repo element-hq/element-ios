@@ -42,7 +42,7 @@
 		F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974A1A6580D70090BC00 /* icon_keyboard.png */; };
 		F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
-		F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */; };
+		F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */; };
 		F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */; };
 		F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F119F171EB00A0EE52 /* RecentsViewController.m */; };
 		F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F319F171EB00A0EE52 /* RoomViewController.m */; };
@@ -148,8 +148,8 @@
 		F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_keyboard@2x.png"; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		F03EF5EC19F171EB00A0EE52 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		F03EF5EC19F171EB00A0EE52 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
+		F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
 		F03EF5EE19F171EB00A0EE52 /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
 		F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTabBarController.m; sourceTree = "<group>"; };
 		F03EF5F019F171EB00A0EE52 /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
@@ -299,14 +299,14 @@
 		F03EF5E919F171EB00A0EE52 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F03EF5EC19F171EB00A0EE52 /* AuthenticationViewController.h */,
+				F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */,
 				7176294A1A77F5D000927125 /* ContactDetailsViewController.h */,
 				7176294B1A77F5D000927125 /* ContactDetailsViewController.m */,
 				71193D271A6E3DC000E59A9E /* ContactsViewController.h */,
 				71193D281A6E3DC000E59A9E /* ContactsViewController.m */,
 				F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */,
 				F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */,
-				F03EF5EC19F171EB00A0EE52 /* LoginViewController.h */,
-				F03EF5ED19F171EB00A0EE52 /* LoginViewController.m */,
 				F03EF5EE19F171EB00A0EE52 /* MasterTabBarController.h */,
 				F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */,
 				71DB9DBF1A495B6400504A09 /* MemberViewController.h */,
@@ -646,7 +646,7 @@
 				F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */,
 				F05237831A728A0A0079F3E0 /* MXCGrowingTextView.m in Sources */,
 				7176294C1A77F5D000927125 /* ContactDetailsViewController.m in Sources */,
-				F03EF5F719F171EB00A0EE52 /* LoginViewController.m in Sources */,
+				F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */,
 				F0D3C30F1A01330F0000D49E /* SettingsTableViewCell.m in Sources */,
 				71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */,
 			);
@@ -762,8 +762,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

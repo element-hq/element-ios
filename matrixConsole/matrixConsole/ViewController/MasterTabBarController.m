@@ -59,7 +59,7 @@
     [super viewDidAppear:animated];
     
     if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusLoggedOut) {
-        [self showLoginScreen];
+        [self showAuthenticationScreen];
     }
 }
 
@@ -92,10 +92,10 @@
 
 #pragma mark -
 
-- (void)showLoginScreen {
+- (void)showAuthenticationScreen {
     [self restoreInitialDisplay];
     
-    [self performSegueWithIdentifier:@"showLogin" sender:self];
+    [self performSegueWithIdentifier:@"showAuth" sender:self];
 }
 
 - (void)showRoomCreationForm {
