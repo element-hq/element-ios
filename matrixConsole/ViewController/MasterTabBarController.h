@@ -23,7 +23,7 @@
 
 @interface MasterTabBarController : UITabBarController
 
-- (void)showLoginScreen;
+- (void)showAuthenticationScreen;
 - (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId;
 

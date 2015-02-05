@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
-#import "LoginViewController.h"
+#import "AuthenticationViewController.h"
 
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "MXCAlert.h"
 
-@interface LoginViewController ()
+@interface AuthenticationViewController ()
 {
     // reference to any opened alert view
     MXCAlert *alert;
@@ -41,7 +41,7 @@
 
 @end
 
-@implementation LoginViewController
+@implementation AuthenticationViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

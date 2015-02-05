@@ -1021,10 +1021,10 @@
             </objects>
             <point key="canvasLocation" x="869" y="-1492"/>
         </scene>
-        <!--Login-->
+        <!--Authentication-->
         <scene sceneID="FoA-N2-3aF">
             <objects>
-                <viewController title="Login" id="ZlD-EU-ncw" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController title="Authentication" id="ZlD-EU-ncw" customClass="AuthenticationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="crg-iM-twR"/>
                         <viewControllerLayoutGuide type="bottom" id="gbK-Nm-HUT"/>
@@ -1194,7 +1194,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showLogin" id="Yfo-em-Rs3"/>
+                        <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="Yfo-em-Rs3"/>
                         <segue destination="11T-cf-rgo" kind="relationship" relationship="viewControllers" id="eov-7h-qzl"/>
                         <segue destination="H1p-Uh-vWS" kind="relationship" relationship="viewControllers" id="Iju-mu-cRD"/>
                         <segue destination="fsw-DP-sy3" kind="relationship" relationship="viewControllers" id="8ex-NL-bWb"/>

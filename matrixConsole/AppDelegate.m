@@ -234,7 +234,7 @@
     [MediaManager clearCache];
     // Logout Matrix
     [[MatrixSDKHandler sharedHandler] logout];
-    [self.masterTabBarController showLoginScreen];
+    [self.masterTabBarController showAuthenticationScreen];
     // Reset App settings
     [[AppSettings sharedSettings] reset];
     //  reset the contact manager
