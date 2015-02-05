@@ -25,7 +25,7 @@ PODS:
   - Mantle (1.5.4):
     - Mantle/extobjc (= 1.5.4)
   - Mantle/extobjc (1.5.4)
-  - MatrixSDK (0.2.1):
+  - MatrixSDK (0.2.2):
     - AFNetworking (~> 2.4.1)
     - Mantle (~> 1.5)
 
