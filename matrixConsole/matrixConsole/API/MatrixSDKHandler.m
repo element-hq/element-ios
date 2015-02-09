@@ -102,8 +102,11 @@ static MatrixSDKHandler *sharedHandler = nil;
         // Use MXFileStore as MXStore to permanently store events
         _mxFileStore = [[MXFileStore alloc] init];
 
-        [_mxFileStore openWithCredentials:credentials onComplete:^{
-            self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient andStore:_mxFileStore];
+        self.mxSession = [[MXSession alloc] initWithMatrixRestClient:self.mxRestClient];
+        __weak typeof(self) weakSelf = self;
+        [self.mxSession setStore:_mxFileStore success:^{
+            typeof(self) self = weakSelf;
+            self.status = MatrixSDKHandlerStatusStoreDataReady;
             // Check here whether the app user wants to display all the events
             if ([[AppSettings sharedSettings] displayAllEvents]) {
                 // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
@@ -132,14 +135,13 @@ static MatrixSDKHandler *sharedHandler = nil;
 
             // Launch mxSession
             [self.mxSession start:^{
-                self.status = MatrixSDKHandlerStatusStoreDataReady;
-            } onServerSyncDone:^{
-                _isResumeDone = YES;
+                typeof(self) self = weakSelf;
+                self->_isResumeDone = YES;
                 self.status = MatrixSDKHandlerStatusServerSyncDone;
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
 
                 // Register listener to update user's information
-                userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
+                self->userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
                     // Consider only events related to user's presence
                     if (event.eventType == MXEventTypePresence) {
                         MXPresence presence = [MXTools presence:event.content[@"presence"]];
@@ -148,13 +150,13 @@ static MatrixSDKHandler *sharedHandler = nil;
                             if (self.userPresence == MXPresenceOnline) {
                                 if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
                                     // Force the local presence to overwrite the user presence on server side
-                                    [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                                    [self setUserPresence:self->_userPresence andStatusMessage:nil completion:nil];
                                     return;
                                 }
                             } else if (self.userPresence == MXPresenceUnavailable) {
                                 if (presence == MXPresenceOffline) {
                                     // Force the local presence to overwrite the user presence on server side
-                                    [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                                    [self setUserPresence:self->_userPresence andStatusMessage:nil completion:nil];
                                     return;
                                 }
                             }
@@ -168,20 +170,22 @@ static MatrixSDKHandler *sharedHandler = nil;
                     [self enableInAppNotifications:YES];
                 }
             } failure:^(NSError *error) {
+                typeof(self) self = weakSelf;
                 NSLog(@"Initial Sync failed: %@", error);
-                if (notifyOpenSessionFailure) {
+                if (self->notifyOpenSessionFailure) {
                     //Alert user only once
-                    notifyOpenSessionFailure = NO;
+                    self->notifyOpenSessionFailure = NO;
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }
-                
-                // Postpone a new attempt in 10 sec 
+
+                // Postpone a new attempt in 10 sec
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self openSession];
                 });
             }];
+        } failure:^(NSError *error) {
+            // This cannot happen. Loading of MXFileStore cannot fail.
         }];
-        
     }
 }
 
