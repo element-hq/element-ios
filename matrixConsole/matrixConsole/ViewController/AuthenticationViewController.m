@@ -20,24 +20,51 @@
 #import "AppDelegate.h"
 #import "MXCAlert.h"
 
-@interface AuthenticationViewController ()
-{
+#import "AFNetworkReachabilityManager.h"
+
+@interface AuthenticationViewController () {
+    // Current request in progress
+    NSOperation *mxAuthFlowRequest;
+    
+    // Array of flows supported by the home server and implemented by the app (for the current auth type)
+    NSMutableArray *supportedFlows;
+    
+    // The current view in which auth inputs are displayed
+    AuthInputsView *currentAuthInputsView;
+    
     // reference to any opened alert view
     MXCAlert *alert;
 }
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewBottomConstraint;
+
+// Return true if the provided flow (kMXLoginFlowType) is supported by the application
++ (BOOL)isImplementedFlowType:(NSString*)flowType;
+
+// The current authentication type
+@property (nonatomic) AuthenticationType authType;
+@property (nonatomic) MXLoginFlow *selectedFlow;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeightConstraint;
+
+@property (weak, nonatomic) IBOutlet UILabel *createAccountLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *authInputsContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *authInputContainerViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet AuthInputsPasswordBasedView *authInputsPasswordBasedView;
+@property (weak, nonatomic) IBOutlet AuthInputsEmailCodeBasedView *authInputsEmailCodeBasedView;
 
 @property (weak, nonatomic) IBOutlet UITextField *homeServerTextField;
-@property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passWordTextField;
+@property (weak, nonatomic) IBOutlet UILabel *homeServerInfoLabel;
+@property (weak, nonatomic) IBOutlet UITextField *identityServerTextField;
+@property (weak, nonatomic) IBOutlet UILabel *identityServerInfoLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *loginBtn;
-@property (weak, nonatomic) IBOutlet UIButton *createAccountBtn;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UIButton *authSwitchButton;
 
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *noFlowLabel;
+@property (weak, nonatomic) IBOutlet UIButton *retryButton;
 
 @end
 
@@ -46,9 +73,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    // Finalize scrollView content size
-    _contentViewBottomConstraint.constant = 0;
     
     // Force contentView in full width
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.contentView
@@ -68,13 +92,31 @@
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
-
-    // Prefill text field
-    _userLoginTextField.text = [[MatrixSDKHandler sharedHandler] userLogin];
+    
+    _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    _submitButton.enabled = NO;
+    _authSwitchButton.enabled = YES;
+    _authInputsPasswordBasedView.delegate = self;
+    _authInputsEmailCodeBasedView.delegate = self;
+    
+    supportedFlows = [NSMutableArray array];
+    
     _homeServerTextField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
-    _passWordTextField.text = nil;
-    _loginBtn.enabled = NO;
-    _loginBtn.alpha = 0.5;
+    _identityServerTextField.text = [[MatrixSDKHandler sharedHandler] identityServerURL];
+    
+    // Set default auth type
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.authType = AuthenticationTypeLogin;
+    });
+}
+
+- (void)dealloc {
+    supportedFlows = nil;
+    if (mxAuthFlowRequest){
+        [mxAuthFlowRequest cancel];
+        mxAuthFlowRequest = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,6 +127,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    // Update supported authentication flow
+    [self refreshSupportedAuthFlow];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -94,17 +139,310 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [self dismissKeyboard];
 
     // close any opened alert
     if (alert) {
         [alert dismiss:NO];
         alert = nil;
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
+
+#pragma mark -
+
++ (BOOL)isImplementedFlowType:(NSString*)flowType {
+    if ([flowType isEqualToString:kMXLoginFlowTypePassword] || [flowType isEqualToString:kMXLoginFlowTypeEmailCode]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)setAuthType:(AuthenticationType)authType {
+    if (authType == AuthenticationTypeLogin) {
+        _createAccountLabel.hidden = YES;
+        [_submitButton setTitle:@"Login" forState:UIControlStateNormal];
+        [_submitButton setTitle:@"Login" forState:UIControlStateHighlighted];
+        [_authSwitchButton setTitle:@"Create account" forState:UIControlStateNormal];
+        [_authSwitchButton setTitle:@"Create account" forState:UIControlStateHighlighted];
+        
+        
+    } else {
+        _createAccountLabel.hidden = NO;
+        [_submitButton setTitle:@"Sign up" forState:UIControlStateNormal];
+        [_submitButton setTitle:@"Sign up" forState:UIControlStateHighlighted];
+        [_authSwitchButton setTitle:@"Back" forState:UIControlStateNormal];
+        [_authSwitchButton setTitle:@"Back" forState:UIControlStateHighlighted];
+    }
+    
+    _authType = authType;
+    
+    // Update supported authentication flow
+    [self refreshSupportedAuthFlow];
+}
+
+- (void)setSelectedFlow:(MXLoginFlow *)selectedFlow {
+    // Hide views which depend on auth flow
+    _submitButton.hidden = YES;
+    _authInputsPasswordBasedView.hidden = YES;
+    _authInputsEmailCodeBasedView.hidden = YES;
+    _noFlowLabel.hidden = YES;
+    _retryButton.hidden = YES;
+    currentAuthInputsView = nil;
+    
+    // Select the right auth inputs view
+    if ([selectedFlow.type isEqualToString:kMXLoginFlowTypePassword]) {
+        currentAuthInputsView = _authInputsPasswordBasedView;
+    } else if ([selectedFlow.type isEqualToString:kMXLoginFlowTypeEmailCode]) {
+        currentAuthInputsView = _authInputsEmailCodeBasedView;
+    }
+    
+    if (currentAuthInputsView) {
+        _submitButton.hidden = NO;
+        currentAuthInputsView.hidden = NO;
+        currentAuthInputsView.authType = _authType;
+        _authInputContainerViewHeightConstraint.constant = currentAuthInputsView.actualHeight;
+    } else {
+        // No input fields are displayed
+        _authInputContainerViewHeightConstraint.constant = 80;
+    }
+    
+    [self.view layoutIfNeeded];
+    
+    // Refresh content view height
+    _contentViewHeightConstraint.constant = _authSwitchButton.frame.origin.y + _authSwitchButton.frame.size.height + 15;
+    
+    _selectedFlow = selectedFlow;
+}
+
+- (void)setUserInteractionEnabled:(BOOL)isEnabled {
+    _submitButton.enabled = (isEnabled && currentAuthInputsView.areAllRequiredFieldsFilled && _homeServerTextField.text.length);
+    _authSwitchButton.enabled = isEnabled;
+    
+    _homeServerTextField.enabled = isEnabled;
+    _identityServerTextField.enabled = isEnabled;
+}
+
+- (void)refreshSupportedAuthFlow {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    
+    // Stop reachability monitoring
+    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
+    
+    // Cancel protential request in progress
+    [mxAuthFlowRequest cancel];
+    mxAuthFlowRequest = nil;
+    
+    [_activityIndicator startAnimating];
+    self.selectedFlow = nil;
+    if (_authType == AuthenticationTypeLogin) {
+        mxAuthFlowRequest = [mxHandler.mxRestClient getLoginFlow:^(NSArray *flows) {
+            [self handleHomeServerFlows:flows];
+        } failure:^(NSError *error) {
+            [self onFailureDuringFlowRefresh:error];
+        }];
+    } else {
+        mxAuthFlowRequest = [mxHandler.mxRestClient getRegisterFlow:^(NSArray *flows) {
+            [self handleHomeServerFlows:flows];
+        } failure:^(NSError *error) {
+            [self onFailureDuringFlowRefresh:error];
+        }];
+    }
+}
+
+- (void)handleHomeServerFlows:(NSArray *)flows {
+    [_activityIndicator stopAnimating];
+    
+    [supportedFlows removeAllObjects];
+    for (MXLoginFlow* flow in flows) {
+        if ([AuthenticationViewController isImplementedFlowType:flow.type]) {
+            [supportedFlows addObject:flow];
+        }
+    }
+    
+    if (supportedFlows.count) {
+        // FIXME display supported flows
+        // Currently we select password based auth
+        for (MXLoginFlow* flow in supportedFlows) {
+            if ([flow.type isEqualToString:kMXLoginFlowTypePassword]) {
+                self.selectedFlow = flow;
+                break;
+            } else if ([flow.type isEqualToString:kMXLoginFlowTypeEmailCode]) {
+                self.selectedFlow = flow;
+                break;
+            }
+        }
+    }
+    
+    if (!_selectedFlow) {
+        // Notify user that no flow is supported
+        _noFlowLabel.text = [NSString stringWithFormat:@"Currently we do not support %@ flows defined by this Home Server", _authType == AuthenticationTypeLogin ? @"Login" : @"Registration"];
+        _noFlowLabel.hidden = NO;
+        _retryButton.hidden = NO;
+    }
+}
+
+- (void)onFailureDuringFlowRefresh:(NSError*)error {
+    [_activityIndicator stopAnimating];
+    
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == kCFURLErrorCancelled) {
+        // Ignore this error
+        return;
+    }
+    
+    NSLog(@"GET auth flows failed: %@", error);
+    // Alert user
+    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    if (!title)
+    {
+        title = @"Error";
+    }
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    
+    alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {}];
+    [alert showInViewController:self];
+    
+    // Display failure reason
+    _noFlowLabel.hidden = NO;
+    _noFlowLabel.text = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if (!_noFlowLabel.text.length) {
+        _noFlowLabel.text = @"We failed to retrieve authentication flow from this Home Server";
+    }
+    _retryButton.hidden = NO;
+    
+    // Handle specific error code here
+    if ([error.domain isEqualToString:NSURLErrorDomain]) {
+        // Check network reachability
+        if (error.code == NSURLErrorNotConnectedToInternet) {
+            // Start monitoring in order to launch a new request when network will be available
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReachabilityStatusChange:) name:AFNetworkingReachabilityDidChangeNotification object:nil];
+            [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+        } else if (error.code == kCFURLErrorTimedOut)  {
+            // Send a new request in 2 sec
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self refreshSupportedAuthFlow];
+            });
+        }
+    }
+}
+
+- (void)onReachabilityStatusChange:(NSNotification *)notif {
+    AFNetworkReachabilityManager *reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+    AFNetworkReachabilityStatus status = reachabilityManager.networkReachabilityStatus;
+    
+    if (status == AFNetworkReachabilityStatusReachableViaWiFi || status == AFNetworkReachabilityStatusReachableViaWWAN) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self refreshSupportedAuthFlow];
+        });
+    } else if (status == AFNetworkReachabilityStatusNotReachable) {
+        _noFlowLabel.text = @"Please check your network connectivity";
+    }
+}
+
+- (IBAction)onButtonPressed:(id)sender {
+    [self dismissKeyboard];
+    
+    if (sender == _submitButton) {
+        MatrixSDKHandler *matrix = [MatrixSDKHandler sharedHandler];
+        if (matrix.mxRestClient) {
+            // Disable user interaction to prevent multiple requests
+            [self setUserInteractionEnabled:NO];
+            [_activityIndicator startAnimating];
+            
+            if (_authType == AuthenticationTypeLogin) {
+                if ([_selectedFlow.type isEqualToString:kMXLoginFlowTypePassword]) {
+                    [matrix.mxRestClient loginWithUser:matrix.userLogin andPassword:_authInputsPasswordBasedView.passWordTextField.text
+                                               success:^(MXCredentials *credentials){
+                                                   [_activityIndicator stopAnimating];
+                                                   
+                                                   // Report credentials
+                                                   [matrix setUserId:credentials.userId];
+                                                   [matrix setAccessToken:credentials.accessToken];
+                                                   // Extract homeServer name from userId
+                                                   NSArray *components = [credentials.userId componentsSeparatedByString:@":"];
+                                                   if (components.count == 2) {
+                                                       [matrix setHomeServer:[components lastObject]];
+                                                   } else {
+                                                       NSLog(@"Unexpected error: the userId is not correctly formatted: %@", credentials.userId);
+                                                   }
+                                                   
+                                                   [self dismissViewControllerAnimated:YES completion:nil];
+                                               }
+                                               failure:^(NSError *error){
+                                                   [self onFailureDuringAuthRequest:error];
+                                               }];
+                } else {
+                    // FIXME
+                    [self onFailureDuringAuthRequest:[NSError errorWithDomain:nil code:0 userInfo:@{@"error": @"Not supported yet"}]];
+                }
+            } else {
+                // FIXME
+                [self onFailureDuringAuthRequest:[NSError errorWithDomain:nil code:0 userInfo:@{@"error": @"Not supported yet"}]];
+            }
+        }
+    } else if (sender == _authSwitchButton){
+        if (_authType == AuthenticationTypeLogin) {
+            self.authType = AuthenticationTypeRegister;
+        } else {
+            self.authType = AuthenticationTypeLogin;
+        }
+    } else if (sender == _retryButton) {
+        [self refreshSupportedAuthFlow];
+    }
+}
+
+- (void)onFailureDuringAuthRequest:(NSError *)error {
+    [_activityIndicator stopAnimating];
+    [self setUserInteractionEnabled:YES];
+    
+    NSLog(@"Auth request failed: %@", error);
+    
+    // translate the error code to a human message
+    NSString* message = error.localizedDescription;
+    NSDictionary* dict = error.userInfo;
+    
+    // detect if it is a Matrix SDK issue
+    if (dict) {
+        NSString* localizedError = [dict valueForKey:@"error"];
+        NSString* errCode = [dict valueForKey:@"errcode"];
+        
+        if (errCode) {
+            if ([errCode isEqualToString:@"M_FORBIDDEN"]) {
+                message = @"Invalid username/password";
+            } else if (localizedError.length > 0) {
+                message = localizedError;
+            } else if ([errCode isEqualToString:@"M_UNKNOWN_TOKEN"]) {
+                message = @"The access token specified was not recognised";
+            } else if ([errCode isEqualToString:@"M_BAD_JSON"]) {
+                message = @"Malformed JSON";
+            } else if ([errCode isEqualToString:@"M_NOT_JSON"]) {
+                message = @"Did not contain valid JSON";
+            } else if ([errCode isEqualToString:@"M_LIMIT_EXCEEDED"]) {
+                message = @"Too many requests have been sent";
+            } else if ([errCode isEqualToString:@"M_USER_IN_USE"]) {
+                message = @"This user name is already used";
+            } else if ([errCode isEqualToString:@"M_LOGIN_EMAIL_URL_NOT_YET"]) {
+                message = @"The email link which has not been clicked yet";
+            } else {
+                message = errCode;
+            }
+        }
+    }
+    
+    //Alert user
+    alert = [[MXCAlert alloc] initWithTitle:@"Login Failed" message:message style:MXCAlertStyleAlert];
+    [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleCancel handler:^(MXCAlert *alert) {}];
+    [alert showInViewController:self];
+}
+
+#pragma mark - Keyboard handling
 
 - (void)onKeyboardWillShow:(NSNotification *)notif {
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
@@ -114,13 +452,6 @@
     // Handle portrait/landscape mode
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
     self.scrollView.contentInset = insets;
-    
-    for (UITextField *tf in @[ self.userLoginTextField, self.passWordTextField, self.homeServerTextField]) {
-        if ([tf isFirstResponder]) {
-            CGRect tfFrame = tf.frame;
-            [self.scrollView scrollRectToVisible:tfFrame animated:YES];
-        }
-    }
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
@@ -131,137 +462,59 @@
 
 - (void)dismissKeyboard {
     // Hide the keyboard
-    [_userLoginTextField resignFirstResponder];
-    [_passWordTextField resignFirstResponder];
+    [currentAuthInputsView dismissKeyboard];
     [_homeServerTextField resignFirstResponder];
+    [_identityServerTextField resignFirstResponder];
 }
 
 #pragma mark - UITextField delegate
 
 - (void)onTextFieldChange:(NSNotification *)notif {
-    NSString *user = _userLoginTextField.text;
-    NSString *pass = _passWordTextField.text;
     NSString *homeServerURL = _homeServerTextField.text;
     
-    if (user.length && pass.length && homeServerURL.length) {
-        _loginBtn.enabled = YES;
-        _loginBtn.alpha = 1;
+    if (currentAuthInputsView.areAllRequiredFieldsFilled && homeServerURL.length) {
+        _submitButton.enabled = YES;
     } else {
-        _loginBtn.enabled = NO;
-        _loginBtn.alpha = 0.5;
+        _submitButton.enabled = NO;
     }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    MatrixSDKHandler *matrix = [MatrixSDKHandler sharedHandler];
-    
-    if (textField == _userLoginTextField) {
-        [matrix setUserLogin:textField.text];
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    if (textField == _homeServerTextField) {
+        if (![[mxHandler homeServerURL] isEqualToString:textField.text]) {
+            [mxHandler setHomeServerURL:textField.text];
+            if (!textField.text.length) {
+                // Force refresh with default value
+                textField.text = [mxHandler homeServerURL];
+            }
+            // Refresh UI
+            [self refreshSupportedAuthFlow];
+        }
     }
-    else if (textField == _homeServerTextField) {
-        [matrix setHomeServerURL:textField.text];
+    else if (textField == _identityServerTextField) {
+        [mxHandler setIdentityServerURL:textField.text];
         if (!textField.text.length) {
             // Force refresh with default value
-            textField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
+            textField.text = [mxHandler identityServerURL];
         }
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*) textField {
-    if (textField == _userLoginTextField) {
-        // "Next" key has been pressed
-        [_passWordTextField becomeFirstResponder];
-    }
-    else {
+- (BOOL)textFieldShouldReturn:(UITextField*)textField {
+    if (textField.returnKeyType == UIReturnKeyDone) {
         // "Done" key has been pressed
         [textField resignFirstResponder];
-        
-        if (_loginBtn.isEnabled) {
-            // Launch authentication now
-            [self onButtonPressed:_loginBtn];
-        }
     }
-    
     return YES;
 }
 
-#pragma mark -
+#pragma mark - AuthInputsViewDelegate delegate
 
-- (IBAction)onButtonPressed:(id)sender {
-    [self dismissKeyboard];
-    
-    if (sender == _loginBtn) {
-        MatrixSDKHandler *matrix = [MatrixSDKHandler sharedHandler];
-        
-        if (matrix.mxRestClient)
-        {
-            // Disable login button to prevent multiple requests
-            _loginBtn.enabled = NO;
-            [_activityIndicator startAnimating];
-            
-            [matrix.mxRestClient loginWithUser:matrix.userLogin  andPassword:_passWordTextField.text
-                                     success:^(MXCredentials *credentials){
-                                         [_activityIndicator stopAnimating];
-                                         
-                                         // Report credentials
-                                         [matrix setUserId:credentials.userId];
-                                         [matrix setAccessToken:credentials.accessToken];
-                                         // Extract homeServer name from userId
-                                         NSArray *components = [credentials.userId componentsSeparatedByString:@":"];
-                                         if (components.count == 2) {
-                                             [matrix setHomeServer:[components lastObject]];
-                                         } else {
-                                             NSLog(@"Unexpected error: the userId is not correctly formatted: %@", credentials.userId);
-                                         }
-                                         
-                                         [self dismissViewControllerAnimated:YES completion:nil];
-                                     }
-                                     failure:^(NSError *error){
-                                         [_activityIndicator stopAnimating];
-                                         _loginBtn.enabled = YES;
-                                         
-                                         NSLog(@"Login failed: %@", error);
-                                         
-                                         // translate the error code to a human message
-                                         NSString* message = error.localizedDescription;
-                                         NSDictionary* dict = error.userInfo;
-                                         
-                                         // detect if it is a Matrix SDK issue
-                                         if (dict) {
-                                             NSString* localizedError = [dict valueForKey:@"error"];
-                                             NSString* errCode = [dict valueForKey:@"errcode"];
-                                             
-                                             if (errCode) {
-                                                 if ([errCode isEqualToString:@"M_FORBIDDEN"]) {
-                                                     message = @"Invalid username/password";
-                                                 } else if (localizedError .length > 0) {
-                                                     message = localizedError;
-                                                 } else if ([errCode isEqualToString:@"M_UNKNOWN_TOKEN"]) {
-                                                     message = @"The access token specified was not recognised";
-                                                 } else if ([errCode isEqualToString:@"M_BAD_JSON"]) {
-                                                     message = @"Malformed JSON";
-                                                 } else if ([errCode isEqualToString:@"M_NOT_JSON"]) {
-                                                     message = @"Did not contain valid JSON";
-                                                 } else if ([errCode isEqualToString:@"M_LIMIT_EXCEEDED"]) {
-                                                     message = @"Too many requests have been sent";
-                                                 } else if ([errCode isEqualToString:@"M_USER_IN_USE"]) {
-                                                     message = @"This user name is already used";
-                                                 } else if ([errCode isEqualToString:@"M_LOGIN_EMAIL_URL_NOT_YET"]) {
-                                                     message = @"The email link which has not been clicked yet";
-                                                 } else {
-                                                     message = errCode;
-                                                 }
-                                             }
-                                         }
-
-                                         //Alert user
-                                          alert = [[MXCAlert alloc] initWithTitle:@"Login Failed" message:message style:MXCAlertStyleAlert];
-                                         [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleCancel handler:^(MXCAlert *alert) {}];
-                                         [alert showInViewController:self];
-                                     }];
-        }
-    } else if (sender == _createAccountBtn){
-        // TODO
+- (void)authInputsDoneKeyHasBeenPressed:(AuthInputsView *)authInputsView {
+    if (_submitButton.isEnabled) {
+        // Launch authentication now
+        [self onButtonPressed:_submitButton];
     }
 }
 

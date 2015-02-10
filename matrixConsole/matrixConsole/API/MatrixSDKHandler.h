@@ -38,6 +38,7 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic, readonly) NSString *localPartFromUserId;
 @property (strong, nonatomic) NSString *accessToken;
+@property (strong, nonatomic) NSString *identityServerURL;
 
 // The type of events to display
 @property (strong, nonatomic) NSArray *eventsFilterForMessages;

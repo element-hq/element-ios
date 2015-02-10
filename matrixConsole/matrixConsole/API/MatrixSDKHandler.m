@@ -52,8 +52,6 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 @implementation MatrixSDKHandler
 
-@synthesize homeServerURL, homeServer, userLogin, userId, accessToken;
-
 + (MatrixSDKHandler *)sharedHandler {
     @synchronized(self) {
         if(sharedHandler == nil)
@@ -79,6 +77,9 @@ static MatrixSDKHandler *sharedHandler = nil;
         // Read potential homeserver url in shared defaults object
         if (self.homeServerURL) {
             self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:self.homeServerURL];
+            if (self.identityServerURL) {
+                [self.mxRestClient setIdentityServer:self.identityServerURL];
+            }
             
             if (self.accessToken) {
                 [self openSession];
@@ -99,6 +100,11 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
+        // Set identity server (if any)
+        if (self.identityServerURL) {
+            [self.mxRestClient setIdentityServer:self.identityServerURL];
+        }
+        
         // Use MXFileStore as MXStore to permanently store events
         _mxFileStore = [[MXFileStore alloc] init];
 
@@ -204,6 +210,9 @@ static MatrixSDKHandler *sharedHandler = nil;
     [self.mxRestClient close];
     if (self.homeServerURL) {
         self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:self.homeServerURL];
+        if (self.identityServerURL) {
+            [self.mxRestClient setIdentityServer:self.identityServerURL];
+        }
     } else {
         self.mxRestClient = nil;
     }
@@ -386,10 +395,14 @@ static MatrixSDKHandler *sharedHandler = nil;
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
 }
 
-- (void)setHomeServerURL:(NSString *)inHomeserverURL {
-    if (inHomeserverURL.length) {
-        [[NSUserDefaults standardUserDefaults] setObject:inHomeserverURL forKey:@"homeserverurl"];
-        self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:inHomeserverURL];
+- (void)setHomeServerURL:(NSString *)inHomeServerURL {
+    if (inHomeServerURL.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inHomeServerURL forKey:@"homeserverurl"];
+        self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:inHomeServerURL];
+        // Set identity server (if any)
+        if (self.identityServerURL) {
+            [self.mxRestClient setIdentityServer:self.identityServerURL];
+        }
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"homeserverurl"];
         // Reinitialize matrix handler
@@ -469,6 +482,24 @@ static MatrixSDKHandler *sharedHandler = nil;
         [self closeSession];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)identityServerURL {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
+}
+
+- (void)setIdentityServerURL:(NSString *)inIdentityServerURL {
+    if (inIdentityServerURL.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:inIdentityServerURL forKey:@"identityserverurl"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"identityserverurl"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // Update the current restClient
+    if (self.mxRestClient) {
+        [self.mxRestClient setIdentityServer:self.identityServerURL];
+    }
 }
 
 #pragma mark - Matrix user's settings

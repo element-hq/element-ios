@@ -16,7 +16,9 @@
 
 #import "RageShakableViewController.h"
 
-@interface AuthenticationViewController : RageShakableViewController <UITextFieldDelegate>
+#import "AuthInputsView.h"
+
+@interface AuthenticationViewController : RageShakableViewController <UITextFieldDelegate, AuthInputsViewDelegate>
 
 @end
 
