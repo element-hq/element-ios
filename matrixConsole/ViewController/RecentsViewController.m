@@ -148,10 +148,12 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // Release potential Room ViewController if none is visible (Note: check on room visibility is required to handle correctly splitViewController)
-    if ([AppDelegate theDelegate].masterTabBarController.visibleRoomId == nil && currentRoomViewController) {
-        currentRoomViewController.roomId = nil;
-        currentRoomViewController = nil;
+    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    if (!self.splitViewController || self.splitViewController.isCollapsed) {
+        if (currentRoomViewController) {
+            currentRoomViewController.roomId = nil;
+            currentRoomViewController = nil;
+        }
     }
 }
 
