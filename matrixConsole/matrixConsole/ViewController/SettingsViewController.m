@@ -350,7 +350,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // TODO display user's presence
             }];
         }
-    } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusServerSyncInProgress) {
+    } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusInitialServerSyncInProgress) {
+        // Remove listener (if any), this action is required to handle correctly matrix sdk handler reload (see clear cache)
+        if (userUpdateListener) {
+            [mxHandler.mxSession.myUser removeListener:userUpdateListener];
+            userUpdateListener = nil;
+        }
         // Set local user's information (the data may not be up-to-date)
         [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:NO];
         currentDisplayName = mxHandler.mxSession.myUser.displayname;
