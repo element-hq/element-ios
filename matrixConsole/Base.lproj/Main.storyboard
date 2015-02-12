@@ -330,9 +330,9 @@
                                         <rect key="frame" x="38" y="4" width="510" height="36"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Icg-kc-a2c">
-                                        <rect key="frame" x="556" y="0.0" width="36" height="44"/>
+                                        <rect key="frame" x="552" y="0.0" width="44" height="44"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="36" id="28c-o8-T5D"/>
+                                            <constraint firstAttribute="width" constant="44" id="28c-o8-T5D"/>
                                             <constraint firstAttribute="height" constant="44" id="cwy-NO-c5b"/>
                                         </constraints>
                                         <state key="normal" title="Send">
@@ -349,8 +349,8 @@
                                     <constraint firstAttribute="bottom" secondItem="cfF-YG-Cvg" secondAttribute="bottom" constant="7" id="FaK-A3-nl8"/>
                                     <constraint firstAttribute="bottom" secondItem="Icg-kc-a2c" secondAttribute="bottom" id="GBv-Db-4H0"/>
                                     <constraint firstItem="cfF-YG-Cvg" firstAttribute="leading" secondItem="6fM-aJ-d0M" secondAttribute="leading" constant="4" id="JLw-Kl-Rdp"/>
-                                    <constraint firstItem="Icg-kc-a2c" firstAttribute="leading" secondItem="UVo-EY-Nyg" secondAttribute="trailing" constant="8" id="lVs-Ba-j3d"/>
-                                    <constraint firstAttribute="trailing" secondItem="Icg-kc-a2c" secondAttribute="trailing" constant="8" id="pQV-JJ-C09"/>
+                                    <constraint firstItem="Icg-kc-a2c" firstAttribute="leading" secondItem="UVo-EY-Nyg" secondAttribute="trailing" constant="4" id="lVs-Ba-j3d"/>
+                                    <constraint firstAttribute="trailing" secondItem="Icg-kc-a2c" secondAttribute="trailing" constant="4" id="pQV-JJ-C09"/>
                                     <constraint firstItem="UVo-EY-Nyg" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="top" constant="4" id="qPI-ig-yno"/>
                                     <constraint firstAttribute="height" constant="44" id="tGp-dw-uAO"/>
                                     <constraint firstItem="UVo-EY-Nyg" firstAttribute="leading" secondItem="cfF-YG-Cvg" secondAttribute="trailing" constant="4" id="u00-eB-vAB"/>
