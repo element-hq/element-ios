@@ -183,6 +183,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // during a screen rotation for example.
     self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
+    // set text input font
+    self.messageTextView.font = [UIFont systemFontOfSize:14];
+    
     // default contraint values
     defaultMessagesTableViewBottomConstraint = _messagesTableViewBottomConstraint.constant;
     defaultControlViewBottomConstraint = _controlViewBottomConstraint.constant;
