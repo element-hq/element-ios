@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "RageShakableViewController.h"
+#import "MXCViewController.h"
 
 // SMS
 #import <MessageUI/MessageUI.h>
@@ -22,7 +22,7 @@
 
 #import "SectionedContacts.h"
 
-@interface ContactsViewController : RageShakableViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
+@interface ContactsViewController : MXCViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
     NSArray* collationTitles;
 }
 

@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import "RageShakableTableViewController.h"
+#import "MXCTableViewController.h"
 
-@interface SettingsViewController : RageShakableTableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface SettingsViewController : MXCTableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 typedef void (^blockSettings_onReadyToLeave)();
 

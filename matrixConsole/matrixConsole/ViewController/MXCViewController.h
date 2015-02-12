@@ -18,7 +18,13 @@
 
 #import "AFNetworkReachabilityManager.h"
 
-@interface RageShakableViewController : UIViewController
+/**
+ * MXCViewController extends UIViewController for the following points:
+ * - support rage shake mechanism
+ * - update navigation bar tintColor according to network reachability
+ */
+
+@interface MXCViewController : UIViewController
 
 @end
 
