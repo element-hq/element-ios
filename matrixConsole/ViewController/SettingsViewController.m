@@ -172,15 +172,22 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     selectedCountryCode = countryCode = [[AppSettings sharedSettings] countryCode];
     
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
+    
     // Refresh display
-    [self startActivityIndicator];
+    if (mxHandler.isActivityInProgress) {
+        [self startActivityIndicator];
+    }
     [self configureView];
-    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
+    [self stopActivityIndicator];
 
     // if country has been updated
     // update the contact phonenumbers
@@ -195,7 +202,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
         countryCode = [[AppSettings sharedSettings] countryCode];
     
-    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
@@ -328,8 +334,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             currentDisplayName = mxHandler.mxSession.myUser.displayname;
             self.userDisplayName.text = currentDisplayName;
             
-            [self stopActivityIndicator];
-            
             // Register listener to update user's information
             userUpdateListener = [mxHandler.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
                 // Update displayName
@@ -346,7 +350,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // TODO display user's presence
             }];
         }
-    } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) {
+    } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusServerSyncInProgress) {
         // Set local user's information (the data may not be up-to-date)
         [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:NO];
         currentDisplayName = mxHandler.mxSession.myUser.displayname;
@@ -355,9 +359,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [self reset];
     }
     
-    if ([mxHandler isResumeDone]) {
-        [self stopActivityIndicator];
-    }
     // Restore user's interactions
     _userPictureButton.enabled = YES;
     _userDisplayName.enabled = YES;
@@ -438,8 +439,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Backup is complete
     isSavingInProgress = NO;
-    // Stop animation (except if the app is resuming)
-    if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
+    // Stop activity indicator except if matrix sdk handler is working
+    if (!mxHandler.isActivityInProgress) {
         [self stopActivityIndicator];
     }
 }
@@ -627,11 +628,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
-    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixSDKHandler sharedHandler] isResumeDone] && !isSavingInProgress) {
-            [self stopActivityIndicator];
-        } else {
+    } else if ([@"isActivityInProgress" isEqualToString:keyPath]) {
+        if ([MatrixSDKHandler sharedHandler].isActivityInProgress || isSavingInProgress) {
             [self startActivityIndicator];
+        } else {
+            [self stopActivityIndicator];
         }
     }
 }
@@ -1112,7 +1113,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // tap on clear application cache
         if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
             // clear caches
-            [[MatrixSDKHandler sharedHandler] forceInitialSync:YES];
+            [[MatrixSDKHandler sharedHandler] reload:YES];
         }
         else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
             

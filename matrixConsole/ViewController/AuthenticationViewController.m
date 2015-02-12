@@ -20,8 +20,6 @@
 #import "AppDelegate.h"
 #import "MXCAlert.h"
 
-#import "AFNetworkReachabilityManager.h"
-
 @interface AuthenticationViewController () {
     // Current request in progress
     NSOperation *mxAuthFlowRequest;
@@ -231,8 +229,7 @@
 - (void)refreshSupportedAuthFlow {
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
-    // Stop reachability monitoring
-    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    // Remove reachability observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
     
     // Cancel protential request in progress
@@ -289,12 +286,12 @@
 }
 
 - (void)onFailureDuringFlowRefresh:(NSError*)error {
-    [_activityIndicator stopAnimating];
-    
     if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == kCFURLErrorCancelled) {
         // Ignore this error
         return;
     }
+    
+    [_activityIndicator stopAnimating];
     
     NSLog(@"GET auth flows failed: %@", error);
     // Alert user
@@ -321,9 +318,8 @@
     if ([error.domain isEqualToString:NSURLErrorDomain]) {
         // Check network reachability
         if (error.code == NSURLErrorNotConnectedToInternet) {
-            // Start monitoring in order to launch a new request when network will be available
+            // Add reachability observer in order to launch a new request when network will be available
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReachabilityStatusChange:) name:AFNetworkingReachabilityDidChangeNotification object:nil];
-            [[AFNetworkReachabilityManager sharedManager] startMonitoring];
         } else if (error.code == kCFURLErrorTimedOut)  {
             // Send a new request in 2 sec
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

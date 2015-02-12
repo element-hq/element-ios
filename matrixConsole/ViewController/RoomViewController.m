@@ -230,8 +230,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         _redactionListener = nil;
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
-        [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
-        [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+        [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
     }
     self.mxRoom = nil;
     
@@ -606,8 +605,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             _redactionListener = nil;
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
-            [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
-            [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
+            [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
         }
         currentTypingUsers = nil;
         if (typingNotifListener) {
@@ -658,8 +656,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideRedactedInformation" options:0 context:nil];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedEvents" options:0 context:nil];
-        [mxHandler addObserver:self forKeyPath:@"status" options:0 context:nil];
-        [mxHandler addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
+        [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
         // Register a listener to handle messages
         _messagesListener = [self.mxRoom listenToEventsOfTypes:mxHandler.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             // Handle first live events
@@ -906,7 +903,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 - (void)stopActivityIndicator {
     // Check whether all conditions are satisfied before stopping loading wheel
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone && mxHandler.isResumeDone && !isBackPaginationInProgress && !isJoinRequestInProgress) {
+    if (!mxHandler.isActivityInProgress && !isBackPaginationInProgress && !isJoinRequestInProgress) {
         [_activityIndicator stopAnimating];
     }
 }
@@ -925,17 +922,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"status" isEqualToString:keyPath]) {
-        if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusServerSyncDone) {
-            [self stopActivityIndicator];
-        } else {
+    if ([@"isActivityInProgress" isEqualToString:keyPath]) {
+        if ([MatrixSDKHandler sharedHandler].isActivityInProgress) {
             [self startActivityIndicator];
-        }
-    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
-            [self stopActivityIndicator];
         } else {
-            [self startActivityIndicator];
+            [self stopActivityIndicator];
         }
     } else if ((object == inputAccessoryView.superview) && ([@"frame" isEqualToString:keyPath] || [@"center" isEqualToString:keyPath])) {
         

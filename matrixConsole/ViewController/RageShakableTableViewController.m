@@ -17,16 +17,69 @@
 
 #import "RageShakableUIResponder.h"
 
+@interface RageShakableTableViewController () {
+    id reachabilityObserver;
+}
+@end
+
 @implementation RageShakableTableViewController
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     [RageShakableUIResponder cancel:self];
+    
+    if (self.navigationController) {
+        // The navigation bar tintColor depends on reachability status - Register reachability observer
+        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            [self onReachabilityStatusChange];
+        }];
+        // Force update
+        [self onReachabilityStatusChange];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
     [RageShakableUIResponder cancel:self];
+}
+
+#pragma mark - Reachability monitoring
+
+- (void)onReachabilityStatusChange {
+    // Retrieve the current reachability status
+    AFNetworkReachabilityManager *reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+    AFNetworkReachabilityStatus status = reachabilityManager.networkReachabilityStatus;
+    
+    // Retrieve the main navigation controller if the current view controller is embedded inside a split view controller.
+    UINavigationController *mainNavigationController = nil;
+    if (self.splitViewController) {
+        mainNavigationController = self.navigationController;
+        UIViewController *parentViewController = self.parentViewController;
+        while (parentViewController) {
+            if (parentViewController.navigationController) {
+                mainNavigationController = parentViewController.navigationController;
+                parentViewController = parentViewController.parentViewController;
+            } else {
+                break;
+            }
+        }
+    }
+    
+    // Update navigationBar tintColor
+    if (status == AFNetworkReachabilityStatusNotReachable) {
+        self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+        if (mainNavigationController) {
+            mainNavigationController.navigationBar.barTintColor = [UIColor redColor];
+        }
+    } else if (status == AFNetworkReachabilityStatusReachableViaWiFi || status == AFNetworkReachabilityStatusReachableViaWWAN) {
+        self.navigationController.navigationBar.barTintColor = nil;
+        if (mainNavigationController) {
+            mainNavigationController.navigationBar.barTintColor = nil;
+        }
+    }
 }
 
 #pragma mark - rageshake : screenshot

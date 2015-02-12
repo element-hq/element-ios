@@ -98,7 +98,7 @@ static AppSettings *sharedSettings = nil;
 - (void)setDisplayAllEvents:(BOOL)displayAllEvents {
     [[NSUserDefaults standardUserDefaults] setBool:displayAllEvents forKey:@"displayAllEvents"];
     // Flush and restore Matrix data
-    [[MatrixSDKHandler sharedHandler] forceInitialSync:NO];
+    [[MatrixSDKHandler sharedHandler] reload:NO];
 }
 
 - (BOOL)hideRedactedInformation {
