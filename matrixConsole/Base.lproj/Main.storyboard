@@ -314,9 +314,10 @@
                                 <rect key="frame" x="0.0" y="507" width="600" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfF-YG-Cvg">
-                                        <rect key="frame" x="8" y="11" width="22" height="22"/>
+                                        <rect key="frame" x="4" y="7" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="22" id="pUe-Lu-1Q0"/>
+                                            <constraint firstAttribute="height" constant="30" id="MxI-8f-ECJ"/>
+                                            <constraint firstAttribute="width" constant="30" id="pUe-Lu-1Q0"/>
                                         </constraints>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -329,9 +330,10 @@
                                         <rect key="frame" x="38" y="4" width="510" height="36"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Icg-kc-a2c">
-                                        <rect key="frame" x="556" y="6" width="36" height="30"/>
+                                        <rect key="frame" x="556" y="0.0" width="36" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="36" id="28c-o8-T5D"/>
+                                            <constraint firstAttribute="height" constant="44" id="cwy-NO-c5b"/>
                                         </constraints>
                                         <state key="normal" title="Send">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -344,14 +346,14 @@
                                 <color key="backgroundColor" red="0.89816151494565222" green="0.89816151494565222" blue="0.89816151494565222" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="UVo-EY-Nyg" secondAttribute="bottom" constant="4" id="42W-Aj-tDe"/>
-                                    <constraint firstAttribute="bottom" secondItem="cfF-YG-Cvg" secondAttribute="bottom" constant="11" id="FaK-A3-nl8"/>
-                                    <constraint firstAttribute="bottom" secondItem="Icg-kc-a2c" secondAttribute="bottom" constant="8" id="GBv-Db-4H0"/>
-                                    <constraint firstItem="cfF-YG-Cvg" firstAttribute="leading" secondItem="6fM-aJ-d0M" secondAttribute="leading" constant="8" id="JLw-Kl-Rdp"/>
+                                    <constraint firstAttribute="bottom" secondItem="cfF-YG-Cvg" secondAttribute="bottom" constant="7" id="FaK-A3-nl8"/>
+                                    <constraint firstAttribute="bottom" secondItem="Icg-kc-a2c" secondAttribute="bottom" id="GBv-Db-4H0"/>
+                                    <constraint firstItem="cfF-YG-Cvg" firstAttribute="leading" secondItem="6fM-aJ-d0M" secondAttribute="leading" constant="4" id="JLw-Kl-Rdp"/>
                                     <constraint firstItem="Icg-kc-a2c" firstAttribute="leading" secondItem="UVo-EY-Nyg" secondAttribute="trailing" constant="8" id="lVs-Ba-j3d"/>
                                     <constraint firstAttribute="trailing" secondItem="Icg-kc-a2c" secondAttribute="trailing" constant="8" id="pQV-JJ-C09"/>
                                     <constraint firstItem="UVo-EY-Nyg" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="top" constant="4" id="qPI-ig-yno"/>
                                     <constraint firstAttribute="height" constant="44" id="tGp-dw-uAO"/>
-                                    <constraint firstItem="UVo-EY-Nyg" firstAttribute="leading" secondItem="cfF-YG-Cvg" secondAttribute="trailing" constant="8" id="u00-eB-vAB"/>
+                                    <constraint firstItem="UVo-EY-Nyg" firstAttribute="leading" secondItem="cfF-YG-Cvg" secondAttribute="trailing" constant="4" id="u00-eB-vAB"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dvT-c5-Ymf">
@@ -917,7 +919,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. #foo:example.org)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x6A-UM-JLc">
-                                    <rect key="frame" x="8" y="250" width="546" height="30"/>
+                                    <rect key="frame" x="8" y="250" width="536" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                     <connections>
@@ -925,9 +927,9 @@
                                     </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="II6-9q-r3c">
-                                    <rect key="frame" x="557" y="250" width="40" height="30"/>
+                                    <rect key="frame" x="547" y="250" width="50" height="30"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="40" id="Fqn-1S-yh3"/>
+                                        <constraint firstAttribute="width" constant="50" id="Fqn-1S-yh3"/>
                                     </constraints>
                                     <state key="normal" title="Join">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
