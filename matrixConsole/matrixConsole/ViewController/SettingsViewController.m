@@ -879,7 +879,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId, mxHandler.accessToken];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -1100,7 +1100,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, nil, mxHandler.userId, mxHandler.accessToken];
+        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId, mxHandler.accessToken];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
         SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
