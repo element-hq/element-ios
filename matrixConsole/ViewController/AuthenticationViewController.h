@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import "RageShakableViewController.h"
+#import "MXCViewController.h"
 
 #import "AuthInputsView.h"
 
-@interface AuthenticationViewController : RageShakableViewController <UITextFieldDelegate, AuthInputsViewDelegate>
+@interface AuthenticationViewController : MXCViewController <UITextFieldDelegate, AuthInputsViewDelegate>
 
 @end
 

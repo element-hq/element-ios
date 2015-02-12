@@ -13,16 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-#import "RageShakableViewController.h"
+#import "MXCViewController.h"
 
 #import "RageShakableUIResponder.h"
 
-@interface RageShakableViewController () {
+@interface MXCViewController () {
     id reachabilityObserver;
 }
 @end
 
-@implementation RageShakableViewController
+@implementation MXCViewController
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -82,7 +82,8 @@
     }
 }
 
-#pragma mark - rageshake : screenshot
+#pragma mark - Rage shake handling
+
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake) {
         [RageShakableUIResponder startShaking:self];

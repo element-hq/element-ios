@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import "RageShakableTableViewController.h"
+#import "MXCTableViewController.h"
 
 #import "MatrixSDKHandler.h"
 
-@interface MemberViewController : RageShakableTableViewController
+@interface MemberViewController : MXCTableViewController
 
 @property (strong, nonatomic) MXRoomMember *mxRoomMember;
 @property (strong, nonatomic) MXRoom *mxRoom;

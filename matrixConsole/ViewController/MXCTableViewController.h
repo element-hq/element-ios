@@ -18,7 +18,13 @@
 
 #import "AFNetworkReachabilityManager.h"
 
-@interface RageShakableTableViewController : UITableViewController
+/** 
+ * MXCTableViewController extends UITableViewController for the following points:
+ * - support rage shake mechanism
+ * - update navigation bar tintColor according to network reachability
+ */
+
+@interface MXCTableViewController : UITableViewController
 
 @end
 
