@@ -40,7 +40,7 @@
     NSDateFormatter *dateFormatter;
     
     RoomViewController *currentRoomViewController;
-    BOOL                isVisible;
+    BOOL                shouldHideActivityIndicator;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -116,13 +116,21 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
+    
     // Refresh display
+    shouldHideActivityIndicator = NO;
+    if (mxHandler.isActivityInProgress) {
+        [self startActivityIndicator];
+    }
     [self configureView];
-    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"isResumeDone" options:0 context:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
     
     // Leave potential editing mode
     [self setEditing:NO];
@@ -132,27 +140,19 @@
     }
     // Hide activity indicator
     [self stopActivityIndicator];
+    shouldHideActivityIndicator = YES;
     
     _preSelectedRoomId = nil;
-    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isResumeDone"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    isVisible = YES;
     
     // Release potential Room ViewController if none is visible (Note: check on room visibility is required to handle correctly splitViewController)
     if ([AppDelegate theDelegate].masterTabBarController.visibleRoomId == nil && currentRoomViewController) {
         currentRoomViewController.roomId = nil;
         currentRoomViewController = nil;
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
-    isVisible = NO;
 }
 
 #pragma mark -
@@ -216,12 +216,11 @@
 - (void)configureView {
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
-    [self startActivityIndicator];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kRecentRoomUpdatedByBackPagination object:nil];
     
     if (mxHandler.mxSession) {
         // Check matrix handler status
-        if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) {
+        if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusServerSyncInProgress) {
             // Server sync is not complete yet
             if (!recents) {
                 // Retrieve recents from local storage (some data may not be up-to-date)
@@ -339,15 +338,13 @@
                 }];
             }
             // else nothing to do
-        } else {
+        } else if (mxHandler.status != MatrixSDKHandlerStatusPaused) {
+            // Here status is MatrixSDKHandlerStatusLoggedOut or MatrixSDKHandlerStatusLogged - Reset recents
             recents = nil;
         }
         
         // Reload table
         [self.tableView reloadData];
-        if ([mxHandler isResumeDone]) {
-            [self stopActivityIndicator];
-        }
         
         // Check whether a room is preselected
         if (_preSelectedRoomId) {
@@ -355,7 +352,6 @@
         }
     } else {
         if (mxHandler.status == MatrixSDKHandlerStatusLoggedOut) {
-            [self stopActivityIndicator];
             // Update title
             unreadCount = 0;
             [self updateTitleView];
@@ -462,16 +458,12 @@
     if ([@"status" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
-            // Hide the activity indicator when Recents is not visible
-            if (!isVisible) {
-                [self stopActivityIndicator];
-            }
         });
-    } else if ([@"isResumeDone" isEqualToString:keyPath]) {
-        if ([[MatrixSDKHandler sharedHandler] isResumeDone]) {
-            [self stopActivityIndicator];
-        } else {
+    } else if ([@"isActivityInProgress" isEqualToString:keyPath]) {
+        if (!shouldHideActivityIndicator && [MatrixSDKHandler sharedHandler].isActivityInProgress) {
             [self startActivityIndicator];
+        } else {
+            [self stopActivityIndicator];
         }
     }
 }

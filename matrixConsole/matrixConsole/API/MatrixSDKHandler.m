@@ -24,6 +24,8 @@
 
 #import "MediaManager.h"
 
+#import "AFNetworkReachabilityManager.h"
+
 NSString *const kMatrixSDKHandlerUnsupportedEventDescriptionPrefix = @"Unsupported event: ";
 
 static MatrixSDKHandler *sharedHandler = nil;
@@ -31,16 +33,19 @@ static MatrixSDKHandler *sharedHandler = nil;
 @interface MatrixSDKHandler () {
     // We will notify user only once on session failure
     BOOL notifyOpenSessionFailure;
+    NSTimer* initialServerSyncTimer;
     
     // Handle user's settings change
     id userUpdateListener;
     // Handle events notification
     id eventsListener;
+    // Reachability observer
+    id reachabilityObserver;
 }
 
 @property (strong, nonatomic) MXFileStore *mxFileStore;
 @property (nonatomic,readwrite) MatrixSDKHandlerStatus status;
-@property (nonatomic,readwrite) BOOL isResumeDone;
+@property (nonatomic,readwrite) BOOL isActivityInProgress;
 @property (strong, nonatomic) MXCAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 
@@ -66,8 +71,7 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 -(MatrixSDKHandler *)init {
     if (self = [super init]) {
-        _status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
-        _isResumeDone = NO;
+        self.status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
         _userPresence = MXPresenceUnknown;
         notifyOpenSessionFailure = YES;
         
@@ -87,10 +91,27 @@ static MatrixSDKHandler *sharedHandler = nil;
         }
         
         _unnotifiedRooms = [[NSMutableArray alloc] init];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+    reachabilityObserver = nil;
+    
+    [initialServerSyncTimer invalidate];
+    initialServerSyncTimer = nil;
+    
+    _processingQueue = nil;
+    
+    [self closeSession];
+    self.mxSession = nil;
+    
+    if (self.mxNotification) {
+        [self.mxNotification dismiss:NO];
+        self.mxNotification = nil;
+    }
 }
 
 - (void)openSession {
@@ -138,64 +159,101 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                  kMXEventTypeStringRoomMessage
                                                  ];
             }
-
-            // Launch mxSession
-            [self.mxSession start:^{
-                typeof(self) self = weakSelf;
-                self->_isResumeDone = YES;
-                self.status = MatrixSDKHandlerStatusServerSyncDone;
-                [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
-
-                // Register listener to update user's information
-                self->userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
-                    // Consider only events related to user's presence
-                    if (event.eventType == MXEventTypePresence) {
-                        MXPresence presence = [MXTools presence:event.content[@"presence"]];
-                        if (self.userPresence != presence) {
-                            // Handle user presence on multiple devices (keep the more pertinent)
-                            if (self.userPresence == MXPresenceOnline) {
-                                if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
-                                    // Force the local presence to overwrite the user presence on server side
-                                    [self setUserPresence:self->_userPresence andStatusMessage:nil completion:nil];
-                                    return;
-                                }
-                            } else if (self.userPresence == MXPresenceUnavailable) {
-                                if (presence == MXPresenceOffline) {
-                                    // Force the local presence to overwrite the user presence on server side
-                                    [self setUserPresence:self->_userPresence andStatusMessage:nil completion:nil];
-                                    return;
-                                }
-                            }
-                            self.userPresence = presence;
-                        }
-                    }
-                }];
-
-                // Check whether the app user wants notifications on new events
-                if ([[AppSettings sharedSettings] enableInAppNotifications]) {
-                    [self enableInAppNotifications:YES];
-                }
-            } failure:^(NSError *error) {
-                typeof(self) self = weakSelf;
-                NSLog(@"Initial Sync failed: %@", error);
-                if (self->notifyOpenSessionFailure) {
-                    //Alert user only once
-                    self->notifyOpenSessionFailure = NO;
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }
-
-                // Postpone a new attempt in 10 sec
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self openSession];
-                });
-            }];
+            
+            // Complete session registration by launching live stream
+            [self launchInitialServerSync];
         } failure:^(NSError *error) {
             // This cannot happen. Loading of MXFileStore cannot fail.
+            typeof(self) self = weakSelf;
+            self.mxSession = nil;
         }];
     }
 }
 
+- (void)launchInitialServerSync {
+    // Complete the session registration when store data is ready.
+    
+    // Cancel potential reachability observer and pending action
+    [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+    reachabilityObserver = nil;
+    [initialServerSyncTimer invalidate];
+    initialServerSyncTimer = nil;
+    
+    // Sanity check
+    if (self.status != MatrixSDKHandlerStatusStoreDataReady) {
+        NSLog(@"Initial server sync is applicable only when store data is ready to complete session initialisation");
+        return;
+    }
+    
+    // Launch mxSession
+    self.status = MatrixSDKHandlerStatusServerSyncInProgress;
+    [self.mxSession start:^{
+        self.status = MatrixSDKHandlerStatusServerSyncDone;
+        [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
+        
+        // Register listener to update user's information
+        userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
+            // Consider only events related to user's presence
+            if (event.eventType == MXEventTypePresence) {
+                MXPresence presence = [MXTools presence:event.content[@"presence"]];
+                if (self.userPresence != presence) {
+                    // Handle user presence on multiple devices (keep the more pertinent)
+                    if (self.userPresence == MXPresenceOnline) {
+                        if (presence == MXPresenceUnavailable || presence == MXPresenceOffline) {
+                            // Force the local presence to overwrite the user presence on server side
+                            [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                            return;
+                        }
+                    } else if (self.userPresence == MXPresenceUnavailable) {
+                        if (presence == MXPresenceOffline) {
+                            // Force the local presence to overwrite the user presence on server side
+                            [self setUserPresence:_userPresence andStatusMessage:nil completion:nil];
+                            return;
+                        }
+                    }
+                    self.userPresence = presence;
+                }
+            }
+        }];
+        
+        // Check whether the app user wants notifications on new events
+        if ([[AppSettings sharedSettings] enableInAppNotifications]) {
+            [self enableInAppNotifications:YES];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Initial Sync failed: %@", error);
+        if (notifyOpenSessionFailure) {
+            //Alert user only once
+            notifyOpenSessionFailure = NO;
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }
+        
+        // Return in previous state
+        self.status = MatrixSDKHandlerStatusStoreDataReady;
+        
+        // Check network reachability
+        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
+            // Add observer to launch a new attempt according to reachability.
+            reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+                NSNumber *staturItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+                if (staturItem) {
+                    AFNetworkReachabilityStatus reachabilityStatus = staturItem.integerValue;
+                    if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
+                        // New attempt
+                        [self launchInitialServerSync];
+                    }
+                }
+            }];
+        } else {
+            // Postpone a new attempt in 10 sec
+            initialServerSyncTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(launchInitialServerSync) userInfo:self repeats:NO];
+        }
+    }];
+}
+
 - (void)closeSession {
+    self.status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
+    
     if (eventsListener) {
         [self.mxSession removeListener:eventsListener];
         eventsListener = nil;
@@ -204,10 +262,12 @@ static MatrixSDKHandler *sharedHandler = nil;
         [self.mxSession.myUser removeListener:userUpdateListener];
         userUpdateListener = nil;
     }
+    
     [self.mxSession close];
     self.mxSession = nil;
     
     [self.mxRestClient close];
+    
     if (self.homeServerURL) {
         self.mxRestClient = [[MXRestClient alloc] initWithHomeServer:self.homeServerURL];
         if (self.identityServerURL) {
@@ -217,25 +277,12 @@ static MatrixSDKHandler *sharedHandler = nil;
         self.mxRestClient = nil;
     }
     
-    _isResumeDone = NO;
     notifyOpenSessionFailure = YES;
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    _processingQueue = nil;
-    
-    [self closeSession];
-    self.mxSession = nil;
-    
-    if (self.mxNotification) {
-        [self.mxNotification dismiss:NO];
-        self.mxNotification = nil;
-    }
-}
+#pragma mark -
 
-- (void)onAppDidEnterBackground {
+- (void)pauseInBackgroundTask {
     // Hide potential notification
     if (self.mxNotification) {
         [self.mxNotification dismiss:NO];
@@ -243,11 +290,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
     
     _unnotifiedRooms = [[NSMutableArray alloc] init];
-}
-
-#pragma mark -
-
-- (void)pauseInBackgroundTask {
+    
     if (self.mxSession && self.status == MatrixSDKHandlerStatusServerSyncDone) {
         _bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
@@ -259,7 +302,7 @@ static MatrixSDKHandler *sharedHandler = nil;
         NSLog(@"pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
         // Pause SDK
         [self.mxSession pause];
-        self.isResumeDone = NO;
+        self.status = MatrixSDKHandlerStatusPaused;
         // Update user presence
         __weak typeof(self) weakSelf = self;
         [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
@@ -268,17 +311,26 @@ static MatrixSDKHandler *sharedHandler = nil;
             weakSelf.bgTask = UIBackgroundTaskInvalid;
             NSLog(@">>>>> background pause task finished");
         }];
+    } else {
+        // Cancel pending actions
+        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+        reachabilityObserver = nil;
+        [initialServerSyncTimer invalidate];
+        initialServerSyncTimer = nil;
     }
 }
 
 - (void)resume {
-    if (self.mxSession && self.status == MatrixSDKHandlerStatusServerSyncDone) {
-        if (!self.isResumeDone) {
+    if (self.mxSession) {
+        if (self.status == MatrixSDKHandlerStatusPaused) {
             // Resume SDK and update user presence
             [self.mxSession resume:^{
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
-                self.isResumeDone = YES;
+                self.status = MatrixSDKHandlerStatusServerSyncDone;
             }];
+        } else if (self.status == MatrixSDKHandlerStatusStoreDataReady) {
+            // The session initialisation was uncompleted, we try to complete it here.
+            [self launchInitialServerSync];
         }
         
         if (_bgTask) {
@@ -302,9 +354,8 @@ static MatrixSDKHandler *sharedHandler = nil;
     // Keep userLogin, homeServerUrl
 }
 
-- (void)forceInitialSync:(BOOL)clearCache {
-    if (self.status == MatrixSDKHandlerStatusServerSyncDone || self.status == MatrixSDKHandlerStatusStoreDataReady) {
-        self.status = MatrixSDKHandlerStatusLogged;
+- (void)reload:(BOOL)clearCache {
+    if (self.mxSession) {
         [self closeSession];
         notifyOpenSessionFailure = NO;
         
@@ -390,6 +441,47 @@ static MatrixSDKHandler *sharedHandler = nil;
 }
 
 #pragma mark - Properties
+
+- (void)setStatus:(MatrixSDKHandlerStatus)status {
+    // Remove potential reachability observer
+    if (reachabilityObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+        reachabilityObserver = nil;
+    }
+    
+    // Update activity flag
+    switch (status) {
+        case MatrixSDKHandlerStatusLoggedOut:
+        case MatrixSDKHandlerStatusStoreDataReady:
+        case MatrixSDKHandlerStatusServerSyncDone: {
+            self.isActivityInProgress = NO;
+            break;
+        }
+        case MatrixSDKHandlerStatusLogged:
+        case MatrixSDKHandlerStatusServerSyncInProgress: {
+            self.isActivityInProgress = YES;
+            break;
+        }
+        case MatrixSDKHandlerStatusPaused: {
+            // Here the app is resuming, the activity is in progress except if the network is unreachable
+            AFNetworkReachabilityStatus reachabilityStatus = [AFNetworkReachabilityManager sharedManager].networkReachabilityStatus;
+            self.isActivityInProgress = (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus ==AFNetworkReachabilityStatusReachableViaWWAN);
+            
+            // Add observer to update handler activity according to reachability.
+            reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+                NSNumber *staturItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+                if (staturItem) {
+                    AFNetworkReachabilityStatus reachabilityStatus = staturItem.integerValue;
+                    self.isActivityInProgress = (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus ==AFNetworkReachabilityStatusReachableViaWWAN);
+                }
+            }];
+            break;
+        }
+    }
+    
+    // Report status
+    _status = status;
+}
 
 - (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
@@ -478,7 +570,6 @@ static MatrixSDKHandler *sharedHandler = nil;
         [self openSession];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
-        self.status = MatrixSDKHandlerStatusLoggedOut;
         [self closeSession];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -565,8 +656,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
-     if ((mxHandler.status == MatrixSDKHandlerStatusStoreDataReady) || (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone)) {
-      
+     if (mxHandler.mxSession) {
          NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
          
          for (MXEvent *mxEvent in recentEvents) {

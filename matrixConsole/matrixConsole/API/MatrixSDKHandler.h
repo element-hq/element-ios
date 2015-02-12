@@ -22,7 +22,9 @@ typedef enum : NSUInteger {
     MatrixSDKHandlerStatusLoggedOut = 0,
     MatrixSDKHandlerStatusLogged,
     MatrixSDKHandlerStatusStoreDataReady,
-    MatrixSDKHandlerStatusServerSyncDone
+    MatrixSDKHandlerStatusServerSyncInProgress,
+    MatrixSDKHandlerStatusServerSyncDone,
+    MatrixSDKHandlerStatusPaused
 } MatrixSDKHandlerStatus;
 
 @interface MatrixSDKHandler : NSObject
@@ -47,7 +49,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) MXPresence userPresence;
 
 @property (nonatomic,readonly) MatrixSDKHandlerStatus status;
-@property (nonatomic,readonly) BOOL isResumeDone;
+@property (nonatomic,readonly) BOOL isActivityInProgress;
 // return the MX cache size in bytes
 @property (nonatomic,readonly) NSUInteger MXCacheSize;
 // return the sum of the caches (MX cache + media cache ...) in bytes
@@ -66,7 +68,7 @@ typedef enum : NSUInteger {
 - (void)logout;
 
 // Flush and restore Matrix data
-- (void)forceInitialSync:(BOOL)clearCache;
+- (void)reload:(BOOL)clearCache;
 
 - (void)enableInAppNotifications:(BOOL)isEnabled;
 

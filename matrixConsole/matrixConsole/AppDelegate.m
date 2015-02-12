@@ -23,6 +23,8 @@
 #import "SettingsViewController.h"
 #import "ContactManager.h"
 
+#import "AFNetworkReachabilityManager.h"
+
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
@@ -70,7 +72,7 @@
     return _build;
 }
 
-#pragma mark -
+#pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -141,6 +143,9 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
+    // Stop reachability monitoring
+    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    
     // check if some media msut be released to reduce the cache size
     [MediaManager reduceCacheSizeToInsert:0];
     // Suspend Matrix handler
@@ -162,6 +167,10 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    // Start monitoring reachability
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
     // Resume Matrix handler
     [[MatrixSDKHandler sharedHandler] resume];
     

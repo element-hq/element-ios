@@ -16,6 +16,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "AFNetworkReachabilityManager.h"
+
 @interface RageShakableTableViewController : UITableViewController
 
 @end

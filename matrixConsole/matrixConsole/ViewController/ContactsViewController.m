@@ -245,10 +245,9 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 }
 
 - (void)updateSectionedMatrixContacts {
-    // check if the user is already known
+    // Check whether mxSession is available in matrix handler
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    if ((mxHandler.status != MatrixSDKHandlerStatusServerSyncDone) && (mxHandler.status != MatrixSDKHandlerStatusStoreDataReady)) {
+    if (!mxHandler.mxSession) {
         [self startActivityIndicator];
         sectionedMatrixContacts = nil;
     } else {
@@ -428,8 +427,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         
         MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
         
-        // display only if the matrix SDk is ready 
-        if ((mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) || (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady)) {
+        // display only if the mxSession is available in matrix SDK handler
+        if (mxHandler.mxSession) {
             // only 1 matrix ID
             if (matrixIDs.count == 1) {
                 NSString* matrixID = [matrixIDs objectAtIndex:0];
