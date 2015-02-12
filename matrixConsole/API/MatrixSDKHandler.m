@@ -186,7 +186,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
     
     // Launch mxSession
-    self.status = MatrixSDKHandlerStatusServerSyncInProgress;
+    self.status = MatrixSDKHandlerStatusInitialServerSyncInProgress;
     [self.mxSession start:^{
         self.status = MatrixSDKHandlerStatusServerSyncDone;
         [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
@@ -458,7 +458,7 @@ static MatrixSDKHandler *sharedHandler = nil;
             break;
         }
         case MatrixSDKHandlerStatusLogged:
-        case MatrixSDKHandlerStatusServerSyncInProgress: {
+        case MatrixSDKHandlerStatusInitialServerSyncInProgress: {
             self.isActivityInProgress = YES;
             break;
         }

@@ -222,7 +222,7 @@
     
     if (mxHandler.mxSession) {
         // Check matrix handler status
-        if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusServerSyncInProgress) {
+        if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusInitialServerSyncInProgress) {
             // Server sync is not complete yet
             if (!recents) {
                 // Retrieve recents from local storage (some data may not be up-to-date)

@@ -22,7 +22,7 @@ typedef enum : NSUInteger {
     MatrixSDKHandlerStatusLoggedOut = 0,
     MatrixSDKHandlerStatusLogged,
     MatrixSDKHandlerStatusStoreDataReady,
-    MatrixSDKHandlerStatusServerSyncInProgress,
+    MatrixSDKHandlerStatusInitialServerSyncInProgress,
     MatrixSDKHandlerStatusServerSyncDone,
     MatrixSDKHandlerStatusPaused
 } MatrixSDKHandlerStatus;
