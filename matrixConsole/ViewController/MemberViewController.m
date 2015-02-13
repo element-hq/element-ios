@@ -301,7 +301,7 @@
         
         // offer to start a new chat only if the room is not a 1:1 room with this user
         // it does not make sense : it would open the same room
-        NSString* roomId = [mxHandler privateRoomIdWith:_mxRoomMember.userId];
+        NSString* roomId = [mxHandler privateOneToOneRoomIdWithUserId:_mxRoomMember.userId];
         if (![roomId isEqualToString:mxRoom.state.roomId]) {
             [buttonsTitles addObject:@"Chat"];
         }
@@ -499,7 +499,7 @@
     
         } else if ([text isEqualToString:@"Chat"]) {
             [self addPendingActionMask];
-            [[MatrixSDKHandler sharedHandler] startPrivateOneToOneRoomWith:_mxRoomMember.userId];
+            [[MatrixSDKHandler sharedHandler] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
         }
     }
 }
