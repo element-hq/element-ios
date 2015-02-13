@@ -228,9 +228,13 @@
     NSLog(@"APNS: %@", userInfo);
 #endif
     
-    // FIXME implement remote notifications handling
-    
     completionHandler(UIBackgroundFetchResultNoData);
+    
+    // Look for the room id
+    NSString* roomId = [userInfo objectForKey:@"room_id"];
+    if (roomId.length) {
+        [self.masterTabBarController showRoom:roomId];
+    }
 }
 
 #pragma mark -
