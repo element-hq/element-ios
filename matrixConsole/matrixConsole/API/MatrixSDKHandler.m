@@ -682,32 +682,38 @@ static MatrixSDKHandler *sharedHandler = nil;
     return matrixIDs;
 }
 
-// search if a private room has been started with this user
-// returns the room ID
-// nil if not found
-- (NSString*) privateRoomIdWith:(NSString*)otherMatrixID {
-    //
+- (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId {
     if (self.mxSession) {
-        // list the last messages of each room to get the rooms list
+        // List the last messages of each room to get the rooms list in chronological order
         NSArray *recentEvents = [NSMutableArray arrayWithArray:[self.mxSession recentsWithTypeIn:self.eventsFilterForMessages]];
         
-        // loops
+        // Loops
         for (MXEvent *mxEvent in recentEvents) {
-            // get the dedicated mxRooms
+            // Get the dedicated mxRooms
             MXRoom *mxRoom = [self.mxSession roomWithRoomId:mxEvent.roomId];
             
-            // accept only room with 2 users
-            if (mxRoom.state.members.count == 2) {
+            // Consider only private room with 2 users
+            if (!mxRoom.state.isPublic && mxRoom.state.members.count == 2) {
                 NSArray* roomMembers = mxRoom.state.members;
                 
+                // Check whether the provided userId is one of them
+                MXRoomMember* member = nil;
                 MXRoomMember* member1 = [roomMembers objectAtIndex:0];
-                MXRoomMember* member2 = [roomMembers objectAtIndex:1];
+                if ([member1.userId isEqualToString:userId]) {
+                    member = member1;
+                } else {
+                    MXRoomMember* member2 = [roomMembers objectAtIndex:1];
+                    if ([member2.userId isEqualToString:userId]) {
+                        member = member2;
+                    }
+                }
                 
-                // check if they are the dedicated users
-                if (
-                    ([member1.userId isEqualToString:self.mxSession.myUser.userId] || [member1.userId isEqualToString:otherMatrixID]) &&
-                    ([member2.userId isEqualToString:self.mxSession.myUser.userId] || [member2.userId isEqualToString:otherMatrixID])) {
-                    return mxRoom.state.roomId;
+                if (member) {
+                    // Check the membership of this member (Indeed the room should be ignored if the member left it)
+                    if (member.membership != MXMembershipLeave && member.membership != MXMembershipBan) {
+                        // We found the right room
+                        return mxRoom.state.roomId;
+                    }
                 }
             }
         }
@@ -716,10 +722,9 @@ static MatrixSDKHandler *sharedHandler = nil;
     return nil;
 }
 
-// create a private one to one chat room
-- (void)startPrivateOneToOneRoomWith:(NSString*)otherMatrixID {
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
     if (self.mxRestClient) {
-        NSString* roomId = [self privateRoomIdWith:otherMatrixID];
+        NSString* roomId = [self privateOneToOneRoomIdWithUserId:userId];
         
         // if the room exists
         if (roomId) {
@@ -732,13 +737,12 @@ static MatrixSDKHandler *sharedHandler = nil;
                                      roomAlias:nil
                                          topic:nil
                                        success:^(MXCreateRoomResponse *response) {
-                                           
                                            // invite the other user only if it is defined and not onself
-                                           if (otherMatrixID && ![self.userId isEqualToString:otherMatrixID]) {
+                                           if (userId && ![self.userId isEqualToString:userId]) {
                                                // add the user
-                                               [self.mxRestClient inviteUser:otherMatrixID toRoom:response.roomId success:^{
+                                               [self.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
                                                } failure:^(NSError *error) {
-                                                   NSLog(@"%@ invitation failed (roomId: %@): %@", otherMatrixID, response.roomId, error);
+                                                   NSLog(@"%@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
                                                    //Alert user
                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                }];

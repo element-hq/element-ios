@@ -109,7 +109,7 @@
     
     if ([view isKindOfClass:[ContactDetailsTableCell class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[MatrixSDKHandler sharedHandler] startPrivateOneToOneRoomWith:((ContactDetailsTableCell*)view).matrixUserIDLabel.text];
+            [[MatrixSDKHandler sharedHandler] startPrivateOneToOneRoomWithUserId:((ContactDetailsTableCell*)view).matrixUserIDLabel.text];
         });
     }
 }

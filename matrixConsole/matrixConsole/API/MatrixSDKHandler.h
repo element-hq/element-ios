@@ -78,16 +78,12 @@ typedef enum : NSUInteger {
 // return a MatrixIDs list of 1:1 room members
 - (NSArray*)oneToOneRoomMemberMatrixIDs;
 
-// search if a private room has been started with this user
-// returns the room ID
-// nil if not found
-- (NSString*) privateRoomIdWith:(NSString*)otherMatrixID;
+// Searches if a private OneToOne room has been started with this user
+// Returns the room ID (nil if not found)
+- (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId;
     
-// check first if there no room between the both users
-// if there is one, open it
-// else create a new one
-// create a private one to one chat room
-- (void)startPrivateOneToOneRoomWith:(NSString*)otherMatrixID;
+// Reopens an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
 
 // the pushes could have disabled for a dedicated room
 // reenable them

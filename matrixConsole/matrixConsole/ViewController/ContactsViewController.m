@@ -442,7 +442,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.startChatMenu = nil;
                     
-                    [mxHandler startPrivateOneToOneRoomWith:matrixID];
+                    [mxHandler startPrivateOneToOneRoomWithUserId:matrixID];
                 }];
             } else {
                 self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with "]  message:nil style:MXCAlertStyleActionSheet];
@@ -451,7 +451,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                     [self.startChatMenu addActionWithTitle:matrixID style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                         weakSelf.startChatMenu = nil;
                         
-                        [mxHandler startPrivateOneToOneRoomWith:matrixID];
+                        [mxHandler startPrivateOneToOneRoomWithUserId:matrixID];
                     }];
                 }
                 
