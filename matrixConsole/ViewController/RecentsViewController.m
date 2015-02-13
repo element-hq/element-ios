@@ -39,8 +39,15 @@
     // Date formatter
     NSDateFormatter *dateFormatter;
     
+    // Keep reference on the current room view controller to release it correctly
     RoomViewController *currentRoomViewController;
-    BOOL                shouldHideActivityIndicator;
+    
+    // Keep the selected cell index to handle correctly split view controller display in landscape mode
+    NSInteger currentSelectedCellIndexPathRow;
+    
+    // The activity indicator is displayed on main screen in order to ignore potential table scrolling
+    // In some case this activity indicator shoud be hidden (For example when the recents view controller is not visible).
+    BOOL shouldHideActivityIndicator;
 }
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -51,7 +58,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
 }
@@ -77,6 +83,7 @@
     recents = nil;
     filteredRecents = nil;
     unreadCount = 0;
+    currentSelectedCellIndexPathRow = -1;
     
     NSString *dateFormat = @"MMM dd HH:mm";
     dateFormatter = [[NSDateFormatter alloc] init];
@@ -119,6 +126,15 @@
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
     
+    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    if (!self.splitViewController || self.splitViewController.isCollapsed) {
+        if (currentRoomViewController) {
+            currentRoomViewController.roomId = nil;
+            currentRoomViewController = nil;
+            // Note: The related cell will be deselected during table refresh triggered below
+        }
+    }
+    
     // Refresh display
     shouldHideActivityIndicator = NO;
     if (mxHandler.isActivityInProgress) {
@@ -148,11 +164,13 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed) {
-        if (currentRoomViewController) {
-            currentRoomViewController.roomId = nil;
-            currentRoomViewController = nil;
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+    // we scroll in order to show the current selected room in recents table.
+    if (self.splitViewController && !self.splitViewController.isCollapsed) {
+        if (currentSelectedCellIndexPathRow != -1) {
+            NSInteger topCellIndexPathRow = currentSelectedCellIndexPathRow ? currentSelectedCellIndexPathRow - 1: currentSelectedCellIndexPathRow;
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:0];
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
     }
 }
@@ -196,6 +214,9 @@
         // Release the current selected room
         currentRoomViewController.roomId = nil;
         currentRoomViewController = nil;
+        
+        // Force table refresh to deselect related cell
+        [self.tableView reloadData];
     }
 }
 
@@ -520,6 +541,11 @@
     
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
+            
+            if (!self.splitViewController.isCollapsed) {
+                // Force table refresh to select the right cell
+                [self.tableView reloadData];
+            }
         }
         
         // Hide back button title
@@ -530,6 +556,20 @@
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Set here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+    currentSelectedCellIndexPathRow = -1;
+    if (currentRoomViewController) {
+        // Look for the rank of this selected room in displayed recents
+        NSArray *displayedRecents = filteredRecents ? filteredRecents : recents;
+        for (NSInteger index = 0; index < displayedRecents.count; index ++) {
+            RecentRoom *recentRoom = [displayedRecents objectAtIndex:index];
+            if ([currentRoomViewController.roomId isEqualToString:recentRoom.roomId]) {
+                currentSelectedCellIndexPathRow = index;
+                break;
+            }
+        }
+    }
+    
     return 1;
 }
 
@@ -574,13 +614,14 @@
         cell.recentDate.text = nil;
     }
     
-    // set background color
+    // Set background color
     if (recentRoom.unreadCount) {
         cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
         cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%tu)", cell.roomTitle.text, recentRoom.unreadCount];
     } else {
         cell.backgroundColor = [UIColor clearColor];
     }
+    
     return cell;
 }
 
@@ -629,6 +670,14 @@
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
     }
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Select cell of the current selected room (if any) - Useful in landscape mode with split view controller.
+    // Note: This operation has to be performed here in order to work around selection change by the system during table view rendering.
+    [cell setSelected:(indexPath.row == currentSelectedCellIndexPathRow) animated:NO];
 }
 
 #pragma mark - UISearchBarDelegate
