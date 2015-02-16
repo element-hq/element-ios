@@ -49,7 +49,9 @@ static MatrixSDKHandler *sharedHandler = nil;
 @property (strong, nonatomic) MXCAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 
-// when the user cancels a notification
+@property (strong, nonatomic) NSMutableDictionary *partialTextMsgByRoomId;
+
+// When the user cancels an inApp notification
 // assume that any messagge room will be ignored
 // until the next launch / debackground
 @property (nonatomic,readwrite) NSMutableArray* unnotifiedRooms;
@@ -91,6 +93,7 @@ static MatrixSDKHandler *sharedHandler = nil;
         }
         
         _unnotifiedRooms = [[NSMutableArray alloc] init];
+        _partialTextMsgByRoomId = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -104,6 +107,10 @@ static MatrixSDKHandler *sharedHandler = nil;
     initialServerSyncTimer = nil;
     
     _processingQueue = nil;
+    
+    _unnotifiedRooms = nil;
+    
+    _partialTextMsgByRoomId = nil;
     
     [self closeSession];
     self.mxSession = nil;
@@ -351,6 +358,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     self.homeServer = nil;
     
     _unnotifiedRooms = [[NSMutableArray alloc] init];
+    _partialTextMsgByRoomId = [[NSMutableDictionary alloc] init];
     // Keep userLogin, homeServerUrl
 }
 
@@ -483,6 +491,8 @@ static MatrixSDKHandler *sharedHandler = nil;
     _status = status;
 }
 
+#pragma mark User's profile
+
 - (NSString *)homeServerURL {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
 }
@@ -593,6 +603,38 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
 }
 
+#pragma mark Cache handling
+
+- (NSUInteger) MXCacheSize {
+    
+    if (self.mxFileStore) {
+        return self.mxFileStore.diskUsage;
+    }
+    
+    return 0;
+}
+
+- (NSUInteger) cachesSize {
+    return self.MXCacheSize + [MediaManager cacheSize];
+}
+
+- (NSUInteger) minCachesSize {
+    // add a 50MB margin to avoid cache file deletion
+    return self.MXCacheSize + [MediaManager minCacheSize] + 50 * 1024 * 1024;
+}
+
+- (NSUInteger) currentMaxCachesSize {
+    return self.MXCacheSize + [MediaManager currentMaxCacheSize];
+}
+
+- (void)setCurrentMaxCachesSize:(NSUInteger)maxCachesSize {
+    [MediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
+}
+
+- (NSUInteger) maxAllowedCachesSize {
+    return self.MXCacheSize + [MediaManager maxAllowedCacheSize];
+}
+
 #pragma mark - Matrix user's settings
 
 - (void)setUserPresence:(MXPresence)userPresence andStatusMessage:(NSString *)statusMessage completion:(void (^)(void))completion {
@@ -608,50 +650,10 @@ static MatrixSDKHandler *sharedHandler = nil;
     }];
 }
 
-#pragma mark - events handler
-
-// Checks whether the event is related to an attachment and if it is supported
-- (BOOL)isSupportedAttachment:(MXEvent*)event {
-    BOOL isSupportedAttachment = NO;
-    
-    if (event.eventType == MXEventTypeRoomMessage) {
-        NSString *msgtype = event.content[@"msgtype"];
-        NSString *requiredField;
-        
-        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
-            requiredField = event.content[@"url"];
-            if (requiredField.length) {
-                isSupportedAttachment = YES;
-            }
-        } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
-            // Not supported yet
-        } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
-            requiredField = event.content[@"url"];
-            if (requiredField) {
-                isSupportedAttachment = YES;
-            }
-        } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
-            // Not supported yet
-        }
-    }
-    return isSupportedAttachment;
-}
-
-// Check whether the event is emote event
-- (BOOL)isEmote:(MXEvent*)event {
-    if (event.eventType == MXEventTypeRoomMessage) {
-        NSString *msgtype = event.content[@"msgtype"];
-        if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-#pragma mark -
+#pragma mark - Room handling
 
 // return a MatrixIDs list of 1:1 room members
-- (NSArray*)oneToOneRoomMemberMatrixIDs {
+- (NSArray*)oneToOneRoomMemberIDs {
     
     NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
@@ -760,30 +762,99 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
 }
 
-// the pushes could have disabled for a dedicated room
-// reenable them
-- (void)allowRoomPushes:(NSString*)roomID {
+- (void)restoreInAppNotificationsForRoomId:(NSString*)roomID {
     if (roomID) {
+        // Enable inApp notification for this room
         [self.unnotifiedRooms removeObject:roomID];
     }
 }
 
-// Return the suitable url to display the content thumbnail into the provided view size
-// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
-- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod {
-    // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-    // Convert first the provided size in pixels
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    CGSize sizeInPixels = CGSizeMake(viewSize.width * scale, viewSize.height * scale);
-    NSString *thumbnailURL = [self.mxRestClient urlOfContentThumbnail:contentURI withSize:sizeInPixels andMethod:thumbnailingMethod];
-    if (nil == thumbnailURL) {
-        // Manage backward compatibility. The content URL used to be an absolute HTTP URL
-        thumbnailURL = contentURI;
+- (void)storePartialTextMessage:(NSString*)textMessage forRoomId:(NSString*)roomId {
+    if (roomId) {
+        if (textMessage.length) {
+            [self.partialTextMsgByRoomId setObject:textMessage forKey:roomId];
+        } else {
+            [self.partialTextMsgByRoomId removeObjectForKey:roomId];
+        }
     }
-    return thumbnailURL;
 }
 
-#pragma mark -
+- (NSString*)partialTextMessageForRoomId:(NSString*)roomId {
+    if (roomId) {
+        return [self.partialTextMsgByRoomId objectForKey:roomId];
+    }
+    return nil;
+}
+
+- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
+    CGFloat powerLevel = 0;
+    
+    // Customize banned and left (kicked) members
+    if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
+        powerLevel = 0;
+    } else {
+        // Handle power level display
+        //self.userPowerLevel.hidden = NO;
+        MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
+        
+        int maxLevel = 0;
+        for (NSString *powerLevel in roomPowerLevels.users.allValues) {
+            int level = [powerLevel intValue];
+            if (level > maxLevel) {
+                maxLevel = level;
+            }
+        }
+        NSUInteger userPowerLevel = [roomPowerLevels powerLevelOfUserWithUserID:roomMember.userId];
+        float userPowerLevelFloat = 0.0;
+        if (userPowerLevel) {
+            userPowerLevelFloat = userPowerLevel;
+        }
+        
+        powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
+    }
+    
+    return powerLevel;
+}
+
+#pragma mark - Event handling
+
+// Checks whether the event is related to an attachment and if it is supported
+- (BOOL)isSupportedAttachment:(MXEvent*)event {
+    BOOL isSupportedAttachment = NO;
+    
+    if (event.eventType == MXEventTypeRoomMessage) {
+        NSString *msgtype = event.content[@"msgtype"];
+        NSString *requiredField;
+        
+        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
+            requiredField = event.content[@"url"];
+            if (requiredField.length) {
+                isSupportedAttachment = YES;
+            }
+        } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
+            // Not supported yet
+        } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
+            requiredField = event.content[@"url"];
+            if (requiredField) {
+                isSupportedAttachment = YES;
+            }
+        } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
+            // Not supported yet
+        }
+    }
+    return isSupportedAttachment;
+}
+
+// Check whether the event is emote event
+- (BOOL)isEmote:(MXEvent*)event {
+    if (event.eventType == MXEventTypeRoomMessage) {
+        NSString *msgtype = event.content[@"msgtype"];
+        if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 - (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState {
     // Consider first the current display name defined in provided room state (Note: this room state is supposed to not take the new event into account)
@@ -1149,66 +1220,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     return displayText;
 }
 
-- (NSUInteger) MXCacheSize {
-    
-    if (self.mxFileStore) {
-        return self.mxFileStore.diskUsage;
-    }
-    
-    return 0;
-}
-
-- (NSUInteger) cachesSize {
-    return self.MXCacheSize + [MediaManager cacheSize];
-}
-
-- (NSUInteger) minCachesSize {
-    // add a 50MB margin to avoid cache file deletion
-    return self.MXCacheSize + [MediaManager minCacheSize] + 50 * 1024 * 1024;
-}
-
-- (NSUInteger) currentMaxCachesSize {
-    return self.MXCacheSize + [MediaManager currentMaxCacheSize];
-}
-
-- (void)setCurrentMaxCachesSize:(NSUInteger)maxCachesSize {
-    [MediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
-}
-
-- (NSUInteger) maxAllowedCachesSize {
-    return self.MXCacheSize + [MediaManager maxAllowedCacheSize];
-}
-
-- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
-    CGFloat powerLevel = 0;
-    
-    // Customize banned and left (kicked) members
-    if (roomMember.membership == MXMembershipLeave || roomMember.membership == MXMembershipBan) {
-        powerLevel = 0;
-    } else {
-        // Handle power level display
-        //self.userPowerLevel.hidden = NO;
-        MXRoomPowerLevels *roomPowerLevels = room.state.powerLevels;
-        
-        int maxLevel = 0;
-        for (NSString *powerLevel in roomPowerLevels.users.allValues) {
-            int level = [powerLevel intValue];
-            if (level > maxLevel) {
-                maxLevel = level;
-            }
-        }
-        NSUInteger userPowerLevel = [roomPowerLevels powerLevelOfUserWithUserID:roomMember.userId];
-        float userPowerLevelFloat = 0.0;
-        if (userPowerLevel) {
-            userPowerLevelFloat = userPowerLevel;
-        }
-        
-        powerLevel = maxLevel ? userPowerLevelFloat / maxLevel : 1;
-    }
-
-    return powerLevel;
-}
-
+#pragma mark - Presence
 
 // return the presence ring color
 // nil means there is no ring to display
@@ -1227,6 +1239,8 @@ static MatrixSDKHandler *sharedHandler = nil;
             return nil;
     }
 }
+
+#pragma mark - Bing work
 
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text {
@@ -1264,6 +1278,23 @@ static MatrixSDKHandler *sharedHandler = nil;
         }
     }
     return NO;
+}
+
+#pragma mark - Thumbnail
+
+// Return the suitable url to display the content thumbnail into the provided view size
+// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
+- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod {
+    // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+    // Convert first the provided size in pixels
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize sizeInPixels = CGSizeMake(viewSize.width * scale, viewSize.height * scale);
+    NSString *thumbnailURL = [self.mxRestClient urlOfContentThumbnail:contentURI withSize:sizeInPixels andMethod:thumbnailingMethod];
+    if (nil == thumbnailURL) {
+        // Manage backward compatibility. The content URL used to be an absolute HTTP URL
+        thumbnailURL = contentURI;
+    }
+    return thumbnailURL;
 }
 
 @end

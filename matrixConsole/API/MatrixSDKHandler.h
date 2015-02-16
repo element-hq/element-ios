@@ -72,34 +72,32 @@ typedef enum : NSUInteger {
 
 - (void)enableInAppNotifications:(BOOL)isEnabled;
 
-- (BOOL)isSupportedAttachment:(MXEvent*)event;
-- (BOOL)isEmote:(MXEvent*)event;
-
-// return a MatrixIDs list of 1:1 room members
-- (NSArray*)oneToOneRoomMemberMatrixIDs;
+// return a userIds list of 1:1 room members
+- (NSArray*)oneToOneRoomMemberIDs;
 
 // Searches if a private OneToOne room has been started with this user
 // Returns the room ID (nil if not found)
 - (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId;
-    
 // Reopens an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
 
-// the pushes could have disabled for a dedicated room
-// reenable them
-- (void)allowRoomPushes:(NSString*)roomID;
+// Enables inApp notifications for a dedicated room if they were disabled
+- (void)restoreInAppNotificationsForRoomId:(NSString*)roomID;
 
-// Return the suitable url to display the content thumbnail into the provided view size
-// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
-- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
+// Stores the current text message partially typed in text input before leaving a room (use nil to reset the current value)
+- (void)storePartialTextMessage:(NSString*)textMessage forRoomId:(NSString*)roomId;
+// Returns the current partial message stored for this room (nil if none)
+- (NSString*)partialTextMessageForRoomId:(NSString*)roomId;
 
+// user power level in a dedicated room
+- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
+
+- (BOOL)isSupportedAttachment:(MXEvent*)event;
+- (BOOL)isEmote:(MXEvent*)event;
 // Note: the room state expected by the 3 following methods is the room state right before handling the event
 - (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
-
-// user power level in a dedicated room
-- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
 
 // return the presence ring color
 // nil means there is no ring to display
@@ -107,5 +105,9 @@ typedef enum : NSUInteger {
 
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text;
+
+// Return the suitable url to display the content thumbnail into the provided view size
+// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
+- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
 
 @end

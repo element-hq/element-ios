@@ -143,7 +143,7 @@
 }
 
 - (void)setVisibleRoomId:(NSString *)aVisibleRoomId {
-    [[MatrixSDKHandler sharedHandler] allowRoomPushes:aVisibleRoomId];
+    [[MatrixSDKHandler sharedHandler] restoreInAppNotificationsForRoomId:aVisibleRoomId];
     _visibleRoomId = aVisibleRoomId;
 }
 

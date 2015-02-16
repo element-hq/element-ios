@@ -126,6 +126,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
 @property (weak, nonatomic) IBOutlet MXCGrowingTextView *messageTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageTextViewTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageTextViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *sendBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messagesTableViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlViewBottomConstraint;
@@ -313,6 +315,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }];
     
     self.messageTextView.delegate = self;
+    // Retrieve the potential message partially typed during last room display
+    self.messageTextView.text = [mxHandler partialTextMessageForRoomId:self.roomId];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -321,6 +325,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     
     // hide action
     if (self.actionMenu) {
@@ -335,6 +341,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self hideRoomMembers];
     
     self.messageTextView.delegate = nil;
+    // Store the potential message partially typed in text input
+    [mxHandler storePartialTextMessage:self.messageTextView.text forRoomId:self.roomId];
 
     // slide to hide keyboard management
     if (isKeyboardObserver) {
@@ -346,7 +354,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self dismissAttachmentImageViews];
     
     if (membersListener) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -2168,18 +2175,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
     // margins between _messageTextView and its superview (controlView)
-    CGFloat controlViewHeight = height + self.controlView.frame.size.height - _messageTextView.frame.size.height;
+    CGFloat controlViewUpdatedHeight = height + _messageTextViewTopConstraint.constant + _messageTextViewBottomConstraint.constant;
     
     // update the controlView height
-    _controlViewHeightConstraint.constant = controlViewHeight;
+    _controlViewHeightConstraint.constant = controlViewUpdatedHeight;
     
     UIEdgeInsets insets = self.messagesTableView.contentInset;
     
     // if the keyboard is not displayed
     if (!isKeyboardDisplayed) {
-        insets.bottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + controlViewHeight - defaultMessagesTableViewBottomConstraint;
+        insets.bottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
     } else {
-        insets.bottom = keyboardHeight + controlViewHeight - defaultMessagesTableViewBottomConstraint;
+        insets.bottom = keyboardHeight + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
     }
     
     self.messagesTableView.contentInset = insets;
