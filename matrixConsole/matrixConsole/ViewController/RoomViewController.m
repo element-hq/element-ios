@@ -315,8 +315,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }];
     
     self.messageTextView.delegate = self;
-    // Retrieve the potential message partially typed during last room display
-    self.messageTextView.text = [mxHandler partialTextMessageForRoomId:self.roomId];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -379,6 +377,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 
     [self updateUI];
+    
+    // Retrieve the potential message partially typed during last room display.
+    // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
+    self.messageTextView.text = [[MatrixSDKHandler sharedHandler] partialTextMessageForRoomId:self.roomId];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -2174,35 +2176,34 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
-    // margins between _messageTextView and its superview (controlView)
+    // Update _messageTextView's superview (controlView)
     CGFloat controlViewUpdatedHeight = height + _messageTextViewTopConstraint.constant + _messageTextViewBottomConstraint.constant;
-    
-    // update the controlView height
     _controlViewHeightConstraint.constant = controlViewUpdatedHeight;
     
+    // We will scroll to bottom after updating controlView only if the most recent message is entirely visible.
+    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+    // Be a bit less retrictive, scroll even if the most recent message is partially hidden
+    maxPositionY += 30;
+    BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+    
+    // Update messages table view inset (only if change is observed)
     UIEdgeInsets insets = self.messagesTableView.contentInset;
-    
-    // if the keyboard is not displayed
-    if (!isKeyboardDisplayed) {
-        insets.bottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
-    } else {
-        insets.bottom = keyboardHeight + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
-    }
-    
-    self.messagesTableView.contentInset = insets;
-    
+    CGFloat insetBottom;
     if (isKeyboardDisplayed) {
-        // scroll to bottom if the user did not scroll to the last 5 pixels of the tableview
-        // add a little margin to avoid approximated values issue
-        if ((self.messagesTableView.contentSize.height - self.messagesTableView.contentOffset.y - 30) <= (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom)) {
-            // force to render the view
-            [self.view layoutIfNeeded];
-            // to have a valid sscroll to bottom
+        insetBottom = keyboardHeight + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
+    } else {
+        insetBottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
+    }
+    if (insets.bottom != insetBottom) {
+        insets.bottom = insetBottom;
+        self.messagesTableView.contentInset = insets;
+        // Force to render the view
+        [self.view layoutIfNeeded];
+        
+        // Adjust scroll view
+        if (shouldScrollToBottom) {
             [self scrollToBottomAnimated:NO];
         }
-    } else {
-        // force to render the view
-        [self.view layoutIfNeeded];
     }
 }
 
