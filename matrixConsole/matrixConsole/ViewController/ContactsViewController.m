@@ -253,8 +253,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     } else {
         [self stopActivityIndicator];
         
-        //NSArray* users = [mxHandler.mxSession users];
-        NSArray* usersIDs = [mxHandler oneToOneRoomMemberMatrixIDs];
+        NSArray* usersIDs = [mxHandler oneToOneRoomMemberIDs];
         // return a MatrixIDs list of 1:1 room members
         
         NSMutableArray* knownUserIDs = [[matrixUserByMatrixID allKeys] mutableCopy];
