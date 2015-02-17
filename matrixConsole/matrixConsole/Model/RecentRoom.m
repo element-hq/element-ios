@@ -22,7 +22,7 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
 @interface RecentRoom() {
     MXRoom *mxRoom;
     id backPaginationListener;
-    NSOperation *backPaginationOperation;
+    MXHTTPOperation *backPaginationOperation;
     
     // Keep reference on last event (used in case of redaction)
     MXEvent *lastEvent;

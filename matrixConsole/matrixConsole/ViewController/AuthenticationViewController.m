@@ -22,7 +22,7 @@
 
 @interface AuthenticationViewController () {
     // Current request in progress
-    NSOperation *mxAuthFlowRequest;
+    MXHTTPOperation *mxAuthFlowRequest;
     
     // Array of flows supported by the home server and implemented by the app (for the current auth type)
     NSMutableArray *supportedFlows;
