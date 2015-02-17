@@ -126,21 +126,20 @@
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
     
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed) {
-        if (currentRoomViewController) {
-            currentRoomViewController.roomId = nil;
-            currentRoomViewController = nil;
-            // Note: The related cell will be deselected during table refresh triggered below
-        }
-    }
-    
     // Refresh display
     shouldHideActivityIndicator = NO;
     if (mxHandler.isActivityInProgress) {
         [self startActivityIndicator];
     }
     [self configureView];
+    
+    if (self.splitViewController) {
+        // Deselect the current selected row, it will be restored on viewDidAppear (if any)
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        if (indexPath) {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -164,14 +163,18 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-    // we scroll in order to show the current selected room in recents table.
-    if (self.splitViewController && !self.splitViewController.isCollapsed) {
-        if (currentSelectedCellIndexPathRow != -1) {
-            NSInteger topCellIndexPathRow = currentSelectedCellIndexPathRow ? currentSelectedCellIndexPathRow - 1: currentSelectedCellIndexPathRow;
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:0];
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    if (!self.splitViewController || self.splitViewController.isCollapsed) {
+        if (currentRoomViewController) {
+            currentRoomViewController.roomId = nil;
+            currentRoomViewController = nil;
+            // Reset selected row index
+            currentSelectedCellIndexPathRow = -1;
         }
+    } else {
+        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+        // the selected room (if any) is highlighted.
+        [self refreshCurrentSelectedCell:YES];
     }
 }
 
@@ -216,7 +219,7 @@
         currentRoomViewController = nil;
         
         // Force table refresh to deselect related cell
-        [self.tableView reloadData];
+        [self refreshRecentsDisplay];
     }
 }
 
@@ -234,6 +237,11 @@
     }
     
     [self.tableView reloadData];
+    
+    // In case of split view controller, update the selected row (if any) and make it visible
+    if (self.splitViewController) {
+        [self refreshCurrentSelectedCell:YES];
+    }
 }
 
 - (void)configureView {
@@ -367,7 +375,7 @@
         }
         
         // Reload table
-        [self.tableView reloadData];
+        [self refreshRecentsDisplay];
         
         // Check whether a room is preselected
         if (_preSelectedRoomId) {
@@ -381,7 +389,7 @@
         }
         
         recents = nil;
-        [self.tableView reloadData];
+        [self refreshRecentsDisplay];
     }
     
     if (recents) {
@@ -400,7 +408,7 @@
 }
 
 - (void)onRecentRoomUpdatedByBackPagination:(NSNotification *)notif{
-    [self.tableView reloadData];
+    [self refreshRecentsDisplay];
     [self updateTitleView];
     
     if ([notif.object isKindOfClass:[NSString class]]) {
@@ -475,6 +483,40 @@
     [UIView setAnimationsEnabled:YES];
 }
 
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible {
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+    currentSelectedCellIndexPathRow = -1;
+    if (currentRoomViewController) {
+        // Look for the rank of this selected room in displayed recents
+        NSArray *displayedRecents = filteredRecents ? filteredRecents : recents;
+        for (NSInteger index = 0; index < displayedRecents.count; index ++) {
+            RecentRoom *recentRoom = [displayedRecents objectAtIndex:index];
+            if ([currentRoomViewController.roomId isEqualToString:recentRoom.roomId]) {
+                currentSelectedCellIndexPathRow = index;
+                break;
+            }
+        }
+    }
+    
+    if (currentSelectedCellIndexPathRow != -1) {
+        // Select the right row
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentSelectedCellIndexPathRow inSection:0];
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        
+        if (forceVisible) {
+            // Scroll table view to make the selected row appear at second position
+            NSInteger topCellIndexPathRow = currentSelectedCellIndexPathRow ? currentSelectedCellIndexPathRow - 1: currentSelectedCellIndexPathRow;
+            indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:0];
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
+    } else {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        if (indexPath) {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    }
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -526,6 +568,9 @@
         [self updateTitleView];
         
         if (self.splitViewController) {
+            // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
+            [self refreshCurrentSelectedCell:NO];
+            
             // IOS >= 8
             if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
                 controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
@@ -541,11 +586,6 @@
     
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
-            
-            if (!self.splitViewController.isCollapsed) {
-                // Force table refresh to select the right cell
-                [self.tableView reloadData];
-            }
         }
         
         // Hide back button title
@@ -556,20 +596,6 @@
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Set here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    currentSelectedCellIndexPathRow = -1;
-    if (currentRoomViewController) {
-        // Look for the rank of this selected room in displayed recents
-        NSArray *displayedRecents = filteredRecents ? filteredRecents : recents;
-        for (NSInteger index = 0; index < displayedRecents.count; index ++) {
-            RecentRoom *recentRoom = [displayedRecents objectAtIndex:index];
-            if ([currentRoomViewController.roomId isEqualToString:recentRoom.roomId]) {
-                currentSelectedCellIndexPathRow = index;
-                break;
-            }
-        }
-    }
-    
     return 1;
 }
 
@@ -672,14 +698,6 @@
     }
 }
 
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Select cell of the current selected room (if any) - Useful in landscape mode with split view controller.
-    // Note: This operation has to be performed here in order to work around selection change by the system during table view rendering.
-    [cell setSelected:(indexPath.row == currentSelectedCellIndexPathRow) animated:NO];
-}
-
 #pragma mark - UISearchBarDelegate
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
@@ -710,7 +728,7 @@
         filteredRecents = nil;
     }
     // Refresh display
-    [self.tableView reloadData];
+    [self refreshRecentsDisplay];
     [self scrollToTop];
 }
 
@@ -727,7 +745,7 @@
     recentsSearchBar = nil;
     filteredRecents = nil;
     self.tableView.tableHeaderView = nil;
-    [self.tableView reloadData];
+    [self refreshRecentsDisplay];
     [self scrollToTop];
 }
 
