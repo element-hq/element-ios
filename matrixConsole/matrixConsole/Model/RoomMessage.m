@@ -425,10 +425,10 @@ static NSAttributedString *messageSeparator = nil;
             CGFloat width, height;
             width = height = 40;
             if (_thumbnailInfo || _attachmentInfo) {
-                if (_thumbnailInfo) {
+                if (_thumbnailInfo && _thumbnailInfo[@"w"] && _thumbnailInfo[@"h"]) {
                     width = [_thumbnailInfo[@"w"] integerValue];
                     height = [_thumbnailInfo[@"h"] integerValue];
-                } else {
+                } else if (_attachmentInfo[@"w"] && _attachmentInfo[@"h"]) {
                     width = [_attachmentInfo[@"w"] integerValue];
                     height = [_attachmentInfo[@"h"] integerValue];
                 }
