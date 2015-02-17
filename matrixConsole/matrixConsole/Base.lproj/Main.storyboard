@@ -756,26 +756,14 @@
                                                 <action selector="onButtonToggle:" destination="qlN-Mb-ZH7" eventType="touchUpInside" id="qJQ-h5-V6K"/>
                                             </connections>
                                         </button>
-                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ryu-DQ-ZnB" userLabel="anchorView">
-                                            <rect key="frame" x="300" y="0.0" width="1" height="43"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="43" id="KTz-7p-S3o"/>
-                                                <constraint firstAttribute="width" constant="1" id="fos-Ji-LqY"/>
-                                            </constraints>
-                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ryu-DQ-ZnB" firstAttribute="centerX" secondItem="fW1-mK-8cr" secondAttribute="centerX" multiplier="2/3" constant="1" id="49M-p4-RIU"/>
-                                        <constraint firstAttribute="centerX" secondItem="ryu-DQ-ZnB" secondAttribute="centerX" id="K08-Cg-VwL"/>
-                                        <constraint firstAttribute="centerY" secondItem="ryu-DQ-ZnB" secondAttribute="centerY" id="RIQ-w6-6lD"/>
-                                        <constraint firstItem="fW1-mK-8cr" firstAttribute="leading" secondItem="ryu-DQ-ZnB" secondAttribute="trailing" constant="14" id="bgp-av-VW8"/>
+                                        <constraint firstItem="fW1-mK-8cr" firstAttribute="leading" secondItem="1wm-Iq-0AV" secondAttribute="trailing" constant="30" id="dLu-Mm-iRr"/>
                                         <constraint firstAttribute="centerY" secondItem="fW1-mK-8cr" secondAttribute="centerY" id="fTA-lc-Gew"/>
                                         <constraint firstItem="1wm-Iq-0AV" firstAttribute="leading" secondItem="C5i-Xc-2Zi" secondAttribute="leading" constant="15" id="jXu-vD-gsh"/>
-                                        <constraint firstItem="ryu-DQ-ZnB" firstAttribute="centerX" secondItem="1wm-Iq-0AV" secondAttribute="centerX" multiplier="2" constant="1" id="pjL-F2-SeU"/>
+                                        <constraint firstItem="1wm-Iq-0AV" firstAttribute="width" secondItem="fW1-mK-8cr" secondAttribute="width" id="qKJ-6H-KOM"/>
                                         <constraint firstAttribute="trailing" secondItem="fW1-mK-8cr" secondAttribute="trailing" constant="15" id="rhr-8v-COx"/>
                                         <constraint firstAttribute="centerY" secondItem="1wm-Iq-0AV" secondAttribute="centerY" id="vru-fx-lq1"/>
-                                        <constraint firstItem="ryu-DQ-ZnB" firstAttribute="leading" secondItem="1wm-Iq-0AV" secondAttribute="trailing" constant="15" id="y2z-pP-uVf"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
