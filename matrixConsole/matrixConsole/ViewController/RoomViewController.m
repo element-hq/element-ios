@@ -67,6 +67,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @interface RoomViewController () {
     BOOL forceScrollToBottomOnViewDidAppear;
     BOOL isJoinRequestInProgress;
+    BOOL isScrollingToBottom;
     
     // Typing notification
     NSDate *lastTypingDate;
@@ -370,7 +371,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (forceScrollToBottomOnViewDidAppear) {
         dispatch_async(dispatch_get_main_queue(), ^{
             // Scroll to the bottom
-            [self scrollToBottomAnimated:animated];
+            [self scrollMessagesTableViewToBottomAnimated:animated];
         });
         forceScrollToBottomOnViewDidAppear = NO;
         self.messagesTableView.hidden = NO;
@@ -777,16 +778,13 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     
                     // Refresh table display except if a back pagination is in progress
                     if (!isBackPaginationInProgress) {
-                        // We will scroll to bottom after updating tableView only if the most recent message is entirely visible.
-                        CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-                        // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-                        maxPositionY += 30;
-                        BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
                         // Refresh tableView
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            // We will scroll to bottom after updating tableView if the current table position is already at the bottom.
+                            BOOL shouldScrollToBottom = [self isMessagesTableScrollViewAtTheBottom];
                             [self.messagesTableView reloadData];
                             if (shouldScrollToBottom) {
-                                [self scrollToBottomAnimated:YES];
+                                [self scrollMessagesTableViewToBottomAnimated:YES];
                             }
                         });
                         
@@ -899,12 +897,29 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self.messagesTableView reloadData];
 }
 
-- (void)scrollToBottomAnimated:(BOOL)animated {
-    // Scroll table view to the bottom
-    NSInteger rowNb = messages.count;
-    // Check whether there is some data and whether the table has already been loaded
-    if (rowNb && self.messagesTableView.contentSize.height) {
-        [self.messagesTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(rowNb - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+- (BOOL)isMessagesTableScrollViewAtTheBottom {
+    // Check whether the most recent message is visible.
+    // Compute the max vertical position visible according to contentOffset
+    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
+    // Be a bit less retrictive, consider the table view at the bottom even if the most recent message is partially hidden
+    maxPositionY += 30;
+    BOOL isScrolledToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+    
+    // Consider the table view at the bottom if a scrolling to bottom is in progress too
+    return (isScrolledToBottom || isScrollingToBottom);
+}
+
+- (void)scrollMessagesTableViewToBottomAnimated:(BOOL)animated {
+    if (self.messagesTableView.contentSize.height) {
+        CGFloat visibleHeight = self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom;
+        if (visibleHeight < self.messagesTableView.contentSize.height) {
+            CGFloat wantedOffsetY = self.messagesTableView.contentSize.height - visibleHeight;
+            CGFloat currentOffsetY = self.messagesTableView.contentOffset.y;
+            if (wantedOffsetY != currentOffsetY) {
+                isScrollingToBottom = YES;
+                [self.messagesTableView setContentOffset:CGPointMake(0, wantedOffsetY) animated:animated];
+            }
+        }
     }
 }
 
@@ -1168,7 +1183,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Adjust vertical content offset
         if (shouldScrollToBottom) {
-            [self scrollToBottomAnimated:NO];
+            [self scrollMessagesTableViewToBottomAnimated:NO];
         } else if (verticalOffset > 0) {
             // Adjust vertical offset in order to limit scrolling down
             CGPoint contentOffset = self.messagesTableView.contentOffset;
@@ -1622,7 +1637,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.messagesTableView.contentInset = insets;
         
         // scroll the tableview content
-        [self scrollToBottomAnimated:NO];
+        [self scrollMessagesTableViewToBottomAnimated:NO];
         
         // force to redraw the layout (else _controlViewBottomConstraint.constant will not be animated)
         [self.view layoutIfNeeded];
@@ -2143,6 +2158,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // Consider this callback to reset scrolling to bottom flag
+    isScrollingToBottom = NO;
+}
+
 #pragma mark - HPGrowingTextView delegate
 
 - (void)growingTextViewDidEndEditing:(HPGrowingTextView *)growingTextView {
@@ -2180,11 +2200,8 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     CGFloat controlViewUpdatedHeight = height + _messageTextViewTopConstraint.constant + _messageTextViewBottomConstraint.constant;
     _controlViewHeightConstraint.constant = controlViewUpdatedHeight;
     
-    // We will scroll to bottom after updating controlView only if the most recent message is entirely visible.
-    CGFloat maxPositionY = self.messagesTableView.contentOffset.y + (self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom);
-    // Be a bit less retrictive, scroll even if the most recent message is partially hidden
-    maxPositionY += 30;
-    BOOL shouldScrollToBottom = (maxPositionY >= self.messagesTableView.contentSize.height);
+    // We will scroll to bottom after updating tableView if the current table position is already at the bottom.
+    BOOL shouldScrollToBottom = [self isMessagesTableScrollViewAtTheBottom];
     
     // Update messages table view inset (only if change is observed)
     UIEdgeInsets insets = self.messagesTableView.contentInset;
@@ -2202,7 +2219,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Adjust scroll view
         if (shouldScrollToBottom) {
-            [self scrollToBottomAnimated:NO];
+            [self scrollMessagesTableViewToBottomAnimated:NO];
         }
     }
 }
@@ -2754,9 +2771,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Refresh table display
         [self.messagesTableView reloadData];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self scrollToBottomAnimated:NO];
-        });
+        [self scrollMessagesTableViewToBottomAnimated:NO];
     }
 }
 
