@@ -16,6 +16,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "MatrixSDKHandler.h"
+
 // Provide the download progress
 // object: URL
 // userInfo: kMediaLoaderProgressRateKey : progress value nested in a NSNumber (range 0->1)
@@ -66,7 +68,7 @@ typedef void (^blockMediaLoader_onError)(NSError *error);
     NSString *uploadId;
     CGFloat initialRange;
     CGFloat range;
-    NSOperation* operation;
+    MXHTTPOperation* operation;
 }
 
 @property (strong, readonly) NSMutableDictionary* statisticsDict;

@@ -15,7 +15,6 @@
  */
 
 #import "MediaManager.h"
-#import "MatrixSDKHandler.h"
 #import "MXCTools.h"
 
 NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
@@ -45,7 +44,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         downloadData = nil;
     }
     else {
-        if (operation.executing) {
+        if (operation.operation.executing) {
             NSLog(@"media upload has been cancelled (%@)", mediaURL);
             [operation cancel];
             operation = nil;

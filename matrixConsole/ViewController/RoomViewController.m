@@ -80,7 +80,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL isFirstPagination;
     NSUInteger backPaginationAddedMsgNb;
     NSUInteger backPaginationHandledEventsNb;
-    NSOperation *backPaginationOperation;
+    MXHTTPOperation *backPaginationOperation;
     CGFloat backPaginationSavedFirstMsgHeight;
     
     // Members list
