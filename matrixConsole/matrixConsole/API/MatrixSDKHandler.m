@@ -41,6 +41,9 @@ static MatrixSDKHandler *sharedHandler = nil;
     id eventsListener;
     // Reachability observer
     id reachabilityObserver;
+
+    // Used for logging application start up
+    NSDate *openSessionStartDate;
 }
 
 @property (strong, nonatomic) MXFileStore *mxFileStore;
@@ -125,7 +128,8 @@ static MatrixSDKHandler *sharedHandler = nil;
     MXCredentials *credentials = [[MXCredentials alloc] initWithHomeServer:self.homeServerURL
                                                                     userId:self.userId
                                                                accessToken:self.accessToken];
-    
+
+    openSessionStartDate = [NSDate date];
     self.mxRestClient = [[MXRestClient alloc] initWithCredentials:credentials];
     if (self.mxRestClient) {
         // Set identity server (if any)
@@ -195,6 +199,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     // Launch mxSession
     self.status = MatrixSDKHandlerStatusInitialServerSyncInProgress;
     [self.mxSession start:^{
+        NSLog(@"[MatrixSDKHandler] The app is ready. Matrix SDK session has been started in %0.fms.", [[NSDate date] timeIntervalSinceDate:openSessionStartDate] * 1000);
         self.status = MatrixSDKHandlerStatusServerSyncDone;
         [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
         
