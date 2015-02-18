@@ -119,6 +119,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
+    
+    // Reachability observer
+    id reachabilityObserver;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -214,6 +217,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         typingNotifListener = nil;
     }
     currentTypingUsers = nil;
+    
+    if (reachabilityObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+        reachabilityObserver = nil;
+    }
     
     // Release local echo resources
     pendingOutgoingEvents = nil;
@@ -623,6 +631,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         currentTypingUsers = nil;
         if (typingNotifListener) {
             [self.mxRoom removeListener:typingNotifListener];
+            typingNotifListener = nil;
+        }
+        
+        if (reachabilityObserver) {
+            [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+            reachabilityObserver = nil;
         }
     }
     // The whole room history is flushed here to rebuild it from the current instant (live)
@@ -3091,6 +3105,12 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 # pragma mark - Typing notification
 
 - (void)handleTypingNotification:(BOOL)typing {
+    // Remove potential reachability observer
+    if (reachabilityObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+        reachabilityObserver = nil;
+    }
+    
     NSUInteger notificationTimeoutMS = -1;
     if (typing) {
         // Check whether a typing event has been already reported to server (We wait for the end of the local timout before considering this new event)
@@ -3143,8 +3163,24 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                     // Cancel timer (if any)
                                     [typingTimer invalidate];
                                     typingTimer = nil;
-                                    // Send again
-                                    [self handleTypingNotification:typing];
+                                    
+                                    // Check network reachability
+                                    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
+                                        // Add observer to launch a new attempt according to reachability.
+                                        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+                                            NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+                                            if (statusItem) {
+                                                AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
+                                                if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
+                                                    // New attempt
+                                                    [self handleTypingNotification:typing];
+                                                }
+                                            }
+                                        }];
+                                    } else {
+                                        // Send again
+                                        [self handleTypingNotification:typing];
+                                    }
                                 }];
 }
 
