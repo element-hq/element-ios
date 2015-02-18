@@ -247,9 +247,9 @@ static MatrixSDKHandler *sharedHandler = nil;
         if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
             // Add observer to launch a new attempt according to reachability.
             reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-                NSNumber *staturItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
-                if (staturItem) {
-                    AFNetworkReachabilityStatus reachabilityStatus = staturItem.integerValue;
+                NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+                if (statusItem) {
+                    AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
                     if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
                         // New attempt
                         [self launchInitialServerSync];
@@ -482,9 +482,9 @@ static MatrixSDKHandler *sharedHandler = nil;
             
             // Add observer to update handler activity according to reachability.
             reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-                NSNumber *staturItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
-                if (staturItem) {
-                    AFNetworkReachabilityStatus reachabilityStatus = staturItem.integerValue;
+                NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+                if (statusItem) {
+                    AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
                     self.isActivityInProgress = (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus ==AFNetworkReachabilityStatusReachableViaWWAN);
                 }
             }];
