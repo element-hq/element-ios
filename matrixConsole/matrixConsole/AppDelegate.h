@@ -32,6 +32,7 @@
 @property (strong, nonatomic) NSString *build;
 
 @property (nonatomic) BOOL isAppForeground;
+@property (nonatomic) BOOL isOffline;
 
 + (AppDelegate*)theDelegate;
 

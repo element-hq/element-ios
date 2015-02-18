@@ -28,7 +28,10 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
-@interface AppDelegate () <UISplitViewControllerDelegate>
+@interface AppDelegate () <UISplitViewControllerDelegate> {
+    // Reachability observer
+    id reachabilityObserver;
+}
 
 @end
 
@@ -70,6 +73,29 @@
         }
     }
     return _build;
+}
+
+- (void)setIsOffline:(BOOL)isOffline {
+    if (isOffline) {
+        // Add observer to leave this state automatically.
+        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+            if (statusItem) {
+                AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
+                if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
+                    self.isOffline = NO;
+                }
+            }
+        }];
+    } else {
+        // Release potential observer
+        if (reachabilityObserver) {
+            [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+            reachabilityObserver = nil;
+        }
+    }
+    
+    _isOffline = isOffline;
 }
 
 #pragma mark - UIApplicationDelegate
@@ -144,6 +170,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // Stop reachability monitoring
+    self.isOffline = NO;
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     
     // check if some media msut be released to reduce the cache size
@@ -257,6 +284,11 @@
 }
 
 - (MXCAlert*)showErrorAsAlert:(NSError*)error {
+    // Ignore network reachability error when the app is already offline
+    if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
+        return nil;
+    }
+    
     if (self.errorNotification) {
         [self.errorNotification dismiss:NO];
     }
@@ -273,6 +305,11 @@
         [AppDelegate theDelegate].errorNotification = nil;
     }];
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
+    
+    // Switch in offline mode in case of network reachability error
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
+        self.isOffline = YES;
+    }
     
     return self.errorNotification;
 }
