@@ -724,7 +724,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                         [self removeMessage:message];
                                     }
                                 } else {
-                                    [self removeMessage:message];
+                                    // Workaround: in case of attachment, we keep our own timestamp and ignore server timestamp to prevent messages jump
+                                    RoomMessageComponent *component = [message componentWithEventId:event.eventId];
+                                    event.originServerTs = component.event.originServerTs;
+                                    RoomMessage *aNewMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomStateCpy];
+                                    if (aNewMessage) {
+                                        [self replaceMessage:message withMessage:aNewMessage];
+                                    } else {
+                                        // Ignore unsupported/unexpected events
+                                        [self removeMessage:message];
+                                    }
+                                    isHandled = YES;
                                 }
                             } else {
                                 // Here the received event id has not been found in current messages list.
@@ -747,7 +757,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                                 [self removeMessage:message];
                                             }
                                         } else {
-                                            [self removeMessage:message];
+                                            // Workaround: in case of attachment, we keep our own timestamp and ignore server timestamp to prevent messages jump
+                                            RoomMessageComponent *component = [message componentWithEventId:pendingEvent.eventId];
+                                            event.originServerTs = component.event.originServerTs;
+                                            RoomMessage *aNewMessage = [[RoomMessage alloc] initWithEvent:event andRoomState:roomStateCpy];
+                                            if (aNewMessage) {
+                                                [self replaceMessage:message withMessage:aNewMessage];
+                                            } else {
+                                                // Ignore unsupported/unexpected events
+                                                [self removeMessage:message];
+                                            }
+                                            isHandled = YES;
                                         }
                                     }
                                 }
@@ -2108,11 +2128,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Release here resources, and restore reusable cells
     
     // Check table view members vs messages
-    if (tableView == self.membersTableView) {
+    if ([cell isKindOfClass:[RoomMemberTableCell class]]) {
         RoomMemberTableCell *memberCell = (RoomMemberTableCell*)cell;
         // Stop potential timer used to refresh member's presence
         [memberCell setRoomMember:nil withRoom:nil];
-    } else if (tableView == self.messagesTableView) {
+    } else if ([cell isKindOfClass:[RoomMessageTableCell class]]) {
         RoomMessageTableCell *msgCell = (RoomMessageTableCell*)cell;
         if ([cell isKindOfClass:[OutgoingMessageTableCell class]]) {
             OutgoingMessageTableCell *outgoingMsgCell = (OutgoingMessageTableCell*)cell;
