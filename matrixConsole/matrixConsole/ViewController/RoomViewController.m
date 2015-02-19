@@ -3167,13 +3167,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                     // Check network reachability
                                     if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
                                         // Add observer to launch a new attempt according to reachability.
+                                        __weak typeof(self) weakSelf = self;
                                         reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
                                             NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
                                             if (statusItem) {
                                                 AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
                                                 if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
                                                     // New attempt
-                                                    [self handleTypingNotification:typing];
+                                                    [weakSelf handleTypingNotification:typing];
                                                 }
                                             }
                                         }];
