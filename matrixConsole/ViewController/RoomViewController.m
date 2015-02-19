@@ -1722,6 +1722,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
+    // Check screen orientation
     keyboardHeight = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
     
     // bottom view offset
@@ -1777,19 +1778,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         [_messageTextView refreshHeight];
         
     } completion:^(BOOL finished) {
-        // be warned when the keyboard frame is updated
-        // used to trap the slide to close the keyboard
-        [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
-        [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
-        isKeyboardObserver = YES;
+        // Check whether the keyboard is still visible at the end of animation
+        if (inputAccessoryView.superview) {
+            // be warned when the keyboard frame is updated
+            // used to trap the slide to close the keyboard
+            [inputAccessoryView.superview addObserver:self forKeyPath:@"frame" options:0 context:nil];
+            [inputAccessoryView.superview addObserver:self forKeyPath:@"center" options:0 context:nil];
+            isKeyboardObserver = YES;
+        }
     }];
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
-    
     // onKeyboardWillHide seems being called several times by IOS
     if (isKeyboardObserver) {
-        
         // IOS 8 / landscape issue
         // when the keyboard reaches the tabbar, it triggers UIKeyboardWillShowNotification events in loop
         // ensure that there is only one evene registration
