@@ -257,10 +257,13 @@
     
     completionHandler(UIBackgroundFetchResultNoData);
     
-    // Look for the room id
-    NSString* roomId = [userInfo objectForKey:@"room_id"];
-    if (roomId.length) {
-        [self.masterTabBarController showRoom:roomId];
+    // Jump to the concerned room only if the app is transitioning from the background
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+        // Look for the room id
+        NSString* roomId = [userInfo objectForKey:@"room_id"];
+        if (roomId.length) {
+            [self.masterTabBarController showRoom:roomId];
+        }
     }
 }
 
