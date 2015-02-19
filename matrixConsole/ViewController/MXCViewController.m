@@ -18,7 +18,7 @@
 #import "RageShakableUIResponder.h"
 
 @interface MXCViewController () {
-    id reachabilityObserver;
+    id mxcViewControllerReachabilityObserver;
 }
 @end
 
@@ -31,8 +31,9 @@
     
     if (self.navigationController) {
         // The navigation bar tintColor depends on reachability status - Register reachability observer
-        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-            [self onReachabilityStatusChange];
+        __weak typeof(self) weakSelf = self;
+        mxcViewControllerReachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+            [weakSelf onReachabilityStatusChange];
         }];
         // Force update
         [self onReachabilityStatusChange];
@@ -42,7 +43,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:mxcViewControllerReachabilityObserver];
     [RageShakableUIResponder cancel:self];
 }
 
