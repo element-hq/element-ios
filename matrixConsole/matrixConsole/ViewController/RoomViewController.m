@@ -3177,6 +3177,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 # pragma mark - UIImagePickerControllerDelegate
 
 - (void)sendImage:(UIImage*)image {
+    // Make sure the uploaded image orientation is up
+    image = [MXCTools forceImageOrientationUp:image];
+    
     // Add a temporary event while the image is attached (local echo)
     MXEvent *localEvent = [self addLocalEchoEventForAttachedImage:image];
     

@@ -32,7 +32,8 @@
 // return the file extension from a contentType
 + (NSString*) fileExtensionFromContentType:(NSString*)contentType;
 
-// Image
+#pragma mark - Image
 + (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
++ (UIImage*)forceImageOrientationUp:(UIImage*)imageSrc;
 
 @end

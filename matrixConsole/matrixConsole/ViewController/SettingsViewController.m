@@ -22,6 +22,7 @@
 #import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 #import "MXC3PID.h"
+#import "MXCTools.h"
 
 #import "ContactManager.h"
 
@@ -417,9 +418,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Check whether avatar has been updated
     if (isAvatarUpdated) {
         if (uploadedPictureURL == nil) {
+            // Retrieve the current picture and make sure its orientation is up
+            UIImage *updatedPicture = [MXCTools forceImageOrientationUp:[self.userPictureButton imageForState:UIControlStateNormal]];
+            
             // Upload picture
             MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];
-            [uploader uploadData:UIImageJPEGRepresentation([self.userPictureButton imageForState:UIControlStateNormal], 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
+            [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
                 // Store uploaded picture url and trigger picture saving
                 uploadedPictureURL = url;
                 [self saveUserInfo];
