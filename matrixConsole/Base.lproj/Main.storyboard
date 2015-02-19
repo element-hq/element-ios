@@ -1222,7 +1222,7 @@
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70b-I3-Cuk" userLabel="retryButton">
                                                         <rect key="frame" x="128" y="30" width="45" height="30"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="45" id="4zv-VS-Uz6"/>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="45" id="4zv-VS-Uz6"/>
                                                             <constraint firstAttribute="height" constant="30" id="eae-iR-11I"/>
                                                         </constraints>
                                                         <state key="normal" title="Retry">
