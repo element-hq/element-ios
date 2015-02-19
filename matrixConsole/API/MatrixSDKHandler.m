@@ -38,7 +38,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     // Handle user's settings change
     id userUpdateListener;
     // Handle events notification
-    id eventsListener;
+    id notificationCenterListener;
     // Reachability observer
     id reachabilityObserver;
 
@@ -266,9 +266,9 @@ static MatrixSDKHandler *sharedHandler = nil;
 - (void)closeSession {
     self.status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
     
-    if (eventsListener) {
-        [self.mxSession removeListener:eventsListener];
-        eventsListener = nil;
+    if (notificationCenterListener) {
+        [self.mxSession.notificationCenter removeListener:notificationCenterListener];
+        notificationCenterListener = nil;
     }
     if (userUpdateListener) {
         [self.mxSession.myUser removeListener:userUpdateListener];
@@ -390,61 +390,50 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 - (void)enableInAppNotifications:(BOOL)isEnabled {
     if (isEnabled) {
-        // Register events listener
-        eventsListener = [self.mxSession listenToEventsOfTypes:self.eventsFilterForMessages onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-            // Consider only live event
-            if (direction == MXEventDirectionForwards) {
-                MXRoomState* roomState = (MXRoomState*)customObject;
-                // If we are running on background, show a local notif
-                if (UIApplicationStateBackground == [UIApplication sharedApplication].applicationState) {
-                    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-                    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
-                    localNotification.hasAction = YES;
-                    [localNotification setAlertBody:[self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES]];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-                } else if (![event.userId isEqualToString:self.userId]
-                           && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                           && ![[AppDelegate theDelegate].masterTabBarController isPresentingMediaPicker]
-                           && ([self.unnotifiedRooms indexOfObject:event.roomId] == NSNotFound)) {
-                    
-                    NSString* messageText = [self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
-                    
-                    // display the alert only the text contains an expected word
-                    if ((0 == [AppSettings sharedSettings].specificWordsToAlertOn.count) ||[self containsBingWord:messageText]) {
-                        // The sender is not the user and the concerned room is not presently visible,
-                        // we display a notification by removing existing one (if any)
-                        if (self.mxNotification) {
-                            [self.mxNotification dismiss:NO];
-                        }
-                        
-                        __weak typeof(self) weakSelf = self;
-                        
-                        self.mxNotification = [[MXCAlert alloc] initWithTitle:roomState.displayname
-                                                                         message:messageText
-                                                                           style:MXCAlertStyleAlert];
-                        self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"Cancel"
-                                                                                                  style:MXCAlertActionStyleDefault
-                                                                                                handler:^(MXCAlert *alert) {
-                                                                                                    weakSelf.mxNotification = nil;
-                                                                                                    [weakSelf.unnotifiedRooms addObject:event.roomId];
-                                                                                                }];
-                        [self.mxNotification addActionWithTitle:@"View"
-                                                          style:MXCAlertActionStyleDefault
-                                                        handler:^(MXCAlert *alert) {
-                                                            weakSelf.mxNotification = nil;
-                                                            // Show the room
-                                                            [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
-                                                        }];
-                        
-                        [self.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
-                    }
+        // Register on notification center
+        notificationCenterListener = [self.mxSession.notificationCenter listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+            // Apply event filter
+            if ([self.eventsFilterForMessages indexOfObject:event.type] == NSNotFound) {
+                // Ignore
+                return;
+            }
+            
+            // Check conditions to display this notification
+            if (![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]
+                && ![[AppDelegate theDelegate].masterTabBarController isPresentingMediaPicker]
+                && ([self.unnotifiedRooms indexOfObject:event.roomId] == NSNotFound)) {
+                // Removing existing notification (if any)
+                if (self.mxNotification) {
+                    [self.mxNotification dismiss:NO];
                 }
+                
+                NSString* messageText = [self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
+                
+                __weak typeof(self) weakSelf = self;
+                self.mxNotification = [[MXCAlert alloc] initWithTitle:roomState.displayname
+                                                              message:messageText
+                                                                style:MXCAlertStyleAlert];
+                self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"Cancel"
+                                                                                          style:MXCAlertActionStyleDefault
+                                                                                        handler:^(MXCAlert *alert) {
+                                                                                            weakSelf.mxNotification = nil;
+                                                                                            [weakSelf.unnotifiedRooms addObject:event.roomId];
+                                                                                        }];
+                [self.mxNotification addActionWithTitle:@"View"
+                                                  style:MXCAlertActionStyleDefault
+                                                handler:^(MXCAlert *alert) {
+                                                    weakSelf.mxNotification = nil;
+                                                    // Show the room
+                                                    [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];
+                                                }];
+                
+                [self.mxNotification showInViewController:[[AppDelegate theDelegate].masterTabBarController selectedViewController]];
             }
         }];
     } else {
-        if (eventsListener) {
-            [self.mxSession removeListener:eventsListener];
-            eventsListener = nil;
+        if (notificationCenterListener) {
+            [self.mxSession.notificationCenter removeListener:notificationCenterListener];
+            notificationCenterListener = nil;
         }
         if (self.mxNotification) {
             [self.mxNotification dismiss:NO];
@@ -1250,8 +1239,7 @@ static MatrixSDKHandler *sharedHandler = nil;
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text {
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    NSMutableArray* wordsList = [[AppSettings sharedSettings].specificWordsToAlertOn mutableCopy];
+    NSMutableArray* wordsList = [NSMutableArray array];
     
     // add the display name
     if (mxHandler.mxSession.myUser.displayname.length) {
