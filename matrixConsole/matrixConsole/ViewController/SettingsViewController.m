@@ -79,11 +79,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Notifications
     UISwitch *apnsNotificationsSwitch;
     UISwitch *inAppNotificationsSwitch;
-    SettingsCellWithLabelAndTextField* inAppNotificationsRulesCell;
     // Dynamic rows in the Notifications section
     NSInteger enablePushNotifRowIndex;
     NSInteger enableInAppNotifRowIndex;
-    NSInteger inAppNotifRulesRowIndex;
     
     // Contacts
     UISwitch *contactsSyncSwitch;
@@ -287,7 +285,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     apnsNotificationsSwitch = nil;
     inAppNotificationsSwitch = nil;
-    inAppNotificationsRulesCell = nil;
     
     allEventsSwitch = nil;
     unsupportedEventsSwitch = nil;
@@ -542,69 +539,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     _saveUserInfoButton.enabled = isDisplayNameUpdated || isAvatarUpdated;
 }
 
-// remove trailing spaces
-- (NSString*)removeUselessSpaceChars:(NSString*)text {
-    NSMutableString* cleanedText = [text mutableCopy];
-    
-    while ([cleanedText hasPrefix:@" "]) {
-        cleanedText = [[cleanedText substringFromIndex:1] mutableCopy];
-    }
-    
-    while ([cleanedText hasSuffix:@" "]) {
-        cleanedText = [[cleanedText substringToIndex:cleanedText.length-1] mutableCopy];
-    }
-    
-    return cleanedText;
-}
-
-// split the words list provided by the user
-// check if they are valid, not duplicated
-- (void)manageWordsList {
-    NSArray* words = [inAppNotificationsRulesCell.settingTextField.text componentsSeparatedByString:@","];
-    NSMutableArray* fiteredWords = [[NSMutableArray alloc] init];
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    // theses both items are implicitly checked
-    NSString* displayname = nil;
-    if (mxHandler.mxSession.myUser.displayname.length) {
-        displayname = mxHandler.mxSession.myUser.displayname;
-    }
-    
-    NSString* userID = nil;
-    if (mxHandler.localPartFromUserId.length) {
-        userID = mxHandler.localPartFromUserId;
-    }
-    
-    // checked word by word
-    for(NSString* word in words) {
-        NSString* cleanWord = [self removeUselessSpaceChars:word];
-        
-        // if they are valid (not null, not implicit and does not already added
-        if ((cleanWord.length > 0) && ![cleanWord isEqualToString:displayname] && ![cleanWord isEqualToString:userID] && ([fiteredWords indexOfObject:cleanWord] == NSNotFound)) {
-            [fiteredWords addObject:cleanWord];
-        }
-    }
-    
-    [[AppSettings sharedSettings] setSpecificWordsToAlertOn:fiteredWords];
-    [self refreshWordsList];
-}
-
-- (void)refreshWordsList {
-    NSMutableString* wordsList = [[NSMutableString alloc] init];
-    NSArray* patterns = [AppSettings sharedSettings].specificWordsToAlertOn;
-    
-    for (NSString* string in patterns) {
-        [wordsList appendFormat:@"%@,", string];
-    }
-    
-    if (wordsList.length > 0) {
-        inAppNotificationsRulesCell.settingTextField.text = [wordsList substringToIndex:wordsList.length - 1];
-    }
-    else {
-        inAppNotificationsRulesCell.settingTextField.text = nil;
-    }
-}
-
 - (void)onMediaDownloadEnd:(NSNotification *)notif {
     // sanity check
     if ([notif.object isKindOfClass:[NSString class]]) {
@@ -775,9 +709,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // Hide the keyboard
         [_userDisplayName resignFirstResponder];
         [self updateSaveUserInfoButtonStatus];
-    } else if (inAppNotificationsRulesCell && [inAppNotificationsRulesCell.settingTextField isFirstResponder]) {
-        [self manageWordsList];
-        [inAppNotificationsRulesCell.settingTextField resignFirstResponder];
     } else if ([submittedEmailCell.settingTextField isFirstResponder]) {
         [submittedEmailCell.settingTextField resignFirstResponder];
     } else if ([emailTokenCell.settingTextField isFirstResponder]) {
@@ -822,15 +753,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             emailTokenCell = nil;
         }
     } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        enableInAppNotifRowIndex = inAppNotifRulesRowIndex = enablePushNotifRowIndex = -1;
+        enableInAppNotifRowIndex = enablePushNotifRowIndex = -1;
         
         if ([APNSHandler sharedHandler].isAvailable) {
             enablePushNotifRowIndex = count++;
         }
         enableInAppNotifRowIndex = count++;
-        if ([[AppSettings sharedSettings] enableInAppNotifications]) {
-            inAppNotifRulesRowIndex = count++;
-        }
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
         countryCodeRowIndex = syncLocalContactsRowIndex = -1;
 
@@ -857,9 +785,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        if (indexPath.row == inAppNotifRulesRowIndex) {
-            return 110;
-        }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         
@@ -972,38 +897,18 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell = emailTokenCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        if (indexPath.row == inAppNotifRulesRowIndex) {
-            // Report the current value (if any)
-            NSString *currentRules = nil;
-            BOOL isFirstResponder = NO;
-            if (inAppNotificationsRulesCell) {
-                currentRules = inAppNotificationsRulesCell.settingTextField.text;
-                isFirstResponder = inAppNotificationsRulesCell.settingTextField.isFirstResponder;
-            }
-            inAppNotificationsRulesCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndTextField" forIndexPath:indexPath];
-            inAppNotificationsRulesCell.settingLabel.text = @"If blank, all messages will trigger an alert.Your username & display name always alerts.";
-            inAppNotificationsRulesCell.settingTextField.text = currentRules;
-            
-            // If the current rules are empty, reload rules from settings except if the textField was the first responder
-            if (!currentRules.length && !isFirstResponder) {
-                [self refreshWordsList];
-            }
-        
-            cell = inAppNotificationsRulesCell;
-        } else {
-            SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
-            if (indexPath.row == enableInAppNotifRowIndex) {
-                notificationsCell.settingLabel.text = @"Enable In-App notifications";
-                notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
-                inAppNotificationsSwitch = notificationsCell.settingSwitch;
-            } else /* enablePushNotifRowIndex */{
-                notificationsCell.settingLabel.text = @"Enable push notifications";
-                notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
-                notificationsCell.settingSwitch.enabled = YES;
-                apnsNotificationsSwitch = notificationsCell.settingSwitch;
-            }
-            cell = notificationsCell;
+        SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+        if (indexPath.row == enableInAppNotifRowIndex) {
+            notificationsCell.settingLabel.text = @"Enable In-App notifications";
+            notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
+            inAppNotificationsSwitch = notificationsCell.settingSwitch;
+        } else /* enablePushNotifRowIndex */{
+            notificationsCell.settingLabel.text = @"Enable push notifications";
+            notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
+            notificationsCell.settingSwitch.enabled = YES;
+            apnsNotificationsSwitch = notificationsCell.settingSwitch;
         }
+        cell = notificationsCell;
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         if (indexPath.row  == syncLocalContactsRowIndex) {
             SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];

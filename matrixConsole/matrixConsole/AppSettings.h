@@ -18,7 +18,6 @@
 @interface AppSettings : NSObject
 
 @property (nonatomic) BOOL enableInAppNotifications;
-@property (nonatomic) NSArray* specificWordsToAlertOn;
 
 @property (nonatomic) BOOL displayAllEvents;
 @property (nonatomic) BOOL hideRedactedInformation;
