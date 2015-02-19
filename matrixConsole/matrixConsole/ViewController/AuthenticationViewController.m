@@ -279,7 +279,18 @@
     
     if (!_selectedFlow) {
         // Notify user that no flow is supported
-        _noFlowLabel.text = [NSString stringWithFormat:@"Currently we do not support %@ flows defined by this Home Server", _authType == AuthenticationTypeLogin ? @"Login" : @"Registration"];
+        if (_authType == AuthenticationTypeLogin) {
+            _noFlowLabel.text = @"Currently we do not support Login flows defined by this Home Server.";
+            
+            [_retryButton setTitle:@"Retry" forState:UIControlStateNormal];
+            [_retryButton setTitle:@"Retry" forState:UIControlStateHighlighted];
+        } else {
+            _noFlowLabel.text = @"Registration is not currently supported.";
+            
+            [_retryButton setTitle:@"Create account on Matrix.org" forState:UIControlStateNormal];
+            [_retryButton setTitle:@"Create account on Matrix.org" forState:UIControlStateHighlighted];
+        }
+        
         _noFlowLabel.hidden = NO;
         _retryButton.hidden = NO;
     }
@@ -312,6 +323,8 @@
     if (!_noFlowLabel.text.length) {
         _noFlowLabel.text = @"We failed to retrieve authentication flow from this Home Server";
     }
+    [_retryButton setTitle:@"Retry" forState:UIControlStateNormal];
+    [_retryButton setTitle:@"Retry" forState:UIControlStateHighlighted];
     _retryButton.hidden = NO;
     
     // Handle specific error code here
@@ -390,7 +403,14 @@
             self.authType = AuthenticationTypeLogin;
         }
     } else if (sender == _retryButton) {
-        [self refreshSupportedAuthFlow];
+        if ([_retryButton.titleLabel.text isEqualToString:@"Retry"]) {
+            [self refreshSupportedAuthFlow];
+        } else {
+            // Open Matrix web page to create an account
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://matrix.org/beta/#/register"]];
+            // Switch back on login screen
+            self.authType = AuthenticationTypeLogin;
+        }
     }
 }
 
