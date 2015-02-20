@@ -39,6 +39,9 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
         _lastEventOriginServerTs = event.originServerTs;
         _unreadCount = isUnread ? 1 : 0;
         
+        // In case of unread, check whether the last event description contains bing words
+        _containsBingUnread = (isUnread && !event.isState && !event.redactedBecause && [mxHandler containsBingWord:_lastEventDescription]);
+        
         // Keep ref on event
         lastEvent = event;
         
@@ -51,8 +54,9 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
 }
 
 - (BOOL)updateWithLastEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState markAsUnread:(BOOL)isUnread {
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     // Check whether the description of the provided event is not empty
-    NSString *description = [[MatrixSDKHandler sharedHandler] displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
+    NSString *description = [mxHandler displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
     if (description.length) {
         [self cancelBackPagination];
         // Update current last event
@@ -61,6 +65,7 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
         _lastEventOriginServerTs = event.originServerTs;
         if (isUnread) {
             _unreadCount ++;
+            _containsBingUnread = (_containsBingUnread || (!event.isState && !event.redactedBecause && [mxHandler containsBingWord:_lastEventDescription]));
         }
         return YES;
     } else if (_lastEventDescription.length) {
@@ -73,11 +78,15 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
                 MXEvent *redactedEvent = [lastEvent prune];
                 redactedEvent.redactedBecause = event.originalDictionary;
                 
-                _lastEventDescription = [[MatrixSDKHandler sharedHandler] displayTextForEvent:redactedEvent withRoomState:nil inSubtitleMode:YES];
+                _lastEventDescription = [mxHandler displayTextForEvent:redactedEvent withRoomState:nil inSubtitleMode:YES];
                 if (!_lastEventDescription.length) {
                     // The current last event must be removed, decrement the unread count (if not null)
                     if (_unreadCount) {
                         _unreadCount--;
+                        
+                        if (_unreadCount == 0) {
+                            _containsBingUnread = NO;
+                        } // else _containsBingUnread may be false, we should perhaps reset this flag here
                     }
                     // Trigger back pagination to get an event with a non empty description
                     [self triggerBackPagination];
@@ -91,6 +100,7 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
 
 - (void)resetUnreadCount {
     _unreadCount = 0;
+    _containsBingUnread = NO;
 }
 
 - (void)dealloc {
