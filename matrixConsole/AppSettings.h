@@ -20,7 +20,7 @@
 @property (nonatomic) BOOL enableInAppNotifications;
 
 @property (nonatomic) BOOL displayAllEvents;
-@property (nonatomic) BOOL hideRedactedInformation;
+@property (nonatomic) BOOL hideRedactions;
 @property (nonatomic) BOOL hideUnsupportedEvents;
 @property (nonatomic) BOOL sortMembersUsingLastSeenTime;
 @property (nonatomic) BOOL displayLeftUsers;

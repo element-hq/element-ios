@@ -16,8 +16,8 @@
 	<false/>
 	<key>displayAllEvents</key>
 	<false/>
-	<key>hideRedactedInformation</key>
-	<false/>
+	<key>hideRedactions</key>
+	<true/>
 	<key>hideUnsupportedEvents</key>
 	<true/>
 	<key>sortMembersUsingLastSeenTime</key>

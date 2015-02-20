@@ -879,7 +879,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     if (isRedacted) {
         NSLog(@"Redacted event %@ (%@)", event.description, event.redactedBecause);
         // Check whether redacted information is required
-        if (!isSubtitle && ![AppSettings sharedSettings].hideRedactedInformation) {
+        if (!isSubtitle && ![AppSettings sharedSettings].hideRedactions) {
             redactedInfo = @"<redacted>";
             // Consider live room state to resolve redactor name if no roomState is provided
             MXRoomState *aRoomState = roomState ? roomState : [self.mxSession roomWithRoomId:event.roomId].state;
