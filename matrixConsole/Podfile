@@ -9,6 +9,7 @@ target "matrixConsole" do
 pod 'MatrixSDK', :path => '../../MatrixSDK.podspec'
 pod 'HPGrowingTextView', '~> 1.1'
 pod 'libPhoneNumber-iOS', '~> 0.7.6'
+pod 'GBDeviceInfo', '~> 2.2.9'
 end
 
 target "matrixConsole" do
