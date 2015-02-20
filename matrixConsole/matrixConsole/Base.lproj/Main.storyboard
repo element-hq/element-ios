@@ -1853,7 +1853,7 @@
         <scene sceneID="b0q-mf-7ii">
             <objects>
                 <navigationController title="SettingsNav" id="g3a-7T-Pjt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="more" id="3O7-Cp-aRc"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="tab_settings.png" id="3O7-Cp-aRc"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bra-h0-es4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2137,6 +2137,7 @@
         <image name="matrixUser.png" width="16" height="16"/>
         <image name="play.png" width="64" height="64"/>
         <image name="tab_home.ico" width="16" height="16"/>
+        <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0ws-cL-0tk"/>
