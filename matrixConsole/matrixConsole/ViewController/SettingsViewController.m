@@ -45,7 +45,7 @@
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
-NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@\r\nAccess token: %@";
+NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@";
 NSString* const kBuildFormatText = @"Build: %@\r\n";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
@@ -808,7 +808,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId, mxHandler.accessToken];
+        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -983,7 +983,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
                 allEventsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_REDACTED_INFO_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Hide redacted information";
+                roomsSettingCell.settingLabel.text = @"Hide redactions";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideRedactedInformation];
                 redactedInfoSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX) {
@@ -1009,7 +1009,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId, mxHandler.accessToken];
+        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
         SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
