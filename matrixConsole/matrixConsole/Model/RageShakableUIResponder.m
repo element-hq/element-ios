@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+#define RAGESHAKABLEUIRESPONDER_MINIMUM_SHAKING_DURATION 2
+
 #import "RageShakableUIResponder.h"
 
 #import "AppDelegate.h"
@@ -78,7 +80,7 @@ static RageShakableUIResponder* sharedInstance = nil;
     
     RageShakableUIResponder* rageShakableUIResponder = [responder isKindOfClass:[RageShakableUIResponder class]] ? (RageShakableUIResponder*)responder : sharedInstance;
     
-    if (rageShakableUIResponder && [AppDelegate theDelegate].isAppForeground && (([[NSDate date] timeIntervalSince1970] - rageShakableUIResponder->startShakingTimeStamp) > 1) && !rageShakableUIResponder->confirmationAlert) {
+    if (rageShakableUIResponder && [AppDelegate theDelegate].isAppForeground && (([[NSDate date] timeIntervalSince1970] - rageShakableUIResponder->startShakingTimeStamp) > RAGESHAKABLEUIRESPONDER_MINIMUM_SHAKING_DURATION) && !rageShakableUIResponder->confirmationAlert) {
         if (!rageShakableUIResponder->ignoreShakeEnd) {
             rageShakableUIResponder->startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
             
