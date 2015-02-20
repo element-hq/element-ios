@@ -81,8 +81,7 @@
 }
 
 // recursive method to compute the folder content size
-+ (long long)folderSize:(NSString *)folderPath
-{
++ (long long)folderSize:(NSString *)folderPath {
     long long folderSize = 0;
     NSArray *fileAtts = [MXCTools listAttributesFiles:folderPath];
     
@@ -140,10 +139,8 @@
 }
 
 // return the file extension from a contentType
-+ (NSString*) fileExtensionFromContentType:(NSString*)contentType
-{
-    if (!contentType)
-    {
++ (NSString*) fileExtensionFromContentType:(NSString*)contentType {
+    if (!contentType) {
         return @"";
     }
     
@@ -154,26 +151,18 @@
     
     CFRelease(uti);
     
-    if (extension)
-    {
+    if (extension) {
         return [NSString stringWithFormat:@".%@", extension];
     }
     
     // else undefined type
-    if ([contentType isEqualToString:@"application/jpeg"])
-    {
+    if ([contentType isEqualToString:@"application/jpeg"]) {
         return @".jpg";
-    }
-    else  if ([contentType isEqualToString:@"audio/x-alaw-basic"])
-    {
+    } else  if ([contentType isEqualToString:@"audio/x-alaw-basic"]) {
         return @".alaw";
-    }
-    else  if ([contentType isEqualToString:@"audio/x-caf"])
-    {
+    } else  if ([contentType isEqualToString:@"audio/x-caf"]) {
         return @".caf";
-    }
-    else  if ([contentType isEqualToString:@"audio/aac"])
-    {
+    } else  if ([contentType isEqualToString:@"audio/aac"]) {
         return @".aac";
     }
     
