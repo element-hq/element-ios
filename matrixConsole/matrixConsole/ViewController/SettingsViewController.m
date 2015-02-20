@@ -37,7 +37,7 @@
 #define SETTINGS_SECTION_COUNT               6
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
-#define SETTINGS_SECTION_ROOMS_HIDE_REDACTED_INFO_INDEX         1
+#define SETTINGS_SECTION_ROOMS_HIDE_REDACTIONS_INDEX         1
 #define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX    2
 #define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
 #define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
@@ -96,7 +96,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Rooms settings
     UISwitch *allEventsSwitch;
-    UISwitch *redactedInfoSwitch;
+    UISwitch *redactionsSwitch;
     UISwitch *unsupportedEventsSwitch;
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
@@ -663,8 +663,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [self.tableView reloadData];
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
-    } else if (sender == redactedInfoSwitch) {
-        [AppSettings sharedSettings].hideRedactedInformation = redactedInfoSwitch.on;
+    } else if (sender == redactionsSwitch) {
+        [AppSettings sharedSettings].hideRedactions = redactionsSwitch.on;
     } else if (sender == unsupportedEventsSwitch) {
         [AppSettings sharedSettings].hideUnsupportedEvents = unsupportedEventsSwitch.on;
     } else if (sender == sortMembersSwitch) {
@@ -982,10 +982,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 roomsSettingCell.settingLabel.text = @"Display all events";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
                 allEventsSwitch = roomsSettingCell.settingSwitch;
-            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_REDACTED_INFO_INDEX) {
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_REDACTIONS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Hide redactions";
-                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideRedactedInformation];
-                redactedInfoSwitch = roomsSettingCell.settingSwitch;
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideRedactions];
+                redactionsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Hide unsupported events";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedEvents];

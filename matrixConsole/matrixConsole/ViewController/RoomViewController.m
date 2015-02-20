@@ -242,7 +242,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         _messagesListener = nil;
         [self.mxRoom removeListener:_redactionListener];
         _redactionListener = nil;
-        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
+        [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactions"];
         [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
     }
@@ -631,7 +631,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             _messagesListener = nil;
             [self.mxRoom removeListener:_redactionListener];
             _redactionListener = nil;
-            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactedInformation"];
+            [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideRedactions"];
             [[AppSettings sharedSettings] removeObserver:self forKeyPath:@"hideUnsupportedEvents"];
             [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
         }
@@ -688,7 +688,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             messages = [NSMutableArray array];
         }
         
-        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideRedactedInformation" options:0 context:nil];
+        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideRedactions" options:0 context:nil];
         [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedEvents" options:0 context:nil];
         [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
         // Register a listener to handle messages
@@ -1031,7 +1031,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             self.messagesTableView.contentInset = insets;
             _controlViewBottomConstraint.constant = newConstant;
         }
-    } else if ([@"hideUnsupportedEvents" isEqualToString:keyPath] || [@"hideRedactedInformation" isEqualToString:keyPath]) {
+    } else if ([@"hideUnsupportedEvents" isEqualToString:keyPath] || [@"hideRedactions" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self configureView];
         });
