@@ -235,6 +235,10 @@
         if (textField.text.length == 0) {
             textField.text = @"@";
         }
+    } else if (textField == _roomAliasTextField || textField == _joinRoomAliasTextField) {
+        if (textField.text.length == 0) {
+            textField.text = @"#";
+        }
     }
 }
 
@@ -254,11 +258,17 @@
     } else if (textField == _participantsTextField) {
         NSArray *participants = self.participantsList;
         textField.text = [participants componentsJoinedByString:@"; "];
-    } else if (textField == _joinRoomAliasTextField && textField.text.length) {
-        // Add homeserver suffix if none
-        NSRange range = [textField.text rangeOfString:@":"];
-        if (range.location == NSNotFound) {
-            textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+    } else if (textField == _joinRoomAliasTextField) {
+        if (textField.text.length > 1) {
+            // Add homeserver suffix if none
+            NSRange range = [textField.text rangeOfString:@":"];
+            if (range.location == NSNotFound) {
+                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+            }
+        } else {
+            // reset text field
+            textField.text = nil;
+            [self onTextFieldChange:nil];
         }
     }
 }
@@ -266,17 +276,18 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     // Auto complete participant IDs
     if (textField == _participantsTextField) {
-        // Auto completion is active only when the change concerns the end of the current string
-        if (range.location == textField.text.length) {
-            if ([string isEqualToString:@";"]) {
-                // Add '@' character
-                textField.text = [textField.text stringByAppendingString:@"; @"];
+        // Add @ if none
+        if (!textField.text.length || textField.text.length == range.length) {
+            if ([string hasPrefix:@"@"] == NO) {
+                textField.text = [NSString stringWithFormat:@"@%@",string];
                 // Update Create button status
                 [self onTextFieldChange:nil];
                 return NO;
-            } else if ([string isEqualToString:@":"]) {
-                // Add homeserver
-                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+            }
+        } else if (range.location == textField.text.length) {
+            if ([string isEqualToString:@";"]) {
+                // Add '@' character
+                textField.text = [textField.text stringByAppendingString:@"; @"];
                 // Update Create button status
                 [self onTextFieldChange:nil];
                 return NO;
@@ -284,7 +295,7 @@
         }
     } else if (textField == _roomAliasTextField) {
         // Add # if none
-        if (!textField.text.length) {
+        if (!textField.text.length || textField.text.length == range.length) {
             if ([string hasPrefix:@"#"] == NO) {
                 if ([string isEqualToString:@":"]) {
                     textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffix];
@@ -306,7 +317,7 @@
         }
     } else if (textField == _joinRoomAliasTextField) {
         // Add # if none
-        if (!textField.text.length) {
+        if (!textField.text.length || textField.text.length == range.length) {
             if ([string hasPrefix:@"#"] == NO) {
                 textField.text = [NSString stringWithFormat:@"#%@",string];
                 // Update Create button status

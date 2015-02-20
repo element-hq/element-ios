@@ -872,7 +872,7 @@
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. @bob:homeserver1; @john:homeserver2...)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="dWR-QZ-pru">
                                             <rect key="frame" x="108" y="84" width="484" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                             <connections>
                                                 <outlet property="delegate" destination="ldZ-75-BUU" id="KC8-Da-ANh"/>
                                             </connections>
@@ -923,7 +923,7 @@
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. #foo:example.org)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x6A-UM-JLc">
                                     <rect key="frame" x="8" y="250" width="536" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                     <connections>
                                         <outlet property="delegate" destination="ldZ-75-BUU" id="fYd-Eb-nB8"/>
                                     </connections>
