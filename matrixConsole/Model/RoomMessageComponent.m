@@ -42,7 +42,7 @@ NSString *const kFailedEventIdPrefix = @"failedEventId-";
             }
             
             // Set component flags
-            _isStateEvent = (event.eventType != MXEventTypeRoomMessage);
+            _isStateEvent = event.isState;
             _isIncomingMsg = ([event.userId isEqualToString:mxHandler.userId] == NO);
             _isRedactedEvent = (event.redactedBecause != nil);
             

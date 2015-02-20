@@ -642,7 +642,11 @@
     
     // Set background color
     if (recentRoom.unreadCount) {
-        cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
+        if (recentRoom.containsBingUnread) {
+            cell.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:1 alpha:1.0];
+        } else {
+            cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
+        }
         cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%tu)", cell.roomTitle.text, recentRoom.unreadCount];
     } else {
         cell.backgroundColor = [UIColor clearColor];
