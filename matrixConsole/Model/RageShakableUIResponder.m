@@ -19,10 +19,10 @@
 #import "RageShakableUIResponder.h"
 
 #import "AppDelegate.h"
-
 #import "MXCAlert.h"
-
 #import "MatrixSDKHandler.h"
+
+#import "GBDeviceInfo_iOS.h"
 
 @interface RageShakableUIResponder() {
     MXCAlert *confirmationAlert;
@@ -164,7 +164,6 @@ static RageShakableUIResponder* sharedInstance = nil;
     [UIPasteboard generalPasteboard].image = image;
     
     if (controller) {
-        
         [controller.view snapshotViewAfterScreenUpdates:YES];
         
         sharedInstance->parentViewController = controller;
@@ -179,23 +178,27 @@ static RageShakableUIResponder* sharedInstance = nil;
         
         NSMutableString* message = [[NSMutableString alloc] init];
         
-        [message appendFormat:@"Something went wrong on my Matrix client : \n\n\n"];
+        [message appendFormat:@"Something went wrong on my Matrix client: \n\n\n"];
         
         [message appendFormat:@"-----> my comments <-----\n\n\n"];
         
         [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Application info\n"];
-        [message appendFormat:@"userId : %@\n", mxHandler.userId];
-        [message appendFormat:@"displayname : %@\n", mxHandler.mxSession.myUser.displayname];
+        [message appendFormat:@"userId: %@\n", mxHandler.userId];
+        [message appendFormat:@"displayname: %@\n", mxHandler.mxSession.myUser.displayname];
         [message appendFormat:@"\n"];
-        [message appendFormat:@"homeServerURL : %@\n", mxHandler.homeServerURL];
-        [message appendFormat:@"homeServer : %@\n", mxHandler.homeServer];
+        [message appendFormat:@"homeServerURL: %@\n", mxHandler.homeServerURL];
+        [message appendFormat:@"homeServer: %@\n", mxHandler.homeServer];
         [message appendFormat:@"\n"];
         [message appendFormat:@"matrixConsole version: %@\n", appVersion];
         [message appendFormat:@"SDK version: %@\n", MatrixSDKVersion];
         if (build.length) {
             [message appendFormat:@"Build: %@\n", build];
         }
+        [message appendFormat:@"------------------------------\n"];
+        [message appendFormat:@"Device info\n"];
+        [message appendFormat:@"model: %@\n", [GBDeviceInfo deviceDetails].modelString];
+        [message appendFormat:@"operatingSystem: %@ %@\n", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
         
         [sharedInstance->mailComposer setMessageBody:message isHTML:NO];
         [sharedInstance->mailComposer addAttachmentData:UIImageJPEGRepresentation(image, 1.0) mimeType:@"image/jpg" fileName:@"screenshot.jpg"];
