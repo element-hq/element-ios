@@ -125,7 +125,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *showRoomMembersButtonItem;
 @property (weak, nonatomic) IBOutlet RoomTitleView *roomTitleView;
+
 @property (weak, nonatomic) IBOutlet UITableView *messagesTableView;
 @property (weak, nonatomic) IBOutlet UIView *controlView;
 @property (weak, nonatomic) IBOutlet UIButton *optionBtn;
@@ -139,7 +141,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *membersListButtonItem;
 @property (weak, nonatomic) IBOutlet EventDetailsView *eventDetailsView;
 
 @property (strong, nonatomic) MXRoom *mxRoom;
@@ -157,13 +158,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view, typically from a nib.
     forceScrollToBottomOnViewDidAppear = YES;
     // Hide messages table by default in order to hide initial scrolling to the bottom
     self.messagesTableView.hidden = YES;
     
     // Add tap detection on members view in order to hide members when the user taps outside members list
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideRoomMembers:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
@@ -345,7 +347,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [self hideEventDetails];
     
     // Hide members by default
-    [self hideRoomMembers];
+    [self hideRoomMembers:nil];
     
     self.messageTextView.delegate = nil;
     // Store the potential message partially typed in text input
@@ -437,10 +439,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (self.mxRoom) {
         self.controlView.hidden = NO;
         // Check room members to enable/disable members button in nav bar
-        self.membersListButtonItem.enabled = ([self.mxRoom.state members].count != 0);
+        self.showRoomMembersButtonItem.enabled = ([self.mxRoom.state members].count != 0);
     } else {
         self.controlView.hidden = YES;
-        self.membersListButtonItem.enabled = NO;
+        self.showRoomMembersButtonItem.enabled = NO;
         _activityIndicator.hidden = YES;
     }
     [self.roomTitleView refreshDisplay];
@@ -1408,13 +1410,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     }];
     
-    self.membersListButtonItem.enabled = members.count != 0;
+    self.showRoomMembersButtonItem.enabled = members.count != 0;
 }
 
-- (void)showRoomMembers {
+- (IBAction)showRoomMembers:(id)sender {
     // Dismiss keyboard
     [self dismissKeyboard];
-    // Hide potential event details
+    // Hide other sub-views
+    [self hideAttachmentView];
     [self hideEventDetails];
     
     [self updateRoomMembers];
@@ -1427,11 +1430,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     self.membersView.hidden = NO;
     [self.membersTableView reloadData];
+    
+    // Update navigation bar items
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(hideRoomMembers:)];
 }
 
-- (void)hideRoomMembers {
+- (IBAction)hideRoomMembers:(id)sender {
     self.membersView.hidden = YES;
     members = nil;
+    
+    // Update navigation bar items
+    self.navigationItem.hidesBackButton = NO;
+    self.navigationItem.rightBarButtonItem = _showRoomMembersButtonItem;
+    
     // Force a reload to release all table cells (and then stop running timer)
     [self.membersTableView reloadData];
 }
@@ -2603,16 +2615,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     }
     
     [self.messagesTableView reloadData];
-}
-
-- (IBAction)showHideRoomMembers:(id)sender {
-    // Check whether the members list is displayed
-    if (members) {
-        [self hideRoomMembers];
-    } else {
-        [self hideAttachmentView];
-        [self showRoomMembers];
-    }
 }
 
 - (IBAction)onResendToggle:(id)sender {
