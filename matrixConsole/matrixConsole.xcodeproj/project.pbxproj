@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3198D9E11A68338B00556695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3198D9E31A68338B00556695 /* Localizable.strings */; };
+		32501A9B1A9B978400C5938F /* MXCRegistrationWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32501A9A1A9B978400C5938F /* MXCRegistrationWebView.m */; };
 		710CA4BF1A7FBEDB00EEFB96 /* MXCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CA4BE1A7FBEDB00EEFB96 /* MXCViewController.m */; };
 		710CA4C21A7FBFED00EEFB96 /* RageShakableUIResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CA4C11A7FBFED00EEFB96 /* RageShakableUIResponder.m */; };
 		710CA4C51A7FC27100EEFB96 /* MXCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CA4C41A7FC27100EEFB96 /* MXCTableViewController.m */; };
@@ -94,6 +95,8 @@
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
 		3198D9E21A68338B00556695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		32501A991A9B978400C5938F /* MXCRegistrationWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCRegistrationWebView.h; sourceTree = "<group>"; };
+		32501A9A1A9B978400C5938F /* MXCRegistrationWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCRegistrationWebView.m; sourceTree = "<group>"; };
 		710CA4BD1A7FBEDB00EEFB96 /* MXCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCViewController.h; sourceTree = "<group>"; };
 		710CA4BE1A7FBEDB00EEFB96 /* MXCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCViewController.m; sourceTree = "<group>"; };
 		710CA4C01A7FBFED00EEFB96 /* RageShakableUIResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakableUIResponder.h; sourceTree = "<group>"; };
@@ -352,6 +355,8 @@
 				F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */,
 				F00B5DB71A1B9BCE00EA1C8D /* MXCImageView.h */,
 				F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */,
+				32501A991A9B978400C5938F /* MXCRegistrationWebView.h */,
+				32501A9A1A9B978400C5938F /* MXCRegistrationWebView.m */,
 				71E94A751A5C4020009F52E5 /* PieChartView.h */,
 				71E94A761A5C4020009F52E5 /* PieChartView.m */,
 				F08DB77F1A9B7C9300B73403 /* PublicRoomTableCell.h */,
@@ -627,6 +632,7 @@
 				710CA4BF1A7FBEDB00EEFB96 /* MXCViewController.m in Sources */,
 				7176294F1A77FED800927125 /* ContactDetailsTableCell.m in Sources */,
 				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
+				32501A9B1A9B978400C5938F /* MXCRegistrationWebView.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F08DB7811A9B7C9300B73403 /* PublicRoomTableCell.m in Sources */,
 				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
