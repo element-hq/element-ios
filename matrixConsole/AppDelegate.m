@@ -22,6 +22,7 @@
 #import "MediaManager.h"
 #import "SettingsViewController.h"
 #import "ContactManager.h"
+#import "RageShakableUIResponder.h"
 
 #import "AFNetworkReachabilityManager.h"
 
@@ -152,6 +153,11 @@
 
     // clear the notifications counter
     [self clearNotifications];
+
+    // check if the app crashed last time
+    if ([MXLogger crashLog]) {
+        [RageShakableUIResponder reportCrash:self.masterTabBarController.selectedViewController];
+    }
     
     return YES;
 }

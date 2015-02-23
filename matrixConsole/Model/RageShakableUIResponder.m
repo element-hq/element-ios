@@ -93,13 +93,13 @@ static RageShakableUIResponder* sharedInstance = nil;
                     
                 [rageShakableUIResponder->confirmationAlert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     sharedInstance->confirmationAlert = nil;
-                    [RageShakableUIResponder takeScreenshot:(UIViewController*)responder];
+                    [RageShakableUIResponder sendEmail:(UIViewController*)responder withSnapshot:YES];
                 }];
 
                 [rageShakableUIResponder->confirmationAlert showInViewController:(UIViewController*)responder];
             }
         } else {
-            [RageShakableUIResponder takeScreenshot:nil];
+            [RageShakableUIResponder sendEmail:nil withSnapshot:NO];
         }
     }
     
@@ -124,52 +124,87 @@ static RageShakableUIResponder* sharedInstance = nil;
     }
 }
 
++ (void)reportCrash:(UIViewController*)viewController {
+    if ([MXLogger crashLog]) {
+        if (!sharedInstance) {
+            sharedInstance = [[RageShakableUIResponder alloc] init];
+        }
+
+        sharedInstance->confirmationAlert = [[MXCAlert alloc] initWithTitle:@"The application has crashed last time. Would you like to submit a crash report?"  message:nil style:MXCAlertStyleAlert];
+
+        [sharedInstance->confirmationAlert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            // Erase the crash log (there is only chance for the user to send it)
+            [MXLogger deleteCrashLog];
+            sharedInstance->confirmationAlert = nil;
+        }];
+
+        [sharedInstance->confirmationAlert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            sharedInstance->confirmationAlert = nil;
+            [RageShakableUIResponder sendEmail:viewController withSnapshot:NO];
+        }];
+
+        [sharedInstance->confirmationAlert showInViewController:viewController];
+    }
+}
+
 + (void)applicationBecomesActive {
     [RageShakableUIResponder cancel:nil];
 }
 
-+ (void)takeScreenshot:(UIViewController*)controller {
-    
-    AppDelegate* theDelegate = [AppDelegate theDelegate];
-    UIGraphicsBeginImageContextWithOptions(theDelegate.window.bounds.size, NO, [UIScreen mainScreen].scale);
-    
-    // Iterate over every window from back to front
-    for (UIWindow *window in [[UIApplication sharedApplication] windows])
-    {
-        if (![window respondsToSelector:@selector(screen)] || [window screen] == [UIScreen mainScreen])
+// Prepare and send a report email
+// If `snapshot` is YES, a screenshot of `controller` will be sent as image attachment to the email
++ (void)sendEmail:(UIViewController*)controller withSnapshot:(BOOL)snapshot {
+
+    UIImage *image;
+
+    if (snapshot) {
+        AppDelegate* theDelegate = [AppDelegate theDelegate];
+        UIGraphicsBeginImageContextWithOptions(theDelegate.window.bounds.size, NO, [UIScreen mainScreen].scale);
+
+        // Iterate over every window from back to front
+        for (UIWindow *window in [[UIApplication sharedApplication] windows])
         {
-            // -renderInContext: renders in the coordinate space of the layer,
-            // so we must first apply the layer's geometry to the graphics context
-            CGContextSaveGState(UIGraphicsGetCurrentContext());
-            // Center the context around the window's anchor point
-            CGContextTranslateCTM(UIGraphicsGetCurrentContext(), [window center].x, [window center].y);
-            // Apply the window's transform about the anchor point
-            CGContextConcatCTM(UIGraphicsGetCurrentContext(), [window transform]);
-            // Offset by the portion of the bounds left of and above the anchor point
-            CGContextTranslateCTM(UIGraphicsGetCurrentContext(),
-                                  -[window bounds].size.width * [[window layer] anchorPoint].x,
-                                  -[window bounds].size.height * [[window layer] anchorPoint].y);
-            
-            // Render the layer hierarchy to the current context
-            [[window layer] renderInContext:UIGraphicsGetCurrentContext()];
-            
-            // Restore the context
-            CGContextRestoreGState(UIGraphicsGetCurrentContext());
+            if (![window respondsToSelector:@selector(screen)] || [window screen] == [UIScreen mainScreen])
+            {
+                // -renderInContext: renders in the coordinate space of the layer,
+                // so we must first apply the layer's geometry to the graphics context
+                CGContextSaveGState(UIGraphicsGetCurrentContext());
+                // Center the context around the window's anchor point
+                CGContextTranslateCTM(UIGraphicsGetCurrentContext(), [window center].x, [window center].y);
+                // Apply the window's transform about the anchor point
+                CGContextConcatCTM(UIGraphicsGetCurrentContext(), [window transform]);
+                // Offset by the portion of the bounds left of and above the anchor point
+                CGContextTranslateCTM(UIGraphicsGetCurrentContext(),
+                                      -[window bounds].size.width * [[window layer] anchorPoint].x,
+                                      -[window bounds].size.height * [[window layer] anchorPoint].y);
+
+                // Render the layer hierarchy to the current context
+                [[window layer] renderInContext:UIGraphicsGetCurrentContext()];
+
+                // Restore the context
+                CGContextRestoreGState(UIGraphicsGetCurrentContext());
+            }
         }
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        // the image is copied in the clipboard
+        [UIPasteboard generalPasteboard].image = image;
     }
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    // the image is copied in the clipboard
-    [UIPasteboard generalPasteboard].image = image;
     
     if (controller) {
         [controller.view snapshotViewAfterScreenUpdates:YES];
         
         sharedInstance->parentViewController = controller;
         sharedInstance->mailComposer = [[MFMailComposeViewController alloc] init];
-        
-        [sharedInstance->mailComposer setSubject:@"Matrix bug report"];
+
+        if ([MXLogger crashLog]) {
+            [sharedInstance->mailComposer setSubject:@"Matrix crash report"];
+        }
+        else {
+            [sharedInstance->mailComposer setSubject:@"Matrix bug report"];
+        }
+
         [sharedInstance->mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@matrix.org"]];
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
@@ -201,10 +236,15 @@ static RageShakableUIResponder* sharedInstance = nil;
         [message appendFormat:@"operatingSystem: %@ %@\n", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
         
         [sharedInstance->mailComposer setMessageBody:message isHTML:NO];
-        [sharedInstance->mailComposer addAttachmentData:UIImageJPEGRepresentation(image, 1.0) mimeType:@"image/jpg" fileName:@"screenshot.jpg"];
+
+        // Attach image only if required
+        if (image) {
+            [sharedInstance->mailComposer addAttachmentData:UIImageJPEGRepresentation(image, 1.0) mimeType:@"image/jpg" fileName:@"screenshot.jpg"];
+        }
+
         // Add logs files
         NSMutableArray *logFiles = [NSMutableArray arrayWithArray:[MXLogger logFiles]];
-        if ([MXLogger crashLog]){
+        if ([MXLogger crashLog]) {
             [logFiles addObject:[MXLogger crashLog]];
         }
         for (NSString *logFile in logFiles) {
