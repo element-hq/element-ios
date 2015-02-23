@@ -18,6 +18,7 @@
 
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
+#import "PublicRoomTableCell.h"
 
 @interface HomeViewController () {
     NSArray *publicRooms;
@@ -69,7 +70,7 @@
     
     // Init
     publicRooms = nil;
-    highlightedPublicRooms = @[@"#matrix:matrix.org"]; // Add here a room name to highlight its display in public room list
+    highlightedPublicRooms = @[@"#matrix:matrix.org", @"#matrix-dev:matrix.org", @"#matrix-fr:matrix.org"]; // Add here a room name to highlight its display in public room list
 }
 
 - (void)didReceiveMemoryWarning {
@@ -123,7 +124,15 @@
             MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
             MXPublicRoom *secondRoom = (MXPublicRoom*)b;
             
-            return [firstRoom.displayname compare:secondRoom.displayname options:NSCaseInsensitiveSearch];
+            // Compare member count
+            if (firstRoom.numJoinedMembers < secondRoom.numJoinedMembers) {
+                return NSOrderedDescending;
+            } else if (firstRoom.numJoinedMembers > secondRoom.numJoinedMembers) {
+                return NSOrderedAscending;
+            } else {
+                // Alphabetic order
+                return [firstRoom.displayname compare:secondRoom.displayname options:NSCaseInsensitiveSearch];
+            }
         }];
         [_publicRoomsTable reloadData];
     }
@@ -482,7 +491,9 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell;
+    PublicRoomTableCell *cell;
+    PublicRoomWithTopicTableCell *cellWithTopic = nil;
+    
     MXPublicRoom *publicRoom;
     if (filteredPublicRooms) {
         publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
@@ -492,22 +503,38 @@
     
     // Check whether this public room has topic
     if (publicRoom.topic) {
-        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellSubtitle" forIndexPath:indexPath];
-        cell.detailTextLabel.text = publicRoom.topic;
+        cellWithTopic = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomWithTopicCell" forIndexPath:indexPath];
+        cellWithTopic.roomTopic.text = publicRoom.topic;
+        cell = cellWithTopic;
     } else {
-        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCellBasic" forIndexPath:indexPath];
+        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCell" forIndexPath:indexPath];
     }
     
     // Set room display name
-    cell.textLabel.text = [publicRoom displayname];
+    cell.roomDisplayName.text = [publicRoom displayname];
+    
+    // Set member count
+    if (publicRoom.numJoinedMembers > 1) {
+        cell.memberCount.text = [NSString stringWithFormat:@"%lu users", (unsigned long)publicRoom.numJoinedMembers];
+    } else if (publicRoom.numJoinedMembers == 1) {
+        cell.memberCount.text = @"1 user";
+    } else {
+        cell.memberCount.text = nil;
+    }
     
     // Highlight?
-    if (cell.textLabel.text && [highlightedPublicRooms indexOfObject:cell.textLabel.text] != NSNotFound) {
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
-        cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:17];
+    if (cell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:cell.roomDisplayName.text] != NSNotFound) {
+        cell.roomDisplayName.font = [UIFont boldSystemFontOfSize:20];
+        if (cellWithTopic) {
+            cellWithTopic.roomTopic.font = [UIFont boldSystemFontOfSize:17];
+        }
+        cell.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:0.9 alpha:1.0];
     } else {
-        cell.textLabel.font = [UIFont systemFontOfSize:19];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+        cell.roomDisplayName.font = [UIFont systemFontOfSize:19];
+        if (cellWithTopic) {
+            cellWithTopic.roomTopic.font = [UIFont systemFontOfSize:16];
+        }
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     return cell;

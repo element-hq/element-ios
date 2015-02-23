@@ -8,10 +8,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Recents-->
+        <!--RecentsNav-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController title="Recents" id="RMx-3f-FxP" sceneMemberID="viewController">
+                <navigationController title="Recents" id="RMx-3f-FxP" userLabel="RecentsNav" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -950,41 +950,82 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PublicRoomCellBasic" textLabel="UoS-rO-98c" style="IBUITableViewCellStyleDefault" id="Y5I-fR-nF2">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PublicRoomCell" id="Wz9-zE-cVU" userLabel="PublicRoomCell" customClass="PublicRoomTableCell">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y5I-fR-nF2" id="k9k-ye-AWt">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wz9-zE-cVU" id="ao8-Y1-uLa">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UoS-rO-98c">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="roomDisplayName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RiU-Jb-mhv">
+                                            <rect key="frame" x="8" y="10" width="504" height="23"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xx users" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VEa-DV-vyM">
+                                            <rect key="frame" x="520" y="13" width="72" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="RiU-Jb-mhv" secondAttribute="centerY" id="6w2-nX-WXN"/>
+                                        <constraint firstItem="RiU-Jb-mhv" firstAttribute="leading" secondItem="ao8-Y1-uLa" secondAttribute="leading" constant="8" id="8fk-hh-48A"/>
+                                        <constraint firstAttribute="trailing" secondItem="VEa-DV-vyM" secondAttribute="trailing" constant="8" id="VLr-f1-8zn"/>
+                                        <constraint firstItem="VEa-DV-vyM" firstAttribute="leading" secondItem="RiU-Jb-mhv" secondAttribute="trailing" constant="8" id="dcM-g2-Mth"/>
+                                        <constraint firstAttribute="centerY" secondItem="VEa-DV-vyM" secondAttribute="centerY" id="raK-8e-0Jz"/>
+                                        <constraint firstAttribute="trailing" secondItem="RiU-Jb-mhv" secondAttribute="trailing" constant="88" id="ues-S3-d4I"/>
+                                    </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="memberCount" destination="VEa-DV-vyM" id="NZJ-Cp-GX2"/>
+                                    <outlet property="roomDisplayName" destination="RiU-Jb-mhv" id="beh-yS-hCG"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PublicRoomCellSubtitle" textLabel="XSB-xW-yiT" detailTextLabel="sfe-5d-fmq" style="IBUITableViewCellStyleSubtitle" id="ZA7-Uv-Ncb">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PublicRoomWithTopicCell" rowHeight="60" id="ZA7-Uv-Ncb" userLabel="PublicRoomWithTopicCell" customClass="PublicRoomWithTopicTableCell">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZA7-Uv-Ncb" id="N4f-z9-lYd">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XSB-xW-yiT">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="roomDisplayName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTD-Ku-LXV">
+                                            <rect key="frame" x="8" y="8" width="504" height="23"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sfe-5d-fmq">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="topic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqj-vC-3VV" userLabel="roomTopic">
+                                            <rect key="frame" x="8" y="31" width="584" height="20"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xx users" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWU-6k-Y5L">
+                                            <rect key="frame" x="520" y="11" width="72" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="KWU-6k-Y5L" secondAttribute="trailing" constant="8" id="4iQ-Hh-wc2"/>
+                                        <constraint firstAttribute="trailing" secondItem="PTD-Ku-LXV" secondAttribute="trailing" constant="88" id="8Kt-Bc-obY"/>
+                                        <constraint firstItem="KWU-6k-Y5L" firstAttribute="centerY" secondItem="PTD-Ku-LXV" secondAttribute="centerY" id="EEs-Uc-8Ua"/>
+                                        <constraint firstItem="dqj-vC-3VV" firstAttribute="leading" secondItem="N4f-z9-lYd" secondAttribute="leading" constant="8" id="FcQ-Ib-ich"/>
+                                        <constraint firstAttribute="bottom" secondItem="dqj-vC-3VV" secondAttribute="bottom" constant="8" id="Vsu-MF-gMy"/>
+                                        <constraint firstItem="PTD-Ku-LXV" firstAttribute="top" secondItem="N4f-z9-lYd" secondAttribute="top" constant="8" id="Yy9-nG-z1M"/>
+                                        <constraint firstItem="KWU-6k-Y5L" firstAttribute="leading" secondItem="PTD-Ku-LXV" secondAttribute="trailing" constant="8" id="bFb-p8-KBU"/>
+                                        <constraint firstItem="PTD-Ku-LXV" firstAttribute="leading" secondItem="N4f-z9-lYd" secondAttribute="leading" constant="8" id="lUQ-yM-Dh8"/>
+                                        <constraint firstAttribute="trailing" secondItem="dqj-vC-3VV" secondAttribute="trailing" constant="8" id="veq-Hf-j80"/>
+                                        <constraint firstItem="dqj-vC-3VV" firstAttribute="top" secondItem="PTD-Ku-LXV" secondAttribute="bottom" id="w2S-XG-rJ9"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="memberCount" destination="KWU-6k-Y5L" id="bVz-85-vVl"/>
+                                    <outlet property="roomDisplayName" destination="PTD-Ku-LXV" id="XeL-Mp-pDI"/>
+                                    <outlet property="roomTopic" destination="dqj-vC-3VV" id="3AC-Zy-b1N"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
