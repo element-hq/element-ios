@@ -22,13 +22,12 @@
     
     button.hidden = (text.length == 0);
     
-    button.layer.borderColor = [UIColor blackColor].CGColor;
+    button.layer.borderColor = button.tintColor.CGColor;
     button.layer.borderWidth = 1;
     button.layer.cornerRadius = 5;
 
     [button setTitle:text forState:UIControlStateNormal];
     [button setTitle:text forState:UIControlStateHighlighted];
-    
 }
 
 - (void) setLeftButtonText:(NSString*)text {

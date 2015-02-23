@@ -89,11 +89,7 @@
         // should never happen
         contactDetailsTableCell.matrixUserIDLabel.text = @"";
     }
-    
-    contactDetailsTableCell.startChatButton.layer.cornerRadius = 5;
-    contactDetailsTableCell.startChatButton.layer.borderColor = [UIColor blackColor].CGColor;
-    contactDetailsTableCell.startChatButton.layer.borderWidth = 2;
-    contactDetailsTableCell.startChatButton.clipsToBounds = YES;
+
     [contactDetailsTableCell.startChatButton addTarget:self action:@selector(startChat:) forControlEvents:UIControlEventTouchUpInside];
     
     return contactDetailsTableCell;

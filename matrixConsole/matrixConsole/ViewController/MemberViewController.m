@@ -254,7 +254,7 @@
         [buttonsTitles addObject:@"Leave"];
     
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
-            [buttonsTitles addObject:@"Set power level"];
+            [buttonsTitles addObject:@"Set Power Level"];
         }
     } else {
         // Consider membership of the selected member
@@ -296,14 +296,14 @@
         
         // update power level
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
-            [buttonsTitles addObject:@"Set power level"];
+            [buttonsTitles addObject:@"Set Power Level"];
         }
         
         // offer to start a new chat only if the room is not a 1:1 room with this user
         // it does not make sense : it would open the same room
         NSString* roomId = [mxHandler privateOneToOneRoomIdWithUserId:_mxRoomMember.userId];
         if (![roomId isEqualToString:mxRoom.state.roomId]) {
-            [buttonsTitles addObject:@"Chat"];
+            [buttonsTitles addObject:@"Start Chat"];
         }
     }
     
