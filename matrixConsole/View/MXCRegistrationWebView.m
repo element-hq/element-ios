@@ -27,7 +27,7 @@ NSString *kMXCJavascriptSendObjectMessage = @"var sendObjectMessage = function(p
     };";
 
 // The function the fallback page calls when the registration is complete
-NSString *kMXCJavascriptOnRegistered = @"matrixRegistration.onRegistered = function(homeserverUrl, userId, accessToken) {   \
+NSString *kMXCJavascriptOnRegistered = @"window.matrixRegistration.onRegistered = function(homeserverUrl, userId, accessToken) {   \
     sendObjectMessage({                 \
         'action': 'onRegistered',       \
         'homeServer': homeserverUrl,    \
