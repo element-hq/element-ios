@@ -17,8 +17,18 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
+#import <MXLogger.h>
+
 int main(int argc, char * argv[]) {
     @autoreleasepool {
+
+        // Redirect NSLogs to files only if we are not debugging
+        if (!isatty(STDERR_FILENO)) {
+            [MXLogger redirectNSLogToFiles:YES];
+        }
+        // Catch and log crashes
+        [MXLogger logCrashes:YES];
+
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

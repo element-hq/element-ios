@@ -202,6 +202,15 @@ static RageShakableUIResponder* sharedInstance = nil;
         
         [sharedInstance->mailComposer setMessageBody:message isHTML:NO];
         [sharedInstance->mailComposer addAttachmentData:UIImageJPEGRepresentation(image, 1.0) mimeType:@"image/jpg" fileName:@"screenshot.jpg"];
+        // Add logs files
+        NSMutableArray *logFiles = [NSMutableArray arrayWithArray:[MXLogger logFiles]];
+        if ([MXLogger crashLog]){
+            [logFiles addObject:[MXLogger crashLog]];
+        }
+        for (NSString *logFile in logFiles) {
+            NSData *logContent = [NSData dataWithContentsOfFile:logFile];
+            [sharedInstance->mailComposer addAttachmentData:logContent mimeType:@"text/plain" fileName:[logFile lastPathComponent]];
+        }
         sharedInstance->mailComposer.mailComposeDelegate = sharedInstance;
         [controller presentViewController:sharedInstance->mailComposer animated:YES completion:nil];
     }
@@ -209,6 +218,8 @@ static RageShakableUIResponder* sharedInstance = nil;
 
 #pragma mark - MFMailComposeViewControllerDelegate delegate
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    // Do not send this crash anymore
+    [MXLogger deleteCrashLog];
     [controller dismissViewControllerAnimated:NO completion:nil];
 }
 
