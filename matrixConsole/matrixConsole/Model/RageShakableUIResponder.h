@@ -24,5 +24,6 @@
 + (void)stopShaking:(UIResponder*)controller;
 + (void)cancel:(UIResponder*)controller;
 + (void)applicationBecomesActive;
++ (void)reportCrash:(UIViewController*)viewController;
 
 @end
