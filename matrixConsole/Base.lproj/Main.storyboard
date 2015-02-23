@@ -564,10 +564,10 @@
                                 <outlet property="topicTextField" destination="svo-vI-b3l" id="Mmx-uw-dhk"/>
                             </connections>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="icon_users.png" id="3d6-ln-ICU">
+                        <barButtonItem key="rightBarButtonItem" image="icon_users.png" id="3d6-ln-ICU" userLabel="showRoomMembers">
                             <inset key="imageInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                             <connections>
-                                <action selector="showHideRoomMembers:" destination="msb-ol-2LB" id="5kH-bV-uAY"/>
+                                <action selector="showRoomMembers:" destination="msb-ol-2LB" id="Ouh-KX-Nj7"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -577,7 +577,6 @@
                         <outlet property="controlViewBottomConstraint" destination="C5t-bm-3s8" id="Ks1-Z5-mzO"/>
                         <outlet property="controlViewHeightConstraint" destination="tGp-dw-uAO" id="hx8-ri-zYa"/>
                         <outlet property="eventDetailsView" destination="C67-FD-9VY" id="KnV-we-fd5"/>
-                        <outlet property="membersListButtonItem" destination="3d6-ln-ICU" id="KtB-5h-eJl"/>
                         <outlet property="membersTableView" destination="pLY-I9-ghF" id="Ioc-IJ-WYX"/>
                         <outlet property="membersView" destination="OWi-J8-sFZ" id="3n2-n5-r6B"/>
                         <outlet property="messageTextView" destination="UVo-EY-Nyg" id="zc1-ch-1Mf"/>
@@ -589,6 +588,7 @@
                         <outlet property="roomNavItem" destination="3Zt-Wl-J6o" id="gjB-fs-Whw"/>
                         <outlet property="roomTitleView" destination="aas-th-FW1" id="nN7-6S-FR3"/>
                         <outlet property="sendBtn" destination="Icg-kc-a2c" id="Tr0-1e-QJp"/>
+                        <outlet property="showRoomMembersButtonItem" destination="3d6-ln-ICU" id="Qh7-yj-G7e"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
