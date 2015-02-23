@@ -65,6 +65,7 @@
 		F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E719DD9DE700B621A1 /* LaunchScreen.xib */; };
 		F07A80F519DD9DE700B621A1 /* matrixConsoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */; };
 		F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */; };
+		F08DB7811A9B7C9300B73403 /* PublicRoomTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F08DB7801A9B7C9300B73403 /* PublicRoomTableCell.m */; };
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
 		F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E67931A77965A00AABD4C /* MXC3PID.m */; };
 		F0AC79331A8394510056D042 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AC79321A8394510056D042 /* AuthInputsView.m */; };
@@ -191,6 +192,8 @@
 		F07A80F319DD9DE700B621A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F07A80F419DD9DE700B621A1 /* matrixConsoleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = matrixConsoleTests.m; sourceTree = "<group>"; };
 		F08B6FCB1A1DE7F80094A35B /* matrixConsole.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrixConsole.jpg; sourceTree = "<group>"; };
+		F08DB77F1A9B7C9300B73403 /* PublicRoomTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableCell.h; sourceTree = "<group>"; };
+		F08DB7801A9B7C9300B73403 /* PublicRoomTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableCell.m; sourceTree = "<group>"; };
 		F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F08E67921A77965A00AABD4C /* MXC3PID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXC3PID.h; sourceTree = "<group>"; };
 		F08E67931A77965A00AABD4C /* MXC3PID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXC3PID.m; sourceTree = "<group>"; };
@@ -351,6 +354,8 @@
 				F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */,
 				71E94A751A5C4020009F52E5 /* PieChartView.h */,
 				71E94A761A5C4020009F52E5 /* PieChartView.m */,
+				F08DB77F1A9B7C9300B73403 /* PublicRoomTableCell.h */,
+				F08DB7801A9B7C9300B73403 /* PublicRoomTableCell.m */,
 				F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */,
 				F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */,
 				71D2E4EA1A49814B000DE015 /* RoomMemberActionsCell.h */,
@@ -623,6 +628,7 @@
 				7176294F1A77FED800927125 /* ContactDetailsTableCell.m in Sources */,
 				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
+				F08DB7811A9B7C9300B73403 /* PublicRoomTableCell.m in Sources */,
 				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
 				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
