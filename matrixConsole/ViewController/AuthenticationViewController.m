@@ -261,12 +261,7 @@
 //        }];
         
         // Currently no registration flow are supported, we switch directly to the fallback page
-        mxCurrentOperation = [mxHandler.mxRestClient registerFallback:^(NSString *fallback) {
-            [self showRegistrationFallBackView:fallback];
-        } failure:^(NSError *error) {
-            NSLog(@"[AuthenticationVC] Failed to get Register fallback: %@", error);
-            [self onFailureDuringMXOperation:error];
-        }];
+        [self showRegistrationFallBackView:[mxHandler.mxRestClient registerFallback]];
     }
 }
 
