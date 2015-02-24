@@ -39,24 +39,46 @@ NSString *kMXCJavascriptOnRegistered = @"window.matrixRegistration.onRegistered 
 @interface MXCRegistrationWebView () {
     // The block called when the registration is successful
     void (^onSuccess)(MXCredentials *);
+    
+    // Activity indicator
+    UIActivityIndicatorView *activityIndicator;
 }
 @end
 
 @implementation MXCRegistrationWebView
 
+- (void)dealloc {
+    if (activityIndicator) {
+        [activityIndicator removeFromSuperview];
+        activityIndicator = nil;
+    }
+}
+
 - (void)openFallbackPage:(NSString *)fallbackPage success:(void (^)(MXCredentials *))success {
     self.delegate = self;
     onSuccess = success;
+    
+    // Add activity indicator
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.center = self.center;
+    [self addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    
     [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:fallbackPage]]];
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
+    if (activityIndicator) {
+        [activityIndicator stopAnimating];
+        [activityIndicator removeFromSuperview];
+        activityIndicator = nil;
+    }
+    
     [self stringByEvaluatingJavaScriptFromString:kMXCJavascriptSendObjectMessage];
     [self stringByEvaluatingJavaScriptFromString:kMXCJavascriptOnRegistered];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-
     NSString *urlString = [[request URL] absoluteString];
 
     if ([urlString hasPrefix:@"js:"]) {
