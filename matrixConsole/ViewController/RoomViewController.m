@@ -231,7 +231,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     NSError *error = nil;
     while (index--) {
         if (![[NSFileManager defaultManager] removeItemAtPath:[tmpCachedAttachments objectAtIndex:index] error:&error]) {
-            NSLog(@"Fail to delete cached media: %@", error);
+            NSLog(@"[RoomVC] Failed to delete cached media: %@", error);
         }
     }
     tmpCachedAttachments = nil;
@@ -676,7 +676,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
                 isJoinRequestInProgress = NO;
-                NSLog(@"Failed to join room (%@): %@", self.mxRoom.state.displayname, error);
+                NSLog(@"[RoomVC] Failed to join room (%@): %@", self.mxRoom.state.displayname, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -882,7 +882,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         
                         if (redactedEvent.isState) {
                             // FIXME: The room state must be refreshed here since this redacted event.
-                            NSLog(@"CAUTION: a state event has been redacted, room state may not be up to date");
+                            NSLog(@"[RoomVC] Warning: A state event has been redacted, room state may not be up to date");
                         }
                         
                         // We replace the event with the redacted one
@@ -1261,7 +1261,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self onBackPaginationComplete];
         });
     } failure:^(NSError *error) {
-        NSLog(@"Failed to paginate back: %@", error);
+        NSLog(@"[RoomVC] Failed to paginate back: %@", error);
         dispatch_async([MatrixSDKHandler sharedHandler].processingQueue, ^{
             [self onBackPaginationComplete];
         });
@@ -1532,7 +1532,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 videoPlayer.contentURL = [NSURL fileURLWithPath:selectedVideoCachePath];
                 [videoPlayer play];
             } else {
-                NSLog(@"Video Download failed"); // TODO we should notify user
+                NSLog(@"[RoomVC] Video Download failed"); // TODO we should notify user
                 [self hideAttachmentView];
             }
         }
@@ -1576,7 +1576,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     if (reason == MPMovieFinishReasonPlaybackError) {
         NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
         if (mediaPlayerError) {
-            NSLog(@"Playback failed with error description: %@", [mediaPlayerError localizedDescription]);
+            NSLog(@"[RoomVC] Playback failed with error description: %@", [mediaPlayerError localizedDescription]);
             [self hideAttachmentView];
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:mediaPlayerError];
@@ -1615,7 +1615,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [videoContent setValue:url forKey:@"url"];
             [self sendMessage:videoContent withLocalEvent:localEvent];
         } failure:^(NSError *error) {
-            NSLog(@"Video upload failed");
+            NSLog(@"[RoomVC] Video upload failed");
             // check if the upload is still defined
             // it could have been cancelled with an external events
             if ([MediaManager existingUploaderWithId:localEvent.eventId inFolder:self.roomId]) {
@@ -1625,7 +1625,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }];
     }
     else {
-        NSLog(@"Attach video failed: no data");
+        NSLog(@"[RoomVC] Attach video failed: no data");
         [self handleError:nil forLocalEvent:localEvent];
     }
 }
@@ -1669,7 +1669,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 exportSession.outputFileType = AVFileTypeMPEG4;
                 [videoInfo setValue:@"video/mp4" forKey:@"mimetype"];
             } else {
-                NSLog(@"Unexpected case: MPEG-4 file format is not supported");
+                NSLog(@"[RoomVC] Warning: MPEG-4 file format is not supported");
                 // we send QuickTime movie file by default
                 exportSession.outputFileType = AVFileTypeQuickTimeMovie;
                 [videoInfo setValue:@"video/quicktime" forKey:@"mimetype"];
@@ -1702,7 +1702,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     [self sendVideoContent:videoContent localEvent:localEvent];
                 }
                 else {
-                    NSLog(@"Video export failed: %d", (int)[exportSession status]);
+                    NSLog(@"[RoomVC] Video export failed: %d", (int)[exportSession status]);
                     // remove tmp file (if any)
                     [[NSFileManager defaultManager] removeItemAtPath:[tmpVideoLocation path] error:nil];
                     [self handleError:nil forLocalEvent:localEvent];
@@ -1712,7 +1712,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // check if the upload is still defined
             // it could have been cancelled with an external events
             if ([MediaManager existingUploaderWithId:localEvent.eventId inFolder:self.roomId]) {
-                NSLog(@"Video thumbnail upload failed");
+                NSLog(@"[RoomVC] Video thumbnail upload failed");
                 [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
                 [self handleError:error forLocalEvent:localEvent];
             }
@@ -2440,7 +2440,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [weakSelf stopActivityIndicator];
                 // Revert change
                 textField.text = weakSelf.mxRoom.state.displayname;
-                NSLog(@"Rename room failed: %@", error);
+                NSLog(@"[RoomVC] Rename room failed: %@", error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -2465,7 +2465,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 textField.text = weakSelf.mxRoom.state.topic;
                 // Hide topic field if empty
                 weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
-                NSLog(@"Topic room change failed: %@", error);
+                NSLog(@"[RoomVC] Topic room change failed: %@", error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -2583,7 +2583,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                         [weakSelf.mxRoom inviteUser:userId success:^{
                             
                         } failure:^(NSError *error) {
-                            NSLog(@"Invite %@ failed: %@", userId, error);
+                            NSLog(@"[RoomVC] Invite %@ failed: %@", userId, error);
                             //Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                         }];
@@ -2773,7 +2773,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             }
         } else {
             lastMessage = nil;
-            NSLog(@"ERROR: Unable to add local event: %@", mxEvent.description);
+            NSLog(@"[RoomVC] Unable to add local event: %@", mxEvent.description);
         }
     }
     
@@ -2856,7 +2856,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)handleError:(NSError *)error forLocalEvent:(MXEvent *)localEvent {
-    NSLog(@"Post message failed: %@", error);
+    NSLog(@"[RoomVC] Post message failed: %@", error);
     if (error) {
         // Alert user
         [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -2866,7 +2866,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // Update the temporary event with this local event id
         RoomMessage *message = [self messageWithEventId:localEvent.eventId];
         if (message) {
-            NSLog(@"Posted event: %@", localEvent.description);
+            NSLog(@"[RoomVC] Posted event: %@", localEvent.description);
             NSString *failedEventId = [NSString stringWithFormat:@"%@%lld", kFailedEventIdPrefix, (long long)(CFAbsoluteTimeGetCurrent() * 1000)];
             [message replaceLocalEventId:localEvent.eventId withEventId:failedEventId];
         }
@@ -2938,7 +2938,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             [mxHandler.mxRestClient setDisplayName:displayName success:^{
             } failure:^(NSError *error) {
-                NSLog(@"Set displayName failed: %@", error);
+                NSLog(@"[RoomVC] Set displayName failed: %@", error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -2958,7 +2958,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Show the room
                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
             } failure:^(NSError *error) {
-                NSLog(@"Join roomAlias (%@) failed: %@", roomAlias, error);
+                NSLog(@"[RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -2993,7 +2993,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Kick the user
                 [self.mxRoom kickUser:userId reason:reason success:^{
                 } failure:^(NSError *error) {
-                    NSLog(@"Kick user (%@) failed: %@", userId, error);
+                    NSLog(@"[RoomVC] Kick user (%@) failed: %@", userId, error);
                     //Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }];
@@ -3015,7 +3015,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Ban the user
                 [self.mxRoom banUser:userId reason:reason success:^{
                 } failure:^(NSError *error) {
-                    NSLog(@"Ban user (%@) failed: %@", userId, error);
+                    NSLog(@"[RoomVC] Ban user (%@) failed: %@", userId, error);
                     //Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }];
@@ -3028,7 +3028,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Unban the user
                 [self.mxRoom unbanUser:userId success:^{
                 } failure:^(NSError *error) {
-                    NSLog(@"Unban user (%@) failed: %@", userId, error);
+                    NSLog(@"[RoomVC] Unban user (%@) failed: %@", userId, error);
                     //Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }];
@@ -3053,7 +3053,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Set user power level
                 [self.mxRoom setPowerLevelOfUserWithUserID:userId powerLevel:[powerLevel integerValue] success:^{
                 } failure:^(NSError *error) {
-                    NSLog(@"Set user power (%@) failed: %@", userId, error);
+                    NSLog(@"[RoomVC] Set user power (%@) failed: %@", userId, error);
                     //Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }];
@@ -3066,7 +3066,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // Reset user power level
                 [self.mxRoom setPowerLevelOfUserWithUserID:userId powerLevel:0 success:^{
                 } failure:^(NSError *error) {
-                    NSLog(@"Reset user power (%@) failed: %@", userId, error);
+                    NSLog(@"[RoomVC] Reset user power (%@) failed: %@", userId, error);
                     //Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }];
@@ -3075,7 +3075,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 self.messageTextView.placeholder = @"Usage: /deop <userId>";
             }
         } else {
-            NSLog(@"Unrecognised IRC-style command: %@", text);
+            NSLog(@"[RoomVC] Unrecognised IRC-style command: %@", text);
             self.messageTextView.placeholder = [NSString stringWithFormat:@"Unrecognised IRC-style command: %@", cmd];
         }
     }
@@ -3122,7 +3122,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         } else {
             // This typing event is too old, we will ignore it
             typing = NO;
-            NSLog(@"sendTypingNotification: a typing event has been ignored");
+            NSLog(@"[RoomVC] Ignore typing event (too old)");
         }
     } else {
         // Cancel any typing timer
@@ -3139,7 +3139,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                                     // Reset last typing date
                                     lastTypingDate = nil;
                                 } failure:^(NSError *error) {
-                                    NSLog(@"sendTypingNotification (%d) failed: %@", typing, error);
+                                    NSLog(@"[RoomVC] Failed to send typing notification (%d) failed: %@", typing, error);
                                     // Cancel timer (if any)
                                     [typingTimer invalidate];
                                     typingTimer = nil;
@@ -3207,7 +3207,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         if ([MediaManager existingUploaderWithId:localEvent.eventId inFolder:self.roomId])
         {
             [MediaManager removeUploaderWithId:localEvent.eventId inFolder:self.roomId];
-            NSLog(@"Failed to upload image: %@", error);
+            NSLog(@"[RoomVC] Failed to upload image: %@", error);
             [self handleError:error forLocalEvent:localEvent];
         }
     }];

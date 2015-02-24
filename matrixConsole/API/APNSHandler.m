@@ -92,7 +92,7 @@ static APNSHandler *sharedHandler = nil;
 - (void)setIsActive:(BOOL)isActive {
     // Refuse to try & turn push on if we're not logged in, it's nonsensical.
     if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusLoggedOut) {
-        NSLog(@"Not logged in: not setting push token because we're not logged in");
+        NSLog(@"[APNSHandler] Not setting push token because we're not logged in");
         return;
     }
     
@@ -119,10 +119,10 @@ static APNSHandler *sharedHandler = nil;
             unsigned char c = [alphabet characterAtIndex:arc4random() % alphabet.length];
             profileTag = [profileTag stringByAppendingFormat:@"%c", c];
         }
-        NSLog(@"Generated fresh profile tag: %@", profileTag);
+        NSLog(@"[APNSHandler] Generated fresh profile tag: %@", profileTag);
         [[NSUserDefaults standardUserDefaults] setValue:profileTag forKey:@"pusherProfileTag"];
     } else {
-        NSLog(@"Using existing profile tag: %@", profileTag);
+        NSLog(@"[APNSHandler] Using existing profile tag: %@", profileTag);
     }
     
     NSObject *kind = isActive ? @"http" : [NSNull null];
@@ -134,7 +134,7 @@ static APNSHandler *sharedHandler = nil;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
     } failure:^(NSError *error) {
-        NSLog(@"Failed to send APNS token! (%@)", error);
+        NSLog(@"[APNSHandler] Failed to send APNS token! (%@)", error);
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
     }];

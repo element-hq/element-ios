@@ -239,7 +239,7 @@
 }
 
 - (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
-    NSLog(@"Got APNS token!");
+    NSLog(@"[AppDelegate] Got APNS token!");
     
     APNSHandler* apnsHandler = [APNSHandler sharedHandler];
     [apnsHandler setDeviceToken:deviceToken];
@@ -252,13 +252,13 @@
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-    NSLog(@"Failed to register for APNS: %@", error);
+    NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
 }
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 #ifdef DEBUG
     // log the full userInfo only in DEBUG
-    NSLog(@"APNS: %@", userInfo);
+    NSLog(@"[AppDelegate] APNS: %@", userInfo);
 #endif
     
     completionHandler(UIBackgroundFetchResultNoData);

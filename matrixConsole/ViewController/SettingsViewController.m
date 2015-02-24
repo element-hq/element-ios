@@ -384,7 +384,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             // Go to the next change saving step
             [self saveUserInfo];
         } failure:^(NSError *error) {
-            NSLog(@"Set displayName failed: %@", error);
+            NSLog(@"[SettingsVC] Failed to set displayName: %@", error);
             //Alert user
             NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
             if (!title) {
@@ -425,7 +425,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 uploadedPictureURL = url;
                 [self saveUserInfo];
             } failure:^(NSError *error) {
-                NSLog(@"Upload image failed: %@", error);
+                NSLog(@"[SettingsVC] Failed to upload image: %@", error);
                 [self handleErrorDuringPictureSaving:error];
             }];
         } else {
@@ -436,7 +436,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                                                  // Loop to end saving
                                                  [self saveUserInfo];
                                              } failure:^(NSError *error) {
-                                                 NSLog(@"Set avatar url failed: %@", error);
+                                                 NSLog(@"[SettingsVC] Failed to set avatar url: %@", error);
                                                  [self handleErrorDuringPictureSaving:error];
                                              }];
         }
@@ -607,7 +607,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             submittedEmailCell.settingTextField.text = nil;
             [self.tableView reloadData];
         } failure:^(NSError *error) {
-            NSLog(@"Request email token failed: %@", error);
+            NSLog(@"[SettingsVC] Failed to request email token: %@", error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
             submittedEmailCell.settingButton.enabled = YES;
@@ -630,7 +630,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     submittedEmail = nil;
                     [self.tableView reloadData];
                 } failure:^(NSError *error) {
-                    NSLog(@"Link email failed: %@", error);
+                    NSLog(@"[SettingsVC] Failed to link email: %@", error);
                     //Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                     
@@ -639,7 +639,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     [self.tableView reloadData];
                 }];
             } else {
-                NSLog(@"Failed to link email");
+                NSLog(@"[SettingsVC] Failed to link email");
                 MXCAlert *alert = [[MXCAlert alloc] initWithTitle:nil message:@"Failed to link email"  style:MXCAlertStyleAlert];
                 [alertsArray addObject:alert];
                 alert.cancelButtonIndex = [alert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
@@ -650,7 +650,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 emailTokenCell.settingTextField.text = nil;
             }
         } failure:^(NSError *error) {
-            NSLog(@"Submitted email token failed: %@", error);
+            NSLog(@"[SettingsVC] Failed to submit email token: %@", error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
             emailTokenCell.settingButton.enabled = YES;

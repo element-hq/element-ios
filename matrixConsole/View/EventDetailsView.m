@@ -130,7 +130,7 @@
                     self.hidden = YES;
                 }
             } failure:^(NSError *error) {
-                NSLog(@"Redact event failed: %@", error);
+                NSLog(@"[EventDetailsView] Redact event (%@) failed: %@", _event.eventId, error);
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 [_activityIndicator stopAnimating];
