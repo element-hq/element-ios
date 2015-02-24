@@ -19,10 +19,11 @@
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "MXCAlert.h"
+#import "MXCRegistrationWebView.h"
 
 @interface AuthenticationViewController () {
     // Current request in progress
-    MXHTTPOperation *mxAuthFlowRequest;
+    MXHTTPOperation *mxCurrentOperation;
     
     // Array of flows supported by the home server and implemented by the app (for the current auth type)
     NSMutableArray *supportedFlows;
@@ -35,7 +36,7 @@
 }
 
 // Return true if the provided flow (kMXLoginFlowType) is supported by the application
-+ (BOOL)isImplementedFlowType:(NSString*)flowType;
++ (BOOL)isImplementedFlowType:(NSString*)flowType forAuthType:(AuthenticationType)authType;
 
 // The current authentication type
 @property (nonatomic) AuthenticationType authType;
@@ -63,6 +64,10 @@
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *noFlowLabel;
 @property (weak, nonatomic) IBOutlet UIButton *retryButton;
+
+@property (weak, nonatomic) IBOutlet UIView *registrationFallbackContentView;
+@property (weak, nonatomic) IBOutlet MXCRegistrationWebView *registrationFallbackWebView;
+@property (weak, nonatomic) IBOutlet UIButton *cancelRegistrationFallbackButton;
 
 @end
 
@@ -111,9 +116,9 @@
 
 - (void)dealloc {
     supportedFlows = nil;
-    if (mxAuthFlowRequest){
-        [mxAuthFlowRequest cancel];
-        mxAuthFlowRequest = nil;
+    if (mxCurrentOperation){
+        [mxCurrentOperation cancel];
+        mxCurrentOperation = nil;
     }
 }
 
@@ -154,10 +159,16 @@
 
 #pragma mark -
 
-+ (BOOL)isImplementedFlowType:(NSString*)flowType {
-    if ([flowType isEqualToString:kMXLoginFlowTypePassword] || [flowType isEqualToString:kMXLoginFlowTypeEmailCode]) {
-        return YES;
++ (BOOL)isImplementedFlowType:(NSString*)flowType forAuthType:(AuthenticationType)authType {
+    if (authType == AuthenticationTypeLogin) {
+        if ([flowType isEqualToString:kMXLoginFlowTypePassword]
+            /*|| [flowType isEqualToString:kMXLoginFlowTypeEmailCode]*/) {
+            return YES;
+        }
+    } else { // AuthenticationTypeRegister
+        // No registration flow is supported yet
     }
+    
     return NO;
 }
 
@@ -168,8 +179,6 @@
         [_submitButton setTitle:@"Login" forState:UIControlStateHighlighted];
         [_authSwitchButton setTitle:@"Create account" forState:UIControlStateNormal];
         [_authSwitchButton setTitle:@"Create account" forState:UIControlStateHighlighted];
-        
-        
     } else {
         _createAccountLabel.hidden = NO;
         [_submitButton setTitle:@"Sign up" forState:UIControlStateNormal];
@@ -233,22 +242,24 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
     
     // Cancel protential request in progress
-    [mxAuthFlowRequest cancel];
-    mxAuthFlowRequest = nil;
+    [mxCurrentOperation cancel];
+    mxCurrentOperation = nil;
     
     [_activityIndicator startAnimating];
     self.selectedFlow = nil;
     if (_authType == AuthenticationTypeLogin) {
-        mxAuthFlowRequest = [mxHandler.mxRestClient getLoginFlow:^(NSArray *flows) {
+        mxCurrentOperation = [mxHandler.mxRestClient getLoginFlow:^(NSArray *flows) {
             [self handleHomeServerFlows:flows];
         } failure:^(NSError *error) {
-            [self onFailureDuringFlowRefresh:error];
+            NSLog(@"GET auth flows failed: %@", error);
+            [self onFailureDuringMXOperation:error];
         }];
     } else {
-        mxAuthFlowRequest = [mxHandler.mxRestClient getRegisterFlow:^(NSArray *flows) {
+        mxCurrentOperation = [mxHandler.mxRestClient getRegisterFlow:^(NSArray *flows) {
             [self handleHomeServerFlows:flows];
         } failure:^(NSError *error) {
-            [self onFailureDuringFlowRefresh:error];
+            NSLog(@"GET auth flows failed: %@", error);
+            [self onFailureDuringMXOperation:error];
         }];
     }
 }
@@ -258,37 +269,53 @@
     
     [supportedFlows removeAllObjects];
     for (MXLoginFlow* flow in flows) {
-        if ([AuthenticationViewController isImplementedFlowType:flow.type]) {
-            [supportedFlows addObject:flow];
+        if ([AuthenticationViewController isImplementedFlowType:flow.type forAuthType:_authType]) {
+            // Check here all stages
+            BOOL isSupported = YES;
+            if (flow.stages.count) {
+                for (NSString *stage in flow.stages) {
+                    if ([AuthenticationViewController isImplementedFlowType:stage forAuthType:_authType] == NO) {
+                        isSupported = NO;
+                        break;
+                    }
+                }
+            }
+            
+            if (isSupported) {
+                [supportedFlows addObject:flow];
+            }
         }
     }
     
     if (supportedFlows.count) {
         // FIXME display supported flows
-        // Currently we select password based auth
-        for (MXLoginFlow* flow in supportedFlows) {
-            if ([flow.type isEqualToString:kMXLoginFlowTypePassword]) {
-                self.selectedFlow = flow;
-                break;
-            } else if ([flow.type isEqualToString:kMXLoginFlowTypeEmailCode]) {
-                self.selectedFlow = flow;
-                break;
-            }
-        }
+        // Currently we select the first one
+        self.selectedFlow = [supportedFlows firstObject];
     }
     
     if (!_selectedFlow) {
         // Notify user that no flow is supported
         if (_authType == AuthenticationTypeLogin) {
             _noFlowLabel.text = @"Currently we do not support Login flows defined by this Home Server.";
-            
-            [_retryButton setTitle:@"Retry" forState:UIControlStateNormal];
-            [_retryButton setTitle:@"Retry" forState:UIControlStateHighlighted];
         } else {
             _noFlowLabel.text = @"Registration is not currently supported.";
             
-            [_retryButton setTitle:@"Create account on Matrix.org" forState:UIControlStateNormal];
-            [_retryButton setTitle:@"Create account on Matrix.org" forState:UIControlStateHighlighted];
+            // Retrieve fallback page from Home Server
+            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+            [_activityIndicator startAnimating];
+            
+            mxCurrentOperation = [mxHandler.mxRestClient registerFallback:^(NSString *fallback) {
+                [self showRegistrationFallBackView:fallback];
+            } failure:^(NSError *error) {
+                //********************************
+                // TEST
+                [self showRegistrationFallBackView:@"https://matrix.org/beta/#/register"];
+                return;
+                //**********************************
+                
+                NSLog(@"GET registerFallback failed: %@", error);
+                [self onFailureDuringMXOperation:error];
+            }];
         }
         
         _noFlowLabel.hidden = NO;
@@ -296,7 +323,9 @@
     }
 }
 
-- (void)onFailureDuringFlowRefresh:(NSError*)error {
+- (void)onFailureDuringMXOperation:(NSError*)error {
+    mxCurrentOperation = nil;
+    
     if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == kCFURLErrorCancelled) {
         // Ignore this error
         return;
@@ -304,7 +333,6 @@
     
     [_activityIndicator stopAnimating];
     
-    NSLog(@"GET auth flows failed: %@", error);
     // Alert user
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
@@ -321,10 +349,8 @@
     _noFlowLabel.hidden = NO;
     _noFlowLabel.text = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     if (!_noFlowLabel.text.length) {
-        _noFlowLabel.text = @"We failed to retrieve authentication flow from this Home Server";
+        _noFlowLabel.text = @"We failed to retrieve authentication information from this Home Server";
     }
-    [_retryButton setTitle:@"Retry" forState:UIControlStateNormal];
-    [_retryButton setTitle:@"Retry" forState:UIControlStateHighlighted];
     _retryButton.hidden = NO;
     
     // Handle specific error code here
@@ -403,14 +429,11 @@
             self.authType = AuthenticationTypeLogin;
         }
     } else if (sender == _retryButton) {
-        if ([_retryButton.titleLabel.text isEqualToString:@"Retry"]) {
-            [self refreshSupportedAuthFlow];
-        } else {
-            // Open Matrix web page to create an account
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://matrix.org/beta/#/register"]];
-            // Switch back on login screen
-            self.authType = AuthenticationTypeLogin;
-        }
+        [self refreshSupportedAuthFlow];
+    } else if (sender == _cancelRegistrationFallbackButton) {
+        // Hide fallback webview
+        [self hideRegistrationFallbackView];
+        self.authType = AuthenticationTypeLogin;
     }
 }
 
@@ -532,6 +555,32 @@
         // Launch authentication now
         [self onButtonPressed:_submitButton];
     }
+}
+
+#pragma mark - Registration Fallback
+
+- (void)showRegistrationFallBackView:(NSString*)fallbackPage {
+    [_registrationFallbackWebView openFallbackPage:fallbackPage success:^(MXCredentials *credentials) {
+        // Report credentials
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        [mxHandler setUserId:credentials.userId];
+        [mxHandler setAccessToken:credentials.accessToken];
+        // Extract homeServer name from userId
+        NSArray *components = [credentials.userId componentsSeparatedByString:@":"];
+        if (components.count == 2) {
+            [mxHandler setHomeServer:[components lastObject]];
+        } else {
+            NSLog(@"Unexpected error: the userId is not correctly formatted: %@", credentials.userId);
+        }
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+    _registrationFallbackContentView.hidden = NO;
+}
+
+- (void)hideRegistrationFallbackView {
+    [_registrationFallbackWebView stopLoading];
+    _registrationFallbackContentView.hidden = YES;
 }
 
 @end

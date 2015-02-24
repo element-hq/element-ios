@@ -1427,12 +1427,47 @@
                                     <constraint firstAttribute="bottom" secondItem="d6h-O8-aBs" secondAttribute="bottom" id="zJF-4I-K30"/>
                                 </constraints>
                             </scrollView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m1P-2H-e3q" userLabel="RegistrationFallbackContentView">
+                                <rect key="frame" x="10" y="30" width="580" height="560"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wy8-eL-0qs">
+                                        <rect key="frame" x="522" y="5" width="50" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="SNe-ts-mx1"/>
+                                            <constraint firstAttribute="height" constant="35" id="cxj-k5-5eB"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onButtonPressed:" destination="ZlD-EU-ncw" eventType="touchUpInside" id="Z6U-iX-emw"/>
+                                        </connections>
+                                    </button>
+                                    <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zwS-9o-UR1" userLabel="registrationWebView" customClass="MXCRegistrationWebView">
+                                        <rect key="frame" x="0.0" y="40" width="580" height="520"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </webView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="zwS-9o-UR1" firstAttribute="leading" secondItem="m1P-2H-e3q" secondAttribute="leading" id="PdC-BM-cGq"/>
+                                    <constraint firstItem="zwS-9o-UR1" firstAttribute="top" secondItem="Wy8-eL-0qs" secondAttribute="bottom" id="SHg-kb-HYZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wy8-eL-0qs" secondAttribute="trailing" constant="8" id="dAE-oR-gyO"/>
+                                    <constraint firstItem="Wy8-eL-0qs" firstAttribute="top" secondItem="m1P-2H-e3q" secondAttribute="top" constant="5" id="jN2-LM-zDK"/>
+                                    <constraint firstAttribute="bottom" secondItem="zwS-9o-UR1" secondAttribute="bottom" id="mcB-1V-H10"/>
+                                    <constraint firstAttribute="trailing" secondItem="zwS-9o-UR1" secondAttribute="trailing" id="pET-Lk-c56"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="m1P-2H-e3q" firstAttribute="top" secondItem="crg-iM-twR" secondAttribute="bottom" constant="10" id="4H8-cd-dqk"/>
                             <constraint firstAttribute="trailing" secondItem="udG-Mx-F4c" secondAttribute="trailing" id="A3Y-Nc-49v"/>
                             <constraint firstItem="gbK-Nm-HUT" firstAttribute="top" secondItem="udG-Mx-F4c" secondAttribute="bottom" id="CT4-Dg-1Dx"/>
+                            <constraint firstItem="gbK-Nm-HUT" firstAttribute="top" secondItem="m1P-2H-e3q" secondAttribute="bottom" constant="10" id="TvL-CC-lFt"/>
                             <constraint firstItem="udG-Mx-F4c" firstAttribute="leading" secondItem="wIi-Yi-2pi" secondAttribute="leading" id="gtx-Th-HKc"/>
+                            <constraint firstAttribute="trailing" secondItem="m1P-2H-e3q" secondAttribute="trailing" constant="10" id="hGg-r7-gFx"/>
+                            <constraint firstItem="m1P-2H-e3q" firstAttribute="leading" secondItem="wIi-Yi-2pi" secondAttribute="leading" constant="10" id="jyc-F5-4sW"/>
                             <constraint firstItem="udG-Mx-F4c" firstAttribute="top" secondItem="wIi-Yi-2pi" secondAttribute="top" constant="20" symbolic="YES" id="ku3-Lq-Cxe"/>
                         </constraints>
                     </view>
@@ -1443,6 +1478,7 @@
                         <outlet property="authInputsEmailCodeBasedView" destination="G6Y-YQ-PvU" id="8IM-sx-LeP"/>
                         <outlet property="authInputsPasswordBasedView" destination="O8N-hu-Ewh" id="1ZN-jj-Txd"/>
                         <outlet property="authSwitchButton" destination="bYl-BD-hfc" id="RmX-1U-gbu"/>
+                        <outlet property="cancelRegistrationFallbackButton" destination="Wy8-eL-0qs" id="zDb-ys-RHw"/>
                         <outlet property="contentView" destination="d6h-O8-aBs" id="hId-Ic-rv4"/>
                         <outlet property="contentViewHeightConstraint" destination="42v-uQ-LsL" id="d3Y-uv-J8T"/>
                         <outlet property="createAccountLabel" destination="pvw-BQ-kaV" id="HvM-wg-gEw"/>
@@ -1451,6 +1487,8 @@
                         <outlet property="identityServerInfoLabel" destination="0ot-Cn-Okj" id="fch-En-eR0"/>
                         <outlet property="identityServerTextField" destination="yfy-fB-piy" id="gwN-t1-TX9"/>
                         <outlet property="noFlowLabel" destination="eg7-eh-lZv" id="eQi-Nt-5Ik"/>
+                        <outlet property="registrationFallbackContentView" destination="m1P-2H-e3q" id="cTq-S4-f9R"/>
+                        <outlet property="registrationFallbackWebView" destination="zwS-9o-UR1" id="7g9-vt-riy"/>
                         <outlet property="retryButton" destination="70b-I3-Cuk" id="jHb-ZS-hrR"/>
                         <outlet property="scrollView" destination="udG-Mx-F4c" id="Aot-SZ-PxD"/>
                         <outlet property="submitButton" destination="fnl-LF-rEL" id="a9E-g2-2C2"/>
