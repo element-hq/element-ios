@@ -306,6 +306,7 @@
         } else {
             _noFlowLabel.text = @"Registration is not currently supported.";
         }
+        NSLog(@"[AuthenticationVC] Warning: %@", _noFlowLabel.text);
         
         _noFlowLabel.hidden = NO;
         _retryButton.hidden = NO;

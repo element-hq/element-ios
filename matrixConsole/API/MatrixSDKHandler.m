@@ -355,6 +355,8 @@ static MatrixSDKHandler *sharedHandler = nil;
 }
 
 - (void)logout {
+    NSLog(@"[MatrixSDKHandler] logout");
+    
     //[self setUserPresence:MXPresenceOffline andStatusMessage:nil completion:nil];
     
     // Reset access token (mxSession is closed by setter)
@@ -483,6 +485,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     // Report status
     _status = status;
+    NSLog(@"[MatrixSDKHandler] Updated status: %lu", status);
 }
 
 #pragma mark User's profile
