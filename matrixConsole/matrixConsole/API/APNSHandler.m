@@ -99,9 +99,9 @@ static APNSHandler *sharedHandler = nil;
     transientActivity = isActive;
     
 #ifdef DEBUG
-    NSString *appId = @"org.matrix.matrixConsole.iosdev";
+    NSString *appId = @"org.matrix.console.ios.dev";
 #else
-    NSString *appId = @"org.matrix.matrixConsole.ios";
+    NSString *appId = @"org.matrix.console.ios.prod";
 #endif
     
     NSString *b64Token = [self.deviceToken base64EncodedStringWithOptions:0];
