@@ -61,6 +61,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleDisplayName</key>
+	<string>Console</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
 </dict>
