@@ -192,7 +192,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     // Sanity check
     if (self.status != MatrixSDKHandlerStatusStoreDataReady) {
-        NSLog(@"Initial server sync is applicable only when store data is ready to complete session initialisation");
+        NSLog(@"[MatrixSDKHandler] Initial server sync is applicable only when store data is ready to complete session initialisation");
         return;
     }
     
@@ -233,7 +233,7 @@ static MatrixSDKHandler *sharedHandler = nil;
             [self enableInAppNotifications:YES];
         }
     } failure:^(NSError *error) {
-        NSLog(@"Initial Sync failed: %@", error);
+        NSLog(@"[MatrixSDKHandler] Initial Sync failed: %@", error);
         if (notifyOpenSessionFailure) {
             //Alert user only once
             notifyOpenSessionFailure = NO;
@@ -308,20 +308,20 @@ static MatrixSDKHandler *sharedHandler = nil;
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
             
-            NSLog(@"pauseInBackgroundTask : %08lX expired", (unsigned long)_bgTask);
+            NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX expired", (unsigned long)_bgTask);
         }];
         
-        NSLog(@"pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
+        NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
         // Pause SDK
         [self.mxSession pause];
         self.status = MatrixSDKHandlerStatusPaused;
         // Update user presence
         __weak typeof(self) weakSelf = self;
         [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
-            NSLog(@"pauseInBackgroundTask : %08lX ends", (unsigned long)weakSelf.bgTask);
+            NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX ends", (unsigned long)weakSelf.bgTask);
             [[UIApplication sharedApplication] endBackgroundTask:weakSelf.bgTask];
             weakSelf.bgTask = UIBackgroundTaskInvalid;
-            NSLog(@">>>>> background pause task finished");
+            NSLog(@"[MatrixSDKHandler] >>>>> background pause task finished");
         }];
     } else {
         // Cancel pending actions
@@ -349,7 +349,7 @@ static MatrixSDKHandler *sharedHandler = nil;
             // Cancel background task
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
-            NSLog(@"pauseInBackgroundTask : %08lX cancelled", (unsigned long)_bgTask);
+            NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX cancelled", (unsigned long)_bgTask);
         }
     }
 }
@@ -635,12 +635,12 @@ static MatrixSDKHandler *sharedHandler = nil;
     self.userPresence = userPresence;
     // Update user presence on server side
     [self.mxSession.myUser setPresence:userPresence andStatusMessage:statusMessage success:^{
-        NSLog(@"Set user presence (%lu) succeeded", (unsigned long)userPresence);
+        NSLog(@"[MatrixSDKHandler] Set user presence (%lu) succeeded", (unsigned long)userPresence);
         if (completion) {
             completion();
         }
     } failure:^(NSError *error) {
-        NSLog(@"Set user presence (%lu) failed: %@", (unsigned long)userPresence, error);
+        NSLog(@"[MatrixSDKHandler] Set user presence (%lu) failed: %@", (unsigned long)userPresence, error);
     }];
 }
 
@@ -738,7 +738,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                // add the user
                                                [self.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
                                                } failure:^(NSError *error) {
-                                                   NSLog(@"%@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
+                                                   NSLog(@"[MatrixSDKHandler] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
                                                    //Alert user
                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                }];
@@ -748,7 +748,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                                            [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
                                            
                                        } failure:^(NSError *error) {
-                                           NSLog(@"Create room failed: %@", error);
+                                           NSLog(@"[MatrixSDKHandler] Create room failed: %@", error);
                                            //Alert user
                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
                                        }];
@@ -877,7 +877,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     NSString *redactedInfo = nil;
     BOOL isRedacted = (event.redactedBecause != nil);
     if (isRedacted) {
-        NSLog(@"Redacted event %@ (%@)", event.description, event.redactedBecause);
+        NSLog(@"[MatrixSDKHandler] Redacted event %@ (%@)", event.description, event.redactedBecause);
         // Check whether redacted information is required
         if (!isSubtitle && ![AppSettings sharedSettings].hideRedactions) {
             redactedInfo = @"<redacted>";
@@ -1128,7 +1128,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                     displayText = displayText? displayText : @"image attachment";
                     // Check attachment validity
                     if (![self isSupportedAttachment:event]) {
-                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        NSLog(@"[MatrixSDKHandler] Warning: Unsupported attachment %@", event.description);
                         // Check whether unsupported/unexpected messages should be exposed
                         if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
                             displayText = @"invalid image attachment";
@@ -1140,7 +1140,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                 } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                     displayText = displayText? displayText : @"audio attachment";
                     if (![self isSupportedAttachment:event]) {
-                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        NSLog(@"[MatrixSDKHandler] Warning: Unsupported attachment %@", event.description);
                         if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
                             displayText = @"invalid audio attachment";
                         } else {
@@ -1150,7 +1150,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                 } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
                     displayText = displayText? displayText : @"video attachment";
                     if (![self isSupportedAttachment:event]) {
-                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        NSLog(@"[MatrixSDKHandler] Warning: Unsupported attachment %@", event.description);
                         if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
                             displayText = @"invalid video attachment";
                         } else {
@@ -1160,7 +1160,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                 } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
                     displayText = displayText? displayText : @"location attachment";
                     if (![self isSupportedAttachment:event]) {
-                        NSLog(@"ERROR: Unsupported attachment %@", event.description);
+                        NSLog(@"[MatrixSDKHandler] Warning: Unsupported attachment %@", event.description);
                         if (isSubtitle || [AppSettings sharedSettings].hideUnsupportedEvents) {
                             displayText = @"invalid location attachment";
                         } else {
@@ -1204,7 +1204,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
     
     if (!displayText) {
-        NSLog(@"ERROR: Unsupported event %@)", event.description);
+        NSLog(@"[MatrixSDKHandler] Warning: Unsupported event %@)", event.description);
         if (!isSubtitle && ![AppSettings sharedSettings].hideUnsupportedEvents) {
             // Return event content as unsupported event
             displayText = [NSString stringWithFormat:@"%@%@", kMatrixSDKHandlerUnsupportedEventDescriptionPrefix, event.description];

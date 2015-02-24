@@ -73,7 +73,6 @@ static NSMutableDictionary* uploadTableById = nil;
             [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFinishNotification object:mediaURL userInfo:nil];
         } failure:^(NSError *error) {
             [downloadTableByURL removeObjectForKey:[MediaManager downloadKey:mediaURL andFolder:folder]];
-            NSLog(@"Failed to download image (%@): %@", mediaURL, error);
             [[NSNotificationCenter defaultCenter] postNotificationName:kMediaDownloadDidFailNotification object:mediaURL userInfo:nil];
         }];
         return mediaLoader;
@@ -375,12 +374,12 @@ static NSMutableDictionary* uploadTableById = nil;
     
     if (mediaCachePath) {
         if (![[NSFileManager defaultManager] removeItemAtPath:mediaCachePath error:&error]) {
-            NSLog(@"Fails to delete media cache dir : %@", error);
+            NSLog(@"[MediaManager] Failed to delete media cache dir: %@", error);
         } else {
-            NSLog(@"Media cache : deleted !");
+            NSLog(@"[MediaManager] Media cache has been deleted");
         }
     } else {
-        NSLog(@"Media cache does not exist");
+        NSLog(@"[MediaManager] Media cache does not exist");
     }
     
     mediaCachePath = nil;

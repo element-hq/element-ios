@@ -54,7 +54,6 @@ static RageShakableUIResponder* sharedInstance = nil;
 }
 
 + (void)startShaking:(UIResponder*)responder {
-    
     if (!sharedInstance) {
         sharedInstance = [[RageShakableUIResponder alloc] init];
     }
@@ -63,6 +62,8 @@ static RageShakableUIResponder* sharedInstance = nil;
     
     // only start if the application is in foreground
     if ([AppDelegate theDelegate].isAppForeground && !rageShakableUIResponder->confirmationAlert) {
+        NSLog(@"[RageShake] Start shaking with [%@]", [responder class]);
+        
         rageShakableUIResponder->startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
         
         rageShakableUIResponder->isShaking = YES;
@@ -70,13 +71,12 @@ static RageShakableUIResponder* sharedInstance = nil;
     }
 }
 
-+ (void)stopShaking:(UIResponder*)responder
-{
++ (void)stopShaking:(UIResponder*)responder {
     if (!sharedInstance) {
         sharedInstance = [[RageShakableUIResponder alloc] init];
     }
     
-    NSLog(@"stopShaking with [%@]", [responder class]);
+    NSLog(@"[RageShake] Stop shaking with [%@]", [responder class]);
     
     RageShakableUIResponder* rageShakableUIResponder = [responder isKindOfClass:[RageShakableUIResponder class]] ? (RageShakableUIResponder*)responder : sharedInstance;
     

@@ -249,14 +249,14 @@
         mxCurrentOperation = [mxHandler.mxRestClient getLoginFlow:^(NSArray *flows) {
             [self handleHomeServerFlows:flows];
         } failure:^(NSError *error) {
-            NSLog(@"Authentication: getLoginFlow failed: %@", error);
+            NSLog(@"[AuthenticationVC] Failed to get Login flows: %@", error);
             [self onFailureDuringMXOperation:error];
         }];
     } else {
 //        mxCurrentOperation = [mxHandler.mxRestClient getRegisterFlow:^(NSArray *flows) {
 //            [self handleHomeServerFlows:flows];
 //        } failure:^(NSError *error) {
-//            NSLog(@"Authentication: getRegisterFlow failed: %@", error);
+//            NSLog(@"[AuthenticationVC] Failed to get Register flows: %@", error);
 //            [self onFailureDuringMXOperation:error];
 //        }];
         
@@ -264,7 +264,7 @@
         mxCurrentOperation = [mxHandler.mxRestClient registerFallback:^(NSString *fallback) {
             [self showRegistrationFallBackView:fallback];
         } failure:^(NSError *error) {
-            NSLog(@"Authentication: registerFallback failed: %@", error);
+            NSLog(@"[AuthenticationVC] Failed to get Register fallback: %@", error);
             [self onFailureDuringMXOperation:error];
         }];
     }
@@ -394,7 +394,7 @@
                                                    if (components.count == 2) {
                                                        [matrix setHomeServer:[components lastObject]];
                                                    } else {
-                                                       NSLog(@"Unexpected error: the userId is not correctly formatted: %@", credentials.userId);
+                                                       NSLog(@"[AuthenticationVC] Warning: the userId is not correctly formatted: %@", credentials.userId);
                                                    }
                                                    
                                                    [self dismissViewControllerAnimated:YES completion:nil];
@@ -430,7 +430,7 @@
     [_activityIndicator stopAnimating];
     [self setUserInteractionEnabled:YES];
     
-    NSLog(@"Auth request failed: %@", error);
+    NSLog(@"[AuthenticationVC] Auth request failed: %@", error);
     
     // translate the error code to a human message
     NSString* message = error.localizedDescription;
@@ -562,7 +562,7 @@
         if (components.count == 2) {
             [mxHandler setHomeServer:[components lastObject]];
         } else {
-            NSLog(@"Unexpected error: the userId is not correctly formatted: %@", credentials.userId);
+            NSLog(@"[AuthenticationVC] Warning: the userId is not correctly formatted: %@", credentials.userId);
         }
         
         [self dismissViewControllerAnimated:YES completion:nil];

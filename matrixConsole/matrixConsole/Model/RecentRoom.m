@@ -141,7 +141,7 @@ NSString *const kRecentRoomUpdatedByBackPagination = @"kRecentRoomUpdatedByBackP
             }
         } failure:^(NSError *error) {
             backPaginationOperation = nil;
-            NSLog(@"RecentRoom: Failed to paginate back: %@", error);
+            NSLog(@"[RecentRoom] Failed to paginate back: %@", error);
             [self cancelBackPagination];
         }];
     } else {

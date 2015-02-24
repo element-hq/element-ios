@@ -207,7 +207,7 @@
             UITableViewCell *recentCell = [self.tableView cellForRowAtIndexPath:indexPath];
             [self performSegueWithIdentifier:@"showDetail" sender:recentCell];
         } else {
-            NSLog(@"We are not able to open room (%@) because it does not appear in recents yet", roomId);
+            NSLog(@"[RecentsVC] We are not able to open room (%@) because it does not appear in recents yet", roomId);
             // Postpone room details display. We run activity indicator until recents are updated (thanks to recents listener)
             _preSelectedRoomId = roomId;
             // Start activity indicator
@@ -695,7 +695,7 @@
             // Refresh table display
             [self refreshRecentsDisplay];
         } failure:^(NSError *error) {
-            NSLog(@"Failed to leave room (%@) failed: %@", selectedRoom.roomId, error);
+            NSLog(@"[RecentsVC] Failed to leave room (%@) failed: %@", selectedRoom.roomId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];

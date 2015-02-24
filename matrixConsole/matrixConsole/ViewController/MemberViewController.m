@@ -381,7 +381,7 @@
             [weakSelf removePendingActionMask];
         } failure:^(NSError *error) {
             [weakSelf removePendingActionMask];
-            NSLog(@"Set user power (%@) failed: %@", roomMember.userId, error);
+            NSLog(@"[MemberVC] Set user power (%@) failed: %@", roomMember.userId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
@@ -438,7 +438,7 @@
                 [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
             } failure:^(NSError *error) {
                 [self removePendingActionMask];
-                NSLog(@"Leave room %@ failed: %@", mxRoom.state.roomId, error);
+                NSLog(@"[MemberVC] Leave room %@ failed: %@", mxRoom.state.roomId, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -455,7 +455,7 @@
                               }
                               failure:^(NSError *error) {
                                   [self removePendingActionMask];
-                                  NSLog(@"Kick %@ failed: %@", _mxRoomMember.userId, error);
+                                  NSLog(@"[MemberVC] Kick %@ failed: %@", _mxRoomMember.userId, error);
                                   //Alert user
                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
                               }];
@@ -468,7 +468,7 @@
                              }
                              failure:^(NSError *error) {
                                  [self removePendingActionMask];
-                                 NSLog(@"Ban %@ failed: %@", _mxRoomMember.userId, error);
+                                 NSLog(@"[MemberVC] Ban %@ failed: %@", _mxRoomMember.userId, error);
                                  //Alert user
                                  [[AppDelegate theDelegate] showErrorAsAlert:error];
                              }];
@@ -480,7 +480,7 @@
                                 }
                                 failure:^(NSError *error) {
                                     [self removePendingActionMask];
-                                    NSLog(@"Invite %@ failed: %@", _mxRoomMember.userId, error);
+                                    NSLog(@"[MemberVC] Invite %@ failed: %@", _mxRoomMember.userId, error);
                                     //Alert user
                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                                 }];
@@ -492,7 +492,7 @@
                                }
                                failure:^(NSError *error) {
                                    [self removePendingActionMask];
-                                   NSLog(@"Unban %@ failed: %@", _mxRoomMember.userId, error);
+                                   NSLog(@"[MemberVC] Unban %@ failed: %@", _mxRoomMember.userId, error);
                                    //Alert user
                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                }];

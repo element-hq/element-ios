@@ -137,7 +137,7 @@
         [_publicRoomsTable reloadData];
     }
                                                     failure:^(NSError *error){
-                                                        NSLog(@"GET public rooms failed: %@", error);
+                                                        NSLog(@"[HomeVC] Failed to get public rooms: %@", error);
                                                         //Alert user
                                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                     }];
@@ -185,7 +185,7 @@
         // Remove homeserver
         NSRange range = [alias rangeOfString:homeServerSuffix];
         if (range.location == NSNotFound) {
-            NSLog(@"Wrong room alias has been set (%@)", _roomAliasTextField.text);
+            NSLog(@"[HomeVC] Wrong room alias has been set (%@)", _roomAliasTextField.text);
             alias = nil;
         } else {
             alias = [alias stringByReplacingCharactersInRange:range withString:@""];
@@ -369,9 +369,9 @@
              NSArray *invitedUsers = self.participantsList;
              for (NSString *userId in invitedUsers) {
                  [mxHandler.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
-                     NSLog(@"%@ has been invited (roomId: %@)", userId, response.roomId);
+                     NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, response.roomId);
                  } failure:^(NSError *error) {
-                     NSLog(@"%@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
+                     NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
                      //Alert user
                      [[AppDelegate theDelegate] showErrorAsAlert:error];
                  }];
@@ -385,7 +385,7 @@
              [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
          } failure:^(NSError *error) {
              _createRoomBtn.enabled = YES;
-             NSLog(@"Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
+             NSLog(@"[HomeVC] Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
              //Alert user
              [[AppDelegate theDelegate] showErrorAsAlert:error];
          }];
@@ -406,7 +406,7 @@
                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
             } failure:^(NSError *error) {
                 _joinRoomBtn.enabled = YES;
-                NSLog(@"Join roomAlias (%@) failed: %@", roomAlias, error);
+                NSLog(@"[HomeVC] Failed to join room alias (%@): %@", roomAlias, error);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -571,7 +571,7 @@
             [loadingWheel removeFromSuperview];
             [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
         } failure:^(NSError *error) {
-            NSLog(@"Failed to join public room (%@) failed: %@", publicRoom.displayname, error);
+            NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
             //Alert user
             [loadingWheel stopAnimating];
             [loadingWheel removeFromSuperview];

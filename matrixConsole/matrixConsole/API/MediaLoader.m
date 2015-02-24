@@ -32,7 +32,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 - (void)cancel {
     // Cancel potential connection
     if (downloadConnection) {
-        NSLog(@"media download has been cancelled (%@)", mediaURL);
+        NSLog(@"[MediaLoader] Media download has been cancelled (%@)", mediaURL);
         if (onError){
             onError(nil);
         }
@@ -45,7 +45,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     }
     else {
         if (operation.operation.executing) {
-            NSLog(@"media upload has been cancelled (%@)", mediaURL);
+            NSLog(@"[MediaLoader] Media upload has been cancelled (%@)", mediaURL);
             [operation cancel];
             operation = nil;
         }
@@ -99,7 +99,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"ERROR: media download failed: %@, %@", error, mediaURL);
+    NSLog(@"[MediaLoader] Failed to download media (%@): %@", mediaURL, error);
     // send the latest known upload info
     [self progressCheckTimeout:nil];
     statisticsDict = nil;
@@ -178,7 +178,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
             onSuccess(cacheFilePath);
         }
     } else {
-        NSLog(@"ERROR: media download failed: %@", mediaURL);
+        NSLog(@"[MediaLoader] Failed to download media: %@", mediaURL);
         if (onError){
             onError(nil);
         }

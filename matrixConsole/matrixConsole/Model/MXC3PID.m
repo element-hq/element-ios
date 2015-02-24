@@ -78,14 +78,13 @@
             return;
         } else if ([self.medium isEqualToString:kMX3PIDMediumMSISDN]) {
             // FIXME: support msisdn as soon as identity server supports it
-            NSLog(@"MXC3PID requestValidationToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
+            NSLog(@"[MXC3PID] requestValidationToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         } else {
-            NSLog(@"MXC3PID requestValidationToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
+            NSLog(@"[MXC3PID] requestValidationToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         }
     } else {
-        NSLog(@"MXC3PID requestValidationToken: Wrong validation flow for this 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
+        NSLog(@"[MXC3PID] Failed to request validation token for 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
     }
-    
 }
 
 - (void)validateWithToken:(NSString*)validationToken
@@ -119,12 +118,12 @@
             return;
         } else if ([self.medium isEqualToString:kMX3PIDMediumMSISDN]) {
             // FIXME: support msisdn as soon as identity server supports it
-            NSLog(@"MXC3PID validateWithToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
+            NSLog(@"[MXC3PID] validateWithToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         } else {
-            NSLog(@"MXC3PID validateWithToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
+            NSLog(@"[MXC3PID] validateWithToken: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         }
     } else {
-        NSLog(@"MXC3PID validateWithToken: Wrong validation flow for this 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
+        NSLog(@"[MXC3PID] Failed to valid with token 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
     }
     
     // Here the validation process failed
@@ -152,12 +151,12 @@
             return;
         } else if ([self.medium isEqualToString:kMX3PIDMediumMSISDN]) {
             // FIXME: support msisdn as soon as identity server supports it
-            NSLog(@"MXC3PID bindWithUserId: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
+            NSLog(@"[MXC3PID] bindWithUserId: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         } else {
-            NSLog(@"MXC3PID bindWithUserId: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
+            NSLog(@"[MXC3PID] bindWithUserId: is not supported for this 3PID: %@ (%@)", self.address, self.medium);
         }
     } else {
-        NSLog(@"MXC3PID bindWithUserId: Wrong validation flow for this 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
+        NSLog(@"[MXC3PID] Failed to bind 3PID: %@ (%@), state: %lu", self.address, self.medium, (unsigned long)_validationState);
     }
     
     // Here the validation process failed
