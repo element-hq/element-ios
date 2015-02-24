@@ -586,11 +586,11 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 
                 self.allowContactSyncAlert = [[MXCAlert alloc] initWithTitle:@"Allow local contacts synchronization ?"  message:nil style:MXCAlertStyleAlert];
                 
-                [self.allowContactSyncAlert addActionWithTitle:@"NO" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.allowContactSyncAlert addActionWithTitle:@"No" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.allowContactSyncAlert = nil;
                 }];
                 
-                [self.allowContactSyncAlert addActionWithTitle:@"YES" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.allowContactSyncAlert addActionWithTitle:@"Yes" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                         weakSelf.allowContactSyncAlert = nil;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         appSettings.syncLocalContacts = YES;
