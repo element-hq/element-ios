@@ -101,6 +101,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
     SettingsCellWithLabelAndSlider* maxCacheSizeCell;
+    NSUInteger minimumCacheSize;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
@@ -134,7 +135,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [[self.userPictureButton imageView] setClipsToBounds:YES];
     
     alertsArray = [NSMutableArray array];
-    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
+    
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    [mxHandler addObserver:self forKeyPath:@"status" options:0 context:nil];
+    
+    // Initialize the minimum cache size with the current value
+    minimumCacheSize = mxHandler.minCachesSize;
     
     isAvatarUpdated = NO;
     isSavingInProgress = NO;
@@ -173,6 +179,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
+    
+    // Update the minimum cache size with the current value
+    // Dispatch this operation to not freeze the app
+    dispatch_async(dispatch_get_main_queue(), ^{
+        minimumCacheSize = mxHandler.minCachesSize;
+    });
     
     // Refresh display
     if (mxHandler.isActivityInProgress) {
@@ -692,8 +704,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         
         // check if the value does not exceed the bounds
-        if (slider.value < mxHandler.minCachesSize) {
-            slider.value = mxHandler.minCachesSize;
+        if (slider.value < minimumCacheSize) {
+            slider.value = minimumCacheSize;
         }
         
         [[MatrixSDKHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
