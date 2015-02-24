@@ -1386,14 +1386,14 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 } else if (user2.presence == MXPresenceOffline) {
                     return NSOrderedDescending;
                 }
-                return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+                return [[self.mxRoom.state memberSortedName:member1.userId] compare:[self.mxRoom.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
             }
             
             // Consider user's lastActive ago value
             if (user1.lastActiveAgo < user2.lastActiveAgo) {
                 return NSOrderedAscending;
             } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
-                return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+                return [[self.mxRoom.state memberSortedName:member1.userId] compare:[self.mxRoom.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
             }
             return NSOrderedDescending;
         } else {
@@ -1406,7 +1406,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 return NSOrderedDescending;
             }
             
-            return [[self.mxRoom.state memberName:member1.userId] compare:[self.mxRoom.state memberName:member2.userId] options:NSCaseInsensitiveSearch];
+            return [[self.mxRoom.state memberSortedName:member1.userId] compare:[self.mxRoom.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
         }
     }];
     
