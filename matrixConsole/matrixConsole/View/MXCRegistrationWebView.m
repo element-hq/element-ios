@@ -17,23 +17,24 @@
 #import "MXCRegistrationWebView.h"
 
 // Generic method to make a bridge between JS and the UIWebView
-NSString *kMXCJavascriptSendObjectMessage = @"var sendObjectMessage = function(parameters) {   \
+NSString *kMXCJavascriptSendObjectMessage = @"window.matrixRegistration.sendObjectMessage = function(parameters) {   \
     var iframe = document.createElement('iframe');                              \
     iframe.setAttribute('src', 'js:' + JSON.stringify(parameters));             \
                                                                                 \
     document.documentElement.appendChild(iframe);                               \
     iframe.parentNode.removeChild(iframe);                                      \
     iframe = null;                                                              \
-    };";
+};";
 
 // The function the fallback page calls when the registration is complete
 NSString *kMXCJavascriptOnRegistered = @"window.matrixRegistration.onRegistered = function(homeserverUrl, userId, accessToken) {   \
-    sendObjectMessage({                 \
-        'action': 'onRegistered',       \
-        'homeServer': homeserverUrl,    \
-        'userId': userId,               \
-        'accessToken': accessToken      \
-    });";
+    matrixRegistration.sendObjectMessage({  \
+        'action': 'onRegistered',           \
+        'homeServer': homeserverUrl,        \
+        'userId': userId,                   \
+        'accessToken': accessToken          \
+    });                                     \
+};";
 
 @interface MXCRegistrationWebView () {
     // The block called when the registration is successful
@@ -44,6 +45,7 @@ NSString *kMXCJavascriptOnRegistered = @"window.matrixRegistration.onRegistered 
 @implementation MXCRegistrationWebView
 
 - (void)openFallbackPage:(NSString *)fallbackPage success:(void (^)(MXCredentials *))success {
+    self.delegate = self;
     onSuccess = success;
     [self loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:fallbackPage]]];
 }
@@ -67,16 +69,15 @@ NSString *kMXCJavascriptOnRegistered = @"window.matrixRegistration.onRegistered 
                                                           error:&error];
 
         if (!error) {
-            if ([@"onRegistered" isEqualToString:parameters[@"onRegistered"]]) {
+            if ([@"onRegistered" isEqualToString:parameters[@"action"]]) {
                 // Translate the JS registration event to MXCredentials
                 MXCredentials *credentials = [[MXCredentials alloc] initWithHomeServer:parameters[@"homeServer"] userId:parameters[@"userId"] accessToken:parameters[@"accessToken"]];
-
+                // And inform the client
                 onSuccess(credentials);
             }
         }
         return NO;
     }
-
     return YES;
 }
 
