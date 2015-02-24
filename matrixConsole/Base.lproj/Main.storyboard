@@ -1443,7 +1443,7 @@
                                             <action selector="onButtonPressed:" destination="ZlD-EU-ncw" eventType="touchUpInside" id="Z6U-iX-emw"/>
                                         </connections>
                                     </button>
-                                    <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zwS-9o-UR1" userLabel="registrationWebView" customClass="MXCRegistrationWebView">
+                                    <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwS-9o-UR1" userLabel="registrationWebView" customClass="MXCRegistrationWebView">
                                         <rect key="frame" x="0.0" y="40" width="580" height="520"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </webView>
@@ -1478,6 +1478,7 @@
                         <outlet property="authInputsEmailCodeBasedView" destination="G6Y-YQ-PvU" id="8IM-sx-LeP"/>
                         <outlet property="authInputsPasswordBasedView" destination="O8N-hu-Ewh" id="1ZN-jj-Txd"/>
                         <outlet property="authSwitchButton" destination="bYl-BD-hfc" id="RmX-1U-gbu"/>
+                        <outlet property="authenticationScrollView" destination="udG-Mx-F4c" id="tzx-0l-1q0"/>
                         <outlet property="cancelRegistrationFallbackButton" destination="Wy8-eL-0qs" id="zDb-ys-RHw"/>
                         <outlet property="contentView" destination="d6h-O8-aBs" id="hId-Ic-rv4"/>
                         <outlet property="contentViewHeightConstraint" destination="42v-uQ-LsL" id="d3Y-uv-J8T"/>
@@ -1490,7 +1491,6 @@
                         <outlet property="registrationFallbackContentView" destination="m1P-2H-e3q" id="cTq-S4-f9R"/>
                         <outlet property="registrationFallbackWebView" destination="zwS-9o-UR1" id="7g9-vt-riy"/>
                         <outlet property="retryButton" destination="70b-I3-Cuk" id="jHb-ZS-hrR"/>
-                        <outlet property="scrollView" destination="udG-Mx-F4c" id="Aot-SZ-PxD"/>
                         <outlet property="submitButton" destination="fnl-LF-rEL" id="a9E-g2-2C2"/>
                     </connections>
                 </viewController>

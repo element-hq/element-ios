@@ -42,7 +42,7 @@
 @property (nonatomic) AuthenticationType authType;
 @property (nonatomic) MXLoginFlow *selectedFlow;
 
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *authenticationScrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeightConstraint;
 
@@ -96,7 +96,7 @@
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
     
-    _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _authenticationScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     _submitButton.enabled = NO;
     _authSwitchButton.enabled = YES;
@@ -108,10 +108,8 @@
     _homeServerTextField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
     _identityServerTextField.text = [[MatrixSDKHandler sharedHandler] identityServerURL];
     
-    // Set default auth type
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.authType = AuthenticationTypeLogin;
-    });
+    // Set initial auth type
+    _authType = AuthenticationTypeLogin;
 }
 
 - (void)dealloc {
@@ -131,7 +129,7 @@
     [super viewWillAppear:animated];
     
     // Update supported authentication flow
-    [self refreshSupportedAuthFlow];
+    self.authType = _authType;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -241,7 +239,7 @@
     // Remove reachability observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
     
-    // Cancel protential request in progress
+    // Cancel potential request in progress
     [mxCurrentOperation cancel];
     mxCurrentOperation = nil;
     
@@ -251,14 +249,22 @@
         mxCurrentOperation = [mxHandler.mxRestClient getLoginFlow:^(NSArray *flows) {
             [self handleHomeServerFlows:flows];
         } failure:^(NSError *error) {
-            NSLog(@"GET auth flows failed: %@", error);
+            NSLog(@"Authentication: getLoginFlow failed: %@", error);
             [self onFailureDuringMXOperation:error];
         }];
     } else {
-        mxCurrentOperation = [mxHandler.mxRestClient getRegisterFlow:^(NSArray *flows) {
-            [self handleHomeServerFlows:flows];
+//        mxCurrentOperation = [mxHandler.mxRestClient getRegisterFlow:^(NSArray *flows) {
+//            [self handleHomeServerFlows:flows];
+//        } failure:^(NSError *error) {
+//            NSLog(@"Authentication: getRegisterFlow failed: %@", error);
+//            [self onFailureDuringMXOperation:error];
+//        }];
+        
+        // Currently no registration flow are supported, we switch directly to the fallback page
+        mxCurrentOperation = [mxHandler.mxRestClient registerFallback:^(NSString *fallback) {
+            [self showRegistrationFallBackView:fallback];
         } failure:^(NSError *error) {
-            NSLog(@"GET auth flows failed: %@", error);
+            NSLog(@"Authentication: registerFallback failed: %@", error);
             [self onFailureDuringMXOperation:error];
         }];
     }
@@ -299,23 +305,6 @@
             _noFlowLabel.text = @"Currently we do not support Login flows defined by this Home Server.";
         } else {
             _noFlowLabel.text = @"Registration is not currently supported.";
-            
-            // Retrieve fallback page from Home Server
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            [_activityIndicator startAnimating];
-            
-            mxCurrentOperation = [mxHandler.mxRestClient registerFallback:^(NSString *fallback) {
-                [self showRegistrationFallBackView:fallback];
-            } failure:^(NSError *error) {
-                //********************************
-                // TEST
-                [self showRegistrationFallBackView:@"https://matrix.org/beta/#/register"];
-                return;
-                //**********************************
-                
-                NSLog(@"GET registerFallback failed: %@", error);
-                [self onFailureDuringMXOperation:error];
-            }];
         }
         
         _noFlowLabel.hidden = NO;
@@ -487,16 +476,16 @@
     NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect endRect = rectVal.CGRectValue;
     
-    UIEdgeInsets insets = self.scrollView.contentInset;
+    UIEdgeInsets insets = self.authenticationScrollView.contentInset;
     // Handle portrait/landscape mode
     insets.bottom = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
-    self.scrollView.contentInset = insets;
+    self.authenticationScrollView.contentInset = insets;
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notif {
-    UIEdgeInsets insets = self.scrollView.contentInset;
+    UIEdgeInsets insets = self.authenticationScrollView.contentInset;
     insets.bottom = 0;
-    self.scrollView.contentInset = insets;
+    self.authenticationScrollView.contentInset = insets;
 }
 
 - (void)dismissKeyboard {
@@ -560,6 +549,9 @@
 #pragma mark - Registration Fallback
 
 - (void)showRegistrationFallBackView:(NSString*)fallbackPage {
+    _authenticationScrollView.hidden = YES;
+    _registrationFallbackContentView.hidden = NO;
+    
     [_registrationFallbackWebView openFallbackPage:fallbackPage success:^(MXCredentials *credentials) {
         // Report credentials
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
@@ -575,11 +567,11 @@
         
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
-    _registrationFallbackContentView.hidden = NO;
 }
 
 - (void)hideRegistrationFallbackView {
     [_registrationFallbackWebView stopLoading];
+    _authenticationScrollView.hidden = NO;
     _registrationFallbackContentView.hidden = YES;
 }
 
