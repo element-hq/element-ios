@@ -485,7 +485,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     // Report status
     _status = status;
-    NSLog(@"[MatrixSDKHandler] Updated status: %lu", status);
+    NSLog(@"[MatrixSDKHandler] Updated status: %zd", status);
 }
 
 #pragma mark User's profile
