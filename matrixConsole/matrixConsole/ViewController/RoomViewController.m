@@ -380,6 +380,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     if (forceScrollToBottomOnViewDidAppear) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (nil == _mxRoom) {
+                // The view controller has been released. Not need to go further
+                return;
+            }
             // Scroll to the bottom
             [self scrollMessagesTableViewToBottomAnimated:animated];
         });
@@ -419,6 +423,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Cell width will be updated, force table refresh to take into account changes of message components
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (nil == _mxRoom) {
+            // The view controller has been released. Not need to go further
+            return;
+        }
         [self.messagesTableView reloadData];
     });
 }
@@ -671,6 +679,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 [self stopActivityIndicator];
                 isJoinRequestInProgress = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if (nil == _mxRoom) {
+                        // The view controller has been released. Not need to go further
+                        return;
+                    }
                     [self configureView];
                 });
             } failure:^(NSError *error) {
@@ -823,6 +835,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (!isBackPaginationInProgress) {
                         // Refresh tableView
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            if (nil == _mxRoom) {
+                                // The view controller has been released. Not need to go further
+                                return;
+                            }
                             // We will scroll to bottom after updating tableView if the current table position is already at the bottom.
                             BOOL shouldScrollToBottom = [self isMessagesTableScrollViewAtTheBottom];
                             [self.messagesTableView reloadData];
@@ -845,6 +861,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 dispatch_async(mxHandler.processingQueue, ^{
                     RoomMessage *firstMessage;
                     @synchronized(self) {
+                        if (nil == _mxRoom) {
+                            // The view controller has been released. Not need to go further
+                            return;
+                        }
                         firstMessage = [messages firstObject];
                     }
                     if (!firstMessage || [firstMessage addEvent:event withRoomState:roomStateCpy] == NO) {
@@ -895,6 +915,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     // Refresh table display except if a back pagination is in progress
                     if (!isBackPaginationInProgress) {
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            if (nil == _mxRoom) {
+                                // The view controller has been released. Not need to go further
+                                return;
+                            }
                             [self.messagesTableView reloadData];
                         });
                     }
@@ -919,6 +943,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (currentTypingUsers.count || typingUsers.count) {
                         currentTypingUsers = typingUsers;
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            if (nil == _mxRoom) {
+                                // The view controller has been released. Not need to go further
+                                return;
+                            }
                             [self.messagesTableView reloadData];
                             if (members) {
                                 [self.membersTableView reloadData];
@@ -1035,6 +1063,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         }
     } else if ([@"hideUnsupportedEvents" isEqualToString:keyPath] || [@"hideRedactions" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (nil == _mxRoom) {
+                // The view controller has been released. Not need to go further
+                return;
+            }
             [self configureView];
         });
     }
@@ -1310,6 +1342,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // Return on main thread to end back pagination
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (nil == _mxRoom) {
+            // The view controller has been released. Not need to go further
+            return;
+        }
         // Reload table
         [self.messagesTableView reloadData];
         
@@ -2296,6 +2332,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         // paginate ?
         if (scrollView.contentOffset.y < -64) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (nil == _mxRoom) {
+                    // The view controller has been released. Not need to go further
+                    return;
+                }
                 [self triggerBackPagination];
             });
         }
@@ -2518,6 +2558,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                     if (weakSelf) {
                         weakSelf.actionMenu = nil;
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            if (nil == weakSelf.mxRoom) {
+                                // The view controller has been released. Not need to go further
+                                return;
+                            }
                             weakSelf.actionMenu = [[MXCAlert alloc] initWithTitle:@"Media:" message:nil style:MXCAlertStyleActionSheet];
                             
                             [weakSelf.actionMenu addActionWithTitle:@"Photo Library" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
@@ -2724,6 +2768,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 if (pendingEvent) {
                     // Handle error
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        if (nil == _mxRoom) {
+                            // The view controller has been released. Not need to go further
+                            return;
+                        }
                         [self handleError:error forLocalEvent:localEvent];
                     });
                 }
@@ -2873,6 +2921,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // Reload on the right thread
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (nil == _mxRoom) {
+                // The view controller has been released. Not need to go further
+                return;
+            }
             [self.messagesTableView reloadData];
         });
     });
@@ -3244,6 +3296,10 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 // wait that the media picker is dismissed to have the valid membersView frame
                 // else it would include a status bar height offset
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if (nil == _mxRoom) {
+                        // The view controller has been released. Not need to go further
+                        return;
+                    }
                     self.imageValidationView = [[MXCImageView alloc] initWithFrame:self.membersView.frame];
                     self.imageValidationView.stretchable = YES;
                     self.imageValidationView.fullScreen = YES;
