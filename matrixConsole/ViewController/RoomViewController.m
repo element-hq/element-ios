@@ -330,6 +330,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -440,6 +441,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)onAppDidEnterBackground {
     [self dismissAttachmentImageViews];
+}
+
+- (void)onAppWillEnterForeground {
+    if (isKeyboardDisplayed) {
+        // When the app comes back in foreground with the keyboard enabled, the history
+        // is no more scrolled to the bottom. So, force scrolling to the bottom if necessary.
+        BOOL shouldScrollToBottom = [self isMessagesTableScrollViewAtTheBottom];
+        if (shouldScrollToBottom) {
+            [self scrollMessagesTableViewToBottomAnimated:YES];
+        }
+    }
 }
 
 - (void)updateUI {
