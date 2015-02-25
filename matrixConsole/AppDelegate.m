@@ -220,6 +220,7 @@
 #pragma mark - APNS methods
 
 - (void)registerUserNotificationSettings {
+    NSLog(@"[AppDelegate] Attempting to get push token...");
     if (!isAPNSRegistered) {
         if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
             // Registration on iOS 8 and later
