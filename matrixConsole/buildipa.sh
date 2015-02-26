@@ -24,12 +24,11 @@ then
 	vars="$vars BUILD_NUMBER=$BUILD_NUMBER"
 fi
 
-if [ $# == 0 ]
-then
-	$basecmd -archivePath "out/matrixConsole.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars"
-	xcrun -sdk $sdk PackageApplication -v $outdir/matrixConsole.xcarchive/Products/Applications/matrixConsole.app -o `pwd`/out/matrixConsole.ipa
-elif [ $1 == 'clean' ]
+if [ "$1" == 'clean' ]
 then
 	$basecmd clean
 	rm -r "$builddir" "$outdir" || true
+else
+	$basecmd -archivePath "out/matrixConsole.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars" "$@"
+	xcrun -sdk $sdk PackageApplication -v $outdir/matrixConsole.xcarchive/Products/Applications/matrixConsole.app -o `pwd`/out/matrixConsole.ipa
 fi
