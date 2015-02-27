@@ -42,6 +42,8 @@
 #define ROOMVIEWCONTROLLER_BACK_PAGINATION_SIZE 20
 #define ROOMVIEWCONTROLLER_BACK_PAGINATION_MAX_SCROLLING_OFFSET 100
 
+#define ROOM_MESSAGES_TABLE_MINIMUM_HEIGHT 50
+
 #define ROOM_MESSAGE_CELL_DEFAULT_HEIGHT 50
 #define ROOM_MESSAGE_CELL_DEFAULT_TEXTVIEW_TOP_CONST 10
 #define ROOM_MESSAGE_CELL_DEFAULT_ATTACHMENTVIEW_TOP_CONST 18
@@ -100,10 +102,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     BOOL isKeyboardObserver;
     BOOL isKeyboardDisplayed;
     CGFloat keyboardHeight;
-    
-    // default contraint values
-    CGFloat defaultMessagesTableViewBottomConstraint;
-    CGFloat defaultControlViewBottomConstraint;
     
     // save the last edited text
     // do not send unexpected typing events
@@ -193,10 +191,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     
     // set text input font
     self.messageTextView.font = [UIFont systemFontOfSize:14];
-    
-    // default contraint values
-    defaultMessagesTableViewBottomConstraint = _messagesTableViewBottomConstraint.constant;
-    defaultControlViewBottomConstraint = _controlViewBottomConstraint.constant;
     
     // draw a rounded border around the textView
     self.messageTextView.layer.cornerRadius = 5;
@@ -994,9 +988,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)scrollMessagesTableViewToBottomAnimated:(BOOL)animated {
     if (self.messagesTableView.contentSize.height) {
-        CGFloat visibleHeight = self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.bottom;
+        CGFloat visibleHeight = self.messagesTableView.frame.size.height - self.messagesTableView.contentInset.top - self.messagesTableView.contentInset.bottom;
         if (visibleHeight < self.messagesTableView.contentSize.height) {
-            CGFloat wantedOffsetY = self.messagesTableView.contentSize.height - visibleHeight;
+            CGFloat wantedOffsetY = self.messagesTableView.contentSize.height - visibleHeight - self.messagesTableView.contentInset.top;
             CGFloat currentOffsetY = self.messagesTableView.contentOffset.y;
             if (wantedOffsetY != currentOffsetY) {
                 isScrollingToBottom = YES;
@@ -1020,11 +1014,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 
 - (void)updateMessageTextViewFrame {
     if (!isKeyboardDisplayed) {
-        // compute the visible area (tableview + text input)
-        // the tableview must use at least 50 pixels to let the user hides the keybaord
-        CGFloat maxTextHeight = (self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width)) - 50;
+        // Compute the visible area (tableview + text input)
+        CGFloat visibleArea = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
         
-        _messageTextView.maxHeight = maxTextHeight;
+        // Set max height of the message text input by considering the minimum height of the table view
+        _messageTextView.maxHeight = visibleArea - ROOM_MESSAGES_TABLE_MINIMUM_HEIGHT;
         [_messageTextView refreshHeight];
     }
 }
@@ -1039,13 +1033,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             [self stopActivityIndicator];
         }
     } else if ((object == inputAccessoryView.superview) && ([@"frame" isEqualToString:keyPath] || [@"center" isEqualToString:keyPath])) {
-        
         // if the keyboard is displayed, check if the keyboard is hiding with a slide animation
         if (inputAccessoryView && inputAccessoryView.superview) {
-            UIEdgeInsets insets = self.messagesTableView.contentInset;
-        
             CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-            
             // on IOS 8, the screen size is oriented
             if ((NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
                 screenSize = CGSizeMake(screenSize.height, screenSize.width);
@@ -1053,25 +1043,20 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             
             keyboardHeight = screenSize.height - inputAccessoryView.superview.frame.origin.y;
             
-            insets.bottom = keyboardHeight + self.controlView.frame.size.height - defaultMessagesTableViewBottomConstraint;
-            
-            // Move the control view
-            // Don't forget the offset related to tabBar
-            CGFloat newConstant = keyboardHeight - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
-            
-            // draw over the bound
-            if ((_controlViewBottomConstraint.constant < 0) || (insets.bottom < self.controlView.frame.size.height)) {
-                newConstant = 0;
-                insets.bottom = self.controlView.frame.size.height;
-            }
-            else {
+            // Compute the bottom constraint for the control view - Don't forget the offset related to tabBar
+            CGFloat controlViewBottomConst = keyboardHeight - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+            // Check whether the keyboard is over the tabBar
+            if (controlViewBottomConst < 0) {
+                controlViewBottomConst = 0;
+            } else {
                 // IOS 8 / landscape issue
                 // when the top of the keyboard reaches the top of the tabbar, it triggers UIKeyboardWillShowNotification events in loop
                 [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
             }
-            // update the table the tableview height
-            self.messagesTableView.contentInset = insets;
-            _controlViewBottomConstraint.constant = newConstant;
+            
+            // Adjust layout constraints
+            _controlViewBottomConstraint.constant = controlViewBottomConst;
+            _messagesTableViewBottomConstraint.constant = controlViewBottomConst + _controlViewHeightConstraint.constant;;
         }
     } else if ([@"hideUnsupportedEvents" isEqualToString:keyPath] || [@"hideRedactions" isEqualToString:keyPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1785,21 +1770,17 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // Check screen orientation
     keyboardHeight = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
     
-    // bottom view offset
-    // Don't forget the offset related to tabBar
-    CGFloat nextBottomViewContanst = keyboardHeight - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+    // Compute the bottom constraint for the control view - Don't forget the offset related to tabBar.
+    CGFloat controlViewBottomConst = keyboardHeight - [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height;
+    // Deduce the bottom constraint for the messages table view.
+    CGFloat messagesTableViewBottomConst = controlViewBottomConst + _controlViewHeightConstraint.constant;
 
-    // the tableview bottom inset must also be updated
-    UIEdgeInsets insets = self.messagesTableView.contentInset;
-    // insets.bottom is the bottom part of the tableview content size which is not displayed
-    // The bottom margin is equal to the keyboard height + controlview part which is greather than the tableview bottom margin.
-    // The tableview bottom margin has the same value as the defauft bottom view height;
-    insets.bottom = keyboardHeight + self.controlView.frame.size.height - defaultMessagesTableViewBottomConstraint;
-
-    // compute the visible area (tableview + text input)
-    CGFloat maxTextHeight = (self.view.frame.size.height - defaultMessagesTableViewBottomConstraint - keyboardHeight - self.navigationController.navigationBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width));
+    // Compute the visible area (tableview + text input) at the end of animation
+    CGFloat visibleArea = self.view.frame.size.height - keyboardHeight - self.navigationController.navigationBar.frame.size.height - MIN([UIApplication sharedApplication].statusBarFrame.size.height, [UIApplication sharedApplication].statusBarFrame.size.width);
+    // Deduce max height of the message text input by considering the minimum height of the table view.
+    CGFloat maxTextHeight = visibleArea - ROOM_MESSAGES_TABLE_MINIMUM_HEIGHT;
     
-    // get the animation info
+    // Get the animation info
     NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
     
@@ -1819,24 +1800,19 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     isKeyboardDisplayed = YES;
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
+        // Apply new constant
+        _controlViewBottomConstraint.constant = controlViewBottomConst;
+        _messagesTableViewBottomConstraint.constant = messagesTableViewBottomConst;
         
-        // Move up control view
-        // Don't forget the offset related to tabBar
-        _controlViewBottomConstraint.constant = nextBottomViewContanst;
-        
-        // reduce the tableview height
-        self.messagesTableView.contentInset = insets;
-        
-        // scroll the tableview content
-        [self scrollMessagesTableViewToBottomAnimated:NO];
-        
-        // force to redraw the layout (else _controlViewBottomConstraint.constant will not be animated)
+        // Force layout to take into account new constraints
         [self.view layoutIfNeeded];
         
-        // update the text input frame
+        // Update the text input frame
         _messageTextView.maxHeight = maxTextHeight;
         [_messageTextView refreshHeight];
         
+        // Scroll the tableview content
+        [self scrollMessagesTableViewToBottomAnimated:NO];
     } completion:^(BOOL finished) {
         // Check whether the keyboard is still visible at the end of animation
         if (inputAccessoryView.superview) {
@@ -1875,12 +1851,6 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         return;
     }
     
-    UIEdgeInsets insets = self.messagesTableView.contentInset;
-    // insets.bottom is the bottom part of the tableview content size which is not displayed
-    // The bottom margin is equal to the tabbar height + controlview part which is greather than the tableview bottom margin.
-    // The tableview bottom margin has the same value as the defauft bottom view height.
-    insets.bottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + (self.controlView.frame.size.height - defaultMessagesTableViewBottomConstraint);
-    
     isKeyboardDisplayed = NO;
     
     // do not animate if the both rect are the same
@@ -1890,15 +1860,11 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
     // animationDuration is ignored because of the animation curve
     // use it to be sure that it will be broken with any new IOS update
     if (CGRectEqualToRect(endRect, beginRect)) {
-        
-        self.messagesTableView.contentInset = insets;
-        _controlViewBottomConstraint.constant = defaultControlViewBottomConstraint;
-        _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
+        _controlViewBottomConstraint.constant = 0;
+        _messagesTableViewBottomConstraint.constant = _controlViewHeightConstraint.constant;
         
         [self.view layoutIfNeeded];
-        
     } else {
-        
         // get the animation info
         NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
         UIViewAnimationCurve animationCurve = curveValue.intValue;
@@ -1908,11 +1874,9 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         
         // animate the keyboard closing
         [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
+            _controlViewBottomConstraint.constant = 0;
+            _messagesTableViewBottomConstraint.constant = _controlViewHeightConstraint.constant;
             
-            _controlViewBottomConstraint.constant = defaultControlViewBottomConstraint;
-            _messagesTableViewBottomConstraint.constant = defaultMessagesTableViewBottomConstraint;
-            
-            self.messagesTableView.contentInset = insets;
             [self.view layoutIfNeeded];
             
         } completion:^(BOOL finished) {
@@ -2392,27 +2356,18 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
 }
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
-    // Update _messageTextView's superview (controlView)
+    // Update growing text's superview (controlView)
     CGFloat controlViewUpdatedHeight = height + _messageTextViewTopConstraint.constant + _messageTextViewBottomConstraint.constant;
     _controlViewHeightConstraint.constant = controlViewUpdatedHeight;
     
-    // We will scroll to bottom after updating tableView if the current table position is already at the bottom.
+    // Adjust bottom constraint of the messages table view
+    // We will scroll to bottom after updating layout if the bottom of the table is currently visible
     BOOL shouldScrollToBottom = [self isMessagesTableScrollViewAtTheBottom];
-    
-    // Update messages table view inset (only if change is observed)
-    UIEdgeInsets insets = self.messagesTableView.contentInset;
-    CGFloat insetBottom;
-    if (isKeyboardDisplayed) {
-        insetBottom = keyboardHeight + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
-    } else {
-        insetBottom = [AppDelegate theDelegate].masterTabBarController.tabBar.frame.size.height + controlViewUpdatedHeight - defaultMessagesTableViewBottomConstraint;
-    }
-    if (insets.bottom != insetBottom) {
-        insets.bottom = insetBottom;
-        self.messagesTableView.contentInset = insets;
+    CGFloat messagesTableViewBottomConst = _controlViewBottomConstraint.constant + _controlViewHeightConstraint.constant;
+    if (_messagesTableViewBottomConstraint.constant != messagesTableViewBottomConst) {
+        _messagesTableViewBottomConstraint.constant = messagesTableViewBottomConst;
         // Force to render the view
         [self.view layoutIfNeeded];
-        
         // Adjust scroll view
         if (shouldScrollToBottom) {
             [self scrollMessagesTableViewToBottomAnimated:NO];

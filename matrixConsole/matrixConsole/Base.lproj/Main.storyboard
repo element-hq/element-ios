@@ -36,7 +36,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="meV-kn-sxo" userLabel="MessagesTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -509,7 +509,7 @@
                             <constraint firstAttribute="trailing" secondItem="C67-FD-9VY" secondAttribute="trailing" constant="10" id="1rB-i0-chP"/>
                             <constraint firstItem="6fM-aJ-d0M" firstAttribute="leading" secondItem="1BF-nV-MTf" secondAttribute="leading" id="7eH-ST-BbY"/>
                             <constraint firstItem="nNf-bE-8dQ" firstAttribute="top" secondItem="6fM-aJ-d0M" secondAttribute="bottom" id="C5t-bm-3s8"/>
-                            <constraint firstAttribute="bottom" secondItem="meV-kn-sxo" secondAttribute="bottom" constant="49" id="Cos-M5-WHG"/>
+                            <constraint firstAttribute="bottom" secondItem="meV-kn-sxo" secondAttribute="bottom" constant="46" id="Cos-M5-WHG"/>
                             <constraint firstItem="dvT-c5-Ymf" firstAttribute="top" secondItem="it4-Tc-q7z" secondAttribute="bottom" constant="36" id="FV3-P0-ekh"/>
                             <constraint firstItem="nNf-bE-8dQ" firstAttribute="top" secondItem="C67-FD-9VY" secondAttribute="bottom" constant="10" id="Idf-pn-dAs"/>
                             <constraint firstItem="meV-kn-sxo" firstAttribute="top" secondItem="1BF-nV-MTf" secondAttribute="top" id="OWt-4M-1DF"/>
