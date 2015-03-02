@@ -2051,7 +2051,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gMZ-iG-iB5">
-                                <rect key="frame" x="195" y="70" width="211" height="29"/>
+                                <rect key="frame" x="195" y="72" width="211" height="29"/>
                                 <segments>
                                     <segment title="Matrix Users"/>
                                     <segment title="Local Contacts"/>
@@ -2070,7 +2070,7 @@
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GiR-2B-wso">
-                                <rect key="frame" x="0.0" y="106" width="600" height="445"/>
+                                <rect key="frame" x="0.0" y="109" width="600" height="442"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
@@ -2157,13 +2157,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="OWX-v0-faA" secondAttribute="centerY" id="3iG-60-3sk"/>
-                            <constraint firstItem="GiR-2B-wso" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="42" id="7L2-mw-dWo"/>
+                            <constraint firstItem="GiR-2B-wso" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="45" id="7L2-mw-dWo"/>
                             <constraint firstAttribute="centerX" secondItem="GiR-2B-wso" secondAttribute="centerX" id="BXv-w3-LS1"/>
                             <constraint firstAttribute="centerX" secondItem="gMZ-iG-iB5" secondAttribute="centerX" id="WIY-IA-T10"/>
                             <constraint firstAttribute="centerX" secondItem="OWX-v0-faA" secondAttribute="centerX" id="ZxB-pu-Yac"/>
                             <constraint firstItem="FkA-Yc-vh2" firstAttribute="top" secondItem="GiR-2B-wso" secondAttribute="bottom" id="krK-n7-1p5"/>
                             <constraint firstAttribute="width" secondItem="GiR-2B-wso" secondAttribute="width" id="sAo-JV-zW1"/>
-                            <constraint firstItem="gMZ-iG-iB5" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="6" id="v8x-IF-zFQ"/>
+                            <constraint firstItem="gMZ-iG-iB5" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="8" id="v8x-IF-zFQ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Contacts" id="CVL-bD-nUg"/>

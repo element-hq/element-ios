@@ -562,7 +562,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (IBAction)onSegmentValueChange:(id)sender {
     if (sender == self.contactsControls) {
-
         displayMatrixUsers = (0 == self.contactsControls.selectedSegmentIndex);
         
         if (contactsSearchBar) {
@@ -581,7 +580,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         if (!displayMatrixUsers) {
             AppSettings* appSettings = [AppSettings sharedSettings];
             
-            if (!appSettings.requestedLocalContactsSync) {
+            if (!appSettings.syncLocalContacts) {
                 __weak typeof(self) weakSelf = self;
                 
                 self.allowContactSyncAlert = [[MXCAlert alloc] initWithTitle:@"Allow local contacts synchronization ?"  message:nil style:MXCAlertStyleAlert];
@@ -605,7 +604,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 }
 
 - (IBAction)onContactThumbnailTap:(id)sender {
-    
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UIView* tappedView = ((UITapGestureRecognizer*)sender).view;
         

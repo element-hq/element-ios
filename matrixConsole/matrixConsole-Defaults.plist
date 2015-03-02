@@ -24,5 +24,7 @@
 	<true/>
 	<key>displayLeftUsers</key>
 	<false/>
+	<key>syncLocalContacts</key>
+	<false/>
 </dict>
 </plist>

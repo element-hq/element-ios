@@ -112,18 +112,6 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] setBool:displayLeftUsers forKey:@"displayLeftUsers"];
 }
 
-
-- (BOOL)requestedLocalContactsSync {
-    id val = [[NSUserDefaults standardUserDefaults] valueForKey:@"syncLocalContacts"];
-    
-    // the value has never been set
-    if (!val) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"syncLocalContacts"];
-    }
-    
-    return (nil != val);
-}
-
 - (BOOL)syncLocalContacts {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"syncLocalContacts"];
 }
