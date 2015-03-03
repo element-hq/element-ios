@@ -2562,6 +2562,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                             weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                                 weakSelf.actionMenu = nil;
                             }];
+                            weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
                             [weakSelf.actionMenu showInViewController:weakSelf];
                             
                         });
@@ -2571,6 +2572,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
                 weakSelf.actionMenu.cancelButtonIndex = [weakSelf.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.actionMenu = nil;
                 }];
+                weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
                 [weakSelf.actionMenu showInViewController:weakSelf];
             }
         }];
