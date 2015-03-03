@@ -457,6 +457,9 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
                     weakSelf.startChatMenu = nil;
                 }];
+                
+                UIView *sourceView = [tableView cellForRowAtIndexPath:indexPath];
+                self.startChatMenu.sourceView = sourceView ? sourceView : tableView;
             }
             
             [self.startChatMenu showInViewController:self];
@@ -512,6 +515,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 weakSelf.startChatMenu = nil;
             }];
             
+            UIView *sourceView = [tableView cellForRowAtIndexPath:indexPath];
+            self.startChatMenu.sourceView = sourceView ? sourceView : tableView;
             [self.startChatMenu showInViewController:self];
         }
     }
