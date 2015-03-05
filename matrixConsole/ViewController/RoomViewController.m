@@ -1497,7 +1497,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             highResImageView.stretchable = YES;
             highResImageView.fullScreen = YES;
             highResImageView.mediaFolder = self.roomId;
-            [highResImageView setImageURL:url withPreviewImage:attachment.image];
+            [highResImageView setImageURL:url withImageOrientation:UIImageOrientationUp andPreviewImage:attachment.image];
             
             // Add tap recognizer to hide attachment
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideAttachmentView)];
@@ -2036,7 +2036,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
             avatarThumbURL = [mxHandler thumbnailURLForContent:message.senderAvatarUrl inViewSize:cell.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
-        [cell.pictureView setImageURL:avatarThumbURL withPreviewImage:[UIImage imageNamed:@"default-profile"]];
+        [cell.pictureView setImageURL:avatarThumbURL withImageOrientation:UIImageOrientationUp andPreviewImage:[UIImage imageNamed:@"default-profile"]];
         [cell.pictureView.layer setCornerRadius:cell.pictureView.frame.size.width / 2];
         cell.pictureView.clipsToBounds = YES;
         cell.pictureView.backgroundColor = [UIColor redColor];
@@ -2127,7 +2127,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         if (message.previewURL) {
             preview = [MediaManager loadCachePictureForURL:message.previewURL inFolder:self.roomId];
         }
-        [cell.attachmentView setImageURL:url withPreviewImage:preview];
+        [cell.attachmentView setImageURL:url withImageOrientation:message.thumbnailOrientation andPreviewImage:preview];
 
         if (url && message.attachmentURL && message.attachmentInfo) {
             // Add tap recognizer to open attachment

@@ -30,10 +30,11 @@
 + (NSArray*)listFiles:(NSString *)folderPath timeSorted:(BOOL)isTimeSorted largeFilesFirst:(BOOL)largeFilesFirst;
 
 // return the file extension from a contentType
-+ (NSString*) fileExtensionFromContentType:(NSString*)contentType;
++ (NSString*)fileExtensionFromContentType:(NSString*)contentType;
 
 #pragma mark - Image
-+ (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
 + (UIImage*)forceImageOrientationUp:(UIImage*)imageSrc;
++ (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size;
++ (UIImageOrientation)imageOrientationForRotationAngleInDegree:(NSInteger)angle;
 
 @end
