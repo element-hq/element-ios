@@ -177,18 +177,9 @@
         return imageSrc;
     }
     
+    // Draw the entire image in a graphics context, respecting the image’s orientation setting
     UIGraphicsBeginImageContext(imageSrc.size);
     [imageSrc drawAtPoint:CGPointMake(0, 0)];
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    if (imageSrc.imageOrientation == UIImageOrientationRight) {
-        CGContextRotateCTM (context,  M_PI * 90 / 180.0f);
-    } else if (imageSrc.imageOrientation == UIImageOrientationLeft) {
-        CGContextRotateCTM (context, M_PI * -90 / 180.0f);
-    } else if (imageSrc.imageOrientation == UIImageOrientationDown) {
-        CGContextRotateCTM (context, M_PI * 180 / 180.0f);
-    }
-    
     UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
