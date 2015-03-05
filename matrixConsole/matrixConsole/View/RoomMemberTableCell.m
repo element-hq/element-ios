@@ -118,7 +118,7 @@
             thumbnailURL = [mxHandler thumbnailURLForContent:roomMember.avatarUrl inViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
         self.pictureView.mediaFolder = kMediaManagerThumbnailFolder;
-        [self.pictureView setImageURL:thumbnailURL withPreviewImage:[UIImage imageNamed:@"default-profile"]];
+        [self.pictureView setImageURL:thumbnailURL withImageOrientation:UIImageOrientationUp andPreviewImage:[UIImage imageNamed:@"default-profile"]];
         
         // Round image view
         [self.pictureView.layer setCornerRadius:self.pictureView.frame.size.width / 2];

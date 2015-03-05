@@ -18,6 +18,7 @@
 
 #import "MatrixSDKHandler.h"
 #import "AppSettings.h"
+#import "MXCTools.h"
 
 NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
 NSString *const kRoomMessageUploadIdKey     = @"kRoomMessageUploadIdKey";
@@ -55,18 +56,34 @@ static NSAttributedString *messageSeparator = nil;
         _messageType = RoomMessageTypeText;
         if ([mxHandler isSupportedAttachment:event]) {
             // Note: event.eventType is equal here to MXEventTypeRoomMessage
+            
+            // Set default thumbnail orientation
+            _thumbnailOrientation = UIImageOrientationUp;
+            
             NSString *msgtype =  event.content[@"msgtype"];
             if ([msgtype isEqualToString:kMXMessageTypeImage]) {
                 _messageType = RoomMessageTypeImage;
                 // Retrieve content url/info
                 _attachmentURL = event.content[@"url"];
                 _attachmentInfo = event.content[@"info"];
-                // Handle thumbnail url/info
+                // Handle legacy thumbnail url/info (Not defined anymore in recent attachments)
                 _thumbnailURL = event.content[@"thumbnail_url"];
                 _thumbnailInfo = event.content[@"thumbnail_info"];
                 if (!_thumbnailURL) {
                     // Suppose _attachmentURL is a matrix content uri, we use SDK to get the well adapted thumbnail from server
                     _thumbnailURL = [mxHandler thumbnailURLForContent:_attachmentURL inViewSize:self.contentSize withMethod:MXThumbnailingMethodScale];
+                    
+                    // Check whether the image has been uploaded with an orientation
+                    if (_attachmentInfo[@"rotation"]) {
+                        // Currently the matrix content server provides thumbnails by ignoring the original image orientation.
+                        // We store here the actual orientation to apply it on downloaded thumbnail.
+                        _thumbnailOrientation = [MXCTools imageOrientationForRotationAngleInDegree:[_attachmentInfo[@"rotation"] integerValue]];
+                        
+                        // Rotate the current content size (if need)
+                        if (_thumbnailOrientation == UIImageOrientationLeft || _thumbnailOrientation == UIImageOrientationRight) {
+                            _contentSize = CGSizeMake(_contentSize.height, _contentSize.width);
+                        }
+                    }
                 }
             } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
                 // Not supported yet
@@ -445,7 +462,13 @@ static NSAttributedString *messageSeparator = nil;
                     }
                 }
             }
-            _contentSize = CGSizeMake(width, height);
+            
+            // Check here thumbnail orientation
+            if (_thumbnailOrientation == UIImageOrientationLeft || _thumbnailOrientation == UIImageOrientationRight) {
+                _contentSize = CGSizeMake(height, width);
+            } else {
+                _contentSize = CGSizeMake(width, height);
+            }
         } else {
             _contentSize = CGSizeMake(40, 40);
         }

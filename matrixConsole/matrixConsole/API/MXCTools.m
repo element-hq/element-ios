@@ -171,6 +171,30 @@
 
 #pragma mark - Image
 
++ (UIImage*)forceImageOrientationUp:(UIImage*)imageSrc {
+    if ((imageSrc.imageOrientation == UIImageOrientationUp) || (!imageSrc)) {
+        // Nothing to do
+        return imageSrc;
+    }
+    
+    UIGraphicsBeginImageContext(imageSrc.size);
+    [imageSrc drawAtPoint:CGPointMake(0, 0)];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (imageSrc.imageOrientation == UIImageOrientationRight) {
+        CGContextRotateCTM (context,  M_PI * 90 / 180.0f);
+    } else if (imageSrc.imageOrientation == UIImageOrientationLeft) {
+        CGContextRotateCTM (context, M_PI * -90 / 180.0f);
+    } else if (imageSrc.imageOrientation == UIImageOrientationDown) {
+        CGContextRotateCTM (context, M_PI * 180 / 180.0f);
+    }
+    
+    UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return retImage;
+}
+
 + (UIImage *)resize:(UIImage *)image toFitInSize:(CGSize)size {
     UIImage *resizedImage = image;
     
@@ -213,25 +237,19 @@
     return resizedImage;
 }
 
-+ (UIImage*)forceImageOrientationUp:(UIImage*)imageSrc {
-    if ((imageSrc.imageOrientation == UIImageOrientationUp) || (!imageSrc)) {
-        // Nothing to do
-        return imageSrc;
++ (UIImageOrientation)imageOrientationForRotationAngleInDegree:(NSInteger)angle {
+    NSInteger modAngle = angle % 360;
+    
+    UIImageOrientation orientation = UIImageOrientationUp;
+    if (45 <= modAngle && modAngle < 135) {
+        return UIImageOrientationRight;
+    } else if (135 <= modAngle && modAngle < 225) {
+        return UIImageOrientationDown;
+    } else if (225 <= modAngle && modAngle < 315) {
+        return UIImageOrientationLeft;
     }
     
-    UIGraphicsBeginImageContext(imageSrc.size);
-    [imageSrc drawAtPoint:CGPointMake(0, 0)];
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    if (imageSrc.imageOrientation == UIImageOrientationRight) {
-        CGContextRotateCTM (context,  M_PI * 90 / 180.0f);
-    } else if (imageSrc.imageOrientation == UIImageOrientationLeft) {
-        CGContextRotateCTM (context, M_PI * -90 / 180.0f);
-    } else if (imageSrc.imageOrientation == UIImageOrientationDown) {
-        CGContextRotateCTM (context, M_PI * 180 / 180.0f);
-    }
-    
-    return UIGraphicsGetImageFromCurrentImageContext();;
+    return orientation;
 }
 
 @end

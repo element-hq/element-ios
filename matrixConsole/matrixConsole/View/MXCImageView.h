@@ -21,7 +21,7 @@
 
 typedef void (^blockMXCImageView_onClick)(MXCImageView *imageView, NSString* title);
 
-- (void)setImageURL:(NSString *)imageURL withPreviewImage:(UIImage*)previewImage;
+- (void)setImageURL:(NSString *)imageURL withImageOrientation:(UIImageOrientation)orientation andPreviewImage:(UIImage*)previewImage;
 
 // Use this boolean to hide activity indicator during image downloading
 @property (nonatomic) BOOL hideActivityIndicator;

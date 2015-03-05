@@ -62,6 +62,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) NSDictionary *attachmentInfo;
 @property (nonatomic) NSString *thumbnailURL;
 @property (nonatomic) NSDictionary *thumbnailInfo;
+@property (nonatomic) UIImageOrientation thumbnailOrientation;
 @property (nonatomic) NSString *previewURL;
 @property (nonatomic) NSString *uploadId;
 @property (nonatomic) CGFloat uploadProgress;

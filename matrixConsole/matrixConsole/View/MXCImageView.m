@@ -21,7 +21,9 @@
 
 @interface MXCImageView () {
     NSString *imageURL;
-    UIImage  *currentImage;
+    UIImageOrientation imageOrientation;
+    
+    UIImage *currentImage;
     
     // the loading view is composed with the spinner and a pie chart
     // the spinner is display until progress > 0
@@ -409,16 +411,19 @@
     }
 }
 
-- (void)setImageURL:(NSString *)anImageURL withPreviewImage:(UIImage*)previewImage {
+- (void)setImageURL:(NSString *)anImageURL withImageOrientation:(UIImageOrientation)orientation andPreviewImage:(UIImage*)previewImage {
     // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    imageURL = anImageURL;
     
+    imageURL = anImageURL;
     if (!imageURL) {
         // Set preview by default
         self.image = previewImage;
         return;
     }
+    
+    // Store image orientation
+    imageOrientation = orientation;
     
     // Check whether the image download is in progress
     MediaLoader* loader = [MediaManager existingDownloaderForURL:imageURL inFolder:mediaFolder];
@@ -436,7 +441,12 @@
         // Retrieve the image from cache
         UIImage* image = [MediaManager loadCachePictureForURL:imageURL inFolder:mediaFolder];
         if (image) {
-            self.image = image;
+            if (imageOrientation != UIImageOrientationUp) {
+                self.image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:imageOrientation];
+            } else {
+                self.image = image;
+            }
+            
             [self stopActivityIndicator];
         } else {
             // Set preview until the image is loaded
@@ -464,7 +474,11 @@
             // update the image
             UIImage* image = [MediaManager loadCachePictureForURL:imageURL inFolder:mediaFolder];
             if (image) {
-                self.image = image;
+                if (imageOrientation != UIImageOrientationUp) {
+                    self.image = [UIImage imageWithCGImage:image.CGImage scale:1.0 orientation:imageOrientation];
+                } else {
+                    self.image = image;
+                }
             }
             // remove the observers
             [[NSNotificationCenter defaultCenter] removeObserver:self];
