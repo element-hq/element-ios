@@ -153,11 +153,6 @@
 
     // clear the notifications counter
     [self clearNotifications];
-
-    // check if the app crashed last time
-    if ([MXLogger crashLog]) {
-        [RageShakableUIResponder reportCrash:self.masterTabBarController.selectedViewController];
-    }
     
     return YES;
 }
@@ -211,6 +206,11 @@
     [[ContactManager sharedManager] fullRefresh];
     
     _isAppForeground = YES;
+    
+    // check if the app crashed last time
+    if ([MXLogger crashLog]) {
+        [RageShakableUIResponder reportCrash:self.masterTabBarController.selectedViewController];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
