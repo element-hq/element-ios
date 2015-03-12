@@ -26,6 +26,8 @@
 
 #import "AFNetworkReachabilityManager.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 NSString *const kMatrixSDKHandlerUnsupportedEventDescriptionPrefix = @"Unsupported event: ";
 
 static MatrixSDKHandler *sharedHandler = nil;
@@ -407,6 +409,16 @@ static MatrixSDKHandler *sharedHandler = nil;
                 // Removing existing notification (if any)
                 if (self.mxNotification) {
                     [self.mxNotification dismiss:NO];
+                }
+                
+                // Check whether tweak is required
+                for (MXPushRuleAction *ruleAction in rule.actions) {
+                    if (ruleAction.actionType == MXPushRuleActionTypeSetTweak) {
+                        if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"]) {
+                            // Play system sound (VoicemailReceived)
+                            AudioServicesPlaySystemSound (1002);
+                        }
+                    }
                 }
                 
                 NSString* messageText = [self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
