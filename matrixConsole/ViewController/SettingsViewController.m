@@ -45,6 +45,7 @@
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
+NSString* const kUserInfoNotificationRulesText = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
 NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@";
 NSString* const kBuildFormatText = @"Build: %@\r\n";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
@@ -82,6 +83,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Dynamic rows in the Notifications section
     NSInteger enablePushNotifRowIndex;
     NSInteger enableInAppNotifRowIndex;
+    NSInteger userInfoNotifRowIndex;
     
     // Contacts
     UISwitch *contactsSyncSwitch;
@@ -765,12 +767,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             emailTokenCell = nil;
         }
     } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        enableInAppNotifRowIndex = enablePushNotifRowIndex = -1;
+        enableInAppNotifRowIndex = enablePushNotifRowIndex = userInfoNotifRowIndex = -1;
         
         if ([APNSHandler sharedHandler].isAvailable) {
             enablePushNotifRowIndex = count++;
         }
         enableInAppNotifRowIndex = count++;
+        userInfoNotifRowIndex = count++;
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
         countryCodeRowIndex = syncLocalContactsRowIndex = -1;
 
@@ -797,6 +800,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
+        if (indexPath.row == userInfoNotifRowIndex) {
+            UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
+            textView.font = [UIFont systemFontOfSize:14];
+            textView.text = kUserInfoNotificationRulesText;
+            CGSize contentSize = [textView sizeThatFits:textView.frame.size];
+            return contentSize.height + 1;
+        }
         return 44;
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         
@@ -909,18 +919,24 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             cell = emailTokenCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
-        if (indexPath.row == enableInAppNotifRowIndex) {
-            notificationsCell.settingLabel.text = @"Enable In-App notifications";
-            notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
-            inAppNotificationsSwitch = notificationsCell.settingSwitch;
-        } else /* enablePushNotifRowIndex */{
-            notificationsCell.settingLabel.text = @"Enable push notifications";
-            notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
-            notificationsCell.settingSwitch.enabled = YES;
-            apnsNotificationsSwitch = notificationsCell.settingSwitch;
+        if (indexPath.row == userInfoNotifRowIndex) {
+            SettingsCellWithTextView *userInfoCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+            userInfoCell.settingTextView.text = kUserInfoNotificationRulesText;
+            cell = userInfoCell;
+        } else {
+            SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            if (indexPath.row == enableInAppNotifRowIndex) {
+                notificationsCell.settingLabel.text = @"Enable In-App notifications";
+                notificationsCell.settingSwitch.on = [[AppSettings sharedSettings] enableInAppNotifications];
+                inAppNotificationsSwitch = notificationsCell.settingSwitch;
+            } else /* enablePushNotifRowIndex */{
+                notificationsCell.settingLabel.text = @"Enable push notifications";
+                notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
+                notificationsCell.settingSwitch.enabled = YES;
+                apnsNotificationsSwitch = notificationsCell.settingSwitch;
+            }
+            cell = notificationsCell;
         }
-        cell = notificationsCell;
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         if (indexPath.row  == syncLocalContactsRowIndex) {
             SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
@@ -972,7 +988,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
+            cell = [tableView dequeueReusableCellWithIdentifier:@"ClearCacheCell"];
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
