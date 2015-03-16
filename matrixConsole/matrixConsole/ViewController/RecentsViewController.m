@@ -238,8 +238,9 @@
     
     [self.tableView reloadData];
     
-    // In case of split view controller, update the selected row (if any) and make it visible
-    if (self.splitViewController) {
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+    // the selected room (if any) is updated and kept visible.
+    if (self.splitViewController && !self.splitViewController.isCollapsed) {
         [self refreshCurrentSelectedCell:YES];
     }
 }
