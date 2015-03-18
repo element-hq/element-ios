@@ -443,7 +443,7 @@
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
 
-        } else if ([text isEqualToString:@"Set power level"]) {
+        } else if ([text isEqualToString:@"Set Power Level"]) {
             [self updateUserPowerLevel:_mxRoomMember];
         } else if ([text isEqualToString:@"Kick"]) {
             [self addPendingActionMask];
@@ -497,7 +497,7 @@
                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                }];
     
-        } else if ([text isEqualToString:@"Chat"]) {
+        } else if ([text isEqualToString:@"Start Chat"]) {
             [self addPendingActionMask];
             [[MatrixSDKHandler sharedHandler] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
         }
