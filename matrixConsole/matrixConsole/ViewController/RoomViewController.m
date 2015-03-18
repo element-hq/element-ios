@@ -2595,7 +2595,7 @@ NSString *const kCmdResetUserPowerLevel = @"/deop";
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
             weakSelf.actionMenu = nil;
         }];
-        weakSelf.actionMenu.sourceView = weakSelf.optionBtn;
+        self.actionMenu.sourceView = self.optionBtn;
         [self.actionMenu showInViewController:self];
     }
 }
