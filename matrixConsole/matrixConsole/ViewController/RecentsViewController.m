@@ -97,7 +97,7 @@
 
 - (void)dealloc {
     if (currentRoomViewController) {
-        currentRoomViewController.roomId = nil;
+        [currentRoomViewController displayRoom:nil];
         currentRoomViewController = nil;
     }
     if (recentsListener) {
@@ -166,7 +166,7 @@
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
     if (!self.splitViewController || self.splitViewController.isCollapsed) {
         if (currentRoomViewController) {
-            currentRoomViewController.roomId = nil;
+            [currentRoomViewController displayRoom:nil];
             currentRoomViewController = nil;
             // Reset selected row index
             currentSelectedCellIndexPathRow = -1;
@@ -215,7 +215,7 @@
         }
     } else if (currentRoomViewController) {
         // Release the current selected room
-        currentRoomViewController.roomId = nil;
+        [currentRoomViewController displayRoom:nil];
         currentRoomViewController = nil;
         
         // Force table refresh to deselect related cell
@@ -227,11 +227,11 @@
 
 - (void)refreshRecentsDisplay {
     // Check whether the current selected room has not been left
-    if (currentRoomViewController.roomId) {
-        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomId];
+    if (currentRoomViewController.dataSource.roomId) {
+        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.dataSource.roomId];
         if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
             // release the room viewController
-            currentRoomViewController.roomId = nil;
+            [currentRoomViewController displayRoom:nil];
             currentRoomViewController = nil;
         }
     }
@@ -418,7 +418,8 @@
         if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:roomId]) {
             // For sanity reason, we have to force a full refresh in order to restore back state of the room
             dispatch_async(dispatch_get_main_queue(), ^{
-                [currentRoomViewController forceRefresh];
+                MXKRoomDataSource *roomDataSrc = currentRoomViewController.dataSource;
+                [currentRoomViewController displayRoom:roomDataSrc];
             });
         }
     }
@@ -492,7 +493,7 @@
         NSArray *displayedRecents = filteredRecents ? filteredRecents : recents;
         for (NSInteger index = 0; index < displayedRecents.count; index ++) {
             RecentRoom *recentRoom = [displayedRecents objectAtIndex:index];
-            if ([currentRoomViewController.roomId isEqualToString:recentRoom.roomId]) {
+            if ([currentRoomViewController.dataSource.roomId isEqualToString:recentRoom.roomId]) {
                 currentSelectedCellIndexPathRow = index;
                 break;
             }
@@ -556,11 +557,14 @@
         if ([controller isKindOfClass:[RoomViewController class]]) {
             // Release potential Room ViewController
             if (currentRoomViewController) {
-                currentRoomViewController.roomId = nil;
+                [currentRoomViewController displayRoom:nil];
                 currentRoomViewController = nil;
             }
+            
             currentRoomViewController = (RoomViewController *)controller;
-            currentRoomViewController.roomId = recentRoom.roomId;
+            MXKRoomDataSource *roomDataSource = [[MXKRoomDataSource alloc] initWithRoomId:recentRoom.roomId
+                                                                         andMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
+            [currentRoomViewController displayRoom:roomDataSource];
         }
         
         // Reset unread count for this room

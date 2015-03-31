@@ -14,15 +14,9 @@
  limitations under the License.
  */
 
-#import "MXCViewController.h"
+#import <MatrixKit/MatrixKit.h>
 
-#import "HPGrowingTextView.h"
-
-@interface RoomViewController : MXCViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, HPGrowingTextViewDelegate>
-
-@property (strong, nonatomic) NSString *roomId;
-
-- (void)forceRefresh;
+@interface RoomViewController : MXKRoomViewController <UITextFieldDelegate>
 
 @end
 

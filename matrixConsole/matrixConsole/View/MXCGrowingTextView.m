@@ -16,6 +16,8 @@
 
 #import "MXCGrowingTextView.h"
 
+// TODO GFO Check whether the following patch is still required. If YES report it into MatrixKit (see MXKRoomInputToolbarViewWithHPGrowingText).
+
 @implementation MXCGrowingTextView
 
 // override theses two methods to fix a weird IOS 8 issue
