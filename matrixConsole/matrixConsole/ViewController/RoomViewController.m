@@ -195,7 +195,9 @@
 - (void)didMatrixSessionStateChange {
     
     [super didMatrixSessionStateChange];
-    if (self.dataSource && !self.dataSource.room) {
+    
+    // Check dataSource state
+    if (self.dataSource.state == MXKDataSourceStatePreparing) {
         // dataSource is not ready, keep running the loading wheel
         [self.activityIndicator startAnimating];
     }
@@ -203,8 +205,8 @@
 
 - (void)updateUI {
     
-    // Check whether data source room is ready to show/hide UI items
-    if (self.dataSource.room) {
+    // Update UI by considering dataSource state
+    if (self.dataSource && self.dataSource.state == MXKDataSourceStateReady) {
         // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
         // into account mxSession state before stopping activity indicator.
         [super didMatrixSessionStateChange];
@@ -217,12 +219,19 @@
         
         self.roomTitleView.mxRoom = self.dataSource.room;
         self.roomTitleView.editable = YES;
+        self.roomTitleView.hidden = NO;
     }
     else {
         self.inputToolbarView.hidden = YES;
         self.showRoomMembersButtonItem.enabled = NO;
         
-        self.roomTitleView.mxRoom = nil;
+        if (self.dataSource && self.dataSource.state == MXKDataSourceStatePreparing) {
+            self.roomTitleView.mxRoom = self.dataSource.room;
+            self.roomTitleView.hidden = (!self.roomTitleView.mxRoom);
+        } else {
+            self.roomTitleView.mxRoom = nil;
+            self.roomTitleView.hidden = NO;
+        }
         self.roomTitleView.editable = NO;
     }
     
@@ -239,13 +248,12 @@
 
 #pragma mark - MXKDataSource delegate
 
-- (void)dataSource:(MXKDataSource *)dataSource didChange:(id)changes {
+- (void)dataSource:(MXKDataSource *)dataSource didStateChange:(MXKDataSourceState)state {
+    // Take into account dataSource state to update UI
+    [self updateUI];
     
-    [super dataSource:dataSource didChange:changes];
-    
-    // Here the data source room is ready, update UI if it is not already done
-    if (self.roomTitleView.mxRoom != self.dataSource.room) {
-        [self updateUI];
+    if ([super.class respondsToSelector:@selector(dataSource:didStateChange:)]) {
+        [super dataSource:dataSource didStateChange:state];
     }
 }
 
