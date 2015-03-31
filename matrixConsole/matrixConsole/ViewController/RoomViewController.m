@@ -72,15 +72,7 @@
 }
 
 - (void)dealloc {
-    members = nil;
-    if (membersListener) {
-        membersListener = nil;
-    }
-    
-    if (self.actionMenu) {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
-    }
+    [self close];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -197,7 +189,7 @@
     [super didMatrixSessionStateChange];
     
     // Check dataSource state
-    if (self.dataSource.state == MXKDataSourceStatePreparing) {
+    if (self.dataSource && self.dataSource.state == MXKDataSourceStatePreparing) {
         // dataSource is not ready, keep running the loading wheel
         [self.activityIndicator startAnimating];
     }
@@ -244,6 +236,20 @@
     [super displayRoom:roomDataSource];
     
     [self updateUI];
+}
+
+- (void)close {
+    members = nil;
+    if (membersListener) {
+        membersListener = nil;
+    }
+    
+    if (self.actionMenu) {
+        [self.actionMenu dismiss:NO];
+        self.actionMenu = nil;
+    }
+    
+    [super close];
 }
 
 #pragma mark - MXKDataSource delegate
