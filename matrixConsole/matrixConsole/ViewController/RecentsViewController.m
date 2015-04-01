@@ -97,7 +97,7 @@
 
 - (void)dealloc {
     if (currentRoomViewController) {
-        [currentRoomViewController close];
+        [currentRoomViewController destroy];
         currentRoomViewController = nil;
     }
     if (recentsListener) {
@@ -166,7 +166,7 @@
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
     if (!self.splitViewController || self.splitViewController.isCollapsed) {
         if (currentRoomViewController) {
-            [currentRoomViewController close];
+            [currentRoomViewController destroy];
             currentRoomViewController = nil;
             // Reset selected row index
             currentSelectedCellIndexPathRow = -1;
@@ -215,7 +215,7 @@
         }
     } else if (currentRoomViewController) {
         // Release the current selected room
-        [currentRoomViewController close];
+        [currentRoomViewController destroy];
         currentRoomViewController = nil;
         
         // Force table refresh to deselect related cell
@@ -231,7 +231,7 @@
         MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.dataSource.roomId];
         if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
             // release the room viewController
-            [currentRoomViewController close];
+            [currentRoomViewController destroy];
             currentRoomViewController = nil;
         }
     }
@@ -557,7 +557,7 @@
         if ([controller isKindOfClass:[RoomViewController class]]) {
             // Release potential Room ViewController
             if (currentRoomViewController) {
-                [currentRoomViewController close];
+                [currentRoomViewController destroy];
                 currentRoomViewController = nil;
             }
             

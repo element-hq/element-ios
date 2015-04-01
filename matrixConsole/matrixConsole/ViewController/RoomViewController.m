@@ -71,10 +71,6 @@
     self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
-- (void)dealloc {
-    [self close];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -238,7 +234,7 @@
     [self updateUI];
 }
 
-- (void)close {
+- (void)destroy {
     members = nil;
     if (membersListener) {
         membersListener = nil;
@@ -249,7 +245,7 @@
         self.actionMenu = nil;
     }
     
-    [super close];
+    [super destroy];
 }
 
 #pragma mark - MXKDataSource delegate
