@@ -61,6 +61,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Replace the default input toolbar view with the one based on `HPGrowingTextView`.
+    [self setRoomInputToolbarViewClass:MXKRoomInputToolbarViewWithHPGrowingText.class];
+    
     // Do any additional setup after loading the view, typically from a nib.
     forceScrollToBottomOnViewDidAppear = YES;
     // TODO GFO Hide messages table by default in order to hide initial scrolling to the bottom
