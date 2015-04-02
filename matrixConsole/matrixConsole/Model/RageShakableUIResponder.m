@@ -19,13 +19,12 @@
 #import "RageShakableUIResponder.h"
 
 #import "AppDelegate.h"
-#import "MXCAlert.h"
 #import "MatrixSDKHandler.h"
 
 #import "GBDeviceInfo_iOS.h"
 
 @interface RageShakableUIResponder() {
-    MXCAlert *confirmationAlert;
+    MXKAlert *confirmationAlert;
     double startShakingTimeStamp;
     bool isShaking;
     bool ignoreShakeEnd;
@@ -85,13 +84,13 @@ static RageShakableUIResponder* sharedInstance = nil;
             rageShakableUIResponder->startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
             
             if ([responder isKindOfClass:[UIViewController class]]) {
-                rageShakableUIResponder->confirmationAlert = [[MXCAlert alloc] initWithTitle:@"You seem to be shaking the phone in frustration. Would you like to submit a bug report?"  message:nil style:MXCAlertStyleAlert];
+                rageShakableUIResponder->confirmationAlert = [[MXKAlert alloc] initWithTitle:@"You seem to be shaking the phone in frustration. Would you like to submit a bug report?"  message:nil style:MXKAlertStyleAlert];
                 
-                [rageShakableUIResponder->confirmationAlert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [rageShakableUIResponder->confirmationAlert addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     sharedInstance->confirmationAlert = nil;
                 }];
                     
-                [rageShakableUIResponder->confirmationAlert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [rageShakableUIResponder->confirmationAlert addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     sharedInstance->confirmationAlert = nil;
                     [RageShakableUIResponder sendEmail:(UIViewController*)responder withSnapshot:YES];
                 }];
@@ -130,15 +129,15 @@ static RageShakableUIResponder* sharedInstance = nil;
             sharedInstance = [[RageShakableUIResponder alloc] init];
         }
 
-        sharedInstance->confirmationAlert = [[MXCAlert alloc] initWithTitle:@"The application has crashed last time. Would you like to submit a crash report?"  message:nil style:MXCAlertStyleAlert];
+        sharedInstance->confirmationAlert = [[MXKAlert alloc] initWithTitle:@"The application has crashed last time. Would you like to submit a crash report?"  message:nil style:MXKAlertStyleAlert];
 
-        [sharedInstance->confirmationAlert addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+        [sharedInstance->confirmationAlert addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             // Erase the crash log (there is only chance for the user to send it)
             [MXLogger deleteCrashLog];
             sharedInstance->confirmationAlert = nil;
         }];
 
-        [sharedInstance->confirmationAlert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+        [sharedInstance->confirmationAlert addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             sharedInstance->confirmationAlert = nil;
             [RageShakableUIResponder sendEmail:viewController withSnapshot:NO];
         }];

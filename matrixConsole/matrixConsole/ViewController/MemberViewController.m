@@ -37,7 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *memberThumbnailButton;
 @property (weak, nonatomic) IBOutlet UITextView *roomMemberMID;
 
-@property (strong, nonatomic) MXCAlert *actionMenu;
+@property (strong, nonatomic) MXKAlert *actionMenu;
 
 - (IBAction)onButtonToggle:(id)sender;
 
@@ -393,10 +393,10 @@
     __weak typeof(self) weakSelf = self;
     
     // Ask for userId to invite
-    self.actionMenu = [[MXCAlert alloc] initWithTitle:@"Power Level"  message:nil style:MXCAlertStyleAlert];
+    self.actionMenu = [[MXKAlert alloc] initWithTitle:@"Power Level"  message:nil style:MXKAlertStyleAlert];
     
     if (![mxHandler.userId isEqualToString:roomMember.userId]) {
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             weakSelf.actionMenu = nil;
             
             [weakSelf setUserPowerLevel:roomMember to:0];
@@ -408,7 +408,7 @@
         textField.placeholder = nil;
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
-    [self.actionMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+    [self.actionMenu addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
         UITextField *textField = [alert textFieldAtIndex:0];
         weakSelf.actionMenu = nil;
         

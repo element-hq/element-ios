@@ -17,7 +17,6 @@
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "AppSettings.h"
-#import "MXCAlert.h"
 
 #import "MXFileStore.h"
 #import "MXTools.h"
@@ -51,7 +50,7 @@ static MatrixSDKHandler *sharedHandler = nil;
 @property (strong, nonatomic) MXFileStore *mxFileStore;
 @property (nonatomic,readwrite) MatrixSDKHandlerStatus status;
 @property (nonatomic,readwrite) BOOL isActivityInProgress;
-@property (strong, nonatomic) MXCAlert *mxNotification;
+@property (strong, nonatomic) MXKAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 
 @property (strong, nonatomic) NSMutableDictionary *partialTextMsgByRoomId;
@@ -424,18 +423,18 @@ static MatrixSDKHandler *sharedHandler = nil;
                 NSString* messageText = [self displayTextForEvent:event withRoomState:roomState inSubtitleMode:YES];
                 
                 __weak typeof(self) weakSelf = self;
-                self.mxNotification = [[MXCAlert alloc] initWithTitle:roomState.displayname
+                self.mxNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
                                                               message:messageText
-                                                                style:MXCAlertStyleAlert];
+                                                                style:MXKAlertStyleAlert];
                 self.mxNotification.cancelButtonIndex = [self.mxNotification addActionWithTitle:@"Cancel"
-                                                                                          style:MXCAlertActionStyleDefault
-                                                                                        handler:^(MXCAlert *alert) {
+                                                                                          style:MXKAlertActionStyleDefault
+                                                                                        handler:^(MXKAlert *alert) {
                                                                                             weakSelf.mxNotification = nil;
                                                                                             [weakSelf.unnotifiedRooms addObject:event.roomId];
                                                                                         }];
                 [self.mxNotification addActionWithTitle:@"View"
-                                                  style:MXCAlertActionStyleDefault
-                                                handler:^(MXCAlert *alert) {
+                                                  style:MXKAlertActionStyleDefault
+                                                handler:^(MXKAlert *alert) {
                                                     weakSelf.mxNotification = nil;
                                                     // Show the room
                                                     [[AppDelegate theDelegate].masterTabBarController showRoom:event.roomId];

@@ -52,7 +52,7 @@
 @property (weak, nonatomic) IBOutlet UIView *membersView;
 @property (weak, nonatomic) IBOutlet UITableView *membersTableView;
 
-@property (strong, nonatomic) MXCAlert *actionMenu;
+@property (strong, nonatomic) MXKAlert *actionMenu;
 
 @end
 
@@ -544,8 +544,8 @@
         if (self.actionMenu) {
             [self.actionMenu dismiss:NO];
         }
-        self.actionMenu = [[MXCAlert alloc] initWithTitle:nil message:alertMsg style:MXCAlertStyleAlert];
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+        self.actionMenu = [[MXKAlert alloc] initWithTitle:nil message:alertMsg style:MXKAlertStyleAlert];
+        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             weakSelf.actionMenu = nil;
         }];
         [self.actionMenu showInViewController:self];

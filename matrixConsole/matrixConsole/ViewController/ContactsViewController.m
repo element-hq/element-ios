@@ -31,9 +31,6 @@
 // contact cell
 #import "ContactTableCell.h"
 
-// alert
-#import "MXCAlert.h"
-
 // settings
 #import "AppSettings.h"
 
@@ -66,8 +63,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     NSString* latestSearchedPattern;
 }
 
-@property (strong, nonatomic) MXCAlert *startChatMenu;
-@property (strong, nonatomic) MXCAlert *allowContactSyncAlert;
+@property (strong, nonatomic) MXKAlert *startChatMenu;
+@property (strong, nonatomic) MXKAlert *allowContactSyncAlert;
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl* contactsControls;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -432,29 +429,29 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             if (matrixIDs.count == 1) {
                 NSString* matrixID = [matrixIDs objectAtIndex:0];
 
-                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with %@", matrixID]  message:nil style:MXCAlertStyleAlert];
+                self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with %@", matrixID]  message:nil style:MXKAlertStyleAlert];
                 
-                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     weakSelf.startChatMenu = nil;
                 }];
                 
-                [self.startChatMenu addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.startChatMenu addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     weakSelf.startChatMenu = nil;
                     
                     [mxHandler startPrivateOneToOneRoomWithUserId:matrixID];
                 }];
             } else {
-                self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with "]  message:nil style:MXCAlertStyleActionSheet];
+                self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with "]  message:nil style:MXKAlertStyleActionSheet];
                 
                 for(NSString* matrixID in matrixIDs) {
-                    [self.startChatMenu addActionWithTitle:matrixID style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    [self.startChatMenu addActionWithTitle:matrixID style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         weakSelf.startChatMenu = nil;
                         
                         [mxHandler startPrivateOneToOneRoomWithUserId:matrixID];
                     }];
                 }
                 
-                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     weakSelf.startChatMenu = nil;
                 }];
                 
@@ -468,14 +465,14 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         // invite to use matrix
         if (([MFMessageComposeViewController canSendText] ? contact.emailAddresses.count : 0) + (contact.phoneNumbers.count > 0)) {
         
-            self.startChatMenu = [[MXCAlert alloc] initWithTitle:[NSString stringWithFormat:@"Invite this user to use matrix with"]  message:nil style:MXCAlertStyleActionSheet];
+            self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Invite this user to use matrix with"]  message:nil style:MXKAlertStyleActionSheet];
             
             // check if the target can send SMSes
             if ([MFMessageComposeViewController canSendText]) {
                 // list phonenumbers
                 for(MXCPhoneNumber* phonenumber in contact.phoneNumbers) {
                     
-                    [self.startChatMenu addActionWithTitle:phonenumber.textNumber style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                    [self.startChatMenu addActionWithTitle:phonenumber.textNumber style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         weakSelf.startChatMenu = nil;
                         
                         // launch SMS composer
@@ -498,7 +495,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             // list emails
             for(MXCEmail* email in contact.emailAddresses) {
                 
-                [self.startChatMenu addActionWithTitle:email.emailAddress style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.startChatMenu addActionWithTitle:email.emailAddress style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     weakSelf.startChatMenu = nil;
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -511,7 +508,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 }];
             }
             
-            [self.startChatMenu addActionWithTitle:@"Cancel" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            [self.startChatMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 weakSelf.startChatMenu = nil;
             }];
             
@@ -588,13 +585,13 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             if (!appSettings.syncLocalContacts) {
                 __weak typeof(self) weakSelf = self;
                 
-                self.allowContactSyncAlert = [[MXCAlert alloc] initWithTitle:@"Allow local contacts synchronization ?"  message:nil style:MXCAlertStyleAlert];
+                self.allowContactSyncAlert = [[MXKAlert alloc] initWithTitle:@"Allow local contacts synchronization ?"  message:nil style:MXKAlertStyleAlert];
                 
-                [self.allowContactSyncAlert addActionWithTitle:@"No" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.allowContactSyncAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     weakSelf.allowContactSyncAlert = nil;
                 }];
                 
-                [self.allowContactSyncAlert addActionWithTitle:@"Yes" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                [self.allowContactSyncAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         weakSelf.allowContactSyncAlert = nil;
                     dispatch_async(dispatch_get_main_queue(), ^{
                         appSettings.syncLocalContacts = YES;

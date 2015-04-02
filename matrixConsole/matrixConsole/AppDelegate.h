@@ -15,9 +15,9 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <MatrixKit/MatrixKit.h>
 
 #import "MasterTabBarController.h"
-#import "MXCAlert.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate> {
     BOOL isAPNSRegistered;
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MasterTabBarController *masterTabBarController;
 
-@property (strong, nonatomic) MXCAlert *errorNotification;
+@property (strong, nonatomic) MXKAlert *errorNotification;
 
 @property (strong, nonatomic) NSString *appVersion;
 @property (strong, nonatomic) NSString *build;
@@ -40,7 +40,7 @@
 
 - (void)logout;
 
-- (MXCAlert*)showErrorAsAlert:(NSError*)error;
+- (MXKAlert*)showErrorAsAlert:(NSError*)error;
 
 @end
 

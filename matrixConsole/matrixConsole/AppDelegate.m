@@ -292,7 +292,7 @@
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (MXCAlert*)showErrorAsAlert:(NSError*)error {
+- (MXKAlert*)showErrorAsAlert:(NSError*)error {
     // Ignore network reachability error when the app is already offline
     if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
         return nil;
@@ -309,8 +309,8 @@
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    self.errorNotification = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+    self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
         [AppDelegate theDelegate].errorNotification = nil;
     }];
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];

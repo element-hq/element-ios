@@ -222,9 +222,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Check whether some local changes have not been saved
     if (_saveUserInfoButton.enabled) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            MXCAlert *alert = [[MXCAlert alloc] initWithTitle:nil message:@"Changes will be discarded"  style:MXCAlertStyleAlert];
+            MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:@"Changes will be discarded"  style:MXKAlertStyleAlert];
             [alertsArray addObject:alert];
-            alert.cancelButtonIndex = [alert addActionWithTitle:@"Discard" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            alert.cancelButtonIndex = [alert addActionWithTitle:@"Discard" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 [alertsArray removeObject:alert];
                 // Discard changes
                 self.userDisplayName.text = currentDisplayName;
@@ -234,7 +234,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     handler();
                 }
             }];
-            [alert addActionWithTitle:@"Save" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            [alert addActionWithTitle:@"Save" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 [alertsArray removeObject:alert];
                 // Start saving
                 [self saveUserInfo];
@@ -269,7 +269,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     // Cancel potential alerts
-    for (MXCAlert *alert in alertsArray){
+    for (MXKAlert *alert in alertsArray){
         [alert dismiss:NO];
     }
     
@@ -406,9 +406,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
             NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
             
-            MXCAlert *alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
+            MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
             [alertsArray addObject:alert];
-            alert.cancelButtonIndex = [alert addActionWithTitle:@"Abort" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            alert.cancelButtonIndex = [alert addActionWithTitle:@"Abort" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 [alertsArray removeObject:alert];
                 // Discard changes
                 self.userDisplayName.text = currentDisplayName;
@@ -416,7 +416,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // Loop to end saving
                 [self saveUserInfo];
             }];
-            [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+            [alert addActionWithTitle:@"Retry" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 [alertsArray removeObject:alert];
                 // Loop to retry saving
                 [self saveUserInfo];
@@ -472,9 +472,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    MXCAlert *alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
+    MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
     [alertsArray addObject:alert];
-    alert.cancelButtonIndex = [alert addActionWithTitle:@"Abort" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"Abort" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
         [alertsArray removeObject:alert];
         // Remove change
         self.userDisplayName.text = currentDisplayName;
@@ -482,7 +482,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // Loop to end saving
         [self saveUserInfo];
     }];
-    [alert addActionWithTitle:@"Retry" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+    [alert addActionWithTitle:@"Retry" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
         [alertsArray removeObject:alert];
         // Loop to retry saving
         [self saveUserInfo];
@@ -654,9 +654,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 }];
             } else {
                 NSLog(@"[SettingsVC] Failed to link email");
-                MXCAlert *alert = [[MXCAlert alloc] initWithTitle:nil message:@"Failed to link email"  style:MXCAlertStyleAlert];
+                MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:@"Failed to link email"  style:MXKAlertStyleAlert];
                 [alertsArray addObject:alert];
-                alert.cancelButtonIndex = [alert addActionWithTitle:@"OK" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {
+                alert.cancelButtonIndex = [alert addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     [alertsArray removeObject:alert];
                 }];
                 [alert showInViewController:self];

@@ -18,7 +18,6 @@
 
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
-#import "MXCAlert.h"
 #import "MXCRegistrationWebView.h"
 
 @interface AuthenticationViewController () {
@@ -32,7 +31,7 @@
     AuthInputsView *currentAuthInputsView;
     
     // reference to any opened alert view
-    MXCAlert *alert;
+    MXKAlert *alert;
 }
 
 // Return true if the provided flow (kMXLoginFlowType) is supported by the application
@@ -326,8 +325,8 @@
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
-    alert = [[MXCAlert alloc] initWithTitle:title message:msg style:MXCAlertStyleAlert];
-    alert.cancelButtonIndex = [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleDefault handler:^(MXCAlert *alert) {}];
+    alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+    alert.cancelButtonIndex = [alert addActionWithTitle:@"Dismiss" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {}];
     [alert showInViewController:self];
     
     // Display failure reason
@@ -461,8 +460,8 @@
     }
     
     //Alert user
-    alert = [[MXCAlert alloc] initWithTitle:@"Login Failed" message:message style:MXCAlertStyleAlert];
-    [alert addActionWithTitle:@"Dismiss" style:MXCAlertActionStyleCancel handler:^(MXCAlert *alert) {}];
+    alert = [[MXKAlert alloc] initWithTitle:@"Login Failed" message:message style:MXKAlertStyleAlert];
+    [alert addActionWithTitle:@"Dismiss" style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {}];
     [alert showInViewController:self];
 }
 
