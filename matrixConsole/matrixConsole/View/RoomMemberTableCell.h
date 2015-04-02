@@ -13,19 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixKit/MXKImageView.h>
+#import <MatrixKit/MXKPieChartView.h>
 
 #import <UIKit/UIKit.h>
-#import "MXCImageView.h"
-#import "PieChartView.h"
 
 @class MXRoomMember;
 @class MXRoom;
 
 // Room Member Table View Cell
 @interface RoomMemberTableCell : UITableViewCell {
-    PieChartView* pieChartView;
+    MXKPieChartView* pieChartView;
 }
-@property (strong, nonatomic) IBOutlet MXCImageView *pictureView;
+@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
 @property (weak, nonatomic) IBOutlet UILabel *userLabel;
 @property (weak, nonatomic) IBOutlet UIView *powerContainer;
 @property (weak, nonatomic) IBOutlet UIImageView *typingBadge;

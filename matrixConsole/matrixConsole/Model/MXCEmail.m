@@ -19,8 +19,6 @@
 
 #import "MXCContact.h"
 
-#import "MediaManager.h"
-
 @interface MXCEmail()
 @end
 

@@ -23,8 +23,6 @@
 #import "AppDelegate.h"
 #import "MatrixSDKHandler.h"
 
-#import "MediaManager.h"
-
 @interface RecentsViewController () {
     // Array of RecentRooms
     NSMutableArray  *recents;
@@ -679,8 +677,8 @@
 
         // cancel pending uploads/downloads
         // they are useless by now
-        [MediaManager cancelDownloadsInFolder:selectedRoom.roomId];
-        [MediaManager cancelUploadsInFolder:selectedRoom.roomId];
+        [MXKMediaManager cancelDownloadsInCacheFolder:selectedRoom.roomId];
+        // TODO GFO cancel pending uploads related to this room
         
         [mxRoom leave:^{
             // Remove the selected room (if it is not already done by recents listener)

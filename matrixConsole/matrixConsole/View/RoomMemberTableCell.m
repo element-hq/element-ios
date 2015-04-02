@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixKit/MXKMediaManager.h>
 
 #import "RoomMemberTableCell.h"
 #import "MatrixSDKHandler.h"
-#import "MediaManager.h"
 
 @interface RoomMemberTableCell () {
     NSString *roomMemberUserId;
@@ -93,7 +93,7 @@
     self.powerContainer.backgroundColor = [UIColor clearColor];
     
     if (!pieChartView) {
-        pieChartView = [[PieChartView alloc] initWithFrame:self.powerContainer.bounds];
+        pieChartView = [[MXKPieChartView alloc] initWithFrame:self.powerContainer.bounds];
         [self.powerContainer addSubview:pieChartView];
     }
     
@@ -117,7 +117,7 @@
             MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             thumbnailURL = [mxHandler thumbnailURLForContent:roomMember.avatarUrl inViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
-        self.pictureView.mediaFolder = kMediaManagerThumbnailFolder;
+        self.pictureView.mediaFolder = kMXKMediaManagerAvatarThumbnailFolder;
         [self.pictureView setImageURL:thumbnailURL withImageOrientation:UIImageOrientationUp andPreviewImage:[UIImage imageNamed:@"default-profile"]];
         
         // Round image view

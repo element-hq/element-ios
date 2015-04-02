@@ -27,15 +27,11 @@
 		717629521A7A682A00927125 /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 717629511A7A682A00927125 /* countryCodes.plist */; };
 		71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */; };
 		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
-		71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E94A761A5C4020009F52E5 /* PieChartView.m */; };
 		D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */; };
-		F00B5DB91A1B9BCE00EA1C8D /* MXCImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */; };
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
 		F01628C119E29C660071C473 /* default-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BC19E29C660071C473 /* default-profile.png */; };
 		F01628C319E29C660071C473 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BE19E29C660071C473 /* logo.png */; };
 		F01A0FF31A27314B009FAE2F /* RoomMessageComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = F01A0FF21A27314B009FAE2F /* RoomMessageComponent.m */; };
-		F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */; };
-		F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F021FBF11A5F1F8E00EA3AE6 /* MediaManager.m */; };
 		F024098219E7D177006E741B /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F024098119E7D177006E741B /* tab_recents@2x.png */; };
 		F02BCE231A1A5A2B00543B47 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = F02BCE221A1A5A2B00543B47 /* play.png */; };
 		F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */; };
@@ -47,7 +43,6 @@
 		F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F119F171EB00A0EE52 /* RecentsViewController.m */; };
 		F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F319F171EB00A0EE52 /* RoomViewController.m */; };
 		F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F519F171EB00A0EE52 /* SettingsViewController.m */; };
-		F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */; };
 		F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = F0465AF91A251F85003639F9 /* RoomMessage.m */; };
 		F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */; };
 		F04B2DA51A977A9B00EEA4C8 /* tab_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = F04B2DA11A977A9B00EEA4C8 /* tab_settings.png */; };
@@ -128,21 +123,13 @@
 		71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberActionsCell.m; sourceTree = "<group>"; };
 		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
 		71DB9DC01A495B6400504A09 /* MemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberViewController.m; sourceTree = "<group>"; };
-		71E94A751A5C4020009F52E5 /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
-		71E94A761A5C4020009F52E5 /* PieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartView.m; sourceTree = "<group>"; };
 		8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-matrixConsole.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7EC7E45C718BF2BBCE0CF48 /* Pods-matrixConsole.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.debug.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.debug.xcconfig"; sourceTree = "<group>"; };
-		F00B5DB71A1B9BCE00EA1C8D /* MXCImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCImageView.h; sourceTree = "<group>"; };
-		F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCImageView.m; sourceTree = "<group>"; };
 		F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "matrixConsole-Defaults.plist"; sourceTree = "<group>"; };
 		F01628BC19E29C660071C473 /* default-profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-profile.png"; sourceTree = "<group>"; };
 		F01628BE19E29C660071C473 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		F01A0FF11A27314B009FAE2F /* RoomMessageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessageComponent.h; sourceTree = "<group>"; };
 		F01A0FF21A27314B009FAE2F /* RoomMessageComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessageComponent.m; sourceTree = "<group>"; };
-		F021FBED1A5EF57300EA3AE6 /* MediaLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaLoader.h; sourceTree = "<group>"; };
-		F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaLoader.m; sourceTree = "<group>"; };
-		F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
-		F021FBF11A5F1F8E00EA3AE6 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		F024098119E7D177006E741B /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
 		F02BCE221A1A5A2B00543B47 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTableCell.h; sourceTree = "<group>"; };
@@ -161,8 +148,6 @@
 		F03EF5F319F171EB00A0EE52 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F03EF5F419F171EB00A0EE52 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		F03EF5F519F171EB00A0EE52 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		F03EF5FD19F1762000A0EE52 /* RoomMessageTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessageTableCell.h; sourceTree = "<group>"; };
-		F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessageTableCell.m; sourceTree = "<group>"; };
 		F0465AF81A251F85003639F9 /* RoomMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessage.h; sourceTree = "<group>"; };
 		F0465AF91A251F85003639F9 /* RoomMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessage.m; sourceTree = "<group>"; };
 		F04A8AD61A3B3DF4008AC915 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTitleView.h; sourceTree = "<group>"; };
@@ -296,10 +281,6 @@
 				F05237791A7289F00079F3E0 /* APNSHandler.m */,
 				71193D391A6E50EC00E59A9E /* ContactManager.h */,
 				71193D3A1A6E50EC00E59A9E /* ContactManager.m */,
-				F021FBED1A5EF57300EA3AE6 /* MediaLoader.h */,
-				F021FBEE1A5EF57300EA3AE6 /* MediaLoader.m */,
-				F021FBF01A5F1F8E00EA3AE6 /* MediaManager.h */,
-				F021FBF11A5F1F8E00EA3AE6 /* MediaManager.m */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -344,12 +325,8 @@
 				71193D2B1A6E433900E59A9E /* ContactTableCell.m */,
 				F05237811A728A0A0079F3E0 /* MXCGrowingTextView.h */,
 				F05237821A728A0A0079F3E0 /* MXCGrowingTextView.m */,
-				F00B5DB71A1B9BCE00EA1C8D /* MXCImageView.h */,
-				F00B5DB81A1B9BCE00EA1C8D /* MXCImageView.m */,
 				32501A991A9B978400C5938F /* MXCRegistrationWebView.h */,
 				32501A9A1A9B978400C5938F /* MXCRegistrationWebView.m */,
-				71E94A751A5C4020009F52E5 /* PieChartView.h */,
-				71E94A761A5C4020009F52E5 /* PieChartView.m */,
 				F08DB77F1A9B7C9300B73403 /* PublicRoomTableCell.h */,
 				F08DB7801A9B7C9300B73403 /* PublicRoomTableCell.m */,
 				F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */,
@@ -358,8 +335,6 @@
 				71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */,
 				F02D707419F1DC9E007B47D3 /* RoomMemberTableCell.h */,
 				F02D707519F1DC9E007B47D3 /* RoomMemberTableCell.m */,
-				F03EF5FD19F1762000A0EE52 /* RoomMessageTableCell.h */,
-				F03EF5FE19F1762000A0EE52 /* RoomMessageTableCell.m */,
 				F04A8AD61A3B3DF4008AC915 /* RoomTitleView.h */,
 				F04A8AD71A3B3DF4008AC915 /* RoomTitleView.m */,
 				F0D3C30D1A01330F0000D49E /* SettingsTableViewCell.h */,
@@ -625,12 +600,10 @@
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F08DB7811A9B7C9300B73403 /* PublicRoomTableCell.m in Sources */,
 				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
-				F03EF5FF19F1762000A0EE52 /* RoomMessageTableCell.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
 				71193D371A6E49F000E59A9E /* MXCEmail.m in Sources */,
 				F077E6491A72966F008D5AD5 /* MatrixSDKHandler.m in Sources */,
 				71193D3E1A6E61AD00E59A9E /* SectionedContacts.m in Sources */,
-				F021FBEF1A5EF57300EA3AE6 /* MediaLoader.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,
 				71193D361A6E49F000E59A9E /* MXCContact.m in Sources */,
 				710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */,
@@ -644,16 +617,13 @@
 				F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */,
-				71E94A771A5C4020009F52E5 /* PieChartView.m in Sources */,
 				F0465AFA1A251F85003639F9 /* RoomMessage.m in Sources */,
-				F021FBF21A5F1F8E00EA3AE6 /* MediaManager.m in Sources */,
 				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
 				F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */,
 				71193D381A6E49F000E59A9E /* MXCPhoneNumber.m in Sources */,
 				71193D3B1A6E50EC00E59A9E /* ContactManager.m in Sources */,
 				71193D2C1A6E433900E59A9E /* ContactTableCell.m in Sources */,
 				F02D707619F1DC9E007B47D3 /* RoomMemberTableCell.m in Sources */,
-				F00B5DB91A1B9BCE00EA1C8D /* MXCImageView.m in Sources */,
 				F0D3C30C1A011EF10000D49E /* AppSettings.m in Sources */,
 				F05237831A728A0A0079F3E0 /* MXCGrowingTextView.m in Sources */,
 				7176294C1A77F5D000927125 /* ContactDetailsViewController.m in Sources */,

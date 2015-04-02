@@ -15,6 +15,7 @@
  */
 
 #import <MatrixKit/MXKTools.h>
+#import <MatrixKit/MXKMediaManager.h>
 
 #import "SettingsViewController.h"
 
@@ -22,7 +23,6 @@
 #import "AppSettings.h"
 #import "APNSHandler.h"
 #import "MatrixSDKHandler.h"
-#import "MediaManager.h"
 #import "MXC3PID.h"
 
 #import "ContactManager.h"
@@ -58,7 +58,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UIButton *logoutBtn;
     
     // User's profile
-    MediaLoader *imageLoader;
+    MXKMediaLoader *imageLoader;
     NSString *currentDisplayName;
     NSString *currentPictureURL;
     NSString *currentPictureThumbURL;
@@ -434,7 +434,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[self.userPictureButton imageForState:UIControlStateNormal]];
             
             // Upload picture
-            MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];
+            MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:mxHandler.mxSession initialRange:0 andRange:1.0];
             [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
                 // Store uploaded picture url and trigger picture saving
                 uploadedPictureURL = url;
@@ -510,16 +510,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
             MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
             currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPictureButton.frame.size withMethod:MXThumbnailingMethodCrop];
+            NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:currentPictureThumbURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
             
             // Check whether the image download is in progress
-            id loader = [MediaManager existingDownloaderForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
+            id loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
             if (loader) {
                 // Add observers
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFinishNotification object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFailNotification object:nil];
             } else {
                 // Retrieve the image from cache
-                UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
+                UIImage* image = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
                 if (image) {
                     [self updateUserPictureButton:image];
                 } else {
@@ -528,9 +529,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                         [imageLoader cancel];
                     }
                     // Add observers
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                    imageLoader = [MediaManager downloadMediaFromURL:currentPictureThumbURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFinishNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFailNotification object:nil];
+                    imageLoader = [MXKMediaManager downloadMediaFromURL:currentPictureThumbURL andSaveAtFilePath:cacheFilePath];
                 }
             }
         } else {
@@ -558,10 +559,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // sanity check
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
+        NSString* cacheFilePath = notif.userInfo[kMXKMediaLoaderFilePathKey];
         
         if ([url isEqualToString:currentPictureThumbURL]) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:currentPictureThumbURL inFolder:kMediaManagerThumbnailFolder];
+            UIImage* image = nil;
+            
+            if (cacheFilePath.length) {
+                image = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
+            }
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }
@@ -571,7 +577,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             [[NSNotificationCenter defaultCenter] removeObserver:self];
             imageLoader = nil;
             
-            if ([notif.name isEqualToString:kMediaDownloadDidFailNotification]) {
+            if ([notif.name isEqualToString:kMXKMediaDownloadDidFailNotification]) {
                 // Reset picture URL in order to try next time
                 currentPictureURL = nil;
             }

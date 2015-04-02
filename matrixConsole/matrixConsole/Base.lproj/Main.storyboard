@@ -52,7 +52,7 @@
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kac-Vi-XbY" id="prD-ap-cDD">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="RW8-nh-DTj" customClass="MXCImageView">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="RW8-nh-DTj" customClass="MXKImageView">
                                                             <rect key="frame" x="8" y="5" width="40" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="4c3-8w-4Tg"/>
@@ -1686,7 +1686,7 @@
                                                         <constraint firstAttribute="height" constant="16" id="JSX-S5-Smq"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="jld-N3-vJN" customClass="MXCImageView">
+                                                <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="jld-N3-vJN" customClass="MXKImageView">
                                                     <rect key="frame" x="12" y="5" width="40" height="40"/>
                                                     <gestureRecognizers/>
                                                     <constraints>

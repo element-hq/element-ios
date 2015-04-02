@@ -18,11 +18,10 @@
 
 #import "AppDelegate.h"
 #import "RoomMemberActionsCell.h"
-#import "MediaManager.h"
 
 @interface MemberViewController () {
     NSString *thumbnailURL;
-    MediaLoader* imageLoader;
+    MXKMediaLoader* imageLoader;
     id membersListener;
     
     NSMutableArray* buttonsTitles;
@@ -168,16 +167,17 @@
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         thumbnailURL = [mxHandler thumbnailURLForContent:_mxRoomMember.avatarUrl inViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
+        NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:thumbnailURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
         // Check whether the image download is in progress
-        id loader = [MediaManager existingDownloaderForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
+        id loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
         if (loader) {
             // Add observers
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFinishNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFailNotification object:nil];
         } else {
             // Retrieve the image from cache
-            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
+            UIImage* image = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
             if (image) {
                 [self.memberThumbnailButton setImage:image forState:UIControlStateNormal];
                 [self.memberThumbnailButton setImage:image forState:UIControlStateHighlighted];
@@ -187,9 +187,9 @@
                     [imageLoader cancel];
                 }
                 // Add observers
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFailNotification object:nil];
-                imageLoader = [MediaManager downloadMediaFromURL:thumbnailURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFinishNotification object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFailNotification object:nil];
+                imageLoader = [MXKMediaManager downloadMediaFromURL:thumbnailURL andSaveAtFilePath:cacheFilePath];
             }
         }
     } else {
@@ -207,10 +207,11 @@
     // sanity check
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
+        NSString* cacheFilePath = notif.userInfo[kMXKMediaLoaderFilePathKey];
         
-        if ([url isEqualToString:thumbnailURL]) {
+        if ([url isEqualToString:thumbnailURL] && cacheFilePath.length) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:thumbnailURL inFolder:kMediaManagerThumbnailFolder];
+            UIImage* image = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
             if (image == nil) {
                 image = [UIImage imageNamed:@"default-profile"];
             }

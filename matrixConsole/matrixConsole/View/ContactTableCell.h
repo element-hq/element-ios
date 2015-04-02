@@ -13,14 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixKit/MXKImageView.h>
 
 #import <UIKit/UIKit.h>
-#import "MXCImageView.h"
+
 #import "MXCContact.h"
 
 @interface ContactTableCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet MXCImageView *thumbnailView;
+@property (strong, nonatomic) IBOutlet MXKImageView *thumbnailView;
 @property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *matrixDisplayNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *matrixIDLabel;

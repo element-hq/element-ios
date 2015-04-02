@@ -19,7 +19,6 @@
 #import "AppSettings.h"
 #import "RoomViewController.h"
 #import "MatrixSDKHandler.h"
-#import "MediaManager.h"
 #import "SettingsViewController.h"
 #import "ContactManager.h"
 #import "RageShakableUIResponder.h"
@@ -175,7 +174,7 @@
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     
     // check if some media msut be released to reduce the cache size
-    [MediaManager reduceCacheSizeToInsert:0];
+    [MXKMediaManager reduceCacheSizeToInsert:0];
     // Suspend Matrix handler
     [[MatrixSDKHandler sharedHandler] pauseInBackgroundTask];
     
@@ -280,7 +279,7 @@
     [[APNSHandler sharedHandler] reset];
     isAPNSRegistered = NO;
     // Clear cache
-    [MediaManager clearCache];
+    [MXKMediaManager clearCache];
     // Logout Matrix
     [[MatrixSDKHandler sharedHandler] logout];
     [self.masterTabBarController showAuthenticationScreen];

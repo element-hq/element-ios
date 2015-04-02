@@ -26,8 +26,6 @@
 #import "AppDelegate.h"
 #import "AppSettings.h"
 
-#import "MediaManager.h"
-
 // TODO GFO
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
 

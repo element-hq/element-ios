@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixKit/MXKMediaManager.h>
 
 #import "MXCContactField.h"
 
@@ -21,9 +22,6 @@
 
 // image URL
 #import "MatrixSDKHandler.h"
-
-// get the thumbnail
-#import "MediaManager.h"
 
 
 @interface MXCContactField() {
@@ -121,8 +119,9 @@
     }
     
     if (avatarURL.length > 0) {
+        NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:avatarURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
-        _avatarImage = [MediaManager loadCachePictureForURL:avatarURL inFolder:kMediaManagerThumbnailFolder];
+        _avatarImage = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
         
         // the image is already in the cache
         if (_avatarImage) {
@@ -130,13 +129,14 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXCContactThumbnailUpdateNotification object:_contactID userInfo:nil];
             });
         } else  {
-            MediaLoader* loader = [MediaManager existingDownloaderForURL:avatarURL inFolder:kMediaManagerThumbnailFolder];
+            
+            MXKMediaLoader* loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
             
             if (!loader) {
-                [MediaManager downloadMediaFromURL:avatarURL withType:@"image/jpeg" inFolder:kMediaManagerThumbnailFolder];
+                [MXKMediaManager downloadMediaFromURL:avatarURL andSaveAtFilePath:cacheFilePath];
             }
             
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMediaDownloadDidFinishNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaDownloadEnd:) name:kMXKMediaDownloadDidFinishNotification object:nil];
         }
     }
 }
@@ -145,10 +145,11 @@
     // sanity check
     if ([notif.object isKindOfClass:[NSString class]]) {
         NSString* url = notif.object;
+        NSString* cacheFilePath = notif.userInfo[kMXKMediaLoaderFilePathKey];
         
-        if ([url isEqualToString:avatarURL]) {
+        if ([url isEqualToString:avatarURL] && cacheFilePath.length) {
             // update the image
-            UIImage* image = [MediaManager loadCachePictureForURL:avatarURL inFolder:kMediaManagerThumbnailFolder];
+            UIImage* image = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
             if (image) {
                 _avatarImage = image;
                 

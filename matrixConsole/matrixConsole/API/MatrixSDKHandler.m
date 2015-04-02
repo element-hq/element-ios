@@ -21,8 +21,6 @@
 #import "MXFileStore.h"
 #import "MXTools.h"
 
-#import "MediaManager.h"
-
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -380,7 +378,7 @@ static MatrixSDKHandler *sharedHandler = nil;
         
         if (clearCache) {
             // clear the media cache
-            [MediaManager clearCache];
+            [MXKMediaManager clearCache];
             
             [_mxFileStore deleteAllData];
         }
@@ -623,24 +621,24 @@ static MatrixSDKHandler *sharedHandler = nil;
 }
 
 - (NSUInteger) cachesSize {
-    return self.MXCacheSize + [MediaManager cacheSize];
+    return self.MXCacheSize + [MXKMediaManager cacheSize];
 }
 
 - (NSUInteger) minCachesSize {
     // add a 50MB margin to avoid cache file deletion
-    return self.MXCacheSize + [MediaManager minCacheSize] + 50 * 1024 * 1024;
+    return self.MXCacheSize + [MXKMediaManager minCacheSize] + 50 * 1024 * 1024;
 }
 
 - (NSUInteger) currentMaxCachesSize {
-    return self.MXCacheSize + [MediaManager currentMaxCacheSize];
+    return self.MXCacheSize + [MXKMediaManager currentMaxCacheSize];
 }
 
 - (void)setCurrentMaxCachesSize:(NSUInteger)maxCachesSize {
-    [MediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
+    [MXKMediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
 }
 
 - (NSUInteger) maxAllowedCachesSize {
-    return self.MXCacheSize + [MediaManager maxAllowedCacheSize];
+    return self.MXCacheSize + [MXKMediaManager maxAllowedCacheSize];
 }
 
 #pragma mark - Matrix user's settings
