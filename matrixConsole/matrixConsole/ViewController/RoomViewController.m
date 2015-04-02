@@ -26,6 +26,8 @@
 #import "AppDelegate.h"
 #import "AppSettings.h"
 
+#import "RageShakeManager.h"
+
 // TODO GFO
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
 
@@ -60,6 +62,9 @@
     
     // Replace the default input toolbar view with the one based on `HPGrowingTextView`.
     [self setRoomInputToolbarViewClass:MXKRoomInputToolbarViewWithHPGrowingText.class];
+    
+    // Set rageShake handler
+    self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Do any additional setup after loading the view, typically from a nib.
     forceScrollToBottomOnViewDidAppear = YES;

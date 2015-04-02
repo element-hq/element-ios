@@ -71,6 +71,7 @@
 		F0D942F61A31F3A300826CC1 /* RecentRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D942F51A31F3A300826CC1 /* RecentRoom.m */; };
 		F0E84D401A1F9AEC005F2E42 /* RecentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */; };
 		F0F148A81AB1BF01005F5D4A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F148A71AB1BF01005F5D4A /* AudioToolbox.framework */; };
+		F0F535BB1ACD6C4F00B603F8 /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F535BA1ACD6C4F00B603F8 /* RageShakeManager.m */; };
 		F0F90C691A32596700455977 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F90C681A32596700455977 /* icon_search.png */; };
 		F0F90C6B1A325ABF00455977 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F90C6A1A325ABF00455977 /* icon_search@2x.png */; };
 /* End PBXBuildFile section */
@@ -193,6 +194,8 @@
 		F0E84D3E1A1F9AEC005F2E42 /* RecentsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsTableViewCell.h; sourceTree = "<group>"; };
 		F0E84D3F1A1F9AEC005F2E42 /* RecentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsTableViewCell.m; sourceTree = "<group>"; };
 		F0F148A71AB1BF01005F5D4A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F0F535B91ACD6C4F00B603F8 /* RageShakeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakeManager.h; sourceTree = "<group>"; };
+		F0F535BA1ACD6C4F00B603F8 /* RageShakeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RageShakeManager.m; sourceTree = "<group>"; };
 		F0F90C681A32596700455977 /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
 		F0F90C6A1A325ABF00455977 /* icon_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -281,6 +284,8 @@
 				F05237791A7289F00079F3E0 /* APNSHandler.m */,
 				71193D391A6E50EC00E59A9E /* ContactManager.h */,
 				71193D3A1A6E50EC00E59A9E /* ContactManager.m */,
+				F0F535B91ACD6C4F00B603F8 /* RageShakeManager.h */,
+				F0F535BA1ACD6C4F00B603F8 /* RageShakeManager.m */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -611,6 +616,7 @@
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
 				710CA4C21A7FBFED00EEFB96 /* RageShakableUIResponder.m in Sources */,
+				F0F535BB1ACD6C4F00B603F8 /* RageShakeManager.m in Sources */,
 				710CA4C51A7FC27100EEFB96 /* MXCTableViewController.m in Sources */,
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
