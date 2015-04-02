@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MXKTools.h>
+
 #import "SettingsViewController.h"
 
 #import "AppDelegate.h"
@@ -22,7 +24,6 @@
 #import "MatrixSDKHandler.h"
 #import "MediaManager.h"
 #import "MXC3PID.h"
-#import "MXCTools.h"
 
 #import "ContactManager.h"
 
@@ -430,7 +431,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     if (isAvatarUpdated) {
         if (uploadedPictureURL == nil) {
             // Retrieve the current picture and make sure its orientation is up
-            UIImage *updatedPicture = [MXCTools forceImageOrientationUp:[self.userPictureButton imageForState:UIControlStateNormal]];
+            UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[self.userPictureButton imageForState:UIControlStateNormal]];
             
             // Upload picture
             MediaLoader *uploader = [[MediaLoader alloc] initWithUploadId:nil initialRange:0 andRange:1.0 folder:kMediaManagerThumbnailFolder];

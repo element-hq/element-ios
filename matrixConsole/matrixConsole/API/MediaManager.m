@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MXKTools.h>
+
 #import "MediaManager.h"
 
 #import "AppSettings.h"
-#import "MXCTools.h"
-
 #import "AppDelegate.h"
 
 NSString *const kMediaManagerPrefixForDummyURL = @"dummyUrl-";
@@ -249,7 +249,7 @@ static NSMutableDictionary* uploadTableById = nil;
             maxSize = [MediaManager maxAllowedCacheSize] - bytes - 50 * 1024 * 1024;
         }
         
-        NSArray* filesList = [MXCTools listFiles:mediaCachePath timeSorted:YES largeFilesFirst:YES];
+        NSArray* filesList = [MXKTools listFiles:mediaCachePath timeSorted:YES largeFilesFirst:YES];
         
         // list the files sorted by timestamp
         for(NSString* filepath in filesList) {
@@ -304,7 +304,7 @@ static NSMutableDictionary* uploadTableById = nil;
 }
 
 + (NSString*)cachePathForMediaURL:(NSString*)mediaURL andType:(NSString *)mimeType inFolder:(NSString*)folder {
-    NSString* fileExt = [MXCTools fileExtensionFromContentType:mimeType];
+    NSString* fileExt = [MXKTools fileExtensionFromContentType:mimeType];
     NSString* fileBase = @"";
     
     // use the mime type to extract a base filename
@@ -325,7 +325,7 @@ static NSMutableDictionary* uploadTableById = nil;
     
     // assume that 0 means uninitialized
     if (storageCacheSize == 0) {
-        storageCacheSize = (NSUInteger)[MXCTools folderSize:mediaCachePath];
+        storageCacheSize = (NSUInteger)[MXKTools folderSize:mediaCachePath];
     }
         
     return storageCacheSize;
@@ -333,7 +333,7 @@ static NSMutableDictionary* uploadTableById = nil;
 
 + (NSUInteger)minCacheSize {
     NSUInteger minSize = [MediaManager cacheSize];
-    NSArray* filenamesList = [MXCTools listFiles:mediaCachePath timeSorted:NO largeFilesFirst:YES];
+    NSArray* filenamesList = [MXKTools listFiles:mediaCachePath timeSorted:NO largeFilesFirst:YES];
  
     NSFileManager* defaultManager = [NSFileManager defaultManager];
     

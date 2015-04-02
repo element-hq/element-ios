@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixKit/MXKTools.h>
 
 #import "MediaManager.h"
-#import "MXCTools.h"
 
 NSString *const kMediaDownloadProgressNotification = @"kMediaDownloadProgressNotification";
 NSString *const kMediaUploadProgressNotification = @"kMediaUploadProgressNotification";
@@ -139,7 +139,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
         NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:downloadData.length countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:expectedSize countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:progressString forKey:kMediaLoaderProgressStringKey];
                 
-        [dict setValue:[MXCTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+        [dict setValue:[MXKTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
         
         NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:meanRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
         [dict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];
@@ -241,7 +241,7 @@ NSString *const kMediaLoaderProgressDownloadRateKey = @"kMediaLoaderProgressDown
     NSString* progressString = [NSString stringWithFormat:@"%@ / %@", [NSByteCountFormatter stringFromByteCount:totalBytesWritten countStyle:NSByteCountFormatterCountStyleFile], [NSByteCountFormatter stringFromByteCount:totalBytesExpectedToWrite countStyle:NSByteCountFormatterCountStyleFile]];
     
     [statisticsDict setValue:progressString forKey:kMediaLoaderProgressStringKey];
-    [statisticsDict setValue:[MXCTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
+    [statisticsDict setValue:[MXKTools formatSecondsInterval:dataRemainingTime] forKey:kMediaLoaderProgressRemaingTimeKey];
     
     NSString* downloadRateStr = [NSString stringWithFormat:@"%@/s", [NSByteCountFormatter stringFromByteCount:dataRate * 1024 countStyle:NSByteCountFormatterCountStyleFile]];
     [statisticsDict setValue:downloadRateStr forKey:kMediaLoaderProgressDownloadRateKey];

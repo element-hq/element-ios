@@ -27,7 +27,6 @@
 #import "AppSettings.h"
 
 #import "MediaManager.h"
-#import "MXCTools.h"
 
 // TODO GFO
 #define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000

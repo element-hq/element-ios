@@ -14,11 +14,12 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MXKTools.h>
+
 #import "RoomMessage.h"
 
 #import "MatrixSDKHandler.h"
 #import "AppSettings.h"
-#import "MXCTools.h"
 
 NSString *const kRoomMessageLocalPreviewKey = @"kRoomMessageLocalPreviewKey";
 NSString *const kRoomMessageUploadIdKey     = @"kRoomMessageUploadIdKey";
@@ -77,7 +78,7 @@ static NSAttributedString *messageSeparator = nil;
                     if (_attachmentInfo[@"rotation"]) {
                         // Currently the matrix content server provides thumbnails by ignoring the original image orientation.
                         // We store here the actual orientation to apply it on downloaded thumbnail.
-                        _thumbnailOrientation = [MXCTools imageOrientationForRotationAngleInDegree:[_attachmentInfo[@"rotation"] integerValue]];
+                        _thumbnailOrientation = [MXKTools imageOrientationForRotationAngleInDegree:[_attachmentInfo[@"rotation"] integerValue]];
                         
                         // Rotate the current content size (if need)
                         if (_thumbnailOrientation == UIImageOrientationLeft || _thumbnailOrientation == UIImageOrientationRight) {
