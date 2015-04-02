@@ -18,6 +18,8 @@
 
 #import <MessageUI/MessageUI.h>
 
+// TODO GFO: Remove this class
+
 @interface RageShakableUIResponder : UIResponder<MFMailComposeViewControllerDelegate>
 
 + (void)startShaking:(UIResponder*)controller;
