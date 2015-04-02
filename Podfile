@@ -5,8 +5,9 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target "matrixConsole" do
 
-# Points to SDK local sources file
-pod 'MatrixSDK', :path => '../../MatrixSDK.podspec'
+# For dev, points to SDK local sources files
+pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+
 pod 'HPGrowingTextView', '~> 1.1'
 pod 'libPhoneNumber-iOS', '~> 0.7.6'
 pod 'GBDeviceInfo', '~> 2.2.9'

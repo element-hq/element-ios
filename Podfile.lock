@@ -34,18 +34,18 @@ DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
   - HPGrowingTextView (~> 1.1)
   - libPhoneNumber-iOS (~> 0.7.6)
-  - MatrixSDK (from `../../MatrixSDK.podspec`)
+  - MatrixSDK (from `../matrix-ios-sdk/MatrixSDK.podspec`)
 
 EXTERNAL SOURCES:
   MatrixSDK:
-    :path: ../../MatrixSDK.podspec
+    :path: ../matrix-ios-sdk/MatrixSDK.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
-  GBDeviceInfo: 3c6ce2465a3b88b2d5bcfebbaabd18073b3d05eb
-  HPGrowingTextView: 07d5ab1f1e867acfb7a6f498b819948c9e97d07c
-  libPhoneNumber-iOS: d4316d494d4997c40a6059faf35a970d7f4eb1c0
-  Mantle: d5fbaf30fbc58031223af13812c060e15934a1fe
-  MatrixSDK: 41c7816b9292594a3fc4b486c2274a212742569f
+  GBDeviceInfo: 5866e2f529547f8a4c3c6917dc40ac53acd75234
+  HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
+  libPhoneNumber-iOS: fb90c5e0d100923b61f0db81de56daefbb67b103
+  Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
+  MatrixSDK: e9c1a64b8357231c2e036bfe5bb009b0141e21b5
 
 COCOAPODS: 0.36.1
