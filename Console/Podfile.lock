@@ -34,11 +34,7 @@ DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
   - HPGrowingTextView (~> 1.1)
   - libPhoneNumber-iOS (~> 0.7.6)
-  - MatrixSDK (from `../matrix-ios-sdk/MatrixSDK.podspec`)
-
-EXTERNAL SOURCES:
-  MatrixSDK:
-    :path: ../matrix-ios-sdk/MatrixSDK.podspec
+  - MatrixSDK (~> 0.3.2)
 
 SPEC CHECKSUMS:
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
