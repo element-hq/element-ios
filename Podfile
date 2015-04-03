@@ -7,6 +7,9 @@ target "matrixConsole" do
 
 
 # Different flavours of pods to Matrix SDK
+# The tagged version on which this version of Console has been built
+#pod 'MatrixSDK', '~> 0.3.2'
+
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixSDK'
 
