@@ -35,14 +35,14 @@ PODS:
 DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
   - libPhoneNumber-iOS (~> 0.7.6)
-  - MatrixKit (from `../../../matrix-ios-kit/MatrixKit.podspec`)
-  - MatrixSDK (from `../../MatrixSDK.podspec`)
+  - MatrixKit (from `../../matrix-ios-kit/MatrixKit.podspec`)
+  - MatrixSDK (from `../../matrix-ios-sdk/MatrixSDK.podspec`)
 
 EXTERNAL SOURCES:
   MatrixKit:
-    :path: ../../../matrix-ios-kit/MatrixKit.podspec
+    :path: ../../matrix-ios-kit/MatrixKit.podspec
   MatrixSDK:
-    :path: ../../MatrixSDK.podspec
+    :path: ../../matrix-ios-sdk/MatrixSDK.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
