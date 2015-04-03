@@ -5,8 +5,18 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target "matrixConsole" do
 
-# For dev, points to SDK local sources files
-pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+
+# Different flavours of pods to Matrix SDK
+# The lastest release available on the CocoaPods repository 
+#pod 'MatrixSDK'
+
+# The develop branch version
+pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+
+# The one used for developping both MatrixSDK and MatrixKit
+# Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
+#pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+
 
 pod 'HPGrowingTextView', '~> 1.1'
 pod 'libPhoneNumber-iOS', '~> 0.7.6'
