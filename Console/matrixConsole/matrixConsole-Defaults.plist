@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>identityserverurl</key>
+	<string>https://matrix.org</string>
+	<key>homeserverurl</key>
+	<string>https://matrix.org</string>
+	<key>homeserver</key>
+	<string>matrix.org</string>
+	<key>apnsIsActive</key>
+	<false/>
+	<key>apnsDeviceToken</key>
+	<string></string>
+	<key>enableInAppNotifications</key>
+	<false/>
+	<key>displayAllEvents</key>
+	<false/>
+	<key>hideRedactions</key>
+	<true/>
+	<key>hideUnsupportedEvents</key>
+	<true/>
+	<key>sortMembersUsingLastSeenTime</key>
+	<true/>
+	<key>displayLeftUsers</key>
+	<false/>
+	<key>syncLocalContacts</key>
+	<false/>
+</dict>
+</plist>

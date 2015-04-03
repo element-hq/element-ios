@@ -1,0 +1,47 @@
+PODS:
+  - AFNetworking (2.5.2):
+    - AFNetworking/NSURLConnection (= 2.5.2)
+    - AFNetworking/NSURLSession (= 2.5.2)
+    - AFNetworking/Reachability (= 2.5.2)
+    - AFNetworking/Security (= 2.5.2)
+    - AFNetworking/Serialization (= 2.5.2)
+    - AFNetworking/UIKit (= 2.5.2)
+  - AFNetworking/NSURLConnection (2.5.2):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.2):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.2)
+  - AFNetworking/Security (2.5.2)
+  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/UIKit (2.5.2):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - GBDeviceInfo (2.2.10)
+  - HPGrowingTextView (1.1)
+  - libPhoneNumber-iOS (0.7.6)
+  - Mantle (1.5.4):
+    - Mantle/extobjc (= 1.5.4)
+  - Mantle/extobjc (1.5.4)
+  - MatrixSDK (0.3.2):
+    - AFNetworking (~> 2.5.2)
+    - Mantle (~> 1.5)
+
+DEPENDENCIES:
+  - GBDeviceInfo (~> 2.2.9)
+  - HPGrowingTextView (~> 1.1)
+  - libPhoneNumber-iOS (~> 0.7.6)
+  - MatrixSDK (~> 0.3.2)
+
+SPEC CHECKSUMS:
+  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  GBDeviceInfo: 5866e2f529547f8a4c3c6917dc40ac53acd75234
+  HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
+  libPhoneNumber-iOS: fb90c5e0d100923b61f0db81de56daefbb67b103
+  Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
+  MatrixSDK: e9c1a64b8357231c2e036bfe5bb009b0141e21b5
+
+COCOAPODS: 0.36.1

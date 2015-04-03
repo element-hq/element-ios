@@ -1,0 +1,32 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, "6.0"
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+target "matrixConsole" do
+
+
+# Different flavours of pods to Matrix SDK
+# The tagged version on which this version of Console has been built
+pod 'MatrixSDK', '~> 0.3.2'
+
+# The lastest release available on the CocoaPods repository 
+#pod 'MatrixSDK'
+
+# The develop branch version
+#pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+
+# The one used for developping both MatrixSDK and MatrixKit
+# Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
+#pod 'MatrixSDK', :path => '../../matrix-ios-sdk/MatrixSDK.podspec'
+
+
+pod 'HPGrowingTextView', '~> 1.1'
+pod 'libPhoneNumber-iOS', '~> 0.7.6'
+pod 'GBDeviceInfo', '~> 2.2.9'
+end
+
+target "matrixConsole" do
+
+end
+
