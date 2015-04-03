@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="7bK-jq-Zjz" kind="relationship" relationship="rootViewController" id="tsl-Nk-0bq"/>
+                        <segue destination="q3d-uQ-djS" kind="relationship" relationship="rootViewController" id="bg4-7B-0ft"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8fS-aE-onr" sceneMemberID="firstResponder"/>
@@ -36,10 +36,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OWi-J8-sFZ" userLabel="MembersView">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="pLY-I9-ghF" userLabel="MembersTableView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <view key="tableFooterView" contentMode="scaleToFill" id="fdb-ra-p9Z" userLabel="fakeTableFooterView">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1549,78 +1549,26 @@
             <point key="canvasLocation" x="60" y="-266"/>
         </scene>
         <!--Recents-->
-        <scene sceneID="smW-Zh-WAh">
+        <scene sceneID="PCl-Pf-mIl">
             <objects>
-                <tableViewController title="Recents" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="RecentsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
+                <viewController id="q3d-uQ-djS" customClass="RecentsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2f0-dG-TSc"/>
+                        <viewControllerLayoutGuide type="bottom" id="sQB-zl-eM7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Qys-kQ-1ab">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RecentsCell" id="WCw-Qf-5nD" customClass="RecentsTableViewCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCw-Qf-5nD" id="37f-cq-3Eg">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YTM-8H-EpC">
-                                            <rect key="frame" x="8" y="8" width="504" height="23"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastEventDescription" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5g8-vg-2EB">
-                                            <rect key="frame" x="8" y="42" width="584" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oct 12 18:15" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKl-0r-wFc">
-                                            <rect key="frame" x="520" y="8" width="72" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="YTM-8H-EpC" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="0FC-Ly-dRv"/>
-                                        <constraint firstAttribute="trailing" secondItem="YTM-8H-EpC" secondAttribute="trailing" constant="88" id="56p-nx-gML"/>
-                                        <constraint firstAttribute="trailing" secondItem="5g8-vg-2EB" secondAttribute="trailing" constant="8" id="Avl-RN-f0J"/>
-                                        <constraint firstItem="5g8-vg-2EB" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="YEf-Sg-fK1"/>
-                                        <constraint firstItem="eKl-0r-wFc" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="m8Q-2Z-v8h"/>
-                                        <constraint firstAttribute="bottom" secondItem="5g8-vg-2EB" secondAttribute="bottom" constant="9" id="oqT-mf-B3Y"/>
-                                        <constraint firstItem="YTM-8H-EpC" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="s5s-Hs-1tF"/>
-                                        <constraint firstAttribute="trailing" secondItem="eKl-0r-wFc" secondAttribute="trailing" constant="8" id="zkS-cE-swl"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="lastEventDescription" destination="5g8-vg-2EB" id="Usm-IJ-hlX"/>
-                                    <outlet property="recentDate" destination="eKl-0r-wFc" id="W7l-rp-OVX"/>
-                                    <outlet property="roomTitle" destination="YTM-8H-EpC" id="eZ8-OJ-Lpy"/>
-                                    <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetail" id="6S0-TO-JiA"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="7bK-jq-Zjz" id="Gho-Na-rnu"/>
-                            <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Recents" id="Zdf-7t-Un8"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Recents" id="L1h-TL-97X"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="4dn-O0-IJ0" id="1dd-MZ-4V4"/>
+                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="Waw-2O-9El"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" id="4dn-O0-IJ0">
-                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mmH-l4-2US" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1665" y="-687"/>
+            <point key="canvasLocation" x="1649" y="-678"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
@@ -1806,6 +1754,6 @@
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0ws-cL-0tk"/>
+        <segue reference="Waw-2O-9El"/>
     </inferredMetricsTieBreakers>
 </document>

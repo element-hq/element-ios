@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,37 +17,27 @@
 #import "RecentsViewController.h"
 #import "RoomViewController.h"
 
-#import "RecentRoom.h"
-#import "RecentsTableViewCell.h"
-
 #import "AppDelegate.h"
 #import "MatrixSDKHandler.h"
 
+#import "RecentListDataSource.h"
+#import "RageShakeManager.h"
+
 @interface RecentsViewController () {
-    // Array of RecentRooms
-    NSMutableArray  *recents;
-    id               recentsListener;
-    NSUInteger       unreadCount;
-    
+
     // Search
     UISearchBar     *recentsSearchBar;
-    NSMutableArray  *filteredRecents;
     BOOL             searchBarShouldEndEditing;
     
-    // Date formatter
-    NSDateFormatter *dateFormatter;
+    //
+    BOOL shouldScrollToTopOnRefresh;
     
     // Keep reference on the current room view controller to release it correctly
     RoomViewController *currentRoomViewController;
     
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSInteger currentSelectedCellIndexPathRow;
-    
-    // The activity indicator is displayed on main screen in order to ignore potential table scrolling
-    // In some case this activity indicator shoud be hidden (For example when the recents view controller is not visible).
-    BOOL shouldHideActivityIndicator;
 }
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -69,28 +59,18 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
     self.navigationItem.rightBarButtonItems = @[searchButton, addButton];
     
-    // Add background to activity indicator
-    CGRect frame = _activityIndicator.frame;
-    frame.size.width += 30;
-    frame.size.height += 30;
-    _activityIndicator.bounds = frame;
-    _activityIndicator.backgroundColor = [UIColor darkGrayColor];
-    [_activityIndicator.layer setCornerRadius:5];
-    
     // Initialisation
-    recents = nil;
-    filteredRecents = nil;
-    unreadCount = 0;
     currentSelectedCellIndexPathRow = -1;
     
-    NSString *dateFormat = @"MMM dd HH:mm";
-    dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]]];
-    [dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    [dateFormatter setDateFormat:dateFormat];
+    // Setup `MXKRecentListViewController` properties
+    self.rageShakeManager = [RageShakeManager sharedManager];
     
-    [[MatrixSDKHandler sharedHandler] addObserver:self forKeyPath:@"status" options:0 context:nil];
+    // The view controller handles itself the selected recent
+    self.delegate = self;
+    
+    // List all the recents for the logged user
+    MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
+    [self displayList:listDataSource];
 }
 
 - (void)dealloc {
@@ -98,19 +78,14 @@
         [currentRoomViewController destroy];
         currentRoomViewController = nil;
     }
-    if (recentsListener) {
-        [[MatrixSDKHandler sharedHandler].mxSession removeListener:recentsListener];
-        recentsListener = nil;
-    }
-    recents = nil;
-    _preSelectedRoomId = nil;
+    _selectedRoomId = nil;
     recentsSearchBar = nil;
-    filteredRecents = nil;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
     
-    if (dateFormatter) {
-        dateFormatter = nil;
-    }
-    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
+    self.tableView.editing = editing;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,17 +96,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
+    [self updateTitleView];
     
-    // Refresh display
-    shouldHideActivityIndicator = NO;
-    if (mxHandler.isActivityInProgress) {
-        [self startActivityIndicator];
-    }
-    [self configureView];
-    
-    if (self.splitViewController) {
+//    if (self.splitViewController)
+    {
         // Deselect the current selected row, it will be restored on viewDidAppear (if any)
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         if (indexPath) {
@@ -143,19 +111,14 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
-    
     // Leave potential editing mode
     [self setEditing:NO];
     // Leave potential search session
     if (recentsSearchBar) {
         [self searchBarCancelButtonClicked:recentsSearchBar];
     }
-    // Hide activity indicator
-    [self stopActivityIndicator];
-    shouldHideActivityIndicator = YES;
     
-    _preSelectedRoomId = nil;
+    _selectedRoomId = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -178,39 +141,40 @@
 
 #pragma mark -
 
-- (void)setPreSelectedRoomId:(NSString *)roomId {
-    _preSelectedRoomId = nil;
-
+- (void)setSelectedRoomId:(NSString *)roomId {
+    if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]) {
+        // Nothing to do
+        return;
+    }
+    
+    _selectedRoomId = roomId;
     if (roomId) {
-        // Check whether recents update is in progress
-        if ([_activityIndicator isAnimating]) {
-            // Postpone room details display
-            _preSelectedRoomId = roomId;
-            return;
-        }
+        // Open details view
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        if (indexPath) {
+//            id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:indexPath.row];
+//            if (![recentCellData.room.state.roomId isEqualToString:roomId]) {
+//                [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//                indexPath = nil;
+//            }
+//        }
+//        
+//        if (!indexPath) {
+//            NSInteger cellCount = [self.dataSource tableView:self.tableView numberOfRowsInSection:0];
+//            for (NSInteger index = 0; index < cellCount; index ++) {
+//                id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:index];
+//                if ([_selectedRoomId isEqualToString:recentCellData.room.state.roomId]) {
+//                    indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+//                    break;
+//                }
+//            }
+//            
+//            if (indexPath) {
+//                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+//            }
+//        }
         
-        // Look for the room index in recents list
-        NSIndexPath *indexPath = nil;
-        for (NSUInteger index = 0; index < recents.count; index++) {
-            RecentRoom *recentRoom = [recents objectAtIndex:index];
-            if ([roomId isEqualToString:recentRoom.roomId]) {
-                indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                break;
-            }
-        }
-        
-        if (indexPath) {
-            // Open details view
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-            UITableViewCell *recentCell = [self.tableView cellForRowAtIndexPath:indexPath];
-            [self performSegueWithIdentifier:@"showDetail" sender:recentCell];
-        } else {
-            NSLog(@"[RecentsVC] We are not able to open room (%@) because it does not appear in recents yet", roomId);
-            // Postpone room details display. We run activity indicator until recents are updated (thanks to recents listener)
-            _preSelectedRoomId = roomId;
-            // Start activity indicator
-            [self startActivityIndicator];
-        }
+        [self performSegueWithIdentifier:@"showDetails" sender:self];
     } else if (currentRoomViewController) {
         // Release the current selected room
         [currentRoomViewController destroy];
@@ -236,6 +200,11 @@
     
     [self.tableView reloadData];
     
+    if (shouldScrollToTopOnRefresh) {
+        [self scrollToTop];
+        shouldScrollToTopOnRefresh = NO;
+    }
+    
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
     // the selected room (if any) is updated and kept visible.
     if (self.splitViewController && !self.splitViewController.isCollapsed) {
@@ -243,190 +212,28 @@
     }
 }
 
-- (void)configureView {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kRecentRoomUpdatedByBackPagination object:nil];
-    
-    if (mxHandler.mxSession) {
-        // Check matrix handler status
-        if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusInitialServerSyncInProgress) {
-            // Server sync is not complete yet
-            if (!recents) {
-                // Retrieve recents from local storage (some data may not be up-to-date)
-                NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
-                recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
-                for (MXEvent *mxEvent in recentEvents) {
-                    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
-                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andRoomState:mxRoom.state markAsUnread:NO];
-                    if (recentRoom) {
-                        [recents addObject:recentRoom];
-                    }
-                }
-                unreadCount = 0;
-            }
-        } else if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) {
-            // Force recents refresh and add listener to update them (if it is not already done)
-            if (!recentsListener) {
-                NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
-                recents = [NSMutableArray arrayWithCapacity:recentEvents.count];
-                for (MXEvent *mxEvent in recentEvents) {
-                    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
-                    RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:mxEvent andRoomState:mxRoom.state markAsUnread:NO];
-                    if (recentRoom) {
-                        [recents addObject:recentRoom];
-                    }
-                }
-                unreadCount = 0;
-                
-                // Check whether redaction event belongs to the listened events list
-                NSArray *listenedEventTypes = mxHandler.eventsFilterForMessages;
-                BOOL hideRedactionEvent = ([listenedEventTypes indexOfObject:kMXEventTypeStringRoomRedaction] == NSNotFound);
-                if (hideRedactionEvent) {
-                    // Add redaction event to the listened events list in order to take into account redaction of the last event in recents.
-                    // (See [RecentRoom updateWithLastEvent:...] for more details)
-                    listenedEventTypes = [listenedEventTypes arrayByAddingObject:kMXEventTypeStringRoomRedaction];
-                }
-                // Register recent listener
-                recentsListener = [mxHandler.mxSession listenToEventsOfTypes:listenedEventTypes onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
-                    // Consider first live event
-                    if (direction == MXEventDirectionForwards) {
-                        // Check user's membership in live room state (We will remove left rooms from recents)
-                        MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:event.roomId];
-                        BOOL isLeft = (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan);
-                        
-                        // Consider this new event as unread only if the sender is not the user and if the room is not visible
-                        BOOL isUnread = (![event.userId isEqualToString:mxHandler.userId]
-                                         && ![[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:event.roomId]);
-                        
-                        // Look for the room
-                        BOOL isFound = NO;
-                        for (NSUInteger index = 0; index < recents.count; index++) {
-                            RecentRoom *recentRoom = [recents objectAtIndex:index];
-                            if ([event.roomId isEqualToString:recentRoom.roomId]) {
-                                isFound = YES;
-                                // Decrement here unreads count for this recent (we will add later the refreshed count)
-                                unreadCount -= recentRoom.unreadCount;
-                                
-                                if (isLeft) {
-                                    // Remove left room
-                                    [recents removeObjectAtIndex:index];
-                                    if (filteredRecents) {
-                                        NSUInteger filteredIndex = [filteredRecents indexOfObject:recentRoom];
-                                        if (filteredIndex != NSNotFound) {
-                                            [filteredRecents removeObjectAtIndex:filteredIndex];
-                                        }
-                                    }
-                                } else {
-                                    if ([recentRoom updateWithLastEvent:event andRoomState:roomState markAsUnread:isUnread]) {
-                                        if (index) {
-                                            // Move this room at first position
-                                            [recents removeObjectAtIndex:index];
-                                            [recents insertObject:recentRoom atIndex:0];
-                                        }
-                                        // Update filtered recents (if any)
-                                        if (filteredRecents) {
-                                            NSUInteger filteredIndex = [filteredRecents indexOfObject:recentRoom];
-                                            if (filteredIndex && filteredIndex != NSNotFound) {
-                                                [filteredRecents removeObjectAtIndex:filteredIndex];
-                                                [filteredRecents insertObject:recentRoom atIndex:0];
-                                            }
-                                        }
-                                    }
-                                    // Refresh global unreads count
-                                    unreadCount += recentRoom.unreadCount;
-                                }
-                                
-                                // Refresh title
-                                [self updateTitleView];
-                                break;
-                            }
-                        }
-                        if (!isFound && !isLeft) {
-                            // Insert in first position this new room
-                            RecentRoom *recentRoom = [[RecentRoom alloc] initWithLastEvent:event andRoomState:roomState markAsUnread:isUnread];
-                            if (recentRoom) {
-                                [recents insertObject:recentRoom atIndex:0];
-                                if (isUnread) {
-                                    unreadCount++;
-                                    [self updateTitleView];
-                                }
-                                
-                                // Check whether we were waiting for this room
-                                if (_preSelectedRoomId) {
-                                    if ([recentRoom.roomId isEqualToString:_preSelectedRoomId]) {
-                                        [self stopActivityIndicator];
-                                        self.preSelectedRoomId = _preSelectedRoomId;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // Reload table
-                        [self refreshRecentsDisplay];
-                    }
-                }];
-            }
-            // else nothing to do
-        } else if (mxHandler.status != MatrixSDKHandlerStatusPaused) {
-            // Here status is MatrixSDKHandlerStatusLoggedOut or MatrixSDKHandlerStatusLogged - Reset recents
-            recents = nil;
-        }
-        
-        // Reload table
-        [self refreshRecentsDisplay];
-        
-        // Check whether a room is preselected
-        if (_preSelectedRoomId) {
-            self.preSelectedRoomId = _preSelectedRoomId;
-        }
-    } else {
-        if (mxHandler.status == MatrixSDKHandlerStatusLoggedOut) {
-            // Update title
-            unreadCount = 0;
-            [self updateTitleView];
-        }
-        
-        recents = nil;
-        [self refreshRecentsDisplay];
-    }
-    
-    if (recents) {
-        // Add observer to force refresh when a recent last description is updated thanks to back pagination
-        // (This happens when the current last event description is blank, a back pagination is triggered to display non empty description)
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRecentRoomUpdatedByBackPagination:) name:kRecentRoomUpdatedByBackPagination object:nil];
-    } else {
-        // Remove potential listener
-        if (recentsListener && mxHandler.mxSession) {
-            [mxHandler.mxSession removeListener:recentsListener];
-            recentsListener = nil;
-        }
-    }
-    
-    [self updateTitleView];
-}
-
-- (void)onRecentRoomUpdatedByBackPagination:(NSNotification *)notif{
-    [self refreshRecentsDisplay];
-    [self updateTitleView];
-    
-    if ([notif.object isKindOfClass:[NSString class]]) {
-        NSString* roomId = notif.object;
-        // Check whether this room is currently displayed in RoomViewController
-        if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:roomId]) {
-            // For sanity reason, we have to force a full refresh in order to restore back state of the room
-            dispatch_async(dispatch_get_main_queue(), ^{
-                MXKRoomDataSource *roomDataSrc = currentRoomViewController.dataSource;
-                [currentRoomViewController displayRoom:roomDataSrc];
-            });
-        }
-    }
-}
+//- (void)onRecentRoomUpdatedByBackPagination:(NSNotification *)notif{
+//    [self refreshRecentsDisplay];
+//    [self updateTitleView];
+//    
+//    if ([notif.object isKindOfClass:[NSString class]]) {
+//        NSString* roomId = notif.object;
+//        // Check whether this room is currently displayed in RoomViewController
+//        if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:roomId]) {
+//            // For sanity reason, we have to force a full refresh in order to restore back state of the room
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                MXKRoomDataSource *roomDataSrc = currentRoomViewController.dataSource;
+//                [currentRoomViewController displayRoom:roomDataSrc];
+//            });
+//        }
+//    }
+//}
 
 - (void)updateTitleView {
     NSString *title = @"Recents";
-    if (unreadCount) {
-         title = [NSString stringWithFormat:@"Recents (%tu)", unreadCount];
+    
+    if (self.dataSource.unreadCount) {
+         title = [NSString stringWithFormat:@"Recents (%tu)", self.dataSource.unreadCount];
     }
     self.navigationItem.title = title;
 }
@@ -438,7 +245,7 @@
 - (void)search:(id)sender {
     if (!recentsSearchBar) {
         // Check whether there are data in which search
-        if (recents.count) {
+        if ([self.dataSource tableView:self.tableView numberOfRowsInSection:0]) {
             // Create search bar
             recentsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
             recentsSearchBar.showsCancelButton = YES;
@@ -463,18 +270,6 @@
     }
 }
 
-- (void)startActivityIndicator {
-    // Add the spinner on main screen in order to ignore potential table scrolling
-    _activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.x);
-    [[AppDelegate theDelegate].window addSubview:_activityIndicator];
-    [_activityIndicator startAnimating];
-}
-
-- (void)stopActivityIndicator {
-    [_activityIndicator stopAnimating];
-    [_activityIndicator removeFromSuperview];
-}
-
 - (void)scrollToTop {
     // stop any scrolling effect
     [UIView setAnimationsEnabled:NO];
@@ -487,11 +282,16 @@
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     currentSelectedCellIndexPathRow = -1;
     if (currentRoomViewController) {
+        // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
+        if (!_selectedRoomId) {
+            _selectedRoomId = currentRoomViewController.dataSource.room.state.roomId;
+        }
+        
         // Look for the rank of this selected room in displayed recents
-        NSArray *displayedRecents = filteredRecents ? filteredRecents : recents;
-        for (NSInteger index = 0; index < displayedRecents.count; index ++) {
-            RecentRoom *recentRoom = [displayedRecents objectAtIndex:index];
-            if ([currentRoomViewController.dataSource.roomId isEqualToString:recentRoom.roomId]) {
+        NSInteger cellCount = [self.dataSource tableView:self.tableView numberOfRowsInSection:0];
+        for (NSInteger index = 0; index < cellCount; index ++) {
+            id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:index];
+            if ([_selectedRoomId isEqualToString:recentCellData.room.state.roomId]) {
                 currentSelectedCellIndexPathRow = index;
                 break;
             }
@@ -517,33 +317,12 @@
     }
 }
 
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"status" isEqualToString:keyPath]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self configureView];
-        });
-    } else if ([@"isActivityInProgress" isEqualToString:keyPath]) {
-        if (!shouldHideActivityIndicator && [MatrixSDKHandler sharedHandler].isActivityInProgress) {
-            [self startActivityIndicator];
-        } else {
-            [self stopActivityIndicator];
-        }
-    }
-}
-
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
+    if ([[segue identifier] isEqualToString:@"showDetails"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        RecentRoom *recentRoom;
-        if (filteredRecents) {
-            recentRoom = filteredRecents[indexPath.row];
-        } else {
-            recentRoom = recents[indexPath.row];
-        }
+        id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:indexPath.row];
         
         UIViewController *controller;
         if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]]) {
@@ -560,14 +339,13 @@
             }
             
             currentRoomViewController = (RoomViewController *)controller;
-            MXKRoomDataSource *roomDataSource = [[MXKRoomDataSource alloc] initWithRoomId:recentRoom.roomId
+            MXKRoomDataSource *roomDataSource = [[MXKRoomDataSource alloc] initWithRoomId:_selectedRoomId
                                                                          andMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
             [currentRoomViewController displayRoom:roomDataSource];
         }
         
         // Reset unread count for this room
-        unreadCount -= recentRoom.unreadCount;
-        [recentRoom resetUnreadCount];
+        [recentCellData resetUnreadCount];
         [self updateTitleView];
         
         if (self.splitViewController) {
@@ -596,113 +374,16 @@
     }
 }
 
-#pragma mark - Table View
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+#pragma mark - MXKDataSourceDelegate
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes {
+    [self refreshRecentsDisplay];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (filteredRecents) {
-        return filteredRecents.count;
-    }
-    return recents.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RecentsTableViewCell *cell = (RecentsTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"RecentsCell" forIndexPath:indexPath];
-
-    RecentRoom *recentRoom;
-    if (filteredRecents) {
-        recentRoom = filteredRecents[indexPath.row];
-    } else {
-        recentRoom = recents[indexPath.row];
-    }
+#pragma mark - MXKRecentListViewControllerDelegate
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)aRoomId {
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
-    
-    cell.roomTitle.text = [mxRoom.state displayname];
-    cell.lastEventDescription.text = recentRoom.lastEventDescription;
-    
-    // Set in bold public room name
-    if (mxRoom.state.isPublic) {
-        cell.roomTitle.font = [UIFont boldSystemFontOfSize:20];
-    } else {
-        cell.roomTitle.font = [UIFont systemFontOfSize:19];
-    }
-    
-    if (recentRoom.lastEventOriginServerTs != kMXUndefinedTimestamp) {
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:recentRoom.lastEventOriginServerTs/1000];
-        cell.recentDate.text = [dateFormatter stringFromDate:date];
-    } else {
-        cell.recentDate.text = nil;
-    }
-    
-    // Set background color
-    if (recentRoom.unreadCount) {
-        if (recentRoom.containsBingUnread) {
-            cell.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:1 alpha:1.0];
-        } else {
-            cell.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1.0];
-        }
-        cell.roomTitle.text = [NSString stringWithFormat:@"%@ (%tu)", cell.roomTitle.text, recentRoom.unreadCount];
-    } else {
-        cell.backgroundColor = [UIColor clearColor];
-    }
-    
-    return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Leave the selected room
-        RecentRoom *selectedRoom;
-        if (filteredRecents) {
-            selectedRoom = filteredRecents[indexPath.row];
-        } else {
-            selectedRoom = recents[indexPath.row];
-        }
-        
-        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:selectedRoom.roomId];
-
-        // cancel pending uploads/downloads
-        // they are useless by now
-        [MXKMediaManager cancelDownloadsInCacheFolder:selectedRoom.roomId];
-        // TODO GFO cancel pending uploads related to this room
-        
-        [mxRoom leave:^{
-            // Remove the selected room (if it is not already done by recents listener)
-            for (NSUInteger index = 0; index < recents.count; index++) {
-                RecentRoom *recentRoom = [recents objectAtIndex:index];
-                if ([recentRoom.roomId isEqualToString:selectedRoom.roomId]) {
-                    [recents removeObjectAtIndex:index];
-                    if (filteredRecents) {
-                        NSUInteger filteredIndex = [filteredRecents indexOfObject:selectedRoom];
-                        if (filteredIndex != NSNotFound) {
-                            [filteredRecents removeObjectAtIndex:filteredIndex];
-                        }
-                    }
-                    break;
-                }
-            }
-            // Refresh table display
-            [self refreshRecentsDisplay];
-        } failure:^(NSError *error) {
-            NSLog(@"[RecentsVC] Failed to leave room (%@) failed: %@", selectedRoom.roomId, error);
-            //Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-    }
+    // Change the current room id to open the room
+    self.selectedRoomId = aRoomId;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -717,26 +398,14 @@
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    // Update filtered list
+    
+    // Apply filter
+    shouldScrollToTopOnRefresh = YES;
     if (searchText.length) {
-        if (filteredRecents) {
-            [filteredRecents removeAllObjects];
-        } else {
-            filteredRecents = [NSMutableArray arrayWithCapacity:recents.count];
-        }
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        for (RecentRoom *recentRoom in recents) {
-            MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:recentRoom.roomId];
-            if ([[mxRoom.state displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                [filteredRecents addObject:recentRoom];
-            }
-        }
+        [self.dataSource searchWithPatterns:@[searchText]];
     } else {
-        filteredRecents = nil;
+        [self.dataSource searchWithPatterns:nil];
     }
-    // Refresh display
-    [self refreshRecentsDisplay];
-    [self scrollToTop];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -746,14 +415,16 @@
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
     // Leave search
     searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
     recentsSearchBar = nil;
-    filteredRecents = nil;
     self.tableView.tableHeaderView = nil;
-    [self refreshRecentsDisplay];
-    [self scrollToTop];
+    
+    // Refresh display
+    shouldScrollToTopOnRefresh = YES;
+    [self.dataSource searchWithPatterns:nil];
 }
 
 @end

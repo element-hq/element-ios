@@ -111,7 +111,7 @@
     
     // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
     dispatch_async(dispatch_get_main_queue(), ^{
-        recentsViewController.preSelectedRoomId = roomId;
+        recentsViewController.selectedRoomId = roomId;
     });
 }
 
@@ -120,7 +120,7 @@
     if (recentsViewController) {
         [recentsNavigationController popToViewController:recentsViewController animated:animated];
         // Release the current selected room
-        recentsViewController.preSelectedRoomId = nil;
+        recentsViewController.selectedRoomId = nil;
     }
 }
 
