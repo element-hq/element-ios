@@ -20,7 +20,10 @@ fi
 
 if [ "$1" == 'clean' ]
 then
-	$basecmd clean
+	if [ -d "matrixConsole.xcworkspace" ]
+	then
+		$basecmd clean
+	fi
 	rm -r "$builddir" "$outdir" || true
 else
 	if [ ! -d "matrixConsole.xcworkspace" ]
