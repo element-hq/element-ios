@@ -284,7 +284,7 @@
     if (currentRoomViewController) {
         // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
         if (!_selectedRoomId) {
-            _selectedRoomId = currentRoomViewController.dataSource.room.state.roomId;
+            _selectedRoomId = currentRoomViewController.dataSource.roomId;
         }
         
         // Look for the rank of this selected room in displayed recents
