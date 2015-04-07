@@ -88,7 +88,7 @@
         // consider only live event
         if (direction == MXEventDirectionForwards) {
             // Check the room Id (if any)
-            if (event.roomId && [event.roomId isEqualToString:self.dataSource.roomId] == NO) {
+            if (event.roomId && [event.roomId isEqualToString:self.roomDataSource.roomId] == NO) {
                 // This event does not concern the current room members
                 return;
             }
@@ -128,7 +128,7 @@
     [self hideRoomMembers:nil];
     
     // Store the potential message partially typed in text input
-    [mxHandler storePartialTextMessage:self.inputToolbarView.textMessage forRoomId:self.dataSource.roomId];
+    [mxHandler storePartialTextMessage:self.inputToolbarView.textMessage forRoomId:self.roomDataSource.roomId];
     
     if (membersListener) {
         [mxHandler.mxSession removeListener:membersListener];
@@ -140,13 +140,13 @@
     [super viewDidAppear:animated];
     
     // Set visible room id
-    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.dataSource.roomId;
+    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
 
     [self updateUI];
     
     // Retrieve the potential message partially typed during last room display.
     // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-    self.inputToolbarView.textMessage = [[MatrixSDKHandler sharedHandler] partialTextMessageForRoomId:self.dataSource.roomId];
+    self.inputToolbarView.textMessage = [[MatrixSDKHandler sharedHandler] partialTextMessageForRoomId:self.roomDataSource.roomId];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -169,7 +169,7 @@
     [super didMatrixSessionStateChange];
     
     // Check dataSource state
-    if (self.dataSource && self.dataSource.state == MXKDataSourceStatePreparing) {
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
         // dataSource is not ready, keep running the loading wheel
         [self.activityIndicator startAnimating];
     }
@@ -178,7 +178,7 @@
 - (void)updateUI {
     
     // Update UI by considering dataSource state
-    if (self.dataSource && self.dataSource.state == MXKDataSourceStateReady) {
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady) {
         // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
         // into account mxSession state before stopping activity indicator.
         [super didMatrixSessionStateChange];
@@ -187,9 +187,9 @@
         self.inputToolbarView.hidden = NO;
         
         // Check room members to enable/disable members button in nav bar
-        self.showRoomMembersButtonItem.enabled = ([self.dataSource.room.state members].count != 0);
+        self.showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
         
-        self.roomTitleView.mxRoom = self.dataSource.room;
+        self.roomTitleView.mxRoom = self.roomDataSource.room;
         self.roomTitleView.editable = YES;
         self.roomTitleView.hidden = NO;
     }
@@ -197,8 +197,8 @@
         self.inputToolbarView.hidden = YES;
         self.showRoomMembersButtonItem.enabled = NO;
         
-        if (self.dataSource && self.dataSource.state == MXKDataSourceStatePreparing) {
-            self.roomTitleView.mxRoom = self.dataSource.room;
+        if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
+            self.roomTitleView.mxRoom = self.roomDataSource.room;
             self.roomTitleView.hidden = (!self.roomTitleView.mxRoom);
         } else {
             self.roomTitleView.mxRoom = nil;
@@ -247,7 +247,7 @@
     
     // Override default implementation in case of tap on avatar
     if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView]) {
-        selectedRoomMember = [self.dataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+        selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
         if (selectedRoomMember) {
             [self performSegueWithIdentifier:@"showMemberSheet" sender:self];
         }
@@ -292,7 +292,7 @@
 
 - (void)updateRoomMembers {
     
-    NSArray* membersList = [self.dataSource.room.state members];
+    NSArray* membersList = [self.roomDataSource.room.state members];
     
     if (![[AppSettings sharedSettings] displayLeftUsers]) {
         NSMutableArray* filteredMembers = [[NSMutableArray alloc] init];
@@ -348,14 +348,14 @@
                 } else if (user2.presence == MXPresenceOffline) {
                     return NSOrderedDescending;
                 }
-                return [[self.dataSource.room.state memberSortedName:member1.userId] compare:[self.dataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
+                return [[self.roomDataSource.room.state memberSortedName:member1.userId] compare:[self.roomDataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
             }
             
             // Consider user's lastActive ago value
             if (user1.lastActiveAgo < user2.lastActiveAgo) {
                 return NSOrderedAscending;
             } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
-                return [[self.dataSource.room.state memberSortedName:member1.userId] compare:[self.dataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
+                return [[self.roomDataSource.room.state memberSortedName:member1.userId] compare:[self.roomDataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
             }
             return NSOrderedDescending;
         } else {
@@ -368,7 +368,7 @@
                 return NSOrderedDescending;
             }
             
-            return [[self.dataSource.room.state memberSortedName:member1.userId] compare:[self.dataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
+            return [[self.roomDataSource.room.state memberSortedName:member1.userId] compare:[self.roomDataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
         }
     }];
     
@@ -439,7 +439,7 @@
         RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
         if (indexPath.row < members.count) {
             MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-            [memberCell setRoomMember:roomMember withRoom:self.dataSource.room];
+            [memberCell setRoomMember:roomMember withRoom:self.roomDataSource.room];
             if ([roomMember.userId isEqualToString:mxHandler.userId]) {
                 memberCell.typingBadge.hidden = YES; //hide typing badge for the current user
             } else {
@@ -486,11 +486,11 @@
     
     if (textField == _roomTitleView.displayNameTextField) {
         // Check whether the user has enough power to rename the room
-        MXRoomPowerLevels *powerLevels = [self.dataSource.room.state powerLevels];
+        MXRoomPowerLevels *powerLevels = [self.roomDataSource.room.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixSDKHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]) {
             // Only the room name is edited here, update the text field with the room name
-            textField.text = self.dataSource.room.state.name;
+            textField.text = self.roomDataSource.room.state.name;
             textField.backgroundColor = [UIColor whiteColor];
         } else {
             alertMsg = @"You are not authorized to edit this room name";
@@ -509,7 +509,7 @@
         }
     } else if (textField == _roomTitleView.topicTextField) {
         // Check whether the user has enough power to edit room topic
-        MXRoomPowerLevels *powerLevels = [self.dataSource.room.state powerLevels];
+        MXRoomPowerLevels *powerLevels = [self.roomDataSource.room.state powerLevels];
         NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixSDKHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
             textField.backgroundColor = [UIColor whiteColor];
@@ -540,35 +540,35 @@
         textField.backgroundColor = [UIColor clearColor];
         
         NSString *roomName = textField.text;
-        if ((roomName.length || self.dataSource.room.state.name.length) && [roomName isEqualToString:self.dataSource.room.state.name] == NO) {
+        if ((roomName.length || self.roomDataSource.room.state.name.length) && [roomName isEqualToString:self.roomDataSource.room.state.name] == NO) {
             [self.activityIndicator startAnimating];
             __weak typeof(self) weakSelf = self;
-            [self.dataSource.room setName:roomName success:^{
+            [self.roomDataSource.room setName:roomName success:^{
                 // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
                 // into account mxSession state before stopping activity indicator.
                 [super didMatrixSessionStateChange];
                 // Refresh title display
-                textField.text = weakSelf.dataSource.room.state.displayname;
+                textField.text = weakSelf.roomDataSource.room.state.displayname;
             } failure:^(NSError *error) {
                 [super didMatrixSessionStateChange];
                 // Revert change
-                textField.text = weakSelf.dataSource.room.state.displayname;
+                textField.text = weakSelf.roomDataSource.room.state.displayname;
                 NSLog(@"[Console RoomVC] Rename room failed: %@", error);
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
         } else {
             // No change on room name, restore title with room displayName
-            textField.text = self.dataSource.room.state.displayname;
+            textField.text = self.roomDataSource.room.state.displayname;
         }
     } else if (textField == _roomTitleView.topicTextField) {
         textField.backgroundColor = [UIColor clearColor];
         
         NSString *topic = textField.text;
-        if ((topic.length || self.dataSource.room.state.topic.length) && [topic isEqualToString:self.dataSource.room.state.topic] == NO) {
+        if ((topic.length || self.roomDataSource.room.state.topic.length) && [topic isEqualToString:self.roomDataSource.room.state.topic] == NO) {
             [self.activityIndicator startAnimating];
             __weak typeof(self) weakSelf = self;
-            [self.dataSource.room setTopic:topic success:^{
+            [self.roomDataSource.room setTopic:topic success:^{
                 // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
                 // into account mxSession state before stopping activity indicator.
                 [super didMatrixSessionStateChange];
@@ -577,7 +577,7 @@
             } failure:^(NSError *error) {
                 [super didMatrixSessionStateChange];
                 // Revert change
-                textField.text = weakSelf.dataSource.room.state.topic;
+                textField.text = weakSelf.roomDataSource.room.state.topic;
                 // Hide topic field if empty
                 weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
                 NSLog(@"[RoomVC] Topic room change failed: %@", error);
@@ -645,7 +645,7 @@
             NSIndexPath *indexPath = [self.membersTableView indexPathForSelectedRow];
             controller.mxRoomMember = [members objectAtIndex:indexPath.row];
         }
-        controller.mxRoom = self.dataSource.room;
+        controller.mxRoom = self.roomDataSource.room;
     }
 }
 

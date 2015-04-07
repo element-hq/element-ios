@@ -189,8 +189,8 @@
 
 - (void)refreshRecentsDisplay {
     // Check whether the current selected room has not been left
-    if (currentRoomViewController.dataSource.roomId) {
-        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.dataSource.roomId];
+    if (currentRoomViewController.roomDataSource.roomId) {
+        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomDataSource.roomId];
         if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
             // release the room viewController
             [currentRoomViewController destroy];
@@ -284,7 +284,7 @@
     if (currentRoomViewController) {
         // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
         if (!_selectedRoomId) {
-            _selectedRoomId = currentRoomViewController.dataSource.roomId;
+            _selectedRoomId = currentRoomViewController.roomDataSource.roomId;
         }
         
         // Look for the rank of this selected room in displayed recents
