@@ -33,8 +33,6 @@
 
 
 @interface RoomViewController () {
-    BOOL forceScrollToBottomOnViewDidAppear;
-    BOOL isJoinRequestInProgress;
     
     // Members list
     NSArray *members;
@@ -65,11 +63,6 @@
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    // Do any additional setup after loading the view, typically from a nib.
-    forceScrollToBottomOnViewDidAppear = YES;
-    // TODO GFO Hide messages table by default in order to hide initial scrolling to the bottom
-//    self.tableView.hidden = YES;
     
     // ensure that the titleView will be scaled when it will be required
     // during a screen rotation for example.
@@ -148,20 +141,6 @@
     
     // Set visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.dataSource.roomId;
-    
-    // TODO
-//    if (forceScrollToBottomOnViewDidAppear) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if (nil == _mxRoom) {
-//                // The view controller has been released. Not need to go further
-//                return;
-//            }
-//            // Scroll to the bottom
-//            [self scrollMessagesTableViewToBottomAnimated:animated];
-//        });
-//        forceScrollToBottomOnViewDidAppear = NO;
-////        self.tableView.hidden = NO;
-//    }
 
     [self updateUI];
     
