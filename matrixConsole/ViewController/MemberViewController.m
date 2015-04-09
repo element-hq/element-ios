@@ -166,7 +166,7 @@
     if (_mxRoomMember.avatarUrl) {
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        thumbnailURL = [mxHandler thumbnailURLForContent:_mxRoomMember.avatarUrl inViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
+        thumbnailURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:_mxRoomMember.avatarUrl toFitViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:thumbnailURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
         // Check whether the image download is in progress

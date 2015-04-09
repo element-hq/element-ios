@@ -115,7 +115,7 @@
         if (roomMember.avatarUrl) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
             MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            thumbnailURL = [mxHandler thumbnailURLForContent:roomMember.avatarUrl inViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+            thumbnailURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:roomMember.avatarUrl toFitViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
         self.pictureView.mediaFolder = kMXKMediaManagerAvatarThumbnailFolder;
         [self.pictureView setImageURL:thumbnailURL withImageOrientation:UIImageOrientationUp andPreviewImage:[UIImage imageNamed:@"default-profile"]];

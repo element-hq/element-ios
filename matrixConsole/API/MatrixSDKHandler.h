@@ -106,8 +106,4 @@ typedef enum : NSUInteger {
 // return YES if the text contains a bing word
 - (BOOL)containsBingWord:(NSString*)text;
 
-// Return the suitable url to display the content thumbnail into the provided view size
-// Note: the provided view size is supposed in points, this method will convert this size in pixels by considering screen scale
-- (NSString*)thumbnailURLForContent:(NSString*)contentURI inViewSize:(CGSize)viewSize withMethod:(MXThumbnailingMethod)thumbnailingMethod;
-
 @end

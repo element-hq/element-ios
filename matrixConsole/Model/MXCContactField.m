@@ -91,7 +91,7 @@
             MXUser* user = [mxHandler.mxSession userWithUserId:_matrixID];
             
             if (user) {
-                avatarURL = [mxHandler thumbnailURLForContent:user.avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
+                avatarURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:user.avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
                 [self downloadAvatarImage];
                 
             } else {
@@ -99,7 +99,7 @@
                 if (mxHandler.mxRestClient) {
                     [mxHandler.mxRestClient avatarUrlForUser:_matrixID
                                                      success:^(NSString *avatarUrl) {
-                                                         avatarURL = [mxHandler thumbnailURLForContent:avatarUrl inViewSize:avatarSize  withMethod:MXThumbnailingMethodCrop];
+                                                         avatarURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
                                                          [self downloadAvatarImage];
                                                      }
                                                      failure:^(NSError *error) {

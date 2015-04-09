@@ -509,7 +509,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (currentPictureURL) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
             MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            currentPictureThumbURL = [mxHandler thumbnailURLForContent:currentPictureURL inViewSize:self.userPictureButton.frame.size withMethod:MXThumbnailingMethodCrop];
+            currentPictureThumbURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:currentPictureURL toFitViewSize:self.userPictureButton.frame.size withMethod:MXThumbnailingMethodCrop];
             NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:currentPictureThumbURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
             
             // Check whether the image download is in progress
