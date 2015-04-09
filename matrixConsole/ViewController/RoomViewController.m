@@ -46,9 +46,6 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *showRoomMembersButtonItem;
 @property (weak, nonatomic) IBOutlet RoomTitleView *roomTitleView;
 
-@property (weak, nonatomic) IBOutlet UIView *membersView;
-@property (weak, nonatomic) IBOutlet UITableView *membersTableView;
-
 @property (strong, nonatomic) MXKAlert *actionMenu;
 
 @end
@@ -105,9 +102,6 @@
                     [self.actionMenu dismiss:NO];
                     self.actionMenu = nil;
                 }
-                // Refresh members list
-                [self updateRoomMembers];
-                [self.membersTableView reloadData];
             }
         }
     }];
@@ -123,9 +117,6 @@
         [self.actionMenu dismiss:NO];
         self.actionMenu = nil;
     }
-    
-    // Hide members by default
-    [self hideRoomMembers:nil];
     
     // Store the potential message partially typed in text input
     [mxHandler storePartialTextMessage:self.inputToolbarView.textMessage forRoomId:self.roomDataSource.roomId];
@@ -249,7 +240,7 @@
     if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView]) {
         selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
         if (selectedRoomMember) {
-            [self performSegueWithIdentifier:@"showMemberSheet" sender:self];
+            [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
         }
     } else {
         // Keep default implementation for other actions
@@ -287,197 +278,6 @@
 //        });
 //    }
 //}
-
-# pragma mark - Room members
-
-- (void)updateRoomMembers {
-    
-    NSArray* membersList = [self.roomDataSource.room.state members];
-    
-    if (![[AppSettings sharedSettings] displayLeftUsers]) {
-        NSMutableArray* filteredMembers = [[NSMutableArray alloc] init];
-        
-        for (MXRoomMember* member in membersList) {
-            if (member.membership != MXMembershipLeave) {
-                [filteredMembers addObject:member];
-            }
-        }
-        
-        membersList = filteredMembers;
-    }
-    
-    members = [membersList sortedArrayUsingComparator:^NSComparisonResult(MXRoomMember *member1, MXRoomMember *member2) {
-        // Move banned and left members at the end of the list
-        if (member1.membership == MXMembershipLeave || member1.membership == MXMembershipBan) {
-            if (member2.membership != MXMembershipLeave && member2.membership != MXMembershipBan) {
-                return NSOrderedDescending;
-            }
-        } else if (member2.membership == MXMembershipLeave || member2.membership == MXMembershipBan) {
-            return NSOrderedAscending;
-        }
-        
-        // Move invited members just before left and banned members
-        if (member1.membership == MXMembershipInvite) {
-            if (member2.membership != MXMembershipInvite) {
-                return NSOrderedDescending;
-            }
-        } else if (member2.membership == MXMembershipInvite) {
-            return NSOrderedAscending;
-        }
-        
-        if ([[AppSettings sharedSettings] sortMembersUsingLastSeenTime]) {
-            // Get the users that correspond to these members
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            MXUser *user1 = [mxHandler.mxSession userWithUserId:member1.userId];
-            MXUser *user2 = [mxHandler.mxSession userWithUserId:member2.userId];
-            
-            // Move users who are not online or unavailable at the end (before invited users)
-            if ((user1.presence == MXPresenceOnline) || (user1.presence == MXPresenceUnavailable)) {
-                if ((user2.presence != MXPresenceOnline) && (user2.presence != MXPresenceUnavailable)) {
-                    return NSOrderedAscending;
-                }
-            } else if ((user2.presence == MXPresenceOnline) || (user2.presence == MXPresenceUnavailable)) {
-                return NSOrderedDescending;
-            } else {
-                // Here both users are neither online nor unavailable (the lastActive ago is useless)
-                // We will sort them according to their display, by keeping in front the offline users
-                if (user1.presence == MXPresenceOffline) {
-                    if (user2.presence != MXPresenceOffline) {
-                        return NSOrderedAscending;
-                    }
-                } else if (user2.presence == MXPresenceOffline) {
-                    return NSOrderedDescending;
-                }
-                return [[self.roomDataSource.room.state memberSortedName:member1.userId] compare:[self.roomDataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
-            }
-            
-            // Consider user's lastActive ago value
-            if (user1.lastActiveAgo < user2.lastActiveAgo) {
-                return NSOrderedAscending;
-            } else if (user1.lastActiveAgo == user2.lastActiveAgo) {
-                return [[self.roomDataSource.room.state memberSortedName:member1.userId] compare:[self.roomDataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
-            }
-            return NSOrderedDescending;
-        } else {
-            // Move user without display name at the end (before invited users)
-            if (member1.displayname.length) {
-                if (!member2.displayname.length) {
-                    return NSOrderedAscending;
-                }
-            } else if (member2.displayname.length) {
-                return NSOrderedDescending;
-            }
-            
-            return [[self.roomDataSource.room.state memberSortedName:member1.userId] compare:[self.roomDataSource.room.state memberSortedName:member2.userId] options:NSCaseInsensitiveSearch];
-        }
-    }];
-    
-    self.showRoomMembersButtonItem.enabled = (members.count != 0);
-}
-
-- (IBAction)showRoomMembers:(id)sender {
-    // Dismiss keyboard
-    [self dismissKeyboard];
-    
-    [self updateRoomMembers];
-    
-    // check if there is some members to display
-    // else it makes no sense to display the list
-    if (0 == members.count) {
-        return;
-    }
-    
-    self.membersView.hidden = NO;
-    [self.membersTableView reloadData];
-    
-    // Update navigation bar items
-    self.navigationItem.hidesBackButton = YES;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(hideRoomMembers:)];
-}
-
-- (IBAction)hideRoomMembers:(id)sender {
-    self.membersView.hidden = YES;
-    members = nil;
-    
-    // Update navigation bar items
-    self.navigationItem.hidesBackButton = NO;
-    self.navigationItem.rightBarButtonItem = _showRoomMembersButtonItem;
-    
-    // Force a reload to release all table cells (and then stop running timer)
-    [self.membersTableView reloadData];
-}
-
-#pragma mark - UITableView data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Check table view members vs messages
-    if (tableView == self.membersTableView) {
-        return members.count;
-    }
-    return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Check table view members vs messages
-    if (tableView == self.membersTableView) {
-        // Use the same default height than message cell
-        return 50;
-    }
-    
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    // Check table view members vs messages
-    if (tableView == self.membersTableView) {
-        RoomMemberTableCell *memberCell = [tableView dequeueReusableCellWithIdentifier:@"RoomMemberCell" forIndexPath:indexPath];
-        if (indexPath.row < members.count) {
-            MXRoomMember *roomMember = [members objectAtIndex:indexPath.row];
-            [memberCell setRoomMember:roomMember withRoom:self.roomDataSource.room];
-            if ([roomMember.userId isEqualToString:mxHandler.userId]) {
-                memberCell.typingBadge.hidden = YES; //hide typing badge for the current user
-            } else {
-                memberCell.typingBadge.hidden = YES; //TODO ([currentTypingUsers indexOfObject:roomMember.userId] == NSNotFound);
-                if (!memberCell.typingBadge.hidden) {
-                    [memberCell.typingBadge.superview bringSubviewToFront:memberCell.typingBadge];
-                }
-            }
-        }
-        return memberCell;
-    }
-    
-    return nil;
-}
-
-#pragma mark - UITableView delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == self.membersTableView) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    } else {
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
-    // Release here resources, and restore reusable cells
-    
-    // Check table view members vs messages
-    if ([cell isKindOfClass:[RoomMemberTableCell class]]) {
-        RoomMemberTableCell *memberCell = (RoomMemberTableCell*)cell;
-        // Stop potential timer used to refresh member's presence
-        [memberCell setRoomMember:nil withRoom:nil];
-    } else {
-        [super tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
-    }
-
-}
 
 #pragma mark - UITextField delegate
 
@@ -635,15 +435,21 @@
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showMemberSheet"]) {
+    if ([[segue identifier] isEqualToString:@"showMemberList"]) {
+        MXKRoomMemberListViewController* controller = [segue destinationViewController];
+        
+        // Dismiss keyboard
+        [self dismissKeyboard];
+        
+        MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
+        [controller displayList:membersDataSource];
+        
+    } else if ([[segue identifier] isEqualToString:@"showMemberDetails"]) {
         MemberViewController* controller = [segue destinationViewController];
         
         if (selectedRoomMember) {
             controller.mxRoomMember = selectedRoomMember;
             selectedRoomMember = nil;
-        } else {
-            NSIndexPath *indexPath = [self.membersTableView indexPathForSelectedRow];
-            controller.mxRoomMember = [members objectAtIndex:indexPath.row];
         }
         controller.mxRoom = self.roomDataSource.room;
     }
