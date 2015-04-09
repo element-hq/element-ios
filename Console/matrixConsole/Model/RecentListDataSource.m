@@ -34,14 +34,16 @@
         
         // cancel pending uploads/downloads
         // they are useless by now
-        [MXKMediaManager cancelDownloadsInCacheFolder:recentCellData.room.state.roomId];
+        [MXKMediaManager cancelDownloadsInCacheFolder:recentCellData.roomDataSource.room.state.roomId];
         // TODO GFO cancel pending uploads related to this room
         
-        [recentCellData.room leave:^{
+        [recentCellData.roomDataSource.room leave:^{
             // Refresh table display
-            [self didCellDataChange:recentCellData];
+            if (self.delegate) {
+                [self.delegate dataSource:self didCellChange:nil];
+            }
         } failure:^(NSError *error) {
-            NSLog(@"[Console RecentListDataSource] Failed to leave room (%@) failed: %@", recentCellData.room.state.roomId, error);
+            NSLog(@"[Console RecentListDataSource] Failed to leave room (%@) failed: %@", recentCellData.roomDataSource.room.state.roomId, error);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];

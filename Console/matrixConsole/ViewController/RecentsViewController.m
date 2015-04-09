@@ -291,7 +291,7 @@
         NSInteger cellCount = [self.dataSource tableView:self.tableView numberOfRowsInSection:0];
         for (NSInteger index = 0; index < cellCount; index ++) {
             id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:index];
-            if ([_selectedRoomId isEqualToString:recentCellData.room.state.roomId]) {
+            if ([_selectedRoomId isEqualToString:recentCellData.roomDataSource.room.state.roomId]) {
                 currentSelectedCellIndexPathRow = index;
                 break;
             }
@@ -345,7 +345,7 @@
         }
         
         // Reset unread count for this room
-        [recentCellData resetUnreadCount];
+        //[roomDataSource resetUnreadCount]; // @TODO: This automatically done by roomDataSource. Is it a good thing?
         [self updateTitleView];
         
         if (self.splitViewController) {
