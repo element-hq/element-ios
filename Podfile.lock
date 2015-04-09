@@ -46,14 +46,6 @@ EXTERNAL SOURCES:
     :branch: matrix_kit
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
-CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: 56e65500bb9a1da3ab360fa4594c502574f180bd
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :commit: 7111490be3b57ad6bbccb625c61c511851a2d87b
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-
 SPEC CHECKSUMS:
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   GBDeviceInfo: 5866e2f529547f8a4c3c6917dc40ac53acd75234
