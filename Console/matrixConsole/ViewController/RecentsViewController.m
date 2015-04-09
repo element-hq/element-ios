@@ -321,9 +321,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetails"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:indexPath.row];
-        
+
         UIViewController *controller;
         if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]]) {
             controller = [[segue destinationViewController] topViewController];
