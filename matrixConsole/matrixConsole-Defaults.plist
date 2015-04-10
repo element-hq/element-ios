@@ -18,8 +18,8 @@
 	<false/>
 	<key>hideRedactions</key>
 	<true/>
-	<key>hideUnsupportedEvents</key>
-	<true/>
+	<key>showUnsupportedEvents</key>
+	<false/>
 	<key>sortMembersUsingLastSeenTime</key>
 	<true/>
 	<key>displayLeftUsers</key>

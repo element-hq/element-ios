@@ -39,7 +39,7 @@
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
 #define SETTINGS_SECTION_ROOMS_HIDE_REDACTIONS_INDEX         1
-#define SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX    2
+#define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    2
 #define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
 #define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
 #define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             5
@@ -687,7 +687,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (sender == redactionsSwitch) {
         [AppSettings sharedSettings].hideRedactions = redactionsSwitch.on;
     } else if (sender == unsupportedEventsSwitch) {
-        [AppSettings sharedSettings].hideUnsupportedEvents = unsupportedEventsSwitch.on;
+        [AppSettings sharedSettings].showUnsupportedEvents = unsupportedEventsSwitch.on;
     } else if (sender == sortMembersSwitch) {
         [AppSettings sharedSettings].sortMembersUsingLastSeenTime = sortMembersSwitch.on;
     } else if (sender == displayLeftMembersSwitch) {
@@ -1021,9 +1021,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 roomsSettingCell.settingLabel.text = @"Hide redactions";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideRedactions];
                 redactionsSwitch = roomsSettingCell.settingSwitch;
-            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_UNSUPPORTED_EVENTS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Hide unsupported events";
-                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideUnsupportedEvents];
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Show unsupported events";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] showUnsupportedEvents];
                 unsupportedEventsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Sort members by last seen time";

@@ -51,7 +51,7 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"enableInAppNotifications"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayAllEvents"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideRedactions"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideUnsupportedEvents"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"showUnsupportedEvents"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayLeftUsers"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"maxMediaCacheSize"];
@@ -88,12 +88,12 @@ static AppSettings *sharedSettings = nil;
     [[NSUserDefaults standardUserDefaults] setBool:hideRedactions forKey:@"hideRedactions"];
 }
 
-- (BOOL)hideUnsupportedEvents {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hideUnsupportedEvents"];
+- (BOOL)showUnsupportedEvents {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"showUnsupportedEvents"];
 }
 
-- (void)setHideUnsupportedEvents:(BOOL)hideUnsupportedEvents {
-    [[NSUserDefaults standardUserDefaults] setBool:hideUnsupportedEvents forKey:@"hideUnsupportedEvents"];
+- (void)setShowUnsupportedEvents:(BOOL)showUnsupportedEvents {
+    [[NSUserDefaults standardUserDefaults] setBool:showUnsupportedEvents forKey:@"showUnsupportedEvents"];
 }
 
 - (BOOL)sortMembersUsingLastSeenTime {

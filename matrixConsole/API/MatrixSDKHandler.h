@@ -16,8 +16,6 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
-extern NSString *const kMatrixSDKHandlerUnsupportedEventDescriptionPrefix;
-
 typedef enum : NSUInteger {
     MatrixSDKHandlerStatusLoggedOut = 0,
     MatrixSDKHandlerStatusLogged,
@@ -97,7 +95,6 @@ typedef enum : NSUInteger {
 // Note: the room state expected by the 3 following methods is the room state right before handling the event
 - (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
-- (NSString*)displayTextForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState inSubtitleMode:(BOOL)isSubtitle;
 
 // return the presence ring color
 // nil means there is no ring to display
