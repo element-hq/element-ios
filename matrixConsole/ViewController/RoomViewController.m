@@ -248,37 +248,6 @@
     }
 }
 
-//#pragma mark - Internal methods
-
-//- (void)configureView {
-//    
-//        
-//// TODO GFO review following observer use
-////        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideRedactions" options:0 context:nil];
-////        [[AppSettings sharedSettings] addObserver:self forKeyPath:@"hideUnsupportedEvents" options:0 context:nil];
-////        [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
-//}
-
-//#pragma mark - KVO
-
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//    if ([@"isActivityInProgress" isEqualToString:keyPath]) {
-//        if ([MatrixSDKHandler sharedHandler].isActivityInProgress) {
-//            [self startActivityIndicator];
-//        } else {
-//            [self stopActivityIndicator];
-//        }
-//    } else if ([@"hideUnsupportedEvents" isEqualToString:keyPath] || [@"hideRedactions" isEqualToString:keyPath]) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if (nil == _mxRoom) {
-//                // The view controller has been released. Not need to go further
-//                return;
-//            }
-//            [self configureView];
-//        });
-//    }
-//}
-
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
