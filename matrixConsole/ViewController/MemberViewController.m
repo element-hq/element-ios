@@ -46,24 +46,6 @@
 @synthesize mxRoom;
 
 - (void)dealloc {
-    // close any pending actionsheet
-    if (self.actionMenu) {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
-    }
-    
-    // Remove any pending observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if (imageLoader) {
-        [imageLoader cancel];
-        imageLoader = nil;
-    }
-    
-    if (membersListener) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        [mxHandler.mxSession removeListener:membersListener];
-        membersListener = nil;
-    }
 }
 
 - (void)viewDidLoad {
@@ -150,6 +132,28 @@
         MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
         [mxHandler.mxSession removeListener:membersListener];
         membersListener = nil;
+    }
+}
+
+- (void)destroy {
+    
+    // close any pending actionsheet
+    if (self.actionMenu) {
+        [self.actionMenu dismiss:NO];
+        self.actionMenu = nil;
+    }
+    
+    if (membersListener) {
+        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        [mxHandler.mxSession removeListener:membersListener];
+        membersListener = nil;
+    }
+    
+    // Remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (imageLoader) {
+        [imageLoader cancel];
+        imageLoader = nil;
     }
 }
 

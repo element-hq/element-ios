@@ -80,7 +80,7 @@
                             <inset key="imageInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                             <connections>
                                 <action selector="showRoomMembers:" destination="msb-ol-2LB" id="Ouh-KX-Nj7"/>
-                                <segue destination="HI1-LW-MDw" kind="show" identifier="showMemberList" id="6wv-08-5jy"/>
+                                <segue destination="HI1-LW-MDw" kind="show" identifier="showMemberList" id="a9o-Zv-YEX"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -185,10 +185,10 @@
             </objects>
             <point key="canvasLocation" x="1517" y="801"/>
         </scene>
-        <!--Room Member List View Controller-->
+        <!--RoomMembers-->
         <scene sceneID="ApV-T1-ijB">
             <objects>
-                <viewController id="HI1-LW-MDw" customClass="MXKRoomMemberListViewController" sceneMemberID="viewController">
+                <viewController id="HI1-LW-MDw" userLabel="RoomMembers" customClass="RoomMembersViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eR5-K8-hbH"/>
                         <viewControllerLayoutGuide type="bottom" id="7Lc-0d-PAr"/>
@@ -198,10 +198,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="T1y-Ef-dvQ"/>
+                    <connections>
+                        <segue destination="qlN-Mb-ZH7" kind="showDetail" identifier="showDetails" id="mzc-lm-6Aa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="43o-ot-tQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2317" y="-328"/>
+            <point key="canvasLocation" x="2895" y="-342"/>
         </scene>
         <!--DetailMember-->
         <scene sceneID="q1J-Wz-aLa">
@@ -292,7 +296,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrY-z4-HGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2320" y="345"/>
+            <point key="canvasLocation" x="2895" y="488"/>
         </scene>
         <!--Home-->
         <scene sceneID="3rt-8o-eGh">
@@ -1673,5 +1677,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Waw-2O-9El"/>
+        <segue reference="mzc-lm-6Aa"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -61,6 +61,7 @@
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
 		F08E67961A77965A00AABD4C /* MXC3PID.m in Sources */ = {isa = PBXBuildFile; fileRef = F08E67931A77965A00AABD4C /* MXC3PID.m */; };
 		F0AC79331A8394510056D042 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AC79321A8394510056D042 /* AuthInputsView.m */; };
+		F0ADEFFB1AD7D2B3008A4F21 /* RoomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ADEFFA1AD7D2B3008A4F21 /* RoomMembersViewController.m */; };
 		F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AC19E6895E00E47915 /* logoHighRes.png */; };
 		F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5AD19E6895E00E47915 /* tab_recents.png */; };
 		F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0CEA5B019E6898800E47915 /* tab_home.ico */; };
@@ -176,6 +177,8 @@
 		F08E67931A77965A00AABD4C /* MXC3PID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXC3PID.m; sourceTree = "<group>"; };
 		F0AC79311A8394510056D042 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
 		F0AC79321A8394510056D042 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
+		F0ADEFF91AD7D2B3008A4F21 /* RoomMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembersViewController.h; sourceTree = "<group>"; };
+		F0ADEFFA1AD7D2B3008A4F21 /* RoomMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembersViewController.m; sourceTree = "<group>"; };
 		F0CEA5AC19E6895E00E47915 /* logoHighRes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoHighRes.png; sourceTree = "<group>"; };
 		F0CEA5AD19E6895E00E47915 /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
 		F0CEA5B019E6898800E47915 /* tab_home.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = tab_home.ico; sourceTree = "<group>"; };
@@ -305,6 +308,8 @@
 				710CA4BE1A7FBEDB00EEFB96 /* MXCViewController.m */,
 				F03EF5F019F171EB00A0EE52 /* RecentsViewController.h */,
 				F03EF5F119F171EB00A0EE52 /* RecentsViewController.m */,
+				F0ADEFF91AD7D2B3008A4F21 /* RoomMembersViewController.h */,
+				F0ADEFFA1AD7D2B3008A4F21 /* RoomMembersViewController.m */,
 				F03EF5F219F171EB00A0EE52 /* RoomViewController.h */,
 				F03EF5F319F171EB00A0EE52 /* RoomViewController.m */,
 				F03EF5F419F171EB00A0EE52 /* SettingsViewController.h */,
@@ -593,6 +598,7 @@
 				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
 				32501A9B1A9B978400C5938F /* MXCRegistrationWebView.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
+				F0ADEFFB1AD7D2B3008A4F21 /* RoomMembersViewController.m in Sources */,
 				F08DB7811A9B7C9300B73403 /* PublicRoomTableCell.m in Sources */,
 				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,

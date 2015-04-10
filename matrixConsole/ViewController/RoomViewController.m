@@ -436,14 +436,16 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showMemberList"]) {
-        MXKRoomMemberListViewController* controller = [segue destinationViewController];
         
-        // Dismiss keyboard
-        [self dismissKeyboard];
-        
-        MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
-        [controller displayList:membersDataSource];
-        
+        if ([[segue destinationViewController] isKindOfClass:[MXKRoomMemberListViewController class]]) {
+            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)[segue destinationViewController];
+            
+            // Dismiss keyboard
+            [self dismissKeyboard];
+            
+            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
+            [membersController displayList:membersDataSource];
+        }
     } else if ([[segue identifier] isEqualToString:@"showMemberDetails"]) {
         MemberViewController* controller = [segue destinationViewController];
         
