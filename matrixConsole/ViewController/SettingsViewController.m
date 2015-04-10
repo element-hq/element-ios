@@ -38,7 +38,7 @@
 #define SETTINGS_SECTION_COUNT               6
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
-#define SETTINGS_SECTION_ROOMS_HIDE_REDACTIONS_INDEX         1
+#define SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX         1
 #define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    2
 #define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
 #define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
@@ -685,7 +685,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     } else if (sender == allEventsSwitch) {
         [AppSettings sharedSettings].displayAllEvents = allEventsSwitch.on;
     } else if (sender == redactionsSwitch) {
-        [AppSettings sharedSettings].hideRedactions = redactionsSwitch.on;
+        [AppSettings sharedSettings].showRedactions = redactionsSwitch.on;
     } else if (sender == unsupportedEventsSwitch) {
         [AppSettings sharedSettings].showUnsupportedEvents = unsupportedEventsSwitch.on;
     } else if (sender == sortMembersSwitch) {
@@ -1017,9 +1017,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 roomsSettingCell.settingLabel.text = @"Display all events";
                 roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] displayAllEvents];
                 allEventsSwitch = roomsSettingCell.settingSwitch;
-            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_HIDE_REDACTIONS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Hide redactions";
-                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] hideRedactions];
+            } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX) {
+                roomsSettingCell.settingLabel.text = @"Show redactions";
+                roomsSettingCell.settingSwitch.on = [[AppSettings sharedSettings] showRedactions];
                 redactionsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Show unsupported events";

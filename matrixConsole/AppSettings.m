@@ -50,7 +50,7 @@ static AppSettings *sharedSettings = nil;
 - (void)reset {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"enableInAppNotifications"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayAllEvents"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hideRedactions"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"showRedactions"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"showUnsupportedEvents"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sortMembersUsingLastSeenTime"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"displayLeftUsers"];
@@ -80,12 +80,12 @@ static AppSettings *sharedSettings = nil;
     [[MatrixSDKHandler sharedHandler] reload:NO];
 }
 
-- (BOOL)hideRedactions {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hideRedactions"];
+- (BOOL)showRedactions {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"showRedactions"];
 }
 
-- (void)setHideRedactions:(BOOL)hideRedactions {
-    [[NSUserDefaults standardUserDefaults] setBool:hideRedactions forKey:@"hideRedactions"];
+- (void)setShowRedactions:(BOOL)showRedactions {
+    [[NSUserDefaults standardUserDefaults] setBool:showRedactions forKey:@"showRedactions"];
 }
 
 - (BOOL)showUnsupportedEvents {
