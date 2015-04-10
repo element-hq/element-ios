@@ -37,14 +37,16 @@
 #define SETTINGS_SECTION_COMMANDS_INDEX      5
 #define SETTINGS_SECTION_COUNT               6
 
-#define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
-#define SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX         1
-#define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    2
-#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
-#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
-#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             5
-#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
-#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
+// TODO Restore room event settings
+#define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         -1 //0
+#define SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX            -1 //1
+#define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    -1 //2
+#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               -1 //3
+#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       -1 //4
+#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             0  //5
+#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                1  //6
+#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      2  //7
+
 
 NSString* const kUserInfoNotificationRulesText = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
 NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@";
