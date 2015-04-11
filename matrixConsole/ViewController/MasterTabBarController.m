@@ -18,12 +18,16 @@
 #import "MatrixSDKHandler.h"
 
 #import "RecentsViewController.h"
+#import "RecentListDataSource.h"
 
 @interface MasterTabBarController () {
     UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
     
     UIImagePickerController *mediaPicker;
+    
+    id sessionStateObserver;
+    MXSession *mxSession;
 }
 
 @end
@@ -53,6 +57,21 @@
             }
         }
     }
+    
+    // Register session state observer
+    sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // Check whether the concerned session is the associated one
+        if (notif.object != mxSession) {
+            mxSession = notif.object;
+            
+            if (recentsViewController) {
+                // List all the recents for the logged user
+                MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+                [recentsViewController displayList:listDataSource];
+            }
+        }
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -73,6 +92,8 @@
     recentsViewController = nil;
     
     [self dismissMediaPicker];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
 }
 
 #pragma mark -

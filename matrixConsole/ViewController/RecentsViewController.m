@@ -20,7 +20,6 @@
 #import "AppDelegate.h"
 #import "MatrixSDKHandler.h"
 
-#import "RecentListDataSource.h"
 #import "RageShakeManager.h"
 
 @interface RecentsViewController () {
@@ -67,10 +66,6 @@
     
     // The view controller handles itself the selected recent
     self.delegate = self;
-    
-    // List all the recents for the logged user
-    MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
-    [self displayList:listDataSource];
 }
 
 - (void)dealloc {

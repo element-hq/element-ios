@@ -381,6 +381,8 @@ static MatrixSDKHandler *sharedHandler = nil;
         // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
         [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:NO];
         
+        [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession] reset];
+        
         if (clearCache) {
             // clear the media cache
             [MXKMediaManager clearCache];
