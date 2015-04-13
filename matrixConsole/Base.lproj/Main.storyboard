@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="q3d-uQ-djS" kind="relationship" relationship="rootViewController" id="bg4-7B-0ft"/>
+                        <segue destination="IIz-2V-0FJ" kind="relationship" relationship="rootViewController" id="wCY-cf-h9D"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8fS-aE-onr" sceneMemberID="firstResponder"/>
@@ -80,7 +80,7 @@
                             <inset key="imageInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                             <connections>
                                 <action selector="showRoomMembers:" destination="msb-ol-2LB" id="Ouh-KX-Nj7"/>
-                                <segue destination="HI1-LW-MDw" kind="show" identifier="showMemberList" id="a9o-Zv-YEX"/>
+                                <segue destination="y7N-Cs-bXh" kind="show" identifier="showMemberList" id="CyV-7r-Ykf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -185,27 +185,26 @@
             </objects>
             <point key="canvasLocation" x="1517" y="801"/>
         </scene>
-        <!--RoomMembers-->
-        <scene sceneID="ApV-T1-ijB">
+        <!--Room Members-->
+        <scene sceneID="5AK-8u-TUO">
             <objects>
-                <viewController id="HI1-LW-MDw" userLabel="RoomMembers" customClass="RoomMembersViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="eR5-K8-hbH"/>
-                        <viewControllerLayoutGuide type="bottom" id="7Lc-0d-PAr"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Exf-qX-mNC">
+                <tableViewController id="y7N-Cs-bXh" userLabel="Room Members" customClass="RoomMembersViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Oe9-1Y-zhS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="T1y-Ef-dvQ"/>
+                        <connections>
+                            <outlet property="dataSource" destination="y7N-Cs-bXh" id="9Zb-6m-GNy"/>
+                            <outlet property="delegate" destination="y7N-Cs-bXh" id="RVg-Nq-nNy"/>
+                        </connections>
+                    </tableView>
                     <connections>
-                        <segue destination="qlN-Mb-ZH7" kind="showDetail" identifier="showDetails" id="mzc-lm-6Aa"/>
+                        <segue destination="qlN-Mb-ZH7" kind="show" identifier="showDetails" id="m9P-N3-WZN"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="43o-ot-tQo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Exe-4N-jYR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2895" y="-342"/>
+            <point key="canvasLocation" x="2895" y="-290"/>
         </scene>
         <!--DetailMember-->
         <scene sceneID="q1J-Wz-aLa">
@@ -1472,26 +1471,25 @@
             <point key="canvasLocation" x="60" y="-266"/>
         </scene>
         <!--Recents-->
-        <scene sceneID="PCl-Pf-mIl">
+        <scene sceneID="36a-Mi-PO6">
             <objects>
-                <viewController id="q3d-uQ-djS" customClass="RecentsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="2f0-dG-TSc"/>
-                        <viewControllerLayoutGuide type="bottom" id="sQB-zl-eM7"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Qys-kQ-1ab">
+                <tableViewController id="IIz-2V-0FJ" userLabel="Recents" customClass="RecentsViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Hy5-uv-1Zn">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Recents" id="L1h-TL-97X"/>
+                        <connections>
+                            <outlet property="delegate" destination="IIz-2V-0FJ" id="u9a-h8-v8f"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="4FK-PB-qzw"/>
                     <connections>
-                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="Waw-2O-9El"/>
+                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="dfI-c6-tO5"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mmH-l4-2US" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IFp-XY-vau" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1649" y="-678"/>
+            <point key="canvasLocation" x="1596" y="-678"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
@@ -1676,7 +1674,7 @@
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Waw-2O-9El"/>
-        <segue reference="mzc-lm-6Aa"/>
+        <segue reference="dfI-c6-tO5"/>
+        <segue reference="m9P-N3-WZN"/>
     </inferredMetricsTieBreakers>
 </document>
