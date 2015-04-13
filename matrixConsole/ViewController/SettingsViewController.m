@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MXKTools.h>
-#import <MatrixKit/MXKMediaManager.h>
-
 #import "SettingsViewController.h"
+
+#import "RageShakeManager.h"
 
 #import "AppDelegate.h"
 #import "AppSettings.h"
@@ -108,13 +107,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     SettingsCellWithLabelAndSlider* maxCacheSizeCell;
     NSUInteger minimumCacheSize;
 }
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+//@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableHeader;
 @property (weak, nonatomic) IBOutlet UIButton *userPictureButton;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
 @property (weak, nonatomic) IBOutlet UIButton *saveUserInfoButton;
-@property (strong, nonatomic) IBOutlet UIView *activityIndicatorBackgroundView;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) IBOutlet UIView *profileActivityBackgroundView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *profileActivity;
 
 - (IBAction)onButtonPressed:(id)sender;
 
@@ -141,22 +140,22 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     alertsArray = [NSMutableArray array];
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    [mxHandler addObserver:self forKeyPath:@"status" options:0 context:nil];
-    
     // Initialize the minimum cache size with the current value
-    minimumCacheSize = mxHandler.minCachesSize;
+    minimumCacheSize = self.minCachesSize;
     
     isAvatarUpdated = NO;
     isSavingInProgress = NO;
     
     _saveUserInfoButton.enabled = NO;
-    _activityIndicatorBackgroundView.hidden = YES;
+    _profileActivityBackgroundView.hidden = YES;
 
     // country selection
     NSString *path = [[NSBundle mainBundle] pathForResource:@"countryCodes" ofType:@"plist"];
     countryCodes = [NSArray arrayWithContentsOfFile:path];
     isSelectingCountryCode = NO;
+    
+    // Setup `MXKRoomMemberListViewController` properties
+    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -173,8 +172,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self reset];
     alertsArray = nil;
     logoutBtn = nil;
-    
-    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -182,19 +179,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     selectedCountryCode = countryCode = [[AppSettings sharedSettings] countryCode];
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    [mxHandler addObserver:self forKeyPath:@"isActivityInProgress" options:0 context:nil];
-    
     // Update the minimum cache size with the current value
     // Dispatch this operation to not freeze the app
     dispatch_async(dispatch_get_main_queue(), ^{
-        minimumCacheSize = mxHandler.minCachesSize;
+        minimumCacheSize = self.minCachesSize;
     });
     
     // Refresh display
-    if (mxHandler.isActivityInProgress) {
-        [self startActivityIndicator];
-    }
     [self configureView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
 }
@@ -202,8 +193,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"isActivityInProgress"];
-    [self stopActivityIndicator];
+    [self stopProfileActivityIndicator];
 
     // if country has been updated
     // update the contact phonenumbers
@@ -231,7 +221,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 [alertsArray removeObject:alert];
                 // Discard changes
                 self.userDisplayName.text = currentDisplayName;
-                [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl force:YES];
+                [self updateUserPicture:self.mxSession.myUser.avatarUrl force:YES];
                 // Ready to leave
                 if (handler) {
                     handler();
@@ -278,7 +268,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Remove listener
     if (userUpdateListener) {
-        [[MatrixSDKHandler sharedHandler].mxSession.myUser removeListener:userUpdateListener];
+        [self.mxSession.myUser removeListener:userUpdateListener];
         userUpdateListener = nil;
     }
     
@@ -310,20 +300,34 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     maxCacheSizeCell = nil;
 }
 
-- (void)startActivityIndicator {
-    if (_activityIndicatorBackgroundView.hidden) {
-        _activityIndicatorBackgroundView.hidden = NO;
-        [_activityIndicator startAnimating];
+- (void)setMxSession:(MXSession *)session {
+    
+    [super setMxSession:session];
+    
+    [self configureView];
+}
+
+- (void)didMatrixSessionStateChange {
+    
+    [super didMatrixSessionStateChange];
+    
+    [self configureView];
+}
+
+- (void)startProfileActivityIndicator {
+    if (_profileActivityBackgroundView.hidden) {
+        _profileActivityBackgroundView.hidden = NO;
+        [_profileActivity startAnimating];
     }
     _userPictureButton.enabled = NO;
     _userDisplayName.enabled = NO;
     _saveUserInfoButton.enabled = NO;
 }
 
-- (void)stopActivityIndicator {
-    if (!_activityIndicatorBackgroundView.hidden) {
-        _activityIndicatorBackgroundView.hidden = YES;
-        [_activityIndicator stopAnimating];
+- (void)stopProfileActivityIndicator {
+    if (!_profileActivityBackgroundView.hidden) {
+        _profileActivityBackgroundView.hidden = YES;
+        [_profileActivity stopAnimating];
     }
     _userPictureButton.enabled = YES;
     _userDisplayName.enabled = YES;
@@ -336,28 +340,28 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         return;
     }
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
     // Disable user's interactions
     _userPictureButton.enabled = NO;
     _userDisplayName.enabled = NO;
     
-    if (mxHandler.status == MatrixSDKHandlerStatusServerSyncDone) {
+    if (!self.mxSession) {
+        [self reset];
+    } else if (self.mxSession.state == MXSessionStateRunning) {
         if (!userUpdateListener) {
             // Set current user's information and add observers
-            [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:YES];
-            currentDisplayName = mxHandler.mxSession.myUser.displayname;
+            [self updateUserPicture:self.mxSession.myUser.avatarUrl force:YES];
+            currentDisplayName = self.mxSession.myUser.displayname;
             self.userDisplayName.text = currentDisplayName;
             
             // Register listener to update user's information
-            userUpdateListener = [mxHandler.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
+            userUpdateListener = [self.mxSession.myUser listenToUserUpdate:^(MXEvent *event) {
                 // Update displayName
-                if (![currentDisplayName isEqualToString:mxHandler.mxSession.myUser.displayname]) {
-                    currentDisplayName = mxHandler.mxSession.myUser.displayname;
-                    self.userDisplayName.text = mxHandler.mxSession.myUser.displayname;
+                if (![currentDisplayName isEqualToString:self.mxSession.myUser.displayname]) {
+                    currentDisplayName = self.mxSession.myUser.displayname;
+                    self.userDisplayName.text = self.mxSession.myUser.displayname;
                 }
                 // Update user's avatar
-                [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:NO];
+                [self updateUserPicture:self.mxSession.myUser.avatarUrl force:NO];
                 
                 // Update button management
                 [self updateSaveUserInfoButtonStatus];
@@ -365,18 +369,16 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 // TODO display user's presence
             }];
         }
-    } else if (mxHandler.status == MatrixSDKHandlerStatusStoreDataReady || mxHandler.status == MatrixSDKHandlerStatusInitialServerSyncInProgress) {
+    } else if (self.mxSession.state == MXSessionStateStoreDataReady || self.mxSession.state == MXSessionStateSyncInProgress) {
         // Remove listener (if any), this action is required to handle correctly matrix sdk handler reload (see clear cache)
         if (userUpdateListener) {
-            [mxHandler.mxSession.myUser removeListener:userUpdateListener];
+            [self.mxSession.myUser removeListener:userUpdateListener];
             userUpdateListener = nil;
         }
         // Set local user's information (the data may not be up-to-date)
-        [self updateUserPicture:mxHandler.mxSession.myUser.avatarUrl force:NO];
-        currentDisplayName = mxHandler.mxSession.myUser.displayname;
+        [self updateUserPicture:self.mxSession.myUser.avatarUrl force:NO];
+        currentDisplayName = self.mxSession.myUser.displayname;
         self.userDisplayName.text = currentDisplayName;
-    } else if (mxHandler.status == MatrixSDKHandlerStatusLoggedOut) {
-        [self reset];
     }
     
     // Restore user's interactions
@@ -387,15 +389,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)saveUserInfo {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    [self startActivityIndicator];
+    [self startProfileActivityIndicator];
     isSavingInProgress = YES;
     
     // Check whether the display name has been changed
     NSString *displayname = self.userDisplayName.text;
     if ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO) {
         // Save display name
-        [mxHandler.mxSession.myUser setDisplayName:displayname success:^{
+        [self.mxSession.myUser setDisplayName:displayname success:^{
             // Update the current displayname
             currentDisplayName = displayname;
             // Go to the next change saving step
@@ -415,7 +416,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 [alertsArray removeObject:alert];
                 // Discard changes
                 self.userDisplayName.text = currentDisplayName;
-                [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl force:YES];
+                [self updateUserPicture:self.mxSession.myUser.avatarUrl force:YES];
                 // Loop to end saving
                 [self saveUserInfo];
             }];
@@ -436,7 +437,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[self.userPictureButton imageForState:UIControlStateNormal]];
             
             // Upload picture
-            MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:mxHandler.mxSession initialRange:0 andRange:1.0];
+            MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:self.mxSession initialRange:0 andRange:1.0];
             [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) mimeType:@"image/jpeg" success:^(NSString *url) {
                 // Store uploaded picture url and trigger picture saving
                 uploadedPictureURL = url;
@@ -446,7 +447,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 [self handleErrorDuringPictureSaving:error];
             }];
         } else {
-            [mxHandler.mxSession.myUser setAvatarUrl:uploadedPictureURL
+            [self.mxSession.myUser setAvatarUrl:uploadedPictureURL
                                              success:^{
                                                  // uploadedPictureURL becomes the user's picture
                                                  [self updateUserPicture:uploadedPictureURL force:YES];
@@ -462,10 +463,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Backup is complete
     isSavingInProgress = NO;
-    // Stop activity indicator except if matrix sdk handler is working
-    if (!mxHandler.isActivityInProgress) {
-        [self stopActivityIndicator];
-    }
+    [self stopProfileActivityIndicator];
 }
 
 - (void)handleErrorDuringPictureSaving:(NSError*)error {
@@ -481,7 +479,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [alertsArray removeObject:alert];
         // Remove change
         self.userDisplayName.text = currentDisplayName;
-        [self updateUserPicture:[MatrixSDKHandler sharedHandler].mxSession.myUser.avatarUrl force:YES];
+        [self updateUserPicture:self.mxSession.myUser.avatarUrl force:YES];
         // Loop to end saving
         [self saveUserInfo];
     }];
@@ -510,8 +508,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         currentPictureURL = [avatar_url isEqual:[NSNull null]] ? nil : avatar_url;
         if (currentPictureURL) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-            currentPictureThumbURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:currentPictureURL toFitViewSize:self.userPictureButton.frame.size withMethod:MXThumbnailingMethodCrop];
+            currentPictureThumbURL = [self.mxSession.matrixRestClient urlOfContentThumbnail:currentPictureURL toFitViewSize:self.userPictureButton.frame.size withMethod:MXThumbnailingMethodCrop];
             NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:currentPictureThumbURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
             
             // Check whether the image download is in progress
@@ -587,22 +584,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
 }
 
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"status" isEqualToString:keyPath]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self configureView];
-        });
-    } else if ([@"isActivityInProgress" isEqualToString:keyPath]) {
-        if ([MatrixSDKHandler sharedHandler].isActivityInProgress || isSavingInProgress) {
-            [self startActivityIndicator];
-        } else {
-            [self stopActivityIndicator];
-        }
-    }
-}
-
 #pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender {
@@ -641,8 +622,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             if (success) {
                 // The email has been "Authenticated"
                 // Link the email with user's account
-                MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-                [submittedEmail bindWithUserId:mxHandler.userId success:^{
+                [submittedEmail bindWithUserId:self.mxSession.myUser.userId success:^{
                     // Add new linked email
                     if (!linkedEmails) {
                         linkedEmails = [NSMutableArray array];
@@ -706,12 +686,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (IBAction)onSliderValueChange:(id)sender {
     if (sender == maxCacheSizeCell.settingSlider) {
         
-        MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
         UISlider* slider = maxCacheSizeCell.settingSlider;
         
         // check if the upper bounds have been updated
-        if (slider.maximumValue != mxHandler.maxAllowedCachesSize) {
-            slider.maximumValue = mxHandler.maxAllowedCachesSize;
+        if (slider.maximumValue != self.maxAllowedCachesSize) {
+            slider.maximumValue = self.maxAllowedCachesSize;
         }
         
         // check if the value does not exceed the bounds
@@ -719,9 +698,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             slider.value = minimumCacheSize;
         }
         
-        [[MatrixSDKHandler sharedHandler] setCurrentMaxCachesSize:slider.value];
+        [self setCurrentMaxCachesSize:slider.value];
         
-        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:self.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
     }
 }
 
@@ -838,8 +817,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId];
+        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, self.mxSession.matrixRestClient.homeserver, self.mxSession.matrixRestClient.identityServer, self.mxSession.myUser.userId];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -884,7 +862,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     UITableViewCell *cell = nil;
     
     if (indexPath.section == SETTINGS_SECTION_LINKED_EMAILS_INDEX) {
@@ -1001,14 +978,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"Clear Cache (%@)", [NSByteCountFormatter stringFromByteCount:mxHandler.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+            cell.textLabel.text = [NSString stringWithFormat:@"Clear Cache (%@)", [NSByteCountFormatter stringFromByteCount:self.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
         } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
             maxCacheSizeCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSilder" forIndexPath:indexPath];
             maxCacheSizeCell.settingSlider.minimumValue = 0;
-            maxCacheSizeCell.settingSlider.maximumValue = mxHandler.maxAllowedCachesSize;
-            maxCacheSizeCell.settingSlider.value = mxHandler.currentMaxCachesSize;
+            maxCacheSizeCell.settingSlider.maximumValue = self.maxAllowedCachesSize;
+            maxCacheSizeCell.settingSlider.value = self.currentMaxCachesSize;
             
             [self onSliderValueChange:maxCacheSizeCell.settingSlider];
             cell = maxCacheSizeCell;
@@ -1046,7 +1023,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, mxHandler.homeServerURL, mxHandler.identityServerURL, mxHandler.userId];
+        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, self.mxSession.matrixRestClient.homeserver, self.mxSession.matrixRestClient.identityServer, self.mxSession.myUser.userId];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
         SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
@@ -1131,6 +1108,44 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
+}
+
+#pragma mark Cache handling
+
+// return the MX cache size in bytes
+- (NSUInteger) MXCacheSize {
+    
+    if (self.mxSession.store && [self.mxSession.store isKindOfClass:[MXFileStore class]]) {
+        MXFileStore *fileStore = (MXFileStore*)self.mxSession.store;
+        return fileStore.diskUsage;
+    }
+    
+    return 0;
+}
+
+// return the sum of the caches (MX cache + media cache ...) in bytes
+- (NSUInteger) cachesSize {
+    return self.MXCacheSize + [MXKMediaManager cacheSize];
+}
+
+// defines the min allow cache size in bytes
+- (NSUInteger) minCachesSize {
+    // add a 50MB margin to avoid cache file deletion
+    return self.MXCacheSize + [MXKMediaManager minCacheSize] + 50 * 1024 * 1024;
+}
+
+// defines the current max caches size in bytes
+- (NSUInteger) currentMaxCachesSize {
+    return self.MXCacheSize + [MXKMediaManager currentMaxCacheSize];
+}
+
+- (void)setCurrentMaxCachesSize:(NSUInteger)maxCachesSize {
+    [MXKMediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
+}
+
+// defines the max allowed caches size in bytes
+- (NSUInteger) maxAllowedCachesSize {
+    return self.MXCacheSize + [MXKMediaManager maxAllowedCacheSize];
 }
 
 @end

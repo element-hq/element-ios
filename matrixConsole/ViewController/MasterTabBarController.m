@@ -20,9 +20,13 @@
 #import "RecentsViewController.h"
 #import "RecentListDataSource.h"
 
+#import "SettingsViewController.h"
+
 @interface MasterTabBarController () {
     UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
+    
+    SettingsViewController *settingsViewController;
     
     UIImagePickerController *mediaPicker;
     
@@ -58,6 +62,20 @@
         }
     }
     
+    // Retrieve the settings view controller
+    UIViewController* settings = [self.viewControllers objectAtIndex:TABBAR_SETTINGS_INDEX];
+    if ([settings isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *settingsNavigationController = (UINavigationController*)settings;
+        for (UIViewController *viewController in settingsNavigationController.viewControllers) {
+            if ([viewController isKindOfClass:[SettingsViewController class]]) {
+                settingsViewController = (SettingsViewController*)viewController;
+            }
+        }
+    }
+    
+    // Sanity check
+    NSAssert(recentsViewController && settingsViewController, @"Something wrong in Main.storyboard");
+    
     // Register session state observer
     sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -65,11 +83,12 @@
         if (notif.object != mxSession) {
             mxSession = notif.object;
             
-            if (recentsViewController) {
-                // List all the recents for the logged user
-                MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
-                [recentsViewController displayList:listDataSource];
-            }
+            // List all the recents for the logged user
+            MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+            [recentsViewController displayList:listDataSource];
+            
+            // Update settings tab
+            settingsViewController.mxSession = mxSession;
         }
     }];
 }
@@ -90,6 +109,7 @@
 - (void)dealloc {
     recentsNavigationController = nil;
     recentsViewController = nil;
+    settingsViewController = nil;
     
     [self dismissMediaPicker];
     
@@ -115,6 +135,9 @@
 
 - (void)showAuthenticationScreen {
     [self restoreInitialDisplay];
+    
+    // Reset user's information in settings
+    settingsViewController.mxSession = nil;
     
     [self performSegueWithIdentifier:@"showAuth" sender:self];
 }

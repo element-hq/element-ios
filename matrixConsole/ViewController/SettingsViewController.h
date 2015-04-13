@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  limitations under the License.
  */
 
-#import "MXCTableViewController.h"
+#import <MatrixKit/MatrixKit.h>
 
-@interface SettingsViewController : MXCTableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface SettingsViewController : MXKTableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 typedef void (^blockSettings_onReadyToLeave)();
 
-- (void)reset;
 - (BOOL)shouldLeave:(blockSettings_onReadyToLeave)handler;
 
 @end

@@ -48,16 +48,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic,readonly) MatrixSDKHandlerStatus status;
 @property (nonatomic,readonly) BOOL isActivityInProgress;
-// return the MX cache size in bytes
-@property (nonatomic,readonly) NSUInteger MXCacheSize;
-// return the sum of the caches (MX cache + media cache ...) in bytes
-@property (nonatomic,readonly) NSUInteger cachesSize;
-// defines the min allow cache size in bytes
-@property (nonatomic,readonly) NSUInteger minCachesSize;
-// defines the current max caches size in bytes
-@property (nonatomic,readwrite) NSUInteger currentMaxCachesSize;
-// defines the max allowed caches size in bytes
-@property (nonatomic,readonly) NSUInteger maxAllowedCachesSize;
 
 + (MatrixSDKHandler *)sharedHandler;
 

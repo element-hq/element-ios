@@ -620,38 +620,6 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
 }
 
-#pragma mark Cache handling
-
-- (NSUInteger) MXCacheSize {
-    
-    if (self.mxFileStore) {
-        return self.mxFileStore.diskUsage;
-    }
-    
-    return 0;
-}
-
-- (NSUInteger) cachesSize {
-    return self.MXCacheSize + [MXKMediaManager cacheSize];
-}
-
-- (NSUInteger) minCachesSize {
-    // add a 50MB margin to avoid cache file deletion
-    return self.MXCacheSize + [MXKMediaManager minCacheSize] + 50 * 1024 * 1024;
-}
-
-- (NSUInteger) currentMaxCachesSize {
-    return self.MXCacheSize + [MXKMediaManager currentMaxCacheSize];
-}
-
-- (void)setCurrentMaxCachesSize:(NSUInteger)maxCachesSize {
-    [MXKMediaManager setCurrentMaxCacheSize:maxCachesSize - self.MXCacheSize];
-}
-
-- (NSUInteger) maxAllowedCachesSize {
-    return self.MXCacheSize + [MXKMediaManager maxAllowedCacheSize];
-}
-
 #pragma mark - Matrix user's settings
 
 - (void)setUserPresence:(MXPresence)userPresence andStatusMessage:(NSString *)statusMessage completion:(void (^)(void))completion {

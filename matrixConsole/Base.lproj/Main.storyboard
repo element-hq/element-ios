@@ -1425,8 +1425,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="7NM-zW-wJT"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="1H7-DG-oTV" id="UEC-5U-M70"/>
-                        <outlet property="activityIndicatorBackgroundView" destination="5as-wy-D5h" id="UyJ-Fq-fhN"/>
+                        <outlet property="profileActivity" destination="1H7-DG-oTV" id="g7Z-2f-n0m"/>
+                        <outlet property="profileActivityBackgroundView" destination="5as-wy-D5h" id="3Wf-yP-k8W"/>
                         <outlet property="saveUserInfoButton" destination="T3d-LT-ivg" id="IX1-WM-Dwv"/>
                         <outlet property="tableHeader" destination="ZP5-e3-ge9" id="nd0-lU-aW3"/>
                         <outlet property="tableView" destination="etG-ZU-b2r" id="5hz-jQ-qVT"/>
