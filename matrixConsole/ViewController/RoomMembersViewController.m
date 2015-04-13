@@ -123,18 +123,11 @@
             roomMembersSearchBar.returnKeyType = UIReturnKeyDone;
             roomMembersSearchBar.delegate = self;
             searchBarShouldEndEditing = NO;
-            // add it to the tableHeaderView
-            // do not create a header view
-            // the header view is refreshed every time there is a [tableView reloaddata]
-            // i.e. there is a removeFromSuperView call, the view is added to the tableview..
-            // with a first respondable view, IOS seems lost to find the first responder
-            // so, the keyboard is always displayed and can not be dismissed
-            // tableHeaderView is never removed from superview so the first responder is not lost
-            self.tableView.tableHeaderView = roomMembersSearchBar;
-
             [roomMembersSearchBar becomeFirstResponder];
             
-            [self scrollToTop];
+            // Force table refresh to add search bar in section header
+            shouldScrollToTopOnRefresh = YES;
+            [self dataSource:self.dataSource didCellChange:nil];
         }
     } else {
         [self searchBarCancelButtonClicked: roomMembersSearchBar];
@@ -174,6 +167,18 @@
     selectedMember = member;
     [self performSegueWithIdentifier:@"showDetails" sender:self];
 }
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (roomMembersSearchBar) {
+        return (roomMembersSearchBar.frame.size.height);
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return roomMembersSearchBar;
+}
 
 #pragma mark - UISearchBarDelegate
 
@@ -209,7 +214,6 @@
     searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
     roomMembersSearchBar = nil;
-    self.tableView.tableHeaderView = nil;
     
     // Refresh display
     shouldScrollToTopOnRefresh = YES;
