@@ -112,8 +112,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 @property (weak, nonatomic) IBOutlet UIButton *userPictureButton;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayName;
 @property (weak, nonatomic) IBOutlet UIButton *saveUserInfoButton;
-@property (strong, nonatomic) IBOutlet UIView *profileActivityBackgroundView;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *profileActivity;
+@property (strong, nonatomic) IBOutlet UIView *profileActivityIndicatorBgView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *profileActivityIndicator;
 
 - (IBAction)onButtonPressed:(id)sender;
 
@@ -147,7 +147,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     isSavingInProgress = NO;
     
     _saveUserInfoButton.enabled = NO;
-    _profileActivityBackgroundView.hidden = YES;
+    _profileActivityIndicatorBgView.hidden = YES;
 
     // country selection
     NSString *path = [[NSBundle mainBundle] pathForResource:@"countryCodes" ofType:@"plist"];
@@ -193,7 +193,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [self stopProfileActivityIndicator];
+    [self stopActivityIndicator];
 
     // if country has been updated
     // update the contact phonenumbers
@@ -242,6 +242,44 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         return NO;
     }
     return YES;
+}
+
+#pragma mark - overridden MXKTableViewController methods
+
+- (void)setMxSession:(MXSession *)session {
+    
+    [super setMxSession:session];
+    
+    [self configureView];
+}
+
+- (void)didMatrixSessionStateChange {
+    
+    [super didMatrixSessionStateChange];
+    
+    [self configureView];
+}
+
+- (void)startActivityIndicator {
+    if (_profileActivityIndicatorBgView.hidden) {
+        _profileActivityIndicatorBgView.hidden = NO;
+        [_profileActivityIndicator startAnimating];
+    }
+    _userPictureButton.enabled = NO;
+    _userDisplayName.enabled = NO;
+    _saveUserInfoButton.enabled = NO;
+}
+
+- (void)stopActivityIndicator {
+    if (!isSavingInProgress) {
+        if (!_profileActivityIndicatorBgView.hidden) {
+            _profileActivityIndicatorBgView.hidden = YES;
+            [_profileActivityIndicator stopAnimating];
+        }
+        _userPictureButton.enabled = YES;
+        _userDisplayName.enabled = YES;
+        [self updateSaveUserInfoButtonStatus];
+    }
 }
 
 #pragma mark - Internal methods
@@ -300,40 +338,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     maxCacheSizeCell = nil;
 }
 
-- (void)setMxSession:(MXSession *)session {
-    
-    [super setMxSession:session];
-    
-    [self configureView];
-}
-
-- (void)didMatrixSessionStateChange {
-    
-    [super didMatrixSessionStateChange];
-    
-    [self configureView];
-}
-
-- (void)startProfileActivityIndicator {
-    if (_profileActivityBackgroundView.hidden) {
-        _profileActivityBackgroundView.hidden = NO;
-        [_profileActivity startAnimating];
-    }
-    _userPictureButton.enabled = NO;
-    _userDisplayName.enabled = NO;
-    _saveUserInfoButton.enabled = NO;
-}
-
-- (void)stopProfileActivityIndicator {
-    if (!_profileActivityBackgroundView.hidden) {
-        _profileActivityBackgroundView.hidden = YES;
-        [_profileActivity stopAnimating];
-    }
-    _userPictureButton.enabled = YES;
-    _userDisplayName.enabled = YES;
-    [self updateSaveUserInfoButtonStatus];
-}
-
 - (void)configureView {
     // Ignore any refresh when saving is in progress
     if (isSavingInProgress) {
@@ -389,7 +393,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (void)saveUserInfo {
-    [self startProfileActivityIndicator];
+    
+    [self startActivityIndicator];
     isSavingInProgress = YES;
     
     // Check whether the display name has been changed
@@ -463,7 +468,11 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Backup is complete
     isSavingInProgress = NO;
-    [self stopProfileActivityIndicator];
+    // Stop activity indicator except if matrix session is working
+    if (self.mxSession.state != MXSessionStateSyncInProgress && self.mxSession.state != MXSessionStateInitialised) {
+        [self stopActivityIndicator];
+    }
+    
 }
 
 - (void)handleErrorDuringPictureSaving:(NSError*)error {
