@@ -32,7 +32,6 @@
 }
 
 // graphical objects
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *memberThumbnailButton;
 @property (weak, nonatomic) IBOutlet UITextView *roomMemberMID;
 
