@@ -65,7 +65,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 @property (strong, nonatomic) MXKAlert *startChatMenu;
 @property (strong, nonatomic) MXKAlert *allowContactSyncAlert;
-@property (weak, nonatomic) IBOutlet UITableView* tableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl* contactsControls;
 @end
 
@@ -92,14 +91,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
-    // required to reduce the tableview height while searching
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
@@ -107,9 +98,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     if (contactsSearchBar) {
         [self searchBarCancelButtonClicked:contactsSearchBar];
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)scrollToTop {
@@ -165,80 +153,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     [super didMatrixSessionStateChange];
     
     [self refreshMatrixUsers];
-}
-
-#pragma mark - Keyboard handling
-
-- (void)onKeyboardWillShow:(NSNotification *)notif {
-    // get the keyboard size
-    NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
-    CGRect endRect = rectVal.CGRectValue;
-    
-    // IOS 8 triggers some unexpected keyboard events
-    if ((endRect.size.height == 0) || (endRect.size.width == 0)) {
-        return;
-    }
-    
-    CGFloat keyboardHeight = (endRect.origin.y == 0) ? endRect.size.width : endRect.size.height;
-    
-    // the tableview bottom inset must also be updated
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.bottom = keyboardHeight;
-    
-    // get the animation info
-    NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    // the duration is ignored but it is better to define it
-    double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-
-    [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
-        // reduce the tableview height
-        self.tableView.contentInset = insets;
-        [self.view layoutIfNeeded];
-        
-    } completion:^(BOOL finished) {
-    }];
-}
-
-- (void)onKeyboardWillHide:(NSNotification *)notif {
-    // get the keyboard size
-    NSValue *rectVal = notif.userInfo[UIKeyboardFrameEndUserInfoKey];
-    CGRect endRect = rectVal.CGRectValue;
-    
-    rectVal = notif.userInfo[UIKeyboardFrameBeginUserInfoKey];
-    CGRect beginRect = rectVal.CGRectValue;
-    
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.bottom = 0;
-    
-    // do not animate if the both rect are the same
-    // but ensure that the fields are properly resetted
-    // e.g. when the user swipes to hide the keyboard
-    // this method is called with invalid rects
-    // animationDuration is ignored because of the animation curve
-    // use it to be sure that it will be broken with any new IOS update
-    if (CGRectEqualToRect(endRect, beginRect)) {
-        
-        self.tableView.contentInset = insets;
-        [self.view layoutIfNeeded];
-        
-    } else {
-        // get the animation info
-        NSNumber *curveValue = [[notif userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-        UIViewAnimationCurve animationCurve = curveValue.intValue;
-        
-        // the duration is ignored but it is better to define it
-        double animationDuration = [[[notif userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        
-        // animate the keyboard closing
-        [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | (animationCurve << 16) animations:^{
-            self.tableView.contentInset = insets;
-            [self.view layoutIfNeeded];
-            
-        } completion:^(BOOL finished) {
-        }];
-    }
 }
 
 #pragma mark - UITableView delegate
@@ -329,6 +243,11 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 }
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
+    if (contactsSearchBar) {
+        // Hide section titles during search session
+        return nil;
+    }
+    
     SectionedContacts* sectionedContacts = contactsSearchBar ? sectionedFilteredContacts : (displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts);
     
     if (sectionedContacts.sectionTitles.count <= section) {
@@ -374,7 +293,29 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     return section;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    // In case of search, the section titles are hidden and the search bar is displayed in first section header.
+    if (contactsSearchBar) {
+        if (section == 0) {
+            return contactsSearchBar.frame.size.height;
+        }
+        return 0;
+        
+    }
+    
+    // Default section header height
+    return 22;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (contactsSearchBar && section == 0) {
+        return contactsSearchBar;
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactTableCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     SectionedContacts* sectionedContacts = contactsSearchBar ? sectionedFilteredContacts : (displayMatrixUsers ? sectionedMatrixContacts : sectionedLocalContacts);
     
@@ -649,6 +590,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         if (sectionedContacts.sectionedContacts.count > 0) {
             // Create search bar
             contactsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+            contactsSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             contactsSearchBar.showsCancelButton = YES;
             contactsSearchBar.returnKeyType = UIReturnKeyDone;
             contactsSearchBar.delegate = self;
@@ -659,8 +601,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             latestSearchedPattern = @"";
             filteredContacts = [(displayMatrixUsers ? [matrixUserByMatrixID allValues] : localContacts) mutableCopy];
             sectionedFilteredContacts = [[ContactManager sharedManager] getSectionedContacts:filteredContacts];
-            
-            self.tableView.tableHeaderView = contactsSearchBar;
+
             [self.tableView reloadData];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -744,11 +685,11 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         // Leave search
         searchBarShouldEndEditing = YES;
         [contactsSearchBar resignFirstResponder];
+        [contactsSearchBar removeFromSuperview];
         contactsSearchBar = nil;
         filteredContacts = nil;
         sectionedFilteredContacts = nil;
         latestSearchedPattern = nil;
-        self.tableView.tableHeaderView = nil;
         [self.tableView reloadData];
         [self scrollToTop];
     }
