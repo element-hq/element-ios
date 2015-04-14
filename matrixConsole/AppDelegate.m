@@ -21,7 +21,7 @@
 #import "MatrixSDKHandler.h"
 #import "SettingsViewController.h"
 #import "ContactManager.h"
-#import "RageShakableUIResponder.h"
+#import "RageShakeManager.h"
 
 #import "AFNetworkReachabilityManager.h"
 
@@ -208,7 +208,7 @@
     
     // check if the app crashed last time
     if ([MXLogger crashLog]) {
-        [RageShakableUIResponder reportCrash:self.masterTabBarController.selectedViewController];
+        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXCViewController.h"
+#import <MatrixKit/MatrixKit.h>
 
 // SMS
 #import <MessageUI/MessageUI.h>
@@ -22,7 +22,7 @@
 
 #import "SectionedContacts.h"
 
-@interface ContactsViewController : MXCViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
+@interface ContactsViewController : MXKViewController <UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
     NSArray* collationTitles;
 }
 

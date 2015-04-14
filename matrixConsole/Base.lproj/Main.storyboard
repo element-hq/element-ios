@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GsA-m1-kGB">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -992,12 +993,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="J51-Cj-6mb" id="hYh-tr-rjl"/>
                         <outlet property="authInputContainerViewHeightConstraint" destination="gDV-QE-CXd" id="w2j-CW-jC6"/>
                         <outlet property="authInputsContainerView" destination="sQb-Oi-ER6" id="16R-BA-8pJ"/>
                         <outlet property="authInputsEmailCodeBasedView" destination="G6Y-YQ-PvU" id="8IM-sx-LeP"/>
                         <outlet property="authInputsPasswordBasedView" destination="O8N-hu-Ewh" id="1ZN-jj-Txd"/>
                         <outlet property="authSwitchButton" destination="bYl-BD-hfc" id="RmX-1U-gbu"/>
+                        <outlet property="authenticationActivityIndicator" destination="J51-Cj-6mb" id="kKy-b0-RS1"/>
                         <outlet property="authenticationScrollView" destination="udG-Mx-F4c" id="tzx-0l-1q0"/>
                         <outlet property="cancelRegistrationFallbackButton" destination="Wy8-eL-0qs" id="zDb-ys-RHw"/>
                         <outlet property="contentView" destination="d6h-O8-aBs" id="hId-Ic-rv4"/>
@@ -1527,15 +1528,6 @@
                                     <action selector="onSegmentValueChange:" destination="T6e-9y-AqE" eventType="valueChanged" id="U89-7D-KKY"/>
                                 </connections>
                             </segmentedControl>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="OWX-v0-faA">
-                                <rect key="frame" x="275" y="275" width="50" height="50"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="e0i-Ar-tnQ"/>
-                                    <constraint firstAttribute="height" constant="50" id="eCx-pZ-Aug"/>
-                                </constraints>
-                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GiR-2B-wso">
                                 <rect key="frame" x="0.0" y="109" width="600" height="442"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1623,11 +1615,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="OWX-v0-faA" secondAttribute="centerY" id="3iG-60-3sk"/>
                             <constraint firstItem="GiR-2B-wso" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="45" id="7L2-mw-dWo"/>
                             <constraint firstAttribute="centerX" secondItem="GiR-2B-wso" secondAttribute="centerX" id="BXv-w3-LS1"/>
                             <constraint firstAttribute="centerX" secondItem="gMZ-iG-iB5" secondAttribute="centerX" id="WIY-IA-T10"/>
-                            <constraint firstAttribute="centerX" secondItem="OWX-v0-faA" secondAttribute="centerX" id="ZxB-pu-Yac"/>
                             <constraint firstItem="FkA-Yc-vh2" firstAttribute="top" secondItem="GiR-2B-wso" secondAttribute="bottom" id="krK-n7-1p5"/>
                             <constraint firstAttribute="width" secondItem="GiR-2B-wso" secondAttribute="width" id="sAo-JV-zW1"/>
                             <constraint firstItem="gMZ-iG-iB5" firstAttribute="top" secondItem="L1O-2c-1vM" secondAttribute="bottom" constant="8" id="v8x-IF-zFQ"/>
@@ -1635,7 +1625,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Contacts" id="CVL-bD-nUg"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="OWX-v0-faA" id="vXQ-cW-GRq"/>
                         <outlet property="contactsControls" destination="gMZ-iG-iB5" id="MbP-gm-SP2"/>
                         <outlet property="tableView" destination="GiR-2B-wso" id="lQe-yC-KZP"/>
                         <segue destination="ro1-6w-v07" kind="show" identifier="showContactDetails" id="QNn-Ne-Cer"/>

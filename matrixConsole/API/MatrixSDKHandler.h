@@ -60,9 +60,6 @@ typedef enum : NSUInteger {
 
 - (void)enableInAppNotifications:(BOOL)isEnabled;
 
-// return a userIds list of 1:1 room members
-- (NSArray*)oneToOneRoomMemberIDs;
-
 // Searches if a private OneToOne room has been started with this user
 // Returns the room ID (nil if not found)
 - (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId;

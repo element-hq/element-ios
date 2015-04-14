@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 
 #import "ContactsViewController.h"
 
-// SDK api
-#import "MatrixSDKHandler.h"
-
 // application info
 #import "AppDelegate.h"
+#import "MatrixSDKHandler.h"
 
 // contacts management
 #import "ContactManager.h"
@@ -33,6 +31,8 @@
 
 // settings
 #import "AppSettings.h"
+
+#import "RageShakeManager.h"
 
 //
 #import "ContactDetailsViewController.h"
@@ -67,7 +67,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 @property (strong, nonatomic) MXKAlert *allowContactSyncAlert;
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl* contactsControls;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation ContactsViewController
@@ -81,9 +80,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     // global init
     displayMatrixUsers = (0 == self.contactsControls.selectedSegmentIndex);
     matrixUserByMatrixID = [[NSMutableDictionary alloc] init];
-    
-    // event listener
-    [[MatrixSDKHandler sharedHandler]  addObserver:self forKeyPath:@"status" options:0 context:nil];
 
     // add the search icon on the right
     // need to add more buttons ?
@@ -91,6 +87,9 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     self.navigationItem.rightBarButtonItems = @[searchButton];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerContactsListRefreshNotification object:nil];
+    
+    // Set rageShake handler
+    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,17 +110,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-}
-
-- (void)startActivityIndicator {
-    [_activityIndicator.layer setCornerRadius:5];
-    _activityIndicator.hidden = NO;
-    [_activityIndicator startAnimating];
-}
-
-- (void)stopActivityIndicator {
-    [_activityIndicator stopAnimating];
-    _activityIndicator.hidden = YES;
 }
 
 - (void)scrollToTop {
@@ -149,6 +137,34 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     [self.contactsControls setSelectedSegmentIndex:0];
     [self.tableView reloadData];
+}
+
+- (void)refreshMatrixUsers {
+    if (displayMatrixUsers) {
+        if (contactsSearchBar) {
+            [self updateSectionedMatrixContacts];
+            latestSearchedPattern = nil;
+            [self searchBar:contactsSearchBar textDidChange:contactsSearchBar.text];
+        } else {
+            [self.tableView reloadData];
+        }
+    }
+}
+
+#pragma mark - overridden MXKTableViewController methods
+
+- (void)setMxSession:(MXSession *)session {
+    
+    [super setMxSession:session];
+    
+    [self refreshMatrixUsers];
+}
+
+- (void)didMatrixSessionStateChange {
+    
+    [super didMatrixSessionStateChange];
+    
+    [self refreshMatrixUsers];
 }
 
 #pragma mark - Keyboard handling
@@ -242,15 +258,14 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 }
 
 - (void)updateSectionedMatrixContacts {
-    // Check whether mxSession is available in matrix handler
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    if (!mxHandler.mxSession) {
+    // Check whether mxSession is available
+    if (!self.mxSession) {
         [self startActivityIndicator];
         sectionedMatrixContacts = nil;
     } else {
         [self stopActivityIndicator];
         
-        NSArray* usersIDs = [mxHandler oneToOneRoomMemberIDs];
+        NSArray* usersIDs = [self oneToOneRoomMemberIDs];
         // return a MatrixIDs list of 1:1 room members
         
         NSMutableArray* knownUserIDs = [[matrixUserByMatrixID allKeys] mutableCopy];
@@ -260,7 +275,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         // it could save thumbnail downloads
         for(NSString* userID in usersIDs) {
             //
-            MXUser* user = [mxHandler.mxSession userWithUserId:userID];
+            MXUser* user = [self.mxSession userWithUserId:userID];
             
             // sanity check
             if (user) {
@@ -417,14 +432,13 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     __weak typeof(self) weakSelf = self;
     NSArray* matrixIDs = contact.matrixIdentifiers;
+    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
 
     // matrix user ?
     if (matrixIDs.count) {
         
-        MatrixSDKHandler* mxHandler = [MatrixSDKHandler sharedHandler];
-        
         // display only if the mxSession is available in matrix SDK handler
-        if (mxHandler.mxSession) {
+        if (self.mxSession) {
             // only 1 matrix ID
             if (matrixIDs.count == 1) {
                 NSString* matrixID = [matrixIDs objectAtIndex:0];
@@ -519,25 +533,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     }
 }
 
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"status" isEqualToString:keyPath]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (displayMatrixUsers) {
-                if (contactsSearchBar) {
-                    [self updateSectionedMatrixContacts];
-                    latestSearchedPattern = nil;
-                    [self searchBar:contactsSearchBar textDidChange:contactsSearchBar.text];
-                } else {
-                    [self.tableView reloadData];
-                }
-            }
-        });
-    }
-}
-
 #pragma mark - Actions
 
 - (void)onContactsRefresh:(NSNotification *)notif {
@@ -545,7 +540,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     sectionedLocalContacts = nil;
     
     // there is an user id
-    if ([[MatrixSDKHandler sharedHandler] userId]) {
+    if (self.mxSession && self.mxSession.myUser.userId) {
         [self updateSectionedLocalContacts];
         //
         if (!displayMatrixUsers) {
@@ -757,6 +752,36 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         [self.tableView reloadData];
         [self scrollToTop];
     }
+}
+
+#pragma mark - Matrix session handling
+
+// return a MatrixIDs list of 1:1 room members
+- (NSArray*)oneToOneRoomMemberIDs {
+    
+    NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
+    
+    if (self.mxSession) {
+        for (MXRoom *mxRoom in self.mxSession.rooms) {
+            
+            NSArray* membersList = [mxRoom.state members];
+            
+            // keep only 1:1 chat
+            if ([mxRoom.state members].count <= 2) {
+                
+                for (MXRoomMember* member in membersList) {
+                    // not myself
+                    if (![member.userId isEqualToString:self.mxSession.myUser.userId]) {
+                        if ([matrixIDs indexOfObject:member.userId] == NSNotFound) {
+                            [matrixIDs addObject:member.userId];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return matrixIDs;
 }
 
 @end

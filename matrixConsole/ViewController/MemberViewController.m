@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 
 #import "AppDelegate.h"
 #import "RoomMemberActionsCell.h"
+
+#import "RageShakeManager.h"
 
 @interface MemberViewController () {
     NSString *thumbnailURL;
@@ -56,6 +58,9 @@
     self.tableView.allowsSelection = NO;
     
     buttonsTitles = [[NSMutableArray alloc] init];
+    
+    // Set rageShake handler
+    self.rageShakeManager = [RageShakeManager sharedManager];
     
     // ignore useless update
     if (_mxRoomMember) {
@@ -233,6 +238,7 @@
     // ignore useless update
     if (![_mxRoomMember.userId isEqualToString:aRoomMember.userId]) {
         _mxRoomMember = aRoomMember;
+        [self updateMemberInfo];
     }
 }
 

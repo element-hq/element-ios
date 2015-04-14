@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import "MXCTableViewController.h"
+#import <MatrixKit/MatrixKit.h>
 
-@interface HomeViewController : MXCTableViewController <UITextFieldDelegate, UISearchBarDelegate>
+@interface HomeViewController : MXKTableViewController <UITextFieldDelegate, UISearchBarDelegate>
 
 @end
 

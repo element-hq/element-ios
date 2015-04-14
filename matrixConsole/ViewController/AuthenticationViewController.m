@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "MXCRegistrationWebView.h"
+
+#import "RageShakeManager.h"
 
 @interface AuthenticationViewController () {
     // Current request in progress
@@ -60,7 +62,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *authSwitchButton;
 
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *authenticationActivityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *noFlowLabel;
 @property (weak, nonatomic) IBOutlet UIButton *retryButton;
 
@@ -106,6 +108,9 @@
     
     _homeServerTextField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
     _identityServerTextField.text = [[MatrixSDKHandler sharedHandler] identityServerURL];
+    
+    // Set rageShake handler
+    self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Set initial auth type
     _authType = AuthenticationTypeLogin;
@@ -242,7 +247,7 @@
     [mxCurrentOperation cancel];
     mxCurrentOperation = nil;
     
-    [_activityIndicator startAnimating];
+    [_authenticationActivityIndicator startAnimating];
     self.selectedFlow = nil;
     if (_authType == AuthenticationTypeLogin) {
         mxCurrentOperation = [mxHandler.mxRestClient getLoginFlow:^(NSArray *flows) {
@@ -265,7 +270,7 @@
 }
 
 - (void)handleHomeServerFlows:(NSArray *)flows {
-    [_activityIndicator stopAnimating];
+    [_authenticationActivityIndicator stopAnimating];
     
     [supportedFlows removeAllObjects];
     for (MXLoginFlow* flow in flows) {
@@ -315,7 +320,7 @@
         return;
     }
     
-    [_activityIndicator stopAnimating];
+    [_authenticationActivityIndicator stopAnimating];
     
     // Alert user
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
@@ -373,13 +378,13 @@
         if (matrix.mxRestClient) {
             // Disable user interaction to prevent multiple requests
             [self setUserInteractionEnabled:NO];
-            [_activityIndicator startAnimating];
+            [_authenticationActivityIndicator startAnimating];
             
             if (_authType == AuthenticationTypeLogin) {
                 if ([_selectedFlow.type isEqualToString:kMXLoginFlowTypePassword]) {
                     [matrix.mxRestClient loginWithUser:matrix.userLogin andPassword:_authInputsPasswordBasedView.passWordTextField.text
                                                success:^(MXCredentials *credentials){
-                                                   [_activityIndicator stopAnimating];
+                                                   [_authenticationActivityIndicator stopAnimating];
                                                    
                                                    // Report credentials
                                                    [matrix setUserId:credentials.userId];
@@ -422,7 +427,7 @@
 }
 
 - (void)onFailureDuringAuthRequest:(NSError *)error {
-    [_activityIndicator stopAnimating];
+    [_authenticationActivityIndicator stopAnimating];
     [self setUserInteractionEnabled:YES];
     
     NSLog(@"[AuthenticationVC] Auth request failed: %@", error);

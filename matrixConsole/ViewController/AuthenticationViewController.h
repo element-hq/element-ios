@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import "MXCViewController.h"
+#import <MatrixKit/MatrixKit.h>
 
 #import "AuthInputsView.h"
 
-@interface AuthenticationViewController : MXCViewController <UITextFieldDelegate, AuthInputsViewDelegate>
+@interface AuthenticationViewController : MXKViewController <UITextFieldDelegate, AuthInputsViewDelegate>
 
 @end
 

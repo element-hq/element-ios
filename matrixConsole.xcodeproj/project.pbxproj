@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		3198D9E11A68338B00556695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3198D9E31A68338B00556695 /* Localizable.strings */; };
 		32501A9B1A9B978400C5938F /* MXCRegistrationWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32501A9A1A9B978400C5938F /* MXCRegistrationWebView.m */; };
-		710CA4BF1A7FBEDB00EEFB96 /* MXCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CA4BE1A7FBEDB00EEFB96 /* MXCViewController.m */; };
-		710CA4C21A7FBFED00EEFB96 /* RageShakableUIResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CA4C11A7FBFED00EEFB96 /* RageShakableUIResponder.m */; };
-		710CA4C51A7FC27100EEFB96 /* MXCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CA4C41A7FC27100EEFB96 /* MXCTableViewController.m */; };
 		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
 		710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */ = {isa = PBXBuildFile; fileRef = 710CC3C11A70F28F006EE973 /* MXCContactField.m */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
@@ -90,12 +87,6 @@
 		3198D9E21A68338B00556695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32501A991A9B978400C5938F /* MXCRegistrationWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCRegistrationWebView.h; sourceTree = "<group>"; };
 		32501A9A1A9B978400C5938F /* MXCRegistrationWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCRegistrationWebView.m; sourceTree = "<group>"; };
-		710CA4BD1A7FBEDB00EEFB96 /* MXCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCViewController.h; sourceTree = "<group>"; };
-		710CA4BE1A7FBEDB00EEFB96 /* MXCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCViewController.m; sourceTree = "<group>"; };
-		710CA4C01A7FBFED00EEFB96 /* RageShakableUIResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RageShakableUIResponder.h; sourceTree = "<group>"; };
-		710CA4C11A7FBFED00EEFB96 /* RageShakableUIResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RageShakableUIResponder.m; sourceTree = "<group>"; };
-		710CA4C31A7FC27100EEFB96 /* MXCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCTableViewController.h; sourceTree = "<group>"; };
-		710CA4C41A7FC27100EEFB96 /* MXCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCTableViewController.m; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
 		710CC3C01A70F28F006EE973 /* MXCContactField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXCContactField.h; sourceTree = "<group>"; };
 		710CC3C11A70F28F006EE973 /* MXCContactField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXCContactField.m; sourceTree = "<group>"; };
@@ -302,10 +293,6 @@
 				F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */,
 				71DB9DBF1A495B6400504A09 /* MemberViewController.h */,
 				71DB9DC01A495B6400504A09 /* MemberViewController.m */,
-				710CA4C31A7FC27100EEFB96 /* MXCTableViewController.h */,
-				710CA4C41A7FC27100EEFB96 /* MXCTableViewController.m */,
-				710CA4BD1A7FBEDB00EEFB96 /* MXCViewController.h */,
-				710CA4BE1A7FBEDB00EEFB96 /* MXCViewController.m */,
 				F03EF5F019F171EB00A0EE52 /* RecentsViewController.h */,
 				F03EF5F119F171EB00A0EE52 /* RecentsViewController.m */,
 				F0ADEFF91AD7D2B3008A4F21 /* RoomMembersViewController.h */,
@@ -360,8 +347,6 @@
 				71193D331A6E49F000E59A9E /* MXCEmail.m */,
 				71193D341A6E49F000E59A9E /* MXCPhoneNumber.h */,
 				71193D351A6E49F000E59A9E /* MXCPhoneNumber.m */,
-				710CA4C01A7FBFED00EEFB96 /* RageShakableUIResponder.h */,
-				710CA4C11A7FBFED00EEFB96 /* RageShakableUIResponder.m */,
 				F0F535BD1ACDE46200B603F8 /* RecentListDataSource.h */,
 				F0F535BE1ACDE46200B603F8 /* RecentListDataSource.m */,
 				71193D3C1A6E61AD00E59A9E /* SectionedContacts.h */,
@@ -593,7 +578,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				710CA4BF1A7FBEDB00EEFB96 /* MXCViewController.m in Sources */,
 				7176294F1A77FED800927125 /* ContactDetailsTableCell.m in Sources */,
 				F04A8AD81A3B3DF4008AC915 /* RoomTitleView.m in Sources */,
 				32501A9B1A9B978400C5938F /* MXCRegistrationWebView.m in Sources */,
@@ -611,9 +595,7 @@
 				710CC3C21A70F28F006EE973 /* MXCContactField.m in Sources */,
 				F03EF5FA19F171EB00A0EE52 /* RoomViewController.m in Sources */,
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
-				710CA4C21A7FBFED00EEFB96 /* RageShakableUIResponder.m in Sources */,
 				F0F535BB1ACD6C4F00B603F8 /* RageShakeManager.m in Sources */,
-				710CA4C51A7FC27100EEFB96 /* MXCTableViewController.m in Sources */,
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,

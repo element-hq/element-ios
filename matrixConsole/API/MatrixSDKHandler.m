@@ -637,37 +637,7 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 #pragma mark - Room handling
 
-// return a MatrixIDs list of 1:1 room members
-- (NSArray*)oneToOneRoomMemberIDs {
-    
-    NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-     if (mxHandler.mxSession) {
-         NSArray *recentEvents = [NSMutableArray arrayWithArray:[mxHandler.mxSession recentsWithTypeIn:mxHandler.eventsFilterForMessages]];
-         
-         for (MXEvent *mxEvent in recentEvents) {
-             MXRoom *mxRoom = [mxHandler.mxSession roomWithRoomId:mxEvent.roomId];
-             
-             NSArray* membersList = [mxRoom.state members];
-             
-             // keep only 1:1 chat
-             if ([mxRoom.state members].count <= 2) {
-                 
-                 for (MXRoomMember* member in membersList) {
-                     // not myself
-                     if (![member.userId isEqualToString:mxHandler.userId]) {
-                         if ([matrixIDs indexOfObject:member.userId] == NSNotFound) {
-                             [matrixIDs addObject:member.userId];
-                         }
-                     }
-                 }
-             }
-         }
-     }
-    
-    return matrixIDs;
-}
+
 
 - (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId {
     if (self.mxSession) {

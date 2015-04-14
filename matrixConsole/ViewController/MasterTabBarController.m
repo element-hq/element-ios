@@ -20,11 +20,15 @@
 #import "RecentsViewController.h"
 #import "RecentListDataSource.h"
 
+#import "ContactsViewController.h"
+
 #import "SettingsViewController.h"
 
 @interface MasterTabBarController () {
     UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
+    
+    ContactsViewController *contactsViewController;
     
     SettingsViewController *settingsViewController;
     
@@ -62,6 +66,17 @@
         }
     }
     
+    // Retrieve the constacts view controller
+    UIViewController* contacts = [self.viewControllers objectAtIndex:TABBAR_CONTACTS_INDEX];
+    if ([contacts isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *contactsNavigationController = (UINavigationController*)contacts;
+        for (UIViewController *viewController in contactsNavigationController.viewControllers) {
+            if ([viewController isKindOfClass:[ContactsViewController class]]) {
+                contactsViewController = (ContactsViewController*)viewController;
+            }
+        }
+    }
+    
     // Retrieve the settings view controller
     UIViewController* settings = [self.viewControllers objectAtIndex:TABBAR_SETTINGS_INDEX];
     if ([settings isKindOfClass:[UINavigationController class]]) {
@@ -74,7 +89,7 @@
     }
     
     // Sanity check
-    NSAssert(recentsViewController && settingsViewController, @"Something wrong in Main.storyboard");
+    NSAssert(recentsViewController && contactsViewController && settingsViewController, @"Something wrong in Main.storyboard");
     
     // Register session state observer
     sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -86,6 +101,9 @@
             // List all the recents for the logged user
             MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
             [recentsViewController displayList:listDataSource];
+            
+            // Update contacts tab
+            contactsViewController.mxSession = mxSession;
             
             // Update settings tab
             settingsViewController.mxSession = mxSession;
@@ -109,6 +127,7 @@
 - (void)dealloc {
     recentsNavigationController = nil;
     recentsViewController = nil;
+    contactsViewController = nil;
     settingsViewController = nil;
     
     [self dismissMediaPicker];
@@ -135,6 +154,9 @@
 
 - (void)showAuthenticationScreen {
     [self restoreInitialDisplay];
+    
+    // Reset mxSession information in contacts
+    contactsViewController.mxSession = nil;
     
     // Reset user's information in settings
     settingsViewController.mxSession = nil;

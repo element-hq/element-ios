@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 #import "ContactDetailsTableCell.h"
 
 #import "MatrixSDKHandler.h"
+
+#import "RageShakeManager.h"
 
 @interface ContactDetailsViewController () {
     NSArray* matrixIDs;
@@ -45,6 +47,9 @@
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.rowHeight = 44;
     self.tableView.allowsSelection = NO;
+    
+    // Set rageShake handler
+    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
