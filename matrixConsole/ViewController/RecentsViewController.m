@@ -327,7 +327,7 @@
             currentRoomViewController = (RoomViewController *)controller;
 
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
-            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:NO];
+            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
             [currentRoomViewController displayRoom:roomDataSource];
         }
         
