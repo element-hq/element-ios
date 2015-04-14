@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomMembersViewController : MXKRoomMemberListViewController <MXKRoomMemberListViewControllerDelegate, UISearchBarDelegate>
+@interface RoomMembersViewController : MXKRoomMemberListViewController <MXKRoomMemberListViewControllerDelegate>
 
 @end
 

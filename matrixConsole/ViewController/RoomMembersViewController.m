@@ -22,11 +22,6 @@
 #import "RageShakeManager.h"
 
 @interface RoomMembersViewController () {
-
-    // Search
-    UISearchBar  *roomMembersSearchBar;
-    BOOL searchBarShouldEndEditing;
-    BOOL shouldScrollToTopOnRefresh;
     
     // Keep reference on the current member view controller to release it correctly
     MemberViewController *currentMemberViewController;
@@ -48,10 +43,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(inviteNewMember:)];
-    self.navigationItem.rightBarButtonItems = @[searchButton, addButton];
     
     // Setup `MXKRoomMemberListViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -66,21 +57,11 @@
         currentMemberViewController = nil;
     }
     selectedMember = nil;
-    roomMembersSearchBar = nil;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    // Leave potential search session
-    if (roomMembersSearchBar) {
-        [self searchBarCancelButtonClicked:roomMembersSearchBar];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -90,52 +71,6 @@
         [currentMemberViewController destroy];
         currentMemberViewController = nil;
     }
-}
-
-
-#pragma mark - Internal methods
-
-- (void)refreshRoomMembersDisplay {
-    
-    if (shouldScrollToTopOnRefresh) {
-        [self scrollToTop];
-        shouldScrollToTopOnRefresh = NO;
-    }
-}
-
-- (void)scrollToTop {
-    // stop any scrolling effect
-    [UIView setAnimationsEnabled:NO];
-    // before scrolling to the tableview top
-    self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
-    [UIView setAnimationsEnabled:YES];
-}
-
-#pragma mark - Actions
-
-- (void)search:(id)sender {
-    if (!roomMembersSearchBar) {
-        // Check whether there are data in which search
-        if ([self.dataSource tableView:self.tableView numberOfRowsInSection:0]) {
-            // Create search bar
-            roomMembersSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-            roomMembersSearchBar.showsCancelButton = YES;
-            roomMembersSearchBar.returnKeyType = UIReturnKeyDone;
-            roomMembersSearchBar.delegate = self;
-            searchBarShouldEndEditing = NO;
-            [roomMembersSearchBar becomeFirstResponder];
-            
-            // Force table refresh to add search bar in section header
-            shouldScrollToTopOnRefresh = YES;
-            [self dataSource:self.dataSource didCellChange:nil];
-        }
-    } else {
-        [self searchBarCancelButtonClicked: roomMembersSearchBar];
-    }
-}
-
-- (void)inviteNewMember:(id)sender {
-    // TODO GFO
 }
 
 #pragma mark - Segues
@@ -153,71 +88,12 @@
     }
 }
 
-#pragma mark - MXKDataSourceDelegate
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes {
-    [super dataSource:dataSource didCellChange:changes];
-    
-    [self refreshRoomMembersDisplay];
-}
-
 #pragma mark - MXKRoomMemberListViewControllerDelegate
 - (void)roomMemberListViewController:(MXKRoomMemberListViewController *)roomMemberListViewController didSelectMember:(MXRoomMember *)member {
     
     // Report the selected member and open details view
     selectedMember = member;
     [self performSegueWithIdentifier:@"showDetails" sender:self];
-}
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (roomMembersSearchBar) {
-        return (roomMembersSearchBar.frame.size.height);
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return roomMembersSearchBar;
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    searchBarShouldEndEditing = NO;
-    return YES;
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    return searchBarShouldEndEditing;
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    
-    // Apply filter
-    shouldScrollToTopOnRefresh = YES;
-    if (searchText.length) {
-        [self.dataSource searchWithPatterns:@[searchText]];
-    } else {
-        [self.dataSource searchWithPatterns:nil];
-    }
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    // "Done" key has been pressed
-    searchBarShouldEndEditing = YES;
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    
-    // Leave search
-    searchBarShouldEndEditing = YES;
-    [searchBar resignFirstResponder];
-    roomMembersSearchBar = nil;
-    
-    // Refresh display
-    shouldScrollToTopOnRefresh = YES;
-    [self.dataSource searchWithPatterns:nil];
 }
 
 @end
