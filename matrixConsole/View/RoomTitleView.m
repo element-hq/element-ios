@@ -218,8 +218,6 @@
 }
 
 - (void)layoutSubviews {
-    // mother class call
-    [super layoutSubviews];
 
     // add a mask to trap the tap events
     // it is faster (and simpliest) than subclassing the scrollview or the textField
@@ -240,6 +238,10 @@
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startTopicAnimation)];
         [topicTextFieldMaskView addGestureRecognizer:longPress];
     }
+    
+    
+    // mother class call
+    [super layoutSubviews];
 }
 
 - (void)setFrame:(CGRect)frame {
