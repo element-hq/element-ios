@@ -58,8 +58,6 @@ typedef enum : NSUInteger {
 // Flush and restore Matrix data
 - (void)reload:(BOOL)clearCache;
 
-- (void)enableInAppNotifications:(BOOL)isEnabled;
-
 // Searches if a private OneToOne room has been started with this user
 // Returns the room ID (nil if not found)
 - (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId;

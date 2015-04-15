@@ -228,7 +228,7 @@
     // Take into account dataSource state to update UI
     [self updateUI];
     
-    if ([super.class respondsToSelector:@selector(dataSource:didStateChange:)]) {
+    if ([super respondsToSelector:@selector(dataSource:didStateChange:)]) {
         [super dataSource:dataSource didStateChange:state];
     }
 }

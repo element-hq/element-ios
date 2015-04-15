@@ -95,11 +95,17 @@ static MatrixSDKHandler *sharedHandler = nil;
         
         _unnotifiedRooms = [[NSMutableArray alloc] init];
         _partialTextMsgByRoomId = [[NSMutableDictionary alloc] init];
+        
+        [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
+        [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     }
     return self;
 }
 
 - (void)dealloc {
+    [[MXKAppSettings standardAppSettings] removeObserver:self forKeyPath:@"enableInAppNotifications"];
+    [[MXKAppSettings standardAppSettings] removeObserver:self forKeyPath:@"showAllEventsInRoomHistory"];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
     reachabilityObserver = nil;
@@ -889,6 +895,18 @@ static MatrixSDKHandler *sharedHandler = nil;
         }
     }
     return NO;
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath]) {
+        // Flush and restore Matrix data
+        [self reload:NO];
+    }
+    else if ([@"enableInAppNotifications" isEqualToString:keyPath]) {
+        [self enableInAppNotifications:[[MXKAppSettings standardAppSettings] enableInAppNotifications]];
+    }
 }
 
 @end
