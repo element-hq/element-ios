@@ -513,7 +513,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         }
     
         if (!displayMatrixUsers) {
-            MXKAppSettings* appSettings = [MXKAppSettings sharedSettings];
+            MXKAppSettings* appSettings = [MXKAppSettings standardAppSettings];
             
             if (!appSettings.syncLocalContacts) {
                 __weak typeof(self) weakSelf = self;

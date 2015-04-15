@@ -81,7 +81,7 @@ static ContactManager* sharedContactManager = nil;
         lastSyncDate = nil;
         
         // wait that the mxSession is ready
-        [[MXKAppSettings sharedSettings]  addObserver:self forKeyPath:@"syncLocalContacts" options:0 context:nil];
+        [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"syncLocalContacts" options:0 context:nil];
     }
     
     return self;
@@ -90,7 +90,7 @@ static ContactManager* sharedContactManager = nil;
 -(void)dealloc {
     if (hasStatusObserver) {
         [[MatrixSDKHandler sharedHandler] removeObserver:self forKeyPath:@"status"];
-        [[MXKAppSettings sharedSettings] removeObserver:self forKeyPath:@"syncLocalContacts"];
+        [[MXKAppSettings standardAppSettings] removeObserver:self forKeyPath:@"syncLocalContacts"];
     }
 }
 
@@ -134,7 +134,7 @@ static ContactManager* sharedContactManager = nil;
 - (void)fullRefresh {
     
     // check if the user allowed to sync local contacts
-    if (![[MXKAppSettings sharedSettings] syncLocalContacts]) {
+    if (![[MXKAppSettings standardAppSettings] syncLocalContacts]) {
         contacts = nil;
         // if the user did not allow to sync local contacts
         // ignore this sync
@@ -209,7 +209,7 @@ static ContactManager* sharedContactManager = nil;
         // can list tocal contacts
         if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
             
-            NSString* countryCode = [[MXKAppSettings sharedSettings] phonebookCountryCode];
+            NSString* countryCode = [[MXKAppSettings standardAppSettings] phonebookCountryCode];
             
             
             ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);

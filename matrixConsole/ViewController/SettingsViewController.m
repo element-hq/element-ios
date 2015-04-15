@@ -36,14 +36,14 @@
 #define SETTINGS_SECTION_COUNT               6
 
 // TODO Restore room event settings
-#define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         -1 //0
-#define SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX            -1 //1
-#define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    -1 //2
-#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               -1 //3
-#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       -1 //4
-#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             0  //5
-#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                1  //6
-#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      2  //7
+#define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
+#define SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX            1
+#define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    2
+#define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
+#define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
+#define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             5
+#define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
+#define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
 
 NSString* const kUserInfoNotificationRulesText = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
@@ -124,6 +124,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // Consider the standard settings by default
+    _settings = [MXKAppSettings standardAppSettings];
+    
     // Add logout button in nav bar
     logoutBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     logoutBtn.frame = CGRectMake(0, 0, 60, 44);
@@ -176,7 +179,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    selectedCountryCode = countryCode = [[MXKAppSettings sharedSettings] phonebookCountryCode];
+    if (!_settings) {
+        // Consider the standard settings by default
+        _settings = [MXKAppSettings standardAppSettings];
+    }
+    
+    selectedCountryCode = countryCode = [_settings phonebookCountryCode];
     
     // Update the minimum cache size with the current value
     // Dispatch this operation to not freeze the app
@@ -199,13 +207,13 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // and check if they match now to Matrix Users
     if (![countryCode isEqualToString:selectedCountryCode]) {
         
-        [[MXKAppSettings sharedSettings] setPhonebookCountryCode:selectedCountryCode];
+        [_settings setPhonebookCountryCode:selectedCountryCode];
         countryCode = selectedCountryCode;
         
         [[ContactManager sharedManager] internationalizePhoneNumbers:countryCode];
         [[ContactManager sharedManager] fullRefresh];
     }
-        countryCode = [[MXKAppSettings sharedSettings] phonebookCountryCode];
+        countryCode = [_settings phonebookCountryCode];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
 }
@@ -670,20 +678,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
         apnsNotificationsSwitch.enabled = NO;
     } else if (sender == inAppNotificationsSwitch) {
-        [MXKAppSettings sharedSettings].enableInAppNotifications = inAppNotificationsSwitch.on;
+        _settings.enableInAppNotifications = inAppNotificationsSwitch.on;
         [self.tableView reloadData];
     } else if (sender == allEventsSwitch) {
-        [MXKAppSettings sharedSettings].showAllEventsInRoomHistory = allEventsSwitch.on;
+        _settings.showAllEventsInRoomHistory = allEventsSwitch.on;
     } else if (sender == redactionsSwitch) {
-        [MXKAppSettings sharedSettings].showRedactionsInRoomHistory = redactionsSwitch.on;
+        _settings.showRedactionsInRoomHistory = redactionsSwitch.on;
     } else if (sender == unsupportedEventsSwitch) {
-        [MXKAppSettings sharedSettings].showUnsupportedEventsInRoomHistory = unsupportedEventsSwitch.on;
+        _settings.showUnsupportedEventsInRoomHistory = unsupportedEventsSwitch.on;
     } else if (sender == sortMembersSwitch) {
-        [MXKAppSettings sharedSettings].sortRoomMembersUsingLastSeenTime = sortMembersSwitch.on;
+        _settings.sortRoomMembersUsingLastSeenTime = sortMembersSwitch.on;
     } else if (sender == displayLeftMembersSwitch) {
-        [MXKAppSettings sharedSettings].showLeftMembersInRoomMemberList = displayLeftMembersSwitch.on;
+        _settings.showLeftMembersInRoomMemberList = displayLeftMembersSwitch.on;
     } else if (sender == contactsSyncSwitch) {
-    	[MXKAppSettings sharedSettings].syncLocalContacts = contactsSyncSwitch.on;
+    	_settings.syncLocalContacts = contactsSyncSwitch.on;
         isSelectingCountryCode = NO;
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.tableView reloadData];
@@ -775,7 +783,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
         // init row index
         syncLocalContactsRowIndex = count++;
-        if ([[MXKAppSettings sharedSettings] syncLocalContacts]) {
+        if ([_settings syncLocalContacts]) {
             countryCodeRowIndex = count++;
         }
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
@@ -921,7 +929,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
             if (indexPath.row == enableInAppNotifRowIndex) {
                 notificationsCell.settingLabel.text = @"Enable In-App notifications";
-                notificationsCell.settingSwitch.on = [[MXKAppSettings sharedSettings] enableInAppNotifications];
+                notificationsCell.settingSwitch.on = [_settings enableInAppNotifications];
                 inAppNotificationsSwitch = notificationsCell.settingSwitch;
             } else /* enablePushNotifRowIndex */{
                 notificationsCell.settingLabel.text = @"Enable push notifications";
@@ -936,7 +944,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
             
             contactsCell.settingLabel.text = @"Sync local contacts";
-            contactsCell.settingSwitch.on = [[MXKAppSettings sharedSettings] syncLocalContacts];
+            contactsCell.settingSwitch.on = [_settings syncLocalContacts];
             contactsSyncSwitch = contactsCell.settingSwitch;
             cell = contactsCell;
         } else if (indexPath.row  == countryCodeRowIndex) {
@@ -1002,23 +1010,23 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             
             if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Display all events";
-                roomsSettingCell.settingSwitch.on = [[MXKAppSettings sharedSettings] showAllEventsInRoomHistory];
+                roomsSettingCell.settingSwitch.on = [_settings showAllEventsInRoomHistory];
                 allEventsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Show redactions";
-                roomsSettingCell.settingSwitch.on = [[MXKAppSettings sharedSettings] showRedactionsInRoomHistory];
+                roomsSettingCell.settingSwitch.on = [_settings showRedactionsInRoomHistory];
                 redactionsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Show unsupported events";
-                roomsSettingCell.settingSwitch.on = [[MXKAppSettings sharedSettings] showUnsupportedEventsInRoomHistory];
+                roomsSettingCell.settingSwitch.on = [_settings showUnsupportedEventsInRoomHistory];
                 unsupportedEventsSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
-                roomsSettingCell.settingSwitch.on = [[MXKAppSettings sharedSettings] sortRoomMembersUsingLastSeenTime];
+                roomsSettingCell.settingSwitch.on = [_settings sortRoomMembersUsingLastSeenTime];
                 sortMembersSwitch = roomsSettingCell.settingSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX) {
                 roomsSettingCell.settingLabel.text = @"Display left members";
-                roomsSettingCell.settingSwitch.on = [[MXKAppSettings sharedSettings] showLeftMembersInRoomMemberList];
+                roomsSettingCell.settingSwitch.on = [_settings showLeftMembersInRoomMemberList];
                 displayLeftMembersSwitch = roomsSettingCell.settingSwitch;
             }
             

@@ -283,7 +283,7 @@
     [[MatrixSDKHandler sharedHandler] logout];
     [self.masterTabBarController showAuthenticationScreen];
     // Reset App settings
-    [[MXKAppSettings sharedSettings] reset];
+    [[MXKAppSettings standardAppSettings] reset];
     //  reset the contact manager
     [[ContactManager sharedManager] reset];
     // By default the "Home" tab is focussed

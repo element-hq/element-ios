@@ -149,7 +149,7 @@ static MatrixSDKHandler *sharedHandler = nil;
             typeof(self) self = weakSelf;
             self.status = MatrixSDKHandlerStatusStoreDataReady;
 //            // Check here whether the app user wants to display all the events
-//            if ([[AppSettings sharedSettings] displayAllEvents]) {
+//            if ([[AppSettings standardAppSettings] displayAllEvents]) {
 //                // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
 //                self.eventsFilterForMessages = @[
 //                                                 kMXEventTypeStringRoomName,
@@ -232,7 +232,7 @@ static MatrixSDKHandler *sharedHandler = nil;
         }];
         
         // Check whether the app user wants notifications on new events
-        if ([[MXKAppSettings sharedSettings] enableInAppNotifications]) {
+        if ([[MXKAppSettings standardAppSettings] enableInAppNotifications]) {
             [self enableInAppNotifications:YES];
         }
     } failure:^(NSError *error) {
