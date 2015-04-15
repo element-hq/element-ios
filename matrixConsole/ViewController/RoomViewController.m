@@ -27,10 +27,6 @@
 
 #import "RageShakeManager.h"
 
-// TODO GFO
-#define ROOMVIEWCONTROLLER_UPLOAD_FILE_SIZE 5000000
-
-
 @interface RoomViewController () {
     
     // Members list
@@ -370,8 +366,6 @@
     return YES;
 }
 
-
-// TODO GFO move this method into dataSource
 - (BOOL)isIRCStyleCommand:(NSString*)string {
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
