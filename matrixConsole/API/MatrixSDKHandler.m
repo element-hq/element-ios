@@ -418,7 +418,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                 
                 MXKEventFormatterError error;
                 NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
-                if (messageText.length && (error != MXKEventFormatterErrorNone)) {
+                if (messageText.length && (error == MXKEventFormatterErrorNone)) {
                     
                     // Removing existing notification (if any)
                     if (self.mxNotification) {
