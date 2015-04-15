@@ -92,7 +92,7 @@
     NSAssert(recentsViewController && contactsViewController && settingsViewController, @"Something wrong in Main.storyboard");
     
     // Register session state observer
-    sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         // Check whether the concerned session is the associated one
         if (notif.object != mxSession) {
