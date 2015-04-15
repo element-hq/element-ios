@@ -29,9 +29,6 @@
 // contact cell
 #import "ContactTableCell.h"
 
-// settings
-#import "AppSettings.h"
-
 #import "RageShakeManager.h"
 
 //
@@ -516,7 +513,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         }
     
         if (!displayMatrixUsers) {
-            AppSettings* appSettings = [AppSettings sharedSettings];
+            MXKAppSettings* appSettings = [MXKAppSettings sharedSettings];
             
             if (!appSettings.syncLocalContacts) {
                 __weak typeof(self) weakSelf = self;

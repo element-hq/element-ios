@@ -24,7 +24,6 @@
 
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
-#import "AppSettings.h"
 
 #import "RageShakeManager.h"
 

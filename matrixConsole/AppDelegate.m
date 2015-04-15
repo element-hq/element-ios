@@ -16,7 +16,6 @@
 
 #import "AppDelegate.h"
 #import "APNSHandler.h"
-#import "AppSettings.h"
 #import "RoomViewController.h"
 #import "MatrixSDKHandler.h"
 #import "SettingsViewController.h"
@@ -284,7 +283,7 @@
     [[MatrixSDKHandler sharedHandler] logout];
     [self.masterTabBarController showAuthenticationScreen];
     // Reset App settings
-    [[AppSettings sharedSettings] reset];
+    [[MXKAppSettings sharedSettings] reset];
     //  reset the contact manager
     [[ContactManager sharedManager] reset];
     // By default the "Home" tab is focussed

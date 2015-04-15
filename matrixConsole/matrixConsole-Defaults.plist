@@ -14,17 +14,19 @@
 	<string></string>
 	<key>enableInAppNotifications</key>
 	<false/>
-	<key>displayAllEvents</key>
+	<key>showAllEventsInRoomHistory</key>
 	<false/>
-	<key>showRedactions</key>
+	<key>showRedactionsInRoomHistory</key>
 	<false/>
-	<key>showUnsupportedEvents</key>
+	<key>showUnsupportedEventsInRoomHistory</key>
 	<false/>
-	<key>sortMembersUsingLastSeenTime</key>
+	<key>sortRoomMembersUsingLastSeenTime</key>
 	<true/>
-	<key>displayLeftUsers</key>
+	<key>showLeftMembersInRoomMemberList</key>
 	<false/>
 	<key>syncLocalContacts</key>
 	<false/>
+	<key>maxAllowedMediaCacheSize</key>
+	<integer>1073741824</integer>
 </dict>
 </plist>

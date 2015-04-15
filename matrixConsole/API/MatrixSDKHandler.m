@@ -16,7 +16,6 @@
 
 #import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
-#import "AppSettings.h"
 
 #import "MXFileStore.h"
 #import "MXTools.h"
@@ -149,31 +148,31 @@ static MatrixSDKHandler *sharedHandler = nil;
         [self.mxSession setStore:_mxFileStore success:^{
             typeof(self) self = weakSelf;
             self.status = MatrixSDKHandlerStatusStoreDataReady;
-            // Check here whether the app user wants to display all the events
-            if ([[AppSettings sharedSettings] displayAllEvents]) {
-                // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
-                self.eventsFilterForMessages = @[
-                                                 kMXEventTypeStringRoomName,
-                                                 kMXEventTypeStringRoomTopic,
-                                                 kMXEventTypeStringRoomMember,
-                                                 kMXEventTypeStringRoomCreate,
-                                                 kMXEventTypeStringRoomJoinRules,
-                                                 kMXEventTypeStringRoomPowerLevels,
-                                                 kMXEventTypeStringRoomAliases,
-                                                 kMXEventTypeStringRoomMessage,
-                                                 kMXEventTypeStringRoomMessageFeedback,
-                                                 kMXEventTypeStringRoomRedaction
-                                                 ];
-            }
-            else {
-                // Display only a subset of events
-                self.eventsFilterForMessages = @[
-                                                 kMXEventTypeStringRoomName,
-                                                 kMXEventTypeStringRoomTopic,
-                                                 kMXEventTypeStringRoomMember,
-                                                 kMXEventTypeStringRoomMessage
-                                                 ];
-            }
+//            // Check here whether the app user wants to display all the events
+//            if ([[AppSettings sharedSettings] displayAllEvents]) {
+//                // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
+//                self.eventsFilterForMessages = @[
+//                                                 kMXEventTypeStringRoomName,
+//                                                 kMXEventTypeStringRoomTopic,
+//                                                 kMXEventTypeStringRoomMember,
+//                                                 kMXEventTypeStringRoomCreate,
+//                                                 kMXEventTypeStringRoomJoinRules,
+//                                                 kMXEventTypeStringRoomPowerLevels,
+//                                                 kMXEventTypeStringRoomAliases,
+//                                                 kMXEventTypeStringRoomMessage,
+//                                                 kMXEventTypeStringRoomMessageFeedback,
+//                                                 kMXEventTypeStringRoomRedaction
+//                                                 ];
+//            }
+//            else {
+//                // Display only a subset of events
+//                self.eventsFilterForMessages = @[
+//                                                 kMXEventTypeStringRoomName,
+//                                                 kMXEventTypeStringRoomTopic,
+//                                                 kMXEventTypeStringRoomMember,
+//                                                 kMXEventTypeStringRoomMessage
+//                                                 ];
+//            }
             
             // Complete session registration by launching live stream
             [self launchInitialServerSync];
@@ -233,7 +232,7 @@ static MatrixSDKHandler *sharedHandler = nil;
         }];
         
         // Check whether the app user wants notifications on new events
-        if ([[AppSettings sharedSettings] enableInAppNotifications]) {
+        if ([[MXKAppSettings sharedSettings] enableInAppNotifications]) {
             [self enableInAppNotifications:YES];
         }
     } failure:^(NSError *error) {
