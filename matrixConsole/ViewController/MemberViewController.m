@@ -71,55 +71,47 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
-    NSArray *mxMembersEvents = @[
-                                 kMXEventTypeStringRoomMember,
-                                 kMXEventTypeStringRoomPowerLevels
-                                 ];
-    
-    // list on member updates
-    membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-        // consider only live event
-        if (direction == MXEventDirectionForwards) {
-            // Check the room Id (if any)
-            if (event.roomId && [event.roomId isEqualToString:mxRoom.state.roomId] == NO) {
-                // This event does not concern the current room members
-                return;
-            }
-            
-            // Hide potential action sheet
-            if (self.actionMenu) {
-                [self.actionMenu dismiss:NO];
-                self.actionMenu = nil;
-            }
-            
-            MXRoomMember* nextRoomMember = nil;
-            
-            // get the updated memmber
-            NSArray* membersList = [self.mxRoom.state members];
-            for (MXRoomMember* member in membersList) {
-                if ([member.userId isEqual:_mxRoomMember.userId]) {
-                    nextRoomMember = member;
-                    break;
+    if (mxRoom) {
+        // Observe room's members update
+        NSArray *mxMembersEvents = @[
+                                     kMXEventTypeStringRoomMember,
+                                     kMXEventTypeStringRoomPowerLevels
+                                     ];
+        
+        
+        membersListener = [mxRoom listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+            // consider only live event
+            if (direction == MXEventDirectionForwards) {
+                
+                // Hide potential action sheet
+                if (self.actionMenu) {
+                    [self.actionMenu dismiss:NO];
+                    self.actionMenu = nil;
+                }
+                
+                MXRoomMember* nextRoomMember = nil;
+                
+                // get the updated memmber
+                NSArray* membersList = [self.mxRoom.state members];
+                for (MXRoomMember* member in membersList) {
+                    if ([member.userId isEqual:_mxRoomMember.userId]) {
+                        nextRoomMember = member;
+                        break;
+                    }
+                }
+                
+                // does the member still exist ?
+                if (nextRoomMember) {
+                    // Refresh members list
+                    _mxRoomMember = nextRoomMember;
+                    [self updateMemberInfo];
+                    [self.tableView reloadData];
+                } else {
+                    [self dismiss];
                 }
             }
-            
-            // does the member still exist ?
-            if (nextRoomMember) {
-                // Refresh members list
-                _mxRoomMember = nextRoomMember;
-                [self updateMemberInfo];
-                [self.tableView reloadData];
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.navigationController popToRootViewControllerAnimated:NO];
-                    [[AppDelegate theDelegate].masterTabBarController setVisibleRoomId:nil];
-                    [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
-                });
-            }
-        }
-    }];
+        }];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -132,10 +124,24 @@
         imageLoader = nil;
     }
     
-    if (membersListener) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        [mxHandler.mxSession removeListener:membersListener];
+    if (membersListener && mxRoom) {
+        [mxRoom removeListener:membersListener];
         membersListener = nil;
+    }
+}
+
+- (void)dismiss {
+    // Check whether the view controller is embedded inside a navigation controller.
+    if (self.navigationController) {
+        // We pop the view controller (except if it is the root view controller).
+        NSUInteger index = [self.navigationController.viewControllers indexOfObject:self];
+        if (index != NSNotFound && index > 0) {
+            UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:(index - 1)];
+            [self.navigationController popToViewController:previousViewController animated:YES];
+        }
+    } else {
+        // Suppose here the view controller has been presented modally
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -147,9 +153,8 @@
         self.actionMenu = nil;
     }
     
-    if (membersListener) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        [mxHandler.mxSession removeListener:membersListener];
+    if (membersListener && mxRoom) {
+        [mxRoom removeListener:membersListener];
         membersListener = nil;
     }
     
@@ -443,9 +448,7 @@
             [self addPendingActionMask];
             [self.mxRoom leave:^{
                 [self removePendingActionMask];
-                [self.navigationController popToRootViewControllerAnimated:NO];
-                [[AppDelegate theDelegate].masterTabBarController setVisibleRoomId:nil];                
-                [[AppDelegate theDelegate].masterTabBarController popRoomViewControllerAnimated:YES];
+                [self dismiss];
             } failure:^(NSError *error) {
                 [self removePendingActionMask];
                 NSLog(@"[MemberVC] Leave room %@ failed: %@", mxRoom.state.roomId, error);
@@ -461,7 +464,10 @@
                                reason:nil
                               success:^{
                                   [self removePendingActionMask];
-                                  [self.navigationController popToRootViewControllerAnimated:YES];
+                                  // Dismiss the current view controller if the left members are hidden
+                                  if (![[MXKAppSettings standardAppSettings] showLeftMembersInRoomMemberList]) {
+                                      [self dismiss];
+                                  }
                               }
                               failure:^(NSError *error) {
                                   [self removePendingActionMask];
