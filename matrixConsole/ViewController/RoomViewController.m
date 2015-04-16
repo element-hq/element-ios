@@ -127,8 +127,6 @@
     
     // Set visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
-
-    [self updateUI];
     
     // Retrieve the potential message partially typed during last room display.
     // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
@@ -161,17 +159,12 @@
     }
 }
 
-- (void)updateUI {
+- (void)updateViewControllerAppearanceOnRoomDataSourceState {
+    
+    [super updateViewControllerAppearanceOnRoomDataSourceState];
     
     // Update UI by considering dataSource state
     if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady) {
-        // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
-        // into account mxSession state before stopping activity indicator.
-        [super didMatrixSessionStateChange];
-        
-        // Show input tool bar
-        self.inputToolbarView.hidden = NO;
-        
         // Check room members to enable/disable members button in nav bar
         self.showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
         
@@ -180,16 +173,20 @@
         self.roomTitleView.hidden = NO;
     }
     else {
-        self.inputToolbarView.hidden = YES;
         self.showRoomMembersButtonItem.enabled = NO;
         
-        if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
-            self.roomTitleView.mxRoom = self.roomDataSource.room;
-            self.roomTitleView.hidden = (!self.roomTitleView.mxRoom);
-        } else {
-            self.roomTitleView.mxRoom = nil;
-            self.roomTitleView.hidden = NO;
+        // Update the title except if the room has just been left
+        if (!self.leftRoomReasonLabel) {
+            if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
+                self.roomTitleView.mxRoom = self.roomDataSource.room;
+                self.roomTitleView.hidden = (!self.roomTitleView.mxRoom);
+            }
+            else {
+                self.roomTitleView.mxRoom = nil;
+                self.roomTitleView.hidden = NO;
+            }
         }
+        
         self.roomTitleView.editable = NO;
     }
     
@@ -197,12 +194,6 @@
 }
 
 #pragma mark -
-
-- (void)displayRoom:(MXKRoomDataSource*)roomDataSource {
-    [super displayRoom:roomDataSource];
-    
-    [self updateUI];
-}
 
 - (void)destroy {
     members = nil;
@@ -219,15 +210,6 @@
 }
 
 #pragma mark - MXKDataSource delegate
-
-- (void)dataSource:(MXKDataSource *)dataSource didStateChange:(MXKDataSourceState)state {
-    // Take into account dataSource state to update UI
-    [self updateUI];
-    
-    if ([super respondsToSelector:@selector(dataSource:didStateChange:)]) {
-        [super dataSource:dataSource didStateChange:state];
-    }
-}
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo {
     
@@ -308,13 +290,11 @@
             [self.activityIndicator startAnimating];
             __weak typeof(self) weakSelf = self;
             [self.roomDataSource.room setName:roomName success:^{
-                // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
-                // into account mxSession state before stopping activity indicator.
-                [super didMatrixSessionStateChange];
+                [self stopActivityIndicator];
                 // Refresh title display
                 textField.text = weakSelf.roomDataSource.room.state.displayname;
             } failure:^(NSError *error) {
-                [super didMatrixSessionStateChange];
+                [self stopActivityIndicator];
                 // Revert change
                 textField.text = weakSelf.roomDataSource.room.state.displayname;
                 NSLog(@"[Console RoomVC] Rename room failed: %@", error);
@@ -333,13 +313,11 @@
             [self.activityIndicator startAnimating];
             __weak typeof(self) weakSelf = self;
             [self.roomDataSource.room setTopic:topic success:^{
-                // Here the activityIndicator should be stopped, we call `didMatrixSessionStateChange` to take
-                // into account mxSession state before stopping activity indicator.
-                [super didMatrixSessionStateChange];
+                [self stopActivityIndicator];
                 // Hide topic field if empty
                 weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
             } failure:^(NSError *error) {
-                [super didMatrixSessionStateChange];
+                [self stopActivityIndicator];
                 // Revert change
                 textField.text = weakSelf.roomDataSource.room.state.topic;
                 // Hide topic field if empty

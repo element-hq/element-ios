@@ -110,31 +110,34 @@
                     [self updateMemberInfo];
                     [self.tableView reloadData];
                 } else {
-                    [self dismiss];
-                }
-            }
-        }];
-        
-        // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
-        kMXSessionWillLeaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            // Check whether the user will leave the room related to the displayed member
-            if (notif.object == self.mxSession) {
-                NSString *roomId = notif.userInfo[@"roomId"];
-                if (roomId && [roomId isEqualToString:mxRoom.state.roomId]) {
-                    // We must dismiss the current view controller.
-                    [self dismiss];
+                    [self withdrawViewControllerAnimated:YES completion:nil];
                 }
             }
         }];
     }
+    
+    // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
+    kMXSessionWillLeaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // Check whether the user will leave the room related to the displayed member
+        if (notif.object == self.mxSession) {
+            NSString *roomId = notif.userInfo[@"roomId"];
+            if (roomId && [roomId isEqualToString:mxRoom.state.roomId]) {
+                // We must remove the current view controller.
+                [self withdrawViewControllerAnimated:YES completion:nil];
+            }
+        }
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     // Remove observers
-    [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionWillLeaveRoomNotificationObserver];
+    if (kMXSessionWillLeaveRoomNotificationObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionWillLeaveRoomNotificationObserver];
+        kMXSessionWillLeaveRoomNotificationObserver = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (imageLoader) {
@@ -145,21 +148,6 @@
     if (membersListener && mxRoom) {
         [mxRoom removeListener:membersListener];
         membersListener = nil;
-    }
-}
-
-- (void)dismiss {
-    // Check whether the view controller is embedded inside a navigation controller.
-    if (self.navigationController) {
-        // We pop the view controller (except if it is the root view controller).
-        NSUInteger index = [self.navigationController.viewControllers indexOfObject:self];
-        if (index != NSNotFound && index > 0) {
-            UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:(index - 1)];
-            [self.navigationController popToViewController:previousViewController animated:YES];
-        }
-    } else {
-        // Suppose here the view controller has been presented modally
-        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -177,7 +165,9 @@
     }
     
     // Remove observers
-    [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionWillLeaveRoomNotificationObserver];
+    if (kMXSessionWillLeaveRoomNotificationObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionWillLeaveRoomNotificationObserver];
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (imageLoader) {
@@ -468,7 +458,7 @@
             [self addPendingActionMask];
             [self.mxRoom leave:^{
                 [self removePendingActionMask];
-                [self dismiss];
+                [self withdrawViewControllerAnimated:YES completion:nil];
             } failure:^(NSError *error) {
                 [self removePendingActionMask];
                 NSLog(@"[MemberVC] Leave room %@ failed: %@", mxRoom.state.roomId, error);
@@ -484,9 +474,9 @@
                                reason:nil
                               success:^{
                                   [self removePendingActionMask];
-                                  // Dismiss the current view controller if the left members are hidden
+                                  // Pop/Dismiss the current view controller if the left members are hidden
                                   if (![[MXKAppSettings standardAppSettings] showLeftMembersInRoomMemberList]) {
-                                      [self dismiss];
+                                      [self withdrawViewControllerAnimated:YES completion:nil];
                                   }
                               }
                               failure:^(NSError *error) {

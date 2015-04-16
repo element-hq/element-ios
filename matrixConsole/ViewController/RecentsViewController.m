@@ -183,15 +183,6 @@
 #pragma mark - Internal methods
 
 - (void)refreshRecentsDisplay {
-    // Check whether the current selected room has not been left
-    if (currentRoomViewController.roomDataSource.roomId) {
-        MXRoom *mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:currentRoomViewController.roomDataSource.roomId];
-        if (mxRoom == nil || mxRoom.state.membership == MXMembershipLeave || mxRoom.state.membership == MXMembershipBan) {
-            // release the room viewController
-            [currentRoomViewController destroy];
-            currentRoomViewController = nil;
-        }
-    }
 
     // Update the unreadCount in the title
     [self updateTitleView];
