@@ -31,6 +31,9 @@
     // mask view while processing a request
     UIView* pendingRequestMask;
     UIActivityIndicatorView * pendingMaskSpinnerView;
+    
+    // Observe left rooms
+    id kMXSessionWillLeaveRoomNotificationObserver;
 }
 
 // graphical objects
@@ -111,14 +114,29 @@
                 }
             }
         }];
+        
+        // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
+        kMXSessionWillLeaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            // Check whether the user will leave the room related to the displayed member
+            if (notif.object == self.mxSession) {
+                NSString *roomId = notif.userInfo[@"roomId"];
+                if (roomId && [roomId isEqualToString:mxRoom.state.roomId]) {
+                    // We must dismiss the current view controller.
+                    [self dismiss];
+                }
+            }
+        }];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    // Remove any pending observers
+    // Remove observers
+    [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionWillLeaveRoomNotificationObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     if (imageLoader) {
         [imageLoader cancel];
         imageLoader = nil;
@@ -158,8 +176,10 @@
         membersListener = nil;
     }
     
-    // Remove any pending observers
+    // Remove observers
+    [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionWillLeaveRoomNotificationObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     if (imageLoader) {
         [imageLoader cancel];
         imageLoader = nil;

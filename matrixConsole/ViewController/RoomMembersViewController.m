@@ -81,6 +81,7 @@
         if ([[segue destinationViewController] isKindOfClass:[MemberViewController class]]) {
             if (selectedMember) {
                 currentMemberViewController = (MemberViewController *)[segue destinationViewController];
+                currentMemberViewController.mxSession = self.mxSession;
                 currentMemberViewController.mxRoomMember = selectedMember;
                 currentMemberViewController.mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:self.dataSource.roomId];
             }
