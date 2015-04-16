@@ -192,6 +192,9 @@
             currentRoomViewController = nil;
         }
     }
+
+    // Update the unreadCount in the title
+    [self updateTitleView];
     
     [self.tableView reloadData];
     
