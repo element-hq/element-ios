@@ -30,6 +30,9 @@
 @interface AppDelegate () <UISplitViewControllerDelegate> {
     // Reachability observer
     id reachabilityObserver;
+    
+    // matrix session observer used to detect new opened sessions.
+    id matrixSessionStateObserver;
 }
 
 @end
@@ -106,7 +109,7 @@
         self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
         self.masterTabBarController.delegate = self;
         
-        // By default the "Home" tab is focussed
+        // By default the "Home" tab is focused
         [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
         
         UIViewController* recents = [self.masterTabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
@@ -141,6 +144,22 @@
         NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // Register matrix session state observer in order to handle new opened session 
+        matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            MXSession *mxSession = (MXSession*)notif.object;
+            
+            // Check whether the concerned session is a new one
+            if (mxSession.state == MXSessionStateInitialised) {
+                
+                // Report this new session to contact manager
+                [[ContactManager sharedManager] setMxSession:mxSession];
+                
+                // Update all view controllers thanks to tab bar controller
+                self.masterTabBarController.mxSession = mxSession;
+            }
+        }];
         
         // Check whether we're logged in
         if ([MatrixSDKHandler sharedHandler].accessToken) {
@@ -275,18 +294,29 @@
 #pragma mark -
 
 - (void)logout {
+    
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [[APNSHandler sharedHandler] reset];
     isAPNSRegistered = NO;
+    
     // Clear cache
     [MXKMediaManager clearCache];
+    
     // Logout Matrix
     [[MatrixSDKHandler sharedHandler] logout];
+    
+    // Reset mxSession information in all view controllers
+    self.masterTabBarController.mxSession = nil;
+    
+    // Return to authentication screen
     [self.masterTabBarController showAuthenticationScreen];
+    
     // Reset App settings
     [[MXKAppSettings standardAppSettings] reset];
+    
     // Reset the contact manager
     [[ContactManager sharedManager] reset];
+    
     // By default the "Home" tab is focussed
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }

@@ -26,8 +26,6 @@
 
 #import "SettingsViewController.h"
 
-#import "ContactManager.h"
-
 @interface MasterTabBarController () {
     HomeViewController *homeViewController;
     
@@ -39,9 +37,6 @@
     SettingsViewController *settingsViewController;
     
     UIImagePickerController *mediaPicker;
-    
-    id sessionStateObserver;
-    MXSession *mxSession;
 }
 
 @end
@@ -107,31 +102,6 @@
     
     // Sanity check
     NSAssert(homeViewController &&recentsViewController && contactsViewController && settingsViewController, @"Something wrong in Main.storyboard");
-    
-    // Register session state observer
-    sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        // Check whether the concerned session is the associated one
-        if (notif.object != mxSession) {
-            mxSession = notif.object;
-            
-            // Report this session into contact manager
-            [[ContactManager sharedManager] setMxSession:mxSession];
-            
-            // Update home tab
-            homeViewController.mxSession = mxSession;
-            
-            // List all the recents for the logged user
-            MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
-            [recentsViewController displayList:listDataSource];
-            
-            // Update contacts tab
-            contactsViewController.mxSession = mxSession;
-            
-            // Update settings tab
-            settingsViewController.mxSession = mxSession;
-        }
-    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -157,8 +127,6 @@
     settingsViewController = nil;
     
     [self dismissMediaPicker];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
 }
 
 #pragma mark -
@@ -178,18 +146,27 @@
 
 #pragma mark -
 
+- (void)setMxSession:(MXSession *)mxSession {
+    // Update home tab
+    homeViewController.mxSession = mxSession;
+    
+    // List all the recents for the logged user
+    MXKRecentListDataSource *recentlistDataSource = nil;
+    if (mxSession) {
+        recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+    }
+    [recentsViewController displayList:recentlistDataSource];
+    
+    // Update contacts tab
+    contactsViewController.mxSession = mxSession;
+    
+    // Update settings tab
+    settingsViewController.mxSession = mxSession;
+}
+
 - (void)showAuthenticationScreen {
+    
     [self restoreInitialDisplay];
-    
-    // Reset mxSession information in home
-    homeViewController.mxSession = nil;
-    
-    // Reset mxSession information in contacts
-    contactsViewController.mxSession = nil;
-    
-    // Reset user's information in settings
-    settingsViewController.mxSession = nil;
-    
     [self performSegueWithIdentifier:@"showAuth" sender:self];
 }
 

@@ -16,6 +16,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <MatrixSDK/MatrixSDK.h>
+
 #define TABBAR_HOME_INDEX      0
 #define TABBAR_RECENTS_INDEX   1
 #define TABBAR_CONTACTS_INDEX  2
@@ -35,6 +37,12 @@
 - (void)dismissMediaPicker;
 
 @property (strong, nonatomic) NSString *visibleRoomId; // nil if no room is presently visible
+
+/**
+ Associated matrix session (nil by default).
+ This property is propagated to all view controllers handled by the tab bar controller.
+ */
+@property (nonatomic) MXSession *mxSession;
 
 @end
 

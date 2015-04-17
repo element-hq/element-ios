@@ -98,8 +98,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Refresh UI
-    [self updateViewControllerAppearanceOnMatrixSessionChange];
+    // Note: super calls `mxSession` setter to refresh UI according to matrix session. We don't need to do it here.
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -151,7 +150,6 @@
         _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
     } else {
         // Hide room creation and join options (only public rooms section is displayed).
-        savedTableHeaderView = self.tableView.tableHeaderView;
         self.tableView.tableHeaderView = nil;
     }
     
