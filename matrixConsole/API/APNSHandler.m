@@ -91,7 +91,7 @@ static APNSHandler *sharedHandler = nil;
 
 - (void)setIsActive:(BOOL)isActive {
     // Refuse to try & turn push on if we're not logged in, it's nonsensical.
-    if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusLoggedOut) {
+    if (![MatrixSDKHandler sharedHandler].accessToken) {
         NSLog(@"[APNSHandler] Not setting push token because we're not logged in");
         return;
     }

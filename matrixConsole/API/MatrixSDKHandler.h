@@ -27,8 +27,6 @@ typedef enum : NSUInteger {
 
 @interface MatrixSDKHandler : NSObject
 
-@property (strong, nonatomic) dispatch_queue_t processingQueue;
-
 @property (strong, nonatomic) MXRestClient *mxRestClient;
 @property (strong, nonatomic) MXSession *mxSession;
 
@@ -40,14 +38,8 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) NSString *accessToken;
 @property (strong, nonatomic) NSString *identityServerURL;
 
-// The type of events to display
-@property (strong, nonatomic) NSArray *eventsFilterForMessages;
-
 // Matrix user's settings
 @property (nonatomic) MXPresence userPresence;
-
-@property (nonatomic,readonly) MatrixSDKHandlerStatus status;
-@property (nonatomic,readonly) BOOL isActivityInProgress;
 
 + (MatrixSDKHandler *)sharedHandler;
 
@@ -67,25 +59,11 @@ typedef enum : NSUInteger {
 // Enables inApp notifications for a dedicated room if they were disabled
 - (void)restoreInAppNotificationsForRoomId:(NSString*)roomID;
 
-// Stores the current text message partially typed in text input before leaving a room (use nil to reset the current value)
-- (void)storePartialTextMessage:(NSString*)textMessage forRoomId:(NSString*)roomId;
-// Returns the current partial message stored for this room (nil if none)
-- (NSString*)partialTextMessageForRoomId:(NSString*)roomId;
-
 // user power level in a dedicated room
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
-
-- (BOOL)isSupportedAttachment:(MXEvent*)event;
-- (BOOL)isEmote:(MXEvent*)event;
-// Note: the room state expected by the 3 following methods is the room state right before handling the event
-- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
-- (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState;
 
 // return the presence ring color
 // nil means there is no ring to display
 - (UIColor*)getPresenceRingColor:(MXPresence)presence;
-
-// return YES if the text contains a bing word
-- (BOOL)containsBingWord:(NSString*)text;
 
 @end

@@ -16,8 +16,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MatrixSDK/MatrixSDK.h>
+
 #import "SectionedContacts.h"
-#import "MXCContact.h" 
+#import "MXCContact.h"
 
 // warn when there is a contacts list refresh
 extern NSString *const kContactManagerContactsListRefreshNotification;
@@ -31,6 +33,18 @@ extern NSString *const kContactsDidInternationalizeNotification;
 }
 
 + (id)sharedManager;
+
+/**
+ Associated matrix session (nil by default).
+ This property is used to link matrix id to the contacts.
+ */
+@property (nonatomic) MXSession *mxSession;
+
+/**
+ Associated matrix REST Client (nil by default). Ignored if mxSession is defined.
+ This property is used to make Matrix API requests when no matrix session is provided.
+ */
+@property (nonatomic) MXRestClient *mxRestClient;
 
 @property (nonatomic, readonly) NSMutableArray *contacts;
 

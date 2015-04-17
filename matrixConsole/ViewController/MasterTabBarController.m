@@ -17,6 +17,8 @@
 #import "MasterTabBarController.h"
 #import "MatrixSDKHandler.h"
 
+#import "HomeViewController.h"
+
 #import "RecentsViewController.h"
 #import "RecentListDataSource.h"
 
@@ -24,7 +26,11 @@
 
 #import "SettingsViewController.h"
 
+#import "ContactManager.h"
+
 @interface MasterTabBarController () {
+    HomeViewController *homeViewController;
+    
     UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
     
@@ -66,6 +72,17 @@
         }
     }
     
+    // Retrieve the home view controller
+    UIViewController* home = [self.viewControllers objectAtIndex:TABBAR_HOME_INDEX];
+    if ([home isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *homeNavigationController = (UINavigationController*)home;
+        for (UIViewController *viewController in homeNavigationController.viewControllers) {
+            if ([viewController isKindOfClass:[HomeViewController class]]) {
+                homeViewController = (HomeViewController*)viewController;
+            }
+        }
+    }
+    
     // Retrieve the constacts view controller
     UIViewController* contacts = [self.viewControllers objectAtIndex:TABBAR_CONTACTS_INDEX];
     if ([contacts isKindOfClass:[UINavigationController class]]) {
@@ -89,7 +106,7 @@
     }
     
     // Sanity check
-    NSAssert(recentsViewController && contactsViewController && settingsViewController, @"Something wrong in Main.storyboard");
+    NSAssert(homeViewController &&recentsViewController && contactsViewController && settingsViewController, @"Something wrong in Main.storyboard");
     
     // Register session state observer
     sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -97,6 +114,12 @@
         // Check whether the concerned session is the associated one
         if (notif.object != mxSession) {
             mxSession = notif.object;
+            
+            // Report this session into contact manager
+            [[ContactManager sharedManager] setMxSession:mxSession];
+            
+            // Update home tab
+            homeViewController.mxSession = mxSession;
             
             // List all the recents for the logged user
             MXKRecentListDataSource *listDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
@@ -114,7 +137,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([MatrixSDKHandler sharedHandler].status == MatrixSDKHandlerStatusLoggedOut) {
+    // Check whether we're not logged in
+    if (![MatrixSDKHandler sharedHandler].accessToken) {
         [self showAuthenticationScreen];
     }
 }
@@ -125,6 +149,8 @@
 }
 
 - (void)dealloc {
+    
+    homeViewController = nil;
     recentsNavigationController = nil;
     recentsViewController = nil;
     contactsViewController = nil;
@@ -154,6 +180,9 @@
 
 - (void)showAuthenticationScreen {
     [self restoreInitialDisplay];
+    
+    // Reset mxSession information in home
+    homeViewController.mxSession = nil;
     
     // Reset mxSession information in contacts
     contactsViewController.mxSession = nil;

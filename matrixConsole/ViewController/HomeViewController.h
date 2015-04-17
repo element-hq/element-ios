@@ -18,5 +18,11 @@
 
 @interface HomeViewController : MXKTableViewController <UITextFieldDelegate, UISearchBarDelegate>
 
+/**
+ Associated matrix REST Client (nil by default). Ignored if mxSession is defined.
+ This property is used to make Matrix API requests when no matrix session is provided.
+ */
+@property (nonatomic) MXRestClient *mxRestClient;
+
 @end
 

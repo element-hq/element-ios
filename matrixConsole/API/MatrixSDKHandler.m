@@ -45,12 +45,9 @@ static MatrixSDKHandler *sharedHandler = nil;
 }
 
 @property (strong, nonatomic) MXFileStore *mxFileStore;
-@property (nonatomic,readwrite) MatrixSDKHandlerStatus status;
-@property (nonatomic,readwrite) BOOL isActivityInProgress;
+
 @property (strong, nonatomic) MXKAlert *mxNotification;
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
-
-@property (strong, nonatomic) NSMutableDictionary *partialTextMsgByRoomId;
 
 // When the user cancels an inApp notification
 // assume that any messagge room will be ignored
@@ -74,12 +71,8 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 -(MatrixSDKHandler *)init {
     if (self = [super init]) {
-        self.status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
         _userPresence = MXPresenceUnknown;
-        notifyOpenSessionFailure = YES;
-        
-        NSString *label = [NSString stringWithFormat:@"com.matrix.%@.MatrixSDKHandler", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
-        _processingQueue = dispatch_queue_create([label UTF8String], DISPATCH_QUEUE_SERIAL);
+        notifyOpenSessionFailure = YES;        
         
         // Read potential homeserver url in shared defaults object
         if (self.homeServerURL) {
@@ -94,7 +87,6 @@ static MatrixSDKHandler *sharedHandler = nil;
         }
         
         _unnotifiedRooms = [[NSMutableArray alloc] init];
-        _partialTextMsgByRoomId = [[NSMutableDictionary alloc] init];
         
         [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
         [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
@@ -113,11 +105,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     [initialServerSyncTimer invalidate];
     initialServerSyncTimer = nil;
     
-    _processingQueue = nil;
-    
     _unnotifiedRooms = nil;
-    
-    _partialTextMsgByRoomId = nil;
     
     [self closeSession];
     self.mxSession = nil;
@@ -152,35 +140,8 @@ static MatrixSDKHandler *sharedHandler = nil;
         
         __weak typeof(self) weakSelf = self;
         [self.mxSession setStore:_mxFileStore success:^{
-            typeof(self) self = weakSelf;
-            self.status = MatrixSDKHandlerStatusStoreDataReady;
-//            // Check here whether the app user wants to display all the events
-//            if ([[AppSettings standardAppSettings] displayAllEvents]) {
-//                // Use a filter to retrieve all the events (except kMXEventTypeStringPresence which are not related to a specific room)
-//                self.eventsFilterForMessages = @[
-//                                                 kMXEventTypeStringRoomName,
-//                                                 kMXEventTypeStringRoomTopic,
-//                                                 kMXEventTypeStringRoomMember,
-//                                                 kMXEventTypeStringRoomCreate,
-//                                                 kMXEventTypeStringRoomJoinRules,
-//                                                 kMXEventTypeStringRoomPowerLevels,
-//                                                 kMXEventTypeStringRoomAliases,
-//                                                 kMXEventTypeStringRoomMessage,
-//                                                 kMXEventTypeStringRoomMessageFeedback,
-//                                                 kMXEventTypeStringRoomRedaction
-//                                                 ];
-//            }
-//            else {
-//                // Display only a subset of events
-//                self.eventsFilterForMessages = @[
-//                                                 kMXEventTypeStringRoomName,
-//                                                 kMXEventTypeStringRoomTopic,
-//                                                 kMXEventTypeStringRoomMember,
-//                                                 kMXEventTypeStringRoomMessage
-//                                                 ];
-//            }
-            
             // Complete session registration by launching live stream
+            typeof(self) self = weakSelf;
             [self launchInitialServerSync];
         } failure:^(NSError *error) {
             // This cannot happen. Loading of MXFileStore cannot fail.
@@ -200,16 +161,14 @@ static MatrixSDKHandler *sharedHandler = nil;
     initialServerSyncTimer = nil;
     
     // Sanity check
-    if (self.status != MatrixSDKHandlerStatusStoreDataReady) {
+    if (self.mxSession.state != MXSessionStateStoreDataReady) {
         NSLog(@"[MatrixSDKHandler] Initial server sync is applicable only when store data is ready to complete session initialisation");
         return;
     }
     
     // Launch mxSession
-    self.status = MatrixSDKHandlerStatusInitialServerSyncInProgress;
     [self.mxSession start:^{
         NSLog(@"[MatrixSDKHandler] The app is ready. Matrix SDK session has been started in %0.fms.", [[NSDate date] timeIntervalSinceDate:openSessionStartDate] * 1000);
-        self.status = MatrixSDKHandlerStatusServerSyncDone;
         [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
         
         // Register listener to update user's information
@@ -249,9 +208,6 @@ static MatrixSDKHandler *sharedHandler = nil;
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }
         
-        // Return in previous state
-        self.status = MatrixSDKHandlerStatusStoreDataReady;
-        
         // Check network reachability
         if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
             // Add observer to launch a new attempt according to reachability.
@@ -273,7 +229,6 @@ static MatrixSDKHandler *sharedHandler = nil;
 }
 
 - (void)closeSession {
-    self.status = (self.accessToken != nil) ? MatrixSDKHandlerStatusLogged : MatrixSDKHandlerStatusLoggedOut;
     
     if (notificationCenterListener) {
         [self.mxSession.notificationCenter removeListener:notificationCenterListener];
@@ -312,7 +267,7 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     _unnotifiedRooms = [[NSMutableArray alloc] init];
     
-    if (self.mxSession && self.status == MatrixSDKHandlerStatusServerSyncDone) {
+    if (self.mxSession && self.mxSession.state == MXSessionStateRunning) {
         _bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
@@ -323,7 +278,6 @@ static MatrixSDKHandler *sharedHandler = nil;
         NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
         // Pause SDK
         [self.mxSession pause];
-        self.status = MatrixSDKHandlerStatusPaused;
         // Update user presence
         __weak typeof(self) weakSelf = self;
         [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
@@ -343,13 +297,12 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 - (void)resume {
     if (self.mxSession) {
-        if (self.status == MatrixSDKHandlerStatusPaused) {
+        if (self.mxSession.state == MXSessionStatePaused) {
             // Resume SDK and update user presence
             [self.mxSession resume:^{
                 [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
-                self.status = MatrixSDKHandlerStatusServerSyncDone;
             }];
-        } else if (self.status == MatrixSDKHandlerStatusStoreDataReady) {
+        } else if (self.mxSession.state == MXSessionStateStoreDataReady) {
             // The session initialisation was uncompleted, we try to complete it here.
             [self launchInitialServerSync];
         }
@@ -374,7 +327,6 @@ static MatrixSDKHandler *sharedHandler = nil;
     self.homeServer = nil;
     
     _unnotifiedRooms = [[NSMutableArray alloc] init];
-    _partialTextMsgByRoomId = [[NSMutableDictionary alloc] init];
     // Keep userLogin, homeServerUrl
 }
 
@@ -405,8 +357,11 @@ static MatrixSDKHandler *sharedHandler = nil;
     if (isEnabled) {
         // Register on notification center
         notificationCenterListener = [self.mxSession.notificationCenter listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-            // Apply event filter
-            if ([self.eventsFilterForMessages indexOfObject:event.type] == NSNotFound) {
+            
+            // Apply first the event filter defined in the related room data source
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mxSession];
+            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:event.roomId create:NO];
+            if (!roomDataSource || [roomDataSource.eventsFilterForMessages indexOfObject:event.type] == NSNotFound) {
                 // Ignore
                 return;
             }
@@ -467,50 +422,6 @@ static MatrixSDKHandler *sharedHandler = nil;
             self.mxNotification = nil;
         }
     }
-}
-
-#pragma mark - Properties
-
-- (void)setStatus:(MatrixSDKHandlerStatus)status {
-    // Remove potential reachability observer
-    if (reachabilityObserver) {
-        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
-        reachabilityObserver = nil;
-    }
-    
-    // Update activity flag
-    switch (status) {
-        case MatrixSDKHandlerStatusLoggedOut:
-        case MatrixSDKHandlerStatusStoreDataReady:
-        case MatrixSDKHandlerStatusServerSyncDone: {
-            self.isActivityInProgress = NO;
-            break;
-        }
-        case MatrixSDKHandlerStatusLogged:
-        case MatrixSDKHandlerStatusInitialServerSyncInProgress: {
-            self.isActivityInProgress = YES;
-            break;
-        }
-        case MatrixSDKHandlerStatusPaused: {
-            // Here the app is resuming, the activity is in progress except if the network is unreachable
-            AFNetworkReachabilityStatus reachabilityStatus = [AFNetworkReachabilityManager sharedManager].networkReachabilityStatus;
-            self.isActivityInProgress = (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus ==AFNetworkReachabilityStatusReachableViaWWAN);
-            
-            // Add observer to update handler activity according to reachability.
-            reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-                NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
-                if (statusItem) {
-                    AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
-                    self.isActivityInProgress = (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus ==AFNetworkReachabilityStatusReachableViaWWAN);
-                }
-            }];
-            break;
-        }
-    }
-    
-    // Report status
-    _status = status;
-    NSLog(@"[MatrixSDKHandler] Updated status: %zd", status);
 }
 
 #pragma mark User's profile
@@ -598,7 +509,6 @@ static MatrixSDKHandler *sharedHandler = nil;
     if (inAccessToken.length) {
         [[NSUserDefaults standardUserDefaults] setObject:inAccessToken forKey:@"accesstoken"];
         [[AppDelegate theDelegate] registerUserNotificationSettings];
-        self.status = MatrixSDKHandlerStatusLogged;
         [self openSession];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"accesstoken"];
@@ -642,18 +552,10 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 #pragma mark - Room handling
 
-
-
 - (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId {
+    
     if (self.mxSession) {
-        // List the last messages of each room to get the rooms list in chronological order
-        NSArray *recentEvents = [NSMutableArray arrayWithArray:[self.mxSession recentsWithTypeIn:self.eventsFilterForMessages]];
-        
-        // Loops
-        for (MXEvent *mxEvent in recentEvents) {
-            // Get the dedicated mxRooms
-            MXRoom *mxRoom = [self.mxSession roomWithRoomId:mxEvent.roomId];
-            
+        for (MXRoom *mxRoom in self.mxSession.rooms) {
             // Consider only private room with 2 users
             if (!mxRoom.state.isPublic && mxRoom.state.members.count == 2) {
                 NSArray* roomMembers = mxRoom.state.members;
@@ -729,23 +631,6 @@ static MatrixSDKHandler *sharedHandler = nil;
     }
 }
 
-- (void)storePartialTextMessage:(NSString*)textMessage forRoomId:(NSString*)roomId {
-    if (roomId) {
-        if (textMessage.length) {
-            [self.partialTextMsgByRoomId setObject:textMessage forKey:roomId];
-        } else {
-            [self.partialTextMsgByRoomId removeObjectForKey:roomId];
-        }
-    }
-}
-
-- (NSString*)partialTextMessageForRoomId:(NSString*)roomId {
-    if (roomId) {
-        return [self.partialTextMsgByRoomId objectForKey:roomId];
-    }
-    return nil;
-}
-
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
     CGFloat powerLevel = 0;
     
@@ -776,68 +661,6 @@ static MatrixSDKHandler *sharedHandler = nil;
     return powerLevel;
 }
 
-#pragma mark - Event handling
-
-// Checks whether the event is related to an attachment and if it is supported
-- (BOOL)isSupportedAttachment:(MXEvent*)event {
-    BOOL isSupportedAttachment = NO;
-    
-    if (event.eventType == MXEventTypeRoomMessage) {
-        NSString *msgtype = event.content[@"msgtype"];
-        NSString *requiredField;
-        
-        if ([msgtype isEqualToString:kMXMessageTypeImage]) {
-            requiredField = event.content[@"url"];
-            if (requiredField.length) {
-                isSupportedAttachment = YES;
-            }
-        } else if ([msgtype isEqualToString:kMXMessageTypeAudio]) {
-            // Not supported yet
-        } else if ([msgtype isEqualToString:kMXMessageTypeVideo]) {
-            requiredField = event.content[@"url"];
-            if (requiredField) {
-                isSupportedAttachment = YES;
-            }
-        } else if ([msgtype isEqualToString:kMXMessageTypeLocation]) {
-            // Not supported yet
-        }
-    }
-    return isSupportedAttachment;
-}
-
-// Check whether the event is emote event
-- (BOOL)isEmote:(MXEvent*)event {
-    if (event.eventType == MXEventTypeRoomMessage) {
-        NSString *msgtype = event.content[@"msgtype"];
-        if ([msgtype isEqualToString:kMXMessageTypeEmote]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState {
-    // Consider first the current display name defined in provided room state (Note: this room state is supposed to not take the new event into account)
-    NSString *senderDisplayName = [roomState memberName:event.userId];
-    // Check whether this sender name is updated by the current event (This happens in case of new joined member)
-    if ([event.content[@"displayname"] length]) {
-        // Use the actual display name
-        senderDisplayName = event.content[@"displayname"];
-    }
-    return senderDisplayName;
-}
-
-- (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState {
-    // Consider first the avatar url defined in provided room state (Note: this room state is supposed to not take the new event into account)
-    NSString *senderAvatarUrl = [roomState memberWithUserId:event.userId].avatarUrl;
-    // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
-    if ([event.content[@"avatar_url"] length]) {
-        // Use the actual display name
-        senderAvatarUrl = event.content[@"avatar_url"];
-    }
-    return senderAvatarUrl;
-}
-
 #pragma mark - Presence
 
 // return the presence ring color
@@ -856,45 +679,6 @@ static MatrixSDKHandler *sharedHandler = nil;
         default:
             return nil;
     }
-}
-
-#pragma mark - Bing work
-
-// return YES if the text contains a bing word
-- (BOOL)containsBingWord:(NSString*)text {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    NSMutableArray* wordsList = [NSMutableArray array];
-    
-    // add the display name
-    if (mxHandler.mxSession.myUser.displayname.length) {
-        [wordsList addObject:mxHandler.mxSession.myUser.displayname];
-    }
-    
-    // and the user identifiers
-    if (mxHandler.localPartFromUserId.length) {
-        [wordsList addObject:mxHandler.localPartFromUserId];
-    }
-    
-    if (wordsList.count > 0) {
-        NSMutableString* pattern = [[NSMutableString alloc] init];
-        
-        [pattern appendString:@"("];
-        
-        for(NSString* word in wordsList) {
-            // check it is a regex
-            if ([pattern hasPrefix:@"\\b"] && [pattern hasSuffix:@"\\b"]) {
-                [pattern appendFormat:@"%@|", word];
-            } else {
-                [pattern appendFormat:@"\\b%@\\b|", word];
-            }
-        }
-        
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%@)", [pattern substringToIndex:pattern.length - 1]] options:NSRegularExpressionCaseInsensitive error:nil];
-        if ([regex numberOfMatchesInString:text options:0 range:NSMakeRange(0, [text length])]) {
-            return YES;
-        }
-    }
-    return NO;
 }
 
 #pragma mark - KVO

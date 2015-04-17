@@ -142,7 +142,8 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        if ([MatrixSDKHandler sharedHandler].status != MatrixSDKHandlerStatusLoggedOut) {
+        // Check whether we're logged in
+        if ([MatrixSDKHandler sharedHandler].accessToken) {
             [self registerUserNotificationSettings];
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
@@ -284,7 +285,7 @@
     [self.masterTabBarController showAuthenticationScreen];
     // Reset App settings
     [[MXKAppSettings standardAppSettings] reset];
-    //  reset the contact manager
+    // Reset the contact manager
     [[ContactManager sharedManager] reset];
     // By default the "Home" tab is focussed
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
