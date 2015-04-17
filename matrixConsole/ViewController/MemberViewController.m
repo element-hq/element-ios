@@ -269,12 +269,12 @@
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
     NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:_mxRoomMember.userId];
-    NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:mxHandler.userId];
+    NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
     
     [buttonsTitles removeAllObjects];
     
     // Consider the case of the user himself
-    if ([_mxRoomMember.userId isEqualToString:mxHandler.userId]) {
+    if ([_mxRoomMember.userId isEqualToString:self.mxSession.myUser.userId]) {
         
         [buttonsTitles addObject:@"Leave"];
     
@@ -417,14 +417,14 @@
     MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     __weak typeof(self) weakSelf = self;
     
-    // Ask for userId to invite
+    // Ask for the power level to set
     self.actionMenu = [[MXKAlert alloc] initWithTitle:@"Power Level"  message:nil style:MXKAlertStyleAlert];
     
-    if (![mxHandler.userId isEqualToString:roomMember.userId]) {
+    if (![self.mxSession.myUser.userId isEqualToString:roomMember.userId]) {
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             weakSelf.actionMenu = nil;
             
-            [weakSelf setUserPowerLevel:roomMember to:0];
+            [weakSelf setUserPowerLevel:roomMember to:(int)weakSelf.mxRoom.state.powerLevels.usersDefault];
         }];
     }
     [self.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {

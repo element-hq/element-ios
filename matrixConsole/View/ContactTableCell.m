@@ -33,6 +33,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (membersListener) {
+        // TODO GFO: use the right mxSession in case of multiple sessions
         [[MatrixSDKHandler sharedHandler].mxSession removeListener:membersListener];
         membersListener = nil;
     }
