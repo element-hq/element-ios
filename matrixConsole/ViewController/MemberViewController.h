@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MatrixSDKHandler.h"
-
 @interface MemberViewController : MXKTableViewController
 
 @property (strong, nonatomic) MXRoomMember *mxRoomMember;

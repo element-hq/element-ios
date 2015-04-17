@@ -16,6 +16,8 @@
 
 #import "MemberViewController.h"
 
+#import "MatrixSDKHandler.h"
+
 #import "AppDelegate.h"
 #import "RoomMemberActionsCell.h"
 
