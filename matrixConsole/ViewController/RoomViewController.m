@@ -70,13 +70,12 @@
     [super viewWillAppear:animated];
     
     // Register a listener for events that concern room members
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
     NSArray *mxMembersEvents = @[
                                  kMXEventTypeStringRoomMember,
                                  kMXEventTypeStringRoomPowerLevels,
                                  kMXEventTypeStringPresence
                                  ];
-    membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+    membersListener = [self.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
         // consider only live event
         if (direction == MXEventDirectionForwards) {
             // Check the room Id (if any)
@@ -105,8 +104,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    
     // hide action
     if (self.actionMenu) {
         [self.actionMenu dismiss:NO];
@@ -114,10 +111,10 @@
     }
     
     // Store the potential message partially typed in text input
-    [mxHandler storePartialTextMessage:self.inputToolbarView.textMessage forRoomId:self.roomDataSource.roomId];
+    self.roomDataSource.partialTextMessage = self.inputToolbarView.textMessage;
     
     if (membersListener) {
-        [mxHandler.mxSession removeListener:membersListener];
+        [self.mxSession removeListener:membersListener];
         membersListener = nil;
     }
 }
@@ -130,7 +127,7 @@
     
     // Retrieve the potential message partially typed during last room display.
     // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-    self.inputToolbarView.textMessage = [[MatrixSDKHandler sharedHandler] partialTextMessageForRoomId:self.roomDataSource.roomId];
+    self.inputToolbarView.textMessage = self.roomDataSource.partialTextMessage;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -355,7 +352,7 @@
         
         // Check
         if (roomAlias.length) {
-            [[MatrixSDKHandler sharedHandler].mxSession joinRoom:roomAlias success:^(MXRoom *room) {
+            [self.mxSession joinRoom:roomAlias success:^(MXRoom *room) {
                 // Show the room
                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
             } failure:^(NSError *error) {
@@ -383,7 +380,7 @@
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:[MatrixSDKHandler sharedHandler].mxSession];
+            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mxSession];
             [membersController displayList:membersDataSource];
         }
     } else if ([[segue identifier] isEqualToString:@"showMemberDetails"]) {
