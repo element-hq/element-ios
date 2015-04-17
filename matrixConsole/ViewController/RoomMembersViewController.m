@@ -83,7 +83,7 @@
                 currentMemberViewController = (MemberViewController *)[segue destinationViewController];
                 currentMemberViewController.mxSession = self.mxSession;
                 currentMemberViewController.mxRoomMember = selectedMember;
-                currentMemberViewController.mxRoom = [[MatrixSDKHandler sharedHandler].mxSession roomWithRoomId:self.dataSource.roomId];
+                currentMemberViewController.mxRoom = [self.mxSession roomWithRoomId:self.dataSource.roomId];
             }
         }
     }
