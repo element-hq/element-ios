@@ -16,7 +16,7 @@
 
 #import "AuthenticationViewController.h"
 
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 #import "AppDelegate.h"
 #import "MXCRegistrationWebView.h"
 
@@ -106,8 +106,8 @@
     
     supportedFlows = [NSMutableArray array];
     
-    _homeServerTextField.text = [[MatrixSDKHandler sharedHandler] homeServerURL];
-    _identityServerTextField.text = [[MatrixSDKHandler sharedHandler] identityServerURL];
+    _homeServerTextField.text = [[MatrixHandler sharedHandler] homeServerURL];
+    _identityServerTextField.text = [[MatrixHandler sharedHandler] identityServerURL];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -238,7 +238,7 @@
 }
 
 - (void)refreshSupportedAuthFlow {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Remove reachability observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
@@ -374,7 +374,7 @@
     [self dismissKeyboard];
     
     if (sender == _submitButton) {
-        MatrixSDKHandler *matrix = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *matrix = [MatrixHandler sharedHandler];
         if (matrix.mxRestClient) {
             // Disable user interaction to prevent multiple requests
             [self setUserInteractionEnabled:NO];
@@ -508,7 +508,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     if (textField == _homeServerTextField) {
         if (![[mxHandler homeServerURL] isEqualToString:textField.text]) {
             [mxHandler setHomeServerURL:textField.text];
@@ -554,7 +554,7 @@
     
     [_registrationFallbackWebView openFallbackPage:fallbackPage success:^(MXCredentials *credentials) {
         // Report credentials
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         [mxHandler setUserId:credentials.userId];
         [mxHandler setAccessToken:credentials.accessToken];
         // Extract homeServer name from userId

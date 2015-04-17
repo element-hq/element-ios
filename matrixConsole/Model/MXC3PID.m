@@ -15,7 +15,7 @@
  */
 
 #import "MXC3PID.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 #import "MXTools.h"
 
 @interface MXC3PID ()
@@ -50,7 +50,7 @@
                        failure:(void (^)(NSError *error))failure {
     // Sanity Check
     if (_validationState != MXC3PIDAuthStateTokenRequested) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         // Reset if the current state is different than "Unknown"
         if (_validationState != MXC3PIDAuthStateUnknown) {
             [self resetValidationParameters];
@@ -92,7 +92,7 @@
               failure:(void (^)(NSError *error))failure {
     // Sanity check
     if (_validationState == MXC3PIDAuthStateTokenReceived) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         
         if ([self.medium isEqualToString:kMX3PIDMediumEmail]) {
             _validationState = MXC3PIDAuthStateTokenSubmitted;
@@ -137,7 +137,7 @@
                failure:(void (^)(NSError *error))failure {
     // Sanity check
     if (_validationState == MXC3PIDAuthStateAuthenticated) {
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         
         if ([self.medium isEqualToString:kMX3PIDMediumEmail]) {
             [mxHandler.mxRestClient bind3PID:userId sid:self.sid clientSecret:self.clientSecret success:^(NSDictionary *JSONResponse) {

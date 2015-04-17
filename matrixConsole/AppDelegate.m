@@ -17,7 +17,7 @@
 #import "AppDelegate.h"
 #import "APNSHandler.h"
 #import "RoomViewController.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 #import "SettingsViewController.h"
 #import "ContactManager.h"
 #import "RageShakeManager.h"
@@ -162,7 +162,7 @@
         }];
         
         // Check whether we're logged in
-        if ([MatrixSDKHandler sharedHandler].accessToken) {
+        if ([MatrixHandler sharedHandler].accessToken) {
             [self registerUserNotificationSettings];
             // When user is already logged, we launch the app on Recents
             [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
@@ -195,7 +195,7 @@
     // check if some media msut be released to reduce the cache size
     [MXKMediaManager reduceCacheSizeToInsert:0];
     // Suspend Matrix handler
-    [[MatrixSDKHandler sharedHandler] pauseInBackgroundTask];
+    [[MatrixHandler sharedHandler] pauseInBackgroundTask];
     
     // clear the notifications counter
     [self clearNotifications];
@@ -218,7 +218,7 @@
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Resume Matrix handler
-    [[MatrixSDKHandler sharedHandler] resume];
+    [[MatrixHandler sharedHandler] resume];
     
     // refresh the contacts list
     [[ContactManager sharedManager] fullRefresh];
@@ -303,7 +303,7 @@
     [MXKMediaManager clearCache];
     
     // Logout Matrix
-    [[MatrixSDKHandler sharedHandler] logout];
+    [[MatrixHandler sharedHandler] logout];
     
     // Reset mxSession information in all view controllers
     self.masterTabBarController.mxSession = nil;

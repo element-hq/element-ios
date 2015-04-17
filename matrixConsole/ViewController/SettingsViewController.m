@@ -20,7 +20,7 @@
 
 #import "AppDelegate.h"
 #import "APNSHandler.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 #import "MXC3PID.h"
 
 #import "ContactManager.h"
@@ -1057,7 +1057,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // tap on clear application cache
         if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
             // clear caches
-            [[MatrixSDKHandler sharedHandler] reload:YES];
+            [[MatrixHandler sharedHandler] reload:YES];
         }
         else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
             

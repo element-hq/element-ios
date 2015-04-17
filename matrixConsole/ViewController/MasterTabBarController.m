@@ -15,7 +15,7 @@
  */
 
 #import "MasterTabBarController.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 #import "HomeViewController.h"
 
@@ -108,7 +108,7 @@
     [super viewDidAppear:animated];
     
     // Check whether we're not logged in
-    if (![MatrixSDKHandler sharedHandler].accessToken) {
+    if (![MatrixHandler sharedHandler].accessToken) {
         [self showAuthenticationScreen];
     }
 }
@@ -215,7 +215,7 @@
 }
 
 - (void)setVisibleRoomId:(NSString *)aVisibleRoomId {
-    [[MatrixSDKHandler sharedHandler] restoreInAppNotificationsForRoomId:aVisibleRoomId];
+    [[MatrixHandler sharedHandler] restoreInAppNotificationsForRoomId:aVisibleRoomId];
     _visibleRoomId = aVisibleRoomId;
 }
 

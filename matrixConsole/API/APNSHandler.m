@@ -16,7 +16,7 @@
 
 #import "APNSHandler.h"
 #import "AppDelegate.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 NSString *const kAPNSHandlerHasBeenUpdated = @"kAPNSHandlerHasBeenUpdated";
 
@@ -91,7 +91,7 @@ static APNSHandler *sharedHandler = nil;
 
 - (void)setIsActive:(BOOL)isActive {
     // Refuse to try & turn push on if we're not logged in, it's nonsensical.
-    if (![MatrixSDKHandler sharedHandler].accessToken) {
+    if (![MatrixHandler sharedHandler].accessToken) {
         NSLog(@"[APNSHandler] Not setting push token because we're not logged in");
         return;
     }
@@ -127,7 +127,7 @@ static APNSHandler *sharedHandler = nil;
     
     NSObject *kind = isActive ? @"http" : [NSNull null];
 
-    MXRestClient *restCli = [MatrixSDKHandler sharedHandler].mxRestClient;
+    MXRestClient *restCli = [MatrixHandler sharedHandler].mxRestClient;
     [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData success:^{
         [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
         [[NSUserDefaults standardUserDefaults] synchronize];

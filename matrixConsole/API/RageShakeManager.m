@@ -19,7 +19,7 @@
 #import "RageShakeManager.h"
 
 #import "AppDelegate.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -194,7 +194,7 @@ static RageShakeManager* sharedInstance = nil;
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         
         NSMutableString* message = [[NSMutableString alloc] init];
         

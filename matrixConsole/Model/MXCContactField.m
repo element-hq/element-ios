@@ -21,7 +21,7 @@
 #import "MXCContact.h"
 
 // image URL
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 
 @interface MXCContactField() {
@@ -85,7 +85,7 @@
         if (avatarURL.length > 0) {
             [self downloadAvatarImage];
         } else {
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             
             // check if the user is already known
             MXUser* user = [mxHandler.mxSession userWithUserId:_matrixID];

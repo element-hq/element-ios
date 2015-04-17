@@ -16,7 +16,7 @@
 
 #import "MemberViewController.h"
 
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 #import "AppDelegate.h"
 #import "RoomMemberActionsCell.h"
@@ -190,7 +190,7 @@
     
     if (_mxRoomMember.avatarUrl) {
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         thumbnailURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:_mxRoomMember.avatarUrl toFitViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:thumbnailURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
@@ -266,7 +266,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
@@ -394,7 +394,7 @@
 }
 
 - (void) setUserPowerLevel:(MXRoomMember*)roomMember to:(int)value {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     int currentPowerLevel = (int)([mxHandler getPowerLevel:roomMember inRoom:self.mxRoom] * 100);
     
     // check if the power level has not yet been set to 0
@@ -416,7 +416,7 @@
 }
 
 - (void) updateUserPowerLevel:(MXRoomMember*)roomMember {
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     __weak typeof(self) weakSelf = self;
     
     // Ask for the power level to set
@@ -527,7 +527,7 @@
     
         } else if ([text isEqualToString:@"Start Chat"]) {
             [self addPendingActionMask];
-            [[MatrixSDKHandler sharedHandler] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
+            [[MatrixHandler sharedHandler] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
         }
     }
 }

@@ -18,7 +18,7 @@
 
 // application info
 #import "AppDelegate.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 // contacts management
 #import "ContactManager.h"
@@ -370,7 +370,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     __weak typeof(self) weakSelf = self;
     NSArray* matrixIDs = contact.matrixIdentifiers;
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
 
     // matrix user ?
     if (matrixIDs.count) {

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 #import "AppDelegate.h"
 
 #import "MXFileStore.h"
@@ -24,9 +24,9 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-static MatrixSDKHandler *sharedHandler = nil;
+static MatrixHandler *sharedHandler = nil;
 
-@interface MatrixSDKHandler () {
+@interface MatrixHandler () {
     // We will notify user only once on session failure
     BOOL notifyOpenSessionFailure;
     NSTimer* initialServerSyncTimer;
@@ -55,9 +55,9 @@ static MatrixSDKHandler *sharedHandler = nil;
 @property (nonatomic,readwrite) NSMutableArray* unnotifiedRooms;
 @end
 
-@implementation MatrixSDKHandler
+@implementation MatrixHandler
 
-+ (MatrixSDKHandler *)sharedHandler {
++ (MatrixHandler *)sharedHandler {
     @synchronized(self) {
         if(sharedHandler == nil)
         {
@@ -69,7 +69,7 @@ static MatrixSDKHandler *sharedHandler = nil;
 
 #pragma  mark - 
 
--(MatrixSDKHandler *)init {
+-(MatrixHandler *)init {
     if (self = [super init]) {
         _userPresence = MXPresenceUnknown;
         notifyOpenSessionFailure = YES;        
@@ -162,13 +162,13 @@ static MatrixSDKHandler *sharedHandler = nil;
     
     // Sanity check
     if (self.mxSession.state != MXSessionStateStoreDataReady) {
-        NSLog(@"[MatrixSDKHandler] Initial server sync is applicable only when store data is ready to complete session initialisation");
+        NSLog(@"[MatrixHandler] Initial server sync is applicable only when store data is ready to complete session initialisation");
         return;
     }
     
     // Launch mxSession
     [self.mxSession start:^{
-        NSLog(@"[MatrixSDKHandler] The app is ready. Matrix SDK session has been started in %0.fms.", [[NSDate date] timeIntervalSinceDate:openSessionStartDate] * 1000);
+        NSLog(@"[MatrixHandler] The app is ready. Matrix SDK session has been started in %0.fms.", [[NSDate date] timeIntervalSinceDate:openSessionStartDate] * 1000);
         [self setUserPresence:MXPresenceOnline andStatusMessage:nil completion:nil];
         
         // Register listener to update user's information
@@ -201,7 +201,7 @@ static MatrixSDKHandler *sharedHandler = nil;
             [self enableInAppNotifications:YES];
         }
     } failure:^(NSError *error) {
-        NSLog(@"[MatrixSDKHandler] Initial Sync failed: %@", error);
+        NSLog(@"[MatrixHandler] Initial Sync failed: %@", error);
         if (notifyOpenSessionFailure) {
             //Alert user only once
             notifyOpenSessionFailure = NO;
@@ -272,19 +272,19 @@ static MatrixSDKHandler *sharedHandler = nil;
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
             
-            NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX expired", (unsigned long)_bgTask);
+            NSLog(@"[MatrixHandler] pauseInBackgroundTask : %08lX expired", (unsigned long)_bgTask);
         }];
         
-        NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
+        NSLog(@"[MatrixHandler] pauseInBackgroundTask : %08lX starts", (unsigned long)_bgTask);
         // Pause SDK
         [self.mxSession pause];
         // Update user presence
         __weak typeof(self) weakSelf = self;
         [self setUserPresence:MXPresenceUnavailable andStatusMessage:nil completion:^{
-            NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX ends", (unsigned long)weakSelf.bgTask);
+            NSLog(@"[MatrixHandler] pauseInBackgroundTask : %08lX ends", (unsigned long)weakSelf.bgTask);
             [[UIApplication sharedApplication] endBackgroundTask:weakSelf.bgTask];
             weakSelf.bgTask = UIBackgroundTaskInvalid;
-            NSLog(@"[MatrixSDKHandler] >>>>> background pause task finished");
+            NSLog(@"[MatrixHandler] >>>>> background pause task finished");
         }];
     } else {
         // Cancel pending actions
@@ -311,13 +311,13 @@ static MatrixSDKHandler *sharedHandler = nil;
             // Cancel background task
             [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
             _bgTask = UIBackgroundTaskInvalid;
-            NSLog(@"[MatrixSDKHandler] pauseInBackgroundTask : %08lX cancelled", (unsigned long)_bgTask);
+            NSLog(@"[MatrixHandler] pauseInBackgroundTask : %08lX cancelled", (unsigned long)_bgTask);
         }
     }
 }
 
 - (void)logout {
-    NSLog(@"[MatrixSDKHandler] logout");
+    NSLog(@"[MatrixHandler] logout");
     
     //[self setUserPresence:MXPresenceOffline andStatusMessage:nil completion:nil];
     
@@ -541,12 +541,12 @@ static MatrixSDKHandler *sharedHandler = nil;
     self.userPresence = userPresence;
     // Update user presence on server side
     [self.mxSession.myUser setPresence:userPresence andStatusMessage:statusMessage success:^{
-        NSLog(@"[MatrixSDKHandler] Set user presence (%lu) succeeded", (unsigned long)userPresence);
+        NSLog(@"[MatrixHandler] Set user presence (%lu) succeeded", (unsigned long)userPresence);
         if (completion) {
             completion();
         }
     } failure:^(NSError *error) {
-        NSLog(@"[MatrixSDKHandler] Set user presence (%lu) failed: %@", (unsigned long)userPresence, error);
+        NSLog(@"[MatrixHandler] Set user presence (%lu) failed: %@", (unsigned long)userPresence, error);
     }];
 }
 
@@ -606,7 +606,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                                                // add the user
                                                [self.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
                                                } failure:^(NSError *error) {
-                                                   NSLog(@"[MatrixSDKHandler] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
+                                                   NSLog(@"[MatrixHandler] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
                                                    //Alert user
                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                }];
@@ -616,7 +616,7 @@ static MatrixSDKHandler *sharedHandler = nil;
                                            [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
                                            
                                        } failure:^(NSError *error) {
-                                           NSLog(@"[MatrixSDKHandler] Create room failed: %@", error);
+                                           NSLog(@"[MatrixHandler] Create room failed: %@", error);
                                            //Alert user
                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
                                        }];

@@ -15,7 +15,7 @@
  */
 
 #import "RoomTitleView.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 @interface RoomTitleView () {
     id messagesListener;

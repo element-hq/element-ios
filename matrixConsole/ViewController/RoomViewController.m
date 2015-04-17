@@ -22,7 +22,7 @@
 #import "RoomMemberTableCell.h"
 #import "RoomTitleView.h"
 
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 #import "AppDelegate.h"
 
 #import "RageShakeManager.h"
@@ -230,7 +230,7 @@
     if (textField == _roomTitleView.displayNameTextField) {
         // Check whether the user has enough power to rename the room
         MXRoomPowerLevels *powerLevels = [self.roomDataSource.room.state powerLevels];
-        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixSDKHandler sharedHandler].userId];
+        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]) {
             // Only the room name is edited here, update the text field with the room name
             textField.text = self.roomDataSource.room.state.name;
@@ -253,7 +253,7 @@
     } else if (textField == _roomTitleView.topicTextField) {
         // Check whether the user has enough power to edit room topic
         MXRoomPowerLevels *powerLevels = [self.roomDataSource.room.state powerLevels];
-        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixSDKHandler sharedHandler].userId];
+        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
         if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
             textField.backgroundColor = [UIColor whiteColor];
             [self.roomTitleView stopTopicAnimation];

@@ -17,7 +17,7 @@
 #import "RoomMembersViewController.h"
 #import "MemberViewController.h"
 
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 #import "RageShakeManager.h"
 

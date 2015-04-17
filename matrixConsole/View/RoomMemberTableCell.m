@@ -16,7 +16,7 @@
 #import <MatrixKit/MXKMediaManager.h>
 
 #import "RoomMemberTableCell.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 @interface RoomMemberTableCell () {
     NSString *roomMemberUserId;
@@ -39,7 +39,7 @@
 // nil if there is no valid one
 - (UIColor*)getUserPresenceColor:(MXUser*)user {
     if (user) {
-        return [[MatrixSDKHandler sharedHandler] getPresenceRingColor:user.presence];
+        return [[MatrixHandler sharedHandler] getPresenceRingColor:user.presence];
     }
     
     return nil;
@@ -114,7 +114,7 @@
         NSString *thumbnailURL = nil;
         if (roomMember.avatarUrl) {
             // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
             thumbnailURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:roomMember.avatarUrl toFitViewSize:self.pictureView.frame.size withMethod:MXThumbnailingMethodCrop];
         }
         self.pictureView.mediaFolder = kMXKMediaManagerAvatarThumbnailFolder;
@@ -147,7 +147,7 @@
         } else {
             self.backgroundColor = [UIColor whiteColor];
             
-            powerLevel = [[MatrixSDKHandler sharedHandler] getPowerLevel:roomMember inRoom:room];
+            powerLevel = [[MatrixHandler sharedHandler] getPowerLevel:roomMember inRoom:room];
 
             // get the user presence and his thumbnail border color
             if (roomMember.membership == MXMembershipInvite) {
@@ -157,7 +157,7 @@
                 roomMemberUserId = roomMember.userId;
                 
                 // Get the user that corresponds to this member
-                MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+                MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
                 MXUser *user = [mxHandler.mxSession userWithUserId:roomMemberUserId];
                 
                 // existing user ?
@@ -218,7 +218,7 @@
     lastSeenTimer = nil;
     
     // Get the user that corresponds to this member
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
+    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     MXUser *user = [mxHandler.mxSession userWithUserId:roomMemberUserId];
     
     // existing user ?

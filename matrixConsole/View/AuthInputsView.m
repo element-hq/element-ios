@@ -15,7 +15,7 @@
  */
 
 #import "AuthInputsView.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 @implementation AuthInputsView
 
@@ -83,7 +83,7 @@
     super.authType = authType;
     
     // Prefill text field
-    self.userLoginTextField.text = [[MatrixSDKHandler sharedHandler] userLogin];
+    self.userLoginTextField.text = [[MatrixHandler sharedHandler] userLogin];
     self.passWordTextField.text = nil;
 }
 
@@ -99,7 +99,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == self.userLoginTextField) {
-        [[MatrixSDKHandler sharedHandler] setUserLogin:textField.text];
+        [[MatrixHandler sharedHandler] setUserLogin:textField.text];
     }
 }
 
@@ -180,7 +180,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == self.userLoginTextField) {
-        [[MatrixSDKHandler sharedHandler] setUserLogin:textField.text];
+        [[MatrixHandler sharedHandler] setUserLogin:textField.text];
     }
     // FIXME store user's email in matrixSDKHandler like userId
 }

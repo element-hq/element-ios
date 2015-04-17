@@ -16,16 +16,7 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
-typedef enum : NSUInteger {
-    MatrixSDKHandlerStatusLoggedOut = 0,
-    MatrixSDKHandlerStatusLogged,
-    MatrixSDKHandlerStatusStoreDataReady,
-    MatrixSDKHandlerStatusInitialServerSyncInProgress,
-    MatrixSDKHandlerStatusServerSyncDone,
-    MatrixSDKHandlerStatusPaused
-} MatrixSDKHandlerStatus;
-
-@interface MatrixSDKHandler : NSObject
+@interface MatrixHandler : NSObject
 
 @property (strong, nonatomic) MXRestClient *mxRestClient;
 @property (strong, nonatomic) MXSession *mxSession;
@@ -41,7 +32,7 @@ typedef enum : NSUInteger {
 // Matrix user's settings
 @property (nonatomic) MXPresence userPresence;
 
-+ (MatrixSDKHandler *)sharedHandler;
++ (MatrixHandler *)sharedHandler;
 
 - (void)pauseInBackgroundTask;
 - (void)resume;

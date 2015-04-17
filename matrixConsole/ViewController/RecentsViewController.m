@@ -18,7 +18,7 @@
 #import "RoomViewController.h"
 
 #import "AppDelegate.h"
-#import "MatrixSDKHandler.h"
+#import "MatrixHandler.h"
 
 #import "RageShakeManager.h"
 
