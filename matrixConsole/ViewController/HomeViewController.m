@@ -16,7 +16,6 @@
 
 #import "HomeViewController.h"
 
-#import "MatrixSDKHandler.h"
 #import "AppDelegate.h"
 #import "PublicRoomTableCell.h"
 
@@ -145,9 +144,17 @@
         // Ensure to display room creation section
         [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
         
-        // Update alias placeholder in room creation section
-        homeServerSuffix = [NSString stringWithFormat:@":%@",self.mxRestClient.homeserver];
-        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
+        // Extract homeServer name from userId
+        NSArray *components = [self.mxSession.myUser.userId componentsSeparatedByString:@":"];
+        if (components.count == 2) {
+            homeServerSuffix = [NSString stringWithFormat:@":%@",[components lastObject]];
+            // Update alias placeholder in room creation section
+            _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
+        } else {
+            homeServerSuffix = nil;
+            NSLog(@"[HomeVC] Warning: the userId is not correctly formatted: %@", self.mxSession.myUser.userId);
+            _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
+        }
     } else {
         // Hide room creation and join options (only public rooms section is displayed).
         self.tableView.tableHeaderView = nil;
@@ -227,13 +234,16 @@
     if (alias.length > 1) {
         // Remove '#' character
         alias = [alias substringFromIndex:1];
-        // Remove homeserver
-        NSRange range = [alias rangeOfString:homeServerSuffix];
-        if (range.location == NSNotFound) {
-            NSLog(@"[HomeVC] Wrong room alias has been set (%@)", _roomAliasTextField.text);
-            alias = nil;
-        } else {
-            alias = [alias stringByReplacingCharactersInRange:range withString:@""];
+        
+        if (homeServerSuffix) {
+            // Remove homeserver
+            NSRange range = [alias rangeOfString:homeServerSuffix];
+            if (range.location == NSNotFound) {
+                NSLog(@"[HomeVC] Wrong room alias has been set (%@)", _roomAliasTextField.text);
+                alias = nil;
+            } else {
+                alias = [alias stringByReplacingCharactersInRange:range withString:@""];
+            }
         }
     }
     
@@ -302,11 +312,14 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
     if (textField == _roomAliasTextField) {
-        // Check whether homeserver suffix should be added
-        NSRange range = [textField.text rangeOfString:@":"];
-        if (range.location == NSNotFound) {
-            textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+        if (homeServerSuffix) {
+            // Check whether homeserver suffix should be added
+            NSRange range = [textField.text rangeOfString:@":"];
+            if (range.location == NSNotFound) {
+                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+            }
         }
+        
         // Check whether the alias is valid
         if (!self.alias) {
             // reset text field
@@ -318,11 +331,13 @@
         textField.text = [participants componentsJoinedByString:@"; "];
     } else if (textField == _joinRoomAliasTextField) {
         if (textField.text.length > 1) {
-            // Add homeserver suffix if none
-            NSRange range = [textField.text rangeOfString:@":"];
-            if (range.location == NSNotFound) {
-                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
-            }
+             if (homeServerSuffix) {
+                 // Add homeserver suffix if none
+                 NSRange range = [textField.text rangeOfString:@":"];
+                 if (range.location == NSNotFound) {
+                     textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                 }
+             }
         } else {
             // reset text field
             textField.text = nil;
@@ -356,7 +371,7 @@
         // Add # if none
         if (!textField.text.length || textField.text.length == range.length) {
             if ([string hasPrefix:@"#"] == NO) {
-                if ([string isEqualToString:@":"]) {
+                if ([string isEqualToString:@":"] && homeServerSuffix) {
                     textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffix];
                 } else {
                     textField.text = [NSString stringWithFormat:@"#%@",string];
@@ -365,7 +380,7 @@
                 [self onTextFieldChange:nil];
                 return NO;
             }
-        } else {
+        } else if (homeServerSuffix) {
             // Add homeserver automatically when user adds ':' at the end
             if (range.location == textField.text.length && [string isEqualToString:@":"]) {
                 textField.text = [textField.text stringByAppendingString:homeServerSuffix];
@@ -411,8 +426,7 @@
         }
         
         // Create new room
-        MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-        [mxHandler.mxRestClient createRoom:roomName
+        [self.mxRestClient createRoom:roomName
          visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
          roomAlias:self.alias
          topic:nil
@@ -420,7 +434,7 @@
              // Check whether some users must be invited
              NSArray *invitedUsers = self.participantsList;
              for (NSString *userId in invitedUsers) {
-                 [mxHandler.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
+                 [self.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
                      NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, response.roomId);
                  } failure:^(NSError *error) {
                      NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
@@ -502,7 +516,7 @@
     [sectionHeader addSubview:sectionLabel];
     
     if (publicRooms) {
-        NSString *homeserver = [MatrixSDKHandler sharedHandler].homeServerURL;
+        NSString *homeserver = self.mxRestClient.homeserver;
         if (homeserver.length) {
             sectionLabel.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
         } else {
@@ -610,8 +624,7 @@
     }
     
     // Check whether the user has already joined the selected public room
-    MatrixSDKHandler *mxHandler = [MatrixSDKHandler sharedHandler];
-    if ([mxHandler.mxSession roomWithRoomId:publicRoom.roomId]) {
+    if ([self.mxSession roomWithRoomId:publicRoom.roomId]) {
         // Open selected room
         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
     } else {
@@ -624,7 +637,7 @@
             [selectedCell addSubview:loadingWheel];
         }
         [loadingWheel startAnimating];
-        [mxHandler.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
+        [self.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
             // Show joined room
             [loadingWheel stopAnimating];
             [loadingWheel removeFromSuperview];
