@@ -14,7 +14,7 @@ target "matrixConsole" do
 #pod 'MatrixKit'
 
 # The develop branch version
-pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'matrix_kit'
+pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
 pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
 
 # The one used for developping both MatrixSDK and MatrixKit
