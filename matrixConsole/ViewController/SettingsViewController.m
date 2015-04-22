@@ -47,7 +47,7 @@
 
 
 NSString* const kUserInfoNotificationRulesText = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
-NSString* const kConfigurationFormatText = @"matrixConsole version: %@\r\nSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@";
+NSString* const kConfigurationFormatText = @"Console version: %@\r\nMatrixKit version: %@\r\nMatrixSDK version: %@\r\n%@\r\nHome server: %@\r\nIdentity server: %@\r\nUser ID: %@";
 NSString* const kBuildFormatText = @"Build: %@\r\n";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
@@ -833,7 +833,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, self.mxSession.matrixRestClient.homeserver, self.mxSession.matrixRestClient.identityServer, self.mxSession.myUser.userId];
+        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build, self.mxSession.matrixRestClient.homeserver, self.mxSession.matrixRestClient.identityServer, self.mxSession.myUser.userId];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
@@ -1039,7 +1039,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixSDKVersion, build, self.mxSession.matrixRestClient.homeserver, self.mxSession.matrixRestClient.identityServer, self.mxSession.myUser.userId];
+        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build, self.mxSession.matrixRestClient.homeserver, self.mxSession.matrixRestClient.identityServer, self.mxSession.myUser.userId];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
         SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];

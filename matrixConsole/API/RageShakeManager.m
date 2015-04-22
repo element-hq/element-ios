@@ -210,8 +210,9 @@ static RageShakeManager* sharedInstance = nil;
         [message appendFormat:@"homeServerURL: %@\n", mxHandler.homeServerURL];
         [message appendFormat:@"homeServer: %@\n", mxHandler.homeServer];
         [message appendFormat:@"\n"];
-        [message appendFormat:@"matrixConsole version: %@\n", appVersion];
-        [message appendFormat:@"SDK version: %@\n", MatrixSDKVersion];
+        [message appendFormat:@"Console version: %@\n", appVersion];
+        [message appendFormat:@"MatrixKit version: %@\n", MatrixKitVersion];
+        [message appendFormat:@"MatrixSDK version: %@\n", MatrixSDKVersion];
         if (build.length) {
             [message appendFormat:@"Build: %@\n", build];
         }
