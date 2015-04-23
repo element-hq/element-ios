@@ -596,24 +596,24 @@ static MatrixHandler *sharedHandler = nil;
             [[AppDelegate theDelegate].masterTabBarController showRoom:roomId];
         } else {
             // create a new room
-            [self.mxRestClient createRoom:nil
-                                    visibility:kMXRoomVisibilityPrivate
-                                     roomAlias:nil
-                                         topic:nil
-                                       success:^(MXCreateRoomResponse *response) {
+            [self.mxSession createRoom:nil
+                            visibility:kMXRoomVisibilityPrivate
+                             roomAlias:nil
+                                 topic:nil
+                               success:^(MXRoom *room) {
                                            // invite the other user only if it is defined and not onself
                                            if (userId && ![self.userId isEqualToString:userId]) {
                                                // add the user
-                                               [self.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
+                                               [room inviteUser:userId success:^{
                                                } failure:^(NSError *error) {
-                                                   NSLog(@"[MatrixHandler] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
+                                                   NSLog(@"[MatrixHandler] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
                                                    //Alert user
                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                }];
                                            }
                                            
                                            // Open created room
-                                           [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+                                           [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
                                            
                                        } failure:^(NSError *error) {
                                            NSLog(@"[MatrixHandler] Create room failed: %@", error);

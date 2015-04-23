@@ -426,18 +426,18 @@
         }
         
         // Create new room
-        [self.mxRestClient createRoom:roomName
-         visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
-         roomAlias:self.alias
-         topic:nil
-         success:^(MXCreateRoomResponse *response) {
+        [self.mxSession createRoom:roomName
+                        visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
+                         roomAlias:self.alias
+                             topic:nil
+                           success:^(MXRoom *room) {
              // Check whether some users must be invited
              NSArray *invitedUsers = self.participantsList;
              for (NSString *userId in invitedUsers) {
-                 [self.mxRestClient inviteUser:userId toRoom:response.roomId success:^{
-                     NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, response.roomId);
+                 [room inviteUser:userId success:^{
+                     NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, room.state.roomId);
                  } failure:^(NSError *error) {
-                     NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, response.roomId, error);
+                     NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
                      //Alert user
                      [[AppDelegate theDelegate] showErrorAsAlert:error];
                  }];
@@ -448,7 +448,7 @@
              _roomAliasTextField.text = nil;
              _participantsTextField.text = nil;
              // Open created room
-             [[AppDelegate theDelegate].masterTabBarController showRoom:response.roomId];
+             [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
          } failure:^(NSError *error) {
              _createRoomBtn.enabled = YES;
              NSLog(@"[HomeVC] Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
