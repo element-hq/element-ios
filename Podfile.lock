@@ -36,7 +36,24 @@ PODS:
 DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
   - libPhoneNumber-iOS (~> 0.7.6)
-  - MatrixKit (~> 0.1.0)
+  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
+  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
+
+EXTERNAL SOURCES:
+  MatrixKit:
+    :branch: develop
+    :git: https://github.com/matrix-org/matrix-ios-kit.git
+  MatrixSDK:
+    :branch: develop
+    :git: https://github.com/matrix-org/matrix-ios-sdk.git
+
+CHECKOUT OPTIONS:
+  MatrixKit:
+    :commit: 7112b86037959bfe929ce1f53e9df2fdf8a06f7b
+    :git: https://github.com/matrix-org/matrix-ios-kit.git
+  MatrixSDK:
+    :commit: f6adbf3bd4c0835e0a412c13786d51d9ec3e8d89
+    :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
