@@ -3,13 +3,16 @@ Console
 
 Console is an iOS Matrix client. 
 
-It is also a sample that demonstrates how to use MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk) in an iOS app.
+It is also a sample that demonstrates how to use 
+MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and 
+MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk) in an iOS app.
 
 
 Build instructions
 ==================
 
-Before opening the Console Xcode workspace, you need to build it with the CocoaPods command::
+Before opening the Console Xcode workspace, you need to build it with the
+CocoaPods command::
 
         $ cd Console
         $ pod install
