@@ -93,13 +93,10 @@
     
     [self updateTitleView];
     
-//    if (self.splitViewController)
-    {
-        // Deselect the current selected row, it will be restored on viewDidAppear (if any)
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        if (indexPath) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
+    // Deselect the current selected row, it will be restored on viewDidAppear (if any)
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    if (indexPath) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 }
 
@@ -121,12 +118,8 @@
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
     if (!self.splitViewController || self.splitViewController.isCollapsed) {
-        if (currentRoomViewController) {
-            [currentRoomViewController destroy];
-            currentRoomViewController = nil;
-            // Reset selected row index
-            currentSelectedCellIndexPathRow = -1;
-        }
+        // Reset potential selected room id. This will release the current selected room (if any).
+        self.selectedRoomId = nil;
     } else {
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
@@ -144,31 +137,6 @@
     
     _selectedRoomId = roomId;
     if (roomId) {
-        // Open details view
-//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//        if (indexPath) {
-//            id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:indexPath.row];
-//            if (![recentCellData.room.state.roomId isEqualToString:roomId]) {
-//                [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-//                indexPath = nil;
-//            }
-//        }
-//        
-//        if (!indexPath) {
-//            NSInteger cellCount = [self.dataSource tableView:self.tableView numberOfRowsInSection:0];
-//            for (NSInteger index = 0; index < cellCount; index ++) {
-//                id<MXKRecentCellDataStoring> recentCellData = [self.dataSource cellDataAtIndex:index];
-//                if ([_selectedRoomId isEqualToString:recentCellData.room.state.roomId]) {
-//                    indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-//                    break;
-//                }
-//            }
-//            
-//            if (indexPath) {
-//                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-//            }
-//        }
-        
         [self performSegueWithIdentifier:@"showDetails" sender:self];
     } else if (currentRoomViewController) {
         // Release the current selected room
@@ -283,7 +251,7 @@
     if (currentSelectedCellIndexPathRow != -1) {
         // Select the right row
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentSelectedCellIndexPathRow inSection:0];
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
         if (forceVisible) {
             // Scroll table view to make the selected row appear at second position
