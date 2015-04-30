@@ -1057,7 +1057,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         // tap on clear application cache
         if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
             // clear caches
-            [[MatrixHandler sharedHandler] reload:YES];
+            [[AppDelegate theDelegate] reloadMatrixSessions:YES];
         }
         else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
             

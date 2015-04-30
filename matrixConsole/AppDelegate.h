@@ -38,6 +38,8 @@
 
 - (void)registerUserNotificationSettings;
 
+- (void)reloadMatrixSessions:(BOOL)clearCache;
+
 - (void)logout;
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error;

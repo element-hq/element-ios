@@ -108,7 +108,7 @@
     [super viewDidAppear:animated];
     
     // Check whether we're not logged in
-    if (![MatrixHandler sharedHandler].accessToken) {
+    if (![MXKAccountManager sharedManager].accounts.count) {
         [self showAuthenticationScreen];
     }
 }
@@ -215,7 +215,16 @@
 }
 
 - (void)setVisibleRoomId:(NSString *)aVisibleRoomId {
-    [[MatrixHandler sharedHandler] restoreInAppNotificationsForRoomId:aVisibleRoomId];
+    
+    // Presently only the first account is used
+    // TODO GFO: handle multi-session
+    MXKAccount *account = [[MXKAccountManager sharedManager].accounts firstObject];
+    if (account) {
+        // Enable inApp notification for this room
+        [account updateNotificationListenerForRoomId:aVisibleRoomId ignore:NO];
+    }
+    
+    
     _visibleRoomId = aVisibleRoomId;
 }
 

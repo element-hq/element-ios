@@ -194,7 +194,6 @@ static RageShakeManager* sharedInstance = nil;
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         
         NSMutableString* message = [[NSMutableString alloc] init];
         
@@ -203,13 +202,17 @@ static RageShakeManager* sharedInstance = nil;
         [message appendFormat:@"-----> my comments <-----\n\n\n"];
         
         [message appendFormat:@"------------------------------\n"];
+        [message appendFormat:@"Account info\n"];
+        
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+        for (MXKAccount* account in mxAccounts) {
+            [message appendFormat:@"userId: %@\n", account.mxCredentials.userId];
+            [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
+            [message appendFormat:@"homeServerURL: %@\n", account.mxCredentials.homeServer];
+        }
+        
+        [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Application info\n"];
-        [message appendFormat:@"userId: %@\n", mxHandler.userId];
-        [message appendFormat:@"displayname: %@\n", mxHandler.mxSession.myUser.displayname];
-        [message appendFormat:@"\n"];
-        [message appendFormat:@"homeServerURL: %@\n", mxHandler.homeServerURL];
-        [message appendFormat:@"homeServer: %@\n", mxHandler.homeServer];
-        [message appendFormat:@"\n"];
         [message appendFormat:@"Console version: %@\n", appVersion];
         [message appendFormat:@"MatrixKit version: %@\n", MatrixKitVersion];
         [message appendFormat:@"MatrixSDK version: %@\n", MatrixSDKVersion];

@@ -17,12 +17,13 @@
 #import "AppDelegate.h"
 #import "APNSHandler.h"
 #import "RoomViewController.h"
-#import "MatrixHandler.h"
 #import "SettingsViewController.h"
 #import "ContactManager.h"
 #import "RageShakeManager.h"
 
 #import "AFNetworkReachabilityManager.h"
+
+#import <AudioToolbox/AudioToolbox.h>
 
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
@@ -33,7 +34,12 @@
     
     // matrix session observer used to detect new opened sessions.
     id matrixSessionStateObserver;
+    
+    // matrix account observer used to detect new added accounts.
+    id matrixAccountsObserver;
 }
+
+@property (strong, nonatomic) MXKAlert *mxInAppNotification;
 
 @end
 
@@ -103,6 +109,7 @@
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
     {
@@ -145,28 +152,8 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        // Register matrix session state observer in order to handle new opened session 
-        matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            MXSession *mxSession = (MXSession*)notif.object;
-            
-            // Check whether the concerned session is a new one
-            if (mxSession.state == MXSessionStateInitialised) {
-                
-                // Report this new session to contact manager
-                [[ContactManager sharedManager] setMxSession:mxSession];
-                
-                // Update all view controllers thanks to tab bar controller
-                self.masterTabBarController.mxSession = mxSession;
-            }
-        }];
-        
-        // Check whether we're logged in
-        if ([MatrixHandler sharedHandler].accessToken) {
-            [self registerUserNotificationSettings];
-            // When user is already logged, we launch the app on Recents
-            [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
-        }
+        // Add matrix observers and initialize matrix sessions.
+        [self initMatrixSessions];
     }
 
     // clear the notifications counter
@@ -192,10 +179,20 @@
     self.isOffline = NO;
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     
-    // check if some media msut be released to reduce the cache size
+    // check if some media must be released to reduce the cache size
     [MXKMediaManager reduceCacheSizeToInsert:0];
-    // Suspend Matrix handler
-    [[MatrixHandler sharedHandler] pauseInBackgroundTask];
+    
+    // Hide potential notification
+    if (self.mxInAppNotification) {
+        [self.mxInAppNotification dismiss:NO];
+        self.mxInAppNotification = nil;
+    }
+    
+    // Suspend all running matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    for (MXKAccount *account in mxAccounts) {
+        [account pauseInBackgroundTask];
+    }
     
     // clear the notifications counter
     [self clearNotifications];
@@ -217,8 +214,11 @@
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
-    // Resume Matrix handler
-    [[MatrixHandler sharedHandler] resume];
+    // Resume all existing matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    for (MXKAccount *account in mxAccounts) {
+        [account resume];
+    }
     
     // refresh the contacts list
     [[ContactManager sharedManager] fullRefresh];
@@ -291,7 +291,95 @@
     }
 }
 
-#pragma mark -
+#pragma mark - Matrix sessions handling
+
+- (void)initMatrixSessions {
+    
+    // Register matrix session state observer in order to handle new opened session
+    matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXSession *mxSession = (MXSession*)notif.object;
+        
+        // Check whether the concerned session is a new one
+        if (mxSession.state == MXSessionStateInitialised) {
+            
+            // Report this new session to contact manager
+            [[ContactManager sharedManager] setMxSession:mxSession];
+            
+            // Update all view controllers thanks to tab bar controller
+            self.masterTabBarController.mxSession = mxSession;
+            
+            // Check whether the app user wants notifications on new events
+            if ([[MXKAppSettings standardAppSettings] enableInAppNotifications]) {
+                [self enableInAppNotifications:YES];
+            }
+        }
+    }];
+    
+    // Register an observer in order to handle new account
+    matrixAccountsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        NSString *userId = (NSString*)notif.object;
+        
+        // TODO GFO: handle here multi sessions
+        
+        // Launch matrix session for this new account
+        MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
+        if (account) {
+            [self registerUserNotificationSettings];
+            
+            // Use MXFileStore as MXStore to permanently store events.
+            MXFileStore *mxFileStore = [[MXFileStore alloc] init];
+            [account openSessionWithStore:mxFileStore];
+        }
+    }];    
+    
+    // Observe settings changes
+    [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
+    [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
+    
+    // Check whether we're logged in
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    if (mxAccounts.count) {
+        
+        [self registerUserNotificationSettings];
+        
+        // When user is already logged, we launch the app on Recents
+        [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
+        
+        // Launch a matrix session only for the first account (TODO launch a session for each account).
+        // Use MXFileStore as MXStore to permanently store events.
+        MXFileStore *mxFileStore = [[MXFileStore alloc] init];
+        [mxAccounts.firstObject openSessionWithStore:mxFileStore];
+    }
+}
+
+- (void)reloadMatrixSessions:(BOOL)clearCache {
+    
+    // Reload all running matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    for (MXKAccount *account in mxAccounts) {
+        
+        if (account.mxSession) {
+            id<MXStore> store = account.mxSession.store;
+            
+            [[MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession] reset];
+            
+            if (clearCache) {
+                [store deleteAllData];
+            }
+            [account openSessionWithStore:store];
+        }
+    }
+    
+    // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
+    [self.masterTabBarController popRoomViewControllerAnimated:NO];
+    
+    if (clearCache) {
+        // clear the media cache
+        [MXKMediaManager clearCache];
+    }
+}
 
 - (void)logout {
     
@@ -302,8 +390,8 @@
     // Clear cache
     [MXKMediaManager clearCache];
     
-    // Logout Matrix
-    [[MatrixHandler sharedHandler] logout];
+    // Logout all matrix account
+    [[MXKAccountManager sharedManager] logout];
     
     // Reset mxSession information in all view controllers
     self.masterTabBarController.mxSession = nil;
@@ -361,6 +449,87 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
+- (void)enableInAppNotifications:(BOOL)isEnabled {
+    
+    // Update In-App notifications in all running matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    for (MXKAccount *account in mxAccounts) {
+        
+        if (account.mxSession) {
+            if (isEnabled) {
+                // Build MXEvent -> NSString formatter
+                MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
+                eventFormatter.isForSubtitle = YES;
+                
+                [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+                    
+                    // Check conditions to display this notification (TODO GFO multi-session handling)
+                    if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
+                        && ![self.masterTabBarController isPresentingMediaPicker]) {
+                        
+                        MXKEventFormatterError error;
+                        NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
+                        if (messageText.length && (error == MXKEventFormatterErrorNone)) {
+                            
+                            // Removing existing notification (if any)
+                            if (self.mxInAppNotification) {
+                                [self.mxInAppNotification dismiss:NO];
+                            }
+                            
+                            // Check whether tweak is required
+                            for (MXPushRuleAction *ruleAction in rule.actions) {
+                                if (ruleAction.actionType == MXPushRuleActionTypeSetTweak) {
+                                    if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"]) {
+                                        // Play system sound (VoicemailReceived)
+                                        AudioServicesPlaySystemSound (1002);
+                                    }
+                                }
+                            }
+                            
+                            __weak typeof(self) weakSelf = self;
+                            self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
+                                                                          message:messageText
+                                                                            style:MXKAlertStyleAlert];
+                            self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
+                                                                                                      style:MXKAlertActionStyleDefault
+                                                                                                    handler:^(MXKAlert *alert) {
+                                                                                                        weakSelf.mxInAppNotification = nil;
+                                                                                                        [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
+                                                                                                    }];
+                            [self.mxInAppNotification addActionWithTitle:@"View"
+                                                              style:MXKAlertActionStyleDefault
+                                                            handler:^(MXKAlert *alert) {
+                                                                weakSelf.mxInAppNotification = nil;
+                                                                // Show the room
+                                                                [weakSelf.masterTabBarController showRoom:event.roomId];
+                                                            }];
+                            
+                            [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
+                        }
+                    }
+                }];
+            } else {
+                [account removeNotificationListener];
+            }
+        }
+    }
+    
+    if (self.mxInAppNotification) {
+        [self.mxInAppNotification dismiss:NO];
+        self.mxInAppNotification = nil;
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath]) {
+        // Flush and restore Matrix data
+        [self reloadMatrixSessions:NO];
+    }
+    else if ([@"enableInAppNotifications" isEqualToString:keyPath]) {
+        [self enableInAppNotifications:[[MXKAppSettings standardAppSettings] enableInAppNotifications]];
+    }
 }
 
 #pragma mark - SplitViewController delegate

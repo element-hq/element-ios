@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+#import <MatrixKit/MatrixKit.h>
 
 #import "APNSHandler.h"
 #import "AppDelegate.h"
-#import "MatrixHandler.h"
 
 NSString *const kAPNSHandlerHasBeenUpdated = @"kAPNSHandlerHasBeenUpdated";
 
@@ -91,7 +91,7 @@ static APNSHandler *sharedHandler = nil;
 
 - (void)setIsActive:(BOOL)isActive {
     // Refuse to try & turn push on if we're not logged in, it's nonsensical.
-    if (![MatrixHandler sharedHandler].accessToken) {
+    if (![MXKAccountManager sharedManager].accounts.count) {
         NSLog(@"[APNSHandler] Not setting push token because we're not logged in");
         return;
     }
@@ -126,18 +126,23 @@ static APNSHandler *sharedHandler = nil;
     }
     
     NSObject *kind = isActive ? @"http" : [NSNull null];
-
-    MXRestClient *restCli = [MatrixHandler sharedHandler].mxRestClient;
-    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData success:^{
-        [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // TODO GFO Handle correctly multi-session here
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    for (MXKAccount *account in mxAccounts) {
+        MXRestClient *restCli = account.mxRestClient;
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
-    } failure:^(NSError *error) {
-        NSLog(@"[APNSHandler] Failed to send APNS token! (%@)", error);
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
-    }];
+        [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData success:^{
+            [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
+        } failure:^(NSError *error) {
+            NSLog(@"[APNSHandler] Failed to send APNS token for %@! (%@)", account.mxCredentials.userId, error);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
+        }];
+    }
 }
 
 @end

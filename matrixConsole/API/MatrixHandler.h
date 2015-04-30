@@ -21,34 +21,13 @@
 @property (strong, nonatomic) MXRestClient *mxRestClient;
 @property (strong, nonatomic) MXSession *mxSession;
 
-@property (strong, nonatomic) NSString *homeServerURL;
-@property (strong, nonatomic) NSString *homeServer;
-@property (strong, nonatomic) NSString *userLogin;
-@property (strong, nonatomic) NSString *userId;
-@property (strong, nonatomic, readonly) NSString *localPartFromUserId;
-@property (strong, nonatomic) NSString *accessToken;
-@property (strong, nonatomic) NSString *identityServerURL;
-
-// Matrix user's settings
-@property (nonatomic) MXPresence userPresence;
-
 + (MatrixHandler *)sharedHandler;
-
-- (void)pauseInBackgroundTask;
-- (void)resume;
-- (void)logout;
-
-// Flush and restore Matrix data
-- (void)reload:(BOOL)clearCache;
 
 // Searches if a private OneToOne room has been started with this user
 // Returns the room ID (nil if not found)
 - (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId;
 // Reopens an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
-
-// Enables inApp notifications for a dedicated room if they were disabled
-- (void)restoreInAppNotificationsForRoomId:(NSString*)roomID;
 
 // user power level in a dedicated room
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
