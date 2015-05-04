@@ -19,7 +19,6 @@
 
 #import "MXKRoomBubbleTableViewCell.h"
 
-#import "RoomMemberTableCell.h"
 #import "RoomTitleView.h"
 
 #import "MatrixHandler.h"

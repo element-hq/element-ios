@@ -23,11 +23,6 @@
 
 + (MatrixHandler *)sharedHandler;
 
-
-
-// user power level in a dedicated room
-- (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
-
 // return the presence ring color
 // nil means there is no ring to display
 - (UIColor*)getPresenceRingColor:(MXPresence)presence;
