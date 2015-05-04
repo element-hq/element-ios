@@ -18,7 +18,10 @@
 #import "MatrixHandler.h"
 #import "MXTools.h"
 
-@interface MXC3PID ()
+@interface MXC3PID () {
+    MXRestClient *mxRestClient;
+    MXHTTPOperation *currentRequest;
+}
 @property (nonatomic) NSString *clientSecret;
 @property (nonatomic) NSUInteger sendAttempt;
 @property (nonatomic) NSString *sid;
@@ -39,6 +42,11 @@
 
 - (void)resetValidationParameters {
     _validationState = MXC3PIDAuthStateUnknown;
+    
+    [currentRequest cancel];
+    currentRequest = nil;
+    mxRestClient = nil;
+    
     self.clientSecret = nil;
     self.sendAttempt = 1;
     self.sid = nil;
@@ -46,11 +54,12 @@
     self.userId = nil;
 }
 
-- (void)requestValidationToken:(void (^)())success
-                       failure:(void (^)(NSError *error))failure {
+- (void)requestValidationTokenWithMatrixRestClient:(MXRestClient*)restClient
+                                           success:(void (^)())success
+                                           failure:(void (^)(NSError *error))failure {
     // Sanity Check
-    if (_validationState != MXC3PIDAuthStateTokenRequested) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+    if (_validationState != MXC3PIDAuthStateTokenRequested && restClient) {
+        
         // Reset if the current state is different than "Unknown"
         if (_validationState != MXC3PIDAuthStateUnknown) {
             [self resetValidationParameters];
@@ -59,17 +68,23 @@
         if ([self.medium isEqualToString:kMX3PIDMediumEmail]) {
             self.clientSecret = [MXTools generateSecret];
             _validationState = MXC3PIDAuthStateTokenRequested;
-            [mxHandler.mxRestClient requestEmailValidation:self.address clientSecret:self.clientSecret sendAttempt:self.sendAttempt success:^(NSString *sid) {
+             mxRestClient = restClient;
+            
+            currentRequest = [mxRestClient requestEmailValidation:self.address clientSecret:self.clientSecret sendAttempt:self.sendAttempt success:^(NSString *sid) {
                 _validationState = MXC3PIDAuthStateTokenReceived;
+                currentRequest = nil;
                 self.sid = sid;
+                
                 if (success) {
                     success();
                 }
             } failure:^(NSError *error) {
                 // Return in unknown state
                 _validationState = MXC3PIDAuthStateUnknown;
+                currentRequest = nil;
                 // Increment attempt counter
                 self.sendAttempt++;
+                
                 if (failure) {
                     failure (error);
                 }
@@ -92,11 +107,11 @@
               failure:(void (^)(NSError *error))failure {
     // Sanity check
     if (_validationState == MXC3PIDAuthStateTokenReceived) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         
         if ([self.medium isEqualToString:kMX3PIDMediumEmail]) {
             _validationState = MXC3PIDAuthStateTokenSubmitted;
-            [mxHandler.mxRestClient validateEmail:self.sid validationToken:validationToken clientSecret:self.clientSecret success:^(BOOL successFlag) {
+            
+            currentRequest = [mxRestClient validateEmail:self.sid validationToken:validationToken clientSecret:self.clientSecret success:^(BOOL successFlag) {
                 if (successFlag) {
                     // Validation is complete
                     _validationState = MXC3PIDAuthStateAuthenticated;
@@ -104,12 +119,17 @@
                     // Return in previous step
                     _validationState = MXC3PIDAuthStateTokenReceived;
                 }
+                
+                currentRequest = nil;
+                
                 if (success) {
                     success(successFlag);
                 }
             } failure:^(NSError *error) {
                 // Return in previous step
                 _validationState = MXC3PIDAuthStateTokenReceived;
+                currentRequest = nil;
+                
                 if (failure) {
                     failure (error);
                 }
@@ -137,16 +157,23 @@
                failure:(void (^)(NSError *error))failure {
     // Sanity check
     if (_validationState == MXC3PIDAuthStateAuthenticated) {
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
         
         if ([self.medium isEqualToString:kMX3PIDMediumEmail]) {
-            [mxHandler.mxRestClient bind3PID:userId sid:self.sid clientSecret:self.clientSecret success:^(NSDictionary *JSONResponse) {
+            currentRequest = [mxRestClient bind3PID:userId sid:self.sid clientSecret:self.clientSecret success:^(NSDictionary *JSONResponse) {
                 // Update linked userId in 3PID
                 self.userId = userId;
+                currentRequest = nil;
+                
                 if (success) {
                     success();
                 }
-            } failure:failure];
+            } failure:^(NSError *error) {
+                currentRequest = nil;
+                
+                if (failure) {
+                    failure (error);
+                }
+            }];
             
             return;
         } else if ([self.medium isEqualToString:kMX3PIDMediumMSISDN]) {

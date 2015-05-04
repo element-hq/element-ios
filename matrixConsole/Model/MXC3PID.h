@@ -62,11 +62,13 @@ typedef enum : NSUInteger {
  This validation token must be then send back to the identity server with [MXC3PID validateWithToken]
  in order to complete the 3PID authentication.
  
+ @param restClient used to make matrix API requests during validation process.
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
-- (void)requestValidationToken:(void (^)())success
-                       failure:(void (^)(NSError *error))failure;
+- (void)requestValidationTokenWithMatrixRestClient:(MXRestClient*)restClient
+                                           success:(void (^)())success
+                                           failure:(void (^)(NSError *error))failure;
 
 /**
  Complete the 3rd party id validation by sending the validation token the user received.

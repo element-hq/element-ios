@@ -621,7 +621,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         
         submittedEmailCell.settingButton.enabled = NO;
-        [submittedEmail requestValidationToken:^{
+        [submittedEmail requestValidationTokenWithMatrixRestClient:self.mxSession.matrixRestClient success:^{
             // Reset email field
             submittedEmailCell.settingTextField.text = nil;
             [self.tableView reloadData];
