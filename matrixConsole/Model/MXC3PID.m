@@ -15,7 +15,6 @@
  */
 
 #import "MXC3PID.h"
-#import "MatrixHandler.h"
 #import "MXTools.h"
 
 @interface MXC3PID () {

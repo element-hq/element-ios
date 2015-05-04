@@ -17,11 +17,7 @@
 
 #import "MXCContactField.h"
 
-// wanr when there is a contact update
-#import "MXCContact.h"
-
-// image URL
-#import "MatrixHandler.h"
+#import "ContactManager.h"
 
 
 @interface MXCContactField() {
@@ -85,21 +81,22 @@
         if (avatarURL.length > 0) {
             [self downloadAvatarImage];
         } else {
-            MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+            // TODO GFO Handle multi-session here
+            ContactManager *contactManager = [ContactManager sharedManager];
             
             // check if the user is already known
-            MXUser* user = [mxHandler.mxSession userWithUserId:_matrixID];
+            MXUser* user = [contactManager.mxSession userWithUserId:_matrixID];
             
             if (user) {
-                avatarURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:user.avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
+                avatarURL = [contactManager.mxSession.matrixRestClient urlOfContentThumbnail:user.avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
                 [self downloadAvatarImage];
                 
             } else {
                 
-                if (mxHandler.mxRestClient) {
-                    [mxHandler.mxRestClient avatarUrlForUser:_matrixID
+                if (contactManager.mxRestClient) {
+                    [contactManager.mxRestClient avatarUrlForUser:_matrixID
                                                      success:^(NSString *avatarUrl) {
-                                                         avatarURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
+                                                         avatarURL = [contactManager.mxSession.matrixRestClient urlOfContentThumbnail:avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
                                                          [self downloadAvatarImage];
                                                      }
                                                      failure:^(NSError *error) {

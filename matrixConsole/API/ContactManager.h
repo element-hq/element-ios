@@ -32,7 +32,7 @@ extern NSString *const kContactsDidInternationalizeNotification;
     NSMutableDictionary* matrixIDBy3PID;
 }
 
-+ (id)sharedManager;
++ (ContactManager*)sharedManager;
 
 /**
  Associated matrix session (nil by default).

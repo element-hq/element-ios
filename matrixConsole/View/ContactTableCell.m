@@ -18,8 +18,6 @@
 
 #import "ContactTableCell.h"
 
-#import "MatrixHandler.h"
-
 #import "MXTools.h"
 
 #import "ContactManager.h"
@@ -35,14 +33,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (membersListener) {
-        // TODO GFO: use the right mxSession in case of multiple sessions
-        [[MatrixHandler sharedHandler].mxSession removeListener:membersListener];
+        // TODO GFO: use the right mxSession in case of multi-session
+        [[ContactManager sharedManager].mxSession removeListener:membersListener];
         membersListener = nil;
     }
 }
 
 - (void)setContact:(MXCContact *)aContact {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     _contact = aContact;
     
@@ -51,7 +48,7 @@
     
     // remove the matrix info until they are retrieved from the Matrix SDK
     if (membersListener) {
-        [mxHandler.mxSession removeListener:membersListener];
+        [[ContactManager sharedManager].mxSession removeListener:membersListener];
         membersListener = nil;
     }
     self.thumbnailView.layer.borderWidth = 0;
@@ -64,7 +61,7 @@
     NSArray *mxMembersEvents = @[
                                     kMXEventTypeStringPresence
                                 ];
-    membersListener = [mxHandler.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+    membersListener = [[ContactManager sharedManager].mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
         // consider only live event
         if (direction == MXEventDirectionForwards) {
             NSString* matrixUserID = nil;
@@ -109,10 +106,8 @@
 }
 
 - (void)refreshUserPresence {
-    // search the linked mxUser
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
-    // get the matrix identifiers
+    // search the linked mxUser
     NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
     
     // if defined
@@ -121,7 +116,7 @@
         NSString* matrixUserID = [self.contact.matrixIdentifiers objectAtIndex:0];
         
         // check if already known as a Matrix user
-        MXUser* mxUser = [mxHandler.mxSession userWithUserId:matrixUserID];
+        MXUser* mxUser = [[ContactManager sharedManager].mxSession userWithUserId:matrixUserID];
         
         // check if the mxUser is known
         // if it is not known, the presence cannot be retrieved
