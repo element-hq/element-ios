@@ -23,8 +23,4 @@
 
 + (MatrixHandler *)sharedHandler;
 
-// return the presence ring color
-// nil means there is no ring to display
-- (UIColor*)getPresenceRingColor:(MXPresence)presence;
-
 @end

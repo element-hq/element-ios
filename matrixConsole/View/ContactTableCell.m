@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MatrixKit.h>
+
 #import "ContactTableCell.h"
 
 #import "MatrixHandler.h"
@@ -146,7 +148,21 @@
 }
 
 - (void)refreshPresenceUserRing:(MXPresence)presenceStatus {
-    UIColor* ringColor = [[MatrixHandler sharedHandler] getPresenceRingColor:presenceStatus];
+    UIColor* ringColor;
+    
+    switch (presenceStatus) {
+        case MXPresenceOnline:
+            ringColor = [[MXKAppSettings standardAppSettings] presenceColorForOnlineUser];
+            break;
+        case MXPresenceUnavailable:
+            ringColor = [[MXKAppSettings standardAppSettings] presenceColorForUnavailableUser];
+            break;
+        case MXPresenceOffline:
+            ringColor = [[MXKAppSettings standardAppSettings] presenceColorForOfflineUser];
+            break;
+        default:
+            ringColor = nil;
+    }
     
     // if the thumbnail is defined
     if (ringColor) {

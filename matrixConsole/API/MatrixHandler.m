@@ -43,32 +43,4 @@ static MatrixHandler *sharedHandler = nil;
     return account.mxRestClient;
 }
 
-
-// FIXME GFO Move the following methods in SDK and Remove MatrixHandler class
-
-#pragma mark - Room handling
-
-
-
-
-
-#pragma mark - Presence
-
-// return the presence ring color
-// nil means there is no ring to display
-- (UIColor*)getPresenceRingColor:(MXPresence)presence {
-    switch (presence) {
-        case MXPresenceOnline:
-            return [UIColor colorWithRed:0.2 green:0.9 blue:0.2 alpha:1.0];
-        case MXPresenceUnavailable:
-            return [UIColor colorWithRed:0.9 green:0.9 blue:0.0 alpha:1.0];
-        case MXPresenceOffline:
-            return [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:1.0];
-        case MXPresenceUnknown:
-        case MXPresenceFreeForChat:
-        case MXPresenceHidden:
-        default:
-            return nil;
-    }
-}
 @end
