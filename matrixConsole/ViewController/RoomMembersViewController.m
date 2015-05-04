@@ -17,8 +17,6 @@
 #import "RoomMembersViewController.h"
 #import "MemberViewController.h"
 
-#import "MatrixHandler.h"
-
 #import "RageShakeManager.h"
 
 @interface RoomMembersViewController () {

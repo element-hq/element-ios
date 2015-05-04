@@ -21,7 +21,6 @@
 
 #import "RoomTitleView.h"
 
-#import "MatrixHandler.h"
 #import "AppDelegate.h"
 
 #import "RageShakeManager.h"

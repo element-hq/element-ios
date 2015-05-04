@@ -15,7 +15,6 @@
  */
 
 #import "MasterTabBarController.h"
-#import "MatrixHandler.h"
 
 #import "HomeViewController.h"
 

@@ -18,7 +18,6 @@
 #import "RoomViewController.h"
 
 #import "AppDelegate.h"
-#import "MatrixHandler.h"
 
 #import "RageShakeManager.h"
 

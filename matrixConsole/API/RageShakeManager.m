@@ -19,7 +19,6 @@
 #import "RageShakeManager.h"
 
 #import "AppDelegate.h"
-#import "MatrixHandler.h"
 
 #import "GBDeviceInfo_iOS.h"
 

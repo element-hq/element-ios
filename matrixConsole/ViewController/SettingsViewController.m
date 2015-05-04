@@ -20,7 +20,6 @@
 
 #import "AppDelegate.h"
 #import "APNSHandler.h"
-#import "MatrixHandler.h"
 #import "MXC3PID.h"
 
 #import "ContactManager.h"
