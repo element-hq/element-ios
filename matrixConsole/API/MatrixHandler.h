@@ -23,9 +23,6 @@
 
 + (MatrixHandler *)sharedHandler;
 
-// Searches if a private OneToOne room has been started with this user
-// Returns the room ID (nil if not found)
-- (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId;
 // Reopens an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
 

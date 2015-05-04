@@ -48,48 +48,15 @@ static MatrixHandler *sharedHandler = nil;
 
 #pragma mark - Room handling
 
-- (NSString*)privateOneToOneRoomIdWithUserId:(NSString*)userId {
-    
-    if (self.mxSession) {
-        for (MXRoom *mxRoom in self.mxSession.rooms) {
-            // Consider only private room with 2 users
-            if (!mxRoom.state.isPublic && mxRoom.state.members.count == 2) {
-                NSArray* roomMembers = mxRoom.state.members;
-                
-                // Check whether the provided userId is one of them
-                MXRoomMember* member = nil;
-                MXRoomMember* member1 = [roomMembers objectAtIndex:0];
-                if ([member1.userId isEqualToString:userId]) {
-                    member = member1;
-                } else {
-                    MXRoomMember* member2 = [roomMembers objectAtIndex:1];
-                    if ([member2.userId isEqualToString:userId]) {
-                        member = member2;
-                    }
-                }
-                
-                if (member) {
-                    // Check the membership of this member (Indeed the room should be ignored if the member left it)
-                    if (member.membership != MXMembershipLeave && member.membership != MXMembershipBan) {
-                        // We found the right room
-                        return mxRoom.state.roomId;
-                    }
-                }
-            }
-        }
-    }
-    
-    return nil;
-}
 
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
     if (self.mxRestClient) {
-        NSString* roomId = [self privateOneToOneRoomIdWithUserId:userId];
+        MXRoom* mxRoom = [self.mxSession privateOneToOneRoomWithUserId:userId];
         
         // if the room exists
-        if (roomId) {
+        if (mxRoom) {
             // open it
-            [[AppDelegate theDelegate].masterTabBarController showRoom:roomId];
+            [[AppDelegate theDelegate].masterTabBarController showRoom:mxRoom.state.roomId];
         } else {
             // create a new room
             [self.mxSession createRoom:nil

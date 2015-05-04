@@ -328,8 +328,8 @@
         
         // offer to start a new chat only if the room is not a 1:1 room with this user
         // it does not make sense : it would open the same room
-        NSString* roomId = [mxHandler privateOneToOneRoomIdWithUserId:_mxRoomMember.userId];
-        if (![roomId isEqualToString:mxRoom.state.roomId]) {
+        MXRoom* room = [self.mxSession privateOneToOneRoomWithUserId:_mxRoomMember.userId];
+        if (!room || (![room.state.roomId isEqualToString:mxRoom.state.roomId])) {
             [buttonsTitles addObject:@"Start Chat"];
         }
     }
