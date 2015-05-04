@@ -368,7 +368,7 @@
     return nil != pendingMaskSpinnerView;
 }
 
-- (void) addPendingActionMask {
+- (void)addPendingActionMask {
 
     // add a spinner above the tableview to avoid that the user tap on any other button
     pendingMaskSpinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -383,7 +383,7 @@
     [pendingMaskSpinnerView startAnimating];
 }
 
-- (void) removePendingActionMask {
+- (void)removePendingActionMask {
     if (pendingMaskSpinnerView) {
         [pendingMaskSpinnerView removeFromSuperview];
         pendingMaskSpinnerView = nil;
@@ -391,9 +391,8 @@
     }
 }
 
-- (void) setUserPowerLevel:(MXRoomMember*)roomMember to:(int)value {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-    int currentPowerLevel = (int)([mxHandler getPowerLevel:roomMember inRoom:self.mxRoom] * 100);
+- (void)setUserPowerLevel:(MXRoomMember*)roomMember to:(NSUInteger)value {
+    NSUInteger currentPowerLevel = [self.mxRoom.state.powerLevels powerLevelOfUserWithUserID:roomMember.userId];
     
     // check if the power level has not yet been set to 0
     if (value != currentPowerLevel) {
@@ -413,8 +412,7 @@
     }
 }
 
-- (void) updateUserPowerLevel:(MXRoomMember*)roomMember {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
+- (void)updateUserPowerLevel:(MXRoomMember*)roomMember {
     __weak typeof(self) weakSelf = self;
     
     // Ask for the power level to set
@@ -424,12 +422,12 @@
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             weakSelf.actionMenu = nil;
             
-            [weakSelf setUserPowerLevel:roomMember to:(int)weakSelf.mxRoom.state.powerLevels.usersDefault];
+            [weakSelf setUserPowerLevel:roomMember to:weakSelf.mxRoom.state.powerLevels.usersDefault];
         }];
     }
     [self.actionMenu addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.secureTextEntry = NO;
-        textField.text = [NSString stringWithFormat:@"%d", (int)([mxHandler getPowerLevel:roomMember inRoom:weakSelf.mxRoom] * 100)];
+        textField.text = [NSString stringWithFormat:@"%tu", [weakSelf.mxRoom.state.powerLevels powerLevelOfUserWithUserID:roomMember.userId]];
         textField.placeholder = nil;
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
@@ -438,7 +436,7 @@
         weakSelf.actionMenu = nil;
         
         if (textField.text.length > 0) {
-            [weakSelf setUserPowerLevel:roomMember to:(int)[textField.text integerValue]];
+            [weakSelf setUserPowerLevel:roomMember to:[textField.text integerValue]];
         }
     }];
     [self.actionMenu showInViewController:self];
