@@ -49,43 +49,6 @@ static MatrixHandler *sharedHandler = nil;
 #pragma mark - Room handling
 
 
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
-    if (self.mxRestClient) {
-        MXRoom* mxRoom = [self.mxSession privateOneToOneRoomWithUserId:userId];
-        
-        // if the room exists
-        if (mxRoom) {
-            // open it
-            [[AppDelegate theDelegate].masterTabBarController showRoom:mxRoom.state.roomId];
-        } else {
-            // create a new room
-            [self.mxSession createRoom:nil
-                            visibility:kMXRoomVisibilityPrivate
-                             roomAlias:nil
-                                 topic:nil
-                               success:^(MXRoom *room) {
-                                           // invite the other user only if it is defined and not onself
-                                           if (userId && ![self.mxSession.myUser.userId isEqualToString:userId]) {
-                                               // add the user
-                                               [room inviteUser:userId success:^{
-                                               } failure:^(NSError *error) {
-                                                   NSLog(@"[MatrixHandler] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                                                   //Alert user
-                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                               }];
-                                           }
-                                           
-                                           // Open created room
-                                           [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
-                                           
-                                       } failure:^(NSError *error) {
-                                           NSLog(@"[MatrixHandler] Create room failed: %@", error);
-                                           //Alert user
-                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                       }];
-        }
-    }
-}
 
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room {
     CGFloat powerLevel = 0;

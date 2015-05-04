@@ -190,8 +190,7 @@
     
     if (_mxRoomMember.avatarUrl) {
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-        MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
-        thumbnailURL = [mxHandler.mxSession.matrixRestClient urlOfContentThumbnail:_mxRoomMember.avatarUrl toFitViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
+        thumbnailURL = [self.mxSession.matrixRestClient urlOfContentThumbnail:_mxRoomMember.avatarUrl toFitViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:thumbnailURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
         // Check whether the image download is in progress
@@ -266,7 +265,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
@@ -527,7 +525,7 @@
     
         } else if ([text isEqualToString:@"Start Chat"]) {
             [self addPendingActionMask];
-            [[MatrixHandler sharedHandler] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
+            [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
         }
     }
 }

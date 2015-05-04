@@ -18,7 +18,7 @@
 
 #import "ContactDetailsTableCell.h"
 
-#import "MatrixHandler.h"
+#import "AppDelegate.h"
 
 #import "RageShakeManager.h"
 
@@ -110,7 +110,7 @@
     
     if ([view isKindOfClass:[ContactDetailsTableCell class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[MatrixHandler sharedHandler] startPrivateOneToOneRoomWithUserId:((ContactDetailsTableCell*)view).matrixUserIDLabel.text];
+            [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:((ContactDetailsTableCell*)view).matrixUserIDLabel.text];
         });
     }
 }

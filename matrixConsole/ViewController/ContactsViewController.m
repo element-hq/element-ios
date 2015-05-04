@@ -18,7 +18,6 @@
 
 // application info
 #import "AppDelegate.h"
-#import "MatrixHandler.h"
 
 // contacts management
 #import "ContactManager.h"
@@ -370,7 +369,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     __weak typeof(self) weakSelf = self;
     NSArray* matrixIDs = contact.matrixIdentifiers;
-    MatrixHandler *mxHandler = [MatrixHandler sharedHandler];
 
     // matrix user ?
     if (matrixIDs.count) {
@@ -390,7 +388,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 [self.startChatMenu addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     weakSelf.startChatMenu = nil;
                     
-                    [mxHandler startPrivateOneToOneRoomWithUserId:matrixID];
+                    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixID];
                 }];
             } else {
                 self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with "]  message:nil style:MXKAlertStyleActionSheet];
@@ -399,7 +397,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                     [self.startChatMenu addActionWithTitle:matrixID style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         weakSelf.startChatMenu = nil;
                         
-                        [mxHandler startPrivateOneToOneRoomWithUserId:matrixID];
+                        [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixID];
                     }];
                 }
                 

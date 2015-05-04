@@ -532,6 +532,55 @@
     }
 }
 
+#pragma mark - Matrix Rooms handling
+
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
+    
+    // TODO GFO: handle here multi sessions
+    
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    if (mxAccounts.count) {
+        MXKAccount *mxAccount = mxAccounts.firstObject;
+        MXSession *mxSession = mxAccount.mxSession;
+        
+        if (mxSession) {
+            MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
+            
+            // if the room exists
+            if (mxRoom) {
+                // open it
+                [self.masterTabBarController showRoom:mxRoom.state.roomId];
+            } else {
+                // create a new room
+                [mxSession createRoom:nil
+                                visibility:kMXRoomVisibilityPrivate
+                                 roomAlias:nil
+                                     topic:nil
+                                   success:^(MXRoom *room) {
+                                       // invite the other user only if it is defined and not onself
+                                       if (userId && ![mxSession.myUser.userId isEqualToString:userId]) {
+                                           // add the user
+                                           [room inviteUser:userId success:^{
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                                               //Alert user
+                                               [self showErrorAsAlert:error];
+                                           }];
+                                       }
+                                       
+                                       // Open created room
+                                       [self.masterTabBarController showRoom:room.state.roomId];
+                                       
+                                   } failure:^(NSError *error) {
+                                       NSLog(@"[AppDelegate] Create room failed: %@", error);
+                                       //Alert user
+                                       [self showErrorAsAlert:error];
+                                   }];
+            }
+        }
+    }
+}
+
 #pragma mark - SplitViewController delegate
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {

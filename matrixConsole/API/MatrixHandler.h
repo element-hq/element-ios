@@ -23,8 +23,7 @@
 
 + (MatrixHandler *)sharedHandler;
 
-// Reopens an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
+
 
 // user power level in a dedicated room
 - (CGFloat)getPowerLevel:(MXRoomMember *)roomMember inRoom:(MXRoom *)room;
