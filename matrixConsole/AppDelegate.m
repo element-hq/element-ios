@@ -363,7 +363,7 @@
         if (account.mxSession) {
             id<MXStore> store = account.mxSession.store;
             
-            [[MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession] reset];
+            [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
             
             if (clearCache) {
                 [store deleteAllData];
@@ -389,6 +389,14 @@
     
     // Clear cache
     [MXKMediaManager clearCache];
+    
+    // Reset all stored room data
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    for (MXKAccount *account in mxAccounts) {
+        if (account.mxSession) {
+            [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
+        }
+    }
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logout];
