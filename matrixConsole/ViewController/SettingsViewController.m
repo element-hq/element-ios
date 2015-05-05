@@ -20,7 +20,6 @@
 
 #import "AppDelegate.h"
 #import "APNSHandler.h"
-#import "MXC3PID.h"
 
 #import "ContactManager.h"
 
@@ -70,7 +69,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Linked emails
     NSMutableArray *linkedEmails;
-    MXC3PID        *submittedEmail;
+    MXK3PID        *submittedEmail;
     SettingsCellWithTextFieldAndButton* submittedEmailCell;
     SettingsCellWithLabelTextFieldAndButton* emailTokenCell;
     // Dynamic rows in the Linked emails section
@@ -617,7 +616,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [[AppDelegate theDelegate] logout];
     } else if (sender == submittedEmailCell.settingButton) {
         if (!submittedEmail || ![submittedEmail.address isEqualToString:submittedEmailCell.settingTextField.text]) {
-            submittedEmail = [[MXC3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:submittedEmailCell.settingTextField.text];
+            submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:submittedEmailCell.settingTextField.text];
         }
         
         submittedEmailCell.settingButton.enabled = NO;
@@ -764,7 +763,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         count = linkedEmails.count;
         submittedEmailRowIndex = count++;
-        if (submittedEmail && submittedEmail.validationState >= MXC3PIDAuthStateTokenReceived) {
+        if (submittedEmail && submittedEmail.validationState >= MXK3PIDAuthStateTokenReceived) {
             emailTokenRowIndex = count++;
         } else {
             emailTokenCell = nil;
