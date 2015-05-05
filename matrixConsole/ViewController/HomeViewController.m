@@ -114,35 +114,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 
-#pragma mark -
+#pragma mark - 
 
-- (void)setMxSession:(MXSession *)mxSession {
-    [super setMxSession:mxSession];
+- (void)didMatrixSessionStateChange {
     
-    // Refresh UI
-    [self updateViewControllerAppearanceOnMatrixSessionChange];
-}
-
-- (MXRestClient*)mxRestClient {
-    // Ignore `mxRestClient` property if a matrix session has been defined
-    if (self.mxSession) {
-        return self.mxSession.matrixRestClient;
-    }
+    [super didMatrixSessionStateChange];
     
-    return _mxRestClient;
-}
-
-#pragma mark - Internals
-
-- (void)updateViewControllerAppearanceOnMatrixSessionChange {
-    
-    // Check if a matrix session is set
-    if (self.mxSession) {
-        // Show room creation and join options
-        self.tableView.tableHeaderView = savedTableHeaderView;
-        
-        // Ensure to display room creation section
-        [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
+    if (!homeServerSuffix && self.mxSession.myUser.userId) {
         
         // Extract homeServer name from userId
         NSArray *components = [self.mxSession.myUser.userId componentsSeparatedByString:@":"];
@@ -155,6 +133,22 @@
             NSLog(@"[HomeVC] Warning: the userId is not correctly formatted: %@", self.mxSession.myUser.userId);
             _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
         }
+    }
+}
+
+#pragma mark -
+
+- (void)setMxSession:(MXSession *)mxSession {
+    
+    [super setMxSession:mxSession];
+    
+    // Refresh UI
+    if (self.mxSession) {
+        // Show room creation and join options
+        self.tableView.tableHeaderView = savedTableHeaderView;
+        
+        // Ensure to display room creation section
+        [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
     } else {
         // Hide room creation and join options (only public rooms section is displayed).
         self.tableView.tableHeaderView = nil;
@@ -163,6 +157,17 @@
     // Refresh listed public rooms
     [self refreshPublicRooms];
 }
+
+- (MXRestClient*)mxRestClient {
+    // Ignore `mxRestClient` property if a matrix session has been defined
+    if (self.mxSession) {
+        return self.mxSession.matrixRestClient;
+    }
+    
+    return _mxRestClient;
+}
+
+#pragma mark - Internals
 
 - (void)refreshPublicRooms {
     
