@@ -16,6 +16,8 @@
 
 #import "MasterTabBarController.h"
 
+#import "AppDelegate.h"
+
 #import "HomeViewController.h"
 
 #import "RecentsViewController.h"
@@ -114,7 +116,9 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
+    [[AppDelegate theDelegate] reloadMatrixSessions:NO];
 }
 
 - (void)dealloc {
