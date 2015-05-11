@@ -317,10 +317,16 @@
 
 - (void)initMatrixSessions {
     
-    // Register matrix session state observer in order to handle new opened session
+    // Register matrix session state observer in order to handle new opened session.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXSession *mxSession = (MXSession*)notif.object;
+        
+        // Remove by default potential call observer on matrix session state change
+        if (matrixCallObserver) {
+            [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
+            matrixCallObserver = nil;
+        }
         
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised) {
@@ -335,6 +341,10 @@
             if ([[MXKAppSettings standardAppSettings] enableInAppNotifications]) {
                 [self enableInAppNotifications:YES];
             }
+        } else if (mxSession.state == MXSessionStateRunning) {
+            
+            // A new call observer may be added here
+            [self addMatrixCallObserver];
         }
     }];
     
@@ -354,21 +364,6 @@
             MXFileStore *mxFileStore = [[MXFileStore alloc] init];
             [account openSessionWithStore:mxFileStore];
         }
-    }];
-    
-    // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        MXCall *mxCall = (MXCall*)notif.object;
-        
-        presentedCallViewController = [MXKCallViewController callViewController:mxCall];
-        presentedCallViewController.delegate = self;
-        
-        UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
-        [selectedViewController presentViewController:presentedCallViewController animated:YES completion:nil];
-        
-        // Hide system status bar
-        [UIApplication sharedApplication].statusBarHidden = YES;
     }];
     
     // Observe settings changes
@@ -575,6 +570,28 @@
     else if ([@"enableInAppNotifications" isEqualToString:keyPath]) {
         [self enableInAppNotifications:[[MXKAppSettings standardAppSettings] enableInAppNotifications]];
     }
+}
+
+- (void)addMatrixCallObserver {
+    
+    if (matrixCallObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
+    }
+    
+    // Register call observer in order to handle new opened session
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXCall *mxCall = (MXCall*)notif.object;
+        
+        presentedCallViewController = [MXKCallViewController callViewController:mxCall];
+        presentedCallViewController.delegate = self;
+        
+        UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
+        [selectedViewController presentViewController:presentedCallViewController animated:YES completion:nil];
+        
+        // Hide system status bar
+        [UIApplication sharedApplication].statusBarHidden = YES;
+    }];
 }
 
 #pragma mark - Matrix Rooms handling
