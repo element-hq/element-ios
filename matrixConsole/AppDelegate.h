@@ -19,7 +19,7 @@
 
 #import "MasterTabBarController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, MXKCallViewControllerDelegate> {
     BOOL isAPNSRegistered;
 }
 

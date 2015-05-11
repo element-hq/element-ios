@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <MatrixSDK/MatrixSDK.h>
+#import <MatrixKit/MatrixKit.h>
 
 #define TABBAR_HOME_INDEX      0
 #define TABBAR_RECENTS_INDEX   1

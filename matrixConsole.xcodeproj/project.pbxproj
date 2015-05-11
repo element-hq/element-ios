@@ -43,6 +43,11 @@
 		F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237791A7289F00079F3E0 /* APNSHandler.m */; };
 		F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3C1A3F3D7F002B698E /* icon_users.png */; };
 		F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */; };
+		F068EC491B015048005B06E2 /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F068EC441B015048005B06E2 /* busy.mp3 */; };
+		F068EC4A1B015048005B06E2 /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F068EC451B015048005B06E2 /* callend.mp3 */; };
+		F068EC4B1B015048005B06E2 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F068EC461B015048005B06E2 /* message.mp3 */; };
+		F068EC4C1B015048005B06E2 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F068EC471B015048005B06E2 /* ring.mp3 */; };
+		F068EC4D1B015048005B06E2 /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F068EC481B015048005B06E2 /* ringback.mp3 */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
 		F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80DA19DD9DE700B621A1 /* AppDelegate.m */; };
 		F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07A80E219DD9DE700B621A1 /* Main.storyboard */; };
@@ -134,6 +139,11 @@
 		F05237791A7289F00079F3E0 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
 		F05C3A3C1A3F3D7F002B698E /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_users@2x.png"; sourceTree = "<group>"; };
+		F068EC441B015048005B06E2 /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
+		F068EC451B015048005B06E2 /* callend.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = callend.mp3; sourceTree = "<group>"; };
+		F068EC461B015048005B06E2 /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
+		F068EC471B015048005B06E2 /* ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ring.mp3; sourceTree = "<group>"; };
+		F068EC481B015048005B06E2 /* ringback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringback.mp3; sourceTree = "<group>"; };
 		F07A80D219DD9DE700B621A1 /* matrixConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matrixConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F07A80D619DD9DE700B621A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F07A80D719DD9DE700B621A1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -220,6 +230,7 @@
 		F01628B519E298710071C473 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F068EC431B015048005B06E2 /* sounds */,
 				710CC3BE1A6E9F14006EE973 /* matrixUser.png */,
 				F030974A1A6580D70090BC00 /* icon_keyboard.png */,
 				F030974B1A6580D70090BC00 /* icon_keyboard@2x.png */,
@@ -320,6 +331,19 @@
 				71193D3D1A6E61AD00E59A9E /* SectionedContacts.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		F068EC431B015048005B06E2 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F068EC441B015048005B06E2 /* busy.mp3 */,
+				F068EC451B015048005B06E2 /* callend.mp3 */,
+				F068EC461B015048005B06E2 /* message.mp3 */,
+				F068EC471B015048005B06E2 /* ring.mp3 */,
+				F068EC481B015048005B06E2 /* ringback.mp3 */,
+			);
+			name = sounds;
+			path = "../../../matrix-ios-kit/MatrixKit/Assets/sounds";
 			sourceTree = "<group>";
 		};
 		F07A80C919DD9DE700B621A1 = {
@@ -476,23 +500,28 @@
 				F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */,
 				F07A80E919DD9DE700B621A1 /* LaunchScreen.xib in Resources */,
 				F04B2DA51A977A9B00EEA4C8 /* tab_settings.png in Resources */,
+				F068EC4A1B015048005B06E2 /* callend.mp3 in Resources */,
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
 				F030974D1A6580D70090BC00 /* icon_keyboard@2x.png in Resources */,
 				717629521A7A682A00927125 /* countryCodes.plist in Resources */,
 				710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */,
 				F030974C1A6580D70090BC00 /* icon_keyboard.png in Resources */,
+				F068EC4B1B015048005B06E2 /* message.mp3 in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
 				F01628C319E29C660071C473 /* logo.png in Resources */,
 				F01628C119E29C660071C473 /* default-profile.png in Resources */,
 				F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */,
 				F0F90C6B1A325ABF00455977 /* icon_search@2x.png in Resources */,
 				F0CEA5AE19E6895E00E47915 /* logoHighRes.png in Resources */,
+				F068EC491B015048005B06E2 /* busy.mp3 in Resources */,
+				F068EC4C1B015048005B06E2 /* ring.mp3 in Resources */,
 				F0F90C691A32596700455977 /* icon_search.png in Resources */,
 				F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */,
 				3198D9E11A68338B00556695 /* Localizable.strings in Resources */,
 				F07A80E619DD9DE700B621A1 /* Images.xcassets in Resources */,
 				F08B6FCC1A1DE7F80094A35B /* matrixConsole.jpg in Resources */,
 				F04B2DA61A977A9B00EEA4C8 /* tab_settings@2x.png in Resources */,
+				F068EC4D1B015048005B06E2 /* ringback.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
