@@ -25,6 +25,11 @@ pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :br
 
 pod 'libPhoneNumber-iOS', '~> 0.7.6'
 pod 'GBDeviceInfo', '~> 2.2.9'
+
+# There is no pod for OpenWebRTC-SDK. Use the master branch from github
+# As of 2015/05/06, it works
+pod 'OpenWebRTC-SDK', :git => 'https://github.com/EricssonResearch/openwebrtc-ios-sdk.git', :branch => 'master'
+
 end
 
 target "matrixConsole" do

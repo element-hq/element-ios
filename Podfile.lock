@@ -32,12 +32,17 @@ PODS:
   - MatrixSDK (0.4.0):
     - AFNetworking (~> 2.5.2)
     - Mantle (~> 1.5)
+  - OpenWebRTC (0.3.1)
+  - OpenWebRTC-SDK (0.1.1):
+    - OpenWebRTC
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
   - libPhoneNumber-iOS (~> 0.7.6)
   - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
   - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
+  - OpenWebRTC-SDK (from `https://github.com/EricssonResearch/openwebrtc-ios-sdk.git`,
+    branch `master`)
 
 EXTERNAL SOURCES:
   MatrixKit:
@@ -46,14 +51,20 @@ EXTERNAL SOURCES:
   MatrixSDK:
     :branch: develop
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  OpenWebRTC-SDK:
+    :branch: master
+    :git: https://github.com/EricssonResearch/openwebrtc-ios-sdk.git
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 7112b86037959bfe929ce1f53e9df2fdf8a06f7b
+    :commit: c3a3042ec70af046ac0fcd64bce45513cb239552
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: f6adbf3bd4c0835e0a412c13786d51d9ec3e8d89
+    :commit: 97fd4514790a88cecd53d1c1d17ed2c0cbf04d19
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  OpenWebRTC-SDK:
+    :commit: 629c6dc4694abf49a6a3713eb520eeb75da7cf02
+    :git: https://github.com/EricssonResearch/openwebrtc-ios-sdk.git
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
@@ -63,5 +74,7 @@ SPEC CHECKSUMS:
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
   MatrixKit: 47d6d55e1c5a32e43610b3965db3916e8ddc805c
   MatrixSDK: 1645c94a7c7657e91e890c9c09d10094f79b7b92
+  OpenWebRTC: 85be1caf6dc45b11106eacba93de61e3e52b1cf8
+  OpenWebRTC-SDK: fd66e49ab80e88ed1e55231ac875a4976dc3ba74
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.37.1
