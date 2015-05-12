@@ -279,7 +279,12 @@
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels]) {
             [buttonsTitles addObject:@"Set Power Level"];
         }
-    } else {
+    } else if (_mxRoomMember) {
+        
+        // Offer voip call options
+        [buttonsTitles addObject:@"Start Voice Call"];
+        [buttonsTitles addObject:@"Start Video Call"];
+        
         // Consider membership of the selected member
         switch (_mxRoomMember.membership) {
             case MXMembershipInvite:
@@ -522,6 +527,47 @@
         } else if ([text isEqualToString:@"Start Chat"]) {
             [self addPendingActionMask];
             [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:_mxRoomMember.userId];
+        } else {
+            BOOL startVideoCall = [text isEqualToString:@"Start Video Call"];
+            
+            if (startVideoCall || [text isEqualToString:@"Start Voice Call"]) {
+                [self addPendingActionMask];
+                
+                MXRoom* oneToOneRoom = [self.mxSession privateOneToOneRoomWithUserId:_mxRoomMember.userId];
+                
+                // Place the call directly if the room exists
+                if (oneToOneRoom) {
+                    [self.mxSession.callManager placeCallInRoom:oneToOneRoom.state.roomId withVideo:startVideoCall];
+                    [self removePendingActionMask];
+                } else {
+                    // Create a new room
+                    [self.mxSession createRoom:nil
+                                    visibility:kMXRoomVisibilityPrivate
+                                     roomAlias:nil
+                                         topic:nil
+                                       success:^(MXRoom *room) {
+                                           // Add the user
+                                           [room inviteUser:_mxRoomMember.userId success:^{
+                                               // Delay the call in order to be sure that the room is ready
+                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                   [self.mxSession.callManager placeCallInRoom:room.state.roomId withVideo:startVideoCall];
+                                                   [self removePendingActionMask];
+                                               });
+                                               
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"[MemberVC] %@ invitation failed (roomId: %@): %@", _mxRoomMember.userId, room.state.roomId, error);
+                                               [self removePendingActionMask];
+                                               //Alert user
+                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                           }];
+                                       } failure:^(NSError *error) {
+                                           NSLog(@"[MemberVC] Create room failed: %@", error);
+                                           [self removePendingActionMask];
+                                           //Alert user
+                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                       }];
+                }
+            }
         }
     }
 }
