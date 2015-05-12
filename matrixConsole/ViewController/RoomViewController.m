@@ -82,24 +82,28 @@
         self.actionMenu = nil;
     }
     
-    // Store the potential message partially typed in text input
-    self.roomDataSource.partialTextMessage = self.inputToolbarView.textMessage;
-    
-    if (membersListener) {
-        [self.roomDataSource.room removeListener:membersListener];
-        membersListener = nil;
+    if (self.roomDataSource) {
+        // Store the potential message partially typed in text input
+        self.roomDataSource.partialTextMessage = self.inputToolbarView.textMessage;
+        
+        if (membersListener) {
+            [self.roomDataSource.room removeListener:membersListener];
+            membersListener = nil;
+        }
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // Set visible room id
-    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
-    
-    // Retrieve the potential message partially typed during last room display.
-    // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-    self.inputToolbarView.textMessage = self.roomDataSource.partialTextMessage;
+    if (self.roomDataSource) {
+        // Set visible room id
+        [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
+        
+        // Retrieve the potential message partially typed during last room display.
+        // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
+        self.inputToolbarView.textMessage = self.roomDataSource.partialTextMessage;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -110,6 +114,17 @@
 }
 
 #pragma mark -
+
+- (void)displayRoom:(MXKRoomDataSource *)dataSource {
+    
+    // Remove members listener (if any) before changing dataSource.
+    if (membersListener) {
+        [self.roomDataSource.room removeListener:membersListener];
+        membersListener = nil;
+    }
+    
+    [super displayRoom:dataSource];
+}
 
 - (void)dismissKeyboard {
     
