@@ -28,8 +28,13 @@
 @interface RoomViewController () {
     
     // Members list
-    NSArray *members;
     id membersListener;
+    
+    // Voip call options
+    UIButton *voipVoiceCallButton;
+    UIButton *voipVideoCallButton;
+    UIBarButtonItem *voipVoiceCallBarButtonItem;
+    UIBarButtonItem *voipVideoCallBarButtonItem;
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
@@ -66,37 +71,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    // Register a listener for events that concern room members
-    NSArray *mxMembersEvents = @[
-                                 kMXEventTypeStringRoomMember,
-                                 kMXEventTypeStringRoomPowerLevels,
-                                 kMXEventTypeStringPresence
-                                 ];
-    membersListener = [self.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-        // consider only live event
-        if (direction == MXEventDirectionForwards) {
-            // Check the room Id (if any)
-            if (event.roomId && [event.roomId isEqualToString:self.roomDataSource.roomId] == NO) {
-                // This event does not concern the current room members
-                return;
-            }
-            
-            // Check whether no text field is editing before refreshing title view
-            if (!self.roomTitleView.isEditing) {
-                [self.roomTitleView refreshDisplay];
-            }
-
-            // refresh the
-            if (members.count > 0) {
-                // Hide potential action sheet
-                if (self.actionMenu) {
-                    [self.actionMenu dismiss:NO];
-                    self.actionMenu = nil;
-                }
-            }
-        }
-    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -112,7 +86,7 @@
     self.roomDataSource.partialTextMessage = self.inputToolbarView.textMessage;
     
     if (membersListener) {
-        [self.mxSession removeListener:membersListener];
+        [self.roomDataSource.room removeListener:membersListener];
         membersListener = nil;
     }
 }
@@ -160,16 +134,34 @@
     
     // Update UI by considering dataSource state
     if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady) {
-        // Check room members to enable/disable members button in nav bar
-        self.showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
-        
         self.roomTitleView.mxRoom = self.roomDataSource.room;
         self.roomTitleView.editable = YES;
         self.roomTitleView.hidden = NO;
-    }
-    else {
-        self.showRoomMembersButtonItem.enabled = NO;
         
+        // Register a listener for events that concern room members
+        if (!membersListener) {
+            membersListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                
+                // Consider only live event
+                if (direction == MXEventDirectionForwards) {
+                    
+                    // Check the room Id (if any)
+                    if (event.roomId && [event.roomId isEqualToString:self.roomDataSource.roomId] == NO) {
+                        // This event does not concern the current room members
+                        return;
+                    }
+                    
+                    // Check whether no text field is editing before refreshing title view
+                    if (!self.roomTitleView.isEditing) {
+                        [self.roomTitleView refreshDisplay];
+                    }
+                    
+                    // Update navigation bar items
+                    [self updateNavigationBarButtonItems];
+                }
+            }];
+        }
+    } else {
         // Update the title except if the room has just been left
         if (!self.leftRoomReasonLabel) {
             if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
@@ -181,18 +173,25 @@
                 self.roomTitleView.hidden = NO;
             }
         }
-        
         self.roomTitleView.editable = NO;
+        
+        // Remove members listener if any.
+        if (membersListener) {
+            [self.roomDataSource.room removeListener:membersListener];
+            membersListener = nil;
+        }
     }
     
+    // Finalize room title refresh
     [self.roomTitleView refreshDisplay];
+    
+    // Update navigation bar items
+    [self updateNavigationBarButtonItems];
 }
 
-#pragma mark -
-
 - (void)destroy {
-    members = nil;
     if (membersListener) {
+        [self.roomDataSource.room removeListener:membersListener];
         membersListener = nil;
     }
     
@@ -202,6 +201,45 @@
     }
     
     [super destroy];
+}
+
+#pragma mark - 
+
+- (void)updateNavigationBarButtonItems {
+    
+    // Update navigation bar buttons according to room members count
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady) {
+        
+        if (self.roomDataSource.room.state.members.count == 2) {
+            if (!voipVoiceCallBarButtonItem || !voipVideoCallBarButtonItem) {
+                voipVoiceCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                voipVoiceCallButton.frame = CGRectMake(0, 0, 36, 36);
+                UIImage *voiceImage = [UIImage imageNamed:@"voice"];
+                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateNormal];
+                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateHighlighted];
+                [voipVoiceCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                voipVoiceCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVoiceCallButton];
+                
+                voipVideoCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                voipVideoCallButton.frame = CGRectMake(0, 0, 36, 36);
+                UIImage *videoImage = [UIImage imageNamed:@"video"];
+                [voipVideoCallButton setImage:videoImage forState:UIControlStateNormal];
+                [voipVideoCallButton setImage:videoImage forState:UIControlStateHighlighted];
+                [voipVideoCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                voipVideoCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVideoCallButton];
+            }
+            
+            _showRoomMembersButtonItem.enabled = YES;
+            
+            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem, voipVideoCallBarButtonItem, voipVoiceCallBarButtonItem];
+        } else {
+            _showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
+            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
+        }
+    } else {
+        _showRoomMembersButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
+    }
 }
 
 #pragma mark - MXKDataSource delegate
@@ -389,6 +427,15 @@
             selectedRoomMember = nil;
         }
         controller.mxRoom = self.roomDataSource.room;
+    }
+}
+
+#pragma mark - Action
+
+- (IBAction)onButtonPressed:(id)sender {
+    
+    if (sender == voipVoiceCallButton || sender == voipVideoCallButton) {
+        [self.mxSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:(sender == voipVideoCallButton)];
     }
 }
 
