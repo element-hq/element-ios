@@ -52,7 +52,7 @@
     /**
      The current call view controller (if any).
      */
-    MXKCallViewController *presentedCallViewController;
+    MXKCallViewController *currentCallViewController;
     
     /**
      Call status window displayed when user goes back to app during a call.
@@ -581,16 +581,21 @@
     // Register call observer in order to handle new opened session
     matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXCall *mxCall = (MXCall*)notif.object;
-        
-        presentedCallViewController = [MXKCallViewController callViewController:mxCall];
-        presentedCallViewController.delegate = self;
-        
-        UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
-        [selectedViewController presentViewController:presentedCallViewController animated:YES completion:nil];
-        
-        // Hide system status bar
-        [UIApplication sharedApplication].statusBarHidden = YES;
+        // Ignore the call if a call is already in progress
+        if (currentCallViewController) {
+            MXCall *mxCall = (MXCall*)notif.object;
+            
+            currentCallViewController = [MXKCallViewController callViewController:mxCall];
+            currentCallViewController.delegate = self;
+            
+            UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
+            [selectedViewController presentViewController:currentCallViewController animated:YES completion:^{
+                currentCallViewController.isPresented = YES;
+            }];
+            
+            // Hide system status bar
+            [UIApplication sharedApplication].statusBarHidden = YES;
+        }
     }];
 }
 
@@ -687,25 +692,38 @@
 
 - (void)dismissCallViewController:(MXKCallViewController *)callViewController {
     
-    BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
-    NSLog(@"Call view controller must be dismissed (%d)", callIsEnded);
-    
-    [callViewController dismissViewControllerAnimated:YES completion:^{
-        if (!callIsEnded) {
-            [self addCallStatusBar];
+    if (callViewController == currentCallViewController) {
+        
+        if (callViewController.isPresented) {
+            BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
+            NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
+            
+            [callViewController dismissViewControllerAnimated:YES completion:^{
+                callViewController.isPresented = NO;
+                
+                if (!callIsEnded) {
+                    [self addCallStatusBar];
+                }
+            }];
+            
+            if (callIsEnded) {
+                [self removeCallStatusBar];
+                
+                // Restore system status bar
+                [UIApplication sharedApplication].statusBarHidden = NO;
+                
+                // Release properly
+                currentCallViewController.mxCall.delegate = nil;
+                currentCallViewController.delegate = nil;
+                currentCallViewController = nil;
+            }
+        } else {
+            // Here the presentation of the call view controller is in progress
+            // Postpone the dismiss
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self dismissCallViewController:callViewController];
+            });
         }
-    }];
-    
-    if (callIsEnded) {
-        [self removeCallStatusBar];
-        
-        // Restore system status bar
-        [UIApplication sharedApplication].statusBarHidden = NO;
-        
-        // Release properly
-        presentedCallViewController.mxCall.delegate = nil;
-        presentedCallViewController.delegate = nil;
-        presentedCallViewController = nil;
     }
 }
 
@@ -766,7 +784,9 @@
     [self removeCallStatusBar];
     
     UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
-    [selectedViewController presentViewController:presentedCallViewController animated:YES completion:nil];
+    [selectedViewController presentViewController:currentCallViewController animated:YES completion:^{
+        currentCallViewController.isPresented = YES;
+    }];
 }
 
 - (void)statusBarDidChangeFrame {
