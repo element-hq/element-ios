@@ -38,6 +38,9 @@
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
+    
+    // Keep reference on potential pushed view controller to release it correctly
+    id pushedViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
@@ -103,6 +106,13 @@
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
         self.inputToolbarView.textMessage = self.roomDataSource.partialTextMessage;
+    }
+    
+    if (pushedViewController) {
+        if ([pushedViewController respondsToSelector:@selector(destroy)]) {
+            [pushedViewController destroy];
+        }
+        pushedViewController = nil;
     }
 }
 
@@ -423,10 +433,13 @@
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    pushedViewController = [segue destinationViewController];
+    
     if ([[segue identifier] isEqualToString:@"showMemberList"]) {
         
-        if ([[segue destinationViewController] isKindOfClass:[MXKRoomMemberListViewController class]]) {
-            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)[segue destinationViewController];
+        if ([pushedViewController isKindOfClass:[MXKRoomMemberListViewController class]]) {
+            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)pushedViewController;
             
             // Dismiss keyboard
             [self dismissKeyboard];
@@ -435,7 +448,7 @@
             [membersController displayList:membersDataSource];
         }
     } else if ([[segue identifier] isEqualToString:@"showMemberDetails"]) {
-        MemberViewController* controller = [segue destinationViewController];
+        MemberViewController* controller = pushedViewController;
         
         if (selectedRoomMember) {
             controller.mxRoomMember = selectedRoomMember;
