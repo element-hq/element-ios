@@ -131,7 +131,6 @@
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    setenv("GST_DEBUG", "4", 1);
     
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
