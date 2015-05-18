@@ -109,10 +109,22 @@
     }
     
     if (pushedViewController) {
+        
+        // Force the pushed view controller to dispose its resources, and release associated data source if any.
+        MXKDataSource *dataSource;
+        
+        if ([pushedViewController isKindOfClass:[MXKRoomMemberListViewController class]]) {
+            dataSource = [(MXKRoomMemberListViewController*)pushedViewController dataSource];
+        }
+        
         if ([pushedViewController respondsToSelector:@selector(destroy)]) {
             [pushedViewController destroy];
         }
         pushedViewController = nil;
+        
+        if (dataSource) {
+            [dataSource destroy];
+        }
     }
 }
 
