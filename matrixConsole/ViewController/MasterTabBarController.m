@@ -158,7 +158,10 @@
     if (mxSession) {
         recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
     }
+    // Keep reference on existing dataSource to release it properly
+    MXKRecentListDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
     [recentsViewController displayList:recentlistDataSource];
+    [previousRecentlistDataSource destroy];
     
     // Update contacts tab
     contactsViewController.mxSession = mxSession;
