@@ -64,6 +64,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Local changes
     BOOL isAvatarUpdated;
     BOOL isSavingInProgress;
+    
+    blockMXKAccountDetailsViewController_onReadyToLeave onReadyToLeaveHandler;
+    
     // Listen user's profile changes
     id userUpdateListener;
     
@@ -234,18 +237,20 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }];
             [alert addActionWithTitle:@"Save" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 [alertsArray removeObject:alert];
-                // Start saving
+                // Start saving (Report handler to leave at the end).
+                onReadyToLeaveHandler = handler;
                 [self saveUserInfo];
-                // Ready to leave
-                if (handler) {
-                    handler();
-                }
             }];
             [alert showInViewController:self];
         });
                        
         return NO;
+    } else if (isSavingInProgress) {
+        // Report handler to leave at the end of saving
+        onReadyToLeaveHandler = handler;
+        return NO;
     }
+
     return YES;
 }
 
@@ -341,6 +346,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
     maxCacheSizeCell = nil;
+    
+    onReadyToLeaveHandler = nil;
 }
 
 - (void)configureView {
@@ -478,6 +485,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         [self stopActivityIndicator];
     }
     
+    // Ready to leave
+    if (onReadyToLeaveHandler) {
+        onReadyToLeaveHandler();
+        onReadyToLeaveHandler = nil;
+    }
+    
 }
 
 - (void)handleErrorDuringPictureSaving:(NSError*)error {
@@ -565,7 +578,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSString *displayname = self.userDisplayName.text;
     BOOL isDisplayNameUpdated = ((displayname.length || currentDisplayName.length) && [displayname isEqualToString:currentDisplayName] == NO);
     
-    _saveUserInfoButton.enabled = isDisplayNameUpdated || isAvatarUpdated;
+    _saveUserInfoButton.enabled = (isDisplayNameUpdated || isAvatarUpdated) && !isSavingInProgress;
 }
 
 - (void)onMediaDownloadEnd:(NSNotification *)notif {
