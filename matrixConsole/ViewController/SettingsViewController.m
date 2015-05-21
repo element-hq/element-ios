@@ -54,6 +54,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 @interface SettingsViewController () {
     
     MXKAccount *selectedAccount;
+    id removedAccountObserver;
+    id accountUserInfoObserver;
     
     // Notifications
     UISwitch *apnsNotificationsSwitch;
@@ -108,6 +110,32 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Setup `MXKRoomMemberListViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Add observer to handle removed accounts
+    removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        NSString *userId = notif.object;
+        if (userId) {
+            // Check whether details of this account was displayed
+            if ([pushedViewController isKindOfClass:[MXKAccountDetailsViewController class]]) {
+                MXKAccountDetailsViewController *accountDetailsViewController = (MXKAccountDetailsViewController*)pushedViewController;
+                if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:userId]) {
+                    // pop the account details view controller
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }
+            }
+        }
+        
+        // Refresh table to remove this account
+        [self.tableView reloadData];
+    }];
+    
+    // Add observer to handle accounts update
+    accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // Refresh table to remove this account
+        [self.tableView reloadData];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -190,6 +218,16 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)reset {
     // Remove observers
+    if (removedAccountObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:removedAccountObserver];
+        removedAccountObserver = nil;
+    }
+    
+    if (accountUserInfoObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:accountUserInfoObserver];
+        accountUserInfoObserver = nil;
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     selectedAccount = nil;
