@@ -330,13 +330,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (recentsSearchBar) {
-        return (recentsSearchBar.frame.size.height);
+        if (section == 0) {
+            return (recentsSearchBar.frame.size.height);
+        }
+        return 0;
     }
+    
+    if (tableView.numberOfSections > 1) {
+        return 30;
+    }
+    
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return recentsSearchBar;
+    if (recentsSearchBar) {
+        if (section == 0) {
+            return recentsSearchBar;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - UISearchBarDelegate
