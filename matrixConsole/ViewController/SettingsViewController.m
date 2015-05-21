@@ -212,10 +212,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     [self.tableView reloadData];
 }
 
-- (void)logout {
-    [[AppDelegate theDelegate] logout];
-}
-
 - (void)reset {
     // Remove observers
     if (removedAccountObserver) {
@@ -245,6 +241,14 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 #pragma mark - Actions
+
+- (IBAction)addAccount:(id)sender {
+    [self performSegueWithIdentifier:@"addAccount" sender:self];
+}
+
+- (IBAction)logout:(id)sender {
+    [[AppDelegate theDelegate] logout];
+}
 
 - (IBAction)onButtonPressed:(id)sender {
     
@@ -366,7 +370,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
             [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateNormal];
             [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateHighlighted];
-            [logoutBtnCell.mxkButton addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
+            [logoutBtnCell.mxkButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = logoutBtnCell;
         }
@@ -560,6 +564,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX) {
         sectionHeader.text = @" Accounts";
+        
+        UIButton *addAccount = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        [addAccount addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
+        
+        CGRect frame = addAccount.frame;
+        frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 8;
+        frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+        addAccount.frame = frame;
+        
+        [sectionHeader addSubview:addAccount];
+        sectionHeader.userInteractionEnabled = YES;
     } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         sectionHeader.text = @" Notifications";
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {

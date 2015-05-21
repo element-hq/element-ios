@@ -1056,6 +1056,7 @@
                     <navigationItem key="navigationItem" title="Settings" id="7NM-zW-wJT"/>
                     <connections>
                         <segue destination="KeQ-Sp-kmH" kind="show" identifier="showAccountDetails" id="flf-61-vgV"/>
+                        <segue destination="ZlD-EU-ncw" kind="show" identifier="addAccount" id="17E-G9-IZ6"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKJ-22-Asy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1167,5 +1168,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="dfI-c6-tO5"/>
         <segue reference="m9P-N3-WZN"/>
+        <segue reference="17E-G9-IZ6"/>
     </inferredMetricsTieBreakers>
 </document>
