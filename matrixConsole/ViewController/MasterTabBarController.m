@@ -247,7 +247,7 @@
     
     // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
     dispatch_async(dispatch_get_main_queue(), ^{
-        recentsViewController.selectedRoomId = roomId;
+        [recentsViewController selectRoomWithId:roomId inMatrixSession:nil]; // TODO a matrix session is required here
     });
 }
 
@@ -256,7 +256,7 @@
     if (recentsViewController) {
         [recentsNavigationController popToViewController:recentsViewController animated:animated];
         // Release the current selected room
-        recentsViewController.selectedRoomId = nil;
+        [recentsViewController closeSelectedRoom];
     }
 }
 
