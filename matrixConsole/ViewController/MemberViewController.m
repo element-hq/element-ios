@@ -97,7 +97,7 @@
                 // get the updated memmber
                 NSArray* membersList = [self.mxRoom.state members];
                 for (MXRoomMember* member in membersList) {
-                    if ([member.userId isEqual:_mxRoomMember.userId]) {
+                    if ([member.userId isEqualToString:_mxRoomMember.userId]) {
                         nextRoomMember = member;
                         break;
                     }

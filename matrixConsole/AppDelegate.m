@@ -317,7 +317,7 @@
 
 - (void)initMatrixSessions {
     
-    // Register matrix session state observer in order to handle new opened session.
+    // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXSession *mxSession = (MXSession*)notif.object;
@@ -331,18 +331,34 @@
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised) {
             
-            // Report this new session to contact manager
-            [[ContactManager sharedManager] setMxSession:mxSession];
+            if (!self.masterTabBarController.mxSessions.count) {
+                // Report this first session to contact manager
+                [[ContactManager sharedManager] setMxSession:mxSession];
+                
+                // TODO GFO handle multi-session in ContactManager
+            }
             
             // Update all view controllers thanks to tab bar controller
-            self.masterTabBarController.mxSession = mxSession;
+            [self.masterTabBarController addMatrixSession:mxSession];
             
             // Check whether the app user wants notifications on new events
             if ([[MXKAppSettings standardAppSettings] enableInAppNotifications]) {
                 [self enableInAppNotifications:YES];
             }
-        } else if (mxSession.state == MXSessionStateRunning) {
-            
+        } else if (mxSession.state == MXSessionStateClosed) {
+            [self.masterTabBarController removeMatrixSession:mxSession];
+        }
+        
+        // Restore call observer only if all session are running
+        NSArray *mxSessions = self.masterTabBarController.mxSessions;
+        BOOL shouldAddMatrixCallObserver = (mxSessions.count);
+        for (mxSession in mxSessions) {
+            if (mxSession.state != MXSessionStateRunning) {
+                shouldAddMatrixCallObserver = NO;
+                break;
+            }
+        }
+        if (shouldAddMatrixCallObserver) {
             // A new call observer may be added here
             [self addMatrixCallObserver];
         }
@@ -352,8 +368,6 @@
     matrixAccountsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         NSString *userId = (NSString*)notif.object;
-        
-        // TODO GFO: handle here multi sessions
         
         // Launch matrix session for this new account
         MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
@@ -379,10 +393,13 @@
         // When user is already logged, we launch the app on Recents
         [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
-        // Launch a matrix session only for the first account (TODO launch a session for each account).
         // Use MXFileStore as MXStore to permanently store events.
         MXFileStore *mxFileStore = [[MXFileStore alloc] init];
-        [mxAccounts.firstObject openSessionWithStore:mxFileStore];
+        
+        // Launch a matrix session for all existing accounts.
+        for (MXKAccount *account in mxAccounts) {
+            [account openSessionWithStore:mxFileStore];
+        }
     }
 }
 
@@ -432,9 +449,6 @@
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logout];
-    
-    // Reset mxSession information in all view controllers
-    self.masterTabBarController.mxSession = nil;
     
     // Return to authentication screen
     [self.masterTabBarController showAuthenticationScreen];

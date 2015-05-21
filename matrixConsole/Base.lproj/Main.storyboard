@@ -576,10 +576,10 @@
             </objects>
             <point key="canvasLocation" x="869" y="-1492"/>
         </scene>
-        <!--Authentication-->
+        <!--Authentication View Controller-->
         <scene sceneID="FoA-N2-3aF">
             <objects>
-                <viewController title="Authentication" id="ZlD-EU-ncw" customClass="AuthenticationViewController" sceneMemberID="viewController">
+                <viewController id="ZlD-EU-ncw" customClass="AuthenticationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="crg-iM-twR"/>
                         <viewControllerLayoutGuide type="bottom" id="gbK-Nm-HUT"/>

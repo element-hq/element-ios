@@ -508,7 +508,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SETTINGS_SECTION_ACCOUNTS_INDEX) {
-        return 70;
+        return 50;
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         if (indexPath.row == userInfoNotifRowIndex) {
             UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];

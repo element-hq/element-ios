@@ -28,6 +28,10 @@
 #import "SettingsViewController.h"
 
 @interface MasterTabBarController () {
+    //Array of `MXSession` instances.
+    NSMutableArray *mxSessionArray;
+    
+    // Tab bar view controllers
     HomeViewController *homeViewController;
     
     UINavigationController *recentsNavigationController;
@@ -37,6 +41,7 @@
     
     SettingsViewController *settingsViewController;
     
+    // mediaPicker
     UIImagePickerController *mediaPicker;
 }
 
@@ -47,6 +52,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    mxSessionArray = [NSMutableArray array];
     
     // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
     // to the recents list in Recents Tab.
@@ -123,6 +130,8 @@
 
 - (void)dealloc {
     
+    mxSessionArray = nil;
+    
     homeViewController = nil;
     recentsNavigationController = nil;
     recentsViewController = nil;
@@ -149,25 +158,72 @@
 
 #pragma mark -
 
-- (void)setMxSession:(MXSession *)mxSession {
-    // Update home tab
-    homeViewController.mxSession = mxSession;
+- (NSArray*)mxSessions {
+    return [NSArray arrayWithArray:mxSessionArray];
+}
+
+- (void)addMatrixSession:(MXSession *)mxSession {
     
-    // List all the recents for the logged user
-    MXKRecentListDataSource *recentlistDataSource = nil;
     if (mxSession) {
-        recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+        // Check whether this is the first added session
+        if (!mxSessionArray.count) {
+            // Update home tab
+            homeViewController.mxSession = mxSession;
+            
+            // List all the recents for the logged user
+            MXKRecentListDataSource *recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+            [recentsViewController displayList:recentlistDataSource];
+            
+            // Update contacts tab
+            contactsViewController.mxSession = mxSession;
+            
+            // Update settings tab
+            settingsViewController.mxSession = mxSession;
+        } else {
+            [recentsViewController.dataSource addMatrixSession:mxSession];
+            
+            // TODO GFO handle multi-session in other view controllers
+            // Presently only the first added session is considered.
+        }
+        
+        [mxSessionArray addObject:mxSession];
     }
-    // Keep reference on existing dataSource to release it properly
-    MXKRecentListDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
-    [recentsViewController displayList:recentlistDataSource];
-    [previousRecentlistDataSource destroy];
+}
+
+- (void)removeMatrixSession:(MXSession*)mxSession {
     
-    // Update contacts tab
-    contactsViewController.mxSession = mxSession;
+    [recentsViewController.dataSource removeMatrixSession:mxSession];
     
-    // Update settings tab
-    settingsViewController.mxSession = mxSession;
+    [mxSessionArray removeObject:mxSession];
+    
+    // TODO GFO handle multi-sessions
+    
+    // Check whether there are others sessions
+    if (mxSessionArray.count) {
+        // Check whether we have to change session in the other tabs
+        if (homeViewController.mxSession == mxSession) {
+            mxSession = [mxSessionArray firstObject];
+            
+            // Update other tabs
+            homeViewController.mxSession = mxSession;
+            contactsViewController.mxSession = mxSession;
+            settingsViewController.mxSession = mxSession;
+        }
+    } else {
+        // Update home tab
+        homeViewController.mxSession = nil;
+        
+        // Keep reference on existing dataSource to release it properly
+        MXKRecentListDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
+        [recentsViewController displayList:nil];
+        [previousRecentlistDataSource destroy];
+        
+        // Update contacts tab
+        contactsViewController.mxSession = nil;
+        
+        // Update settings tab
+        settingsViewController.mxSession = nil;
+    }
 }
 
 - (void)showAuthenticationScreen {
@@ -186,6 +242,8 @@
     
     // Switch on Recents Tab
     [self setSelectedIndex:TABBAR_RECENTS_INDEX];
+    
+    // TODO GFO handle multi-session
     
     // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
     dispatch_async(dispatch_get_main_queue(), ^{

@@ -26,6 +26,17 @@
 
 @interface MasterTabBarController : UITabBarController
 
+// Associated matrix sessions (empty by default).
+@property (nonatomic, readonly) NSArray *mxSessions;
+
+// Current selected room id. nil if no room is presently visible.
+@property (strong, nonatomic) NSString *visibleRoomId;
+
+// Add a matrix session. This session is propagated to all view controllers handled by the tab bar controller.
+- (void)addMatrixSession:(MXSession*)mxSession;
+// Remove a matrix session.
+- (void)removeMatrixSession:(MXSession*)mxSession;
+
 - (void)showAuthenticationScreen;
 - (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId;
@@ -36,13 +47,9 @@
 - (void)presentMediaPicker:(UIImagePickerController*)mediaPicker;
 - (void)dismissMediaPicker;
 
-@property (strong, nonatomic) NSString *visibleRoomId; // nil if no room is presently visible
 
-/**
- Associated matrix session (nil by default).
- This property is propagated to all view controllers handled by the tab bar controller.
- */
-@property (nonatomic) MXSession *mxSession;
+
+
 
 @end
 

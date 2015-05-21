@@ -45,8 +45,15 @@
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    // Dismiss on successful login
-    [self dismissViewControllerAnimated:YES completion:nil];
+    // Remove auth view controller on successful login
+    if (self.navigationController) {
+        // Pop the view controller
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        // Dismiss on successful login
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
 }
 
 @end
