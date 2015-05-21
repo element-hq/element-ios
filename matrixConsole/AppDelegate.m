@@ -676,8 +676,10 @@
         UIViewController* selectedViewController = [tabBarController selectedViewController];
         if ([selectedViewController isKindOfClass:[UINavigationController class]]) {
             UIViewController *topViewController = ((UINavigationController*)selectedViewController).topViewController;
-            if ([topViewController isKindOfClass:[SettingsViewController class]]) {
-                res = [((SettingsViewController *)topViewController) shouldLeave:^() {
+            if ([topViewController isKindOfClass:[MXKAccountDetailsViewController class]]) {
+                res = [((MXKAccountDetailsViewController *)topViewController) shouldLeave:^() {
+                    [topViewController.navigationController popViewControllerAnimated:NO];
+                    
                     // This block is called when tab change is delayed to prompt user about his profile changes
                     NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
                     tabBarController.selectedIndex = nextSelectedViewController;

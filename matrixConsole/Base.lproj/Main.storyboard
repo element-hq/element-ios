@@ -760,70 +760,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="ZP5-e3-ge9" userLabel="TableHeaderView">
-                            <rect key="frame" x="0.0" y="64" width="600" height="100"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Dl-D7-ahX" userLabel="PicturePickerButton">
-                                    <rect key="frame" x="10" y="12" width="75" height="75"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="75" id="hDj-ul-OgM"/>
-                                        <constraint firstAttribute="height" constant="75" id="kjF-Ug-XwN"/>
-                                        <constraint firstAttribute="width" secondItem="5Dl-D7-ahX" secondAttribute="height" multiplier="1:1" id="lze-NW-zq1"/>
-                                    </constraints>
-                                    <state key="normal" image="default-profile.png">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="touchUpInside" id="eit-gO-ZiH"/>
-                                    </connections>
-                                </button>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your display name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8M9-ZM-efS">
-                                    <rect key="frame" x="95" y="13" width="495" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                    <connections>
-                                        <action selector="textFieldDidChange:" destination="1TJ-Md-cjN" eventType="editingChanged" id="asg-M3-0vO"/>
-                                        <outlet property="delegate" destination="1TJ-Md-cjN" id="hV1-mY-vBI"/>
-                                    </connections>
-                                </textField>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T3d-LT-ivg">
-                                    <rect key="frame" x="95" y="62" width="495" height="30"/>
-                                    <state key="normal" title="Save changes">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="onButtonPressed:" destination="1TJ-Md-cjN" eventType="touchUpInside" id="QdM-AP-HIU"/>
-                                    </connections>
-                                </button>
-                                <view alpha="0.49999999999999961" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5as-wy-D5h" userLabel="Spinner background view">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </view>
-                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="1H7-DG-oTV">
-                                    <rect key="frame" x="282" y="32" width="37" height="37"/>
-                                </activityIndicatorView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="5as-wy-D5h" secondAttribute="bottom" id="5ud-nw-rsd"/>
-                                <constraint firstAttribute="centerY" secondItem="5Dl-D7-ahX" secondAttribute="centerY" id="8v6-O8-Rbm"/>
-                                <constraint firstAttribute="centerY" secondItem="1H7-DG-oTV" secondAttribute="centerY" id="DZN-Eh-ceZ"/>
-                                <constraint firstAttribute="centerX" secondItem="5as-wy-D5h" secondAttribute="centerX" id="ExN-0x-heO"/>
-                                <constraint firstItem="8M9-ZM-efS" firstAttribute="leading" secondItem="T3d-LT-ivg" secondAttribute="leading" id="Sw3-6S-Met"/>
-                                <constraint firstItem="8M9-ZM-efS" firstAttribute="trailing" secondItem="T3d-LT-ivg" secondAttribute="trailing" id="YG7-1A-mES"/>
-                                <constraint firstItem="8M9-ZM-efS" firstAttribute="top" secondItem="ZP5-e3-ge9" secondAttribute="top" constant="13" id="ZRr-1V-S6Z"/>
-                                <constraint firstAttribute="trailing" secondItem="5as-wy-D5h" secondAttribute="trailing" id="Zfg-bu-N4E"/>
-                                <constraint firstItem="5Dl-D7-ahX" firstAttribute="leading" secondItem="ZP5-e3-ge9" secondAttribute="leading" constant="10" id="bFJ-3g-wBh"/>
-                                <constraint firstItem="8M9-ZM-efS" firstAttribute="leading" secondItem="5Dl-D7-ahX" secondAttribute="trailing" constant="10" id="hCS-JS-UW3"/>
-                                <constraint firstItem="T3d-LT-ivg" firstAttribute="top" secondItem="8M9-ZM-efS" secondAttribute="bottom" constant="19" id="lBT-GX-5Pj"/>
-                                <constraint firstAttribute="centerX" secondItem="1H7-DG-oTV" secondAttribute="centerX" id="oKx-SR-2E6"/>
-                                <constraint firstAttribute="trailing" secondItem="8M9-ZM-efS" secondAttribute="trailing" constant="10" id="oL0-Kq-K48"/>
-                                <constraint firstItem="5as-wy-D5h" firstAttribute="top" secondItem="ZP5-e3-ge9" secondAttribute="top" id="piP-Kc-0gl"/>
-                                <constraint firstAttribute="centerY" secondItem="5as-wy-D5h" secondAttribute="centerY" id="uF3-qF-8KL"/>
-                                <constraint firstItem="5as-wy-D5h" firstAttribute="leading" secondItem="ZP5-e3-ge9" secondAttribute="leading" id="zov-Qd-S57"/>
-                            </constraints>
-                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsCellWithSwitch" id="XUG-wd-Xsh" customClass="SettingsCellWithSwitch">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -1119,18 +1055,20 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="7NM-zW-wJT"/>
                     <connections>
-                        <outlet property="profileActivityIndicator" destination="1H7-DG-oTV" id="Uor-7w-a0S"/>
-                        <outlet property="profileActivityIndicatorBgView" destination="5as-wy-D5h" id="SWa-LZ-lWe"/>
-                        <outlet property="saveUserInfoButton" destination="T3d-LT-ivg" id="IX1-WM-Dwv"/>
-                        <outlet property="tableHeader" destination="ZP5-e3-ge9" id="nd0-lU-aW3"/>
-                        <outlet property="tableView" destination="etG-ZU-b2r" id="5hz-jQ-qVT"/>
-                        <outlet property="userDisplayName" destination="8M9-ZM-efS" id="rAQ-cX-3Ay"/>
-                        <outlet property="userPictureButton" destination="5Dl-D7-ahX" id="gTE-rx-FjE"/>
+                        <segue destination="KeQ-Sp-kmH" kind="show" identifier="showAccountDetails" id="flf-61-vgV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKJ-22-Asy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="880" y="2020"/>
+        </scene>
+        <!--Account Details View Controller-->
+        <scene sceneID="V8G-Oz-3KA">
+            <objects>
+                <tableViewController id="KeQ-Sp-kmH" customClass="MXKAccountDetailsViewController" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KBx-ZK-1zU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1661" y="2022"/>
         </scene>
         <!--SettingsNav-->
         <scene sceneID="b0q-mf-7ii">
