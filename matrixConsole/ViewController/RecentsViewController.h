@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate, UISearchBarDelegate>
+@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
 
 /**
  Open the room with the provided identifier in a specific matrix session.

@@ -22,12 +22,8 @@
 #import "RageShakeManager.h"
 
 @interface RecentsViewController () {
-
-    // Search
-    UISearchBar     *recentsSearchBar;
-    BOOL             searchBarShouldEndEditing;
     
-    //
+    // Recents refresh handling
     BOOL shouldScrollToTopOnRefresh;
     
     // Selected room description
@@ -57,9 +53,10 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
+    // Add navigation items
+    NSArray *rightBarButtonItems = self.navigationItem.rightBarButtonItems;
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
-    self.navigationItem.rightBarButtonItems = @[searchButton, addButton];
+    self.navigationItem.rightBarButtonItems = rightBarButtonItems ? [rightBarButtonItems arrayByAddingObject:addButton] : @[addButton];
     
     // Initialisation
     currentSelectedCellIndexPath = nil;
@@ -78,14 +75,12 @@
     }
     selectedRoomId = nil;
     selectedRoomSession = nil;
-    
-    recentsSearchBar = nil;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     
-    self.tableView.editing = editing;
+    self.recentsTableView.editing = editing;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -99,9 +94,9 @@
     [self updateTitleView];
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
     if (indexPath) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 }
 
@@ -110,10 +105,6 @@
     
     // Leave potential editing mode
     [self setEditing:NO];
-    // Leave potential search session
-    if (recentsSearchBar) {
-        [self searchBarCancelButtonClicked:recentsSearchBar];
-    }
     
     selectedRoomId = nil;
     selectedRoomSession = nil;
@@ -173,7 +164,7 @@
     // Update the unreadCount in the title
     [self updateTitleView];
     
-    [self.tableView reloadData];
+    [self.recentsTableView reloadData];
     
     if (shouldScrollToTopOnRefresh) {
         [self scrollToTop];
@@ -217,32 +208,11 @@
     [[AppDelegate theDelegate].masterTabBarController showRoomCreationForm];
 }
 
-- (void)search:(id)sender {
-    if (!recentsSearchBar) {
-        // Check whether there are data in which search
-        if ([self.dataSource tableView:self.tableView numberOfRowsInSection:0]) {
-            // Create search bar
-            recentsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-            recentsSearchBar.showsCancelButton = YES;
-            recentsSearchBar.returnKeyType = UIReturnKeyDone;
-            recentsSearchBar.delegate = self;
-            searchBarShouldEndEditing = NO;
-            [recentsSearchBar becomeFirstResponder];
-            
-            // Reload table to add this search bar in section header
-            shouldScrollToTopOnRefresh = YES;
-            [self refreshRecentsDisplay];
-        }
-    } else {
-        [self searchBarCancelButtonClicked: recentsSearchBar];
-    }
-}
-
 - (void)scrollToTop {
     // stop any scrolling effect
     [UIView setAnimationsEnabled:NO];
     // before scrolling to the tableview top
-    self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
+    self.recentsTableView.contentOffset = CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top);
     [UIView setAnimationsEnabled:YES];
 }
 
@@ -262,18 +232,18 @@
     
     if (currentSelectedCellIndexPath) {
         // Select the right row
-        [self.tableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
         if (forceVisible) {
             // Scroll table view to make the selected row appear at second position
             NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
     } else {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
         if (indexPath) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     }
 }
@@ -316,14 +286,6 @@
             if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
                 controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
             }
-            
-            // hide the keyboard when opening a new controller
-            // do not hide the searchBar until the RecentsViewController is dismissed
-            // on tablets / iphone 6+, the user could expect to search again while looking at a room
-            if ([recentsSearchBar isFirstResponder]) {
-                searchBarShouldEndEditing = YES;
-                [recentsSearchBar resignFirstResponder];
-            }
     
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
@@ -346,70 +308,32 @@
     [self selectRoomWithId:roomId inMatrixSession:matrixSession];
 }
 
-#pragma mark - UITableViewDelegate
+#pragma mark - Override UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (recentsSearchBar) {
-        if (section == 0) {
-            return (recentsSearchBar.frame.size.height);
-        }
-        return 0;
-    }
-    
-    if (tableView.numberOfSections > 1) {
+    // Check whether there are mutiple sessions
+    if (self.dataSource.mxSessions.count > 1) {
         return 30;
     }
-    
     return 0;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (recentsSearchBar) {
-        if (section == 0) {
-            return recentsSearchBar;
-        }
-    }
-    return nil;
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    searchBarShouldEndEditing = NO;
-    return YES;
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    return searchBarShouldEndEditing;
-}
+#pragma mark - Override UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     
-    // Apply filter
+    // Prepare table refresh on new search session
     shouldScrollToTopOnRefresh = YES;
-    if (searchText.length) {
-        [self.dataSource searchWithPatterns:@[searchText]];
-    } else {
-        [self.dataSource searchWithPatterns:nil];
-    }
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    // "Done" key has been pressed
-    searchBarShouldEndEditing = YES;
-    [searchBar resignFirstResponder];
+    
+    [super searchBar:searchBar textDidChange:searchText];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     
-    // Leave search
-    searchBarShouldEndEditing = YES;
-    [searchBar resignFirstResponder];
-    recentsSearchBar = nil;
-    
-    // Refresh display
+    // Prepare table refresh on end of search
     shouldScrollToTopOnRefresh = YES;
-    [self.dataSource searchWithPatterns:nil];
+    
+    [super searchBarCancelButtonClicked: searchBar];
 }
 
 @end
