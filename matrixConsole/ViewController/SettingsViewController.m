@@ -237,6 +237,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     inAppNotificationsSwitch = nil;
     
     allEventsSwitch = nil;
+    redactionsSwitch = nil;
     unsupportedEventsSwitch = nil;
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
@@ -395,6 +396,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 notificationsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
             }
             
+            [notificationsCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
+            
             if (indexPath.row == enableInAppNotifRowIndex) {
                 notificationsCell.mxkLabel.text = @"Enable In-App notifications";
                 notificationsCell.mxkSwitch.on = [_settings enableInAppNotifications];
@@ -405,6 +408,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 notificationsCell.mxkSwitch.enabled = YES;
                 apnsNotificationsSwitch = notificationsCell.mxkSwitch;
             }
+            
             cell = notificationsCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
@@ -413,6 +417,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             if (!contactsCell) {
                 contactsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
             }
+            
+            [contactsCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
             
             contactsCell.mxkLabel.text = @"Sync local contacts";
             contactsCell.mxkSwitch.on = [_settings syncLocalContacts];
@@ -496,6 +502,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             if (!roomsSettingCell) {
                 roomsSettingCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
             }
+            
+            [roomsSettingCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
             
             if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX) {
                 roomsSettingCell.mxkLabel.text = @"Display all events";
