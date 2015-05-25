@@ -23,8 +23,6 @@
 
 #import "ContactManager.h"
 
-#import "SettingsTableViewCell.h"
-
 #define SETTINGS_SECTION_ACCOUNTS_INDEX      0
 #define SETTINGS_SECTION_NOTIFICATIONS_INDEX 1
 #define SETTINGS_SECTION_CONTACTS_INDEX      2
@@ -43,12 +41,16 @@
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
 NSString *const kSettingsAccountCellIdentifier = @"kSettingsAccountCellIdentifier";
-NSString *const kSettingsLogoutCellIdentifier = @"kSettingsLogoutCellIdentifier";
-
+NSString *const kSettingsButtonCellIdentifier = @"kSettingsButtonCellIdentifier";
+NSString *const kSettingsUserInfoCellIdentifier = @"kSettingsUserInfoCellIdentifier";
+NSString *const kSettingsSwitchCellIdentifier = @"kSettingsSwitchCellIdentifier";
+NSString *const kSettingsCountryCellIdentifier = @"kSettingsCountryCellIdentifier";
+NSString *const kSettingsPickerCellIdentifier = @"kSettingsPickerCellIdentifier";
+NSString *const kSettingsSliderCellIdentifier = @"kSettingsSliderCellIdentifier";
 
 NSString* const kUserInfoNotificationRulesText = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
 NSString* const kConfigurationFormatText = @"Console version: %@\r\nMatrixKit version: %@\r\nMatrixSDK version: %@\r\n%@";
-NSString* const kBuildFormatText = @"Build: %@\r\n";
+NSString* const kBuildFormatText = @"Build: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
 
 @interface SettingsViewController () {
@@ -82,8 +84,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     UISwitch *unsupportedEventsSwitch;
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
-    SettingsCellWithLabelAndSlider* maxCacheSizeCell;
+    MXKTableViewCellWithLabelAndSlider* maxCacheSizeCell;
     NSUInteger minimumCacheSize;
+    UIButton *clearCacheButton;
     
     // Keep reference on potential pushed view controller to release it correctly
     id pushedViewController;
@@ -238,6 +241,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
     maxCacheSizeCell = nil;
+    clearCacheButton = nil;
 }
 
 #pragma mark - Actions
@@ -275,13 +279,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.tableView reloadData];
          });
+    } else if (sender == clearCacheButton) {
+        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
     }
 }
 
 - (IBAction)onSliderValueChange:(id)sender {
-    if (sender == maxCacheSizeCell.settingSlider) {
+    if (sender == maxCacheSizeCell.mxkSlider) {
         
-        UISlider* slider = maxCacheSizeCell.settingSlider;
+        UISlider* slider = maxCacheSizeCell.mxkSlider;
         
         // check if the upper bounds have been updated
         if (slider.maximumValue != self.maxAllowedCachesSize) {
@@ -295,7 +301,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         [self setCurrentMaxCachesSize:slider.value];
         
-        maxCacheSizeCell.settingLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:self.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+        maxCacheSizeCell.mxkLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:self.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
     }
 }
 
@@ -364,9 +370,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             accountCell.mxAccount = [accounts objectAtIndex:indexPath.row];
             cell = accountCell;
         } else {
-            MXKTableViewCellWithButton *logoutBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsLogoutCellIdentifier];
+            MXKTableViewCellWithButton *logoutBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
             if (!logoutBtnCell) {
-                logoutBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsLogoutCellIdentifier];
+                logoutBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
             }
             [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateNormal];
             [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateHighlighted];
@@ -376,33 +382,43 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
     } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
         if (indexPath.row == userInfoNotifRowIndex) {
-            SettingsCellWithTextView *userInfoCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-            userInfoCell.settingTextView.text = kUserInfoNotificationRulesText;
+            MXKTableViewCellWithTextView *userInfoCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+            if (!userInfoCell) {
+                userInfoCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+            }
+            
+            userInfoCell.mxkTextView.text = kUserInfoNotificationRulesText;
             cell = userInfoCell;
         } else {
-            SettingsCellWithSwitch *notificationsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch *notificationsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            if (!notificationsCell) {
+                notificationsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            }
+            
             if (indexPath.row == enableInAppNotifRowIndex) {
-                notificationsCell.settingLabel.text = @"Enable In-App notifications";
-                notificationsCell.settingSwitch.on = [_settings enableInAppNotifications];
-                inAppNotificationsSwitch = notificationsCell.settingSwitch;
+                notificationsCell.mxkLabel.text = @"Enable In-App notifications";
+                notificationsCell.mxkSwitch.on = [_settings enableInAppNotifications];
+                inAppNotificationsSwitch = notificationsCell.mxkSwitch;
             } else /* enablePushNotifRowIndex */{
-                notificationsCell.settingLabel.text = @"Enable push notifications";
-                notificationsCell.settingSwitch.on = [[APNSHandler sharedHandler] isActive];
-                notificationsCell.settingSwitch.enabled = YES;
-                apnsNotificationsSwitch = notificationsCell.settingSwitch;
+                notificationsCell.mxkLabel.text = @"Enable push notifications";
+                notificationsCell.mxkSwitch.on = [[APNSHandler sharedHandler] isActive];
+                notificationsCell.mxkSwitch.enabled = YES;
+                apnsNotificationsSwitch = notificationsCell.mxkSwitch;
             }
             cell = notificationsCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         if (indexPath.row  == syncLocalContactsRowIndex) {
-            SettingsCellWithSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch *contactsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            if (!contactsCell) {
+                contactsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            }
             
-            contactsCell.settingLabel.text = @"Sync local contacts";
-            contactsCell.settingSwitch.on = [_settings syncLocalContacts];
-            contactsSyncSwitch = contactsCell.settingSwitch;
+            contactsCell.mxkLabel.text = @"Sync local contacts";
+            contactsCell.mxkSwitch.on = [_settings syncLocalContacts];
+            contactsSyncSwitch = contactsCell.mxkSwitch;
             cell = contactsCell;
         } else if (indexPath.row  == countryCodeRowIndex) {
-            
             int index = 0;
             NSString* countryName = @"";
             
@@ -417,24 +433,30 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
             // there is no country code selection
             if (!isSelectingCountryCode) {
-                SettingsCellWithLabelAndSubLabel *countryCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSubLabel" forIndexPath:indexPath];
+                MXKTableViewCellWithLabelAndSubLabel *countryCell = [[MXKTableViewCellWithLabelAndSubLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsCountryCellIdentifier];
+                if (!countryCell) {
+                    countryCell = [[MXKTableViewCellWithLabelAndSubLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsCountryCellIdentifier];
+                }
                
-                countryCell.label.text = @"Select your country";
-                countryCell.sublabel.text = countryName;
+                countryCell.mxkLabel.text = @"Select your country";
+                countryCell.mxkSublabel.text = countryName;
                 countryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell = countryCell;
                 
             } else {
                 // there is a selection in progress
-                SettingsCellWithPicker *pickerCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithPicker" forIndexPath:indexPath];
+                MXKTableViewCellWithPicker *pickerCell = [[MXKTableViewCellWithPicker alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsPickerCellIdentifier];
+                if (!pickerCell) {
+                    pickerCell = [[MXKTableViewCellWithPicker alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsPickerCellIdentifier];
+                }
                 
                 // display a picker
-                pickerCell.pickerView.delegate = self;
-                pickerCell.pickerView.dataSource = self;
+                pickerCell.mxkPickerView.delegate = self;
+                pickerCell.mxkPickerView.dataSource = self;
                 
                 if (countryName.length > 0) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [pickerCell.pickerView selectRow:index inComponent:0 animated:NO];
+                        [pickerCell.mxkPickerView selectRow:index inComponent:0 animated:NO];
                     });
                 }
                 
@@ -444,60 +466,81 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
     } else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX) {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"ClearCacheCell"];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ClearCacheCell"];
+            MXKTableViewCellWithButton *clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
+            if (!clearCacheBtnCell) {
+                clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"Clear Cache (%@)", [NSByteCountFormatter stringFromByteCount:self.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor =  [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor;
-        } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
-            maxCacheSizeCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithLabelAndSilder" forIndexPath:indexPath];
-            maxCacheSizeCell.settingSlider.minimumValue = 0;
-            maxCacheSizeCell.settingSlider.maximumValue = self.maxAllowedCachesSize;
-            maxCacheSizeCell.settingSlider.value = self.currentMaxCachesSize;
             
-            [self onSliderValueChange:maxCacheSizeCell.settingSlider];
+            NSString *btnTitle = [NSString stringWithFormat:@"Clear Cache (%@)", [NSByteCountFormatter stringFromByteCount:self.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+            [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            
+            clearCacheButton = clearCacheBtnCell.mxkButton;
+            [clearCacheBtnCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = clearCacheBtnCell;
+        } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX) {
+            maxCacheSizeCell = [[MXKTableViewCellWithLabelAndSlider alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSliderCellIdentifier];
+            if (!maxCacheSizeCell) {
+                maxCacheSizeCell = [[MXKTableViewCellWithLabelAndSlider alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSliderCellIdentifier];
+            }
+            
+            maxCacheSizeCell.mxkSlider.minimumValue = 0;
+            maxCacheSizeCell.mxkSlider.maximumValue = self.maxAllowedCachesSize;
+            maxCacheSizeCell.mxkSlider.value = self.currentMaxCachesSize;
+            
+            [self onSliderValueChange:maxCacheSizeCell.mxkSlider];
             cell = maxCacheSizeCell;
         } else {
-            SettingsCellWithSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithSwitch" forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch *roomsSettingCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            if (!roomsSettingCell) {
+                roomsSettingCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            }
             
             if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Display all events";
-                roomsSettingCell.settingSwitch.on = [_settings showAllEventsInRoomHistory];
-                allEventsSwitch = roomsSettingCell.settingSwitch;
+                roomsSettingCell.mxkLabel.text = @"Display all events";
+                roomsSettingCell.mxkSwitch.on = [_settings showAllEventsInRoomHistory];
+                allEventsSwitch = roomsSettingCell.mxkSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Show redactions";
-                roomsSettingCell.settingSwitch.on = [_settings showRedactionsInRoomHistory];
-                redactionsSwitch = roomsSettingCell.settingSwitch;
+                roomsSettingCell.mxkLabel.text = @"Show redactions";
+                roomsSettingCell.mxkSwitch.on = [_settings showRedactionsInRoomHistory];
+                redactionsSwitch = roomsSettingCell.mxkSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Show unsupported events";
-                roomsSettingCell.settingSwitch.on = [_settings showUnsupportedEventsInRoomHistory];
-                unsupportedEventsSwitch = roomsSettingCell.settingSwitch;
+                roomsSettingCell.mxkLabel.text = @"Show unsupported events";
+                roomsSettingCell.mxkSwitch.on = [_settings showUnsupportedEventsInRoomHistory];
+                unsupportedEventsSwitch = roomsSettingCell.mxkSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Sort members by last seen time";
-                roomsSettingCell.settingSwitch.on = [_settings sortRoomMembersUsingLastSeenTime];
-                sortMembersSwitch = roomsSettingCell.settingSwitch;
+                roomsSettingCell.mxkLabel.text = @"Sort members by last seen time";
+                roomsSettingCell.mxkSwitch.on = [_settings sortRoomMembersUsingLastSeenTime];
+                sortMembersSwitch = roomsSettingCell.mxkSwitch;
             } else if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX) {
-                roomsSettingCell.settingLabel.text = @"Display left members";
-                roomsSettingCell.settingSwitch.on = [_settings showLeftMembersInRoomMemberList];
-                displayLeftMembersSwitch = roomsSettingCell.settingSwitch;
+                roomsSettingCell.mxkLabel.text = @"Display left members";
+                roomsSettingCell.mxkSwitch.on = [_settings showLeftMembersInRoomMemberList];
+                displayLeftMembersSwitch = roomsSettingCell.mxkSwitch;
             }
             
             cell = roomsSettingCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
-        SettingsCellWithTextView *configurationCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
+        MXKTableViewCellWithTextView *configurationCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+        if (!configurationCell) {
+            configurationCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+        }
+
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
         if (build.length) {
             build = [NSString stringWithFormat:kBuildFormatText, build];
         }
-        configurationCell.settingTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
+        configurationCell.mxkTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
         cell = configurationCell;
     } else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX) {
-        SettingsCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCellWithTextView" forIndexPath:indexPath];
-        commandsCell.settingTextView.text = kCommandsDescriptionText;
+        MXKTableViewCellWithTextView *commandsCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+        if (!commandsCell) {
+            commandsCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+        }
+
+        commandsCell.mxkTextView.text = kCommandsDescriptionText;
         cell = commandsCell;
     }
     
@@ -600,9 +643,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 
                 [self performSegueWithIdentifier:@"showAccountDetails" sender:self];
             }
-        } else if ((indexPath.section == SETTINGS_SECTION_ROOMS_INDEX) && (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)) {
-            // tap on clear application caches
-            [[AppDelegate theDelegate] reloadMatrixSessions:YES];
         } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
             if (indexPath.row == countryCodeRowIndex) {
                 isSelectingCountryCode = YES;
