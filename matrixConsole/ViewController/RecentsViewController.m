@@ -308,16 +308,6 @@
     [self selectRoomWithId:roomId inMatrixSession:matrixSession];
 }
 
-#pragma mark - Override UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    // Check whether there are mutiple sessions
-    if (self.dataSource.mxSessions.count > 1) {
-        return 30;
-    }
-    return 0;
-}
-
 #pragma mark - Override UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
