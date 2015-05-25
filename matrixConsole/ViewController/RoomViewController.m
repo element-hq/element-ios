@@ -463,10 +463,11 @@
         MemberViewController* controller = pushedViewController;
         
         if (selectedRoomMember) {
+            controller.mxSession = self.mxSession;
             controller.mxRoomMember = selectedRoomMember;
+            controller.mxRoom = self.roomDataSource.room;
             selectedRoomMember = nil;
         }
-        controller.mxRoom = self.roomDataSource.room;
     }
 }
 
