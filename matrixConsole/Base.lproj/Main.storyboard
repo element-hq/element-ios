@@ -1107,15 +1107,6 @@
         <scene sceneID="EAJ-Vu-76j">
             <objects>
                 <viewController id="Foe-o5-6Ud" customClass="RecentsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="HH2-T1-Da9"/>
-                        <viewControllerLayoutGuide type="bottom" id="Szo-EG-DCD"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="FIt-hK-caa">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
                     <navigationItem key="navigationItem" id="6sO-OP-7Sv"/>
                     <connections>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="Vo4-8x-dtH"/>
