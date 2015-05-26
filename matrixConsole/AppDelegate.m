@@ -393,11 +393,11 @@
         // When user is already logged, we launch the app on Recents
         [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
-        // Use MXFileStore as MXStore to permanently store events.
-        MXFileStore *mxFileStore = [[MXFileStore alloc] init];
-        
         // Launch a matrix session for all existing accounts.
         for (MXKAccount *account in mxAccounts) {
+            // Use MXFileStore as MXStore to permanently store events.
+            MXFileStore *mxFileStore = [[MXFileStore alloc] init];
+            
             [account openSessionWithStore:mxFileStore];
         }
     }
@@ -414,9 +414,7 @@
             
             [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
             
-            if (clearCache) {
-                [store deleteAllData];
-            }
+            [account closeSession:clearCache];
             [account openSessionWithStore:store];
         }
     }
