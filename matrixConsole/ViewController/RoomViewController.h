@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomViewController : MXKRoomViewController <UITextFieldDelegate>
+@interface RoomViewController : MXKRoomViewController
 
 @end
 
