@@ -81,9 +81,6 @@
     }
     
     if (self.roomDataSource) {
-        // Store the potential message partially typed in text input
-        self.roomDataSource.partialTextMessage = self.inputToolbarView.textMessage;
-        
         if (membersListener) {
             [self.roomDataSource.room removeListener:membersListener];
             membersListener = nil;
@@ -97,10 +94,6 @@
     if (self.roomDataSource) {
         // Set visible room id
         [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
-        
-        // Retrieve the potential message partially typed during last room display.
-        // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        self.inputToolbarView.textMessage = self.roomDataSource.partialTextMessage;
     }
     
     if (pushedViewController) {
