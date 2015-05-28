@@ -178,23 +178,6 @@
     }
 }
 
-//- (void)onRecentRoomUpdatedByBackPagination:(NSNotification *)notif{
-//    [self refreshRecentsDisplay];
-//    [self updateTitleView];
-//    
-//    if ([notif.object isKindOfClass:[NSString class]]) {
-//        NSString* roomId = notif.object;
-//        // Check whether this room is currently displayed in RoomViewController
-//        if ([[AppDelegate theDelegate].masterTabBarController.visibleRoomId isEqualToString:roomId]) {
-//            // For sanity reason, we have to force a full refresh in order to restore back state of the room
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                MXKRoomDataSource *roomDataSrc = currentRoomViewController.dataSource;
-//                [currentRoomViewController displayRoom:roomDataSrc];
-//            });
-//        }
-//    }
-//}
-
 - (void)updateTitleView {
     NSString *title = @"Recents";
     

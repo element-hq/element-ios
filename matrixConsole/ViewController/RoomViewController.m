@@ -189,7 +189,7 @@
         if (roomAlias.length) {
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
                 // Show the room
-                [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
+                [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:self.mainSession];
             } failure:^(NSError *error) {
                 NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
                 //Alert user

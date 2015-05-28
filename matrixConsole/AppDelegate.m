@@ -318,7 +318,28 @@
         // Look for the room id
         NSString* roomId = [userInfo objectForKey:@"room_id"];
         if (roomId.length) {
-            [self.masterTabBarController showRoom:roomId];
+            // TODO retrieve the right matrix session
+            
+            //**************
+            // Patch consider the first session which knows the room id
+            MXSession *mxSession;
+            NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+            
+            if (mxAccounts.count == 1) {
+                MXKAccount *account = mxAccounts.firstObject;
+                mxSession = account.mxSession;
+            } else {
+                for (MXKAccount *account in mxAccounts) {
+                    if ([account.mxSession roomWithRoomId:roomId]) {
+                        mxSession = account.mxSession;
+                        break;
+                    }
+                }
+            }
+            //**************
+            
+            
+            [self.masterTabBarController showRoom:roomId withMatrixSession:mxSession];
         }
     }
 }
@@ -565,7 +586,7 @@
                                                             handler:^(MXKAlert *alert) {
                                                                 weakSelf.mxInAppNotification = nil;
                                                                 // Show the room
-                                                                [weakSelf.masterTabBarController showRoom:event.roomId];
+                                                                [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
                                                             }];
                             
                             [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
@@ -673,7 +694,7 @@
             // if the room exists
             if (mxRoom) {
                 // open it
-                [self.masterTabBarController showRoom:mxRoom.state.roomId];
+                [self.masterTabBarController showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
             } else {
                 // create a new room
                 [mxSession createRoom:nil
@@ -693,7 +714,7 @@
                                   }
                                   
                                   // Open created room
-                                  [self.masterTabBarController showRoom:room.state.roomId];
+                                  [self.masterTabBarController showRoom:room.state.roomId withMatrixSession:mxSession];
                                   
                               } failure:^(NSError *error) {
                                   NSLog(@"[AppDelegate] Create room failed: %@", error);

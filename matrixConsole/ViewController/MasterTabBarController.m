@@ -219,17 +219,15 @@
     [self setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (void)showRoom:(NSString*)roomId {
+- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession {
     [self restoreInitialDisplay];
     
     // Switch on Recents Tab
     [self setSelectedIndex:TABBAR_RECENTS_INDEX];
     
-    // TODO GFO handle multi-session
-    
     // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
     dispatch_async(dispatch_get_main_queue(), ^{
-        [recentsViewController selectRoomWithId:roomId inMatrixSession:nil]; // TODO a matrix session is required here
+        [recentsViewController selectRoomWithId:roomId inMatrixSession:mxSession];
     });
 }
 

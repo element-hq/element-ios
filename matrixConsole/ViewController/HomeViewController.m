@@ -37,7 +37,6 @@
     NSMutableArray *homeServerSuffixArray;
     
     MXKAlert *mxAccountSelectionAlert;
-    MXSession *selectedSession;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
@@ -317,13 +316,12 @@
     return participants;
 }
 
-- (void)selectMatrixSession:(void (^)())onSelection {
+- (void)selectMatrixSession:(void (^)(MXSession *selectedSession))onSelection {
     NSArray *mxSessions = self.mxSessions;
     
     if (mxSessions.count == 1) {
-        selectedSession = self.mainSession;
         if (onSelection) {
-            onSelection();
+            onSelection(self.mainSession);
         }
     } else if (mxSessions.count > 1) {
         if (mxAccountSelectionAlert) {
@@ -337,10 +335,8 @@
             [mxAccountSelectionAlert addActionWithTitle:mxSession.myUser.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 strongSelf->mxAccountSelectionAlert = nil;
-                strongSelf->selectedSession = mxSession;
-                
                 if (onSelection) {
-                    onSelection();
+                    onSelection(mxSession);
                 }
             }];
         }
@@ -494,81 +490,74 @@
     
     [self dismissKeyboard];
     
-    // Check whether a session is selected
-    if (!selectedSession) {
-        [self selectMatrixSession:^{
-            [self onButtonPressed:sender];
-        }];
-        return;
-    }
-    
-    if (sender == _createRoomBtn) {
-        // Disable button to prevent multiple request
-        _createRoomBtn.enabled = NO;
-        
-        NSString *roomName = _roomNameTextField.text;
-        if (! roomName.length) {
-            roomName = nil;
-        }
-        
-        // Create new room
-        [selectedSession createRoom:roomName
-                        visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
-                         roomAlias:self.alias
-                             topic:nil
-                           success:^(MXRoom *room) {
-             // Check whether some users must be invited
-             NSArray *invitedUsers = self.participantsList;
-             for (NSString *userId in invitedUsers) {
-                 [room inviteUser:userId success:^{
-                     NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, room.state.roomId);
-                 } failure:^(NSError *error) {
-                     NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                     //Alert user
-                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                 }];
-             }
-             
-             // Reset text fields
-             _roomNameTextField.text = nil;
-             _roomAliasTextField.text = nil;
-             _participantsTextField.text = nil;
-             // Open created room
-             [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
-         } failure:^(NSError *error) {
-             _createRoomBtn.enabled = YES;
-             NSLog(@"[HomeVC] Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
-             //Alert user
-             [[AppDelegate theDelegate] showErrorAsAlert:error];
-         }];
-    } else if (sender == _joinRoomBtn) {
-        // Disable button to prevent multiple request
-        _joinRoomBtn.enabled = NO;
-        
-        NSString *roomAlias = _joinRoomAliasTextField.text;
-        // Remove white space from both ends
-        roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        
-        // Check
-        if (roomAlias.length) {
-            [selectedSession joinRoom:roomAlias success:^(MXRoom *room) {
+    // Handle multi-sessions here
+    [self selectMatrixSession:^(MXSession *selectedSession) {
+        if (sender == _createRoomBtn) {
+            // Disable button to prevent multiple request
+            _createRoomBtn.enabled = NO;
+            
+            NSString *roomName = _roomNameTextField.text;
+            if (! roomName.length) {
+                roomName = nil;
+            }
+            
+            // Create new room
+            [selectedSession createRoom:roomName
+                             visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
+                              roomAlias:self.alias
+                                  topic:nil
+                                success:^(MXRoom *room) {
+                                    // Check whether some users must be invited
+                                    NSArray *invitedUsers = self.participantsList;
+                                    for (NSString *userId in invitedUsers) {
+                                        [room inviteUser:userId success:^{
+                                            NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, room.state.roomId);
+                                        } failure:^(NSError *error) {
+                                            NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                                            //Alert user
+                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                        }];
+                                    }
+                                    
+                                    // Reset text fields
+                                    _roomNameTextField.text = nil;
+                                    _roomAliasTextField.text = nil;
+                                    _participantsTextField.text = nil;
+                                    // Open created room
+                                    [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:selectedSession];
+                                } failure:^(NSError *error) {
+                                    _createRoomBtn.enabled = YES;
+                                    NSLog(@"[HomeVC] Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
+                                    //Alert user
+                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                }];
+        } else if (sender == _joinRoomBtn) {
+            // Disable button to prevent multiple request
+            _joinRoomBtn.enabled = NO;
+            
+            NSString *roomAlias = _joinRoomAliasTextField.text;
+            // Remove white space from both ends
+            roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            
+            // Check
+            if (roomAlias.length) {
+                [selectedSession joinRoom:roomAlias success:^(MXRoom *room) {
+                    // Reset text fields
+                    _joinRoomAliasTextField.text = nil;
+                    // Show the room
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:selectedSession];
+                } failure:^(NSError *error) {
+                    _joinRoomBtn.enabled = YES;
+                    NSLog(@"[HomeVC] Failed to join room alias (%@): %@", roomAlias, error);
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            } else {
                 // Reset text fields
                 _joinRoomAliasTextField.text = nil;
-                // Show the room
-                [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
-            } failure:^(NSError *error) {
-                _joinRoomBtn.enabled = YES;
-                NSLog(@"[HomeVC] Failed to join room alias (%@): %@", roomAlias, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        } else {
-            // Reset text fields
-            _joinRoomAliasTextField.text = nil;
+            }
         }
-    }
-    
-    selectedSession = nil;
+    }];
 }
 
 #pragma mark - Table view data source
@@ -703,52 +692,47 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Check whether a session is selected
-    if (!selectedSession) {
-        [self selectMatrixSession:^{
-            [self tableView:tableView didSelectRowAtIndexPath:indexPath];
-        }];
-        return;
-    }
-    
-    MXPublicRoom *publicRoom;
-    if (filteredPublicRooms && indexPath.row < filteredPublicRooms.count) {
-        publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
-    } else if (indexPath.row < publicRooms.count){
-        publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    }
-    
-    if (publicRooms) {
-        // Check whether the user has already joined the selected public room
-        if ([selectedSession roomWithRoomId:publicRoom.roomId]) {
-            // Open selected room
-            [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
-        } else {
-            // Join the selected room
-            UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-            if (selectedCell) {
-                CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
-                loadingWheel.center = center;
-                [selectedCell addSubview:loadingWheel];
-            }
-            [loadingWheel startAnimating];
-            [selectedSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
-                // Show joined room
-                [loadingWheel stopAnimating];
-                [loadingWheel removeFromSuperview];
-                [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
-            } failure:^(NSError *error) {
-                NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
-                //Alert user
-                [loadingWheel stopAnimating];
-                [loadingWheel removeFromSuperview];
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
+    // Handle multi-sessions here
+    [self selectMatrixSession:^(MXSession *selectedSession) {
+        MXPublicRoom *publicRoom;
+        if (filteredPublicRooms && indexPath.row < filteredPublicRooms.count) {
+            publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
+        } else if (indexPath.row < publicRooms.count){
+            publicRoom = [publicRooms objectAtIndex:indexPath.row];
         }
         
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
+        if (publicRooms) {
+            // Check whether the user has already joined the selected public room
+            if ([selectedSession roomWithRoomId:publicRoom.roomId]) {
+                // Open selected room
+                [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedSession];
+            } else {
+                // Join the selected room
+                UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+                if (selectedCell) {
+                    CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
+                    loadingWheel.center = center;
+                    [selectedCell addSubview:loadingWheel];
+                }
+                [loadingWheel startAnimating];
+                [selectedSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
+                    // Show joined room
+                    [loadingWheel stopAnimating];
+                    [loadingWheel removeFromSuperview];
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedSession];
+                } failure:^(NSError *error) {
+                    NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+                    //Alert user
+                    [loadingWheel stopAnimating];
+                    [loadingWheel removeFromSuperview];
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            }
+            
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
+    }];
 }
 
 #pragma mark - UISearchBarDelegate
