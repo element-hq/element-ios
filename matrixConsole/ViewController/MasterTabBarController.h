@@ -47,9 +47,5 @@
 - (void)presentMediaPicker:(UIImagePickerController*)mediaPicker;
 - (void)dismissMediaPicker;
 
-
-
-
-
 @end
 

@@ -260,18 +260,17 @@
     }
 }
 
-- (void)setVisibleRoomId:(NSString *)aVisibleRoomId {
+- (void)setVisibleRoomId:(NSString *)roomId {
     
-    // Presently only the first account is used
-    // TODO GFO: handle multi-session
-    MXKAccount *account = [[MXKAccountManager sharedManager].accounts firstObject];
-    if (account) {
-        // Enable inApp notification for this room
-        [account updateNotificationListenerForRoomId:aVisibleRoomId ignore:NO];
+    if (roomId) {
+        // Enable inApp notification for this room in all existing accounts.
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+        for (MXKAccount *account in mxAccounts) {
+            [account updateNotificationListenerForRoomId:roomId ignore:NO];
+        }
     }
     
-    
-    _visibleRoomId = aVisibleRoomId;
+    _visibleRoomId = roomId;
 }
 
 @end

@@ -527,7 +527,7 @@
                 
                 [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
                     
-                    // Check conditions to display this notification (TODO GFO multi-session handling)
+                    // Check conditions to display this notification
                     if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
                         && ![self.masterTabBarController isPresentingMediaPicker]) {
                         
