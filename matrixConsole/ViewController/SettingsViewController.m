@@ -698,29 +698,34 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 #pragma mark - Cache handling
 
 // return the MX cache size in bytes
-- (NSUInteger) MXCacheSize {
+- (NSUInteger)MXCacheSize {
     
-    if (self.mxSession.store && [self.mxSession.store isKindOfClass:[MXFileStore class]]) {
-        MXFileStore *fileStore = (MXFileStore*)self.mxSession.store;
-        return fileStore.diskUsage;
+    NSUInteger cacheSize = 0;
+    
+    NSArray *mxSessions = self.mxSessions;
+    for (MXSession *mxSession in mxSessions) {
+        if (mxSession.store && [mxSession.store isKindOfClass:[MXFileStore class]]) {
+            MXFileStore *fileStore = (MXFileStore*)mxSession.store;
+            cacheSize += fileStore.diskUsage;
+        }
     }
     
-    return 0;
+    return cacheSize;
 }
 
 // return the sum of the caches (MX cache + media cache ...) in bytes
-- (NSUInteger) cachesSize {
+- (NSUInteger)cachesSize {
     return self.MXCacheSize + [MXKMediaManager cacheSize];
 }
 
 // defines the min allow cache size in bytes
-- (NSUInteger) minCachesSize {
+- (NSUInteger)minCachesSize {
     // add a 50MB margin to avoid cache file deletion
     return self.MXCacheSize + [MXKMediaManager minCacheSize] + 50 * 1024 * 1024;
 }
 
 // defines the current max caches size in bytes
-- (NSUInteger) currentMaxCachesSize {
+- (NSUInteger)currentMaxCachesSize {
     return self.MXCacheSize + [MXKMediaManager currentMaxCacheSize];
 }
 

@@ -22,6 +22,10 @@
 
 #import "SectionedContacts.h"
 
+/**
+ 'ContactsViewController' instance display constact list.
+ Presently it support only one matrix session. TODO handle multi session
+ */
 @interface ContactsViewController : MXKTableViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
     NSArray* collationTitles;
 }

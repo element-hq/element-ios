@@ -137,16 +137,9 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 #pragma mark - overridden MXKTableViewController methods
 
-- (void)setMxSession:(MXSession *)session {
+- (void)onMatrixSessionChange {
     
-    [super setMxSession:session];
-    
-    [self refreshMatrixUsers];
-}
-
-- (void)didMatrixSessionStateChange {
-    
-    [super didMatrixSessionStateChange];
+    [super onMatrixSessionChange];
     
     [self refreshMatrixUsers];
 }
@@ -168,8 +161,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 }
 
 - (void)updateSectionedMatrixContacts {
-    // Check whether mxSession is available
-    if (!self.mxSession) {
+    // Check whether mainSession is available
+    if (!self.mainSession) {
         [self startActivityIndicator];
         sectionedMatrixContacts = nil;
     } else {
@@ -185,7 +178,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         // it could save thumbnail downloads
         for(NSString* userID in usersIDs) {
             //
-            MXUser* user = [self.mxSession userWithUserId:userID];
+            MXUser* user = [self.mainSession userWithUserId:userID];
             
             // sanity check
             if (user) {
@@ -373,8 +366,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     // matrix user ?
     if (matrixIDs.count) {
         
-        // display only if the mxSession is available in matrix SDK handler
-        if (self.mxSession) {
+        // display only if the mainSession is available in matrix SDK handler
+        if (self.mainSession) {
             // only 1 matrix ID
             if (matrixIDs.count == 1) {
                 NSString* matrixID = [matrixIDs objectAtIndex:0];
@@ -476,7 +469,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     sectionedLocalContacts = nil;
     
     // there is an user id
-    if (self.mxSession && self.mxSession.myUser.userId) {
+    if (self.mainSession && self.mainSession.myUser.userId) {
         [self updateSectionedLocalContacts];
         //
         if (!displayMatrixUsers) {
@@ -697,8 +690,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
     
-    if (self.mxSession) {
-        for (MXRoom *mxRoom in self.mxSession.rooms) {
+    if (self.mainSession) {
+        for (MXRoom *mxRoom in self.mainSession.rooms) {
             
             NSArray* membersList = [mxRoom.state members];
             
@@ -707,7 +700,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                 
                 for (MXRoomMember* member in membersList) {
                     // not myself
-                    if (![member.userId isEqualToString:self.mxSession.myUser.userId]) {
+                    if (![member.userId isEqualToString:self.mainSession.myUser.userId]) {
                         if ([matrixIDs indexOfObject:member.userId] == NSNotFound) {
                             [matrixIDs addObject:member.userId];
                         }

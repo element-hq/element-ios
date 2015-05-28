@@ -223,7 +223,7 @@
         // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
         if (!selectedRoomId) {
             selectedRoomId = currentRoomViewController.roomDataSource.roomId;
-            selectedRoomSession = currentRoomViewController.mxSession;
+            selectedRoomSession = currentRoomViewController.mainSession;
         }
         
         // Look for the rank of this selected room in displayed recents

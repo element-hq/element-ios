@@ -79,9 +79,9 @@
         if ([[segue destinationViewController] isKindOfClass:[MemberViewController class]]) {
             if (selectedMember) {
                 currentMemberViewController = (MemberViewController *)[segue destinationViewController];
-                currentMemberViewController.mxSession = self.mxSession;
+                [currentMemberViewController addMatrixSession:self.mainSession];
                 currentMemberViewController.mxRoomMember = selectedMember;
-                currentMemberViewController.mxRoom = [self.mxSession roomWithRoomId:self.dataSource.roomId];
+                currentMemberViewController.mxRoom = [self.mainSession roomWithRoomId:self.dataSource.roomId];
             }
         }
     }

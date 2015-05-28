@@ -165,26 +165,21 @@
 - (void)addMatrixSession:(MXSession *)mxSession {
     
     if (mxSession) {
-        // Check whether this is the first added session
+        // Update recents data source (The recents view controller will be updated by its data source)
         if (!mxSessionArray.count) {
-            // Update home tab
-            homeViewController.mxSession = mxSession;
-            
-            // List all the recents for the logged user
+            // This is the first added session, list all the recents for the logged user
             MXKRecentListDataSource *recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
             [recentsViewController displayList:recentlistDataSource];
-            
-            // Update contacts tab
-            contactsViewController.mxSession = mxSession;
-            
-            // Update settings tab
-            settingsViewController.mxSession = mxSession;
         } else {
             [recentsViewController.dataSource addMatrixSession:mxSession];
-            
-            // TODO GFO handle multi-session in other view controllers
-            // Presently only the first added session is considered.
         }
+        
+        // Update home tab
+        [homeViewController addMatrixSession:mxSession];
+        // Update contacts tab
+        [contactsViewController addMatrixSession:mxSession];
+        // Update settings tab
+        [settingsViewController addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
     }
@@ -192,37 +187,24 @@
 
 - (void)removeMatrixSession:(MXSession*)mxSession {
     
+    // Update recents data source
     [recentsViewController.dataSource removeMatrixSession:mxSession];
+    
+    // Update home tab
+    [homeViewController removeMatrixSession:mxSession];
+    // Update contacts tab
+    [contactsViewController removeMatrixSession:mxSession];
+    // Update settings tab
+    [settingsViewController removeMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
-    // TODO GFO handle multi-sessions
-    
     // Check whether there are others sessions
-    if (mxSessionArray.count) {
-        // Check whether we have to change session in the other tabs
-        if (homeViewController.mxSession == mxSession) {
-            mxSession = [mxSessionArray firstObject];
-            
-            // Update other tabs
-            homeViewController.mxSession = mxSession;
-            contactsViewController.mxSession = mxSession;
-            settingsViewController.mxSession = mxSession;
-        }
-    } else {
-        // Update home tab
-        homeViewController.mxSession = nil;
-        
+    if (!mxSessionArray.count) {
         // Keep reference on existing dataSource to release it properly
         MXKRecentListDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
         [recentsViewController displayList:nil];
         [previousRecentlistDataSource destroy];
-        
-        // Update contacts tab
-        contactsViewController.mxSession = nil;
-        
-        // Update settings tab
-        settingsViewController.mxSession = nil;
     }
 }
 

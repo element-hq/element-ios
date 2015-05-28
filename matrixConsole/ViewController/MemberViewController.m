@@ -120,7 +120,7 @@
     kMXSessionWillLeaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         // Check whether the user will leave the room related to the displayed member
-        if (notif.object == self.mxSession) {
+        if (notif.object == self.mainSession) {
             NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
             if (roomId && [roomId isEqualToString:mxRoom.state.roomId]) {
                 // We must remove the current view controller.
@@ -188,7 +188,7 @@
     
     if (_mxRoomMember.avatarUrl) {
         // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-        thumbnailURL = [self.mxSession.matrixRestClient urlOfContentThumbnail:_mxRoomMember.avatarUrl toFitViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
+        thumbnailURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:_mxRoomMember.avatarUrl toFitViewSize:self.memberThumbnailButton.frame.size withMethod:MXThumbnailingMethodCrop];
         NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:thumbnailURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
         // Check whether the image download is in progress
@@ -267,12 +267,12 @@
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
     NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:_mxRoomMember.userId];
-    NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
+    NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     [buttonsTitles removeAllObjects];
     
     // Consider the case of the user himself
-    if ([_mxRoomMember.userId isEqualToString:self.mxSession.myUser.userId]) {
+    if ([_mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId]) {
         
         [buttonsTitles addObject:@"Leave"];
     
@@ -329,7 +329,7 @@
         
         // offer to start a new chat only if the room is not a 1:1 room with this user
         // it does not make sense : it would open the same room
-        MXRoom* room = [self.mxSession privateOneToOneRoomWithUserId:_mxRoomMember.userId];
+        MXRoom* room = [self.mainSession privateOneToOneRoomWithUserId:_mxRoomMember.userId];
         if (!room || (![room.state.roomId isEqualToString:mxRoom.state.roomId])) {
             [buttonsTitles addObject:@"Start Chat"];
         }
@@ -421,7 +421,7 @@
     // Ask for the power level to set
     self.actionMenu = [[MXKAlert alloc] initWithTitle:@"Power Level"  message:nil style:MXKAlertStyleAlert];
     
-    if (![self.mxSession.myUser.userId isEqualToString:roomMember.userId]) {
+    if (![self.mainSession.myUser.userId isEqualToString:roomMember.userId]) {
         self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Reset to default" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             weakSelf.actionMenu = nil;
             
@@ -533,15 +533,15 @@
             if (startVideoCall || [text isEqualToString:@"Start Voice Call"]) {
                 [self addPendingActionMask];
                 
-                MXRoom* oneToOneRoom = [self.mxSession privateOneToOneRoomWithUserId:_mxRoomMember.userId];
+                MXRoom* oneToOneRoom = [self.mainSession privateOneToOneRoomWithUserId:_mxRoomMember.userId];
                 
                 // Place the call directly if the room exists
                 if (oneToOneRoom) {
-                    [self.mxSession.callManager placeCallInRoom:oneToOneRoom.state.roomId withVideo:startVideoCall];
+                    [self.mainSession.callManager placeCallInRoom:oneToOneRoom.state.roomId withVideo:startVideoCall];
                     [self removePendingActionMask];
                 } else {
                     // Create a new room
-                    [self.mxSession createRoom:nil
+                    [self.mainSession createRoom:nil
                                     visibility:kMXRoomVisibilityPrivate
                                      roomAlias:nil
                                          topic:nil
@@ -550,7 +550,7 @@
                                            [room inviteUser:_mxRoomMember.userId success:^{
                                                // Delay the call in order to be sure that the room is ready
                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                   [self.mxSession.callManager placeCallInRoom:room.state.roomId withVideo:startVideoCall];
+                                                   [self.mainSession.callManager placeCallInRoom:room.state.roomId withVideo:startVideoCall];
                                                    [self removePendingActionMask];
                                                });
                                                

@@ -33,7 +33,11 @@
     BOOL             searchBarShouldEndEditing;
     UIView          *savedTableHeaderView;
     
-    NSString *homeServerSuffix;
+    // Array of homeserver suffix (NSString instance)
+    NSMutableArray *homeServerSuffixArray;
+    
+    MXKAlert *mxAccountSelectionAlert;
+    MXSession *selectedSession;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
@@ -92,6 +96,8 @@
     publicRoomsSearchBar = nil;
     filteredPublicRooms = nil;
     savedTableHeaderView = nil;
+    
+    homeServerSuffixArray = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,39 +122,31 @@
 
 #pragma mark - 
 
-- (void)didMatrixSessionStateChange {
-    
-    [super didMatrixSessionStateChange];
-    
-    if (!homeServerSuffix && self.mxSession.myUser.userId) {
-        
-        // Extract homeServer name from userId
-        NSArray *components = [self.mxSession.myUser.userId componentsSeparatedByString:@":"];
-        if (components.count == 2) {
-            homeServerSuffix = [NSString stringWithFormat:@":%@",[components lastObject]];
-            // Update alias placeholder in room creation section
-            _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffix];
-        } else {
-            homeServerSuffix = nil;
-            NSLog(@"[HomeVC] Warning: the userId is not correctly formatted: %@", self.mxSession.myUser.userId);
-            _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
-        }
+- (void)destroy {
+    if (mxAccountSelectionAlert) {
+        [mxAccountSelectionAlert dismiss:NO];
+        mxAccountSelectionAlert = nil;
     }
+    
+    [super destroy];
 }
 
-#pragma mark -
-
-- (void)setMxSession:(MXSession *)mxSession {
+- (void)onMatrixSessionChange {
     
-    [super setMxSession:mxSession];
+    [super onMatrixSessionChange];
+    
+    NSArray *mxSessions = self.mxSessions;
     
     // Refresh UI
-    if (self.mxSession) {
-        // Show room creation and join options
-        self.tableView.tableHeaderView = savedTableHeaderView;
-        
-        // Ensure to display room creation section
-        [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
+    if (mxSessions.count) {
+        // Check whether room creation UI is visible
+        if (!self.tableView.tableHeaderView) {
+            // Show room creation and join options
+            self.tableView.tableHeaderView = savedTableHeaderView;
+            
+            // Ensure to display room creation section
+            [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
+        }
     } else {
         // Hide room creation and join options (only public rooms section is displayed).
         self.tableView.tableHeaderView = nil;
@@ -156,12 +154,43 @@
     
     // Refresh listed public rooms
     [self refreshPublicRooms];
+    
+    // Update homeServer suffix array
+    if (homeServerSuffixArray.count != mxSessions.count) {
+        homeServerSuffixArray = [NSMutableArray array];
+        
+        for (MXSession *mxSession in mxSessions) {
+            if (mxSession.myUser.userId) {
+                // Extract homeServer name from userId
+                NSArray *components = [mxSession.myUser.userId componentsSeparatedByString:@":"];
+                if (components.count == 2) {
+                    NSString *homeServerSuffix = [NSString stringWithFormat:@":%@",[components lastObject]];
+                    if ([homeServerSuffixArray indexOfObject:homeServerSuffix] == NSNotFound) {
+                        [homeServerSuffixArray addObject:homeServerSuffix];
+                    }
+                } else {
+                    NSLog(@"[HomeVC] Warning: the userId is not correctly formatted: %@", mxSession.myUser.userId);
+                }
+            }
+        }
+        
+        // Update alias placeholder in room creation section
+        if (homeServerSuffixArray.count == 1) {
+            _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffixArray.firstObject];
+        } else {
+            _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
+        }
+    }
 }
 
+#pragma mark -
+
 - (MXRestClient*)mxRestClient {
+    // TODO GFO handle multi session (multi account)
+    
     // Ignore `mxRestClient` property if a matrix session has been defined
-    if (self.mxSession) {
-        return self.mxSession.matrixRestClient;
+    if (self.mainSession) {
+        return self.mainSession.matrixRestClient;
     }
     
     return _mxRestClient;
@@ -240,15 +269,21 @@
         // Remove '#' character
         alias = [alias substringFromIndex:1];
         
-        if (homeServerSuffix) {
-            // Remove homeserver
+        NSString *actualAlias = nil;
+        for (NSString *homeServerSuffix in homeServerSuffixArray) {
+            // Remove homeserver suffix
             NSRange range = [alias rangeOfString:homeServerSuffix];
-            if (range.location == NSNotFound) {
-                NSLog(@"[HomeVC] Wrong room alias has been set (%@)", _roomAliasTextField.text);
-                alias = nil;
-            } else {
-                alias = [alias stringByReplacingCharactersInRange:range withString:@""];
+            if (range.location != NSNotFound) {
+                actualAlias = [alias stringByReplacingCharactersInRange:range withString:@""];
+                break;
             }
+        }
+        
+        if (actualAlias) {
+            alias = actualAlias;
+        } else {
+            NSLog(@"[HomeVC] Wrong room alias has been set (%@)", _roomAliasTextField.text);
+            alias = nil;
         }
     }
     
@@ -280,6 +315,44 @@
     }
     
     return participants;
+}
+
+- (void)selectMatrixSession:(void (^)())onSelection {
+    NSArray *mxSessions = self.mxSessions;
+    
+    if (mxSessions.count == 1) {
+        selectedSession = self.mainSession;
+        if (onSelection) {
+            onSelection();
+        }
+    } else if (mxSessions.count > 1) {
+        if (mxAccountSelectionAlert) {
+            [mxAccountSelectionAlert dismiss:NO];
+        }
+        
+        mxAccountSelectionAlert = [[MXKAlert alloc] initWithTitle:@"Select an account" message:nil style:MXKAlertStyleActionSheet];
+        
+        __weak typeof(self) weakSelf = self;
+        for(MXSession *mxSession in mxSessions) {
+            [mxAccountSelectionAlert addActionWithTitle:mxSession.myUser.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->mxAccountSelectionAlert = nil;
+                strongSelf->selectedSession = mxSession;
+                
+                if (onSelection) {
+                    onSelection();
+                }
+            }];
+        }
+        
+        mxAccountSelectionAlert.cancelButtonIndex = [mxAccountSelectionAlert addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->mxAccountSelectionAlert = nil;
+        }];
+        
+        mxAccountSelectionAlert.sourceView = self.tableView;
+        [mxAccountSelectionAlert showInViewController:self];
+    }
 }
 
 #pragma mark - UITextField delegate
@@ -317,11 +390,11 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
     if (textField == _roomAliasTextField) {
-        if (homeServerSuffix) {
+        if (homeServerSuffixArray.count == 1) {
             // Check whether homeserver suffix should be added
             NSRange range = [textField.text rangeOfString:@":"];
             if (range.location == NSNotFound) {
-                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                textField.text = [textField.text stringByAppendingString:homeServerSuffixArray.firstObject];
             }
         }
         
@@ -336,11 +409,11 @@
         textField.text = [participants componentsJoinedByString:@"; "];
     } else if (textField == _joinRoomAliasTextField) {
         if (textField.text.length > 1) {
-             if (homeServerSuffix) {
+             if (homeServerSuffixArray.count == 1) {
                  // Add homeserver suffix if none
                  NSRange range = [textField.text rangeOfString:@":"];
                  if (range.location == NSNotFound) {
-                     textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                     textField.text = [textField.text stringByAppendingString:homeServerSuffixArray.firstObject];
                  }
              }
         } else {
@@ -376,8 +449,8 @@
         // Add # if none
         if (!textField.text.length || textField.text.length == range.length) {
             if ([string hasPrefix:@"#"] == NO) {
-                if ([string isEqualToString:@":"] && homeServerSuffix) {
-                    textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffix];
+                if ([string isEqualToString:@":"] && homeServerSuffixArray.count == 1) {
+                    textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffixArray.firstObject];
                 } else {
                     textField.text = [NSString stringWithFormat:@"#%@",string];
                 }
@@ -385,10 +458,10 @@
                 [self onTextFieldChange:nil];
                 return NO;
             }
-        } else if (homeServerSuffix) {
+        } else if (homeServerSuffixArray.count == 1) {
             // Add homeserver automatically when user adds ':' at the end
             if (range.location == textField.text.length && [string isEqualToString:@":"]) {
-                textField.text = [textField.text stringByAppendingString:homeServerSuffix];
+                textField.text = [textField.text stringByAppendingString:homeServerSuffixArray.firstObject];
                 // Update Create button status
                 [self onTextFieldChange:nil];
                 return NO;
@@ -421,6 +494,14 @@
     
     [self dismissKeyboard];
     
+    // Check whether a session is selected
+    if (!selectedSession) {
+        [self selectMatrixSession:^{
+            [self onButtonPressed:sender];
+        }];
+        return;
+    }
+    
     if (sender == _createRoomBtn) {
         // Disable button to prevent multiple request
         _createRoomBtn.enabled = NO;
@@ -431,7 +512,7 @@
         }
         
         // Create new room
-        [self.mxSession createRoom:roomName
+        [selectedSession createRoom:roomName
                         visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
                          roomAlias:self.alias
                              topic:nil
@@ -470,7 +551,7 @@
         
         // Check
         if (roomAlias.length) {
-            [self.mxSession joinRoom:roomAlias success:^(MXRoom *room) {
+            [selectedSession joinRoom:roomAlias success:^(MXRoom *room) {
                 // Reset text fields
                 _joinRoomAliasTextField.text = nil;
                 // Show the room
@@ -486,6 +567,8 @@
             _joinRoomAliasTextField.text = nil;
         }
     }
+    
+    selectedSession = nil;
 }
 
 #pragma mark - Table view data source
@@ -620,43 +703,52 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Check whether a session is selected
+    if (!selectedSession) {
+        [self selectMatrixSession:^{
+            [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+        }];
+        return;
+    }
     
     MXPublicRoom *publicRoom;
-    if (filteredPublicRooms) {
+    if (filteredPublicRooms && indexPath.row < filteredPublicRooms.count) {
         publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
-    } else {
+    } else if (indexPath.row < publicRooms.count){
         publicRoom = [publicRooms objectAtIndex:indexPath.row];
     }
     
-    // Check whether the user has already joined the selected public room
-    if ([self.mxSession roomWithRoomId:publicRoom.roomId]) {
-        // Open selected room
-        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
-    } else {
-        // Join the selected room
-        UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-        if (selectedCell) {
-            CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
-            loadingWheel.center = center;
-            [selectedCell addSubview:loadingWheel];
-        }
-        [loadingWheel startAnimating];
-        [self.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
-            // Show joined room
-            [loadingWheel stopAnimating];
-            [loadingWheel removeFromSuperview];
+    if (publicRooms) {
+        // Check whether the user has already joined the selected public room
+        if ([selectedSession roomWithRoomId:publicRoom.roomId]) {
+            // Open selected room
             [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
-        } failure:^(NSError *error) {
-            NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
-            //Alert user
-            [loadingWheel stopAnimating];
-            [loadingWheel removeFromSuperview];
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
+        } else {
+            // Join the selected room
+            UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+            if (selectedCell) {
+                CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
+                loadingWheel.center = center;
+                [selectedCell addSubview:loadingWheel];
+            }
+            [loadingWheel startAnimating];
+            [selectedSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
+                // Show joined room
+                [loadingWheel stopAnimating];
+                [loadingWheel removeFromSuperview];
+                [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId];
+            } failure:^(NSError *error) {
+                NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+                //Alert user
+                [loadingWheel stopAnimating];
+                [loadingWheel removeFromSuperview];
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate

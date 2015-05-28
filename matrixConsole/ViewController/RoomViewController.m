@@ -136,9 +136,9 @@
     [super displayRoom:dataSource];
 }
 
-- (void)didMatrixSessionStateChange {
+- (void)onMatrixSessionChange {
     
-    [super didMatrixSessionStateChange];
+    [super onMatrixSessionChange];
     
     // Check dataSource state
     if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
@@ -187,7 +187,7 @@
         
         // Check
         if (roomAlias.length) {
-            [self.mxSession joinRoom:roomAlias success:^(MXRoom *room) {
+            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
                 // Show the room
                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
             } failure:^(NSError *error) {
@@ -287,14 +287,14 @@
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mxSession];
+            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
             [membersController displayList:membersDataSource];
         }
     } else if ([[segue identifier] isEqualToString:@"showMemberDetails"]) {
         MemberViewController* controller = pushedViewController;
         
         if (selectedRoomMember) {
-            controller.mxSession = self.mxSession;
+            [controller addMatrixSession:self.mainSession];
             controller.mxRoomMember = selectedRoomMember;
             controller.mxRoom = self.roomDataSource.room;
             selectedRoomMember = nil;
@@ -307,7 +307,7 @@
 - (IBAction)onButtonPressed:(id)sender {
     
     if (sender == voipVoiceCallButton || sender == voipVideoCallButton) {
-        [self.mxSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:(sender == voipVideoCallButton)];
+        [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:(sender == voipVideoCallButton)];
     }
 }
 
