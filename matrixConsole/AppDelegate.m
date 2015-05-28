@@ -59,6 +59,11 @@
      */
     UIWindow* callStatusBarWindow;
     UIButton* callStatusBarButton;
+    
+    /**
+     Account picker used in case of multiple account.
+     */
+    MXKAlert *accountPicker;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -190,6 +195,11 @@
     if (self.errorNotification) {
         [self.errorNotification dismiss:NO];
         self.errorNotification = nil;
+    }
+    
+    if (accountPicker) {
+        [accountPicker dismiss:NO];
+        accountPicker = nil;
     }
 }
 
@@ -611,16 +621,51 @@
     }];
 }
 
+#pragma mark - Matrix Accounts handling
+
+- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection {
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    
+    if (mxAccounts.count == 1) {
+        if (onSelection) {
+            onSelection(mxAccounts.firstObject);
+        }
+    } else if (mxAccounts.count > 1) {
+        if (accountPicker) {
+            [accountPicker dismiss:NO];
+        }
+        
+        accountPicker = [[MXKAlert alloc] initWithTitle:@"Select an account" message:nil style:MXKAlertStyleActionSheet];
+        
+        __weak typeof(self) weakSelf = self;
+        for(MXKAccount *account in mxAccounts) {
+            [accountPicker addActionWithTitle:account.mxCredentials.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->accountPicker = nil;
+                
+                if (onSelection) {
+                    onSelection(account);
+                }
+            }];
+        }
+        
+        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->accountPicker = nil;
+        }];
+        
+        accountPicker.sourceView = [self.masterTabBarController selectedViewController].view;
+        [accountPicker showInViewController:[self.masterTabBarController selectedViewController]];
+    }
+}
+
 #pragma mark - Matrix Rooms handling
 
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
     
-    // TODO GFO: handle here multi sessions
-    
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    if (mxAccounts.count) {
-        MXKAccount *mxAccount = mxAccounts.firstObject;
-        MXSession *mxSession = mxAccount.mxSession;
+    // Handle here potential multiple accounts
+    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
+        MXSession *mxSession = selectedAccount.mxSession;
         
         if (mxSession) {
             MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
@@ -632,32 +677,32 @@
             } else {
                 // create a new room
                 [mxSession createRoom:nil
-                                visibility:kMXRoomVisibilityPrivate
-                                 roomAlias:nil
-                                     topic:nil
-                                   success:^(MXRoom *room) {
-                                       // invite the other user only if it is defined and not onself
-                                       if (userId && ![mxSession.myUser.userId isEqualToString:userId]) {
-                                           // add the user
-                                           [room inviteUser:userId success:^{
-                                           } failure:^(NSError *error) {
-                                               NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                                               //Alert user
-                                               [self showErrorAsAlert:error];
-                                           }];
-                                       }
-                                       
-                                       // Open created room
-                                       [self.masterTabBarController showRoom:room.state.roomId];
-                                       
-                                   } failure:^(NSError *error) {
-                                       NSLog(@"[AppDelegate] Create room failed: %@", error);
-                                       //Alert user
-                                       [self showErrorAsAlert:error];
-                                   }];
+                           visibility:kMXRoomVisibilityPrivate
+                            roomAlias:nil
+                                topic:nil
+                              success:^(MXRoom *room) {
+                                  // invite the other user only if it is defined and not onself
+                                  if (userId && ![mxSession.myUser.userId isEqualToString:userId]) {
+                                      // add the user
+                                      [room inviteUser:userId success:^{
+                                      } failure:^(NSError *error) {
+                                          NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                                          //Alert user
+                                          [self showErrorAsAlert:error];
+                                      }];
+                                  }
+                                  
+                                  // Open created room
+                                  [self.masterTabBarController showRoom:room.state.roomId];
+                                  
+                              } failure:^(NSError *error) {
+                                  NSLog(@"[AppDelegate] Create room failed: %@", error);
+                                  //Alert user
+                                  [self showErrorAsAlert:error];
+                              }];
             }
         }
-    }
+    }];
 }
 
 #pragma mark - SplitViewController delegate
