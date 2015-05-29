@@ -130,6 +130,53 @@
     [super destroy];
 }
 
+- (void)addMatrixSession:(MXSession *)mxSession {
+    [super addMatrixSession:mxSession];
+    
+    // Update homeServer suffix array
+    if (!homeServerSuffixArray) {
+        homeServerSuffixArray = [NSMutableArray array];
+    }
+    
+    NSString *homeserverSuffix = mxSession.matrixRestClient.homeserverSuffix;
+    if (homeserverSuffix && [homeServerSuffixArray indexOfObject:homeserverSuffix] == NSNotFound) {
+        [homeServerSuffixArray addObject:homeserverSuffix];
+        
+        // Update alias placeholder in room creation section
+        if (homeServerSuffixArray.count == 1) {
+            _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffixArray.firstObject];
+        } else {
+            _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
+        }
+    }
+}
+
+- (void)removeMatrixSession:(MXSession *)mxSession {
+    [super removeMatrixSession:mxSession];
+    
+    // Update homeServer suffix array
+    NSArray *mxSessions = self.mxSessions;
+    if (mxSessions.count) {
+        [homeServerSuffixArray removeAllObjects];
+        
+        for (MXSession *mxSession in mxSessions) {
+            NSString *homeserverSuffix = mxSession.matrixRestClient.homeserverSuffix;
+            if (homeserverSuffix && [homeServerSuffixArray indexOfObject:homeserverSuffix] == NSNotFound) {
+                [homeServerSuffixArray addObject:homeserverSuffix];
+            }
+        }
+    } else {
+        homeServerSuffixArray = nil;
+    }
+    
+    // Update alias placeholder in room creation section
+    if (homeServerSuffixArray.count == 1) {
+        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffixArray.firstObject];
+    } else {
+        _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
+    }
+}
+
 - (void)onMatrixSessionChange {
     
     [super onMatrixSessionChange];
@@ -153,33 +200,6 @@
     
     // Refresh listed public rooms
     [self refreshPublicRooms];
-    
-    // Update homeServer suffix array
-    if (homeServerSuffixArray.count != mxSessions.count) {
-        homeServerSuffixArray = [NSMutableArray array];
-        
-        for (MXSession *mxSession in mxSessions) {
-            if (mxSession.myUser.userId) {
-                // Extract homeServer name from userId
-                NSArray *components = [mxSession.myUser.userId componentsSeparatedByString:@":"];
-                if (components.count == 2) {
-                    NSString *homeServerSuffix = [NSString stringWithFormat:@":%@",[components lastObject]];
-                    if ([homeServerSuffixArray indexOfObject:homeServerSuffix] == NSNotFound) {
-                        [homeServerSuffixArray addObject:homeServerSuffix];
-                    }
-                } else {
-                    NSLog(@"[HomeVC] Warning: the userId is not correctly formatted: %@", mxSession.myUser.userId);
-                }
-            }
-        }
-        
-        // Update alias placeholder in room creation section
-        if (homeServerSuffixArray.count == 1) {
-            _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffixArray.firstObject];
-        } else {
-            _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
-        }
-    }
 }
 
 #pragma mark -
