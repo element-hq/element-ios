@@ -127,12 +127,13 @@ static APNSHandler *sharedHandler = nil;
     
     NSObject *kind = isActive ? @"http" : [NSNull null];
     
-    // TODO GFO Handle correctly multi-session here
+    // Handle multi-session here
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    BOOL append = NO;
     for (MXKAccount *account in mxAccounts) {
         MXRestClient *restCli = account.mxRestClient;
         
-        [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData success:^{
+        [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:@"Matrix Console iOS" deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData append:append success:^{
             [[NSUserDefaults standardUserDefaults] setBool:transientActivity forKey:@"apnsIsActive"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
@@ -142,6 +143,9 @@ static APNSHandler *sharedHandler = nil;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kAPNSHandlerHasBeenUpdated object:nil];
         }];
+        
+        // Turn on 'append' flag to add another pusher with the given pushkey and App ID to any others user IDs
+        append = YES;
     }
 }
 
