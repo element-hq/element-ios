@@ -63,7 +63,7 @@ static RageShakeManager* sharedInstance = nil;
 }
 
 - (void)promptCrashReportInViewController:(UIViewController*)viewController {
-    if ([MXLogger crashLog]) {
+    if ([MXLogger crashLog] && [MFMailComposeViewController canSendMail]) {
         
         confirmationAlert = [[MXKAlert alloc] initWithTitle:@"The application has crashed last time. Would you like to submit a crash report?"  message:nil style:MXKAlertStyleAlert];
         
@@ -107,7 +107,7 @@ static RageShakeManager* sharedInstance = nil;
     if (isShaking && [AppDelegate theDelegate].isAppForeground && !confirmationAlert
         && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION)) {
         
-        if ([responder isKindOfClass:[UIViewController class]]) {
+        if ([responder isKindOfClass:[UIViewController class]] && [MFMailComposeViewController canSendMail]) {
             confirmationAlert = [[MXKAlert alloc] initWithTitle:@"You seem to be shaking the phone in frustration. Would you like to submit a bug report?"  message:nil style:MXKAlertStyleAlert];
             
             __weak typeof(self) weakSelf = self;
