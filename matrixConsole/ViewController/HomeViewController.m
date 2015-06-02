@@ -17,46 +17,43 @@
 #import "HomeViewController.h"
 
 #import "AppDelegate.h"
-#import "PublicRoomTableCell.h"
 
 #import "RageShakeManager.h"
 
+NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreateRoomCellId";
+NSString *const kHomeViewControllerJoinRoomCellId = @"kHomeViewControllerJoinRoomCellId";
+NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPublicRoomCellId";
+
 @interface HomeViewController () {
-    NSArray *publicRooms;
+    // Room creation section
+    NSInteger createRoomSection;
+    MXKRoomCreationView *createRoomView;
+    
+    // Join room by alias section
+    NSInteger joinRoomSection;
+    MXKTableViewCellWithTextFieldAndButton* joinRoomCell;
+    
+    // Public rooms sections
+    NSInteger publicRoomsFirstSection;
+    // Homeserver list
+    NSMutableArray *homeServers;
+    // All registered REST clients
+    NSMutableArray *restClients;
+    // REST clients by homeserver
+    NSMutableDictionary *restClientDict;
+    // Public rooms by homeserver
+    NSMutableDictionary *publicRoomsDict;
+    // Array of shrinked homeservers.
+    NSMutableArray *shrinkedHomeServers;
     
     // List of public room names to highlight in displayed list
     NSArray* highlightedPublicRooms;
     
-    // Search in public room
-    UISearchBar     *publicRoomsSearchBar;
-    NSMutableArray  *filteredPublicRooms;
+    // Search in public rooms
+    UIBarButtonItem *searchButton;
     BOOL             searchBarShouldEndEditing;
-    UIView          *savedTableHeaderView;
-    
-    // Array of homeserver suffix (NSString instance)
-    NSMutableArray *homeServerSuffixArray;
-    
-    MXKAlert *mxAccountSelectionAlert;
+    NSMutableDictionary  *filteredPublicRoomsDict;
 }
-
-@property (weak, nonatomic) IBOutlet UITableView *publicRoomsTable;
-
-@property (weak, nonatomic) IBOutlet UILabel *roomCreationSectionLabel;
-@property (weak, nonatomic) IBOutlet UIView *roomCreationSectionView;
-@property (weak, nonatomic) IBOutlet UILabel *roomNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *roomAliasLabel;
-@property (weak, nonatomic) IBOutlet UILabel *participantsLabel;
-@property (weak, nonatomic) IBOutlet UITextField *roomNameTextField;
-@property (weak, nonatomic) IBOutlet UITextField *roomAliasTextField;
-@property (weak, nonatomic) IBOutlet UITextField *participantsTextField;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *roomVisibilityControl;
-@property (weak, nonatomic) IBOutlet UIButton *createRoomBtn;
-
-@property (weak, nonatomic) IBOutlet UILabel *joinRoomSectionLabel;
-@property (weak, nonatomic) IBOutlet UITextField *joinRoomAliasTextField;
-@property (weak, nonatomic) IBOutlet UIButton *joinRoomBtn;
-
-- (IBAction)onButtonPressed:(id)sender;
 
 @end
 
@@ -65,22 +62,57 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view, typically from a nib.
-    _roomCreationSectionLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-    _createRoomBtn.enabled = NO;
-    
-    _joinRoomSectionLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-    _joinRoomBtn.enabled = NO;
-    
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Keep a reference on loaded table view header view (This header is temporary removed during search in public rooms).
-    savedTableHeaderView = self.tableView.tableHeaderView;
+    // Prepare room creation section
+    createRoomView = [MXKRoomCreationView roomCreationView];
+    createRoomView.delegate = self;
     
     // Init
-    publicRooms = nil;
     highlightedPublicRooms = @[@"#matrix:matrix.org", @"#matrix-dev:matrix.org", @"#matrix-fr:matrix.org"]; // Add here a room name to highlight its display in public room list
+    
+    // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
+    if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)]) {
+        [NSLayoutConstraint deactivateConstraints:@[_publicRoomsSearchBarTopConstraint, _tableViewBottomConstraint]];
+    } else {
+        [self.view removeConstraint:_publicRoomsSearchBarTopConstraint];
+        [self.view removeConstraint:_tableViewBottomConstraint];
+    }
+    
+    _publicRoomsSearchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:_publicRoomsSearchBar
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.tableView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    
+    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)]) {
+        [NSLayoutConstraint activateConstraints:@[_publicRoomsSearchBarTopConstraint, _tableViewBottomConstraint]];
+    } else {
+        [self.view addConstraint:_publicRoomsSearchBarTopConstraint];
+        [self.view addConstraint:_tableViewBottomConstraint];
+    }
+    
+    // Hide search bar by default
+    _publicRoomsSearchBar.hidden = YES;
+    _publicRoomsSearchBarHeightConstraint.constant = 0;
+    [self.view setNeedsUpdateConstraints];
+    
+    // Add search option in navigation bar
+    self.enableSearch = YES;
+    
+    // Add an accessory view to the search bar in order to retrieve keyboard view.
+    _publicRoomsSearchBar.inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,43 +121,59 @@
 }
 
 - (void)dealloc{
-    publicRooms = nil;
     highlightedPublicRooms = nil;
+    _publicRoomsSearchBar.inputAccessoryView = nil;
+    searchButton = nil;
     
-    publicRoomsSearchBar = nil;
-    filteredPublicRooms = nil;
-    savedTableHeaderView = nil;
-    
-    homeServerSuffixArray = nil;
+    [self destroy];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    // Note: super calls `mxSession` setter to refresh UI according to matrix session. We don't need to do it here.
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    
     [super viewWillDisappear:animated];
     
     // Leave potential search session
-    if (publicRoomsSearchBar) {
-        [self searchBarCancelButtonClicked:publicRoomsSearchBar];
+    if (!_publicRoomsSearchBar.isHidden) {
+        [self searchBarCancelButtonClicked:_publicRoomsSearchBar];
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 
-#pragma mark - 
+#pragma mark - Override MXKViewController
+
+- (void)onKeyboardShowAnimationComplete {
+    // Report the keyboard view in order to track keyboard frame changes
+    self.keyboardView = _publicRoomsSearchBar.inputAccessoryView.superview;
+}
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight {
+    
+    // Deduce the bottom constraint for the table view (Don't forget the potential tabBar)
+    CGFloat tableViewBottomConst = keyboardHeight - self.bottomLayoutGuide.length;
+    // Check whether the keyboard is over the tabBar
+    if (tableViewBottomConst < 0) {
+        tableViewBottomConst = 0;
+    }
+    
+    // Update constraints
+    _tableViewBottomConstraint.constant = tableViewBottomConst;
+    
+    // Force layout immediately to take into account new constraint
+    [self.view layoutIfNeeded];
+}
 
 - (void)destroy {
-    if (mxAccountSelectionAlert) {
-        [mxAccountSelectionAlert dismiss:NO];
-        mxAccountSelectionAlert = nil;
-    }
+    [createRoomView removeFromSuperview];
+    [createRoomView destroy];
+    
+    homeServers = nil;
+    restClients = nil;
+    restClientDict = nil;
+    publicRoomsDict = nil;
+    filteredPublicRoomsDict = nil;
+    shrinkedHomeServers = nil;
     
     [super destroy];
 }
@@ -133,96 +181,128 @@
 - (void)addMatrixSession:(MXSession *)mxSession {
     [super addMatrixSession:mxSession];
     
-    // Update homeServer suffix array
-    if (!homeServerSuffixArray) {
-        homeServerSuffixArray = [NSMutableArray array];
-    }
-    
-    NSString *homeserverSuffix = mxSession.matrixRestClient.homeserverSuffix;
-    if (homeserverSuffix && [homeServerSuffixArray indexOfObject:homeserverSuffix] == NSNotFound) {
-        [homeServerSuffixArray addObject:homeserverSuffix];
-        
-        // Update alias placeholder in room creation section
-        if (homeServerSuffixArray.count == 1) {
-            _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffixArray.firstObject];
-        } else {
-            _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
-        }
-    }
+    // Report the related REST Client to retrieve public rooms
+    [self addRestClient:mxSession.matrixRestClient];
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession {
     [super removeMatrixSession:mxSession];
     
-    // Update homeServer suffix array
-    NSArray *mxSessions = self.mxSessions;
-    if (mxSessions.count) {
-        [homeServerSuffixArray removeAllObjects];
-        
-        for (MXSession *mxSession in mxSessions) {
-            NSString *homeserverSuffix = mxSession.matrixRestClient.homeserverSuffix;
-            if (homeserverSuffix && [homeServerSuffixArray indexOfObject:homeserverSuffix] == NSNotFound) {
-                [homeServerSuffixArray addObject:homeserverSuffix];
-            }
-        }
-    } else {
-        homeServerSuffixArray = nil;
-    }
-    
-    // Update alias placeholder in room creation section
-    if (homeServerSuffixArray.count == 1) {
-        _roomAliasTextField.placeholder = [NSString stringWithFormat:@"(e.g. #foo%@)", homeServerSuffixArray.firstObject];
-    } else {
-        _roomAliasTextField.placeholder = @"(e.g. #foo:example.org)";
-    }
+    // Remove the related REST Client
+    [self removeRestClient:mxSession.matrixRestClient];
 }
 
 - (void)onMatrixSessionChange {
     
     [super onMatrixSessionChange];
     
-    NSArray *mxSessions = self.mxSessions;
-    
-    // Refresh UI
-    if (mxSessions.count) {
-        // Check whether room creation UI is visible
-        if (!self.tableView.tableHeaderView) {
-            // Show room creation and join options
-            self.tableView.tableHeaderView = savedTableHeaderView;
-            
-            // Ensure to display room creation section
-            [self.tableView scrollRectToVisible:_roomCreationSectionLabel.frame animated:NO];
-        }
-    } else {
-        // Hide room creation and join options (only public rooms section is displayed).
-        self.tableView.tableHeaderView = nil;
-    }
-    
-    // Refresh listed public rooms
-    [self refreshPublicRooms];
+    // Refresh all listed public rooms
+    [self refreshPublicRooms:nil];
 }
 
 #pragma mark -
 
-- (MXRestClient*)mxRestClient {
-    // TODO GFO handle multi session (multi account)
-    
-    // Ignore `mxRestClient` property if a matrix session has been defined
-    if (self.mainSession) {
-        return self.mainSession.matrixRestClient;
+- (void)addRestClient:(MXRestClient*)restClient {
+    if (!restClient.homeserver) {
+        return;
     }
     
-    return _mxRestClient;
+    if (!homeServers) {
+        homeServers = [NSMutableArray array];
+    }
+    if (!restClients) {
+        restClients = [NSMutableArray array];
+    }
+    if (!restClientDict) {
+        restClientDict = [NSMutableDictionary dictionary];
+    }
+    
+    if ([restClients indexOfObject:restClient] == NSNotFound) {
+        [restClients addObject:restClient];
+        
+        if ([homeServers indexOfObject:restClient.homeserver] == NSNotFound){
+            [homeServers addObject:restClient.homeserver];
+            [restClientDict setObject:restClient forKey:restClient.homeserver];
+            [self refreshPublicRooms:restClient];
+        }
+    }
+}
+
+- (void)removeRestClient:(MXRestClient *)restClient {
+    NSUInteger index = [restClients indexOfObject:restClient];
+    if (index != NSNotFound) {
+        [restClients removeObjectAtIndex:index];
+        
+        // Check whether this client was reported in rest client dictionary
+        for (NSString *homeserver in homeServers) {
+            if ([restClientDict objectForKey:homeserver] == restClient) {
+                [restClientDict removeObjectForKey:homeserver];
+                BOOL removeHomeServer = YES;
+                
+                // Look for an other rest client for this homeserver (if any)
+                for (MXRestClient *client in restClients) {
+                    if ([client.homeserver isEqualToString:homeserver]) {
+                        [restClientDict setObject:client forKey:homeserver];
+                        removeHomeServer = NO;
+                        break;
+                    }
+                }
+                
+                if (removeHomeServer) {
+                    [homeServers removeObject:homeserver];
+                }
+                
+                [self refreshPublicRooms:nil];
+                break;
+            }
+        }
+    }
+}
+
+- (void)setEnableSearch:(BOOL)enableSearch {
+    if (enableSearch) {
+        if (!searchButton) {
+            searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
+        }
+        
+        // Add it in right bar items
+        NSArray *rightBarButtonItems = self.navigationItem.rightBarButtonItems;
+        self.navigationItem.rightBarButtonItems = rightBarButtonItems ? [rightBarButtonItems arrayByAddingObject:searchButton] : @[searchButton];
+    } else {
+        NSMutableArray *rightBarButtonItems = [NSMutableArray arrayWithArray: self.navigationItem.rightBarButtonItems];
+        [rightBarButtonItems removeObject:searchButton];
+        self.navigationItem.rightBarButtonItems = rightBarButtonItems;
+    }
 }
 
 #pragma mark - Internals
 
-- (void)refreshPublicRooms {
+- (void)refreshPublicRooms:(MXRestClient*)restClient {
     
-    if (self.mxRestClient) {
+    NSArray *selectedClients = restClient ? @[restClient] : restClientDict.allValues;
+    
+    if (!publicRoomsDict) {
+        publicRoomsDict = [NSMutableDictionary dictionaryWithCapacity:restClientDict.count];
+    } else {
+        if (restClient) {
+            // Flush and update public rooms only for this homeserver
+            [publicRoomsDict removeObjectForKey:restClient.homeserver];
+        } else {
+            // Flush and update public rooms for all homeservers
+            [publicRoomsDict removeAllObjects];
+        }
+    }
+    
+    if (!shrinkedHomeServers) {
+        shrinkedHomeServers = [NSMutableArray array];
+    }
+    
+    for (NSInteger index = 0; index < selectedClients.count; index ++) {
+        MXRestClient *restClient = [selectedClients objectAtIndex:index];
+        
         // Retrieve public rooms
-        [self.mxRestClient publicRooms:^(NSArray *rooms){
-            publicRooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        [restClient publicRooms:^(NSArray *rooms){
+            NSArray *publicRooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
                 
                 MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
                 MXPublicRoom *secondRoom = (MXPublicRoom*)b;
@@ -237,166 +317,64 @@
                     return [firstRoom.displayname compare:secondRoom.displayname options:NSCaseInsensitiveSearch];
                 }
             }];
-            [_publicRoomsTable reloadData];
+            
+            if (publicRooms.count && restClient.homeserver) {
+                [publicRoomsDict setObject:publicRooms forKey:restClient.homeserver];
+                [self.tableView reloadData];
+            }
         }
-                               failure:^(NSError *error){
-                                   NSLog(@"[HomeVC] Failed to get public rooms: %@", error);
-                                   //Alert user
-                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                               }];
+                        failure:^(NSError *error){
+                            NSLog(@"[HomeVC] Failed to get public rooms for %@: %@", restClient.homeserver, error);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
     }
 }
 
-- (void)search:(id)sender {
-    
-    if (!publicRoomsSearchBar) {
+- (IBAction)search:(id)sender {
+    if (_publicRoomsSearchBar.isHidden) {
         // Check whether there are data in which search
-        if (publicRooms.count) {
-            // Create search bar
-            publicRoomsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-            publicRoomsSearchBar.showsCancelButton = YES;
-            publicRoomsSearchBar.returnKeyType = UIReturnKeyDone;
-            publicRoomsSearchBar.delegate = self;
-            [publicRoomsSearchBar becomeFirstResponder];
-            publicRoomsSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            // Hide table header during search session
-            self.tableView.tableHeaderView = nil;
-            // Reload table in order to display search bar as section header
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            [self.tableView reloadData];
+        if (publicRoomsDict.count) {
+            // Show search bar
+            _publicRoomsSearchBar.hidden = NO;
+            _publicRoomsSearchBarHeightConstraint.constant = 44;
+            [self.view setNeedsUpdateConstraints];
             
+            searchBarShouldEndEditing = NO;
+            [_publicRoomsSearchBar becomeFirstResponder];
         }
     } else {
-        [self searchBarCancelButtonClicked: publicRoomsSearchBar];
+        [self searchBarCancelButtonClicked: _publicRoomsSearchBar];
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)dismissKeyboard {
+    [createRoomView dismissKeyboard];
     
-    // Hide the keyboard
-    [_roomNameTextField resignFirstResponder];
-    [_roomAliasTextField resignFirstResponder];
-    [_participantsTextField resignFirstResponder];
-    [_joinRoomAliasTextField resignFirstResponder];
+    [joinRoomCell.mxkTextField resignFirstResponder];
+    
+    if (_publicRoomsSearchBar) {
+        [self searchBarCancelButtonClicked: _publicRoomsSearchBar];
+    }
 }
 
-- (NSString*)alias {
-    
-    // Extract alias name from alias text field
-    NSString *alias = _roomAliasTextField.text;
-    if (alias.length > 1) {
-        // Remove '#' character
-        alias = [alias substringFromIndex:1];
-        
-        NSString *actualAlias = nil;
-        for (NSString *homeServerSuffix in homeServerSuffixArray) {
-            // Remove homeserver suffix
-            NSRange range = [alias rangeOfString:homeServerSuffix];
-            if (range.location != NSNotFound) {
-                actualAlias = [alias stringByReplacingCharactersInRange:range withString:@""];
-                break;
-            }
-        }
-        
-        if (actualAlias) {
-            alias = actualAlias;
-        } else {
-            NSLog(@"[HomeVC] Wrong room alias has been set (%@)", _roomAliasTextField.text);
-            alias = nil;
-        }
-    }
-    
-    if (! alias.length) {
-        alias = nil;
-    }
-    
-    return alias;
+#pragma mark - MXKRoomCreationView Delegate
+
+- (void)roomCreationView:(MXKRoomCreationView *)creationView presentMXKAlert:(MXKAlert *)alert {
+    [self dismissKeyboard];
+    [alert showInViewController:self];
 }
 
-- (NSArray*)participantsList {
-    
-    NSMutableArray *participants = [NSMutableArray array];
-    
-    if (_participantsTextField.text.length) {
-        NSArray *components = [_participantsTextField.text componentsSeparatedByString:@";"];
-        
-        for (NSString *component in components) {
-            // Remove white space from both ends
-            NSString *user = [component stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (user.length > 1 && [user hasPrefix:@"@"]) {
-                [participants addObject:user];
-            }
-        }
-    }
-    
-    if (participants.count == 0) {
-        participants = nil;
-    }
-    
-    return participants;
-}
-
-- (void)selectMatrixSession:(void (^)(MXSession *selectedSession))onSelection {
-    NSArray *mxSessions = self.mxSessions;
-    
-    if (mxSessions.count == 1) {
-        if (onSelection) {
-            onSelection(self.mainSession);
-        }
-    } else if (mxSessions.count > 1) {
-        if (mxAccountSelectionAlert) {
-            [mxAccountSelectionAlert dismiss:NO];
-        }
-        
-        mxAccountSelectionAlert = [[MXKAlert alloc] initWithTitle:@"Select an account" message:nil style:MXKAlertStyleActionSheet];
-        
-        __weak typeof(self) weakSelf = self;
-        for(MXSession *mxSession in mxSessions) {
-            [mxAccountSelectionAlert addActionWithTitle:mxSession.myUser.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->mxAccountSelectionAlert = nil;
-                if (onSelection) {
-                    onSelection(mxSession);
-                }
-            }];
-        }
-        
-        mxAccountSelectionAlert.cancelButtonIndex = [mxAccountSelectionAlert addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->mxAccountSelectionAlert = nil;
-        }];
-        
-        mxAccountSelectionAlert.sourceView = self.tableView;
-        [mxAccountSelectionAlert showInViewController:self];
-    }
+- (void)roomCreationView:(MXKRoomCreationView *)creationView showRoom:(NSString *)roomId withMatrixSession:(MXSession *)mxSession {
+    [[AppDelegate theDelegate].masterTabBarController showRoom:roomId withMatrixSession:mxSession];
 }
 
 #pragma mark - UITextField delegate
 
-- (void)onTextFieldChange:(NSNotification *)notif {
-    
-    // Update Create Room button
-    NSString *roomName = _roomNameTextField.text;
-    NSString *roomAlias = _roomAliasTextField.text;
-    NSString *participants = _participantsTextField.text;
-    
-    if (roomName.length || roomAlias.length || participants.length) {
-        _createRoomBtn.enabled = YES;
-    } else {
-        _createRoomBtn.enabled = NO;
-    }
-    
-    // Update Join Room button
-    _joinRoomBtn.enabled = (_joinRoomAliasTextField.text.length != 0);
-}
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    
-    if (textField == _participantsTextField) {
-        if (textField.text.length == 0) {
-            textField.text = @"@";
-        }
-    } else if (textField == _roomAliasTextField || textField == _joinRoomAliasTextField) {
+    if (textField == joinRoomCell.mxkTextField) {
         if (textField.text.length == 0) {
             textField.text = @"#";
         }
@@ -404,92 +382,24 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    
-    if (textField == _roomAliasTextField) {
-        if (homeServerSuffixArray.count == 1) {
-            // Check whether homeserver suffix should be added
-            NSRange range = [textField.text rangeOfString:@":"];
-            if (range.location == NSNotFound) {
-                textField.text = [textField.text stringByAppendingString:homeServerSuffixArray.firstObject];
-            }
-        }
-        
-        // Check whether the alias is valid
-        if (!self.alias) {
+    if (textField == joinRoomCell.mxkTextField) {
+        if (textField.text.length < 2) {
             // reset text field
             textField.text = nil;
-            [self onTextFieldChange:nil];
-        }
-    } else if (textField == _participantsTextField) {
-        NSArray *participants = self.participantsList;
-        textField.text = [participants componentsJoinedByString:@"; "];
-    } else if (textField == _joinRoomAliasTextField) {
-        if (textField.text.length > 1) {
-             if (homeServerSuffixArray.count == 1) {
-                 // Add homeserver suffix if none
-                 NSRange range = [textField.text rangeOfString:@":"];
-                 if (range.location == NSNotFound) {
-                     textField.text = [textField.text stringByAppendingString:homeServerSuffixArray.firstObject];
-                 }
-             }
-        } else {
-            // reset text field
-            textField.text = nil;
-            [self onTextFieldChange:nil];
+            joinRoomCell.mxkButton.enabled = NO;
         }
     }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    
-    // Auto complete participant IDs
-    if (textField == _participantsTextField) {
-        // Add @ if none
-        if (!textField.text.length || textField.text.length == range.length) {
-            if ([string hasPrefix:@"@"] == NO) {
-                textField.text = [NSString stringWithFormat:@"@%@",string];
-                // Update Create button status
-                [self onTextFieldChange:nil];
-                return NO;
-            }
-        } else if (range.location == textField.text.length) {
-            if ([string isEqualToString:@";"]) {
-                // Add '@' character
-                textField.text = [textField.text stringByAppendingString:@"; @"];
-                // Update Create button status
-                [self onTextFieldChange:nil];
-                return NO;
-            }
-        }
-    } else if (textField == _roomAliasTextField) {
-        // Add # if none
-        if (!textField.text.length || textField.text.length == range.length) {
-            if ([string hasPrefix:@"#"] == NO) {
-                if ([string isEqualToString:@":"] && homeServerSuffixArray.count == 1) {
-                    textField.text = [NSString stringWithFormat:@"#%@",homeServerSuffixArray.firstObject];
-                } else {
-                    textField.text = [NSString stringWithFormat:@"#%@",string];
-                }
-                // Update Create button status
-                [self onTextFieldChange:nil];
-                return NO;
-            }
-        } else if (homeServerSuffixArray.count == 1) {
-            // Add homeserver automatically when user adds ':' at the end
-            if (range.location == textField.text.length && [string isEqualToString:@":"]) {
-                textField.text = [textField.text stringByAppendingString:homeServerSuffixArray.firstObject];
-                // Update Create button status
-                [self onTextFieldChange:nil];
-                return NO;
-            }
-        }
-    } else if (textField == _joinRoomAliasTextField) {
+    // Auto complete room alias
+    if (textField == joinRoomCell.mxkTextField) {
         // Add # if none
         if (!textField.text.length || textField.text.length == range.length) {
             if ([string hasPrefix:@"#"] == NO) {
                 textField.text = [NSString stringWithFormat:@"#%@",string];
-                // Update Create button status
-                [self onTextFieldChange:nil];
+                // Update Join button status
+                joinRoomCell.mxkButton.enabled = YES;
                 return NO;
             }
         }
@@ -498,7 +408,6 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField*) textField {
-    
     // "Done" key has been pressed
     [textField resignFirstResponder];
     return YES;
@@ -507,98 +416,225 @@
 #pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender {
-    
-    [self dismissKeyboard];
-    
-    // Handle multi-sessions here
-    [self selectMatrixSession:^(MXSession *selectedSession) {
-        if (sender == _createRoomBtn) {
+    if (sender == joinRoomCell.mxkButton) {
+        [self dismissKeyboard];
+
+        // Handle multi-sessions here
+        [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
             // Disable button to prevent multiple request
-            _createRoomBtn.enabled = NO;
+            joinRoomCell.mxkButton.enabled = NO;
             
-            NSString *roomName = _roomNameTextField.text;
-            if (! roomName.length) {
-                roomName = nil;
-            }
-            
-            // Create new room
-            [selectedSession createRoom:roomName
-                             visibility:(_roomVisibilityControl.selectedSegmentIndex == 0) ? kMXRoomVisibilityPublic : kMXRoomVisibilityPrivate
-                              roomAlias:self.alias
-                                  topic:nil
-                                success:^(MXRoom *room) {
-                                    // Check whether some users must be invited
-                                    NSArray *invitedUsers = self.participantsList;
-                                    for (NSString *userId in invitedUsers) {
-                                        [room inviteUser:userId success:^{
-                                            NSLog(@"[HomeVC] %@ has been invited (roomId: %@)", userId, room.state.roomId);
-                                        } failure:^(NSError *error) {
-                                            NSLog(@"[HomeVC] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                                            //Alert user
-                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                        }];
-                                    }
-                                    
-                                    // Reset text fields
-                                    _roomNameTextField.text = nil;
-                                    _roomAliasTextField.text = nil;
-                                    _participantsTextField.text = nil;
-                                    // Open created room
-                                    [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:selectedSession];
-                                } failure:^(NSError *error) {
-                                    _createRoomBtn.enabled = YES;
-                                    NSLog(@"[HomeVC] Create room (%@ %@ (%@)) failed: %@", _roomNameTextField.text, self.alias, (_roomVisibilityControl.selectedSegmentIndex == 0) ? @"Public":@"Private", error);
-                                    //Alert user
-                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                }];
-        } else if (sender == _joinRoomBtn) {
-            // Disable button to prevent multiple request
-            _joinRoomBtn.enabled = NO;
-            
-            NSString *roomAlias = _joinRoomAliasTextField.text;
+            NSString *roomAlias = joinRoomCell.mxkTextField.text;
             // Remove white space from both ends
             roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             // Check
             if (roomAlias.length) {
-                [selectedSession joinRoom:roomAlias success:^(MXRoom *room) {
+                [selectedAccount.mxSession joinRoom:roomAlias success:^(MXRoom *room) {
                     // Reset text fields
-                    _joinRoomAliasTextField.text = nil;
+                    joinRoomCell.mxkTextField.text = nil;
                     // Show the room
-                    [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:selectedSession];
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:selectedAccount.mxSession];
                 } failure:^(NSError *error) {
-                    _joinRoomBtn.enabled = YES;
+                    joinRoomCell.mxkButton.enabled = YES;
                     NSLog(@"[HomeVC] Failed to join room alias (%@): %@", roomAlias, error);
-                    //Alert user
+                    // Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                 }];
             } else {
                 // Reset text fields
-                _joinRoomAliasTextField.text = nil;
+                joinRoomCell.mxkTextField.text = nil;
             }
+        }];
+    } else if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *shrinkButton = (UIButton*)sender;
+        
+        if (shrinkButton.tag < homeServers.count) {
+            NSString *homeserver = [homeServers objectAtIndex:shrinkButton.tag];
+            
+            NSUInteger index = [shrinkedHomeServers indexOfObject:homeserver];
+            if (index != NSNotFound) {
+                // Disclose the
+                [shrinkedHomeServers removeObjectAtIndex:index];
+            } else {
+                // Shrink the recents from this session
+                [shrinkedHomeServers addObject:homeserver];
+            }
+            
+            // Notify delegate
+            [self.tableView reloadData];
         }
-    }];
+    }
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return 1;
+    NSInteger count = 0;
+    
+    createRoomSection = joinRoomSection = publicRoomsFirstSection = -1;
+    
+    // Room creation and join room alias required a matrix session, besides these sections are hidden during search session.
+    if (self.mxSessions.count && _publicRoomsSearchBar.isHidden) {
+        createRoomSection = count++;
+        joinRoomSection = count++;
+    }
+    
+    if (homeServers.count) {
+        publicRoomsFirstSection = count;
+        count += homeServers.count;
+    }
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger count = 0;
     
-    if (filteredPublicRooms) {
-        return filteredPublicRooms.count;
+    if (section == createRoomSection) {
+        count = 1;
+    } else if (section == joinRoomSection) {
+        count = 1;
+    } else {
+        NSArray *publicRooms = nil;
+        NSInteger index = section - publicRoomsFirstSection;
+        if (index < homeServers.count) {
+            NSString *homeserver = [homeServers objectAtIndex:index];
+            
+            // Check whether the list is shrinked
+            if ([shrinkedHomeServers indexOfObject:homeserver] == NSNotFound) {
+                if (filteredPublicRoomsDict) {
+                    publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
+                } else {
+                    publicRooms = [publicRoomsDict objectForKey:homeserver];
+                }
+            }
+        }
+        
+        count = publicRooms.count;
     }
-    return publicRooms.count;
+    return count;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == createRoomSection) {
+        return createRoomView.actualFrameHeight;
+    } else if (indexPath.section >= publicRoomsFirstSection) {
+        return 60;
+    }
+    return 44;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    
+    if (indexPath.section == createRoomSection) {
+        [createRoomView removeFromSuperview];
+        // Update view data
+        createRoomView.mxSessions = self.mxSessions;
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerCreateRoomCellId];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerCreateRoomCellId];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+
+        // Add creation view in full size
+        [cell.contentView addSubview:createRoomView];
+        [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.contentView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:createRoomView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
+        [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.contentView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:createRoomView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
+        [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.contentView
+                                                                     attribute:NSLayoutAttributeLeading
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:createRoomView
+                                                                     attribute:NSLayoutAttributeLeading
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
+        [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.contentView
+                                                                     attribute:NSLayoutAttributeTrailing
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:createRoomView
+                                                                     attribute:NSLayoutAttributeTrailing
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
+        [cell.contentView setNeedsUpdateConstraints];
+        
+    } else if (indexPath.section == joinRoomSection) {
+        // Report the current value (if any)
+        NSString *currentAlias = nil;
+        if (joinRoomCell) {
+            currentAlias = joinRoomCell.mxkTextField.text;
+        }
+        
+        joinRoomCell = [[MXKTableViewCellWithTextFieldAndButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerJoinRoomCellId];
+        if (!joinRoomCell) {
+            joinRoomCell = [[MXKTableViewCellWithTextFieldAndButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerJoinRoomCellId];
+        }
+        
+        joinRoomCell.mxkTextField.text = currentAlias;
+        joinRoomCell.mxkButton.enabled = (currentAlias.length != 0);
+        [joinRoomCell.mxkButton setTitle:@"Join" forState:UIControlStateNormal];
+        [joinRoomCell.mxkButton setTitle:@"Join" forState:UIControlStateHighlighted];
+        [joinRoomCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+        cell = joinRoomCell;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    } else {
+        MXKPublicRoomTableViewCell *publicRoomCell = [[MXKPublicRoomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerPublicRoomCellId];
+        if (!publicRoomCell) {
+            publicRoomCell = [[MXKPublicRoomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerPublicRoomCellId];
+        }
+        
+        MXPublicRoom *publicRoom;
+        NSInteger index = indexPath.section - publicRoomsFirstSection;
+        if (index < homeServers.count) {
+            NSString *homeserver = [homeServers objectAtIndex:index];
+            NSArray *publicRooms = nil;
+            if (filteredPublicRoomsDict) {
+                publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
+            } else {
+                publicRooms = [publicRoomsDict objectForKey:homeserver];
+            }
+            
+            publicRoom = [publicRooms objectAtIndex:indexPath.row];
+        }
+        
+        if (publicRoom) {
+            [publicRoomCell render:publicRoom];
+            // Highlight?
+            publicRoomCell.focused = (publicRoomCell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:publicRoomCell.roomDisplayName.text] != NSNotFound);
+        }
+        
+        cell = publicRoomCell;
+    }
+    
+    return cell;
+}
+
+#pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
-    if (publicRoomsSearchBar) {
-        return (publicRoomsSearchBar.frame.size.height + 40);
+    // In case of search session, homeservers with no result are hidden.
+    if (filteredPublicRoomsDict) {
+        NSInteger index = section - publicRoomsFirstSection;
+        NSString *homeserver = [homeServers objectAtIndex:index];
+        NSArray *publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
+        if (!publicRooms.count) {
+            return 0;
+        }
     }
     return 40;
 }
@@ -607,158 +643,141 @@
     
     UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, sectionHeader.frame.size.width, 40)];
+    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, sectionHeader.frame.size.width - 10, sectionHeader.frame.size.height - 10)];
     sectionLabel.font = [UIFont boldSystemFontOfSize:16];
     sectionLabel.backgroundColor = [UIColor clearColor];
     [sectionHeader addSubview:sectionLabel];
     
-    if (publicRooms) {
-        NSString *homeserver = self.mxRestClient.homeserver;
-        if (homeserver.length) {
-            sectionLabel.text = [NSString stringWithFormat:@" Public Rooms (at %@):", homeserver];
-        } else {
-            sectionLabel.text = @" Public Rooms:";
-        }
-        
-        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [searchButton setImage:[UIImage imageNamed:@"icon_search"] forState:UIControlStateNormal];
-        [searchButton setImage:[UIImage imageNamed:@"icon_search"] forState:UIControlStateHighlighted];
-        [searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
-        searchButton.frame = CGRectMake(sectionLabel.frame.size.width - 45, 0, 40, 40);
-        searchButton.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-        [sectionHeader addSubview:searchButton];
-        sectionHeader.userInteractionEnabled = YES;
-        
-        if (publicRoomsSearchBar) {
-            CGRect frame = publicRoomsSearchBar.frame;
-            frame.origin.y = 40;
-            publicRoomsSearchBar.frame = frame;
-            [sectionHeader addSubview:publicRoomsSearchBar];
-        }
+    if (section == createRoomSection) {
+        sectionLabel.text = @"Create Room:";
+    } else if (section == joinRoomSection) {
+        sectionLabel.text = @"Join Room:";
     } else {
-        sectionLabel.text = @" No Public Rooms";
+        NSArray *publicRooms = nil;
+        NSString *homeserver;
+        NSInteger index = section - publicRoomsFirstSection;
+        if (index < homeServers.count) {
+            homeserver = [homeServers objectAtIndex:index];
+            
+            if (filteredPublicRoomsDict) {
+                publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
+            } else {
+                publicRooms = [publicRoomsDict objectForKey:homeserver];
+            }
+        }
+        
+        if (publicRooms) {
+            sectionLabel.text = [NSString stringWithFormat:@"Public Rooms (at %@):", homeserver];
+            
+            if (homeServers.count > 1) {
+                // Add shrink button
+                UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                CGRect frame = sectionHeader.frame;
+                frame.origin.x = frame.origin.y = 0;
+                shrinkButton.frame = frame;
+                shrinkButton.backgroundColor = [UIColor clearColor];
+                [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                shrinkButton.tag = index;
+                [sectionHeader addSubview:shrinkButton];
+                sectionHeader.userInteractionEnabled = YES;
+                
+                // Add shrink icon
+                UIImage *chevron;
+                if ([shrinkedHomeServers indexOfObject:homeserver] != NSNotFound) {
+                    chevron = [UIImage imageNamed:@"disclosure"];
+                } else {
+                    chevron =[UIImage imageNamed:@"shrink"];
+                }
+                UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+                chevronView.contentMode = UIViewContentModeCenter;
+                frame = chevronView.frame;
+                frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 8;
+                frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+                chevronView.frame = frame;
+                [sectionHeader addSubview:chevronView];
+                chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+                
+                // Update label frame
+                frame = sectionHeader.frame;
+                frame.origin.x = 5;
+                frame.origin.y = 5;
+                frame.size.width = chevronView.frame.origin.x - 10;
+                frame.size.height -= 10;
+                sectionLabel.frame = frame;
+            }
+        } else {
+            sectionLabel.text = [NSString stringWithFormat:@"No Public Rooms (at %@)", homeserver];
+        }
     }
     
     return sectionHeader;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    // Cell is larger for public room with topic
-    MXPublicRoom *publicRoom;
-    if (filteredPublicRooms) {
-        publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
-    } else {
-        publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    }
-    
-    if (publicRoom.topic) {
-        return 60;
-    }
-    return 44;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    PublicRoomTableCell *cell;
-    PublicRoomWithTopicTableCell *cellWithTopic = nil;
-    
-    MXPublicRoom *publicRoom;
-    if (filteredPublicRooms) {
-        publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
-    } else {
-        publicRoom = [publicRooms objectAtIndex:indexPath.row];
-    }
-    
-    // Check whether this public room has topic
-    if (publicRoom.topic) {
-        cellWithTopic = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomWithTopicCell" forIndexPath:indexPath];
-        cellWithTopic.roomTopic.text = publicRoom.topic;
-        cell = cellWithTopic;
-    } else {
-        cell = [_publicRoomsTable dequeueReusableCellWithIdentifier:@"PublicRoomCell" forIndexPath:indexPath];
-    }
-    
-    // Set room display name
-    cell.roomDisplayName.text = [publicRoom displayname];
-    
-    // Set member count
-    if (publicRoom.numJoinedMembers > 1) {
-        cell.memberCount.text = [NSString stringWithFormat:@"%lu users", (unsigned long)publicRoom.numJoinedMembers];
-    } else if (publicRoom.numJoinedMembers == 1) {
-        cell.memberCount.text = @"1 user";
-    } else {
-        cell.memberCount.text = nil;
-    }
-    
-    // Highlight?
-    if (cell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:cell.roomDisplayName.text] != NSNotFound) {
-        cell.roomDisplayName.font = [UIFont boldSystemFontOfSize:20];
-        if (cellWithTopic) {
-            cellWithTopic.roomTopic.font = [UIFont boldSystemFontOfSize:17];
-        }
-        cell.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:0.9 alpha:1.0];
-    } else {
-        cell.roomDisplayName.font = [UIFont systemFontOfSize:19];
-        if (cellWithTopic) {
-            cellWithTopic.roomTopic.font = [UIFont systemFontOfSize:16];
-        }
-        cell.backgroundColor = [UIColor clearColor];
-    }
-    
-    return cell;
-}
-
-#pragma mark - Table view delegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Handle multi-sessions here
-    [self selectMatrixSession:^(MXSession *selectedSession) {
-        MXPublicRoom *publicRoom;
-        if (filteredPublicRooms && indexPath.row < filteredPublicRooms.count) {
-            publicRoom = [filteredPublicRooms objectAtIndex:indexPath.row];
-        } else if (indexPath.row < publicRooms.count){
-            publicRoom = [publicRooms objectAtIndex:indexPath.row];
+    if (indexPath.section < publicRoomsFirstSection) {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    } else {
+        // Hide the keyboard when user select a room
+        // do not hide the searchBar until the view controller disappear
+        if ([_publicRoomsSearchBar isFirstResponder]) {
+            searchBarShouldEndEditing = YES;
+            [_publicRoomsSearchBar resignFirstResponder];
         }
         
-        if (publicRooms) {
-            // Check whether the user has already joined the selected public room
-            if ([selectedSession roomWithRoomId:publicRoom.roomId]) {
-                // Open selected room
-                [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedSession];
-            } else {
-                // Join the selected room
-                UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-                if (selectedCell) {
-                    CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
-                    loadingWheel.center = center;
-                    [selectedCell addSubview:loadingWheel];
+        // Handle multi-sessions here
+        [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
+            MXPublicRoom *publicRoom;
+            NSInteger index = indexPath.section - publicRoomsFirstSection;
+            if (index < homeServers.count) {
+                NSString *homeserver = [homeServers objectAtIndex:index];
+                NSArray *publicRooms = nil;
+                if (filteredPublicRoomsDict) {
+                    publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
+                } else {
+                    publicRooms = [publicRoomsDict objectForKey:homeserver];
                 }
-                [loadingWheel startAnimating];
-                [selectedSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
-                    // Show joined room
-                    [loadingWheel stopAnimating];
-                    [loadingWheel removeFromSuperview];
-                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedSession];
-                } failure:^(NSError *error) {
-                    NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
-                    //Alert user
-                    [loadingWheel stopAnimating];
-                    [loadingWheel removeFromSuperview];
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
+                
+                publicRoom = [publicRooms objectAtIndex:indexPath.row];
             }
             
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
-    }];
+            if (publicRoom) {
+                // Check whether the user has already joined the selected public room
+                if ([selectedAccount.mxSession roomWithRoomId:publicRoom.roomId]) {
+                    // Open selected room
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                } else {
+                    // Join the selected room
+                    UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+                    if (selectedCell) {
+                        CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
+                        loadingWheel.center = center;
+                        [selectedCell addSubview:loadingWheel];
+                    }
+                    [loadingWheel startAnimating];
+                    [selectedAccount.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
+                        // Show joined room
+                        [loadingWheel stopAnimating];
+                        [loadingWheel removeFromSuperview];
+                        [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                    } failure:^(NSError *error) {
+                        NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+                        //Alert user
+                        [loadingWheel stopAnimating];
+                        [loadingWheel removeFromSuperview];
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
+                }
+                
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+        }];
+    }
 }
 
 #pragma mark - UISearchBarDelegate
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    
     searchBarShouldEndEditing = NO;
     return YES;
 }
@@ -772,22 +791,32 @@
     
     // Update filtered list
     if (searchText.length) {
-        if (filteredPublicRooms) {
-            [filteredPublicRooms removeAllObjects];
+        if (filteredPublicRoomsDict) {
+            [filteredPublicRoomsDict removeAllObjects];
         } else {
-            filteredPublicRooms = [NSMutableArray arrayWithCapacity:publicRooms.count];
+            filteredPublicRoomsDict = [NSMutableDictionary dictionaryWithCapacity:homeServers.count];
         }
-        for (MXPublicRoom *publicRoom in publicRooms) {
-            if ([[publicRoom displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                [filteredPublicRooms addObject:publicRoom];
+        
+        for (NSString *homeserver in homeServers) {
+            NSArray *publicRooms = [publicRoomsDict objectForKey:homeserver];
+            
+            NSMutableArray *filteredRooms = [NSMutableArray array];
+            for (MXPublicRoom *publicRoom in publicRooms) {
+                if ([[publicRoom displayname] rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                    [filteredRooms addObject:publicRoom];
+                }
+            }
+            
+            if (filteredRooms.count) {
+                [filteredPublicRoomsDict setObject:filteredRooms forKey:homeserver];
             }
         }
     } else {
-        filteredPublicRooms = nil;
+        filteredPublicRoomsDict = nil;
     }
     // Refresh display
     [self.tableView reloadData];
-    if (filteredPublicRooms.count) {
+    if (filteredPublicRoomsDict.count) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
@@ -804,11 +833,18 @@
     // Leave search
     searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
-    publicRoomsSearchBar = nil;
-    filteredPublicRooms = nil;
-    // Restore table header and refresh table display
-    self.tableView.tableHeaderView = savedTableHeaderView;
+    
+    _publicRoomsSearchBar.hidden = YES;
+    _publicRoomsSearchBarHeightConstraint.constant = 0;
+    [self.view setNeedsUpdateConstraints];
+    
+    _publicRoomsSearchBar.text = nil;
+    
+    filteredPublicRoomsDict = nil;
     [self.tableView reloadData];
+    if (self.tableView.numberOfSections && [self tableView:self.tableView numberOfRowsInSection:0]) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
 }
 
 @end

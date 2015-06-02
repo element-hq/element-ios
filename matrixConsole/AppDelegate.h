@@ -36,6 +36,8 @@
 
 + (AppDelegate*)theDelegate;
 
+- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
+
 - (void)registerUserNotificationSettings;
 
 - (void)reloadMatrixSessions:(BOOL)clearCache;

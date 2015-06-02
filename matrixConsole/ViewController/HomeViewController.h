@@ -16,13 +16,30 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface HomeViewController : MXKTableViewController <UITextFieldDelegate, UISearchBarDelegate>
+@interface HomeViewController:MXKViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITextFieldDelegate, MXKRoomCreationViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UISearchBar *publicRoomsSearchBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *publicRoomsSearchBarHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *publicRoomsSearchBarTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
 
 /**
- Associated matrix REST Client (nil by default). Ignored if mxSession is defined.
- This property is used to make Matrix API requests when no matrix session is provided.
+ Add a matrix REST Client. It is used to make Matrix API requests and retrieve public rooms.
  */
-@property (nonatomic) MXRestClient *mxRestClient;
+- (void)addRestClient:(MXRestClient*)restClient;
+
+/**
+ Remove a matrix REST Client.
+ */
+- (void)removeRestClient:(MXRestClient*)restClient;
+
+/**
+ Enable the search in recents list according to the room display name (YES by default).
+ Set NO this property to disable this option and hide the related bar button.
+ */
+@property (nonatomic) BOOL enableSearch;
 
 @end
 
