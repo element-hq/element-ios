@@ -45,6 +45,8 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     NSMutableDictionary *publicRoomsDict;
     // Array of shrinked homeservers.
     NSMutableArray *shrinkedHomeServers;
+    // Count current refresh requests
+    NSInteger refreshCount;
     
     // List of public room names to highlight in displayed list
     NSArray* highlightedPublicRooms;
@@ -130,6 +132,9 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // Refresh all listed public rooms
+    [self refreshPublicRooms:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -143,9 +148,29 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 #pragma mark - Override MXKViewController
 
+- (void)stopActivityIndicator {
+    // Check whether public rooms refresh is in progress
+    if (refreshCount) {
+        return;
+    }
+    
+    [super stopActivityIndicator];
+}
+
 - (void)onKeyboardShowAnimationComplete {
+    // Check first if the search bar is the first responder
+    UIView *keyboardView = _publicRoomsSearchBar.inputAccessoryView.superview;
+    if (!keyboardView) {
+        // Check other potential first responder
+        keyboardView = joinRoomCell.inputAccessoryView.superview;
+        
+        if (!keyboardView) {
+            keyboardView = createRoomView.inputAccessoryView.superview;
+        }
+    }
+    
     // Report the keyboard view in order to track keyboard frame changes
-    self.keyboardView = _publicRoomsSearchBar.inputAccessoryView.superview;
+    self.keyboardView = keyboardView;
 }
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight {
@@ -190,14 +215,6 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     
     // Remove the related REST Client
     [self removeRestClient:mxSession.matrixRestClient];
-}
-
-- (void)onMatrixSessionChange {
-    
-    [super onMatrixSessionChange];
-    
-    // Refresh all listed public rooms
-    [self refreshPublicRooms:nil];
 }
 
 #pragma mark -
@@ -250,6 +267,7 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
                 
                 if (removeHomeServer) {
                     [homeServers removeObject:homeserver];
+                    [publicRoomsDict removeObjectForKey:homeserver];
                 }
                 
                 [self refreshPublicRooms:nil];
@@ -280,19 +298,17 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 - (void)refreshPublicRooms:(MXRestClient*)restClient {
     
     NSArray *selectedClients = restClient ? @[restClient] : restClientDict.allValues;
+    refreshCount = selectedClients.count;
+    
+    if (!refreshCount) {
+        return;
+    }
+    
+    [self startActivityIndicator];
     
     if (!publicRoomsDict) {
         publicRoomsDict = [NSMutableDictionary dictionaryWithCapacity:restClientDict.count];
-    } else {
-        if (restClient) {
-            // Flush and update public rooms only for this homeserver
-            [publicRoomsDict removeObjectForKey:restClient.homeserver];
-        } else {
-            // Flush and update public rooms for all homeservers
-            [publicRoomsDict removeAllObjects];
-        }
     }
-    
     if (!shrinkedHomeServers) {
         shrinkedHomeServers = [NSMutableArray array];
     }
@@ -320,15 +336,34 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
             
             if (publicRooms.count && restClient.homeserver) {
                 [publicRoomsDict setObject:publicRooms forKey:restClient.homeserver];
-                [self.tableView reloadData];
+            }
+            
+            refreshCount--;
+            if (refreshCount == 0) {
+                [self publicRoomsDidRefresh];
             }
         }
                         failure:^(NSError *error){
                             NSLog(@"[HomeVC] Failed to get public rooms for %@: %@", restClient.homeserver, error);
                             //Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                            refreshCount--;
+                            if (refreshCount == 0) {
+                                [self publicRoomsDidRefresh];
+                            }
                         }];
     }
+}
+
+- (void)publicRoomsDidRefresh {
+    [self stopActivityIndicator];
+    
+    // Refresh only the sections related to public rooms (in order to not dismiss potential keyboard).
+    NSInteger sectionNb = [self numberOfSectionsInTableView:self.tableView];
+    sectionNb -= publicRoomsFirstSection;
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (publicRoomsFirstSection, sectionNb)];
+    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (IBAction)search:(id)sender {
@@ -454,14 +489,13 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
             
             NSUInteger index = [shrinkedHomeServers indexOfObject:homeserver];
             if (index != NSNotFound) {
-                // Disclose the
+                // Disclose the public rooms list
                 [shrinkedHomeServers removeObjectAtIndex:index];
             } else {
-                // Shrink the recents from this session
+                // Shrink the public rooms list from this homeserver.
                 [shrinkedHomeServers addObject:homeserver];
             }
-            
-            // Notify delegate
+            // Refresh table
             [self.tableView reloadData];
         }
     }
@@ -718,11 +752,7 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     } else {
         // Hide the keyboard when user select a room
-        // do not hide the searchBar until the view controller disappear
-        if ([_publicRoomsSearchBar isFirstResponder]) {
-            searchBarShouldEndEditing = YES;
-            [_publicRoomsSearchBar resignFirstResponder];
-        }
+        [self dismissKeyboard];
         
         // Handle multi-sessions here
         [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
