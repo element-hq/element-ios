@@ -208,6 +208,8 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     
     // Report the related REST Client to retrieve public rooms
     [self addRestClient:mxSession.matrixRestClient];
+    
+    [self.tableView reloadData];
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession {
@@ -215,6 +217,8 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     
     // Remove the related REST Client
     [self removeRestClient:mxSession.matrixRestClient];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark -
