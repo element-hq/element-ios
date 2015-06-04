@@ -238,7 +238,16 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     [super removeMatrixSession:mxSession];
     
     // Remove the related REST Client
-    [self removeRestClient:mxSession.matrixRestClient];
+    if (mxSession.matrixRestClient)
+    {
+        [self removeRestClient:mxSession.matrixRestClient];
+    }
+    else
+    {
+        // Here the matrix session is closed, the rest client reference has been removed.
+        // Force a full refresh
+        [self refreshPublicRooms:nil];
+    }
     
     [self.tableView reloadData];
 }
@@ -339,17 +348,38 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 #pragma mark - Internals
 
+- (void)removeClosedRestClients
+{
+    // We check here all registered clients (Some of them may have been closed).
+    for (NSInteger index = 0; index < restClients.count; index ++)
+    {
+        MXRestClient *restClient = [restClients objectAtIndex:index];
+        if (!restClient.homeserver.length)
+        {
+            [self removeRestClient:restClient];
+        }
+    }
+}
+
 - (void)refreshPublicRooms:(MXRestClient*)restClient
 {
+    NSArray *selectedClients;
+    if (restClient) {
+        selectedClients = @[restClient];
+    } else {
+        // refresh registered clients by removing closed ones.
+        [self removeClosedRestClients];
+        
+        // Consider only one client by homeserver.
+        selectedClients = restClientDict.allValues;
+    }
     
-    NSArray *selectedClients = restClient ? @[restClient] : restClientDict.allValues;
-    refreshCount = selectedClients.count;
-    
-    if (!refreshCount)
+    if (!selectedClients.count)
     {
         return;
     }
     
+    refreshCount += selectedClients.count;
     [self startActivityIndicator];
     
     if (!publicRoomsDict)
@@ -420,9 +450,12 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     
     // Refresh only the sections related to public rooms (in order to not dismiss potential keyboard).
     NSInteger sectionNb = [self numberOfSectionsInTableView:self.tableView];
-    sectionNb -= publicRoomsFirstSection;
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (publicRoomsFirstSection, sectionNb)];
-    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+    if (publicRoomsFirstSection != -1)
+    {
+        sectionNb -= publicRoomsFirstSection;
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (publicRoomsFirstSection, sectionNb)];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (IBAction)search:(id)sender
@@ -598,7 +631,6 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    
     NSInteger count = 0;
     
     createRoomSection = joinRoomSection = publicRoomsFirstSection = -1;
@@ -630,7 +662,7 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     {
         count = 1;
     }
-    else
+    else if (publicRoomsFirstSection != -1)
     {
         NSArray *publicRooms = nil;
         NSInteger index = section - publicRoomsFirstSection;
@@ -663,7 +695,7 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     {
         return createRoomView.actualFrameHeight;
     }
-    else if (indexPath.section >= publicRoomsFirstSection)
+    else if ((publicRoomsFirstSection != -1) && (indexPath.section >= publicRoomsFirstSection))
     {
         return 60;
     }
@@ -787,7 +819,6 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
     // In case of search session, homeservers with no result are hidden.
     if (filteredPublicRoomsDict)
     {
@@ -804,7 +835,6 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    
     UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, sectionHeader.frame.size.width - 10, sectionHeader.frame.size.height - 10)];
@@ -977,13 +1007,11 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
-    
     return searchBarShouldEndEditing;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    
     // Update filtered list
     if (searchText.length)
     {
@@ -1029,7 +1057,6 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    
     // "Done" key has been pressed
     searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
@@ -1037,7 +1064,6 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    
     // Leave search
     searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
