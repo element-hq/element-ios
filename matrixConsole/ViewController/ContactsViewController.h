@@ -24,7 +24,7 @@
 
 /**
  'ContactsViewController' instance display constact list.
- Presently it support only one matrix session. TODO handle multi session
+ This view controller support multi sessions by collecting all matrix users (only one occurrence is kept by user).
  */
 @interface ContactsViewController : MXKTableViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
     NSArray* collationTitles;

@@ -178,8 +178,10 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (void)updateSectionedMatrixContacts
 {
-    // Check whether mainSession is available
-    if (!self.mainSession)
+    NSArray *mxSessions = self.mxSessions;
+    
+    // Check whether at least one session is available
+    if (!mxSessions.count)
     {
         [self startActivityIndicator];
         sectionedMatrixContacts = nil;
@@ -191,33 +193,32 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         NSArray* usersIDs = [self oneToOneRoomMemberIDs];
         // return a MatrixIDs list of 1:1 room members
         
+        // Update contact mapping
+        // Copy the current dictionary keys (avoid delete and create the same ones, it could save thumbnail downloads)
         NSMutableArray* knownUserIDs = [[matrixUserByMatrixID allKeys] mutableCopy];
         
-        // list the contacts IDs
-        // avoid delete and create the same ones
-        // it could save thumbnail downloads
-        for(NSString* userID in usersIDs)
+        for (MXSession *mxSession in mxSessions)
         {
-            //
-            MXUser* user = [self.mainSession userWithUserId:userID];
-            
-            // sanity check
-            if (user)
+            for(NSString* userID in usersIDs)
             {
-                // managed UserID
-                [knownUserIDs removeObject:userID];
-                
-                MXCContact* contact = [matrixUserByMatrixID objectForKey:userID];
-                
-                // already defined
-                if (contact)
+                MXUser* user = [mxSession userWithUserId:userID];
+                if (user)
                 {
-                    contact.displayName = (user.displayname.length > 0) ? user.displayname : user.userId;
-                }
-                else
-                {
-                    contact = [[MXCContact alloc] initWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) matrixID:user.userId];
-                    [matrixUserByMatrixID setValue:contact forKey:userID];
+                    // managed UserID
+                    [knownUserIDs removeObject:userID];
+                    
+                    MXCContact* contact = [matrixUserByMatrixID objectForKey:userID];
+                    
+                    // already defined
+                    if (contact)
+                    {
+                        contact.displayName = (user.displayname.length > 0) ? user.displayname : user.userId;
+                    }
+                    else
+                    {
+                        contact = [[MXCContact alloc] initWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) matrixID:user.userId];
+                        [matrixUserByMatrixID setValue:contact forKey:userID];
+                    }
                 }
             }
         }
@@ -329,7 +330,6 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
     // In case of search, the section titles are hidden and the search bar is displayed in first section header.
     if (contactsSearchBar)
     {
@@ -425,9 +425,23 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     // matrix user ?
     if (matrixIDs.count)
     {
+        // Display action sheet only if at least one session is available for this user
+        BOOL isSessionAvailable = NO;
         
-        // display only if the mainSession is available in matrix SDK handler
-        if (self.mainSession)
+        NSArray *mxSessions = self.mxSessions;
+        for (NSString* userID in matrixIDs)
+        {
+            for (MXSession *mxSession in mxSessions)
+            {
+                if ([mxSession userWithUserId:userID])
+                {
+                    isSessionAvailable = YES;
+                    break;
+                }
+            }
+        }
+                    
+        if (isSessionAvailable)
         {
             // only 1 matrix ID
             if (matrixIDs.count == 1)
@@ -549,7 +563,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     sectionedLocalContacts = nil;
     
     // there is an user id
-    if (self.mainSession && self.mainSession.myUser.userId)
+    if (self.mxSessions)
     {
         [self updateSectionedLocalContacts];
         //
@@ -817,24 +831,22 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 // return a MatrixIDs list of 1:1 room members
 - (NSArray*)oneToOneRoomMemberIDs
 {
-    
     NSMutableArray* matrixIDs = [[NSMutableArray alloc] init];
     
-    if (self.mainSession)
+    NSArray *mxSessions = self.mxSessions;
+    for (MXSession *mxSession in mxSessions)
     {
-        for (MXRoom *mxRoom in self.mainSession.rooms)
+        for (MXRoom *mxRoom in mxSession.rooms)
         {
-            
             NSArray* membersList = [mxRoom.state members];
             
             // keep only 1:1 chat
             if ([mxRoom.state members].count <= 2)
             {
-                
                 for (MXRoomMember* member in membersList)
                 {
                     // not myself
-                    if (![member.userId isEqualToString:self.mainSession.myUser.userId])
+                    if (![member.userId isEqualToString:mxSession.myUser.userId])
                     {
                         if ([matrixIDs indexOfObject:member.userId] == NSNotFound)
                         {
