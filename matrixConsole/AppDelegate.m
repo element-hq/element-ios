@@ -372,6 +372,7 @@
             // Update all view controllers thanks to tab bar controller
             [self.masterTabBarController addMatrixSession:mxSession];
             
+        } else if (mxSession.state == MXSessionStateStoreDataReady) {
             // Check whether the app user wants notifications on new events
             if ([[MXKAppSettings standardAppSettings] enableInAppNotifications]) {
                 [self enableInAppNotifications:YES];
