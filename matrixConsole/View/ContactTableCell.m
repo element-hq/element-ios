@@ -22,24 +22,28 @@
 
 #import "ContactManager.h"
 
-@interface ContactTableCell() {
+@interface ContactTableCell()
+{
     id membersListener;
 }
 @end
 
 @implementation ContactTableCell
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if (membersListener) {
+    if (membersListener)
+    {
         // TODO GFO: use the right mxSession in case of multi-session
         [[ContactManager sharedManager].mxSession removeListener:membersListener];
         membersListener = nil;
     }
 }
 
-- (void)setContact:(MXCContact *)aContact {
+- (void)setContact:(MXCContact *)aContact
+{
     
     _contact = aContact;
     
@@ -47,7 +51,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // remove the matrix info until they are retrieved from the Matrix SDK
-    if (membersListener) {
+    if (membersListener)
+    {
         [[ContactManager sharedManager].mxSession removeListener:membersListener];
         membersListener = nil;
     }
@@ -59,33 +64,38 @@
     
     // Register a listener for events that concern room members
     NSArray *mxMembersEvents = @[
-                                    kMXEventTypeStringPresence
-                                ];
-    membersListener = [[ContactManager sharedManager].mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-        // consider only live event
-        if (direction == MXEventDirectionForwards) {
-            NSString* matrixUserID = nil;
-            
-            // get the matrix identifiers
-            NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
-            
-            if (matrixIdentifiers.count > 0) {
-                matrixUserID = [self.contact.matrixIdentifiers objectAtIndex:0];
-            }
-            
-            // the event is the current user event
-            if (matrixUserID && [matrixUserID isEqualToString:event.userId]) {
-                [self refreshPresenceUserRing:[MXTools presence:event.content[@"presence"]]];
-            }
-        }
-    }];
+                                 kMXEventTypeStringPresence
+                                 ];
+    membersListener = [[ContactManager sharedManager].mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject)
+                       {
+                           // consider only live event
+                           if (direction == MXEventDirectionForwards)
+                           {
+                               NSString* matrixUserID = nil;
+                               
+                               // get the matrix identifiers
+                               NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
+                               
+                               if (matrixIdentifiers.count > 0)
+                               {
+                                   matrixUserID = [self.contact.matrixIdentifiers objectAtIndex:0];
+                               }
+                               
+                               // the event is the current user event
+                               if (matrixUserID && [matrixUserID isEqualToString:event.userId])
+                               {
+                                   [self refreshPresenceUserRing:[MXTools presence:event.content[@"presence"]]];
+                               }
+                           }
+                       }];
     
     // init the contact info
     [[ContactManager sharedManager] refreshContactMatrixIDs:_contact];
     
     NSArray* matrixIDs = _contact.matrixIdentifiers;
     
-    if (matrixIDs.count == 1) {
+    if (matrixIDs.count == 1)
+    {
         self.contactDisplayNameLabel.hidden = YES;
         
         self.matrixDisplayNameLabel.hidden = NO;
@@ -93,7 +103,9 @@
         self.matrixIDLabel.hidden = NO;
         self.matrixIDLabel.text = [ _contact.matrixIdentifiers objectAtIndex:0];
         
-    } else {
+    }
+    else
+    {
         self.contactDisplayNameLabel.hidden = NO;
         self.contactDisplayNameLabel.text = _contact.displayName;
         
@@ -105,13 +117,15 @@
     [self manageMatrixIcon];
 }
 
-- (void)refreshUserPresence {
+- (void)refreshUserPresence
+{
     
     // search the linked mxUser
     NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
     
     // if defined
-    if (matrixIdentifiers.count > 0) {
+    if (matrixIdentifiers.count > 0)
+    {
         // get the first matrix identifier
         NSString* matrixUserID = [self.contact.matrixIdentifiers objectAtIndex:0];
         
@@ -120,7 +134,8 @@
         
         // check if the mxUser is known
         // if it is not known, the presence cannot be retrieved
-        if (mxUser) {
+        if (mxUser)
+        {
             [self refreshPresenceUserRing:mxUser.presence];
             // we know that this user is a matrix one
             self.matrixUserIconView.hidden = NO;
@@ -128,24 +143,29 @@
     }
 }
 
-- (void)refreshContactThumbnail {
+- (void)refreshContactThumbnail
+{
     self.thumbnailView.image = [self.contact thumbnailWithPreferedSize:self.thumbnailView.frame.size];
     
-    if (!self.thumbnailView.image) {
+    if (!self.thumbnailView.image)
+    {
         self.thumbnailView.image = [UIImage imageNamed:@"default-profile"];
     }
     
     // display the thumbnail in a circle
-    if (self.thumbnailView.layer.cornerRadius  != self.thumbnailView.frame.size.width / 2) {
+    if (self.thumbnailView.layer.cornerRadius  != self.thumbnailView.frame.size.width / 2)
+    {
         self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
         self.thumbnailView.clipsToBounds = YES;
     }
 }
 
-- (void)refreshPresenceUserRing:(MXPresence)presenceStatus {
+- (void)refreshPresenceUserRing:(MXPresence)presenceStatus
+{
     UIColor* ringColor;
     
-    switch (presenceStatus) {
+    switch (presenceStatus)
+    {
         case MXPresenceOnline:
             ringColor = [[MXKAppSettings standardAppSettings] presenceColorForOnlineUser];
             break;
@@ -160,44 +180,56 @@
     }
     
     // if the thumbnail is defined
-    if (ringColor) {
+    if (ringColor)
+        
+    {
         self.thumbnailView.layer.borderWidth = 2;
         self.thumbnailView.layer.borderColor = ringColor.CGColor;
-    } else {
+    }
+    else
+    {
         // remove the border
         // else it draws black border
         self.thumbnailView.layer.borderWidth = 0;
     }
 }
 
-- (void)manageMatrixIcon {
+- (void)manageMatrixIcon
+{
     self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
     
     // try to update the thumbnail with the matrix thumbnail
-    if (_contact.matrixIdentifiers) {
+    if (_contact.matrixIdentifiers)
+    {
         [self refreshContactThumbnail];
     }
     
     [self refreshUserPresence];
 }
 
-- (void)onMatrixIdUpdate:(NSNotification *)notif {
+- (void)onMatrixIdUpdate:(NSNotification *)notif
+{
     // sanity check
-    if ([notif.object isKindOfClass:[NSString class]]) {
+    if ([notif.object isKindOfClass:[NSString class]])
+    {
         NSString* matrixID = notif.object;
         
-        if ([matrixID isEqualToString:self.contact.contactID]) {
+        if ([matrixID isEqualToString:self.contact.contactID])
+        {
             [self manageMatrixIcon];
         }
     }
 }
 
-- (void)onThumbnailUpdate:(NSNotification *)notif {
+- (void)onThumbnailUpdate:(NSNotification *)notif
+{
     // sanity check
-    if ([notif.object isKindOfClass:[NSString class]]) {
+    if ([notif.object isKindOfClass:[NSString class]])
+    {
         NSString* matrixID = notif.object;
         
-        if ([matrixID isEqualToString:self.contact.contactID]) {
+        if ([matrixID isEqualToString:self.contact.contactID])
+        {
             [self refreshContactThumbnail];
             self.matrixUserIconView.hidden = (0 == _contact.matrixIdentifiers.count);
             
