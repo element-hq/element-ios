@@ -198,7 +198,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         countryCode = selectedCountryCode;
         
         [[ContactManager sharedManager] internationalizePhoneNumbers:countryCode];
-        [[ContactManager sharedManager] fullRefresh];
+        [[ContactManager sharedManager] loadContacts];
     }
     
     countryCode = [_settings phonebookCountryCode];

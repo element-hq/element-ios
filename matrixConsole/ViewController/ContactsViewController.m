@@ -42,7 +42,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     BOOL displayMatrixUsers;
     
     // screenshot of the local contacts
-    NSMutableArray* localContacts;
+    NSArray* localContacts;
     SectionedContacts* sectionedLocalContacts;
     
     // screenshot of the matrix users
@@ -83,7 +83,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search:)];
     self.navigationItem.rightBarButtonItems = @[searchButton];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerContactsListRefreshNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerDidUpdateContactsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactsRefresh:) name:kContactManagerDidUpdateContactMatrixIDsNotification object:nil];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -553,6 +554,12 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             [self.startChatMenu showInViewController:self];
         }
     }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    // Release here resources, and restore reusable cells
+    ((ContactTableCell*)cell).contact = nil;
 }
 
 #pragma mark - Actions

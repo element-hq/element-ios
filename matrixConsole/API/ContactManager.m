@@ -22,33 +22,48 @@
 
 #import "MXKAppSettings.h"
 
-// warn when there is a contacts list refresh
-NSString *const kContactManagerContactsListRefreshNotification = @"kContactManagerContactsListRefreshNotification";
+NSString *const kContactManagerDidUpdateContactsNotification = @"kContactManagerDidUpdateContactsNotification";
+NSString *const kContactManagerDidUpdateContactMatrixIDsNotification = @"kContactManagerDidUpdateContactMatrixIDsNotification";
 
-// the phonenumber has been internationalized
-NSString *const kContactsDidInternationalizeNotification = @"kContactsDidInternationalizeNotification";
+NSString *const kContactManagerMatrixUserPresenceChangeNotification = @"kContactManagerMatrixUserPresenceChangeNotification";
+NSString *const kContactManagerMatrixPresenceKey = @"kContactManagerMatrixPresenceKey";
 
-// get the 3PIDS in one requests
-//#define CONTACTS_3PIDS_SYNC 1
-// else checks the matrix IDs for each displayed contact
+NSString *const kContactManagerDidInternationalizeNotification = @"kContactManagerDidInternationalizeNotification";
 
 @interface ContactManager()
 {
+    /**
+     Array of `MXSession` instances.
+     */
+    NSMutableArray *mxSessionArray;
+    
+    /**
+     Presence listener by matrix session
+     */
+    NSMutableArray *mxPresenceListeners;
+    
+    /**
+     Matrix id linked to 3PID.
+     */
+    NSMutableDictionary* matrixIDBy3PID;
+    
+    dispatch_queue_t processingQueue;
+    BOOL isLoading;
     NSDate *lastSyncDate;
     NSMutableDictionary* deviceContactByContactID;
     
-    //
+    // Keep history of 3PID lookup requests
     NSMutableArray* pending3PIDs;
     NSMutableArray* checked3PIDs;
-    
-    NSMutableDictionary* matrixContactByMatrixUserID;
-    
-    id matrixSessionStateObserver;
 }
+
+/**
+ The current REST client defined with the identity server.
+ */
+@property (nonatomic) MXRestClient *identityRESTClient;
 @end
 
 @implementation ContactManager
-@synthesize contacts;
 
 #pragma mark Singleton Methods
 static ContactManager* sharedContactManager = nil;
@@ -71,7 +86,7 @@ static ContactManager* sharedContactManager = nil;
     {
         NSString *label = [NSString stringWithFormat:@"ConsoleMatrix.%@.Contacts", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
         
-        processingQueue = dispatch_queue_create([label UTF8String], NULL);
+        processingQueue = dispatch_queue_create([label UTF8String], DISPATCH_QUEUE_SERIAL);
         
         // save the last sync date
         // to avoid resync the whole phonebook
@@ -86,120 +101,155 @@ static ContactManager* sharedContactManager = nil;
 
 -(void)dealloc
 {
-    
-    if (matrixSessionStateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:matrixSessionStateObserver];
-        matrixSessionStateObserver = nil;
-    }
+    [self reset];
     
     [[MXKAppSettings standardAppSettings] removeObserver:self forKeyPath:@"syncLocalContacts"];
+    
+    processingQueue = nil;
 }
 
 #pragma mark -
 
-- (MXRestClient*)mxRestClient
+- (void)addMatrixSession:(MXSession*)mxSession
 {
-    // Ignore `mxRestClient` property if a matrix session has been defined
-    if (self.mxSession)
+    if (!mxSession)
     {
-        return self.mxSession.matrixRestClient;
+        return;
     }
     
-    return _mxRestClient;
-}
-
-- (void)setMxSession:(MXSession *)session
-{
-    // Remove potential session observer
-    [[NSNotificationCenter defaultCenter] removeObserver:matrixSessionStateObserver];
+    // Check conditions to trigger a full refresh of contacts matrix ids
+    BOOL shouldUpdateContactsMatrixIDs = (self.enableFullMatrixIdSyncOnContactsDidLoad && !isLoading && !_identityRESTClient);
     
-    if (session)
+    if (!mxSessionArray)
     {
-        // Register session state observer
-        matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
-        {
-            
-            // Check whether the concerned session is the associated one
-            if (notif.object == _mxSession)
-            {
-                [self didMatrixSessionStateChange];
-            }
-        }];
+        mxSessionArray = [NSMutableArray array];
+    }
+    if (!mxPresenceListeners)
+    {
+        mxPresenceListeners = [NSMutableArray array];
     }
     
-    _mxSession = session;
-    
-    // Force update
-    [self didMatrixSessionStateChange];
-}
-
-- (void)didMatrixSessionStateChange
-{
-    
-    if (_mxSession && _mxSession.state == MXSessionStateRunning)
+    if ([mxSessionArray indexOfObject:mxSession] == NSNotFound)
     {
-        [self manage3PIDS];
-    }
-}
-
-#pragma mark -
-
-// delete contacts info
-- (void)reset
-{
-    
-    contacts = nil;
-    
-    lastSyncDate = nil;
-    deviceContactByContactID = nil;
-    matrixContactByMatrixUserID = nil;
-    
-    if (matrixSessionStateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:matrixSessionStateObserver];
-        matrixSessionStateObserver = nil;
-    }
-    _mxSession = nil;
-    
-    [self saveMatrixIDsDict];
-    [self saveDeviceContacts];
-    [self saveContactBookInfo];
-    
-    // warn of the contacts list update
-    [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
-}
-
-// refresh the international phonenumber of the contacts
-- (void)internationalizePhoneNumbers:(NSString*)countryCode
-{
-    
-    dispatch_async(processingQueue, ^{
-        NSArray* contactsSnapshot = [deviceContactByContactID allValues];
+        [mxSessionArray addObject:mxSession];
         
-        for(MXCContact* contact in contactsSnapshot)
-        {
-            [contact internationalizePhonenumbers:countryCode];
+        // Register a listener for on matrix presence events
+        id presenceListener = [mxSession listenToEventsOfTypes:@[kMXEventTypeStringPresence]
+                                                       onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                               // consider only live event
+                               if (direction == MXEventDirectionForwards)
+                               {
+                                   NSArray *matrixIDs = [matrixIDBy3PID allValues];
+                                   if ([matrixIDs indexOfObject:event.userId] != NSNotFound) {
+                                       [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerMatrixUserPresenceChangeNotification object:event.userId userInfo:@{kContactManagerMatrixPresenceKey:event.content[@"presence"]}];
+                                   }
+                               }
+                           }];
+        
+        [mxPresenceListeners addObject:presenceListener];
+    }
+    
+    if (shouldUpdateContactsMatrixIDs)
+    {
+        [self updateContactsMatrixIDs];
+    }
+}
+
+- (void)removeMatrixSession:(MXSession*)mxSession
+{
+    if (!mxSession)
+    {
+        return;
+    }
+    
+    NSUInteger index = [mxSessionArray indexOfObject:mxSession];
+    if (index != NSNotFound)
+    {
+        id presenceListener = [mxPresenceListeners objectAtIndex:index];
+        [mxSession removeListener:presenceListener];
+        
+        [mxPresenceListeners removeObjectAtIndex:index];
+        [mxSessionArray removeObjectAtIndex:index];
+        
+        // Reset the current rest client (It will be rebuild if need)
+        _identityRESTClient = nil;
+        
+        // Reset history of 3PID lookup requests
+        pending3PIDs = nil;
+        checked3PIDs = nil;
+    }
+}
+
+- (NSArray*)mxSessions
+{
+    return [NSArray arrayWithArray:mxSessionArray];
+}
+
+- (NSArray*)contacts
+{
+    // Return nil if the loading step is in progress.
+    if (isLoading)
+    {
+        return nil;
+    }
+    
+    return [deviceContactByContactID allValues];
+}
+
+- (void)setIdentityServer:(NSString *)identityServer
+{
+    _identityServer = identityServer;
+    
+    if (identityServer)
+    {
+        _identityRESTClient = [[MXRestClient alloc] initWithHomeServer:nil];
+        _identityRESTClient.identityServer = identityServer;
+        
+        if (self.enableFullMatrixIdSyncOnContactsDidLoad) {
+            [self updateContactsMatrixIDs];
         }
-        
-        [self saveDeviceContacts];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kContactsDidInternationalizeNotification object:nil userInfo:nil];
-    });
+    }
+    else
+    {
+        _identityRESTClient = nil;
+    }
+    
+    // Reset history of 3PID lookup requests
+    pending3PIDs = nil;
+    checked3PIDs = nil;
 }
 
-- (void)fullRefresh
+- (MXRestClient*)identityRESTClient
 {
+    if (!_identityRESTClient)
+    {
+        if (self.identityServer)
+        {
+            _identityRESTClient = [[MXRestClient alloc] initWithHomeServer:nil];
+            _identityRESTClient.identityServer = self.identityServer;
+        }
+        else if (mxSessionArray.count)
+        {
+            MXSession *mxSession = [mxSessionArray firstObject];
+            _identityRESTClient = [[MXRestClient alloc] initWithHomeServer:nil];
+            _identityRESTClient.identityServer = mxSession.matrixRestClient.identityServer;
+        }
+    }
     
+    return _identityRESTClient;
+}
+
+#pragma mark -
+
+- (void)loadContacts
+{
     // check if the user allowed to sync local contacts
     if (![[MXKAppSettings standardAppSettings] syncLocalContacts])
     {
-        contacts = nil;
         // if the user did not allow to sync local contacts
         // ignore this sync
         
-        // at least, display the known contacts
-        [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerDidUpdateContactsNotification object:nil userInfo:nil];
         return;
     }
     
@@ -214,10 +264,9 @@ static ContactManager* sharedContactManager = nil;
         
         if (ab)
         {
-            ABAddressBookRequestAccessWithCompletion(ab, ^(bool granted, CFErrorRef error)
-            {
+            ABAddressBookRequestAccessWithCompletion(ab, ^(bool granted, CFErrorRef error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self fullRefresh];
+                    [self loadContacts];
                 });
                 
             });
@@ -228,8 +277,11 @@ static ContactManager* sharedContactManager = nil;
         return;
     }
     
-    pending3PIDs = [[NSMutableArray alloc] init];
-    checked3PIDs = [[NSMutableArray alloc] init];
+    isLoading = YES;
+    
+    // Reset history of 3PID lookup requests
+    pending3PIDs = nil;
+    checked3PIDs = nil;
     
     // cold start
     // launch the dict from the file system
@@ -258,14 +310,12 @@ static ContactManager* sharedContactManager = nil;
         
         BOOL contactBookUpdate = NO;
         
-        NSMutableArray* deletedContactIDs = [[deviceContactByContactID allKeys] mutableCopy];
+        NSMutableArray* deletedContactIDs = [NSMutableArray arrayWithArray:[deviceContactByContactID allKeys]];
         
-        // can list tocal contacts
+        // can list local contacts?
         if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
         {
-            
             NSString* countryCode = [[MXKAppSettings standardAppSettings] phonebookCountryCode];
-            
             
             ABAddressBookRef ab = ABAddressBookCreateWithOptions(nil, nil);
             ABRecordRef      contactRecord;
@@ -278,7 +328,6 @@ static ContactManager* sharedContactManager = nil;
                 
                 for (index = 0; index < peopleCount; index++)
                 {
-                    
                     contactRecord = (ABRecordRef)CFArrayGetValueAtIndex(people, index);
                     
                     NSString* contactID = [MXCContact contactID:contactRecord];
@@ -337,55 +386,292 @@ static ContactManager* sharedContactManager = nil;
         lastSyncDate = [NSDate date];
         [self saveContactBookInfo];
         
-        NSMutableArray* deviceContacts = [[deviceContactByContactID allValues] mutableCopy];
-        
-        if (_mxSession && _mxSession.state == MXSessionStateRunning)
-        {
-            [self manage3PIDS];
-        }
-        else
-        {
-            // display what you could have read
-            dispatch_async(dispatch_get_main_queue(), ^{
-                contacts = deviceContacts;
-                
-                // at least, display the known contacts
-                [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
-            });
-        }
-    });
-}
-
-// the local contacts are listed
-// update their 3PIDs and their update
-- (void) manage3PIDS
-{
-    dispatch_async(processingQueue, ^{
-        NSMutableArray* tmpContacts = nil;
-        
-        // update with the known dict 3PID -> matrix ID
+        // Update loaded contacts with the known dict 3PID -> matrix ID
         [self updateMatrixIDDeviceContacts];
         
-        tmpContacts = [[deviceContactByContactID allValues] mutableCopy];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            // stored self.contacts in the right thread
-            contacts = tmpContacts;
-#if CONTACTS_3PIDS_SYNC
-            // refresh the 3PIDS -> matrix IDs
-            [self refreshMatrixIDs];
-#else
-            // nop
-            // wait that refreshContactMatrixIDs  is called
+            // Contacts are loaded, post a notification
+            isLoading = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerDidUpdateContactsNotification object:nil userInfo:nil];
             
-#endif
-            // at least, display the known contacts
-            [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
+            if (self.enableFullMatrixIdSyncOnContactsDidLoad) {
+                [self updateContactsMatrixIDs];
+            }
         });
     });
 }
 
-- (void) updateContactMatrixIDs:(MXCContact*) contact
+// refresh matrix IDs
+- (void)updateMatrixIDsForContact:(MXCContact *)contact
+{
+    if (!contact.isMatrixContact && self.identityRESTClient)
+    {
+        if (!pending3PIDs)
+        {
+            pending3PIDs = [[NSMutableArray alloc] init];
+            checked3PIDs = [[NSMutableArray alloc] init];
+        }
+        
+        // Retrieve all 3PIDs of the contact by checking pending requests
+        NSMutableArray* pids = [[NSMutableArray alloc] init];
+        NSMutableArray* medias = [[NSMutableArray alloc] init];
+        for(MXCEmail* email in contact.emailAddresses)
+        {
+            if (([pending3PIDs indexOfObject:email.emailAddress] == NSNotFound) && ([checked3PIDs indexOfObject:email.emailAddress] == NSNotFound))
+            {
+                [pids addObject:email.emailAddress];
+                [medias addObject:@"email"];
+            }
+        }
+        
+        if (pids.count > 0)
+        {
+            [pending3PIDs addObjectsFromArray:pids];
+            
+            [self.identityRESTClient lookup3pids:pids
+                                        forMedia:medias
+                                         success:^(NSArray *userIds) {
+                                             // sanity check
+                                             if (userIds.count == pids.count)
+                                             {
+                                                 // Update status table
+                                                 [checked3PIDs addObjectsFromArray:pids];
+                                                 for(NSString* pid in pids)
+                                                 {
+                                                     [pending3PIDs removeObject:pid];
+                                                 }
+                                                 
+                                                 // Look for updates
+                                                 BOOL isUpdated = NO;
+                                                 for (int index = 0; index < pids.count; index++)
+                                                 {
+                                                     id matrixID = [userIds objectAtIndex:index];
+                                                     NSString* pid = [pids objectAtIndex:index];
+                                                     NSString *currentMatrixID = [matrixIDBy3PID valueForKey:pid];
+                                                     
+                                                     if ([matrixID isEqual:[NSNull null]])
+                                                     {
+                                                         if (currentMatrixID)
+                                                         {
+                                                             [matrixIDBy3PID removeObjectForKey:pid];
+                                                             isUpdated = YES;
+                                                         }
+                                                     }
+                                                     else if ([matrixID isKindOfClass:[NSString class]])
+                                                     {
+                                                         if (![currentMatrixID isEqualToString:matrixID])
+                                                         {
+                                                             [matrixIDBy3PID setValue:matrixID forKey:pid];
+                                                             isUpdated = YES;
+                                                         }
+                                                     }
+                                                 }
+                                                 
+                                                 if (isUpdated)
+                                                 {
+                                                     [self saveMatrixIDsDict];
+                                                 }
+                                                 
+                                                 // Update only this contact
+                                                 [self updateContactMatrixIDs:contact];
+                                                 
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerDidUpdateContactMatrixIDsNotification object:contact.contactID userInfo:nil];
+                                                 });
+                                             }
+                                         }
+                                         failure:^(NSError *error) {
+                                             NSLog(@"[ContactManager] lookup3pids failed %@", error);
+                                             
+                                             // try later
+                                             dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                 [self updateMatrixIDsForContact:contact];
+                                             });
+                                         }];
+        }
+    }
+}
+
+
+- (void)updateContactsMatrixIDs
+{
+    // Check if at least an identity server is available, and if the loading step is not in progress
+    if (!self.identityRESTClient || isLoading)
+    {
+        return;
+    }
+    
+    // Refresh the 3PIDs -> Matrix ID mapping
+    dispatch_async(processingQueue, ^{
+        
+        NSArray* contactsSnapshot = [deviceContactByContactID allValues];
+        
+        // Retrieve all 3PIDs
+        NSMutableArray* pids = [[NSMutableArray alloc] init];
+        NSMutableArray* medias = [[NSMutableArray alloc] init];
+        for(MXCContact* contact in contactsSnapshot)
+        {
+            // the phonenumbers are not managed
+            /*for(ConsolePhoneNumber* pn in contact.phoneNumbers)
+             {
+             if (pn.textNumber.length > 0)
+             {
+             
+             // not yet added
+             if ([pids indexOfObject:pn.textNumber] == NSNotFound)
+             {
+             [pids addObject:pn.textNumber];
+             [medias addObject:@"msisdn"];
+             }
+             }
+             }*/
+            
+            for(MXCEmail* email in contact.emailAddresses)
+            {
+                if (email.emailAddress.length > 0)
+                {
+                    // not yet added
+                    if ([pids indexOfObject:email.emailAddress] == NSNotFound)
+                    {
+                        [pids addObject:email.emailAddress];
+                        [medias addObject:@"email"];
+                    }
+                }
+            }
+        }
+        
+        // Update 3PIDs mapping
+        if (pids.count > 0)
+        {
+            [self.identityRESTClient lookup3pids:pids
+                                        forMedia:medias
+                                         success:^(NSArray *userIds) {
+                                             // Sanity check
+                                             if (userIds.count == pids.count)
+                                             {
+                                                 matrixIDBy3PID = [[NSMutableDictionary alloc] initWithObjects:userIds forKeys:pids];
+                                                 [self saveMatrixIDsDict];
+                                                 [self updateMatrixIDDeviceContacts];
+                                                 
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerDidUpdateContactMatrixIDsNotification object:nil userInfo:nil];
+                                                 });
+                                             }
+                                         }
+                                         failure:^(NSError *error) {
+                                             NSLog(@"[ContactManager] lookup3pids failed %@", error);
+                                             
+                                             // try later
+                                             dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                 [self updateContactsMatrixIDs];
+                                             });
+                                         }];
+        }
+        else
+        {
+            matrixIDBy3PID = nil;
+            [self saveMatrixIDsDict];
+        }
+    });
+}
+
+- (void)reset
+{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
+    
+    isLoading = NO;
+    matrixIDBy3PID = nil;
+    [self saveMatrixIDsDict];
+    
+    deviceContactByContactID = nil;
+    [self saveDeviceContacts];
+    
+    lastSyncDate = nil;
+    [self saveContactBookInfo];
+    
+    while (mxSessionArray.count) {
+        [self removeMatrixSession:mxSessionArray.lastObject];
+    }
+    mxSessionArray = nil;
+    mxPresenceListeners = nil;
+    _identityServer = nil;
+    _identityRESTClient = nil;
+    
+    pending3PIDs = nil;
+    checked3PIDs = nil;
+    
+    // warn of the contacts list update
+    [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerDidUpdateContactsNotification object:nil userInfo:nil];
+}
+
+// refresh the international phonenumber of the contacts
+- (void)internationalizePhoneNumbers:(NSString*)countryCode
+{
+    dispatch_async(processingQueue, ^{
+        NSArray* contactsSnapshot = [deviceContactByContactID allValues];
+        
+        for(MXCContact* contact in contactsSnapshot)
+        {
+            [contact internationalizePhonenumbers:countryCode];
+        }
+        
+        [self saveDeviceContacts];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerDidInternationalizeNotification object:nil userInfo:nil];
+        });
+    });
+}
+
+- (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList
+{
+    UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
+    
+    int indexOffset = 0;
+    
+    NSInteger index, sectionTitlesCount = [[collation sectionTitles] count];
+    NSMutableArray *tmpSectionsArray = [[NSMutableArray alloc] initWithCapacity:(sectionTitlesCount)];
+    
+    sectionTitlesCount += indexOffset;
+    
+    for (index = 0; index < sectionTitlesCount; index++)
+    {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        [tmpSectionsArray addObject:array];
+    }
+    
+    int contactsCount = 0;
+    
+    for (MXCContact *aContact in contactsList)
+    {
+        NSInteger section = [collation sectionForObject:aContact collationStringSelector:@selector(displayName)] + indexOffset;
+        
+        [[tmpSectionsArray objectAtIndex:section] addObject:aContact];
+        ++contactsCount;
+    }
+    
+    NSMutableArray *tmpSectionedContactsTitle = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
+    NSMutableArray *shortSectionsArray = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
+    
+    for (index = indexOffset; index < sectionTitlesCount; index++)
+    {
+        
+        NSMutableArray *usersArrayForSection = [tmpSectionsArray objectAtIndex:index];
+        
+        if ([usersArrayForSection count] != 0)
+        {
+            NSArray* sortedUsersArrayForSection = [collation sortedArrayFromArray:usersArrayForSection collationStringSelector:@selector(displayName)];
+            [shortSectionsArray addObject:sortedUsersArrayForSection];
+            [tmpSectionedContactsTitle addObject:[[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:(index - indexOffset)]];
+        }
+    }
+    
+    return [[SectionedContacts alloc] initWithContacts:shortSectionsArray andTitles:tmpSectionedContactsTitle andCount:contactsCount];
+}
+
+#pragma mark - Internals
+
+- (void)updateContactMatrixIDs:(MXCContact*) contact
 {
     // the phonenumbers wil be managed later
     /*for(ConsolePhoneNumber* pn in contact.phoneNumbers)
@@ -418,9 +704,8 @@ static ContactManager* sharedContactManager = nil;
     }
 }
 
-- (void) updateMatrixIDDeviceContacts
+- (void)updateMatrixIDDeviceContacts
 {
-    
     NSArray* deviceContacts = [deviceContactByContactID allValues];
     
     // update the contacts info
@@ -430,221 +715,6 @@ static ContactManager* sharedContactManager = nil;
     }
 }
 
-#ifdef CONTACTS_3PIDS_SYNC
-// refresh the 3PIDs -> Matrix ID list
-// update the contact is required
-- (void)refreshMatrixIDs
-{
-    
-    // build the request parameters
-    NSMutableArray* pids = [[NSMutableArray alloc] init];
-    NSMutableArray* medias = [[NSMutableArray alloc] init];
-    
-    for(MXCContact* contact in deviceContactsList)
-    {
-        // the phonenumbers are not managed
-        /*for(ConsolePhoneNumber* pn in contact.phoneNumbers)
-         {
-         if (pn.textNumber.length > 0)
-         {
-         
-         // not yet added
-         if ([pids indexOfObject:pn.textNumber] == NSNotFound)
-         {
-         [pids addObject:pn.textNumber];
-         [medias addObject:@"msisdn"];
-         }
-         }
-         }*/
-        
-        for(MXCEmail* email in contact.emailAddresses)
-        {
-            if (email.emailAddress.length > 0)
-            {
-                
-                // not yet added
-                if ([pids indexOfObject:email.emailAddress] == NSNotFound)
-                {
-                    [pids addObject:email.emailAddress];
-                    [medias addObject:@"email"];
-                }
-            }
-        }
-    }
-    
-    // get some pids
-    if (pids.count > 0)
-    {
-        if (self.mxRestClient)
-        {
-            [self.mxRestClient lookup3pids:pids
-                                  forMedia:medias
-                                   success:^(NSArray *userIds)
-            {
-                // sanity check
-                if (userIds.count == pids.count)
-                {
-                    
-                    matrixIDBy3PID = [[NSMutableDictionary alloc] initWithObjects:userIds forKeys:pids];
-                    [self saveMatrixIDsDict];
-                    [self updateMatrixIDDeviceContactsList];
-                    
-                    // add the MX users
-                    NSMutableArray* tmpContacts = [deviceContactsList mutableCopy];
-                    [self mergeMXUsers:tmpContacts];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        contacts = tmpContacts;
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
-                    });
-                }
-            }
-                                   failure:^(NSError *error)
-            {
-                // try later
-                dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                    [self refreshMatrixIDs];
-                });
-            }
-             ];
-        }
-    }
-}
-#endif
-
-// refresh matrix IDs
-- (void)refreshContactMatrixIDs:(MXCContact*)contact
-{
-#ifndef CONTACTS_3PIDS_SYNC
-    if (!contact.isMatrixContact)
-    {
-        
-        // check pending requests
-        NSMutableArray* pids = [[NSMutableArray alloc] init];
-        NSMutableArray* medias = [[NSMutableArray alloc] init];
-        
-        for(MXCEmail* email in contact.emailAddresses)
-        {
-            if (([pending3PIDs indexOfObject:email.emailAddress] == NSNotFound) && ([checked3PIDs indexOfObject:email.emailAddress] == NSNotFound))
-            {
-                [pids addObject:email.emailAddress];
-                [medias addObject:@"email"];
-            }
-        }
-        
-        if (pids.count > 0)
-        {
-            [pending3PIDs addObjectsFromArray:pids];
-            
-            if (self.mxRestClient)
-            {
-                [self.mxRestClient lookup3pids:pids
-                                      forMedia:medias
-                                       success:^(NSArray *userIds)
-                {
-                    // sanity check
-                    if (userIds.count == pids.count)
-                    {
-                        
-                        // update statuses table
-                        [checked3PIDs addObjectsFromArray:pids];
-                        for(NSString* pid in pids)
-                        {
-                            [pending3PIDs removeObject:pid];
-                        }
-                        
-                        BOOL isUpdated = NO;
-                        NSMutableArray* matrixContactsToRemove = [[NSMutableArray alloc] init];
-                        
-                        // apply updates
-                        if (pids.count > 0)
-                        {
-                            for(int index = 0; index < pids.count; index++)
-                            {
-                                NSString* matrixID = [userIds objectAtIndex:index];
-                                NSString* pid = [pids objectAtIndex:index];
-                                
-                                // the dict is created on demand
-                                if (!matrixIDBy3PID)
-                                {
-                                    [self loadMatrixIDsDict];
-                                }
-                                
-                                id currentMatrixID = [matrixIDBy3PID valueForKey:pid];
-                                
-                                // do not keep useless info
-                                if ([matrixID isKindOfClass:[NSString class]])
-                                {
-                                    
-                                    // do not update if not required
-                                    if (![currentMatrixID isKindOfClass:[NSString class]] || ![(NSString*)currentMatrixID isEqualToString:matrixID])
-                                    {
-                                        [matrixIDBy3PID setValue:matrixID forKey:pid];
-                                        isUpdated = YES;
-                                    }
-                                    
-                                }
-                                else
-                                {
-                                    if (currentMatrixID)
-                                    {
-                                        [matrixIDBy3PID removeObjectForKey:pid];
-                                        isUpdated = YES;
-                                    }
-                                }
-                                
-                                // is there a matrix contact with the same
-                                if ([matrixContactByMatrixUserID objectForKey:matrixID])
-                                {
-                                    [matrixContactsToRemove addObject:[matrixContactByMatrixUserID objectForKey:matrixID]];
-                                }
-                            }
-                            
-                            if (isUpdated)
-                            {
-                                [self saveMatrixIDsDict];
-                            }
-                        }
-                        
-                        // some matrix contacts will be replaced by this contact
-                        if (matrixContactsToRemove.count > 0)
-                        {
-                            [self updateContactMatrixIDs:contact];
-                            
-                            for(MXCContact* contactToRemove in matrixContactsToRemove)
-                            {
-                                [self.contacts removeObject:contactToRemove];
-                            }
-                            
-                            // warn there is a global refresh
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kContactManagerContactsListRefreshNotification object:nil userInfo:nil];
-                        }
-                        else
-                        {
-                            // update only this contact
-                            [self updateContactMatrixIDs:contact];
-                        }
-                    }
-                }
-                                       failure:^(NSError *error)
-                {
-                    // try later
-                    dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                        [self refreshContactMatrixIDs:contact];
-                    });
-                }];
-            }
-            else
-            {
-                dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                    [self refreshContactMatrixIDs:contact];
-                });
-            }
-        }
-    }
-#endif
-}
-
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -652,56 +722,9 @@ static ContactManager* sharedContactManager = nil;
     if ([@"syncLocalContacts" isEqualToString:keyPath])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self fullRefresh];
+            [self loadContacts];
         });
     }
-}
-
-- (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList
-{
-    UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
-    
-    int indexOffset = 0;
-    
-    NSInteger index, sectionTitlesCount = [[collation sectionTitles] count];
-    NSMutableArray *tmpSectionsArray = [[NSMutableArray alloc] initWithCapacity:(sectionTitlesCount)];
-    
-    sectionTitlesCount += indexOffset;
-    
-    for (index = 0; index < sectionTitlesCount; index++)
-    {
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        [tmpSectionsArray addObject:array];
-    }
-    
-    int contactsCount = 0;
-    
-    for (MXCContact *aContact in contactsList)
-        
-    {
-        NSInteger section = [collation sectionForObject:aContact collationStringSelector:@selector(displayName)] + indexOffset;
-        
-        [[tmpSectionsArray objectAtIndex:section] addObject:aContact];
-        ++contactsCount;
-    }
-    
-    NSMutableArray *tmpSectionedContactsTitle = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
-    NSMutableArray *shortSectionsArray = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
-    
-    for (index = indexOffset; index < sectionTitlesCount; index++)
-    {
-        
-        NSMutableArray *usersArrayForSection = [tmpSectionsArray objectAtIndex:index];
-        
-        if ([usersArrayForSection count] != 0)
-        {
-            NSArray* sortedUsersArrayForSection = [collation sortedArrayFromArray:usersArrayForSection collationStringSelector:@selector(displayName)];
-            [shortSectionsArray addObject:sortedUsersArrayForSection];
-            [tmpSectionedContactsTitle addObject:[[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:(index - indexOffset)]];
-        }
-    }
-    
-    return [[SectionedContacts alloc] initWithContacts:shortSectionsArray andTitles:tmpSectionedContactsTitle andCount:contactsCount];
 }
 
 #pragma mark - file caches
@@ -717,7 +740,6 @@ static NSString *contactsBookInfoFile = @"contacts";
     NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:matrixIDsDictFile];
     
     if (matrixIDBy3PID)
-        
     {
         NSMutableData *theData = [NSMutableData data];
         NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:theData];
@@ -728,7 +750,6 @@ static NSString *contactsBookInfoFile = @"contacts";
         [theData writeToFile:dataFilePath atomically:YES];
     }
     else
-        
     {
         NSFileManager *fileManager = [[NSFileManager alloc] init];
         [fileManager removeItemAtPath:dataFilePath error:nil];
@@ -744,7 +765,6 @@ static NSString *contactsBookInfoFile = @"contacts";
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     
     if ([fileManager fileExistsAtPath:dataFilePath])
-        
     {
         // the file content could be corrupted
         @try
@@ -761,7 +781,8 @@ static NSString *contactsBookInfoFile = @"contacts";
             }
             
             [decoder finishDecoding];
-        } @catch (NSException *exception)
+        }
+        @catch (NSException *exception)
         {
         }
     }
@@ -772,14 +793,13 @@ static NSString *contactsBookInfoFile = @"contacts";
     }
 }
 
-- (void) saveDeviceContacts
+- (void)saveDeviceContacts
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *dataFilePath = [documentsDirectory stringByAppendingPathComponent:localContactsFile];
     
     if (deviceContactByContactID && (deviceContactByContactID.count > 0))
-        
     {
         NSMutableData *theData = [NSMutableData data];
         NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:theData];
@@ -791,7 +811,6 @@ static NSString *contactsBookInfoFile = @"contacts";
         [theData writeToFile:dataFilePath atomically:YES];
     }
     else
-        
     {
         NSFileManager *fileManager = [[NSFileManager alloc] init];
         [fileManager removeItemAtPath:dataFilePath error:nil];
@@ -807,7 +826,6 @@ static NSString *contactsBookInfoFile = @"contacts";
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     
     if ([fileManager fileExistsAtPath:dataFilePath])
-        
     {
         // the file content could be corrupted
         @try
@@ -889,6 +907,5 @@ static NSString *contactsBookInfoFile = @"contacts";
         }
     }
 }
-
 
 @end

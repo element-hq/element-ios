@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,24 +20,28 @@
 #import "ContactManager.h"
 
 
-@interface MXCContactField() {
+@interface MXCContactField()
+{
     NSString* avatarURL;
 }
 @end
 
 @implementation MXCContactField
 
-- (void)initFields {
+- (void)initFields
+{
     // init members
     _contactID = nil;
     _matrixID = nil;
     avatarURL = @"";
 }
 
-- (id)initWithContactID:(NSString*)contactID matrixID:(NSString*)matrixID {
+- (id)initWithContactID:(NSString*)contactID matrixID:(NSString*)matrixID
+{
     self = [super init];
     
-    if (self) {
+    if (self)
+    {
         [self initFields];
         _contactID = contactID;
         _matrixID = matrixID;
@@ -45,15 +49,18 @@
     
     return self;
 }
-- (void)dealloc {
+- (void)dealloc
+{
     // remove the observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setMatrixID:(NSString*)aMatrixID {
+- (void)setMatrixID:(NSString*)aMatrixID
+{
     // check if there is an update
     // nil test + string comparison
-    if ((aMatrixID != _matrixID) && ![aMatrixID isEqualToString:_matrixID]) {
+    if ((aMatrixID != _matrixID) && ![aMatrixID isEqualToString:_matrixID])
+    {
         _matrixID = aMatrixID;
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -62,74 +69,99 @@
     }
 }
 
-- (void)loadAvatarWithSize:(CGSize)avatarSize {
-    
-    // the avatar image is already done
-    if (_avatarImage) {
+- (void)loadAvatarWithSize:(CGSize)avatarSize
+{
+    // Check whether the avatar image is already set
+    if (_avatarImage)
+    {
         return;
     }
     
-    // sanity check
-    if (_matrixID) {
+    // Sanity check
+    if (_matrixID)
+    {
         
         // nil -> there is no avatar
-        if (!avatarURL) {
+        if (!avatarURL)
+        {
             return;
         }
         
-        // empty string means not yet initialized
-        if (avatarURL.length > 0) {
+        // Empty string means not yet initialized
+        if (avatarURL.length > 0)
+        {
             [self downloadAvatarImage];
-        } else {
-            // TODO GFO Handle multi-session here
-            ContactManager *contactManager = [ContactManager sharedManager];
+        }
+        else
+        {
+            // Consider here all sessions reported into contact manager
+            NSArray* mxSessions = [ContactManager sharedManager].mxSessions;
             
-            // check if the user is already known
-            MXUser* user = [contactManager.mxSession userWithUserId:_matrixID];
-            
-            if (user) {
-                avatarURL = [contactManager.mxSession.matrixRestClient urlOfContentThumbnail:user.avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
-                [self downloadAvatarImage];
+            if (mxSessions.count)
+            {
+                // Check whether a matrix user is already known
+                MXUser* user;
                 
-            } else {
+                for (MXSession *mxSession in mxSessions)
+                {
+                    user = [mxSession userWithUserId:_matrixID];
+                    if (user)
+                    {
+                        avatarURL = [mxSession.matrixRestClient urlOfContentThumbnail:user.avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
+                        [self downloadAvatarImage];
+                        break;
+                    }
+                }
                 
-                if (contactManager.mxRestClient) {
-                    [contactManager.mxRestClient avatarUrlForUser:_matrixID
-                                                     success:^(NSString *avatarUrl) {
-                                                         avatarURL = [contactManager.mxSession.matrixRestClient urlOfContentThumbnail:avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
-                                                         [self downloadAvatarImage];
-                                                     }
-                                                     failure:^(NSError *error) {
-                                                         //
-                                                     }];
+                
+                if (!user)
+                    
+                {
+                    MXSession *mxSession = mxSessions.firstObject;
+                    [mxSession.matrixRestClient avatarUrlForUser:_matrixID
+                                                         success:^(NSString *avatarUrl)
+                    {
+                        avatarURL = [mxSession.matrixRestClient urlOfContentThumbnail:avatarUrl toFitViewSize:avatarSize withMethod:MXThumbnailingMethodCrop];
+                        [self downloadAvatarImage];
+                    }
+                                                         failure:^(NSError *error)
+                    {
+                        //
+                    }];
                 }
             }
         }
     }
 }
 
-- (void)downloadAvatarImage {
-    
+- (void)downloadAvatarImage
+{
     // the avatar image is already done
-    if (_avatarImage) {
+    if (_avatarImage)
+    {
         return;
     }
     
-    if (avatarURL.length > 0) {
+    if (avatarURL.length > 0)
+    {
         NSString *cacheFilePath = [MXKMediaManager cachePathForMediaWithURL:avatarURL inFolder:kMXKMediaManagerAvatarThumbnailFolder];
         
         _avatarImage = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
         
         // the image is already in the cache
-        if (_avatarImage) {
+        if (_avatarImage)
+        {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXCContactThumbnailUpdateNotification object:_contactID userInfo:nil];
             });
-        } else  {
+        }
+        else
+        {
             
             MXKMediaLoader* loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
             
-            if (!loader) {
+            if (!loader)
+            {
                 [MXKMediaManager downloadMediaFromURL:avatarURL andSaveAtFilePath:cacheFilePath];
             }
             
@@ -138,16 +170,20 @@
     }
 }
 
-- (void)onMediaDownloadEnd:(NSNotification *)notif {
+- (void)onMediaDownloadEnd:(NSNotification *)notif
+{
     // sanity check
-    if ([notif.object isKindOfClass:[NSString class]]) {
+    if ([notif.object isKindOfClass:[NSString class]])
+    {
         NSString* url = notif.object;
         NSString* cacheFilePath = notif.userInfo[kMXKMediaLoaderFilePathKey];
         
-        if ([url isEqualToString:avatarURL] && cacheFilePath.length) {
+        if ([url isEqualToString:avatarURL] && cacheFilePath.length)
+        {
             // update the image
             UIImage* image = [MXKMediaManager loadPictureFromFilePath:cacheFilePath];
-            if (image) {
+            if (image)
+            {
                 _avatarImage = image;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -162,7 +198,8 @@
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-    if (self) {
+    if (self)
+    {
         [self initFields];
         _contactID = [coder decodeObjectForKey:@"contactID"];
         _matrixID = [coder decodeObjectForKey:@"matrixID"];
@@ -171,7 +208,8 @@
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)coder {
+- (void)encodeWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:_contactID forKey:@"contactID"];
     [coder encodeObject:_matrixID forKey:@"matrixID"];
 }

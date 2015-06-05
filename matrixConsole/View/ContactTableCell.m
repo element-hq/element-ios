@@ -24,7 +24,7 @@
 
 @interface ContactTableCell()
 {
-    id membersListener;
+    id mxPresenceObserver;
 }
 @end
 
@@ -32,85 +32,63 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    if (membersListener)
-    {
-        // TODO GFO: use the right mxSession in case of multi-session
-        [[ContactManager sharedManager].mxSession removeListener:membersListener];
-        membersListener = nil;
-    }
 }
 
-- (void)setContact:(MXCContact *)aContact
+- (void)setContact:(MXCContact *)contact
 {
-    
-    _contact = aContact;
+    _contact = contact;
     
     // remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    // remove the matrix info until they are retrieved from the Matrix SDK
-    if (membersListener)
-    {
-        [[ContactManager sharedManager].mxSession removeListener:membersListener];
-        membersListener = nil;
+    if (mxPresenceObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxPresenceObserver];
+        mxPresenceObserver = nil;
     }
+    
     self.thumbnailView.layer.borderWidth = 0;
     
-    // be warned when the matrix ID and the thumbnail is updated
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:)  name:kMXCContactMatrixIdentifierUpdateNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXCContactThumbnailUpdateNotification object:nil];
-    
-    // Register a listener for events that concern room members
-    NSArray *mxMembersEvents = @[
-                                 kMXEventTypeStringPresence
-                                 ];
-    membersListener = [[ContactManager sharedManager].mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject)
-                       {
-                           // consider only live event
-                           if (direction == MXEventDirectionForwards)
-                           {
-                               NSString* matrixUserID = nil;
-                               
-                               // get the matrix identifiers
-                               NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
-                               
-                               if (matrixIdentifiers.count > 0)
-                               {
-                                   matrixUserID = [self.contact.matrixIdentifiers objectAtIndex:0];
-                               }
-                               
-                               // the event is the current user event
-                               if (matrixUserID && [matrixUserID isEqualToString:event.userId])
-                               {
-                                   [self refreshPresenceUserRing:[MXTools presence:event.content[@"presence"]]];
-                               }
-                           }
-                       }];
-    
-    // init the contact info
-    [[ContactManager sharedManager] refreshContactMatrixIDs:_contact];
-    
-    NSArray* matrixIDs = _contact.matrixIdentifiers;
-    
-    if (matrixIDs.count == 1)
-    {
-        self.contactDisplayNameLabel.hidden = YES;
+    if (contact) {
+        // be warned when the matrix ID and the thumbnail is updated
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixIdUpdate:)  name:kMXCContactMatrixIdentifierUpdateNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXCContactThumbnailUpdateNotification object:nil];
         
-        self.matrixDisplayNameLabel.hidden = NO;
-        self.matrixDisplayNameLabel.text = _contact.displayName;
-        self.matrixIDLabel.hidden = NO;
-        self.matrixIDLabel.text = [ _contact.matrixIdentifiers objectAtIndex:0];
+        mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            // get the matrix identifiers
+            NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
+            if (matrixIdentifiers.count > 0)
+            {
+                // Consider only the first id
+                NSString *matrixUserID = matrixIdentifiers.firstObject;
+                if ([matrixUserID isEqualToString:notif.object])
+                {
+                    [self refreshPresenceUserRing:[MXTools presence:[notif.userInfo objectForKey:kContactManagerMatrixPresenceKey]]];
+                }
+            }
+        }];
         
-    }
-    else
-    {
-        self.contactDisplayNameLabel.hidden = NO;
-        self.contactDisplayNameLabel.text = _contact.displayName;
+        // Refresh matrix info of the contact
+        [[ContactManager sharedManager] updateMatrixIDsForContact:_contact];
         
-        self.matrixDisplayNameLabel.hidden = YES;
-        self.matrixIDLabel.hidden = YES;
+        NSArray* matrixIDs = _contact.matrixIdentifiers;
+        
+        if (matrixIDs.count == 1)
+        {
+            self.contactDisplayNameLabel.hidden = YES;
+            
+            self.matrixDisplayNameLabel.hidden = NO;
+            self.matrixDisplayNameLabel.text = _contact.displayName;
+            self.matrixIDLabel.hidden = NO;
+            self.matrixIDLabel.text = [ _contact.matrixIdentifiers objectAtIndex:0];
+        }
+        else
+        {
+            self.contactDisplayNameLabel.hidden = NO;
+            self.contactDisplayNameLabel.text = _contact.displayName;
+            
+            self.matrixDisplayNameLabel.hidden = YES;
+            self.matrixIDLabel.hidden = YES;
+        }
     }
     
     [self refreshContactThumbnail];
@@ -119,27 +97,27 @@
 
 - (void)refreshUserPresence
 {
-    
-    // search the linked mxUser
+    // Look for a potential matrix user linked with this contact
     NSArray* matrixIdentifiers = self.contact.matrixIdentifiers;
-    
-    // if defined
     if (matrixIdentifiers.count > 0)
     {
-        // get the first matrix identifier
-        NSString* matrixUserID = [self.contact.matrixIdentifiers objectAtIndex:0];
+        // Consider only the first matrix identifier
+        NSString* matrixUserID = matrixIdentifiers.firstObject;
         
-        // check if already known as a Matrix user
-        MXUser* mxUser = [[ContactManager sharedManager].mxSession userWithUserId:matrixUserID];
-        
-        // check if the mxUser is known
-        // if it is not known, the presence cannot be retrieved
-        if (mxUser)
+        // Consider here all sessions reported into contact manager
+        NSArray* mxSessions = [ContactManager sharedManager].mxSessions;
+        for (MXSession *mxSession in mxSessions)
         {
-            [self refreshPresenceUserRing:mxUser.presence];
-            // we know that this user is a matrix one
-            self.matrixUserIconView.hidden = NO;
+            MXUser *mxUser = [mxSession userWithUserId:matrixUserID];
+            if (mxUser)
+            {
+                [self refreshPresenceUserRing:mxUser.presence];
+                break;
+            }
         }
+        
+        // we know that this user is a matrix one
+        self.matrixUserIconView.hidden = NO;
     }
 }
 

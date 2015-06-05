@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -21,46 +21,99 @@
 #import "SectionedContacts.h"
 #import "MXCContact.h"
 
-// warn when there is a contacts list refresh
-extern NSString *const kContactManagerContactsListRefreshNotification;
+/**
+ Posted when the contact list is loaded and updated.
+ The notification object is nil.
+ */
+extern NSString *const kContactManagerDidUpdateContactsNotification;
 
-// the phonenumber has been internationalized
-extern NSString *const kContactsDidInternationalizeNotification;
+/**
+ Posted when contact matrix ids is updated.
+ The notification object is a contact Id or nil when all contacts are concerned.
+ */
+extern NSString *const kContactManagerDidUpdateContactMatrixIDsNotification;
 
-@interface ContactManager : NSObject {
-    dispatch_queue_t processingQueue;
-    NSMutableDictionary* matrixIDBy3PID;
-}
+/**
+ Posted when the presence of a matrix user linked at least to one contact has changed.
+ The notification object is the matrix Id. The `userInfo` dictionary contains an `MXPresenceString` object under the `kContactManagerMatrixPresenceKey` key, representing the matrix user presence.
+ */
+extern NSString *const kContactManagerMatrixUserPresenceChangeNotification;
+extern NSString *const kContactManagerMatrixPresenceKey;
+
+/**
+ Posted when all phonenumbers have been internationalized.
+ The notification object is nil.
+ */
+extern NSString *const kContactManagerDidInternationalizeNotification;
+
+
+@interface ContactManager : NSObject
 
 + (ContactManager*)sharedManager;
 
 /**
- Associated matrix session (nil by default).
- This property is used to link matrix id to the contacts.
+ The identity server URL used to link matrix ids to the contacts according to their 3PIDs (email, phone number...).
+ This property is nil by default.
+ 
+ If this property is not set whereas some matrix sessions are added, the identity server of the first available matrix session is used.
  */
-@property (nonatomic) MXSession *mxSession;
+@property (nonatomic) NSString *identityServer;
 
 /**
- Associated matrix REST Client (nil by default). Ignored if mxSession is defined.
- This property is used to make Matrix API requests when no matrix session is provided.
+ Associated matrix sessions (empty by default).
  */
-@property (nonatomic) MXRestClient *mxRestClient;
+@property (nonatomic, readonly) NSArray *mxSessions;
 
-@property (nonatomic, readonly) NSMutableArray *contacts;
+/**
+ The current contact list (nil by default until the device contacts are loaded).
+ */
+@property (nonatomic, readonly) NSArray *contacts;
 
-// delete contacts info
+/**
+ No by default. Set YES to update matrix ids for all the contacts in only one request when contact are loaded and an identity server is available.
+ */
+@property (nonatomic) BOOL enableFullMatrixIdSyncOnContactsDidLoad;
+
+/**
+ Add/remove matrix session.
+ */
+- (void)addMatrixSession:(MXSession*)mxSession;
+- (void)removeMatrixSession:(MXSession*)mxSession;
+
+/**
+ Load and refresh the contact list. See kContactManagerDidUpdateContactsNotification posted when contact list is available.
+ */
+- (void)loadContacts;
+
+/**
+ Delete contacts info
+ */
 - (void)reset;
 
-// refresh the international phonenumber of the contacts
+/**
+ Refresh matrix IDs for a specific contact. See kContactManagerDidUpdateContactMatrixIDsNotification
+ posted when update is done.
+ 
+ @param contact the contact to refresh.
+ */
+- (void)updateMatrixIDsForContact:(MXCContact*)contact;
+
+/**
+ Refresh matrix IDs for all listed contacts. See kContactManagerDidUpdateContactMatrixIDsNotification
+ posted when update for all contacts is done.
+ */
+- (void)updateContactsMatrixIDs;
+
+/**
+ Sort the contacts in sectioned arrays to be displayable in a UITableview
+ */
+- (SectionedContacts *)getSectionedContacts:(NSArray*)contactList;
+
+/**
+ Refresh the international phonenumber of the contacts (See kContactManagerDidInternationalizeNotification).
+ 
+ @param countryCode
+ */
 - (void)internationalizePhoneNumbers:(NSString*)countryCode;
-
-// refresh self.contacts
-- (void)fullRefresh;
-
-// refresh matrix IDs
-- (void)refreshContactMatrixIDs:(MXCContact*)contact;
-
-// sort the contacts in sectioned arrays to be displayable in a UITableview
-- (SectionedContacts *)getSectionedContacts:(NSArray*)contactsList;
 
 @end

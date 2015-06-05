@@ -253,7 +253,8 @@
     }
     
     // refresh the contacts list
-    [[ContactManager sharedManager] fullRefresh];
+    [ContactManager sharedManager].enableFullMatrixIdSyncOnContactsDidLoad = NO;
+    [[ContactManager sharedManager] loadContacts];
     
     _isAppForeground = YES;
     
@@ -362,12 +363,8 @@
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised) {
             
-            if (!self.masterTabBarController.mxSessions.count) {
-                // Report this first session to contact manager
-                [[ContactManager sharedManager] setMxSession:mxSession];
-                
-                // TODO GFO handle multi-session in ContactManager
-            }
+            // Report this session to contact manager
+            [[ContactManager sharedManager] addMatrixSession:mxSession];
             
             // Update all view controllers thanks to tab bar controller
             [self.masterTabBarController addMatrixSession:mxSession];
@@ -378,6 +375,7 @@
                 [self enableInAppNotifications:YES];
             }
         } else if (mxSession.state == MXSessionStateClosed) {
+            [[ContactManager sharedManager] removeMatrixSession:mxSession];
             [self.masterTabBarController removeMatrixSession:mxSession];
         }
         

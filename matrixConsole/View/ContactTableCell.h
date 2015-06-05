@@ -27,7 +27,10 @@
 @property (strong, nonatomic) IBOutlet UILabel *matrixIDLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *matrixUserIconView;
 
-// reference to the linked message
+/**
+ The contact displayed in the table view cell.
+ Set this property nil to dispose listeners and other resources.
+ */
 @property (strong, nonatomic) MXCContact *contact;
 
 @end
