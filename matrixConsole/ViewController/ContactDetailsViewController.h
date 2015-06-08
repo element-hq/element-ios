@@ -16,10 +16,10 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MXCContact.h"
+#import "MXKContact.h"
 
 @interface ContactDetailsViewController : MXKTableViewController
 
-@property (strong, nonatomic) MXCContact* contact;
+@property (strong, nonatomic) MXKContact* contact;
 @end
 

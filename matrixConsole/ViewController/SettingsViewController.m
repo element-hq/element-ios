@@ -21,8 +21,6 @@
 #import "AppDelegate.h"
 #import "APNSHandler.h"
 
-#import "ContactManager.h"
-
 #define SETTINGS_SECTION_ACCOUNTS_INDEX      0
 #define SETTINGS_SECTION_NOTIFICATIONS_INDEX 1
 #define SETTINGS_SECTION_CONTACTS_INDEX      2
@@ -196,9 +194,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         [_settings setPhonebookCountryCode:selectedCountryCode];
         countryCode = selectedCountryCode;
-        
-        [[ContactManager sharedManager] internationalizePhoneNumbers:countryCode];
-        [[ContactManager sharedManager] loadContacts];
     }
     
     countryCode = [_settings phonebookCountryCode];

@@ -18,7 +18,7 @@
 #import "APNSHandler.h"
 #import "RoomViewController.h"
 #import "SettingsViewController.h"
-#import "ContactManager.h"
+#import "MXKContactManager.h"
 #import "RageShakeManager.h"
 
 #import "AFNetworkReachabilityManager.h"
@@ -136,7 +136,6 @@
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
     {
@@ -253,8 +252,8 @@
     }
     
     // refresh the contacts list
-    [ContactManager sharedManager].enableFullMatrixIdSyncOnContactsDidLoad = NO;
-    [[ContactManager sharedManager] loadContacts];
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnContactsDidLoad = NO;
+    [[MXKContactManager sharedManager] loadContacts];
     
     _isAppForeground = YES;
     
@@ -348,7 +347,6 @@
 #pragma mark - Matrix sessions handling
 
 - (void)initMatrixSessions {
-    
     // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -364,7 +362,7 @@
         if (mxSession.state == MXSessionStateInitialised) {
             
             // Report this session to contact manager
-            [[ContactManager sharedManager] addMatrixSession:mxSession];
+            [[MXKContactManager sharedManager] addMatrixSession:mxSession];
             
             // Update all view controllers thanks to tab bar controller
             [self.masterTabBarController addMatrixSession:mxSession];
@@ -375,7 +373,7 @@
                 [self enableInAppNotifications:YES];
             }
         } else if (mxSession.state == MXSessionStateClosed) {
-            [[ContactManager sharedManager] removeMatrixSession:mxSession];
+            [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
             [self.masterTabBarController removeMatrixSession:mxSession];
         }
         
@@ -434,7 +432,6 @@
 }
 
 - (void)reloadMatrixSessions:(BOOL)clearCache {
-    
     // Reload all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
     for (MXKAccount *account in mxAccounts) {
@@ -459,7 +456,6 @@
 }
 
 - (void)logout {
-    
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [[APNSHandler sharedHandler] reset];
     isAPNSRegistered = NO;
@@ -485,7 +481,7 @@
     [[MXKAppSettings standardAppSettings] reset];
     
     // Reset the contact manager
-    [[ContactManager sharedManager] reset];
+    [[MXKContactManager sharedManager] reset];
     
     // By default the "Home" tab is focussed
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
@@ -534,7 +530,6 @@
 }
 
 - (void)enableInAppNotifications:(BOOL)isEnabled {
-    
     // Update In-App notifications in all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
     for (MXKAccount *account in mxAccounts) {
@@ -615,7 +610,6 @@
 }
 
 - (void)addMatrixCallObserver {
-    
     if (matrixCallObserver) {
         [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
     }
@@ -682,7 +676,6 @@
 #pragma mark - Matrix Rooms handling
 
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
-    
     // Handle here potential multiple accounts
     [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
         MXSession *mxSession = selectedAccount.mxSession;
@@ -770,7 +763,6 @@
 #pragma mark - MXKCallViewControllerDelegate
 
 - (void)dismissCallViewController:(MXKCallViewController *)callViewController {
-    
     if (callViewController == currentCallViewController) {
         
         if (callViewController.isPresented) {
@@ -809,7 +801,6 @@
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar {
-    
     // Add a call status bar
     CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] applicationFrame].size.width, 44);
     
@@ -843,7 +834,6 @@
 }
 
 - (void)removeCallStatusBar {
-    
     if (callStatusBarWindow) {
         
         // Hide & destroy it
@@ -859,7 +849,6 @@
 }
 
 - (void)returnToCallView {
-    
     [self removeCallStatusBar];
     
     UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
@@ -869,7 +858,6 @@
 }
 
 - (void)statusBarDidChangeFrame {
-    
     UIApplication *app = [UIApplication sharedApplication];
     UIViewController *rootController = app.keyWindow.rootViewController;
     

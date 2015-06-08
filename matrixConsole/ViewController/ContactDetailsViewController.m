@@ -65,7 +65,7 @@
         self.memberThumbnailButton.imageView.image = _contact.thumbnail;
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXCContactThumbnailUpdateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXKContactThumbnailUpdateNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
