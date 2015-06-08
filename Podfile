@@ -21,9 +21,8 @@ pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :br
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
 #pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+#pod 'libPhoneNumber-iOS', '~> 0.7.6'
 
-
-pod 'libPhoneNumber-iOS', '~> 0.7.6'
 pod 'GBDeviceInfo', '~> 2.2.9'
 
 # There is no pod for OpenWebRTC-SDK. Use the master branch from github
