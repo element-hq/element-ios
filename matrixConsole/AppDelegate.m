@@ -252,8 +252,8 @@
     }
     
     // refresh the contacts list
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnContactsDidLoad = NO;
-    [[MXKContactManager sharedManager] loadContacts];
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+    [[MXKContactManager sharedManager] loadLocalContacts];
     
     _isAppForeground = YES;
     

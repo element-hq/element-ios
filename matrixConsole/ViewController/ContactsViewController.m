@@ -50,10 +50,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     self.delegate = self;
 }
 
-- (void)reset
+- (void)destroy
 {
-    [super reset];
-    
     if (self.startChatMenu)
     {
         [self.startChatMenu dismiss:NO];
@@ -64,6 +62,8 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     }
     
     selectedContact = nil;
+    
+    [super destroy];
 }
 
 #pragma mark - Actions
