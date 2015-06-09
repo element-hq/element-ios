@@ -109,7 +109,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (void)contactListViewController:(MXKContactListViewController *)contactListViewController didSelectContact:(NSString*)contactId
 {
-    MXKContact *contact = nil;// TODO GFO [[MXKContactManager sharedManager] contactWithContactID:contactId];
+    MXKContact *contact = [[MXKContactManager sharedManager] contactWithContactID:contactId];
     
     __weak typeof(self) weakSelf = self;
     NSArray* matrixIDs = contact.matrixIdentifiers;
@@ -245,7 +245,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (void)contactListViewController:(MXKContactListViewController *)contactListViewController didTapContactThumbnail:(NSString*)contactId
 {
-    MXKContact *contact = nil;// TODO GFO [[MXKContactManager sharedManager] contactWithContactID:contactId];
+    MXKContact *contact = [[MXKContactManager sharedManager] contactWithContactID:contactId];
     
     // open detailled sheet if there
     if (contact.matrixIdentifiers.count > 0)
