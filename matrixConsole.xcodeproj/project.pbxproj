@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3198D9E11A68338B00556695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3198D9E31A68338B00556695 /* Localizable.strings */; };
+		32F90B7B1B28906400DDC61B /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 32F90B7A1B28906400DDC61B /* empty.mm */; };
 		710CC3BF1A6E9F14006EE973 /* matrixUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 710CC3BE1A6E9F14006EE973 /* matrixUser.png */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
 		71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D281A6E3DC000E59A9E /* ContactsViewController.m */; };
@@ -69,6 +70,7 @@
 /* Begin PBXFileReference section */
 		13057A57E74FD5504196F47F /* Pods-matrixConsole.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.release.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.release.xcconfig"; sourceTree = "<group>"; };
 		3198D9E21A68338B00556695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		32F90B7A1B28906400DDC61B /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		710CC3BE1A6E9F14006EE973 /* matrixUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixUser.png; sourceTree = "<group>"; };
 		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 		F07A80D519DD9DE700B621A1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				32F90B7A1B28906400DDC61B /* empty.mm */,
 				F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */,
 				F07A80D619DD9DE700B621A1 /* Info.plist */,
 				F07A80D719DD9DE700B621A1 /* main.m */,
@@ -509,6 +512,7 @@
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
+				32F90B7B1B28906400DDC61B /* empty.mm in Sources */,
 				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
 				7176294C1A77F5D000927125 /* ContactDetailsViewController.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */,
@@ -651,6 +655,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LIBRARY = "libstdc++";
 				INFOPLIST_FILE = matrixConsole/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -664,6 +669,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LIBRARY = "libstdc++";
 				INFOPLIST_FILE = matrixConsole/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
