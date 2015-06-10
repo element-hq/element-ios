@@ -36,8 +36,9 @@
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSIndexPath *currentSelectedCellIndexPath;
 
-    // Mark all as read alert
-    MXKAlert *currentAlert;
+    // "Mark all as read" option
+    UITapGestureRecognizer *navigationBarTapGesture;
+    MXKAlert *markAllAsReadAlert;
 }
 
 @end
@@ -61,13 +62,11 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
     self.navigationItem.rightBarButtonItems = rightBarButtonItems ? [rightBarButtonItems arrayByAddingObject:addButton] : @[addButton];
     
-    // Add tap gesture on title bar
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.navigationController.navigationBar addGestureRecognizer:tap];
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
+    // Prepare tap gesture on title bar
+    navigationBarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
+    [navigationBarTapGesture setNumberOfTouchesRequired:1];
+    [navigationBarTapGesture setNumberOfTapsRequired:1];
+    [navigationBarTapGesture setDelegate:self];
     
     // Initialisation
     currentSelectedCellIndexPath = nil;
@@ -90,10 +89,15 @@
 
 - (void)destroy
 {
-    if (currentAlert)
+    if (markAllAsReadAlert)
     {
-        [currentAlert dismiss:NO];
-        currentAlert = nil;
+        [markAllAsReadAlert dismiss:NO];
+        markAllAsReadAlert = nil;
+    }
+    
+    if (navigationBarTapGesture) {
+        [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
+        navigationBarTapGesture = nil;
     }
     
     [super destroy];
@@ -120,6 +124,8 @@
     if (indexPath) {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
+    
+    [self.navigationController.navigationBar addGestureRecognizer:navigationBarTapGesture];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -131,11 +137,13 @@
     selectedRoomId = nil;
     selectedRoomSession = nil;
     
-    if (currentAlert)
+    if (markAllAsReadAlert)
     {
-        [currentAlert dismiss:NO];
-        currentAlert = nil;
+        [markAllAsReadAlert dismiss:NO];
+        markAllAsReadAlert = nil;
     }
+    
+    [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -267,23 +275,23 @@
     {
         __weak typeof(self) weakSelf = self;
         
-        currentAlert = [[MXKAlert alloc] initWithTitle:@"Mark all as read?" message:nil style:MXKAlertStyleAlert];
+        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:@"Mark all as read?" message:nil style:MXKAlertStyleAlert];
         
-        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             typeof(self) strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
+            strongSelf->markAllAsReadAlert = nil;
         }];
         
-        [currentAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        [markAllAsReadAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             typeof(self) strongSelf = weakSelf;
             
-            strongSelf->currentAlert = nil;
+            strongSelf->markAllAsReadAlert = nil;
             
             [strongSelf.dataSource markAllAsRead];
             [strongSelf updateNavigationBarTitle];
         }];
         
-        [currentAlert showInViewController:self];
+        [markAllAsReadAlert showInViewController:self];
     }
 }
 
