@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
+@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate>
 
 /**
  Open the room with the provided identifier in a specific matrix session.

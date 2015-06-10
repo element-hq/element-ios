@@ -35,6 +35,9 @@
     
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSIndexPath *currentSelectedCellIndexPath;
+
+    // Mark all as read alert
+    MXKAlert *currentAlert;
 }
 
 @end
@@ -58,6 +61,14 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
     self.navigationItem.rightBarButtonItems = rightBarButtonItems ? [rightBarButtonItems arrayByAddingObject:addButton] : @[addButton];
     
+    // Add tap gesture on title bar
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.navigationController.navigationBar addGestureRecognizer:tap];
+    self.navigationController.navigationBar.userInteractionEnabled = YES;
+    
     // Initialisation
     currentSelectedCellIndexPath = nil;
     
@@ -77,6 +88,17 @@
     selectedRoomSession = nil;
 }
 
+- (void)destroy
+{
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
+    [super destroy];
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
     
@@ -91,7 +113,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self updateTitleView];
+    [self updateNavigationBarTitle];
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
@@ -108,6 +130,12 @@
     
     selectedRoomId = nil;
     selectedRoomSession = nil;
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -162,7 +190,7 @@
 - (void)refreshRecentsDisplay {
 
     // Update the unreadCount in the title
-    [self updateTitleView];
+    [self updateNavigationBarTitle];
     
     [self.recentsTableView reloadData];
     
@@ -178,7 +206,7 @@
     }
 }
 
-- (void)updateTitleView {
+- (void)updateNavigationBarTitle {
     NSString *title = @"Recents";
     
     if (self.dataSource.unreadCount) {
@@ -231,6 +259,34 @@
     }
 }
 
+#pragma mark -
+
+- (void)onNavigationBarTap:(id)sender
+{
+    if (self.dataSource.unreadCount)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:@"Mark all as read?" message:nil style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            typeof(self) strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+        }];
+        
+        [currentAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            typeof(self) strongSelf = weakSelf;
+            
+            strongSelf->currentAlert = nil;
+            
+            [strongSelf.dataSource markAllAsRead];
+            [strongSelf updateNavigationBarTitle];
+        }];
+        
+        [currentAlert showInViewController:self];
+    }
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -259,7 +315,7 @@
         
         // Reset unread count for this room
         //[roomDataSource resetUnreadCount]; // @TODO: This automatically done by roomDataSource. Is it a good thing?
-        [self updateTitleView];
+        [self updateNavigationBarTitle];
         
         if (self.splitViewController) {
             // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
