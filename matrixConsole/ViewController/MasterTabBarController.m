@@ -168,7 +168,7 @@
         // Update recents data source (The recents view controller will be updated by its data source)
         if (!mxSessionArray.count) {
             // This is the first added session, list all the recents for the logged user
-            MXKRecentListDataSource *recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+            RecentListDataSource *recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
             [recentsViewController displayList:recentlistDataSource];
         } else {
             [recentsViewController.dataSource addMatrixSession:mxSession];
@@ -202,7 +202,7 @@
     // Check whether there are others sessions
     if (!mxSessionArray.count) {
         // Keep reference on existing dataSource to release it properly
-        MXKRecentListDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
+        MXKRecentsDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
         [recentsViewController displayList:nil];
         [previousRecentlistDataSource destroy];
     }
