@@ -799,7 +799,10 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
                 publicRooms = [publicRoomsDict objectForKey:homeserver];
             }
             
-            publicRoom = [publicRooms objectAtIndex:indexPath.row];
+            if (indexPath.row < publicRooms.count)
+            {
+                publicRoom = [publicRooms objectAtIndex:indexPath.row];
+            }
         }
         
         if (publicRoom)
@@ -823,11 +826,14 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     if (filteredPublicRoomsDict)
     {
         NSInteger index = section - publicRoomsFirstSection;
-        NSString *homeserver = [homeServers objectAtIndex:index];
-        NSArray *publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
-        if (!publicRooms.count)
+        if (index < homeServers.count)
         {
-            return 0;
+            NSString *homeserver = [homeServers objectAtIndex:index];
+            NSArray *publicRooms = [filteredPublicRoomsDict objectForKey:homeserver];
+            if (!publicRooms.count)
+            {
+                return 0;
+            }
         }
     }
     return 40;
@@ -952,7 +958,10 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
                     publicRooms = [publicRoomsDict objectForKey:homeserver];
                 }
                 
-                publicRoom = [publicRooms objectAtIndex:indexPath.row];
+                if (indexPath.row < publicRooms.count)
+                {
+                    publicRoom = [publicRooms objectAtIndex:indexPath.row];
+                }
             }
             
             if (publicRoom)
