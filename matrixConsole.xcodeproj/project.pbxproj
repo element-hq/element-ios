@@ -11,11 +11,7 @@
 		32F90B7B1B28906400DDC61B /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 32F90B7A1B28906400DDC61B /* empty.mm */; };
 		71193D241A6D64F900E59A9E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71193D231A6D64F900E59A9E /* AddressBook.framework */; };
 		71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71193D281A6E3DC000E59A9E /* ContactsViewController.m */; };
-		7176294C1A77F5D000927125 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7176294B1A77F5D000927125 /* ContactDetailsViewController.m */; };
-		7176294F1A77FED800927125 /* ContactDetailsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7176294E1A77FED800927125 /* ContactDetailsTableCell.m */; };
 		717629521A7A682A00927125 /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 717629511A7A682A00927125 /* countryCodes.plist */; };
-		71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */; };
-		71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB9DC01A495B6400504A09 /* MemberViewController.m */; };
 		D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */; };
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
 		F01628C119E29C660071C473 /* default-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BC19E29C660071C473 /* default-profile.png */; };
@@ -66,15 +62,7 @@
 		71193D231A6D64F900E59A9E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		71193D271A6E3DC000E59A9E /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		71193D281A6E3DC000E59A9E /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
-		7176294A1A77F5D000927125 /* ContactDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsViewController.h; sourceTree = "<group>"; };
-		7176294B1A77F5D000927125 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
-		7176294D1A77FED800927125 /* ContactDetailsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsTableCell.h; sourceTree = "<group>"; };
-		7176294E1A77FED800927125 /* ContactDetailsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsTableCell.m; sourceTree = "<group>"; };
 		717629511A7A682A00927125 /* countryCodes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = countryCodes.plist; path = Resources/countryCodes.plist; sourceTree = "<group>"; };
-		71D2E4EA1A49814B000DE015 /* RoomMemberActionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberActionsCell.h; sourceTree = "<group>"; };
-		71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberActionsCell.m; sourceTree = "<group>"; };
-		71DB9DBF1A495B6400504A09 /* MemberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberViewController.h; sourceTree = "<group>"; };
-		71DB9DC01A495B6400504A09 /* MemberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberViewController.m; sourceTree = "<group>"; };
 		8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-matrixConsole.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7EC7E45C718BF2BBCE0CF48 /* Pods-matrixConsole.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.debug.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.debug.xcconfig"; sourceTree = "<group>"; };
 		F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "matrixConsole-Defaults.plist"; sourceTree = "<group>"; };
@@ -209,16 +197,12 @@
 			children = (
 				F03EF5EC19F171EB00A0EE52 /* AuthenticationViewController.h */,
 				F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */,
-				7176294A1A77F5D000927125 /* ContactDetailsViewController.h */,
-				7176294B1A77F5D000927125 /* ContactDetailsViewController.m */,
 				71193D271A6E3DC000E59A9E /* ContactsViewController.h */,
 				71193D281A6E3DC000E59A9E /* ContactsViewController.m */,
 				F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */,
 				F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */,
 				F03EF5EE19F171EB00A0EE52 /* MasterTabBarController.h */,
 				F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */,
-				71DB9DBF1A495B6400504A09 /* MemberViewController.h */,
-				71DB9DC01A495B6400504A09 /* MemberViewController.m */,
 				F03EF5F019F171EB00A0EE52 /* RecentsViewController.h */,
 				F03EF5F119F171EB00A0EE52 /* RecentsViewController.m */,
 				F0ADEFF91AD7D2B3008A4F21 /* RoomMembersViewController.h */,
@@ -229,17 +213,6 @@
 				F03EF5F519F171EB00A0EE52 /* SettingsViewController.m */,
 			);
 			path = ViewController;
-			sourceTree = "<group>";
-		};
-		F03EF5FC19F1762000A0EE52 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				7176294D1A77FED800927125 /* ContactDetailsTableCell.h */,
-				7176294E1A77FED800927125 /* ContactDetailsTableCell.m */,
-				71D2E4EA1A49814B000DE015 /* RoomMemberActionsCell.h */,
-				71D2E4EB1A49814B000DE015 /* RoomMemberActionsCell.m */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		F0465AF71A251F85003639F9 /* Model */ = {
@@ -277,7 +250,6 @@
 				717629501A7A681B00927125 /* Resources */,
 				F021FBEC1A5EF57300EA3AE6 /* API */,
 				F0465AF71A251F85003639F9 /* Model */,
-				F03EF5FC19F1762000A0EE52 /* View */,
 				F03EF5E919F171EB00A0EE52 /* ViewController */,
 				F07A80D919DD9DE700B621A1 /* AppDelegate.h */,
 				F07A80DA19DD9DE700B621A1 /* AppDelegate.m */,
@@ -467,7 +439,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7176294F1A77FED800927125 /* ContactDetailsTableCell.m in Sources */,
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F0ADEFFB1AD7D2B3008A4F21 /* RoomMembersViewController.m in Sources */,
 				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
@@ -478,13 +449,10 @@
 				F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */,
 				F0F535BB1ACD6C4F00B603F8 /* RageShakeManager.m in Sources */,
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
-				71DB9DC11A495B6400504A09 /* MemberViewController.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				32F90B7B1B28906400DDC61B /* empty.mm in Sources */,
 				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
-				7176294C1A77F5D000927125 /* ContactDetailsViewController.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */,
-				71D2E4EC1A49814B000DE015 /* RoomMemberActionsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

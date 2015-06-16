@@ -20,14 +20,19 @@
 
 #import "RageShakeManager.h"
 
-#import "ContactDetailsViewController.h"
-
 NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
 
 @interface ContactsViewController ()
 {
-    // tap on thumbnail to display matrix information.
+    /**
+     Tap on thumbnail --> display matrix information.
+     */
     MXKContact* selectedContact;
+    
+    /**
+     Keep reference on the current pushed view controller to release it correctly
+     */
+    id destinationViewController;
 }
 
 @property (strong, nonatomic) MXKAlert *startChatMenu;
@@ -48,6 +53,20 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
     
     // The view controller handles itself the selected contact
     self.delegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (destinationViewController)
+    {
+        if ([destinationViewController respondsToSelector:@selector(destroy)])
+        {
+            [destinationViewController destroy];
+        }
+        destinationViewController = nil;
+    }
 }
 
 - (void)destroy
@@ -83,7 +102,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             {
                 __weak typeof(self) weakSelf = self;
                 
-                self.allowContactSyncAlert = [[MXKAlert alloc] initWithTitle:@"Allow local contacts synchronization ?"  message:nil style:MXKAlertStyleAlert];
+                self.allowContactSyncAlert = [[MXKAlert alloc] initWithTitle:@"Allow local contacts synchronization?"  message:nil style:MXKAlertStyleAlert];
                 
                 [self.allowContactSyncAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                 {
@@ -259,9 +278,17 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    // Keep ref on destinationViewController
+    destinationViewController = segue.destinationViewController;
+    
     if ([segue.identifier isEqualToString:@"showContactDetails"])
     {
-        ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+        MXKContactDetailsViewController *contactDetailsViewController = destinationViewController;
+        // Set rageShake handler
+        contactDetailsViewController.rageShakeManager = [RageShakeManager sharedManager];
+        // Set delegate to handle start chat option
+        contactDetailsViewController.delegate = [AppDelegate theDelegate];
+        
         contactDetailsViewController.contact = selectedContact;
         selectedContact = nil;
     }

@@ -798,6 +798,20 @@
     }
 }
 
+#pragma mark - MXKContactDetailsViewControllerDelegate
+
+- (void)contactDetailsViewController:(MXKContactDetailsViewController *)contactDetailsViewController startChatWithMatrixId:(NSString *)matrixId
+{
+    [self startPrivateOneToOneRoomWithUserId:matrixId];
+}
+
+#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId
+{
+    [self startPrivateOneToOneRoomWithUserId:matrixId];
+}
+
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar {
