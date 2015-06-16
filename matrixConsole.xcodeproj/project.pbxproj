@@ -14,7 +14,6 @@
 		717629521A7A682A00927125 /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 717629511A7A682A00927125 /* countryCodes.plist */; };
 		D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */; };
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
-		F01628C119E29C660071C473 /* default-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = F01628BC19E29C660071C473 /* default-profile.png */; };
 		F024098219E7D177006E741B /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F024098119E7D177006E741B /* tab_recents@2x.png */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */; };
@@ -66,7 +65,6 @@
 		8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-matrixConsole.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7EC7E45C718BF2BBCE0CF48 /* Pods-matrixConsole.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.debug.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.debug.xcconfig"; sourceTree = "<group>"; };
 		F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "matrixConsole-Defaults.plist"; sourceTree = "<group>"; };
-		F01628BC19E29C660071C473 /* default-profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-profile.png"; sourceTree = "<group>"; };
 		F024098119E7D177006E741B /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 				F024098119E7D177006E741B /* tab_recents@2x.png */,
 				F04B2DA11A977A9B00EEA4C8 /* tab_settings.png */,
 				F04B2DA21A977A9B00EEA4C8 /* tab_settings@2x.png */,
-				F01628BC19E29C660071C473 /* default-profile.png */,
 				3198D9E31A68338B00556695 /* Localizable.strings */,
 			);
 			path = Assets;
@@ -380,7 +377,6 @@
 				F0CEA5AF19E6895E00E47915 /* tab_recents.png in Resources */,
 				717629521A7A682A00927125 /* countryCodes.plist in Resources */,
 				F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */,
-				F01628C119E29C660071C473 /* default-profile.png in Resources */,
 				F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */,
 				F0CEA5B119E6898800E47915 /* tab_home.ico in Resources */,
 				F0DB1ABF1B01E4AB00A3FA54 /* video.png in Resources */,
