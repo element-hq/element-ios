@@ -15,7 +15,6 @@
  */
 
 #import "AppDelegate.h"
-#import "APNSHandler.h"
 #import "RoomViewController.h"
 #import "SettingsViewController.h"
 #import "MXKContactManager.h"
@@ -41,9 +40,10 @@
     id matrixSessionStateObserver;
     
     /**
-     matrix account observer used to detect new added accounts.
+     matrix account observers.
      */
-    id matrixAccountsObserver;
+    id addedAccountObserver;
+    id removedAccountObserver;
     
     /**
      matrix call observer used to handle incoming/outgoing call.
@@ -330,13 +330,17 @@
 {
     NSLog(@"[AppDelegate] Got APNS token!");
     
-    APNSHandler* apnsHandler = [APNSHandler sharedHandler];
-    [apnsHandler setDeviceToken:deviceToken];
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setApnsDeviceToken:deviceToken];
     
     // force send the push token once per app start
     if (!isAPNSRegistered)
     {
-        apnsHandler.isActive = YES;
+        NSArray *mxAccounts = accountManager.accounts;
+        for (MXKAccount *account in mxAccounts)
+        {
+            account.enablePushNotifications = YES;
+        }
     }
     isAPNSRegistered = YES;
 }
@@ -399,7 +403,6 @@
     // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
     {
-        
         MXSession *mxSession = (MXSession*)notif.object;
         
         // Remove by default potential call observer on matrix session state change
@@ -412,21 +415,27 @@
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised)
         {
-            
             // Report this session to contact manager
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
             
             // Update all view controllers thanks to tab bar controller
             [self.masterTabBarController addMatrixSession:mxSession];
             
-        } else if (mxSession.state == MXSessionStateStoreDataReady)
+        }
+        else if (mxSession.state == MXSessionStateStoreDataReady)
         {
-            // Check whether the app user wants notifications on new events
-            if ([[MXKAppSettings standardAppSettings] enableInAppNotifications])
+            // Check whether the app user wants inApp notifications on new events for this session
+            NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+            for (MXKAccount *account in mxAccounts)
             {
-                [self enableInAppNotifications:YES];
+                if (account.mxSession == mxSession)
+                {
+                    [self enableInAppNotificationsForAccount:account];
+                    break;
+                }
             }
-        } else if (mxSession.state == MXSessionStateClosed)
+        }
+        else if (mxSession.state == MXSessionStateClosed)
         {
             [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
             [self.masterTabBarController removeMatrixSession:mxSession];
@@ -443,6 +452,7 @@
                 break;
             }
         }
+        
         if (shouldAddMatrixCallObserver)
         {
             // A new call observer may be added here
@@ -451,16 +461,17 @@
     }];
     
     // Register an observer in order to handle new account
-    matrixAccountsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
-    {
-        
-        NSString *userId = (NSString*)notif.object;
+    addedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         // Launch matrix session for this new account
-        MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
+        MXKAccount *account = notif.object;
         if (account)
         {
+            // Prepare push notifications
             [self registerUserNotificationSettings];
+            
+            // Observe inApp notifications toggle change
+            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
             
             // Use MXFileStore as MXStore to permanently store events.
             MXFileStore *mxFileStore = [[MXFileStore alloc] init];
@@ -468,26 +479,42 @@
         }
     }];
     
+    // Add observer to handle removed accounts
+    removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // Remove inApp notifications toggle change
+        MXKAccount *account = notif.object;
+        [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
+        
+        // Logout the app when there is no available account
+        if (![MXKAccountManager sharedManager].accounts.count)
+        {
+            [self logout];
+        }
+    }];
+    
     // Observe settings changes
-    [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
     [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
     // Check whether we're logged in
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
     if (mxAccounts.count)
     {
-        
+        // Prepare push notifications
         [self registerUserNotificationSettings];
         
         // When user is already logged, we launch the app on Recents
         [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
-        // Launch a matrix session for all existing accounts.
+        // Prepare each account
         for (MXKAccount *account in mxAccounts)
         {
+            // Observe inApp notifications toggle change
+            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
+            
+            // Launch a matrix session for all existing accounts.
             // Use MXFileStore as MXStore to permanently store events.
             MXFileStore *mxFileStore = [[MXFileStore alloc] init];
-            
             [account openSessionWithStore:mxFileStore];
         }
     }
@@ -524,7 +551,6 @@
 - (void)logout
 {
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-    [[APNSHandler sharedHandler] reset];
     isAPNSRegistered = NO;
     
     // Clear cache
@@ -604,81 +630,76 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
-- (void)enableInAppNotifications:(BOOL)isEnabled
+- (void)enableInAppNotificationsForAccount:(MXKAccount*)account
 {
-    // Update In-App notifications in all running matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts)
+    if (account.mxSession)
     {
-        
-        if (account.mxSession)
+        if (account.enableInAppNotifications)
         {
-            if (isEnabled)
-            {
-                // Build MXEvent -> NSString formatter
-                MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
-                eventFormatter.isForSubtitle = YES;
-                
-                [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule)
-                {
-                    
-                    // Check conditions to display this notification
-                    if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                        && ![self.masterTabBarController isPresentingMediaPicker])
-                    {
-                        
-                        MXKEventFormatterError error;
-                        NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
-                        if (messageText.length && (error == MXKEventFormatterErrorNone))
-                        {
-                            
-                            // Removing existing notification (if any)
-                            if (self.mxInAppNotification)
-                            {
-                                [self.mxInAppNotification dismiss:NO];
-                            }
-                            
-                            // Check whether tweak is required
-                            for (MXPushRuleAction *ruleAction in rule.actions)
-                            {
-                                if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                                {
-                                    if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
-                                    {
-                                        // Play system sound (VoicemailReceived)
-                                        AudioServicesPlaySystemSound (1002);
-                                    }
-                                }
-                            }
-                            
-                            __weak typeof(self) weakSelf = self;
-                            self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
-                                                                               message:messageText
-                                                                                 style:MXKAlertStyleAlert];
-                            self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
-                                                                                                                style:MXKAlertActionStyleDefault
-                                                                                                              handler:^(MXKAlert *alert)
-                            {
-                                weakSelf.mxInAppNotification = nil;
-                                [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
-                            }];
-                            [self.mxInAppNotification addActionWithTitle:@"View"
-                                                                   style:MXKAlertActionStyleDefault
-                                                                 handler:^(MXKAlert *alert)
-                            {
-                                weakSelf.mxInAppNotification = nil;
-                                // Show the room
-                                [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
-                            }];
-                            
-                            [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
-                        }
-                    }
-                }];
-            } else
-            {
-                [account removeNotificationListener];
-            }
+            // Build MXEvent -> NSString formatter
+            MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
+            eventFormatter.isForSubtitle = YES;
+            
+            [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule)
+             {
+                 
+                 // Check conditions to display this notification
+                 if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
+                     && ![self.masterTabBarController isPresentingMediaPicker])
+                 {
+                     
+                     MXKEventFormatterError error;
+                     NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
+                     if (messageText.length && (error == MXKEventFormatterErrorNone))
+                     {
+                         
+                         // Removing existing notification (if any)
+                         if (self.mxInAppNotification)
+                         {
+                             [self.mxInAppNotification dismiss:NO];
+                         }
+                         
+                         // Check whether tweak is required
+                         for (MXPushRuleAction *ruleAction in rule.actions)
+                         {
+                             if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
+                             {
+                                 if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
+                                 {
+                                     // Play system sound (VoicemailReceived)
+                                     AudioServicesPlaySystemSound (1002);
+                                 }
+                             }
+                         }
+                         
+                         __weak typeof(self) weakSelf = self;
+                         self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
+                                                                            message:messageText
+                                                                              style:MXKAlertStyleAlert];
+                         self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
+                                                                                                             style:MXKAlertActionStyleDefault
+                                                                                                           handler:^(MXKAlert *alert)
+                                                                       {
+                                                                           weakSelf.mxInAppNotification = nil;
+                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
+                                                                       }];
+                         [self.mxInAppNotification addActionWithTitle:@"View"
+                                                                style:MXKAlertActionStyleDefault
+                                                              handler:^(MXKAlert *alert)
+                          {
+                              weakSelf.mxInAppNotification = nil;
+                              // Show the room
+                              [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
+                          }];
+                         
+                         [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
+                     }
+                 }
+             }];
+        }
+        else
+        {
+            [account removeNotificationListener];
         }
     }
     
@@ -696,9 +717,9 @@
         // Flush and restore Matrix data
         [self reloadMatrixSessions:NO];
     }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath])
+    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
     {
-        [self enableInAppNotifications:[[MXKAppSettings standardAppSettings] enableInAppNotifications]];
+        [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
 }
 

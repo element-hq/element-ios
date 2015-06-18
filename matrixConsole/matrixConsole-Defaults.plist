@@ -8,12 +8,8 @@
 	<string>https://matrix.org</string>
 	<key>homeserver</key>
 	<string>matrix.org</string>
-	<key>apnsIsActive</key>
-	<false/>
 	<key>apnsDeviceToken</key>
 	<string></string>
-	<key>enableInAppNotifications</key>
-	<false/>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>

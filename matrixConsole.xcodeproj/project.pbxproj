@@ -23,7 +23,6 @@
 		F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5F519F171EB00A0EE52 /* SettingsViewController.m */; };
 		F04B2DA51A977A9B00EEA4C8 /* tab_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = F04B2DA11A977A9B00EEA4C8 /* tab_settings.png */; };
 		F04B2DA61A977A9B00EEA4C8 /* tab_settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F04B2DA21A977A9B00EEA4C8 /* tab_settings@2x.png */; };
-		F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F05237791A7289F00079F3E0 /* APNSHandler.m */; };
 		F05C3A3E1A3F3D7F002B698E /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3C1A3F3D7F002B698E /* icon_users.png */; };
 		F05C3A3F1A3F3D7F002B698E /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */; };
 		F07A80D819DD9DE700B621A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F07A80D719DD9DE700B621A1 /* main.m */; };
@@ -80,8 +79,6 @@
 		F03EF5F519F171EB00A0EE52 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		F04B2DA11A977A9B00EEA4C8 /* tab_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_settings.png; sourceTree = "<group>"; };
 		F04B2DA21A977A9B00EEA4C8 /* tab_settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_settings@2x.png"; sourceTree = "<group>"; };
-		F05237781A7289F00079F3E0 /* APNSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSHandler.h; sourceTree = "<group>"; };
-		F05237791A7289F00079F3E0 /* APNSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSHandler.m; sourceTree = "<group>"; };
 		F05C3A3C1A3F3D7F002B698E /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		F05C3A3D1A3F3D7F002B698E /* icon_users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_users@2x.png"; sourceTree = "<group>"; };
 		F07A80D219DD9DE700B621A1 /* matrixConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matrixConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,8 +178,6 @@
 		F021FBEC1A5EF57300EA3AE6 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				F05237781A7289F00079F3E0 /* APNSHandler.h */,
-				F05237791A7289F00079F3E0 /* APNSHandler.m */,
 				F0F535B91ACD6C4F00B603F8 /* RageShakeManager.h */,
 				F0F535BA1ACD6C4F00B603F8 /* RageShakeManager.m */,
 			);
@@ -437,7 +432,6 @@
 			files = (
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
 				F0ADEFFB1AD7D2B3008A4F21 /* RoomMembersViewController.m in Sources */,
-				F052377C1A7289F00079F3E0 /* APNSHandler.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
 				F0F535BF1ACDE46200B603F8 /* RecentListDataSource.m in Sources */,
 				F03EF5FB19F171EB00A0EE52 /* SettingsViewController.m in Sources */,

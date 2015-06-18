@@ -19,15 +19,13 @@
 #import "RageShakeManager.h"
 
 #import "AppDelegate.h"
-#import "APNSHandler.h"
 
 #define SETTINGS_SECTION_ACCOUNTS_INDEX      0
-#define SETTINGS_SECTION_NOTIFICATIONS_INDEX 1
-#define SETTINGS_SECTION_CONTACTS_INDEX      2
-#define SETTINGS_SECTION_ROOMS_INDEX         3
-#define SETTINGS_SECTION_CONFIGURATION_INDEX 4
-#define SETTINGS_SECTION_COMMANDS_INDEX      5
-#define SETTINGS_SECTION_COUNT               6
+#define SETTINGS_SECTION_CONTACTS_INDEX      1
+#define SETTINGS_SECTION_ROOMS_INDEX         2
+#define SETTINGS_SECTION_CONFIGURATION_INDEX 3
+#define SETTINGS_SECTION_COMMANDS_INDEX      4
+#define SETTINGS_SECTION_COUNT               5
 
 #define SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX         0
 #define SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX            1
@@ -46,7 +44,6 @@ NSString *const kSettingsCountryCellIdentifier = @"kSettingsCountryCellIdentifie
 NSString *const kSettingsPickerCellIdentifier = @"kSettingsPickerCellIdentifier";
 NSString *const kSettingsSliderCellIdentifier = @"kSettingsSliderCellIdentifier";
 
-NSString* const kUserInfoNotificationRulesText = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
 NSString* const kConfigurationFormatText = @"Console version: %@\r\nMatrixKit version: %@\r\nMatrixSDK version: %@\r\n%@";
 NSString* const kBuildFormatText = @"Build: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
@@ -56,14 +53,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     MXKAccount *selectedAccount;
     id removedAccountObserver;
     id accountUserInfoObserver;
-    
-    // Notifications
-    UISwitch *apnsNotificationsSwitch;
-    UISwitch *inAppNotificationsSwitch;
-    // Dynamic rows in the Notifications section
-    NSInteger enablePushNotifRowIndex;
-    NSInteger enableInAppNotifRowIndex;
-    NSInteger userInfoNotifRowIndex;
     
     // Contacts
     UISwitch *contactsSyncSwitch;
@@ -115,12 +104,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        NSString *userId = notif.object;
-        if (userId) {
+        MXKAccount *account = notif.object;
+        if (account) {
             // Check whether details of this account was displayed
             if ([pushedViewController isKindOfClass:[MXKAccountDetailsViewController class]]) {
                 MXKAccountDetailsViewController *accountDetailsViewController = (MXKAccountDetailsViewController*)pushedViewController;
-                if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:userId]) {
+                if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:account.mxCredentials.userId]) {
                     // pop the account details view controller
                     [self.navigationController popToRootViewControllerAnimated:YES];
                 }
@@ -168,8 +157,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Refresh display
     [self.tableView reloadData];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAPNSHandlerHasBeenUpdated) name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -197,18 +184,9 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     
     countryCode = [_settings phonebookCountryCode];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kAPNSHandlerHasBeenUpdated object:nil];
 }
 
 #pragma mark - Internal methods
-
-- (void)onAPNSHandlerHasBeenUpdated {
-    // Force table reload to update notifications section
-    apnsNotificationsSwitch = nil;
-    
-    [self.tableView reloadData];
-}
 
 - (void)reset {
     // Remove observers
@@ -227,9 +205,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     selectedAccount = nil;
     
     contactsSyncSwitch = nil;
-    
-    apnsNotificationsSwitch = nil;
-    inAppNotificationsSwitch = nil;
     
     allEventsSwitch = nil;
     redactionsSwitch = nil;
@@ -252,13 +227,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (IBAction)onButtonPressed:(id)sender {
     
-    if (sender == apnsNotificationsSwitch) {
-        [APNSHandler sharedHandler].isActive = apnsNotificationsSwitch.on;
-        apnsNotificationsSwitch.enabled = NO;
-    } else if (sender == inAppNotificationsSwitch) {
-        _settings.enableInAppNotifications = inAppNotificationsSwitch.on;
-        [self.tableView reloadData];
-    } else if (sender == allEventsSwitch) {
+    if (sender == allEventsSwitch) {
         _settings.showAllEventsInRoomHistory = allEventsSwitch.on;
     } else if (sender == redactionsSwitch) {
         _settings.showRedactionsInRoomHistory = redactionsSwitch.on;
@@ -325,14 +294,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     NSInteger count = 0;
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX) {
         count = [[MXKAccountManager sharedManager] accounts].count + 1; // Add one cell in this section to display "logout all" option.
-    } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        enableInAppNotifRowIndex = enablePushNotifRowIndex = userInfoNotifRowIndex = -1;
-        
-        if ([APNSHandler sharedHandler].isAvailable) {
-            enablePushNotifRowIndex = count++;
-        }
-        enableInAppNotifRowIndex = count++;
-        userInfoNotifRowIndex = count++;
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
         countryCodeRowIndex = syncLocalContactsRowIndex = -1;
 
@@ -375,36 +336,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             [logoutBtnCell.mxkButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = logoutBtnCell;
-        }
-    } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        if (indexPath.row == userInfoNotifRowIndex) {
-            MXKTableViewCellWithTextView *userInfoCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
-            if (!userInfoCell) {
-                userInfoCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
-            }
-            
-            userInfoCell.mxkTextView.text = kUserInfoNotificationRulesText;
-            cell = userInfoCell;
-        } else {
-            MXKTableViewCellWithLabelAndSwitch *notificationsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
-            if (!notificationsCell) {
-                notificationsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
-            }
-            
-            [notificationsCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
-            
-            if (indexPath.row == enableInAppNotifRowIndex) {
-                notificationsCell.mxkLabel.text = @"Enable In-App notifications";
-                notificationsCell.mxkSwitch.on = [_settings enableInAppNotifications];
-                inAppNotificationsSwitch = notificationsCell.mxkSwitch;
-            } else /* enablePushNotifRowIndex */{
-                notificationsCell.mxkLabel.text = @"Enable push notifications";
-                notificationsCell.mxkSwitch.on = [[APNSHandler sharedHandler] isActive];
-                notificationsCell.mxkSwitch.enabled = YES;
-                apnsNotificationsSwitch = notificationsCell.mxkSwitch;
-            }
-            
-            cell = notificationsCell;
         }
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         if (indexPath.row  == syncLocalContactsRowIndex) {
@@ -555,14 +486,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SETTINGS_SECTION_ACCOUNTS_INDEX) {
         return 50;
-    } else if (indexPath.section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        if (indexPath.row == userInfoNotifRowIndex) {
-            UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
-            textView.font = [UIFont systemFontOfSize:14];
-            textView.text = kUserInfoNotificationRulesText;
-            CGSize contentSize = [textView sizeThatFits:textView.frame.size];
-            return contentSize.height + 1;
-        }
     } else if (indexPath.section == SETTINGS_SECTION_CONTACTS_INDEX) {
         
         if ((indexPath.row == countryCodeRowIndex) && isSelectingCountryCode) {
@@ -604,12 +527,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *sectionHeader = [[UILabel alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.font = [UIFont boldSystemFontOfSize:16];
+    UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
     sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, sectionHeader.frame.size.width - 10, sectionHeader.frame.size.height - 10)];
+    sectionLabel.font = [UIFont boldSystemFontOfSize:16];
+    sectionLabel.backgroundColor = [UIColor clearColor];
+    [sectionHeader addSubview:sectionLabel];
     
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX) {
-        sectionHeader.text = @" Accounts";
+        sectionLabel.text = @"Accounts";
         
         UIButton *addAccount = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [addAccount addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
@@ -620,17 +546,17 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         addAccount.frame = frame;
         
         [sectionHeader addSubview:addAccount];
+        addAccount.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        
         sectionHeader.userInteractionEnabled = YES;
-    } else if (section == SETTINGS_SECTION_NOTIFICATIONS_INDEX) {
-        sectionHeader.text = @" Notifications";
     } else if (section == SETTINGS_SECTION_CONTACTS_INDEX) {
-        sectionHeader.text = @" Contacts";
+        sectionLabel.text = @"Contacts";
     } else if (section == SETTINGS_SECTION_ROOMS_INDEX) {
-        sectionHeader.text = @" Rooms";
+        sectionLabel.text = @"Rooms";
     } else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX) {
-        sectionHeader.text = @" Configuration";
+        sectionLabel.text = @"Configuration";
     } else if (section == SETTINGS_SECTION_COMMANDS_INDEX) {
-        sectionHeader.text = @" Commands";
+        sectionLabel.text = @"Commands";
     } else {
         sectionHeader = nil;
     }
