@@ -28,7 +28,8 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
-@interface AppDelegate () <UISplitViewControllerDelegate> {
+@interface AppDelegate () <UISplitViewControllerDelegate>
+{
     /**
      Reachability observer
      */
@@ -74,22 +75,27 @@
 
 #pragma mark -
 
-+ (AppDelegate*)theDelegate {
++ (AppDelegate*)theDelegate
+{
     return (AppDelegate*)[[UIApplication sharedApplication] delegate];
 }
 
 #pragma mark -
 
-- (NSString*)appVersion {
-    if (!_appVersion) {
+- (NSString*)appVersion
+{
+    if (!_appVersion)
+    {
         _appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     }
     
     return _appVersion;
 }
 
-- (NSString*)build {
-    if (!_build) {
+- (NSString*)build
+{
+    if (!_build)
+    {
         NSString *buildBranch = nil;
         NSString *buildNumber = nil;
         // Check whether GIT_BRANCH and BUILD_NUMBER were provided during compilation in command line argument.
@@ -99,32 +105,42 @@
 #ifdef BUILD_NUMBER
         buildNumber = [NSString stringWithFormat:@"#%d", BUILD_NUMBER];
 #endif
-        if (buildBranch && buildNumber) {
+        if (buildBranch && buildNumber)
+        {
             _build = [NSString stringWithFormat:@"%@ %@", buildBranch, buildNumber];
         } else if (buildNumber){
             _build = buildNumber;
-        } else {
+        } else
+        {
             _build = buildBranch ? buildBranch : @"(no build info)";
         }
     }
     return _build;
 }
 
-- (void)setIsOffline:(BOOL)isOffline {
-    if (isOffline) {
+- (void)setIsOffline:(BOOL)isOffline
+{
+    if (isOffline)
+    {
         // Add observer to leave this state automatically.
-        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note)
+        {
             NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
-            if (statusItem) {
+            if (statusItem)
+            {
                 AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
-                if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN) {
+                if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN)
+                {
                     self.isOffline = NO;
                 }
             }
         }];
-    } else {
+    }
+    else
+    {
         // Release potential observer
-        if (reachabilityObserver) {
+        if (reachabilityObserver)
+        {
             [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
             reachabilityObserver = nil;
         }
@@ -135,9 +151,11 @@
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
+        
     {
         self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
         self.masterTabBarController.delegate = self;
@@ -146,25 +164,30 @@
         [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
         
         UIViewController* recents = [self.masterTabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
-        if ([recents isKindOfClass:[UISplitViewController class]]) {
+        if ([recents isKindOfClass:[UISplitViewController class]])
+        {
             UISplitViewController *splitViewController = (UISplitViewController *)recents;
             UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
             
             // IOS >= 8
-            if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
+            if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+            {
                 navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
                 
                 // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
                 // to avoid empty room View Controller in portrait orientation
                 // else, the user cannot select a room
                 // shouldHideViewController delegate method is also implemented
-                if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
+                if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
+                {
                     splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
                 }
             }
             
             splitViewController.delegate = self;
-        } else {
+        }
+        else
+        {
             // Patch missing image in tabBarItem for iOS < 8.0
             recents.tabBarItem.image = [[UIImage imageNamed:@"tab_recents"] imageWithRenderingMode:UIImageRenderingModeAutomatic];
         }
@@ -181,28 +204,32 @@
         // Add matrix observers and initialize matrix sessions.
         [self initMatrixSessions];
     }
-
+    
     // clear the notifications counter
     [self clearNotifications];
     
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    if (self.errorNotification) {
+    if (self.errorNotification)
+    {
         [self.errorNotification dismiss:NO];
         self.errorNotification = nil;
     }
     
-    if (accountPicker) {
+    if (accountPicker)
+    {
         [accountPicker dismiss:NO];
         accountPicker = nil;
     }
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
@@ -214,14 +241,16 @@
     [MXKMediaManager reduceCacheSizeToInsert:0];
     
     // Hide potential notification
-    if (self.mxInAppNotification) {
+    if (self.mxInAppNotification)
+    {
         [self.mxInAppNotification dismiss:NO];
         self.mxInAppNotification = nil;
     }
     
     // Suspend all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts) {
+    for (MXKAccount *account in mxAccounts)
+    {
         [account pauseInBackgroundTask];
     }
     
@@ -231,7 +260,8 @@
     _isAppForeground = NO;
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
@@ -239,7 +269,8 @@
     _isAppForeground = YES;
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
@@ -247,7 +278,8 @@
     
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts) {
+    for (MXKAccount *account in mxAccounts)
+    {
         [account resume];
     }
     
@@ -258,26 +290,32 @@
     _isAppForeground = YES;
     
     // check if the app crashed last time
-    if ([MXLogger crashLog]) {
+    if ([MXLogger crashLog])
+    {
         [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
     }
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 #pragma mark - APNS methods
 
-- (void)registerUserNotificationSettings {
-    if (!isAPNSRegistered) {
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+- (void)registerUserNotificationSettings
+{
+    if (!isAPNSRegistered)
+    {
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
+        {
             // Registration on iOS 8 and later
             UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
                                                                                                  |UIRemoteNotificationTypeSound
                                                                                                  |UIRemoteNotificationTypeAlert) categories:nil];
             [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        } else {
+        } else
+        {
             [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
         }
     }
@@ -288,24 +326,28 @@
     [application registerForRemoteNotifications];
 }
 
-- (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
+- (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
     NSLog(@"[AppDelegate] Got APNS token!");
     
     APNSHandler* apnsHandler = [APNSHandler sharedHandler];
     [apnsHandler setDeviceToken:deviceToken];
     
     // force send the push token once per app start
-    if (!isAPNSRegistered) {
+    if (!isAPNSRegistered)
+    {
         apnsHandler.isActive = YES;
     }
     isAPNSRegistered = YES;
 }
 
-- (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+- (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
 }
 
-- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
 #ifdef DEBUG
     // log the full userInfo only in DEBUG
     NSLog(@"[AppDelegate] APNS: %@", userInfo);
@@ -314,10 +356,12 @@
     completionHandler(UIBackgroundFetchResultNoData);
     
     // Jump to the concerned room only if the app is transitioning from the background
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive)
+    {
         // Look for the room id
         NSString* roomId = [userInfo objectForKey:@"room_id"];
-        if (roomId.length) {
+        if (roomId.length)
+        {
             // TODO retrieve the right matrix session
             
             //**************
@@ -325,12 +369,16 @@
             MXSession *mxSession;
             NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
             
-            if (mxAccounts.count == 1) {
+            if (mxAccounts.count == 1)
+            {
                 MXKAccount *account = mxAccounts.firstObject;
                 mxSession = account.mxSession;
-            } else {
-                for (MXKAccount *account in mxAccounts) {
-                    if ([account.mxSession roomWithRoomId:roomId]) {
+            } else
+            {
+                for (MXKAccount *account in mxAccounts)
+                {
+                    if ([account.mxSession roomWithRoomId:roomId])
+                    {
                         mxSession = account.mxSession;
                         break;
                     }
@@ -346,20 +394,24 @@
 
 #pragma mark - Matrix sessions handling
 
-- (void)initMatrixSessions {
+- (void)initMatrixSessions
+{
     // Register matrix session state observer in order to handle multi-sessions.
-    matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
+    {
         
         MXSession *mxSession = (MXSession*)notif.object;
         
         // Remove by default potential call observer on matrix session state change
-        if (matrixCallObserver) {
+        if (matrixCallObserver)
+        {
             [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
             matrixCallObserver = nil;
         }
         
         // Check whether the concerned session is a new one
-        if (mxSession.state == MXSessionStateInitialised) {
+        if (mxSession.state == MXSessionStateInitialised)
+        {
             
             // Report this session to contact manager
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
@@ -367,12 +419,15 @@
             // Update all view controllers thanks to tab bar controller
             [self.masterTabBarController addMatrixSession:mxSession];
             
-        } else if (mxSession.state == MXSessionStateStoreDataReady) {
+        } else if (mxSession.state == MXSessionStateStoreDataReady)
+        {
             // Check whether the app user wants notifications on new events
-            if ([[MXKAppSettings standardAppSettings] enableInAppNotifications]) {
+            if ([[MXKAppSettings standardAppSettings] enableInAppNotifications])
+            {
                 [self enableInAppNotifications:YES];
             }
-        } else if (mxSession.state == MXSessionStateClosed) {
+        } else if (mxSession.state == MXSessionStateClosed)
+        {
             [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
             [self.masterTabBarController removeMatrixSession:mxSession];
         }
@@ -380,26 +435,31 @@
         // Restore call observer only if all session are running
         NSArray *mxSessions = self.masterTabBarController.mxSessions;
         BOOL shouldAddMatrixCallObserver = (mxSessions.count);
-        for (mxSession in mxSessions) {
-            if (mxSession.state != MXSessionStateRunning) {
+        for (mxSession in mxSessions)
+        {
+            if (mxSession.state != MXSessionStateRunning)
+            {
                 shouldAddMatrixCallObserver = NO;
                 break;
             }
         }
-        if (shouldAddMatrixCallObserver) {
+        if (shouldAddMatrixCallObserver)
+        {
             // A new call observer may be added here
             [self addMatrixCallObserver];
         }
     }];
     
     // Register an observer in order to handle new account
-    matrixAccountsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    matrixAccountsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
+    {
         
         NSString *userId = (NSString*)notif.object;
         
         // Launch matrix session for this new account
         MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
-        if (account) {
+        if (account)
+        {
             [self registerUserNotificationSettings];
             
             // Use MXFileStore as MXStore to permanently store events.
@@ -414,7 +474,8 @@
     
     // Check whether we're logged in
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    if (mxAccounts.count) {
+    if (mxAccounts.count)
+    {
         
         [self registerUserNotificationSettings];
         
@@ -422,7 +483,8 @@
         [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
         // Launch a matrix session for all existing accounts.
-        for (MXKAccount *account in mxAccounts) {
+        for (MXKAccount *account in mxAccounts)
+        {
             // Use MXFileStore as MXStore to permanently store events.
             MXFileStore *mxFileStore = [[MXFileStore alloc] init];
             
@@ -431,12 +493,15 @@
     }
 }
 
-- (void)reloadMatrixSessions:(BOOL)clearCache {
+- (void)reloadMatrixSessions:(BOOL)clearCache
+{
     // Reload all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts) {
+    for (MXKAccount *account in mxAccounts)
+    {
         
-        if (account.mxSession) {
+        if (account.mxSession)
+        {
             id<MXStore> store = account.mxSession.store;
             
             [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
@@ -449,13 +514,15 @@
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
     [self.masterTabBarController popRoomViewControllerAnimated:NO];
     
-    if (clearCache) {
+    if (clearCache)
+    {
         // clear the media cache
         [MXKMediaManager clearCache];
     }
 }
 
-- (void)logout {
+- (void)logout
+{
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [[APNSHandler sharedHandler] reset];
     isAPNSRegistered = NO;
@@ -465,8 +532,10 @@
     
     // Reset all stored room data
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts) {
-        if (account.mxSession) {
+    for (MXKAccount *account in mxAccounts)
+    {
+        if (account.mxSession)
+        {
             [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
         }
     }
@@ -487,31 +556,37 @@
     [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
 }
 
-- (MXKAlert*)showErrorAsAlert:(NSError*)error {
+- (MXKAlert*)showErrorAsAlert:(NSError*)error
+{
     // Ignore network reachability error when the app is already offline
-    if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
+    if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
         return nil;
     }
     
-    if (self.errorNotification) {
+    if (self.errorNotification)
+    {
         [self.errorNotification dismiss:NO];
     }
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
+        
     {
         title = @"Error";
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+    {
         [AppDelegate theDelegate].errorNotification = nil;
     }];
     [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
     
     // Switch in offline mode in case of network reachability error
-    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet) {
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
         self.isOffline = YES;
     }
     
@@ -529,36 +604,47 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
-- (void)enableInAppNotifications:(BOOL)isEnabled {
+- (void)enableInAppNotifications:(BOOL)isEnabled
+{
     // Update In-App notifications in all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts) {
+    for (MXKAccount *account in mxAccounts)
+    {
         
-        if (account.mxSession) {
-            if (isEnabled) {
+        if (account.mxSession)
+        {
+            if (isEnabled)
+            {
                 // Build MXEvent -> NSString formatter
                 MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
                 eventFormatter.isForSubtitle = YES;
                 
-                [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+                [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule)
+                {
                     
                     // Check conditions to display this notification
                     if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                        && ![self.masterTabBarController isPresentingMediaPicker]) {
+                        && ![self.masterTabBarController isPresentingMediaPicker])
+                    {
                         
                         MXKEventFormatterError error;
                         NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
-                        if (messageText.length && (error == MXKEventFormatterErrorNone)) {
+                        if (messageText.length && (error == MXKEventFormatterErrorNone))
+                        {
                             
                             // Removing existing notification (if any)
-                            if (self.mxInAppNotification) {
+                            if (self.mxInAppNotification)
+                            {
                                 [self.mxInAppNotification dismiss:NO];
                             }
                             
                             // Check whether tweak is required
-                            for (MXPushRuleAction *ruleAction in rule.actions) {
-                                if (ruleAction.actionType == MXPushRuleActionTypeSetTweak) {
-                                    if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"]) {
+                            for (MXPushRuleAction *ruleAction in rule.actions)
+                            {
+                                if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
+                                {
+                                    if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
+                                    {
                                         // Play system sound (VoicemailReceived)
                                         AudioServicesPlaySystemSound (1002);
                                     }
@@ -567,58 +653,69 @@
                             
                             __weak typeof(self) weakSelf = self;
                             self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
-                                                                          message:messageText
-                                                                            style:MXKAlertStyleAlert];
+                                                                               message:messageText
+                                                                                 style:MXKAlertStyleAlert];
                             self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
-                                                                                                      style:MXKAlertActionStyleDefault
-                                                                                                    handler:^(MXKAlert *alert) {
-                                                                                                        weakSelf.mxInAppNotification = nil;
-                                                                                                        [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
-                                                                                                    }];
+                                                                                                                style:MXKAlertActionStyleDefault
+                                                                                                              handler:^(MXKAlert *alert)
+                            {
+                                weakSelf.mxInAppNotification = nil;
+                                [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
+                            }];
                             [self.mxInAppNotification addActionWithTitle:@"View"
-                                                              style:MXKAlertActionStyleDefault
-                                                            handler:^(MXKAlert *alert) {
-                                                                weakSelf.mxInAppNotification = nil;
-                                                                // Show the room
-                                                                [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
-                                                            }];
+                                                                   style:MXKAlertActionStyleDefault
+                                                                 handler:^(MXKAlert *alert)
+                            {
+                                weakSelf.mxInAppNotification = nil;
+                                // Show the room
+                                [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
+                            }];
                             
                             [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
                         }
                     }
                 }];
-            } else {
+            } else
+            {
                 [account removeNotificationListener];
             }
         }
     }
     
-    if (self.mxInAppNotification) {
+    if (self.mxInAppNotification)
+    {
         [self.mxInAppNotification dismiss:NO];
         self.mxInAppNotification = nil;
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath]) {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath])
+    {
         // Flush and restore Matrix data
         [self reloadMatrixSessions:NO];
     }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath]) {
+    else if ([@"enableInAppNotifications" isEqualToString:keyPath])
+    {
         [self enableInAppNotifications:[[MXKAppSettings standardAppSettings] enableInAppNotifications]];
     }
 }
 
-- (void)addMatrixCallObserver {
-    if (matrixCallObserver) {
+- (void)addMatrixCallObserver
+{
+    if (matrixCallObserver)
+    {
         [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
     }
     
     // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
+    {
         
         // Ignore the call if a call is already in progress
-        if (!currentCallViewController) {
+        if (!currentCallViewController)
+        {
             MXCall *mxCall = (MXCall*)notif.object;
             
             currentCallViewController = [MXKCallViewController callViewController:mxCall];
@@ -637,33 +734,43 @@
 
 #pragma mark - Matrix Accounts handling
 
-- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection {
+- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection
+{
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
     
-    if (mxAccounts.count == 1) {
-        if (onSelection) {
+    if (mxAccounts.count == 1)
+    {
+        if (onSelection)
+        {
             onSelection(mxAccounts.firstObject);
         }
-    } else if (mxAccounts.count > 1) {
-        if (accountPicker) {
+    }
+    else if (mxAccounts.count > 1)
+    {
+        if (accountPicker)
+        {
             [accountPicker dismiss:NO];
         }
         
         accountPicker = [[MXKAlert alloc] initWithTitle:@"Select an account" message:nil style:MXKAlertStyleActionSheet];
         
         __weak typeof(self) weakSelf = self;
-        for(MXKAccount *account in mxAccounts) {
-            [accountPicker addActionWithTitle:account.mxCredentials.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        for(MXKAccount *account in mxAccounts)
+        {
+            [accountPicker addActionWithTitle:account.mxCredentials.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+            {
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 strongSelf->accountPicker = nil;
                 
-                if (onSelection) {
+                if (onSelection)
+                {
                     onSelection(account);
                 }
             }];
         }
         
-        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+        {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             strongSelf->accountPicker = nil;
         }];
@@ -675,44 +782,53 @@
 
 #pragma mark - Matrix Rooms handling
 
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId {
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId
+{
     // Handle here potential multiple accounts
-    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
+    [self selectMatrixAccount:^(MXKAccount *selectedAccount)
+    {
         MXSession *mxSession = selectedAccount.mxSession;
         
-        if (mxSession) {
+        if (mxSession)
+        {
             MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
             
             // if the room exists
-            if (mxRoom) {
+            if (mxRoom)
+            {
                 // open it
                 [self.masterTabBarController showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
-            } else {
+            } else
+            {
                 // create a new room
                 [mxSession createRoom:nil
                            visibility:kMXRoomVisibilityPrivate
                             roomAlias:nil
                                 topic:nil
-                              success:^(MXRoom *room) {
-                                  // invite the other user only if it is defined and not onself
-                                  if (userId && ![mxSession.myUser.userId isEqualToString:userId]) {
-                                      // add the user
-                                      [room inviteUser:userId success:^{
-                                      } failure:^(NSError *error) {
-                                          NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                                          //Alert user
-                                          [self showErrorAsAlert:error];
-                                      }];
-                                  }
-                                  
-                                  // Open created room
-                                  [self.masterTabBarController showRoom:room.state.roomId withMatrixSession:mxSession];
-                                  
-                              } failure:^(NSError *error) {
-                                  NSLog(@"[AppDelegate] Create room failed: %@", error);
-                                  //Alert user
-                                  [self showErrorAsAlert:error];
-                              }];
+                              success:^(MXRoom *room)
+                {
+                    // invite the other user only if it is defined and not onself
+                    if (userId && ![mxSession.myUser.userId isEqualToString:userId])
+                    {
+                        // add the user
+                        [room inviteUser:userId success:^{
+                        } failure:^(NSError *error)
+                        {
+                            NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                            //Alert user
+                            [self showErrorAsAlert:error];
+                        }];
+                    }
+                    
+                    // Open created room
+                    [self.masterTabBarController showRoom:room.state.roomId withMatrixSession:mxSession];
+                    
+                } failure:^(NSError *error)
+                {
+                    NSLog(@"[AppDelegate] Create room failed: %@", error);
+                    //Alert user
+                    [self showErrorAsAlert:error];
+                }];
             }
         }
     }];
@@ -720,16 +836,20 @@
 
 #pragma mark - SplitViewController delegate
 
-- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
-    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil)) {
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
+{
+    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
+    {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
-    } else {
+    } else
+    {
         return NO;
     }
 }
 
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
     // oniPad devices, force to display the primary and the secondary viewcontroller
     // to avoid empty room View Controller in portrait orientation
     // else, the user cannot select a room
@@ -738,16 +858,21 @@
 
 #pragma mark - UITabBarControllerDelegate delegate
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
     BOOL res = YES;
     
-    if (tabBarController.selectedIndex == TABBAR_SETTINGS_INDEX) {
+    if (tabBarController.selectedIndex == TABBAR_SETTINGS_INDEX)
+    {
         // Prompt user to save unsaved profile changes before switching to another tab
         UIViewController* selectedViewController = [tabBarController selectedViewController];
-        if ([selectedViewController isKindOfClass:[UINavigationController class]]) {
+        if ([selectedViewController isKindOfClass:[UINavigationController class]])
+        {
             UIViewController *topViewController = ((UINavigationController*)selectedViewController).topViewController;
-            if ([topViewController isKindOfClass:[MXKAccountDetailsViewController class]]) {
-                res = [((MXKAccountDetailsViewController *)topViewController) shouldLeave:^() {
+            if ([topViewController isKindOfClass:[MXKAccountDetailsViewController class]])
+            {
+                res = [((MXKAccountDetailsViewController *)topViewController) shouldLeave:^()
+                {
                     [topViewController.navigationController popViewControllerAnimated:NO];
                     
                     // This block is called when tab change is delayed to prompt user about his profile changes
@@ -756,28 +881,33 @@
                 }];
             }
         }
-    }    
+    }
     return res;
 }
 
 #pragma mark - MXKCallViewControllerDelegate
 
-- (void)dismissCallViewController:(MXKCallViewController *)callViewController {
-    if (callViewController == currentCallViewController) {
+- (void)dismissCallViewController:(MXKCallViewController *)callViewController
+{
+    if (callViewController == currentCallViewController)
+    {
         
-        if (callViewController.isPresented) {
+        if (callViewController.isPresented)
+        {
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
             NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
             
             [callViewController dismissViewControllerAnimated:YES completion:^{
                 callViewController.isPresented = NO;
                 
-                if (!callIsEnded) {
+                if (!callIsEnded)
+                {
                     [self addCallStatusBar];
                 }
             }];
             
-            if (callIsEnded) {
+            if (callIsEnded)
+            {
                 [self removeCallStatusBar];
                 
                 // Restore system status bar
@@ -788,7 +918,8 @@
                 currentCallViewController.delegate = nil;
                 currentCallViewController = nil;
             }
-        } else {
+        } else
+        {
             // Here the presentation of the call view controller is in progress
             // Postpone the dismiss
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -814,7 +945,8 @@
 
 #pragma mark - Call status handling
 
-- (void)addCallStatusBar {
+- (void)addCallStatusBar
+{
     // Add a call status bar
     CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] applicationFrame].size.width, 44);
     
@@ -847,8 +979,10 @@
                                                object:nil];
 }
 
-- (void)removeCallStatusBar {
-    if (callStatusBarWindow) {
+- (void)removeCallStatusBar
+{
+    if (callStatusBarWindow)
+    {
         
         // Hide & destroy it
         callStatusBarWindow.hidden = YES;
@@ -862,7 +996,8 @@
     }
 }
 
-- (void)returnToCallView {
+- (void)returnToCallView
+{
     [self removeCallStatusBar];
     
     UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
@@ -871,13 +1006,15 @@
     }];
 }
 
-- (void)statusBarDidChangeFrame {
+- (void)statusBarDidChangeFrame
+{
     UIApplication *app = [UIApplication sharedApplication];
     UIViewController *rootController = app.keyWindow.rootViewController;
     
     // Refresh the root view controller frame
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
-    if (callStatusBarWindow) {
+    if (callStatusBarWindow)
+    {
         // Substract the height of call status bar from the frame.
         CGFloat callBarStatusHeight = callStatusBarWindow.frame.size.height;
         
