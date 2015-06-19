@@ -36,14 +36,6 @@
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
-NSString *const kSettingsAccountCellIdentifier = @"kSettingsAccountCellIdentifier";
-NSString *const kSettingsButtonCellIdentifier = @"kSettingsButtonCellIdentifier";
-NSString *const kSettingsUserInfoCellIdentifier = @"kSettingsUserInfoCellIdentifier";
-NSString *const kSettingsSwitchCellIdentifier = @"kSettingsSwitchCellIdentifier";
-NSString *const kSettingsCountryCellIdentifier = @"kSettingsCountryCellIdentifier";
-NSString *const kSettingsPickerCellIdentifier = @"kSettingsPickerCellIdentifier";
-NSString *const kSettingsSliderCellIdentifier = @"kSettingsSliderCellIdentifier";
-
 NSString* const kConfigurationFormatText = @"Console version: %@\r\nMatrixKit version: %@\r\nMatrixSDK version: %@\r\n%@";
 NSString* const kBuildFormatText = @"Build: %@";
 NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
@@ -388,10 +380,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         NSArray *accounts = [[MXKAccountManager sharedManager] accounts];
         if (indexPath.row < accounts.count)
         {
-            MXKAccountTableViewCell *accountCell = [[MXKAccountTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsAccountCellIdentifier];
+            MXKAccountTableViewCell *accountCell = [tableView dequeueReusableCellWithIdentifier:[MXKAccountTableViewCell defaultReuseIdentifier]];
             if (!accountCell)
             {
-                accountCell = [[MXKAccountTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsAccountCellIdentifier];
+                accountCell = [[MXKAccountTableViewCell alloc] init];
             }
             
             accountCell.mxAccount = [accounts objectAtIndex:indexPath.row];
@@ -408,10 +400,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         else
         {
-            MXKTableViewCellWithButton *logoutBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
+            MXKTableViewCellWithButton *logoutBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!logoutBtnCell)
             {
-                logoutBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
+                logoutBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
             [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateNormal];
             [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateHighlighted];
@@ -424,10 +416,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     {
         if (indexPath.row  == syncLocalContactsRowIndex)
         {
-            MXKTableViewCellWithLabelAndSwitch *contactsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            MXKTableViewCellWithLabelAndSwitch *contactsCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
             if (!contactsCell)
             {
-                contactsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+                contactsCell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
             }
             
             [contactsCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
@@ -456,10 +448,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             // there is no country code selection
             if (!isSelectingCountryCode)
             {
-                MXKTableViewCellWithLabelAndSubLabel *countryCell = [[MXKTableViewCellWithLabelAndSubLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsCountryCellIdentifier];
+                MXKTableViewCellWithLabelAndSubLabel *countryCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSubLabel defaultReuseIdentifier]];
                 if (!countryCell)
                 {
-                    countryCell = [[MXKTableViewCellWithLabelAndSubLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsCountryCellIdentifier];
+                    countryCell = [[MXKTableViewCellWithLabelAndSubLabel alloc] init];
                 }
                 
                 countryCell.mxkLabel.text = @"Select your country";
@@ -471,10 +463,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             else
             {
                 // there is a selection in progress
-                MXKTableViewCellWithPicker *pickerCell = [[MXKTableViewCellWithPicker alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsPickerCellIdentifier];
+                MXKTableViewCellWithPicker *pickerCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithPicker defaultReuseIdentifier]];
                 if (!pickerCell)
                 {
-                    pickerCell = [[MXKTableViewCellWithPicker alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsPickerCellIdentifier];
+                    pickerCell = [[MXKTableViewCellWithPicker alloc] init];
                 }
                 
                 // display a picker
@@ -497,10 +489,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     {
         if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)
         {
-            MXKTableViewCellWithButton *clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
+            MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!clearCacheBtnCell)
             {
-                clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsButtonCellIdentifier];
+                clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
             
             NSString *btnTitle = [NSString stringWithFormat:@"Clear Cache (%@)", [NSByteCountFormatter stringFromByteCount:self.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
@@ -514,10 +506,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX)
         {
-            maxCacheSizeCell = [[MXKTableViewCellWithLabelAndSlider alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSliderCellIdentifier];
+            maxCacheSizeCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSlider defaultReuseIdentifier]];
             if (!maxCacheSizeCell)
             {
-                maxCacheSizeCell = [[MXKTableViewCellWithLabelAndSlider alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSliderCellIdentifier];
+                maxCacheSizeCell = [[MXKTableViewCellWithLabelAndSlider alloc] init];
             }
             
             maxCacheSizeCell.mxkSlider.minimumValue = 0;
@@ -529,10 +521,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         }
         else
         {
-            MXKTableViewCellWithLabelAndSwitch *roomsSettingCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+            MXKTableViewCellWithLabelAndSwitch *roomsSettingCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
             if (!roomsSettingCell)
             {
-                roomsSettingCell = [[MXKTableViewCellWithLabelAndSwitch alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsSwitchCellIdentifier];
+                roomsSettingCell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
             }
             
             [roomsSettingCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
@@ -573,10 +565,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX)
     {
-        MXKTableViewCellWithTextView *configurationCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+        MXKTableViewCellWithTextView *configurationCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
         if (!configurationCell)
         {
-            configurationCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+            configurationCell = [[MXKTableViewCellWithTextView alloc] init];
         }
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
@@ -590,10 +582,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX)
     {
-        MXKTableViewCellWithTextView *commandsCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+        MXKTableViewCellWithTextView *commandsCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
         if (!commandsCell)
         {
-            commandsCell = [[MXKTableViewCellWithTextView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSettingsUserInfoCellIdentifier];
+            commandsCell = [[MXKTableViewCellWithTextView alloc] init];
         }
         
         commandsCell.mxkTextView.text = kCommandsDescriptionText;

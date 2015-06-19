@@ -21,8 +21,6 @@
 #import "RageShakeManager.h"
 
 NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreateRoomCellId";
-NSString *const kHomeViewControllerJoinRoomCellId = @"kHomeViewControllerJoinRoomCellId";
-NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPublicRoomCellId";
 
 @interface HomeViewController ()
 {
@@ -702,7 +700,7 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     return 44;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
     
@@ -712,7 +710,7 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
         // Update view data
         createRoomView.mxSessions = self.mxSessions;
         
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerCreateRoomCellId];
+        cell = [tableView dequeueReusableCellWithIdentifier:kHomeViewControllerCreateRoomCellId];
         if (!cell)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerCreateRoomCellId];
@@ -761,10 +759,10 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
             currentAlias = joinRoomCell.mxkTextField.text;
         }
         
-        joinRoomCell = [[MXKTableViewCellWithTextFieldAndButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerJoinRoomCellId];
+        joinRoomCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextFieldAndButton defaultReuseIdentifier]];
         if (!joinRoomCell)
         {
-            joinRoomCell = [[MXKTableViewCellWithTextFieldAndButton alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerJoinRoomCellId];
+            joinRoomCell = [[MXKTableViewCellWithTextFieldAndButton alloc] init];
         }
         
         joinRoomCell.mxkTextField.text = currentAlias;
@@ -778,10 +776,10 @@ NSString *const kHomeViewControllerPublicRoomCellId = @"kHomeViewControllerPubli
     }
     else
     {
-        MXKPublicRoomTableViewCell *publicRoomCell = [[MXKPublicRoomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerPublicRoomCellId];
+        MXKPublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[MXKPublicRoomTableViewCell defaultReuseIdentifier]];
         if (!publicRoomCell)
         {
-            publicRoomCell = [[MXKPublicRoomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kHomeViewControllerPublicRoomCellId];
+            publicRoomCell = [[MXKPublicRoomTableViewCell alloc] init];
         }
         
         MXPublicRoom *publicRoom;
