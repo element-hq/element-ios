@@ -35,9 +35,6 @@
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
-    
-    // Keep reference on potential pushed view controller to release it correctly
-    id pushedViewController;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *showRoomMembersButtonItem;
@@ -96,35 +93,27 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    if (self.childViewControllers)
+    {
+        // Dispose data source defined for room member list view controller (if any)
+        for (id childViewController in self.childViewControllers)
+        {
+            if ([childViewController isKindOfClass:[MXKRoomMemberListViewController class]])
+            {
+                MXKRoomMemberListViewController *viewController = (MXKRoomMemberListViewController*)childViewController;
+                MXKDataSource *dataSource = [viewController dataSource];
+                [viewController destroy];
+                [dataSource destroy];
+            }
+        }
+    }
+    
     [super viewDidAppear:animated];
     
     if (self.roomDataSource)
     {
         // Set visible room id
         [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
-    }
-    
-    if (pushedViewController)
-    {
-        
-        // Force the pushed view controller to dispose its resources, and release associated data source if any.
-        MXKDataSource *dataSource;
-        
-        if ([pushedViewController isKindOfClass:[MXKRoomMemberListViewController class]])
-        {
-            dataSource = [(MXKRoomMemberListViewController*)pushedViewController dataSource];
-        }
-        
-        if ([pushedViewController respondsToSelector:@selector(destroy)])
-        {
-            [pushedViewController destroy];
-        }
-        pushedViewController = nil;
-        
-        if (dataSource)
-        {
-            [dataSource destroy];
-        }
     }
 }
 
@@ -318,7 +307,10 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    pushedViewController = [segue destinationViewController];
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+    
+    id pushedViewController = [segue destinationViewController];
     
     if ([[segue identifier] isEqualToString:@"showMemberList"])
     {

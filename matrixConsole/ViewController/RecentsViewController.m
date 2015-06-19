@@ -21,7 +21,8 @@
 
 #import "RageShakeManager.h"
 
-@interface RecentsViewController () {
+@interface RecentsViewController ()
+{
     
     // Recents refresh handling
     BOOL shouldScrollToTopOnRefresh;
@@ -35,7 +36,7 @@
     
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSIndexPath *currentSelectedCellIndexPath;
-
+    
     // "Mark all as read" option
     UITapGestureRecognizer *navigationBarTapGesture;
     MXKAlert *markAllAsReadAlert;
@@ -45,18 +46,21 @@
 
 @implementation RecentsViewController
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    {
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
+    
     // Add navigation items
     NSArray *rightBarButtonItems = self.navigationItem.rightBarButtonItems;
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
@@ -78,8 +82,10 @@
     self.delegate = self;
 }
 
-- (void)dealloc {
-    if (currentRoomViewController) {
+- (void)dealloc
+{
+    if (currentRoomViewController)
+    {
         [currentRoomViewController destroy];
         currentRoomViewController = nil;
     }
@@ -90,12 +96,14 @@
 - (void)destroy
 {
     if (markAllAsReadAlert)
+        
     {
         [markAllAsReadAlert dismiss:NO];
         markAllAsReadAlert = nil;
     }
     
-    if (navigationBarTapGesture) {
+    if (navigationBarTapGesture)
+    {
         [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
         navigationBarTapGesture = nil;
     }
@@ -103,32 +111,37 @@
     [super destroy];
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
     [super setEditing:editing animated:animated];
     
     self.recentsTableView.editing = editing;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     [self updateNavigationBarTitle];
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-    if (indexPath) {
+    if (indexPath)
+    {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
     [self.navigationController.navigationBar addGestureRecognizer:navigationBarTapGesture];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     
     // Leave potential editing mode
@@ -138,6 +151,7 @@
     selectedRoomSession = nil;
     
     if (markAllAsReadAlert)
+        
     {
         [markAllAsReadAlert dismiss:NO];
         markAllAsReadAlert = nil;
@@ -146,14 +160,18 @@
     [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed) {
+    if (!self.splitViewController || self.splitViewController.isCollapsed)
+    {
         // Release the current selected room (if any).
         [self closeSelectedRoom];
-    } else {
+    }
+    else
+    {
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
@@ -162,9 +180,11 @@
 
 #pragma mark -
 
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession {
+- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+{
     if (selectedRoomId && [selectedRoomId isEqualToString:roomId]
-        && selectedRoomSession && selectedRoomSession == matrixSession) {
+        && selectedRoomSession && selectedRoomSession == matrixSession)
+    {
         // Nothing to do
         return;
     }
@@ -172,18 +192,23 @@
     selectedRoomId = roomId;
     selectedRoomSession = matrixSession;
     
-    if (roomId && matrixSession) {
+    if (roomId && matrixSession)
+    {
         [self performSegueWithIdentifier:@"showDetails" sender:self];
-    } else {
+    }
+    else
+    {
         [self closeSelectedRoom];
     }
 }
 
-- (void)closeSelectedRoom {
+- (void)closeSelectedRoom
+{
     selectedRoomId = nil;
     selectedRoomSession = nil;
     
-    if (currentRoomViewController) {
+    if (currentRoomViewController)
+    {
         // Release the current selected room
         [currentRoomViewController destroy];
         currentRoomViewController = nil;
@@ -195,39 +220,45 @@
 
 #pragma mark - Internal methods
 
-- (void)refreshRecentsDisplay {
-
+- (void)refreshRecentsDisplay
+{
     // Update the unreadCount in the title
     [self updateNavigationBarTitle];
     
     [self.recentsTableView reloadData];
     
-    if (shouldScrollToTopOnRefresh) {
+    if (shouldScrollToTopOnRefresh)
+    {
         [self scrollToTop];
         shouldScrollToTopOnRefresh = NO;
     }
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
     // the selected room (if any) is updated and kept visible.
-    if (self.splitViewController && !self.splitViewController.isCollapsed) {
+    if (self.splitViewController && !self.splitViewController.isCollapsed)
+    {
         [self refreshCurrentSelectedCell:YES];
     }
 }
 
-- (void)updateNavigationBarTitle {
+- (void)updateNavigationBarTitle
+{
     NSString *title = @"Recents";
     
-    if (self.dataSource.unreadCount) {
-         title = [NSString stringWithFormat:@"Recents (%tu)", self.dataSource.unreadCount];
+    if (self.dataSource.unreadCount)
+    {
+        title = [NSString stringWithFormat:@"Recents (%tu)", self.dataSource.unreadCount];
     }
     self.navigationItem.title = title;
 }
 
-- (void)createNewRoom:(id)sender {
+- (void)createNewRoom:(id)sender
+{
     [[AppDelegate theDelegate].masterTabBarController showRoomCreationForm];
 }
 
-- (void)scrollToTop {
+- (void)scrollToTop
+{
     // stop any scrolling effect
     [UIView setAnimationsEnabled:NO];
     // before scrolling to the tableview top
@@ -235,12 +266,15 @@
     [UIView setAnimationsEnabled:YES];
 }
 
-- (void)refreshCurrentSelectedCell:(BOOL)forceVisible {
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     currentSelectedCellIndexPath = nil;
-    if (currentRoomViewController) {
+    if (currentRoomViewController)
+    {
         // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
-        if (!selectedRoomId) {
+        if (!selectedRoomId)
+        {
             selectedRoomId = currentRoomViewController.roomDataSource.roomId;
             selectedRoomSession = currentRoomViewController.mainSession;
         }
@@ -249,19 +283,24 @@
         currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:selectedRoomSession];
     }
     
-    if (currentSelectedCellIndexPath) {
+    if (currentSelectedCellIndexPath)
+    {
         // Select the right row
         [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        if (forceVisible) {
+        if (forceVisible)
+        {
             // Scroll table view to make the selected row appear at second position
             NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
             [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
-    } else {
+    }
+    else
+    {
         NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-        if (indexPath) {
+        if (indexPath)
+        {
             [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     }
@@ -272,24 +311,27 @@
 - (void)onNavigationBarTap:(id)sender
 {
     if (self.dataSource.unreadCount)
+        
     {
         __weak typeof(self) weakSelf = self;
         
         markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:@"Mark all as read?" message:nil style:MXKAlertStyleAlert];
         
-        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) strongSelf = weakSelf;
-            strongSelf->markAllAsReadAlert = nil;
-        }];
+        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                                                {
+                                                    typeof(self) strongSelf = weakSelf;
+                                                    strongSelf->markAllAsReadAlert = nil;
+                                                }];
         
-        [markAllAsReadAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            typeof(self) strongSelf = weakSelf;
-            
-            strongSelf->markAllAsReadAlert = nil;
-            
-            [strongSelf.dataSource markAllAsRead];
-            [strongSelf updateNavigationBarTitle];
-        }];
+        [markAllAsReadAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+         {
+             typeof(self) strongSelf = weakSelf;
+             
+             strongSelf->markAllAsReadAlert = nil;
+             
+             [strongSelf.dataSource markAllAsRead];
+             [strongSelf updateNavigationBarTitle];
+         }];
         
         [markAllAsReadAlert showInViewController:self];
     }
@@ -297,25 +339,31 @@
 
 #pragma mark - Segues
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showDetails"]) {
-
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"showDetails"])
+    {
         UIViewController *controller;
-        if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]]) {
+        if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]])
+        {
             controller = [[segue destinationViewController] topViewController];
-        } else {
+        }
+        else
+        {
             controller = [segue destinationViewController];
         }
         
-        if ([controller isKindOfClass:[RoomViewController class]]) {
+        if ([controller isKindOfClass:[RoomViewController class]])
+        {
             // Release potential Room ViewController
-            if (currentRoomViewController) {
+            if (currentRoomViewController)
+            {
                 [currentRoomViewController destroy];
                 currentRoomViewController = nil;
             }
             
             currentRoomViewController = (RoomViewController *)controller;
-
+            
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:selectedRoomSession];
             MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:selectedRoomId create:YES];
             [currentRoomViewController displayRoom:roomDataSource];
@@ -325,15 +373,17 @@
         //[roomDataSource resetUnreadCount]; // @TODO: This automatically done by roomDataSource. Is it a good thing?
         [self updateNavigationBarTitle];
         
-        if (self.splitViewController) {
+        if (self.splitViewController)
+        {
             // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
             [self refreshCurrentSelectedCell:NO];
             
             // IOS >= 8
-            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)]) {
+            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+            {
                 controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
             }
-    
+            
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
@@ -344,29 +394,30 @@
 }
 
 #pragma mark - MXKDataSourceDelegate
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes {
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
     [self refreshRecentsDisplay];
 }
 
 #pragma mark - MXKRecentListViewControllerDelegate
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession {
-    
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
+{
     // Open the room
     [self selectRoomWithId:roomId inMatrixSession:matrixSession];
 }
 
 #pragma mark - Override UISearchBarDelegate
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
     // Prepare table refresh on new search session
     shouldScrollToTopOnRefresh = YES;
     
     [super searchBar:searchBar textDidChange:searchText];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
     // Prepare table refresh on end of search
     shouldScrollToTopOnRefresh = YES;
     

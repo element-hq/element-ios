@@ -66,9 +66,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     MXKTableViewCellWithLabelAndSlider* maxCacheSizeCell;
     NSUInteger minimumCacheSize;
     UIButton *clearCacheButton;
-    
-    // Keep reference on potential pushed view controller to release it correctly
-    id pushedViewController;
 }
 
 @end
@@ -100,14 +97,21 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         MXKAccount *account = notif.object;
         if (account)
         {
-            // Check whether details of this account was displayed
-            if ([pushedViewController isKindOfClass:[MXKAccountDetailsViewController class]])
+            if (self.childViewControllers.count)
             {
-                MXKAccountDetailsViewController *accountDetailsViewController = (MXKAccountDetailsViewController*)pushedViewController;
-                if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:account.mxCredentials.userId])
+                for (id viewController in self.childViewControllers)
                 {
-                    // pop the account details view controller
-                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    // Check whether details of this account was displayed
+                    if ([viewController isKindOfClass:[MXKAccountDetailsViewController class]])
+                    {
+                        MXKAccountDetailsViewController *accountDetailsViewController = viewController;
+                        if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:account.mxCredentials.userId])
+                        {
+                            // pop the account details view controller
+                            [self.navigationController popToRootViewControllerAnimated:YES];
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -157,21 +161,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     // Refresh display
     [self.tableView reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (pushedViewController)
-    {
-        // Force the pushed view controller to dispose its resources
-        if ([pushedViewController respondsToSelector:@selector(destroy)])
-        {
-            [pushedViewController destroy];
-        }
-        pushedViewController = nil;
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -293,7 +282,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 {
     if (sender == maxCacheSizeCell.mxkSlider)
     {
-        
         UISlider* slider = maxCacheSizeCell.mxkSlider;
         
         // check if the upper bounds have been updated
@@ -318,13 +306,12 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
-    pushedViewController = [segue destinationViewController];
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
     
     if ([[segue identifier] isEqualToString:@"showAccountDetails"])
     {
-        
-        MXKAccountDetailsViewController *accountViewController = (MXKAccountDetailsViewController *)pushedViewController;
+        MXKAccountDetailsViewController *accountViewController = segue.destinationViewController;
         accountViewController.mxAccount = selectedAccount;
         selectedAccount = nil;
     }

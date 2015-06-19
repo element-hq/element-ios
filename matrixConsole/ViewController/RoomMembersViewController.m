@@ -25,11 +25,6 @@
      The selected member
      */
     MXRoomMember *selectedMember;
-    
-    /**
-     Keep reference on the current pushed view controller to release it correctly
-     */
-    id destinationViewController;
 }
 
 @end
@@ -59,7 +54,6 @@
 
 - (void)dealloc
 {
-    destinationViewController = nil;
     selectedMember = nil;
 }
 
@@ -69,32 +63,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (destinationViewController)
-    {
-        if ([destinationViewController respondsToSelector:@selector(destroy)])
-        {
-            [destinationViewController destroy];
-        }
-        destinationViewController = nil;
-    }
-}
-
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Keep ref on destinationViewController
-    destinationViewController = segue.destinationViewController;
+    [super prepareForSegue:segue sender:sender];
     
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
         if (selectedMember)
         {
-            MXKRoomMemberDetailsViewController *memberViewController = destinationViewController;
+            MXKRoomMemberDetailsViewController *memberViewController = segue.destinationViewController;
             // Set rageShake handler
             memberViewController.rageShakeManager = [RageShakeManager sharedManager];
             // Set delegate to handle start chat option
