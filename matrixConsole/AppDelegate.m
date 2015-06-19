@@ -248,7 +248,7 @@
     }
     
     // Suspend all running matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
         [account pauseInBackgroundTask];
@@ -277,7 +277,7 @@
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Resume all existing matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
         [account resume];
@@ -336,7 +336,7 @@
     // force send the push token once per app start
     if (!isAPNSRegistered)
     {
-        NSArray *mxAccounts = accountManager.accounts;
+        NSArray *mxAccounts = accountManager.activeAccounts;
         for (MXKAccount *account in mxAccounts)
         {
             account.enablePushNotifications = YES;
@@ -371,7 +371,7 @@
             //**************
             // Patch consider the first session which knows the room id
             MXSession *mxSession;
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             
             if (mxAccounts.count == 1)
             {
@@ -425,7 +425,7 @@
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
             // Check whether the app user wants inApp notifications on new events for this session
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             for (MXKAccount *account in mxAccounts)
             {
                 if (account.mxSession == mxSession)
@@ -467,15 +467,19 @@
         MXKAccount *account = notif.object;
         if (account)
         {
-            // Prepare push notifications
-            [self registerUserNotificationSettings];
+            if (isAPNSRegistered)
+            {
+                // Enable push notifications by default on new added account
+                account.enablePushNotifications = YES;
+            }
+            else
+            {
+                // Set up push notifications
+                [self registerUserNotificationSettings];
+            }
             
             // Observe inApp notifications toggle change
             [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
-            
-            // Use MXFileStore as MXStore to permanently store events.
-            MXFileStore *mxFileStore = [[MXFileStore alloc] init];
-            [account openSessionWithStore:mxFileStore];
         }
     }];
     
@@ -496,26 +500,23 @@
     // Observe settings changes
     [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
-    // Check whether we're logged in
+    // Prepare account manager: Use MXFileStore as MXStore to permanently store events.
+    [MXKAccountManager sharedManager].storeClass = [MXFileStore class];
+    
+    // Check whether we're already logged in
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
     if (mxAccounts.count)
     {
-        // Prepare push notifications
+        // Set up push notifications
         [self registerUserNotificationSettings];
         
         // When user is already logged, we launch the app on Recents
         [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
-        // Prepare each account
+        // Observe inApp notifications toggle change for each account
         for (MXKAccount *account in mxAccounts)
         {
-            // Observe inApp notifications toggle change
             [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
-            
-            // Launch a matrix session for all existing accounts.
-            // Use MXFileStore as MXStore to permanently store events.
-            MXFileStore *mxFileStore = [[MXFileStore alloc] init];
-            [account openSessionWithStore:mxFileStore];
         }
     }
 }
@@ -523,19 +524,10 @@
 - (void)reloadMatrixSessions:(BOOL)clearCache
 {
     // Reload all running matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
-        
-        if (account.mxSession)
-        {
-            id<MXStore> store = account.mxSession.store;
-            
-            [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
-            
-            [account closeSession:clearCache];
-            [account openSessionWithStore:store];
-        }
+        [account reload:clearCache];
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
@@ -555,16 +547,6 @@
     
     // Clear cache
     [MXKMediaManager clearCache];
-    
-    // Reset all stored room data
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-    for (MXKAccount *account in mxAccounts)
-    {
-        if (account.mxSession)
-        {
-            [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:account.mxSession];
-        }
-    }
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logout];
@@ -640,62 +622,61 @@
             MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
             eventFormatter.isForSubtitle = YES;
             
-            [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule)
-             {
-                 
-                 // Check conditions to display this notification
-                 if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                     && ![self.masterTabBarController isPresentingMediaPicker])
-                 {
-                     
-                     MXKEventFormatterError error;
-                     NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
-                     if (messageText.length && (error == MXKEventFormatterErrorNone))
-                     {
-                         
-                         // Removing existing notification (if any)
-                         if (self.mxInAppNotification)
+            [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
+                
+                // Check conditions to display this notification
+                if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
+                    && ![self.masterTabBarController isPresentingMediaPicker])
+                {
+                    
+                    MXKEventFormatterError error;
+                    NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
+                    if (messageText.length && (error == MXKEventFormatterErrorNone))
+                    {
+                        
+                        // Removing existing notification (if any)
+                        if (self.mxInAppNotification)
+                        {
+                            [self.mxInAppNotification dismiss:NO];
+                        }
+                        
+                        // Check whether tweak is required
+                        for (MXPushRuleAction *ruleAction in rule.actions)
+                        {
+                            if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
+                            {
+                                if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
+                                {
+                                    // Play system sound (VoicemailReceived)
+                                    AudioServicesPlaySystemSound (1002);
+                                }
+                            }
+                        }
+                        
+                        __weak typeof(self) weakSelf = self;
+                        self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
+                                                                           message:messageText
+                                                                             style:MXKAlertStyleAlert];
+                        self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
+                                                                                                            style:MXKAlertActionStyleDefault
+                                                                                                          handler:^(MXKAlert *alert)
+                                                                      {
+                                                                          weakSelf.mxInAppNotification = nil;
+                                                                          [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
+                                                                      }];
+                        [self.mxInAppNotification addActionWithTitle:@"View"
+                                                               style:MXKAlertActionStyleDefault
+                                                             handler:^(MXKAlert *alert)
                          {
-                             [self.mxInAppNotification dismiss:NO];
-                         }
-                         
-                         // Check whether tweak is required
-                         for (MXPushRuleAction *ruleAction in rule.actions)
-                         {
-                             if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                             {
-                                 if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
-                                 {
-                                     // Play system sound (VoicemailReceived)
-                                     AudioServicesPlaySystemSound (1002);
-                                 }
-                             }
-                         }
-                         
-                         __weak typeof(self) weakSelf = self;
-                         self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
-                                                                            message:messageText
-                                                                              style:MXKAlertStyleAlert];
-                         self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
-                                                                                                             style:MXKAlertActionStyleDefault
-                                                                                                           handler:^(MXKAlert *alert)
-                                                                       {
-                                                                           weakSelf.mxInAppNotification = nil;
-                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
-                                                                       }];
-                         [self.mxInAppNotification addActionWithTitle:@"View"
-                                                                style:MXKAlertActionStyleDefault
-                                                              handler:^(MXKAlert *alert)
-                          {
-                              weakSelf.mxInAppNotification = nil;
-                              // Show the room
-                              [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
-                          }];
-                         
-                         [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
-                     }
-                 }
-             }];
+                             weakSelf.mxInAppNotification = nil;
+                             // Show the room
+                             [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
+                         }];
+                        
+                        [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
+                    }
+                }
+            }];
         }
         else
         {
@@ -757,7 +738,7 @@
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection
 {
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     
     if (mxAccounts.count == 1)
     {

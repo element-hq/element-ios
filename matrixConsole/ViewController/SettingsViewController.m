@@ -50,7 +50,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 @interface SettingsViewController ()
 {
-    
     MXKAccount *selectedAccount;
     id removedAccountObserver;
     id accountUserInfoObserver;
@@ -232,6 +231,22 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     clearCacheButton = nil;
 }
 
+- (IBAction)onAccountToggleChange:(id)sender
+{
+    UISwitch *accountSwitchToggle = sender;
+    
+    NSArray *accounts = [[MXKAccountManager sharedManager] accounts];
+    if (accountSwitchToggle.tag < accounts.count)
+    {
+        MXKAccount *account = [accounts objectAtIndex:accountSwitchToggle.tag];
+        account.disabled = !accountSwitchToggle.on;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
 #pragma mark - Actions
 
 - (IBAction)addAccount:(id)sender
@@ -380,6 +395,15 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             }
             
             accountCell.mxAccount = [accounts objectAtIndex:indexPath.row];
+            
+            // Display switch toggle in case of multiple accounts
+            if (accounts.count > 1 || accountCell.mxAccount.disabled)
+            {
+                accountCell.accountSwitchToggle.tag = indexPath.row;
+                accountCell.accountSwitchToggle.hidden = NO;
+                [accountCell.accountSwitchToggle addTarget:self action:@selector(onAccountToggleChange:) forControlEvents:UIControlEventValueChanged];
+            }
+            
             cell = accountCell;
         }
         else
@@ -738,7 +762,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    
     // sanity check
     if ((row >= 0) && (row < countryCodes.count))
     {
@@ -758,7 +781,6 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
 // return the MX cache size in bytes
 - (NSUInteger)MXCacheSize
 {
-    
     NSUInteger cacheSize = 0;
     
     NSArray *mxSessions = self.mxSessions;

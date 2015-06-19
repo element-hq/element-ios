@@ -205,7 +205,9 @@ static RageShakeManager* sharedInstance = nil;
         
         NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
         for (MXKAccount* account in mxAccounts) {
-            [message appendFormat:@"userId: %@\n", account.mxCredentials.userId];
+            NSString *disabled = account.disabled ? @" (disabled)" : @"";
+            
+            [message appendFormat:@"userId: %@%@\n", account.mxCredentials.userId, disabled];
             [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
             [message appendFormat:@"homeServerURL: %@\n", account.mxCredentials.homeServer];
         }
