@@ -155,7 +155,6 @@
 {
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
-        
     {
         self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
         self.masterTabBarController.delegate = self;
@@ -500,8 +499,10 @@
     // Observe settings changes
     [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
+    // Observers have been defined, we start now a matrix session for each enabled accounts.
     // Prepare account manager: Use MXFileStore as MXStore to permanently store events.
     [MXKAccountManager sharedManager].storeClass = [MXFileStore class];
+    [[MXKAccountManager sharedManager] openSessionForActiveAccounts];
     
     // Check whether we're already logged in
     NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
