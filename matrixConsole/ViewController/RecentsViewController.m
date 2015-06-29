@@ -212,34 +212,10 @@
         // Release the current selected room
         [currentRoomViewController destroy];
         currentRoomViewController = nil;
-        
-        // Force table refresh to deselect related cell
-        [self refreshRecentsDisplay];
     }
 }
 
 #pragma mark - Internal methods
-
-- (void)refreshRecentsDisplay
-{
-    // Update the unreadCount in the title
-    [self updateNavigationBarTitle];
-    
-    [self.recentsTableView reloadData];
-    
-    if (shouldScrollToTopOnRefresh)
-    {
-        [self scrollToTop];
-        shouldScrollToTopOnRefresh = NO;
-    }
-    
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-    // the selected room (if any) is updated and kept visible.
-    if (self.splitViewController && !self.splitViewController.isCollapsed)
-    {
-        [self refreshCurrentSelectedCell:YES];
-    }
-}
 
 - (void)updateNavigationBarTitle
 {
@@ -396,7 +372,23 @@
 #pragma mark - MXKDataSourceDelegate
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    [self refreshRecentsDisplay];
+    // Update the unreadCount in the title
+    [self updateNavigationBarTitle];
+    
+    [self.recentsTableView reloadData];
+    
+    if (shouldScrollToTopOnRefresh)
+    {
+        [self scrollToTop];
+        shouldScrollToTopOnRefresh = NO;
+    }
+    
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+    // the selected room (if any) is updated and kept visible.
+    if (self.splitViewController && !self.splitViewController.isCollapsed)
+    {
+        [self refreshCurrentSelectedCell:YES];
+    }
 }
 
 #pragma mark - MXKRecentListViewControllerDelegate

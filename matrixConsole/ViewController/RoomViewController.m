@@ -139,18 +139,6 @@
     [super displayRoom:dataSource];
 }
 
-- (void)onMatrixSessionChange
-{
-    [super onMatrixSessionChange];
-    
-    // Check dataSource state
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing)
-    {
-        // dataSource is not ready, keep running the loading wheel
-        [self.activityIndicator startAnimating];
-    }
-}
-
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
