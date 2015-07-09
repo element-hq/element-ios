@@ -22,11 +22,13 @@ PODS:
     - AFNetworking/NSURLSession
   - GBDeviceInfo (2.2.10)
   - HPGrowingTextView (1.1)
+  - libPhoneNumber-iOS (0.7.6)
   - Mantle (1.5.4):
     - Mantle/extobjc (= 1.5.4)
   - Mantle/extobjc (1.5.4)
   - MatrixKit (0.1.0):
     - HPGrowingTextView (~> 1.1)
+    - libPhoneNumber-iOS (~> 0.7.6)
     - MatrixSDK (~> 0.4.0)
   - MatrixSDK (0.4.0):
     - AFNetworking (~> 2.5.2)
@@ -55,10 +57,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 74bef1a10c0cafc488ffc936b45947f14b5b7f85
+    :commit: d19f9de196205c1430e3eddf0a267f0c72ead070
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 0f374cfa70024d8ee64469d1aecf4c76d0d38585
+    :commit: 6b6418c05a4a03122a75ffcd9c225b82ca733cc5
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   OpenWebRTC-SDK:
     :commit: 2e2fd572c22f73f1d6c42bf37697b33dd2af3cda
@@ -68,10 +70,11 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   GBDeviceInfo: 5866e2f529547f8a4c3c6917dc40ac53acd75234
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
+  libPhoneNumber-iOS: fb90c5e0d100923b61f0db81de56daefbb67b103
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
-  MatrixKit: 10b6c36dd997da0919a4b4f3f00f4ec352bdc765
+  MatrixKit: 968ca5d3b2277573991fb1646faca991468c6380
   MatrixSDK: 1645c94a7c7657e91e890c9c09d10094f79b7b92
   OpenWebRTC: 85be1caf6dc45b11106eacba93de61e3e52b1cf8
   OpenWebRTC-SDK: fd66e49ab80e88ed1e55231ac875a4976dc3ba74
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.37.2
