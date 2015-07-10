@@ -20,11 +20,9 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
 
-#import "SectionedContacts.h"
-
-@interface ContactsViewController : MXKTableViewController <UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate> {
-    NSArray* collationTitles;
-}
-
+/**
+ 'ContactsViewController' inherits MXKContactListViewController to handle contact list.
+ */
+@interface ContactsViewController : MXKContactListViewController <MXKContactListViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 @end
 

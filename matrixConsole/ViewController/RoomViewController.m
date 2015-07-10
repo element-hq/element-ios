@@ -15,31 +15,29 @@
  */
 
 #import "RoomViewController.h"
-#import "MemberViewController.h"
 
 #import "MXKRoomBubbleTableViewCell.h"
 
-#import "RoomMemberTableCell.h"
-#import "RoomTitleView.h"
-
-#import "MatrixHandler.h"
 #import "AppDelegate.h"
 
 #import "RageShakeManager.h"
 
-@interface RoomViewController () {
-    
+@interface RoomViewController ()
+{
     // Members list
-    NSArray *members;
     id membersListener;
+    
+    // Voip call options
+    UIButton *voipVoiceCallButton;
+    UIButton *voipVideoCallButton;
+    UIBarButtonItem *voipVoiceCallBarButtonItem;
+    UIBarButtonItem *voipVideoCallBarButtonItem;
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
 }
 
-@property (weak, nonatomic) IBOutlet UINavigationItem *roomNavItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *showRoomMembersButtonItem;
-@property (weak, nonatomic) IBOutlet RoomTitleView *roomTitleView;
 
 @property (strong, nonatomic) MXKAlert *actionMenu;
 
@@ -47,320 +45,162 @@
 
 @implementation RoomViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    
+    // Set room title view
+    [self setRoomTitleViewClass:MXKRoomTitleViewWithTopic.class];
     
     // Replace the default input toolbar view with the one based on `HPGrowingTextView`.
     [self setRoomInputToolbarViewClass:MXKRoomInputToolbarViewWithHPGrowingText.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    // ensure that the titleView will be scaled when it will be required
-    // during a screen rotation for example.
-    self.roomTitleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    
-    // Register a listener for events that concern room members
-    NSArray *mxMembersEvents = @[
-                                 kMXEventTypeStringRoomMember,
-                                 kMXEventTypeStringRoomPowerLevels,
-                                 kMXEventTypeStringPresence
-                                 ];
-    membersListener = [self.mxSession listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-        // consider only live event
-        if (direction == MXEventDirectionForwards) {
-            // Check the room Id (if any)
-            if (event.roomId && [event.roomId isEqualToString:self.roomDataSource.roomId] == NO) {
-                // This event does not concern the current room members
-                return;
-            }
-            
-            // Check whether no text field is editing before refreshing title view
-            if (!self.roomTitleView.isEditing) {
-                [self.roomTitleView refreshDisplay];
-            }
-
-            // refresh the
-            if (members.count > 0) {
-                // Hide potential action sheet
-                if (self.actionMenu) {
-                    [self.actionMenu dismiss:NO];
-                    self.actionMenu = nil;
-                }
-            }
-        }
-    }];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     
     // hide action
-    if (self.actionMenu) {
+    if (self.actionMenu)
+    {
         [self.actionMenu dismiss:NO];
         self.actionMenu = nil;
     }
     
-    // Store the potential message partially typed in text input
-    self.roomDataSource.partialTextMessage = self.inputToolbarView.textMessage;
-    
-    if (membersListener) {
-        [self.mxSession removeListener:membersListener];
-        membersListener = nil;
+    if (self.roomDataSource)
+    {
+        if (membersListener)
+        {
+            [self.roomDataSource.room removeListener:membersListener];
+            membersListener = nil;
+        }
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (self.childViewControllers)
+    {
+        // Dispose data source defined for room member list view controller (if any)
+        for (id childViewController in self.childViewControllers)
+        {
+            if ([childViewController isKindOfClass:[MXKRoomMemberListViewController class]])
+            {
+                MXKRoomMemberListViewController *viewController = (MXKRoomMemberListViewController*)childViewController;
+                MXKDataSource *dataSource = [viewController dataSource];
+                [viewController destroy];
+                [dataSource destroy];
+            }
+        }
+    }
+    
     [super viewDidAppear:animated];
     
-    // Set visible room id
-    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
-    
-    // Retrieve the potential message partially typed during last room display.
-    // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-    self.inputToolbarView.textMessage = self.roomDataSource.partialTextMessage;
+    if (self.roomDataSource)
+    {
+        // Set visible room id
+        [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
+    }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated
+{
     [super viewDidDisappear:animated];
     
     // Reset visible room id
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
 }
 
-#pragma mark -
+#pragma mark - Override MXKRoomViewController
 
-- (void)dismissKeyboard {
-    
-    [_roomTitleView dismissKeyboard];
-    [super dismissKeyboard];
-}
-
-- (void)didMatrixSessionStateChange {
-    
-    [super didMatrixSessionStateChange];
-    
-    // Check dataSource state
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
-        // dataSource is not ready, keep running the loading wheel
-        [self.activityIndicator startAnimating];
-    }
-}
-
-- (void)updateViewControllerAppearanceOnRoomDataSourceState {
-    
-    [super updateViewControllerAppearanceOnRoomDataSourceState];
-    
-    // Update UI by considering dataSource state
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady) {
-        // Check room members to enable/disable members button in nav bar
-        self.showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
-        
-        self.roomTitleView.mxRoom = self.roomDataSource.room;
-        self.roomTitleView.editable = YES;
-        self.roomTitleView.hidden = NO;
-    }
-    else {
-        self.showRoomMembersButtonItem.enabled = NO;
-        
-        // Update the title except if the room has just been left
-        if (!self.leftRoomReasonLabel) {
-            if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStatePreparing) {
-                self.roomTitleView.mxRoom = self.roomDataSource.room;
-                self.roomTitleView.hidden = (!self.roomTitleView.mxRoom);
-            }
-            else {
-                self.roomTitleView.mxRoom = nil;
-                self.roomTitleView.hidden = NO;
-            }
-        }
-        
-        self.roomTitleView.editable = NO;
-    }
-    
-    [self.roomTitleView refreshDisplay];
-}
-
-#pragma mark -
-
-- (void)destroy {
-    members = nil;
-    if (membersListener) {
+- (void)displayRoom:(MXKRoomDataSource *)dataSource
+{
+    // Remove members listener (if any) before changing dataSource.
+    if (membersListener)
+    {
+        [self.roomDataSource.room removeListener:membersListener];
         membersListener = nil;
     }
     
-    if (self.actionMenu) {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
-    }
-    
-    [super destroy];
+    [super displayRoom:dataSource];
 }
 
-#pragma mark - MXKDataSource delegate
-
-- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo {
+- (void)updateViewControllerAppearanceOnRoomDataSourceState
+{
+    [super updateViewControllerAppearanceOnRoomDataSourceState];
     
-    // Override default implementation in case of tap on avatar
-    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView]) {
-        selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
-        if (selectedRoomMember) {
-            [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
-        }
-    } else {
-        // Keep default implementation for other actions
-        [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
-    }
-}
-
-#pragma mark - UITextField delegate
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    NSString *alertMsg = nil;
-    
-    if (textField == _roomTitleView.displayNameTextField) {
-        // Check whether the user has enough power to rename the room
-        MXRoomPowerLevels *powerLevels = [self.roomDataSource.room.state powerLevels];
-        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
-        if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]) {
-            // Only the room name is edited here, update the text field with the room name
-            textField.text = self.roomDataSource.room.state.name;
-            textField.backgroundColor = [UIColor whiteColor];
-        } else {
-            alertMsg = @"You are not authorized to edit this room name";
-        }
-        
-        // Check whether the user is allowed to change room topic
-        if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
-            // Show topic text field even if the current value is nil
-            _roomTitleView.hiddenTopic = NO;
-            if (alertMsg) {
-                // Here the user can only update the room topic, switch on room topic field (without displaying alert)
-                alertMsg = nil;
-                [_roomTitleView.topicTextField becomeFirstResponder];
-                return NO;
-            }
-        }
-    } else if (textField == _roomTitleView.topicTextField) {
-        // Check whether the user has enough power to edit room topic
-        MXRoomPowerLevels *powerLevels = [self.roomDataSource.room.state powerLevels];
-        NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:[MatrixHandler sharedHandler].userId];
-        if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]) {
-            textField.backgroundColor = [UIColor whiteColor];
-            [self.roomTitleView stopTopicAnimation];
-        } else {
-            alertMsg = @"You are not authorized to edit this room topic";
-        }
-    }
-    
-    if (alertMsg) {
-        // Alert user
-        __weak typeof(self) weakSelf = self;
-        if (self.actionMenu) {
-            [self.actionMenu dismiss:NO];
-        }
-        self.actionMenu = [[MXKAlert alloc] initWithTitle:nil message:alertMsg style:MXKAlertStyleAlert];
-        self.actionMenu.cancelButtonIndex = [self.actionMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            weakSelf.actionMenu = nil;
-        }];
-        [self.actionMenu showInViewController:self];
-        return NO;
-    }
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField == _roomTitleView.displayNameTextField) {
-        textField.backgroundColor = [UIColor clearColor];
-        
-        NSString *roomName = textField.text;
-        if ((roomName.length || self.roomDataSource.room.state.name.length) && [roomName isEqualToString:self.roomDataSource.room.state.name] == NO) {
-            [self.activityIndicator startAnimating];
-            __weak typeof(self) weakSelf = self;
-            [self.roomDataSource.room setName:roomName success:^{
-                [self stopActivityIndicator];
-                // Refresh title display
-                textField.text = weakSelf.roomDataSource.room.state.displayname;
-            } failure:^(NSError *error) {
-                [self stopActivityIndicator];
-                // Revert change
-                textField.text = weakSelf.roomDataSource.room.state.displayname;
-                NSLog(@"[Console RoomVC] Rename room failed: %@", error);
-                // Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+    // Update UI by considering dataSource state
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
+    {
+        // Register a listener for events that concern room members
+        if (!membersListener)
+        {
+            membersListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                
+                // Consider only live event
+                if (direction == MXEventDirectionForwards)
+                {
+                    // Update navigation bar items
+                    [self updateNavigationBarButtonItems];
+                }
             }];
-        } else {
-            // No change on room name, restore title with room displayName
-            textField.text = self.roomDataSource.room.state.displayname;
-        }
-    } else if (textField == _roomTitleView.topicTextField) {
-        textField.backgroundColor = [UIColor clearColor];
-        
-        NSString *topic = textField.text;
-        if ((topic.length || self.roomDataSource.room.state.topic.length) && [topic isEqualToString:self.roomDataSource.room.state.topic] == NO) {
-            [self.activityIndicator startAnimating];
-            __weak typeof(self) weakSelf = self;
-            [self.roomDataSource.room setTopic:topic success:^{
-                [self stopActivityIndicator];
-                // Hide topic field if empty
-                weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
-            } failure:^(NSError *error) {
-                [self stopActivityIndicator];
-                // Revert change
-                textField.text = weakSelf.roomDataSource.room.state.topic;
-                // Hide topic field if empty
-                weakSelf.roomTitleView.hiddenTopic = !textField.text.length;
-                NSLog(@"[RoomVC] Topic room change failed: %@", error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        } else {
-            // Hide topic field if empty
-            _roomTitleView.hiddenTopic = !topic.length;
         }
     }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField*) textField {
-    if (textField == _roomTitleView.displayNameTextField) {
-        // "Next" key has been pressed
-        [_roomTitleView.topicTextField becomeFirstResponder];
-    } else {
-        // "Done" key has been pressed
-        [textField resignFirstResponder];
+    else
+    {
+        // Remove members listener if any.
+        if (membersListener)
+        {
+            [self.roomDataSource.room removeListener:membersListener];
+            membersListener = nil;
+        }
     }
-    return YES;
+    
+    // Update navigation bar items
+    [self updateNavigationBarButtonItems];
 }
 
-- (BOOL)isIRCStyleCommand:(NSString*)string {
+- (BOOL)isIRCStyleCommand:(NSString*)string
+{
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
-    if ([string hasPrefix:kCmdJoinRoom]) {
+    if ([string hasPrefix:kCmdJoinRoom])
+    {
         // Join a room
         NSString *roomAlias = [string substringFromIndex:kCmdJoinRoom.length + 1];
         // Remove white space from both ends
         roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         // Check
-        if (roomAlias.length) {
-            [self.mxSession joinRoom:roomAlias success:^(MXRoom *room) {
-                // Show the room
-                [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId];
-            } failure:^(NSError *error) {
-                NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
-                //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
-        } else {
+        if (roomAlias.length)
+        {
+            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room)
+             {
+                 // Show the room
+                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:self.mainSession];
+             } failure:^(NSError *error)
+             {
+                 NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
+                 //Alert user
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+             }];
+        }
+        else
+        {
             // Display cmd usage in text input as placeholder
             self.inputToolbarView.placeholder = @"Usage: /join <room_alias>";
         }
@@ -369,28 +209,134 @@
     return [super isIRCStyleCommand:string];
 }
 
+- (void)destroy
+{
+    if (membersListener)
+    {
+        [self.roomDataSource.room removeListener:membersListener];
+        membersListener = nil;
+    }
+    
+    if (self.actionMenu)
+    {
+        [self.actionMenu dismiss:NO];
+        self.actionMenu = nil;
+    }
+    
+    [super destroy];
+}
+
+#pragma mark -
+
+- (void)updateNavigationBarButtonItems
+{
+    // Update navigation bar buttons according to room members count
+    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
+    {
+        if (self.roomDataSource.room.state.members.count == 2)
+        {
+            if (!voipVoiceCallBarButtonItem || !voipVideoCallBarButtonItem)
+            {
+                voipVoiceCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                voipVoiceCallButton.frame = CGRectMake(0, 0, 36, 36);
+                UIImage *voiceImage = [UIImage imageNamed:@"voice"];
+                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateNormal];
+                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateHighlighted];
+                [voipVoiceCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                voipVoiceCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVoiceCallButton];
+                
+                voipVideoCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                voipVideoCallButton.frame = CGRectMake(0, 0, 36, 36);
+                UIImage *videoImage = [UIImage imageNamed:@"video"];
+                [voipVideoCallButton setImage:videoImage forState:UIControlStateNormal];
+                [voipVideoCallButton setImage:videoImage forState:UIControlStateHighlighted];
+                [voipVideoCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                voipVideoCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVideoCallButton];
+            }
+            
+            _showRoomMembersButtonItem.enabled = YES;
+            
+            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem, voipVideoCallBarButtonItem, voipVoiceCallBarButtonItem];
+        }
+        else
+        {
+            _showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
+            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
+        }
+    }
+    else
+    {
+        _showRoomMembersButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
+    }
+}
+
+#pragma mark - MXKDataSource delegate
+
+- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
+{
+    // Override default implementation in case of tap on avatar
+    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
+    {
+        selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+        if (selectedRoomMember)
+        {
+            [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+        }
+    }
+    else
+    {
+        // Keep default implementation for other actions
+        [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+    }
+}
+
 #pragma mark - Segues
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showMemberList"]) {
-        
-        if ([[segue destinationViewController] isKindOfClass:[MXKRoomMemberListViewController class]]) {
-            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)[segue destinationViewController];
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+    
+    id pushedViewController = [segue destinationViewController];
+    
+    if ([[segue identifier] isEqualToString:@"showMemberList"])
+    {
+        if ([pushedViewController isKindOfClass:[MXKRoomMemberListViewController class]])
+        {
+            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)pushedViewController;
             
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mxSession];
+            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
             [membersController displayList:membersDataSource];
         }
-    } else if ([[segue identifier] isEqualToString:@"showMemberDetails"]) {
-        MemberViewController* controller = [segue destinationViewController];
-        
-        if (selectedRoomMember) {
-            controller.mxRoomMember = selectedRoomMember;
+    }
+    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
+    {
+        if (selectedRoomMember)
+        {
+            MXKRoomMemberDetailsViewController *memberViewController = pushedViewController;
+            // Set rageShake handler
+            memberViewController.rageShakeManager = [RageShakeManager sharedManager];
+            // Set delegate to handle start chat option
+            memberViewController.delegate = [AppDelegate theDelegate];
+            
+            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
+            
             selectedRoomMember = nil;
         }
-        controller.mxRoom = self.roomDataSource.room;
+    }
+}
+
+#pragma mark - Action
+
+- (IBAction)onButtonPressed:(id)sender
+{
+    if (sender == voipVoiceCallButton || sender == voipVideoCallButton)
+    {
+        [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:(sender == voipVideoCallButton)];
     }
 }
 

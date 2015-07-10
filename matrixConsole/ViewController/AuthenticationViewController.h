@@ -16,9 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "AuthInputsView.h"
-
-@interface AuthenticationViewController : MXKViewController <UITextFieldDelegate, AuthInputsViewDelegate>
+@interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
 
 @end
 

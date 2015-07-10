@@ -19,6 +19,6 @@
 /**
  The data source for Console `RecentsViewController`.
  */
-@interface RecentListDataSource : MXKRecentListDataSource 
+@interface RecentListDataSource : MXKInterleavedRecentsDataSource
 
 @end

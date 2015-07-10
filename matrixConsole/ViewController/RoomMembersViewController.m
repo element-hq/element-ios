@@ -15,18 +15,15 @@
  */
 
 #import "RoomMembersViewController.h"
-#import "MemberViewController.h"
 
-#import "MatrixHandler.h"
-
+#import "AppDelegate.h"
 #import "RageShakeManager.h"
 
-@interface RoomMembersViewController () {
-    
-    // Keep reference on the current member view controller to release it correctly
-    MemberViewController *currentMemberViewController;
-    
-    // The selected member
+@interface RoomMembersViewController ()
+{
+    /**
+     The selected member
+     */
     MXRoomMember *selectedMember;
 }
 
@@ -34,14 +31,18 @@
 
 @implementation RoomMembersViewController
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    {
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     // Setup `MXKRoomMemberListViewController` properties
@@ -51,47 +52,42 @@
     self.delegate = self;
 }
 
-- (void)dealloc {
-    if (currentMemberViewController) {
-        [currentMemberViewController destroy];
-        currentMemberViewController = nil;
-    }
+- (void)dealloc
+{
     selectedMember = nil;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (currentMemberViewController) {
-        [currentMemberViewController destroy];
-        currentMemberViewController = nil;
-    }
-}
-
 #pragma mark - Segues
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showDetails"]) {
-        
-        if ([[segue destinationViewController] isKindOfClass:[MemberViewController class]]) {
-            if (selectedMember) {
-                currentMemberViewController = (MemberViewController *)[segue destinationViewController];
-                currentMemberViewController.mxSession = self.mxSession;
-                currentMemberViewController.mxRoomMember = selectedMember;
-                currentMemberViewController.mxRoom = [self.mxSession roomWithRoomId:self.dataSource.roomId];
-            }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+    
+    if ([[segue identifier] isEqualToString:@"showDetails"])
+    {
+        if (selectedMember)
+        {
+            MXKRoomMemberDetailsViewController *memberViewController = segue.destinationViewController;
+            // Set rageShake handler
+            memberViewController.rageShakeManager = [RageShakeManager sharedManager];
+            // Set delegate to handle start chat option
+            memberViewController.delegate = [AppDelegate theDelegate];
+            
+            [memberViewController displayRoomMember:selectedMember withMatrixRoom:[self.mainSession roomWithRoomId:self.dataSource.roomId]];
         }
     }
 }
 
 #pragma mark - MXKRoomMemberListViewControllerDelegate
-- (void)roomMemberListViewController:(MXKRoomMemberListViewController *)roomMemberListViewController didSelectMember:(MXRoomMember *)member {
-    
+- (void)roomMemberListViewController:(MXKRoomMemberListViewController *)roomMemberListViewController didSelectMember:(MXRoomMember *)member
+{
     // Report the selected member and open details view
     selectedMember = member;
     [self performSegueWithIdentifier:@"showDetails" sender:self];

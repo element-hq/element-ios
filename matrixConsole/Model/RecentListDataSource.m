@@ -30,7 +30,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Leave the selected room
-        id<MXKRecentCellDataStoring> recentCellData = [self cellDataAtIndex:indexPath.row];
+        id<MXKRecentCellDataStoring> recentCellData = [self cellDataAtIndexPath:indexPath];
         
         // cancel pending uploads/downloads
         // they are useless by now

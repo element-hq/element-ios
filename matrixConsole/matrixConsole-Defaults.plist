@@ -8,12 +8,8 @@
 	<string>https://matrix.org</string>
 	<key>homeserver</key>
 	<string>matrix.org</string>
-	<key>apnsIsActive</key>
-	<false/>
 	<key>apnsDeviceToken</key>
 	<string></string>
-	<key>enableInAppNotifications</key>
-	<false/>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
@@ -28,5 +24,11 @@
 	<false/>
 	<key>maxAllowedMediaCacheSize</key>
 	<integer>1073741824</integer>
+	<key>presenceColorForOnlineUser</key>
+	<integer>3401011</integer>
+	<key>presenceColorForUnavailableUser</key>
+	<integer>15066368</integer>
+	<key>presenceColorForOfflineUser</key>
+	<integer>15020851</integer>
 </dict>
 </plist>

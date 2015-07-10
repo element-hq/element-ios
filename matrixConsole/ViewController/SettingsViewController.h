@@ -16,17 +16,13 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-typedef void (^blockSettings_onReadyToLeave)();
-
-@interface SettingsViewController : MXKTableViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface SettingsViewController : MXKTableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 
 /**
  The application settings displayed in the view controller.
  By default the shared application settings are considered.
  */
 @property (nonatomic) MXKAppSettings *settings;
-
-- (BOOL)shouldLeave:(blockSettings_onReadyToLeave)handler;
 
 @end
 

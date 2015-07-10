@@ -19,7 +19,7 @@
 
 #import "MasterTabBarController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate> {
     BOOL isAPNSRegistered;
 }
 
@@ -36,11 +36,22 @@
 
 + (AppDelegate*)theDelegate;
 
+- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
+
 - (void)registerUserNotificationSettings;
+
+- (void)reloadMatrixSessions:(BOOL)clearCache;
 
 - (void)logout;
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error;
+
+/**
+ Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
+ 
+ @param userId 
+ */
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
 
 @end
 

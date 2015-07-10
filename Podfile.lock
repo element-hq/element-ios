@@ -1,23 +1,23 @@
 PODS:
-  - AFNetworking (2.5.3):
-    - AFNetworking/NSURLConnection (= 2.5.3)
-    - AFNetworking/NSURLSession (= 2.5.3)
-    - AFNetworking/Reachability (= 2.5.3)
-    - AFNetworking/Security (= 2.5.3)
-    - AFNetworking/Serialization (= 2.5.3)
-    - AFNetworking/UIKit (= 2.5.3)
-  - AFNetworking/NSURLConnection (2.5.3):
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.3):
+  - AFNetworking/NSURLSession (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.3)
-  - AFNetworking/Security (2.5.3)
-  - AFNetworking/Serialization (2.5.3)
-  - AFNetworking/UIKit (2.5.3):
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - GBDeviceInfo (2.2.10)
@@ -28,23 +28,53 @@ PODS:
   - Mantle/extobjc (1.5.4)
   - MatrixKit (0.1.0):
     - HPGrowingTextView (~> 1.1)
+    - libPhoneNumber-iOS (~> 0.7.6)
     - MatrixSDK (~> 0.4.0)
   - MatrixSDK (0.4.0):
     - AFNetworking (~> 2.5.2)
     - Mantle (~> 1.5)
+  - OpenWebRTC (0.3.1)
+  - OpenWebRTC-SDK (0.1.1):
+    - OpenWebRTC
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
-  - libPhoneNumber-iOS (~> 0.7.6)
-  - MatrixKit (~> 0.1.0)
+  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
+  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
+  - OpenWebRTC-SDK (from `https://github.com/matrix-org/openwebrtc-ios-sdk.git`, branch
+    `cvo_support`)
+
+EXTERNAL SOURCES:
+  MatrixKit:
+    :branch: develop
+    :git: https://github.com/matrix-org/matrix-ios-kit.git
+  MatrixSDK:
+    :branch: develop
+    :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  OpenWebRTC-SDK:
+    :branch: cvo_support
+    :git: https://github.com/matrix-org/openwebrtc-ios-sdk.git
+
+CHECKOUT OPTIONS:
+  MatrixKit:
+    :commit: d19f9de196205c1430e3eddf0a267f0c72ead070
+    :git: https://github.com/matrix-org/matrix-ios-kit.git
+  MatrixSDK:
+    :commit: 6b6418c05a4a03122a75ffcd9c225b82ca733cc5
+    :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  OpenWebRTC-SDK:
+    :commit: 2e2fd572c22f73f1d6c42bf37697b33dd2af3cda
+    :git: https://github.com/matrix-org/openwebrtc-ios-sdk.git
 
 SPEC CHECKSUMS:
-  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   GBDeviceInfo: 5866e2f529547f8a4c3c6917dc40ac53acd75234
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: fb90c5e0d100923b61f0db81de56daefbb67b103
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
-  MatrixKit: 47d6d55e1c5a32e43610b3965db3916e8ddc805c
+  MatrixKit: 968ca5d3b2277573991fb1646faca991468c6380
   MatrixSDK: 1645c94a7c7657e91e890c9c09d10094f79b7b92
+  OpenWebRTC: 85be1caf6dc45b11106eacba93de61e3e52b1cf8
+  OpenWebRTC-SDK: fd66e49ab80e88ed1e55231ac875a4976dc3ba74
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.37.2
