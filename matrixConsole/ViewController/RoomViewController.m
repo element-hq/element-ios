@@ -233,7 +233,8 @@
     // Update navigation bar buttons according to room members count
     if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
     {
-        if (self.roomDataSource.room.state.members.count == 2)
+        // Check conditions to display voip call buttons
+        if (self.roomDataSource.room.state.members.count == 2 && self.mainSession.callManager.callStack)
         {
             if (!voipVoiceCallBarButtonItem || !voipVideoCallBarButtonItem)
             {
