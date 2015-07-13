@@ -8,7 +8,7 @@ target "matrixConsole" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Console has been built
-pod 'MatrixKit', '~> 0.2.0'
+#pod 'MatrixKit', '~> 0.2.0'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -16,6 +16,7 @@ pod 'MatrixKit', '~> 0.2.0'
 # The develop branch version
 #pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
 #pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
+pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'master'
 
 # The one used for developping both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
