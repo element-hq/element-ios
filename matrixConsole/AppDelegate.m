@@ -24,6 +24,8 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
+
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
@@ -499,13 +501,20 @@
     // Observe settings changes
     [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
+    // Prepare account manager
+    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+    
+    // Use MXFileStore as MXStore to permanently store events.
+    accountManager.storeClass = [MXFileStore class];
+
+    // Use OpenWebRTC as call stack
+    accountManager.callStackClass = [MXOpenWebRTCCallStack class];
+
     // Observers have been defined, we start now a matrix session for each enabled accounts.
-    // Prepare account manager: Use MXFileStore as MXStore to permanently store events.
-    [MXKAccountManager sharedManager].storeClass = [MXFileStore class];
-    [[MXKAccountManager sharedManager] openSessionForActiveAccounts];
+    [accountManager openSessionForActiveAccounts];
     
     // Check whether we're already logged in
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    NSArray *mxAccounts = accountManager.accounts;
     if (mxAccounts.count)
     {
         // Set up push notifications

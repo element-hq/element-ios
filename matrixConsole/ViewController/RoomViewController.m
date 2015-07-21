@@ -234,7 +234,7 @@
     if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
     {
         // Check conditions to display voip call buttons
-        if (self.roomDataSource.room.state.members.count == 2 && self.mainSession.callManager.callStack)
+        if (self.roomDataSource.room.state.members.count == 2 && self.mainSession.callManager)
         {
             if (!voipVoiceCallBarButtonItem || !voipVideoCallBarButtonItem)
             {
