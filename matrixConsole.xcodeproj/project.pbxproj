@@ -14,6 +14,8 @@
 		717629521A7A682A00927125 /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 717629511A7A682A00927125 /* countryCodes.plist */; };
 		D648B86A591308736E2D4078 /* libPods-matrixConsole.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */; };
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
+		F01449A31B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */; };
+		F01449B41B56B14D00EA7D73 /* AccountDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */; };
 		F024098219E7D177006E741B /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F024098119E7D177006E741B /* tab_recents@2x.png */; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */; };
@@ -64,6 +66,10 @@
 		8141B1E2401FFCC3C5B99234 /* libPods-matrixConsole.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-matrixConsole.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7EC7E45C718BF2BBCE0CF48 /* Pods-matrixConsole.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matrixConsole.debug.xcconfig"; path = "Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole.debug.xcconfig"; sourceTree = "<group>"; };
 		F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "matrixConsole-Defaults.plist"; sourceTree = "<group>"; };
+		F01449A11B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalNotificationSettingsViewController.h; sourceTree = "<group>"; };
+		F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalNotificationSettingsViewController.m; sourceTree = "<group>"; };
+		F01449B21B56B14D00EA7D73 /* AccountDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDetailsViewController.h; sourceTree = "<group>"; };
+		F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDetailsViewController.m; sourceTree = "<group>"; };
 		F024098119E7D177006E741B /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -187,12 +193,16 @@
 		F03EF5E919F171EB00A0EE52 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F01449B21B56B14D00EA7D73 /* AccountDetailsViewController.h */,
+				F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */,
 				F03EF5EC19F171EB00A0EE52 /* AuthenticationViewController.h */,
 				F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */,
 				71193D271A6E3DC000E59A9E /* ContactsViewController.h */,
 				71193D281A6E3DC000E59A9E /* ContactsViewController.m */,
 				F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */,
 				F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */,
+				F01449A11B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.h */,
+				F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */,
 				F03EF5EE19F171EB00A0EE52 /* MasterTabBarController.h */,
 				F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */,
 				F03EF5F019F171EB00A0EE52 /* RecentsViewController.h */,
@@ -431,6 +441,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F07A80DB19DD9DE700B621A1 /* AppDelegate.m in Sources */,
+				F01449B41B56B14D00EA7D73 /* AccountDetailsViewController.m in Sources */,
 				F0ADEFFB1AD7D2B3008A4F21 /* RoomMembersViewController.m in Sources */,
 				F07A80D819DD9DE700B621A1 /* main.m in Sources */,
 				F0F535BF1ACDE46200B603F8 /* RecentListDataSource.m in Sources */,
@@ -441,6 +452,7 @@
 				F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */,
 				F03EF5F919F171EB00A0EE52 /* RecentsViewController.m in Sources */,
 				32F90B7B1B28906400DDC61B /* empty.mm in Sources */,
+				F01449A31B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m in Sources */,
 				71193D291A6E3DC000E59A9E /* ContactsViewController.m in Sources */,
 				F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */,
 			);
