@@ -37,6 +37,11 @@
     id reachabilityObserver;
     
     /**
+     MatrixKit error observer
+     */
+    id matrixKitErrorObserver;
+    
+    /**
      matrix session observer used to detect new opened sessions.
      */
     id matrixSessionStateObserver;
@@ -125,8 +130,8 @@
     if (isOffline)
     {
         // Add observer to leave this state automatically.
-        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note)
-        {
+        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
             NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
             if (statusItem)
             {
@@ -136,6 +141,7 @@
                     self.isOffline = NO;
                 }
             }
+            
         }];
     }
     else
@@ -216,6 +222,14 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    // Release MatrixKit error observer
+    if (matrixKitErrorObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:matrixKitErrorObserver];
+        matrixKitErrorObserver = nil;
+    }
+    
     if (self.errorNotification)
     {
         [self.errorNotification dismiss:NO];
@@ -276,6 +290,13 @@
     
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    // Observe matrixKit error to alert user on error
+    matrixKitErrorObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKErrorNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        [self showErrorAsAlert:note.object];
+        
+    }];
     
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -589,7 +610,6 @@
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
-        
     {
         title = @"Error";
     }
