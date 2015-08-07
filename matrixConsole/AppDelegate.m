@@ -601,6 +601,17 @@
     
     // Clear cache
     [MXKMediaManager clearCache];
+
+#ifdef MX_CALL_STACK_ENDPOINT
+    // Erase all created certificates and private keys by MXEndpointCallStack
+    for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
+    {
+        if ([account.mxSession.callManager.callStack isKindOfClass:MXEndpointCallStack.class])
+        {
+            [(MXEndpointCallStack*)account.mxSession.callManager.callStack deleteData:account.mxSession.myUser.userId];
+        }
+    }
+#endif
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logout];
