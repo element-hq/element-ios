@@ -36,10 +36,6 @@
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
 
-NSString* const kConfigurationFormatText = @"Console version: %@\r\nMatrixKit version: %@\r\nMatrixSDK version: %@\r\n%@";
-NSString* const kBuildFormatText = @"Build: %@";
-NSString* const kCommandsDescriptionText = @"The following commands are available in the room chat:\r\n\r\n /nick <display_name>: change your display name\r\n /me <action>: send the action you are doing. /me will be replaced by your display name\r\n /join <room_alias>: join a room\r\n /kick <user_id> [<reason>]: kick the user\r\n /ban <user_id> [<reason>]: ban the user\r\n /unban <user_id>: unban the user\r\n /op <user_id> <power_level>: set user power level\r\n /deop <user_id>: reset user power level to the room default value";
-
 @interface SettingsViewController ()
 {
     MXKAccount *selectedAccount;
@@ -298,7 +294,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         
         [self setCurrentMaxCachesSize:slider.value];
         
-        maxCacheSizeCell.mxkLabel.text = [NSString stringWithFormat:@"Maximum cache size (%@)", [NSByteCountFormatter stringFromByteCount:self.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+        maxCacheSizeCell.mxkLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_max_cache_size", @"MatrixConsole", nil), [NSByteCountFormatter stringFromByteCount:self.currentMaxCachesSize countStyle:NSByteCountFormatterCountStyleFile]];
     }
 }
 
@@ -392,8 +388,8 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             {
                 logoutBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
-            [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateNormal];
-            [logoutBtnCell.mxkButton setTitle:@"Logout all accounts" forState:UIControlStateHighlighted];
+            [logoutBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"account_logout_all", @"MatrixConsole", nil) forState:UIControlStateNormal];
+            [logoutBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"account_logout_all", @"MatrixConsole", nil) forState:UIControlStateHighlighted];
             [logoutBtnCell.mxkButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = logoutBtnCell;
@@ -411,7 +407,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             
             [contactsCell.mxkSwitch addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventValueChanged];
             
-            contactsCell.mxkLabel.text = @"Sync local contacts";
+            contactsCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contact_sync", @"MatrixConsole", nil);
             contactsCell.mxkSwitch.on = [_settings syncLocalContacts];
             contactsSyncSwitch = contactsCell.mxkSwitch;
             cell = contactsCell;
@@ -441,7 +437,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                     countryCell = [[MXKTableViewCellWithLabelAndSubLabel alloc] init];
                 }
                 
-                countryCell.mxkLabel.text = @"Select your country";
+                countryCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_country_select", @"MatrixConsole", nil);
                 countryCell.mxkSublabel.text = countryName;
                 countryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell = countryCell;
@@ -482,7 +478,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
                 clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
             
-            NSString *btnTitle = [NSString stringWithFormat:@"Clear Cache (%@)", [NSByteCountFormatter stringFromByteCount:self.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
+            NSString *btnTitle = [NSString stringWithFormat:@"%@ (%@)", NSLocalizedStringFromTable(@"settings_clear_cache", @"MatrixConsole", nil), [NSByteCountFormatter stringFromByteCount:self.cachesSize countStyle:NSByteCountFormatterCountStyleFile]];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             
@@ -518,31 +514,31 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             
             if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_ALL_EVENTS_INDEX)
             {
-                roomsSettingCell.mxkLabel.text = @"Display all events";
+                roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_display_all_events", @"MatrixConsole", nil);
                 roomsSettingCell.mxkSwitch.on = [_settings showAllEventsInRoomHistory];
                 allEventsSwitch = roomsSettingCell.mxkSwitch;
             }
             else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_REDACTIONS_INDEX)
             {
-                roomsSettingCell.mxkLabel.text = @"Show redactions";
+                roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_redactions", @"MatrixConsole", nil);
                 roomsSettingCell.mxkSwitch.on = [_settings showRedactionsInRoomHistory];
                 redactionsSwitch = roomsSettingCell.mxkSwitch;
             }
             else if (indexPath.row == SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX)
             {
-                roomsSettingCell.mxkLabel.text = @"Show unsupported events";
+                roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_unsupported_events", @"MatrixConsole", nil);
                 roomsSettingCell.mxkSwitch.on = [_settings showUnsupportedEventsInRoomHistory];
                 unsupportedEventsSwitch = roomsSettingCell.mxkSwitch;
             }
             else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX)
             {
-                roomsSettingCell.mxkLabel.text = @"Sort members by last seen time";
+                roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_sort_by_last_seen", @"MatrixConsole", nil);
                 roomsSettingCell.mxkSwitch.on = [_settings sortRoomMembersUsingLastSeenTime];
                 sortMembersSwitch = roomsSettingCell.mxkSwitch;
             }
             else if (indexPath.row == SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX)
             {
-                roomsSettingCell.mxkLabel.text = @"Display left members";
+                roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_display_left_members", @"MatrixConsole", nil);
                 roomsSettingCell.mxkSwitch.on = [_settings showLeftMembersInRoomMemberList];
                 displayLeftMembersSwitch = roomsSettingCell.mxkSwitch;
             }
@@ -562,9 +558,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         NSString* build = [AppDelegate theDelegate].build;
         if (build.length)
         {
-            build = [NSString stringWithFormat:kBuildFormatText, build];
+            build = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_config_build_number", @"MatrixConsole", nil), build];
         }
-        configurationCell.mxkTextView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
+        NSString *configurationFormatText = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", NSLocalizedStringFromTable(@"settings_config_ios_console_version", @"MatrixConsole", nil), NSLocalizedStringFromTable(@"settings_config_ios_kit_version", @"MatrixConsole", nil), NSLocalizedStringFromTable(@"settings_config_ios_sdk_version", @"MatrixConsole", nil), @"%@"];
+        configurationCell.mxkTextView.text = [NSString stringWithFormat:configurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
         cell = configurationCell;
     }
     else if (indexPath.section == SETTINGS_SECTION_COMMANDS_INDEX)
@@ -575,7 +572,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
             commandsCell = [[MXKTableViewCellWithTextView alloc] init];
         }
         
-        commandsCell.mxkTextView.text = kCommandsDescriptionText;
+        commandsCell.mxkTextView.text = NSLocalizedStringFromTable(@"settings_command_commands", @"MatrixConsole", nil);
         cell = commandsCell;
     }
     
@@ -614,9 +611,10 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
         NSString* build = [AppDelegate theDelegate].build;
         if (build.length)
         {
-            build = [NSString stringWithFormat:kBuildFormatText, build];
+            build = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_config_build_number", @"MatrixConsole", nil), build];
         }
-        textView.text = [NSString stringWithFormat:kConfigurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
+        NSString *configurationFormatText = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", NSLocalizedStringFromTable(@"settings_config_ios_console_version", @"MatrixConsole", nil), NSLocalizedStringFromTable(@"settings_config_ios_kit_version", @"MatrixConsole", nil), NSLocalizedStringFromTable(@"settings_config_ios_sdk_version", @"MatrixConsole", nil), @"%@"];
+        textView.text = [NSString stringWithFormat:configurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     }
@@ -624,7 +622,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     {
         UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
         textView.font = [UIFont systemFontOfSize:14];
-        textView.text = kCommandsDescriptionText;
+        textView.text = NSLocalizedStringFromTable(@"settings_command_commands", @"MatrixConsole", nil);
         CGSize contentSize = [textView sizeThatFits:textView.frame.size];
         return contentSize.height + 1;
     }
@@ -653,7 +651,7 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX)
     {
-        sectionLabel.text = @"Accounts";
+        sectionLabel.text = NSLocalizedStringFromTable(@"accounts", @"MatrixConsole", nil);
         
         UIButton *addAccount = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [addAccount addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
@@ -670,19 +668,19 @@ NSString* const kCommandsDescriptionText = @"The following commands are availabl
     }
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
     {
-        sectionLabel.text = @"Contacts";
+        sectionLabel.text = NSLocalizedStringFromTable(@"contacts", @"MatrixConsole", nil);
     }
     else if (section == SETTINGS_SECTION_ROOMS_INDEX)
     {
-        sectionLabel.text = @"Rooms";
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_title_rooms", @"MatrixConsole", nil);
     }
     else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX)
     {
-        sectionLabel.text = @"Configuration";
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_title_config", @"MatrixConsole", nil);
     }
     else if (section == SETTINGS_SECTION_COMMANDS_INDEX)
     {
-        sectionLabel.text = @"Commands";
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_title_commands", @"MatrixConsole", nil);
     }
     else
     {

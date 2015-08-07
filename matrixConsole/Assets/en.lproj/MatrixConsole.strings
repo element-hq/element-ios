@@ -1,0 +1,113 @@
+/*
+ Copyright 2015 OpenMarket Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+// Titles
+"recents" = "Recents";
+"accounts" = "Accounts";
+
+// Action
+"return_to_call" = "Return to call";
+"join" = "Join";
+"chat_with_user" = "Chat with %@";
+
+// Contact
+"invitation_subject" = "Matrix.org is magic";
+"contact_local_sync_prompt" = "Allow local contacts synchronization?";
+
+// Settings
+"settings_config_ios_console_version" = "Console version: %@";
+"settings_config_ios_kit_version" = "MatrixKit version: %@";
+"settings_config_ios_sdk_version" = "MatrixSDK version: %@";
+"settings_config_no_build_info" = "(no build info)";
+"settings_contact_sync" = "Sync local contacts";
+"settings_country_select" = "Select your country";
+"settings_show_redactions" = "Show redactions";
+"settings_show_unsupported_events" = "Show unsupported events";
+"settings_max_cache_size" = "Maximum cache size (%@)";
+
+// Accounts
+"account_logout_all" = "Logout all accounts";
+
+// Others
+"public_room_section_title" = "Public Rooms (at %@):";
+"public_room_empty_section_title" = "No Public Rooms (at %@)";
+"mark_all_as_read_prompt" = "Mark all as read?";
+"bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
+"rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"view" = "View";
+"chat_with" = "Chat with ";
+
+// actions 
+"create_room" = "Create Room";
+"join_room" = "Join Room";
+
+// Login Screen 
+"login_error_must_start_http" = "URL must start with http[s]://";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen 
+
+// contacts list screen 
+"contacts" = "Contacts";
+"invite_this_user_to_use_matrix" = "Invite this user to use matrix with";
+"invitation_message" = "I\'d like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
+
+// Settings screen 
+"settings_webclient_push" = "To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
+"settings_title_config" = "Configuration";
+"settings_title_rooms" = "Rooms";
+"settings_title_commands" = "Commands";
+"settings_config_build_number" = "Build: %@";
+"settings_display_all_events" = "Display all events";
+"settings_sort_by_last_seen" = "Sort members by last seen time";
+"settings_display_left_members" = "Display left members";
+"settings_clear_cache" = "Clear cache";
+
+// Notification settings screen 
+"notification_settings_global_notification_settings" = "Global Notification Settings";
+
+// gcm section 
+"settings_command_commands" = "The following commands are available in the room chat:\n\n /nick <display_name>: change your display name\n /me <action>: send the action you are doing. /me will be replaced by your display name\n /join <room_alias>: join a room\n /kick <user_id> [<reason>]: kick the user\n /ban <user_id> [<reason>]: ban the user\n /unban <user_id>: unban the user\n /op <user_id> <power_level>: set user power level\n /deop <user_id>: reset user power level to the room default value";
+
+// Settings keys 
+
+// call string 
+

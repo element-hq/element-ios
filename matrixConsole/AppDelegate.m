@@ -20,6 +20,8 @@
 #import "MXKContactManager.h"
 #import "RageShakeManager.h"
 
+#import "NSBundle+MatrixKit.h"
+
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -119,7 +121,7 @@
             _build = buildNumber;
         } else
         {
-            _build = buildBranch ? buildBranch : @"(no build info)";
+            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"MatrixConsole", nil);
         }
     }
     return _build;
@@ -611,12 +613,12 @@
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
     {
-        title = @"Error";
+        title = [NSBundle mxk_localizedStringForKey:@"error"];
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
     {
         [AppDelegate theDelegate].errorNotification = nil;
     }];
@@ -687,14 +689,14 @@
                         self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
                                                                            message:messageText
                                                                              style:MXKAlertStyleAlert];
-                        self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
+                        self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                                                                             style:MXKAlertActionStyleDefault
                                                                                                           handler:^(MXKAlert *alert)
                                                                       {
                                                                           weakSelf.mxInAppNotification = nil;
                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
                                                                       }];
-                        [self.mxInAppNotification addActionWithTitle:@"View"
+                        [self.mxInAppNotification addActionWithTitle:NSLocalizedStringFromTable(@"view", @"MatrixConsole", nil)
                                                                style:MXKAlertActionStyleDefault
                                                              handler:^(MXKAlert *alert)
                          {
@@ -784,7 +786,7 @@
             [accountPicker dismiss:NO];
         }
         
-        accountPicker = [[MXKAlert alloc] initWithTitle:@"Select an account" message:nil style:MXKAlertStyleActionSheet];
+        accountPicker = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"select_account"] message:nil style:MXKAlertStyleActionSheet];
         
         __weak typeof(self) weakSelf = self;
         for(MXKAccount *account in mxAccounts)
@@ -801,7 +803,7 @@
             }];
         }
         
-        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
         {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             strongSelf->accountPicker = nil;
@@ -988,7 +990,7 @@
     // Create statusBarButton
     callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width,topBarSize.height);
-    NSString *btnTitle = @"Return to call";
+    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"MatrixConsole", nil);
     
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateNormal];
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];

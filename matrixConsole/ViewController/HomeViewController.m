@@ -767,8 +767,8 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
         
         joinRoomCell.mxkTextField.text = currentAlias;
         joinRoomCell.mxkButton.enabled = (currentAlias.length != 0);
-        [joinRoomCell.mxkButton setTitle:@"Join" forState:UIControlStateNormal];
-        [joinRoomCell.mxkButton setTitle:@"Join" forState:UIControlStateHighlighted];
+        [joinRoomCell.mxkButton setTitle:NSLocalizedStringFromTable(@"join", @"MatrixConsole", nil) forState:UIControlStateNormal];
+        [joinRoomCell.mxkButton setTitle:NSLocalizedStringFromTable(@"join", @"MatrixConsole", nil) forState:UIControlStateHighlighted];
         [joinRoomCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         cell = joinRoomCell;
@@ -848,11 +848,11 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
     
     if (section == createRoomSection)
     {
-        sectionLabel.text = @"Create Room:";
+        sectionLabel.text = NSLocalizedStringFromTable(@"create_room", @"MatrixConsole", nil);
     }
     else if (section == joinRoomSection)
     {
-        sectionLabel.text = @"Join Room:";
+        sectionLabel.text = NSLocalizedStringFromTable(@"join_room", @"MatrixConsole", nil);
     }
     else
     {
@@ -875,7 +875,7 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
         
         if (publicRooms)
         {
-            sectionLabel.text = [NSString stringWithFormat:@"Public Rooms (at %@):", homeserver];
+            sectionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"public_room_section_title", @"MatrixConsole", nil), homeserver];
             
             if (homeServers.count > 1)
             {
@@ -920,7 +920,7 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
         }
         else
         {
-            sectionLabel.text = [NSString stringWithFormat:@"No Public Rooms (at %@)", homeserver];
+            sectionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"public_room_empty_section_title", @"MatrixConsole", nil), homeserver];
         }
     }
     
