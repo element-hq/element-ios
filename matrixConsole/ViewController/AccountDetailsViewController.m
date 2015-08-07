@@ -18,8 +18,6 @@
 
 #import "RageShakeManager.h"
 
-NSString* const kAccountDetailsNotificationRulesUserInfo = @"To configure global notification settings (like rules), go find a webclient and hit Settings > Notifications.";
-
 @interface AccountDetailsViewController()
 {
     NSInteger globalNotificationSettingsRowIndex;
@@ -73,8 +71,8 @@ NSString* const kAccountDetailsNotificationRulesUserInfo = @"To configure global
         {
             globalNotifSettingsBtnCell = [[MXKTableViewCellWithButton alloc] init];
         }
-        [globalNotifSettingsBtnCell.mxkButton setTitle:@"Global Notification Settings" forState:UIControlStateNormal];
-        [globalNotifSettingsBtnCell.mxkButton setTitle:@"Global Notification Settings" forState:UIControlStateHighlighted];
+        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"MatrixConsole", nil) forState:UIControlStateNormal];
+        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"MatrixConsole", nil) forState:UIControlStateHighlighted];
         [globalNotifSettingsBtnCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         globalNotifSettingsButton = globalNotifSettingsBtnCell.mxkButton;
@@ -88,7 +86,7 @@ NSString* const kAccountDetailsNotificationRulesUserInfo = @"To configure global
 //            userInfoCell = [[MXKTableViewCellWithTextView alloc] init];
 //        }
 //        
-//        userInfoCell.mxkTextView.text = kAccountDetailsNotificationRulesUserInfo;
+//        userInfoCell.mxkTextView.text = NSLocalizedStringFromTable(@"settings_webclient_push", @"MatrixConsole", nil);
 //        cell = userInfoCell;
     }
     else
@@ -110,7 +108,7 @@ NSString* const kAccountDetailsNotificationRulesUserInfo = @"To configure global
 //        {
 //            UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
 //            textView.font = [UIFont systemFontOfSize:14];
-//            textView.text = kAccountDetailsNotificationRulesUserInfo;
+//            textView.text = NSLocalizedStringFromTable(@"settings_webclient_push", @"MatrixConsole", nil);
 //            CGSize contentSize = [textView sizeThatFits:textView.frame.size];
 //            return contentSize.height + 1;
 //        }
