@@ -26,7 +26,14 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#define MX_CALL_STACK_OPENWEBRTC
+#ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
+#endif
+
+#ifdef MX_CALL_STACK_ENDPOINT
+#import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
+#endif
 
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
@@ -530,11 +537,25 @@
     // Use MXFileStore as MXStore to permanently store events.
     accountManager.storeClass = [MXFileStore class];
 
-    // Use OpenWebRTC as call stack
-    accountManager.callStackClass = [MXOpenWebRTCCallStack class];
-
     // Observers have been defined, we start now a matrix session for each enabled accounts.
     [accountManager openSessionForActiveAccounts];
+
+    // Set the VoIP call stack
+    for (MXKAccount *account in accountManager.accounts)
+    {
+        id<MXCallStack> callStack;
+
+#ifdef MX_CALL_STACK_OPENWEBRTC
+        callStack = [[MXOpenWebRTCCallStack alloc] init];
+#endif
+#ifdef MX_CALL_STACK_ENDPOINT
+        callStack = [[MXEndpointCallStack alloc] initWithMatrixId:account.mxSession.myUser.userId];
+#endif
+        if (callStack)
+        {
+            [account.mxSession enableVoIPWithCallStack:callStack];
+        }
+    }
     
     // Check whether we're already logged in
     NSArray *mxAccounts = accountManager.accounts;
