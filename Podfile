@@ -1,9 +1,9 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, "6.0"
+# platform :ios, "7.0"
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "matrixConsole" do
+target "Vector" do
 
 
 # Different flavours of pods to MatrixKit
@@ -29,10 +29,6 @@ pod 'GBDeviceInfo', '~> 2.2.9'
 # The wrapper lib between MatrixSDK and OpenWebRTC-SDK
 pod 'MatrixOpenWebRTCWrapper', :git => 'https://github.com/matrix-org/matrix-ios-openwebrtc-wrapper.git', :branch => 'master'
 pod 'OpenWebRTC-SDK', :git => 'https://github.com/matrix-org/openwebrtc-ios-sdk.git', :branch => 'cvo_support'
-
-end
-
-target "matrixConsole" do
 
 end
 
