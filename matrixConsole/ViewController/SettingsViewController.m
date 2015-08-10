@@ -238,7 +238,6 @@
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    
     if (sender == allEventsSwitch)
     {
         _settings.showAllEventsInRoomHistory = allEventsSwitch.on;
@@ -390,6 +389,8 @@
             }
             [logoutBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"account_logout_all", @"MatrixConsole", nil) forState:UIControlStateNormal];
             [logoutBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"account_logout_all", @"MatrixConsole", nil) forState:UIControlStateHighlighted];
+            
+            [logoutBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [logoutBtnCell.mxkButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = logoutBtnCell;
@@ -483,7 +484,9 @@
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             
             clearCacheButton = clearCacheBtnCell.mxkButton;
-            [clearCacheBtnCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [clearCacheButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [clearCacheButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = clearCacheBtnCell;
         }
@@ -500,6 +503,8 @@
             maxCacheSizeCell.mxkSlider.value = self.currentMaxCachesSize;
             
             [self onSliderValueChange:maxCacheSizeCell.mxkSlider];
+            
+            [maxCacheSizeCell.mxkSlider addTarget:self action:@selector(onSliderValueChange:) forControlEvents:UIControlEventValueChanged];
             cell = maxCacheSizeCell;
         }
         else

@@ -86,13 +86,7 @@
 
 - (void)dealloc
 {
-    if (currentRoomViewController)
-    {
-        [currentRoomViewController destroy];
-        currentRoomViewController = nil;
-    }
-    selectedRoomId = nil;
-    selectedRoomSession = nil;
+    [self closeSelectedRoom];
 }
 
 - (void)destroy
@@ -153,7 +147,6 @@
     selectedRoomSession = nil;
     
     if (markAllAsReadAlert)
-        
     {
         [markAllAsReadAlert dismiss:NO];
         markAllAsReadAlert = nil;
@@ -211,7 +204,14 @@
     
     if (currentRoomViewController)
     {
-        // Release the current selected room
+        if (currentRoomViewController.roomDataSource)
+        {
+            // Let the manager release this room data source
+            MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+            [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
+        }
+
         [currentRoomViewController destroy];
         currentRoomViewController = nil;
     }
@@ -333,9 +333,17 @@
         
         if ([controller isKindOfClass:[RoomViewController class]])
         {
-            // Release potential Room ViewController
+            // Release existing Room view controller (if any)
             if (currentRoomViewController)
             {
+                if (currentRoomViewController.roomDataSource)
+                {
+                    // Let the manager release this room data source
+                    MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
+                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                    [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
+                }
+                
                 [currentRoomViewController destroy];
                 currentRoomViewController = nil;
             }
