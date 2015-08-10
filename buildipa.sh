@@ -6,7 +6,7 @@ builddir="build"
 outdir="out"
 
 sdk="iphoneos"
-basecmd="xcodebuild -scheme matrixConsole -workspace matrixConsole.xcworkspace -configuration Release -sdk $sdk -derivedDataPath $builddir"
+basecmd="xcodebuild -scheme Vector -workspace Vector.xcworkspace -configuration Release -sdk $sdk -derivedDataPath $builddir"
 vars=""
 
 if [ -n "$GIT_BRANCH" ]
@@ -20,17 +20,17 @@ fi
 
 if [ "$1" == 'clean' ]
 then
-	if [ -d "matrixConsole.xcworkspace" ]
+	if [ -d "Vector.xcworkspace" ]
 	then
 		$basecmd clean
 	fi
 	rm -r "$builddir" "$outdir" || true
 else
-	if [ ! -d "matrixConsole.xcworkspace" ]
+	if [ ! -d "Vector.xcworkspace" ]
 	then
 		echo "Please run pod install first"
 		exit 1
 	fi
-	$basecmd -archivePath "out/matrixConsole.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars" "$@"
-	xcrun -sdk $sdk PackageApplication -v $outdir/matrixConsole.xcarchive/Products/Applications/matrixConsole.app -o `pwd`/out/matrixConsole.ipa
+	$basecmd -archivePath "out/Vector.xcarchive" archive GCC_PREPROCESSOR_DEFINITIONS="\$(GCC_PREPROCESSOR_DEFINITIONS) $vars" "$@"
+	xcrun -sdk $sdk PackageApplication -v $outdir/Vector.xcarchive/Products/Applications/Vector.app -o `pwd`/out/Vector.ipa
 fi
