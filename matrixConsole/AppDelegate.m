@@ -20,9 +20,20 @@
 #import "MXKContactManager.h"
 #import "RageShakeManager.h"
 
+#import "NSBundle+MatrixKit.h"
+
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
+
+#define MX_CALL_STACK_OPENWEBRTC
+#ifdef MX_CALL_STACK_OPENWEBRTC
+#import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
+#endif
+
+#ifdef MX_CALL_STACK_ENDPOINT
+#import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
+#endif
 
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
@@ -33,6 +44,11 @@
      Reachability observer
      */
     id reachabilityObserver;
+    
+    /**
+     MatrixKit error observer
+     */
+    id matrixKitErrorObserver;
     
     /**
      matrix session observer used to detect new opened sessions.
@@ -112,7 +128,7 @@
             _build = buildNumber;
         } else
         {
-            _build = buildBranch ? buildBranch : @"(no build info)";
+            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"MatrixConsole", nil);
         }
     }
     return _build;
@@ -123,8 +139,8 @@
     if (isOffline)
     {
         // Add observer to leave this state automatically.
-        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note)
-        {
+        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
             NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
             if (statusItem)
             {
@@ -134,6 +150,7 @@
                     self.isOffline = NO;
                 }
             }
+            
         }];
     }
     else
@@ -214,6 +231,14 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    // Release MatrixKit error observer
+    if (matrixKitErrorObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:matrixKitErrorObserver];
+        matrixKitErrorObserver = nil;
+    }
+    
     if (self.errorNotification)
     {
         [self.errorNotification dismiss:NO];
@@ -274,6 +299,13 @@
     
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    // Observe matrixKit error to alert user on error
+    matrixKitErrorObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKErrorNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        [self showErrorAsAlert:note.object];
+        
+    }];
     
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -499,13 +531,34 @@
     // Observe settings changes
     [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
+    // Prepare account manager
+    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+    
+    // Use MXFileStore as MXStore to permanently store events.
+    accountManager.storeClass = [MXFileStore class];
+
     // Observers have been defined, we start now a matrix session for each enabled accounts.
-    // Prepare account manager: Use MXFileStore as MXStore to permanently store events.
-    [MXKAccountManager sharedManager].storeClass = [MXFileStore class];
-    [[MXKAccountManager sharedManager] openSessionForActiveAccounts];
+    [accountManager openSessionForActiveAccounts];
+
+    // Set the VoIP call stack
+    for (MXKAccount *account in accountManager.accounts)
+    {
+        id<MXCallStack> callStack;
+
+#ifdef MX_CALL_STACK_OPENWEBRTC
+        callStack = [[MXOpenWebRTCCallStack alloc] init];
+#endif
+#ifdef MX_CALL_STACK_ENDPOINT
+        callStack = [[MXEndpointCallStack alloc] initWithMatrixId:account.mxSession.myUser.userId];
+#endif
+        if (callStack)
+        {
+            [account.mxSession enableVoIPWithCallStack:callStack];
+        }
+    }
     
     // Check whether we're already logged in
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+    NSArray *mxAccounts = accountManager.accounts;
     if (mxAccounts.count)
     {
         // Set up push notifications
@@ -548,6 +601,17 @@
     
     // Clear cache
     [MXKMediaManager clearCache];
+
+#ifdef MX_CALL_STACK_ENDPOINT
+    // Erase all created certificates and private keys by MXEndpointCallStack
+    for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
+    {
+        if ([account.mxSession.callManager.callStack isKindOfClass:MXEndpointCallStack.class])
+        {
+            [(MXEndpointCallStack*)account.mxSession.callManager.callStack deleteData:account.mxSession.myUser.userId];
+        }
+    }
+#endif
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logout];
@@ -580,14 +644,13 @@
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     if (!title)
-        
     {
-        title = @"Error";
+        title = [NSBundle mxk_localizedStringForKey:@"error"];
     }
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
     {
         [AppDelegate theDelegate].errorNotification = nil;
     }];
@@ -658,14 +721,14 @@
                         self.mxInAppNotification = [[MXKAlert alloc] initWithTitle:roomState.displayname
                                                                            message:messageText
                                                                              style:MXKAlertStyleAlert];
-                        self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:@"Cancel"
+                        self.mxInAppNotification.cancelButtonIndex = [self.mxInAppNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                                                                             style:MXKAlertActionStyleDefault
                                                                                                           handler:^(MXKAlert *alert)
                                                                       {
                                                                           weakSelf.mxInAppNotification = nil;
                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
                                                                       }];
-                        [self.mxInAppNotification addActionWithTitle:@"View"
+                        [self.mxInAppNotification addActionWithTitle:NSLocalizedStringFromTable(@"view", @"MatrixConsole", nil)
                                                                style:MXKAlertActionStyleDefault
                                                              handler:^(MXKAlert *alert)
                          {
@@ -755,7 +818,7 @@
             [accountPicker dismiss:NO];
         }
         
-        accountPicker = [[MXKAlert alloc] initWithTitle:@"Select an account" message:nil style:MXKAlertStyleActionSheet];
+        accountPicker = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"select_account"] message:nil style:MXKAlertStyleActionSheet];
         
         __weak typeof(self) weakSelf = self;
         for(MXKAccount *account in mxAccounts)
@@ -772,7 +835,7 @@
             }];
         }
         
-        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
         {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             strongSelf->accountPicker = nil;
@@ -959,7 +1022,7 @@
     // Create statusBarButton
     callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width,topBarSize.height);
-    NSString *btnTitle = @"Return to call";
+    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"MatrixConsole", nil);
     
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateNormal];
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];

@@ -237,10 +237,22 @@
         <!--Account Details View Controller-->
         <scene sceneID="V8G-Oz-3KA">
             <objects>
-                <tableViewController id="KeQ-Sp-kmH" customClass="MXKAccountDetailsViewController" sceneMemberID="viewController"/>
+                <tableViewController id="KeQ-Sp-kmH" customClass="AccountDetailsViewController" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="h5x-Kb-9pa" kind="show" identifier="showGlobalNotificationSettings" id="kgj-1g-opx"/>
+                    </connections>
+                </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KBx-ZK-1zU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1661" y="2022"/>
+        </scene>
+        <!--Global notification settings-->
+        <scene sceneID="QZt-ZR-Vkj">
+            <objects>
+                <tableViewController title="Global notification settings" id="h5x-Kb-9pa" customClass="GlobalNotificationSettingsViewController" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iOf-Cf-2Ew" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1661" y="2776"/>
         </scene>
         <!--SettingsNav-->
         <scene sceneID="b0q-mf-7ii">
@@ -327,8 +339,8 @@
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="m9P-N3-WZN"/>
         <segue reference="Vo4-8x-dtH"/>
+        <segue reference="9Sj-Yf-p2I"/>
         <segue reference="17E-G9-IZ6"/>
     </inferredMetricsTieBreakers>
 </document>

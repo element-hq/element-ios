@@ -22,6 +22,8 @@
 
 #import "GBDeviceInfo_iOS.h"
 
+#import "NSBundle+MatrixKit.h"
+
 static RageShakeManager* sharedInstance = nil;
 
 @interface RageShakeManager() {
@@ -65,10 +67,10 @@ static RageShakeManager* sharedInstance = nil;
 - (void)promptCrashReportInViewController:(UIViewController*)viewController {
     if ([MXLogger crashLog] && [MFMailComposeViewController canSendMail]) {
         
-        confirmationAlert = [[MXKAlert alloc] initWithTitle:@"The application has crashed last time. Would you like to submit a crash report?"  message:nil style:MXKAlertStyleAlert];
+        confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
         
         __weak typeof(self) weakSelf = self;
-        [confirmationAlert addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             typeof(self) self = weakSelf;
             self->confirmationAlert = nil;
             
@@ -76,7 +78,7 @@ static RageShakeManager* sharedInstance = nil;
             [MXLogger deleteCrashLog];
         }];
         
-        [confirmationAlert addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
             typeof(self) self = weakSelf;
             self->confirmationAlert = nil;
             
@@ -108,15 +110,15 @@ static RageShakeManager* sharedInstance = nil;
         && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION)) {
         
         if ([responder isKindOfClass:[UIViewController class]] && [MFMailComposeViewController canSendMail]) {
-            confirmationAlert = [[MXKAlert alloc] initWithTitle:@"You seem to be shaking the phone in frustration. Would you like to submit a bug report?"  message:nil style:MXKAlertStyleAlert];
+            confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
             
             __weak typeof(self) weakSelf = self;
-            [confirmationAlert addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 typeof(self) self = weakSelf;
                 self->confirmationAlert = nil;
             }];
             
-            [confirmationAlert addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                 typeof(self) self = weakSelf;
                 self->confirmationAlert = nil;
                 [self sendEmail:(UIViewController*)responder withSnapshot:YES];

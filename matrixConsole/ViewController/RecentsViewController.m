@@ -21,6 +21,8 @@
 
 #import "RageShakeManager.h"
 
+#import "NSBundle+MatrixKit.h"
+
 @interface RecentsViewController ()
 {
     
@@ -84,13 +86,7 @@
 
 - (void)dealloc
 {
-    if (currentRoomViewController)
-    {
-        [currentRoomViewController destroy];
-        currentRoomViewController = nil;
-    }
-    selectedRoomId = nil;
-    selectedRoomSession = nil;
+    [self closeSelectedRoom];
 }
 
 - (void)destroy
@@ -151,7 +147,6 @@
     selectedRoomSession = nil;
     
     if (markAllAsReadAlert)
-        
     {
         [markAllAsReadAlert dismiss:NO];
         markAllAsReadAlert = nil;
@@ -209,7 +204,14 @@
     
     if (currentRoomViewController)
     {
-        // Release the current selected room
+        if (currentRoomViewController.roomDataSource)
+        {
+            // Let the manager release this room data source
+            MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+            [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
+        }
+
         [currentRoomViewController destroy];
         currentRoomViewController = nil;
     }
@@ -219,11 +221,11 @@
 
 - (void)updateNavigationBarTitle
 {
-    NSString *title = @"Recents";
+    NSString *title = NSLocalizedStringFromTable(@"recents", @"MatrixConsole", nil);
     
     if (self.dataSource.unreadCount)
     {
-        title = [NSString stringWithFormat:@"Recents (%tu)", self.dataSource.unreadCount];
+        title = [NSString stringWithFormat:@"%@ (%tu)", title, self.dataSource.unreadCount];
     }
     self.navigationItem.title = title;
 }
@@ -291,15 +293,15 @@
     {
         __weak typeof(self) weakSelf = self;
         
-        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:@"Mark all as read?" message:nil style:MXKAlertStyleAlert];
+        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"MatrixConsole", nil) message:nil style:MXKAlertStyleAlert];
         
-        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                                                 {
                                                     typeof(self) strongSelf = weakSelf;
                                                     strongSelf->markAllAsReadAlert = nil;
                                                 }];
         
-        [markAllAsReadAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+        [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
          {
              typeof(self) strongSelf = weakSelf;
              
@@ -331,9 +333,17 @@
         
         if ([controller isKindOfClass:[RoomViewController class]])
         {
-            // Release potential Room ViewController
+            // Release existing Room view controller (if any)
             if (currentRoomViewController)
             {
+                if (currentRoomViewController.roomDataSource)
+                {
+                    // Let the manager release this room data source
+                    MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
+                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                    [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
+                }
+                
                 [currentRoomViewController destroy];
                 currentRoomViewController = nil;
             }

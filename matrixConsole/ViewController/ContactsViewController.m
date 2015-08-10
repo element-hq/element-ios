@@ -20,7 +20,7 @@
 
 #import "RageShakeManager.h"
 
-NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Please, visit the website http://matrix.org to have more information.";
+#import "NSBundle+MatrixKit.h"
 
 @interface ContactsViewController ()
 {
@@ -83,14 +83,14 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             {
                 __weak typeof(self) weakSelf = self;
                 
-                self.allowContactSyncAlert = [[MXKAlert alloc] initWithTitle:@"Allow local contacts synchronization?"  message:nil style:MXKAlertStyleAlert];
+                self.allowContactSyncAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"contact_local_sync_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
                 
-                [self.allowContactSyncAlert addActionWithTitle:@"No" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                [self.allowContactSyncAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                 {
                     weakSelf.allowContactSyncAlert = nil;
                 }];
                 
-                [self.allowContactSyncAlert addActionWithTitle:@"Yes" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                [self.allowContactSyncAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                 {
                     weakSelf.allowContactSyncAlert = nil;
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -140,14 +140,14 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             {
                 NSString* matrixID = [matrixIDs objectAtIndex:0];
                 
-                self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with %@", matrixID]  message:nil style:MXKAlertStyleAlert];
+                self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"chat_with_user", @"MatrixConsole", nil), matrixID]  message:nil style:MXKAlertStyleAlert];
                 
-                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                [self.startChatMenu addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                  {
                      weakSelf.startChatMenu = nil;
                  }];
                 
-                [self.startChatMenu addActionWithTitle:@"OK" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                [self.startChatMenu addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                  {
                      weakSelf.startChatMenu = nil;
                      
@@ -156,7 +156,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
             }
             else
             {
-                self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Chat with "]  message:nil style:MXKAlertStyleActionSheet];
+                self.startChatMenu = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"chat_with", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleActionSheet];
                 
                 for(NSString* matrixID in matrixIDs)
                 {
@@ -168,7 +168,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                      }];
                 }
                 
-                [self.startChatMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                [self.startChatMenu addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                  {
                      weakSelf.startChatMenu = nil;
                  }];
@@ -185,7 +185,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
         if (([MFMessageComposeViewController canSendText] ? contact.emailAddresses.count : 0) + (contact.phoneNumbers.count > 0))
         {
             
-            self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:@"Invite this user to use matrix with"]  message:nil style:MXKAlertStyleActionSheet];
+            self.startChatMenu = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_this_user_to_use_matrix", @"MatrixConsole", nil)]  message:nil style:MXKAlertStyleActionSheet];
             
             // check if the target can send SMSes
             if ([MFMessageComposeViewController canSendText])
@@ -204,7 +204,7 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                              
                          {
                              messageComposer.messageComposeDelegate = weakSelf;
-                             messageComposer.body =kInvitationMessage;
+                             messageComposer.body = NSLocalizedStringFromTable(@"invitation_message", @"MatrixConsole", nil);
                              messageComposer.recipients = [NSArray arrayWithObject:phonenumber.textNumber];
                              
                              dispatch_async(dispatch_get_main_queue(), ^{
@@ -224,15 +224,15 @@ NSString *const kInvitationMessage = @"I'd like to chat with you with matrix. Pl
                      
                      dispatch_async(dispatch_get_main_queue(), ^{
                          
-                         NSString* subject = [ @"Matrix.org is magic" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                         NSString* body = [kInvitationMessage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                         NSString* subject = [NSLocalizedStringFromTable(@"invitation_subject", @"MatrixConsole", nil) stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                         NSString* body = [NSLocalizedStringFromTable(@"invitation_message", @"MatrixConsole", nil) stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                          
                          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@?subject=%@&body=%@", email.emailAddress, subject, body]]];
                      });
                  }];
             }
             
-            [self.startChatMenu addActionWithTitle:@"Cancel" style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+            [self.startChatMenu addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
              {
                  weakSelf.startChatMenu = nil;
              }];
