@@ -1,3 +1,15 @@
+Changes in Console in 0.5.1 (2015-08-10)
+===============================================
+
+Improvements:
+ * Add localized strings (see MatrixConsole.strings)
+ * Error handling: Alert user on MatrixKit error.
+ * RecentsViewController: release the current room resources when user selects another room.
+
+Bug fixes:
+ * Bug Fix: Settings - The slider related to the maximum cache size is not working.
+ * Bug Fix: Settings - The user is logged out when he press "Clear cache" button.
+
 Changes in Console in 0.5.0 (2015-07-10)
 ===============================================
 
