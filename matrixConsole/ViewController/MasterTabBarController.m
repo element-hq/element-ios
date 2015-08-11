@@ -21,7 +21,6 @@
 #import "HomeViewController.h"
 
 #import "RecentsViewController.h"
-#import "RecentListDataSource.h"
 
 #import "ContactsViewController.h"
 
@@ -196,7 +195,7 @@
         if (!mxSessionArray.count)
         {
             // This is the first added session, list all the recents for the logged user
-            RecentListDataSource *recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+            MXKInterleavedRecentsDataSource *recentlistDataSource = [[MXKInterleavedRecentsDataSource alloc] initWithMatrixSession:mxSession];
             [recentsViewController displayList:recentlistDataSource];
         }
         else
