@@ -25,7 +25,6 @@
 
 @interface RecentsViewController ()
 {
-    
     // Recents refresh handling
     BOOL shouldScrollToTopOnRefresh;
     
