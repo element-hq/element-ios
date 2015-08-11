@@ -1,28 +1,24 @@
-Console
-=======
+Vector-ios
+==========
 
-Console is an iOS Matrix client. 
+Vector/iOS is an iOS Matrix client. 
 
-It is also a sample that demonstrates how to use 
-MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and 
-MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk) in an iOS app.
+It is based on MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk).
 
-The app can be installed from the App Store at
-https://itunes.apple.com/gb/app/matrix-console/id970074271?mt=8
-or you can build from source as per below:
+You can build the app from source as per below:
 
 Build instructions
 ==================
 
-Before opening the Console Xcode workspace, you need to build it with the
+Before opening the Vector Xcode workspace, you need to build it with the
 CocoaPods command::
 
-        $ cd Console
+        $ cd Vector
         $ pod install
 
-This will load all dependencies for the Console source code, including MatrixKit and MatrixSDK.
+This will load all dependencies for the Vector source code, including MatrixKit and MatrixSDK.
 
-Then, open ``matrixConsole.xcworkspace`` with Xcode
+Then, open ``Vector.xcworkspace`` with Xcode
 
-        $ open matrixConsole.xcworkspace
+        $ open Vector.xcworkspace
 

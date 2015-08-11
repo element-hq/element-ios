@@ -1,14 +1,14 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, "6.0"
+# platform :ios, "7.0"
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "matrixConsole" do
+target "Vector" do
 
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Console has been built
-pod 'MatrixKit', '~> 0.2.0'
+pod 'MatrixKit', '~> 0.2.1'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -23,10 +23,6 @@ pod 'MatrixKit', '~> 0.2.0'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
 pod 'GBDeviceInfo', '~> 2.2.9'
-
-end
-
-target "matrixConsole" do
 
 end
 
