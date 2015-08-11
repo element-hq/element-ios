@@ -26,7 +26,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-#define MX_CALL_STACK_OPENWEBRTC
+//#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
 #endif
@@ -338,17 +338,9 @@
 {
     if (!isAPNSRegistered)
     {
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
-        {
-            // Registration on iOS 8 and later
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-                                                                                                 |UIRemoteNotificationTypeSound
-                                                                                                 |UIRemoteNotificationTypeAlert) categories:nil];
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        } else
-        {
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
-        }
+        // Registration on iOS 8 and later
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     }
 }
 
