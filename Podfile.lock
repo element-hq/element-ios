@@ -26,56 +26,17 @@ PODS:
   - Mantle (1.5.5):
     - Mantle/extobjc (= 1.5.5)
   - Mantle/extobjc (1.5.5)
-  - MatrixKit (0.2.0):
+  - MatrixKit (0.2.1):
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.7.6)
     - MatrixSDK (~> 0.5.0)
-  - MatrixOpenWebRTCWrapper (0.0.1):
-    - MatrixSDK
-    - OpenWebRTC-SDK
-  - MatrixSDK (0.5.0):
+  - MatrixSDK (0.5.1):
     - AFNetworking (~> 2.5.2)
     - Mantle (~> 1.5)
-  - OpenWebRTC (0.3.1)
-  - OpenWebRTC-SDK (0.1.1):
-    - OpenWebRTC
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixOpenWebRTCWrapper (from `https://github.com/matrix-org/matrix-ios-openwebrtc-wrapper.git`,
-    branch `master`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-  - OpenWebRTC-SDK (from `https://github.com/matrix-org/openwebrtc-ios-sdk.git`, branch
-    `cvo_support`)
-
-EXTERNAL SOURCES:
-  MatrixKit:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixOpenWebRTCWrapper:
-    :branch: master
-    :git: https://github.com/matrix-org/matrix-ios-openwebrtc-wrapper.git
-  MatrixSDK:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-  OpenWebRTC-SDK:
-    :branch: cvo_support
-    :git: https://github.com/matrix-org/openwebrtc-ios-sdk.git
-
-CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: 716a2fbe9860a2b90395966bd69ab978d4b2139e
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixOpenWebRTCWrapper:
-    :commit: 85194c4f4b937b5467b2a66d4f738494883ffe80
-    :git: https://github.com/matrix-org/matrix-ios-openwebrtc-wrapper.git
-  MatrixSDK:
-    :commit: 84fad50013ce77ab21e77b318dc6a7ed627ea2ea
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-  OpenWebRTC-SDK:
-    :commit: 2e2fd572c22f73f1d6c42bf37697b33dd2af3cda
-    :git: https://github.com/matrix-org/openwebrtc-ios-sdk.git
+  - MatrixKit (~> 0.2.1)
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
@@ -83,10 +44,7 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: fb90c5e0d100923b61f0db81de56daefbb67b103
   Mantle: 1b29072a707453975b200a173cf77ec1e2810b75
-  MatrixKit: 118b88560bc0fcafbcee5fdeb1befef15b816b7b
-  MatrixOpenWebRTCWrapper: d73d460ad6e412947f801ec1f70a1853734a09ff
-  MatrixSDK: 657cdbaeb9bc48df50fb8e4a495c2daa3f0eaee6
-  OpenWebRTC: 85be1caf6dc45b11106eacba93de61e3e52b1cf8
-  OpenWebRTC-SDK: fd66e49ab80e88ed1e55231ac875a4976dc3ba74
+  MatrixKit: 213e1db8adad7e4d4128a2141378737f504c215c
+  MatrixSDK: 8012d8b0d05c576fa8127590f82bdab2a58d6989
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2
