@@ -128,7 +128,7 @@
             _build = buildNumber;
         } else
         {
-            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"MatrixConsole", nil);
+            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
         }
     }
     return _build;
@@ -176,8 +176,8 @@
         self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
         self.masterTabBarController.delegate = self;
         
-        // By default the "Home" tab is focused
-        [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+        // By default the "Recents" tab is focused
+        [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
         UIViewController* recents = [self.masterTabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
         if ([recents isKindOfClass:[UISplitViewController class]])
@@ -556,9 +556,6 @@
         // Set up push notifications
         [self registerUserNotificationSettings];
         
-        // When user is already logged, we launch the app on Recents
-        [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
-        
         // Observe inApp notifications toggle change for each account
         for (MXKAccount *account in mxAccounts)
         {
@@ -617,8 +614,8 @@
     // Reset the contact manager
     [[MXKContactManager sharedManager] reset];
     
-    // By default the "Home" tab is focussed
-    [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+    // By default the "Recents" tab is focussed
+    [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
 }
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error
@@ -720,7 +717,7 @@
                                                                           weakSelf.mxInAppNotification = nil;
                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
                                                                       }];
-                        [self.mxInAppNotification addActionWithTitle:NSLocalizedStringFromTable(@"view", @"MatrixConsole", nil)
+                        [self.mxInAppNotification addActionWithTitle:NSLocalizedStringFromTable(@"view", @"Vector", nil)
                                                                style:MXKAlertActionStyleDefault
                                                              handler:^(MXKAlert *alert)
                          {
@@ -1014,7 +1011,7 @@
     // Create statusBarButton
     callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width,topBarSize.height);
-    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"MatrixConsole", nil);
+    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"Vector", nil);
     
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateNormal];
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];

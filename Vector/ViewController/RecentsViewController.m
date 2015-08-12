@@ -23,6 +23,8 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "RecentListDataSource.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -132,6 +134,15 @@
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
+    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
+    if (recentListDataSource)
+    {
+        [self startActivityIndicator];
+        [recentListDataSource refreshPublicRooms:nil onComplete:^{
+            [self stopActivityIndicator];
+        }];
+    }
+    
     [self.navigationController.navigationBar addGestureRecognizer:navigationBarTapGesture];
 }
 
@@ -169,6 +180,67 @@
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 35;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Check whether the selected row is a public room or not
+    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
+    if (recentListDataSource && recentListDataSource.publicRoomsFirstSection != -1 && indexPath.section >= recentListDataSource.publicRoomsFirstSection)
+    {
+        MXPublicRoom *publicRoom = [recentListDataSource publicRoomAtIndexPath:indexPath];
+        if (publicRoom)
+        {
+            // Handle multi-sessions here
+            [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
+                // Check whether the user has already joined the selected public room
+                if ([selectedAccount.mxSession roomWithRoomId:publicRoom.roomId])
+                {
+                    // Open selected room
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                }
+                else
+                {
+                    // Join the selected room
+                    UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+                    if (selectedCell)
+                    {
+                        CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
+                        loadingWheel.center = center;
+                        [selectedCell addSubview:loadingWheel];
+                    }
+                    [loadingWheel startAnimating];
+                    [selectedAccount.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room)
+                     {
+                         // Show joined room
+                         [loadingWheel stopAnimating];
+                         [loadingWheel removeFromSuperview];
+                         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                     } failure:^(NSError *error)
+                     {
+                         NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+                         //Alert user
+                         [loadingWheel stopAnimating];
+                         [loadingWheel removeFromSuperview];
+                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                     }];
+                }
+                
+            }];
+        }
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    else
+    {
+        // Let super handle the selected row
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
 }
 
@@ -220,7 +292,7 @@
 
 - (void)updateNavigationBarTitle
 {
-    NSString *title = NSLocalizedStringFromTable(@"recents", @"MatrixConsole", nil);
+    NSString *title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
     
     if (self.dataSource.unreadCount)
     {
@@ -292,7 +364,7 @@
     {
         __weak typeof(self) weakSelf = self;
         
-        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"MatrixConsole", nil) message:nil style:MXKAlertStyleAlert];
+        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"Vector", nil) message:nil style:MXKAlertStyleAlert];
         
         markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                                                 {

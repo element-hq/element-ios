@@ -16,13 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface SettingsViewController : MXKTableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
-
-/**
- The application settings displayed in the view controller.
- By default the shared application settings are considered.
- */
-@property (nonatomic) MXKAppSettings *settings;
+@interface SettingsViewController : MXKTableViewController
 
 @end
 

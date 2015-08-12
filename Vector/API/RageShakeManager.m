@@ -67,7 +67,7 @@ static RageShakeManager* sharedInstance = nil;
 - (void)promptCrashReportInViewController:(UIViewController*)viewController {
     if ([MXLogger crashLog] && [MFMailComposeViewController canSendMail]) {
         
-        confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
+        confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
         
         __weak typeof(self) weakSelf = self;
         [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
@@ -110,7 +110,7 @@ static RageShakeManager* sharedInstance = nil;
         && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION)) {
         
         if ([responder isKindOfClass:[UIViewController class]] && [MFMailComposeViewController canSendMail]) {
-            confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
+            confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
             
             __weak typeof(self) weakSelf = self;
             [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {

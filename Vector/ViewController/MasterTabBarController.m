@@ -18,12 +18,8 @@
 
 #import "AppDelegate.h"
 
-#import "HomeViewController.h"
-
 #import "RecentsViewController.h"
 #import "RecentListDataSource.h"
-
-#import "ContactsViewController.h"
 
 #import "SettingsViewController.h"
 
@@ -33,12 +29,9 @@
     NSMutableArray *mxSessionArray;
     
     // Tab bar view controllers
-    HomeViewController *homeViewController;
     
     UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
-    
-    ContactsViewController *contactsViewController;
     
     SettingsViewController *settingsViewController;
     
@@ -83,34 +76,6 @@
         }
     }
     
-    // Retrieve the home view controller
-    UIViewController* home = [self.viewControllers objectAtIndex:TABBAR_HOME_INDEX];
-    if ([home isKindOfClass:[UINavigationController class]])
-    {
-        UINavigationController *homeNavigationController = (UINavigationController*)home;
-        for (UIViewController *viewController in homeNavigationController.viewControllers)
-        {
-            if ([viewController isKindOfClass:[HomeViewController class]])
-            {
-                homeViewController = (HomeViewController*)viewController;
-            }
-        }
-    }
-    
-    // Retrieve the constacts view controller
-    UIViewController* contacts = [self.viewControllers objectAtIndex:TABBAR_CONTACTS_INDEX];
-    if ([contacts isKindOfClass:[UINavigationController class]])
-    {
-        UINavigationController *contactsNavigationController = (UINavigationController*)contacts;
-        for (UIViewController *viewController in contactsNavigationController.viewControllers)
-        {
-            if ([viewController isKindOfClass:[ContactsViewController class]])
-            {
-                contactsViewController = (ContactsViewController*)viewController;
-            }
-        }
-    }
-    
     // Retrieve the settings view controller
     UIViewController* settings = [self.viewControllers objectAtIndex:TABBAR_SETTINGS_INDEX];
     if ([settings isKindOfClass:[UINavigationController class]])
@@ -126,7 +91,7 @@
     }
     
     // Sanity check
-    NSAssert(homeViewController &&recentsViewController && contactsViewController && settingsViewController, @"Something wrong in Main.storyboard");
+    NSAssert(recentsViewController && settingsViewController, @"Something wrong in Main.storyboard");
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -152,10 +117,8 @@
 {
     mxSessionArray = nil;
     
-    homeViewController = nil;
     recentsNavigationController = nil;
     recentsViewController = nil;
-    contactsViewController = nil;
     settingsViewController = nil;
     
     [self dismissMediaPicker];
@@ -204,10 +167,6 @@
             [recentsViewController.dataSource addMatrixSession:mxSession];
         }
         
-        // Update home tab
-        [homeViewController addMatrixSession:mxSession];
-        // Update contacts tab
-        [contactsViewController addMatrixSession:mxSession];
         // Update settings tab
         [settingsViewController addMatrixSession:mxSession];
         
@@ -220,10 +179,6 @@
     // Update recents data source
     [recentsViewController.dataSource removeMatrixSession:mxSession];
     
-    // Update home tab
-    [homeViewController removeMatrixSession:mxSession];
-    // Update contacts tab
-    [contactsViewController removeMatrixSession:mxSession];
     // Update settings tab
     [settingsViewController removeMatrixSession:mxSession];
     
@@ -247,8 +202,7 @@
 
 - (void)showRoomCreationForm
 {
-    // Switch in Home Tab
-    [self setSelectedIndex:TABBAR_HOME_INDEX];
+    // TODO
 }
 
 - (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession

@@ -71,8 +71,8 @@
         {
             globalNotifSettingsBtnCell = [[MXKTableViewCellWithButton alloc] init];
         }
-        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"MatrixConsole", nil) forState:UIControlStateNormal];
-        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"MatrixConsole", nil) forState:UIControlStateHighlighted];
+        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"Vector", nil) forState:UIControlStateNormal];
+        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"Vector", nil) forState:UIControlStateHighlighted];
         [globalNotifSettingsBtnCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         globalNotifSettingsButton = globalNotifSettingsBtnCell.mxkButton;
