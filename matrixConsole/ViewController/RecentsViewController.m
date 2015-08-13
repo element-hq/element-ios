@@ -206,7 +206,7 @@
     {
         if (currentRoomViewController.roomDataSource)
         {
-            // Let the manager release this room data source
+            // Let the manager close this room data source
             MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
             [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
@@ -338,7 +338,7 @@
             {
                 if (currentRoomViewController.roomDataSource)
                 {
-                    // Let the manager release this room data source
+                    // Let the manager close this room data source
                     MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
                     MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
                     [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
