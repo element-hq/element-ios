@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomCreationStep2ViewController : MXKTableViewController
+@interface RoomCreationStep2ViewController : MXKTableViewController <UISearchBarDelegate>
 
 @property (nonatomic) MXKRoomCreationInputs* roomCreationInputs;
 

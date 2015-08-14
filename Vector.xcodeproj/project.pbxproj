@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
+		F0316E3A1B7DF45A00F03620 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E381B7DF45A00F03620 /* add.png */; };
+		F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E391B7DF45A00F03620 /* add@2x.png */; };
+		F0316E3E1B7E28DE00F03620 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E3C1B7E28DE00F03620 /* remove.png */; };
+		F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E3D1B7E28DE00F03620 /* remove@2x.png */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
 		F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9AA1B78D8F000B1FBBF /* AppDelegate.m */; };
 		F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F094A9B21B78D8F000B1FBBF /* Main.storyboard */; };
@@ -69,6 +73,10 @@
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0316E381B7DF45A00F03620 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
+		F0316E391B7DF45A00F03620 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
+		F0316E3C1B7E28DE00F03620 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
+		F0316E3D1B7E28DE00F03620 /* remove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove@2x.png"; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Vector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9A61B78D8F000B1FBBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F094A9A71B78D8F000B1FBBF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -301,6 +309,10 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0316E3C1B7E28DE00F03620 /* remove.png */,
+				F0316E3D1B7E28DE00F03620 /* remove@2x.png */,
+				F0316E381B7DF45A00F03620 /* add.png */,
+				F0316E391B7DF45A00F03620 /* add@2x.png */,
 				F0DD7D7C1B7AAA3C00C4BE02 /* icon_users.png */,
 				F0DD7D7D1B7AAA3C00C4BE02 /* icon_users@2x.png */,
 				F0DD7D1C1B7AA8C900C4BE02 /* attach.png */,
@@ -412,6 +424,7 @@
 				F0DD7D651B7AA8C900C4BE02 /* logo@2x.png in Resources */,
 				F0DD7D611B7AA8C900C4BE02 /* hide@2x.png in Resources */,
 				F0DD7D751B7AA8C900C4BE02 /* typing@2x.png in Resources */,
+				F0316E3A1B7DF45A00F03620 /* add.png in Resources */,
 				F0DD7D671B7AA8C900C4BE02 /* members@2x.png in Resources */,
 				F0DD7D721B7AA8C900C4BE02 /* tab_settings.png in Resources */,
 				F0DD7D7B1B7AA8C900C4BE02 /* voip@2x.png in Resources */,
@@ -419,9 +432,12 @@
 				F0DD7D7E1B7AAA3C00C4BE02 /* icon_users.png in Resources */,
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
 				F0DD7D4C1B7AA8C900C4BE02 /* attach.png in Resources */,
+				F0316E3E1B7E28DE00F03620 /* remove.png in Resources */,
+				F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */,
 				F0DD7D691B7AA8C900C4BE02 /* menu@2x.png in Resources */,
 				F0DD7D731B7AA8C900C4BE02 /* tab_settings@2x.png in Resources */,
 				F0DD7D641B7AA8C900C4BE02 /* logo.png in Resources */,
+				F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */,
 				F0DD7D7F1B7AAA3C00C4BE02 /* icon_users@2x.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				F0DD7D601B7AA8C900C4BE02 /* hide.png in Resources */,

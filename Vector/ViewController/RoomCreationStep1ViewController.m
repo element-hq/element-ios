@@ -70,6 +70,11 @@
     {
         [self addMatrixSession:mxSession];
     }
+    
+    // Add a little white space below the navigation bar
+    UIEdgeInsets contentInset = self.tableView.contentInset;
+    contentInset.top += 15;
+    self.tableView.contentInset = contentInset;
 }
 
 - (void)didReceiveMemoryWarning
@@ -413,6 +418,17 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 30;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if([view isKindOfClass:[UITableViewHeaderFooterView class]])
+    {
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *) view;
+        tableViewHeaderFooterView.textLabel.text = [tableViewHeaderFooterView.textLabel.text capitalizedString];
+        tableViewHeaderFooterView.textLabel.font = [UIFont boldSystemFontOfSize:17];
+        tableViewHeaderFooterView.textLabel.textColor = [UIColor blackColor];
+    }
 }
 
 //- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

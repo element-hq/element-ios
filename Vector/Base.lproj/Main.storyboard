@@ -194,7 +194,7 @@
         <scene sceneID="3UV-ot-cd9">
             <objects>
                 <tableViewController id="Cbg-8m-X8i" customClass="RoomCreationStep1ViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="NUY-Lz-fh7">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="NUY-Lz-fh7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -220,18 +220,10 @@
         <scene sceneID="iae-jL-hCr">
             <objects>
                 <tableViewController id="ora-EF-y8t" customClass="RoomCreationStep2ViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="zDo-5c-N7t">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="zDo-5c-N7t">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fwy-dF-puX">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fwy-dF-puX" id="trx-n9-rol">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="ora-EF-y8t" id="h2d-VL-Bb2"/>
                             <outlet property="delegate" destination="ora-EF-y8t" id="r6y-Ki-LnV"/>
@@ -276,10 +268,10 @@
             </objects>
             <point key="canvasLocation" x="911" y="81"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Room Creation Nav Controller-->
         <scene sceneID="afM-B0-GRp">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cLJ-Zo-cIe" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cLJ-Zo-cIe" userLabel="Room Creation Nav Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lWd-xy-Xa1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
