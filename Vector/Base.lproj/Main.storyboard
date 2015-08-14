@@ -190,11 +190,69 @@
             </objects>
             <point key="canvasLocation" x="60" y="-266"/>
         </scene>
+        <!--Room Creation Step1 View Controller-->
+        <scene sceneID="3UV-ot-cd9">
+            <objects>
+                <tableViewController id="Cbg-8m-X8i" customClass="RoomCreationStep1ViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="NUY-Lz-fh7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="Cbg-8m-X8i" id="SOv-BE-z4t"/>
+                            <outlet property="delegate" destination="Cbg-8m-X8i" id="vQ5-ME-lJj"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="KAS-Jg-1Dg">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="tim-NW-Txf"/>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="Cub-LH-hn4">
+                            <connections>
+                                <segue destination="ora-EF-y8t" kind="show" identifier="showRoomCreationStep2" id="wiK-nM-g3w"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DVg-PQ-GNa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3085" y="-1522"/>
+        </scene>
+        <!--Room Creation Step2 View Controller-->
+        <scene sceneID="iae-jL-hCr">
+            <objects>
+                <tableViewController id="ora-EF-y8t" customClass="RoomCreationStep2ViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="zDo-5c-N7t">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fwy-dF-puX">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fwy-dF-puX" id="trx-n9-rol">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ora-EF-y8t" id="h2d-VL-Bb2"/>
+                            <outlet property="delegate" destination="ora-EF-y8t" id="r6y-Ki-LnV"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9el-54-iek" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3857" y="-1522"/>
+        </scene>
         <!--Recents View Controller-->
         <scene sceneID="EAJ-Vu-76j">
             <objects>
                 <viewController id="Foe-o5-6Ud" customClass="RecentsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="6sO-OP-7Sv"/>
+                    <navigationItem key="navigationItem" id="6sO-OP-7Sv">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="8g1-4L-TZB">
+                            <connections>
+                                <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="yz3-TT-K7V"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="Vo4-8x-dtH"/>
                     </connections>
@@ -218,14 +276,32 @@
             </objects>
             <point key="canvasLocation" x="911" y="81"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="afM-B0-GRp">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cLJ-Zo-cIe" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lWd-xy-Xa1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Cbg-8m-X8i" kind="relationship" relationship="rootViewController" id="FCF-4W-EeB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="use-eB-x6a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2273" y="-1522"/>
+        </scene>
     </scenes>
     <resources>
         <image name="icon_users.png" width="35" height="25"/>
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="17E-G9-IZ6"/>
         <segue reference="Vo4-8x-dtH"/>
         <segue reference="m9P-N3-WZN"/>
-        <segue reference="17E-G9-IZ6"/>
     </inferredMetricsTieBreakers>
 </document>

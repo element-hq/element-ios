@@ -36,7 +36,6 @@
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
 - (void)showAuthenticationScreen;
-- (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated;

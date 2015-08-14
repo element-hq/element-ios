@@ -21,6 +21,26 @@
 // Actions
 "view" = "View";
 "mark_all_as_read_prompt" = "Mark all as read?";
+"next" = "Next";
+"back" = "Back";
+
+// Room creation
+"room_creation_title" = "New Chat";
+"room_creation_account" = "Account";
+"room_creation_appearance" = "Appearance";
+"room_creation_appearance_name" = "Name";
+"room_creation_appearance_picture" = "Chat picture (optional)";
+"room_creation_privacy" = "Privacy";
+"room_creation_private_room" = "This chat is private";
+"room_creation_public_room" = "This chat is public";
+"room_creation_make_public" = "Make public";
+"room_creation_make_public_prompt_title" = "Make this chat public?";
+"room_creation_make_public_prompt_msg" = "Are you sure you want to make this chat public? Anyone can read your messages and join the chat.";
+"room_creation_keep_private" = "Keep private";
+"room_creation_make_private" = "Make private";
+"room_creation_create" = "Create Chat";
+"room_creation_add_participants" = "Add Participants";
+"room_creation_participants" = "Participants";
 
 // Settings
 "account_logout_all" = "Logout all accounts";

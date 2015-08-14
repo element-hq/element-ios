@@ -64,11 +64,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    // Add navigation items
-    NSArray *rightBarButtonItems = self.navigationItem.rightBarButtonItems;
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
-    self.navigationItem.rightBarButtonItems = rightBarButtonItems ? [rightBarButtonItems arrayByAddingObject:addButton] : @[addButton];
-    
     // Prepare tap gesture on title bar
     navigationBarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
     [navigationBarTapGesture setNumberOfTouchesRequired:1];
@@ -301,11 +296,6 @@
     self.navigationItem.title = title;
 }
 
-- (void)createNewRoom:(id)sender
-{
-    [[AppDelegate theDelegate].masterTabBarController showRoomCreationForm];
-}
-
 - (void)scrollToTop
 {
     // stop any scrolling effect
@@ -390,6 +380,9 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+    
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
         UIViewController *controller;
@@ -426,8 +419,6 @@
             [currentRoomViewController displayRoom:roomDataSource];
         }
         
-        // Reset unread count for this room
-        //[roomDataSource resetUnreadCount]; // @TODO: This automatically done by roomDataSource. Is it a good thing?
         [self updateNavigationBarTitle];
         
         if (self.splitViewController)
@@ -446,7 +437,7 @@
         }
         
         // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"back", @"Vector", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 

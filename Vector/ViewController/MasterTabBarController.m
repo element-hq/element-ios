@@ -200,11 +200,6 @@
     [self performSegueWithIdentifier:@"showAuth" sender:self];
 }
 
-- (void)showRoomCreationForm
-{
-    // TODO
-}
-
 - (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession
 {
     [self restoreInitialDisplay];

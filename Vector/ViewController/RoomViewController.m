@@ -240,7 +240,7 @@
             {
                 voipVoiceCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 voipVoiceCallButton.frame = CGRectMake(0, 0, 36, 36);
-                UIImage *voiceImage = [UIImage imageNamed:@"voice"];
+                UIImage *voiceImage = [UIImage imageNamed:@"voip"];
                 [voipVoiceCallButton setImage:voiceImage forState:UIControlStateNormal];
                 [voipVoiceCallButton setImage:voiceImage forState:UIControlStateHighlighted];
                 [voipVoiceCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
