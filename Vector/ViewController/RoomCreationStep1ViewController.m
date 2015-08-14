@@ -362,14 +362,16 @@
         }
         else if (indexPath.row == 1)
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"roomPictureCell"];
-            if (!cell)
+            MXKTableViewCellWithLabelAndImageView *roomPictureCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndImageView defaultReuseIdentifier]];
+            if (!roomPictureCell)
             {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"roomPictureCell"];
+                roomPictureCell = [[MXKTableViewCellWithLabelAndImageView alloc] init];
             }
             
-            cell.textLabel.text = NSLocalizedStringFromTable(@"room_creation_appearance_picture", @"Vector", nil);
-            cell.imageView.image = [UIImage imageNamed:@"logo"];
+            roomPictureCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_creation_appearance_picture", @"Vector", nil);
+            roomPictureCell.mxkImageView.image = [UIImage imageNamed:@"placeholder"];
+            
+            cell = roomPictureCell;
         }
     }
     else if (indexPath.section == privacySection)

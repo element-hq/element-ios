@@ -12,6 +12,8 @@
 		F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E391B7DF45A00F03620 /* add@2x.png */; };
 		F0316E3E1B7E28DE00F03620 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E3C1B7E28DE00F03620 /* remove.png */; };
 		F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E3D1B7E28DE00F03620 /* remove@2x.png */; };
+		F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E451B7E4C9A00F03620 /* placeholder.png */; };
+		F0316E481B7E4C9A00F03620 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E461B7E4C9A00F03620 /* placeholder@2x.png */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
 		F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9AA1B78D8F000B1FBBF /* AppDelegate.m */; };
 		F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F094A9B21B78D8F000B1FBBF /* Main.storyboard */; };
@@ -77,6 +79,8 @@
 		F0316E391B7DF45A00F03620 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
 		F0316E3C1B7E28DE00F03620 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
 		F0316E3D1B7E28DE00F03620 /* remove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove@2x.png"; sourceTree = "<group>"; };
+		F0316E451B7E4C9A00F03620 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		F0316E461B7E4C9A00F03620 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
 		F094A9A21B78D8F000B1FBBF /* Vector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F094A9A61B78D8F000B1FBBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F094A9A71B78D8F000B1FBBF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -309,6 +313,8 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0316E451B7E4C9A00F03620 /* placeholder.png */,
+				F0316E461B7E4C9A00F03620 /* placeholder@2x.png */,
 				F0316E3C1B7E28DE00F03620 /* remove.png */,
 				F0316E3D1B7E28DE00F03620 /* remove@2x.png */,
 				F0316E381B7DF45A00F03620 /* add.png */,
@@ -436,10 +442,12 @@
 				F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */,
 				F0DD7D691B7AA8C900C4BE02 /* menu@2x.png in Resources */,
 				F0DD7D731B7AA8C900C4BE02 /* tab_settings@2x.png in Resources */,
+				F0316E481B7E4C9A00F03620 /* placeholder@2x.png in Resources */,
 				F0DD7D641B7AA8C900C4BE02 /* logo.png in Resources */,
 				F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */,
 				F0DD7D7F1B7AAA3C00C4BE02 /* icon_users@2x.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
+				F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */,
 				F0DD7D601B7AA8C900C4BE02 /* hide.png in Resources */,
 				F0DD7D741B7AA8C900C4BE02 /* typing.png in Resources */,
 				F0DD7D681B7AA8C900C4BE02 /* menu.png in Resources */,
