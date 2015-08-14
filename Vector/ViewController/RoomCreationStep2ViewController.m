@@ -29,9 +29,11 @@
     
     // Add participants
     NSInteger addParticipantsSection;
-    UISearchBar *addParticipantsSearchBar;
+    MXKTableViewCellWithSearchBar *addParticipantsSearchBarCell;
+    BOOL isAddParticipantsSearchBarEditing;
     NSString *addParticipantsSearchText;
     NSMutableArray *filteredParticipants;
+    NSInteger addParticipantsSeparatorCellIndex;
     
     // Participants
     NSInteger participantsSection;
@@ -56,6 +58,13 @@
     {
         [self addMatrixSession:mxSession];
     }
+    
+    addParticipantsSearchBarCell = [[MXKTableViewCellWithSearchBar alloc] init];
+    addParticipantsSearchBarCell.mxkSearchBar.searchBarStyle = UISearchBarStyleMinimal;
+//    addParticipantsSearchBarCell.mxkSearchBar.barTintColor = [UIColor whiteColor]; // set barTint in case of UISearchBarStyleDefault (= UISearchBarStyleProminent)
+    addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
+    addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
+    isAddParticipantsSearchBarEditing = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,7 +76,7 @@
 - (void)destroy
 {
     createButton = nil;
-    addParticipantsSearchBar = nil;
+    addParticipantsSearchBarCell = nil;
     filteredParticipants = nil;
     participantsByIds = nil;
     
@@ -175,6 +184,7 @@
     else if (section == addParticipantsSection)
     {
         count = 1 + filteredParticipants.count;
+        addParticipantsSeparatorCellIndex = count++;
     }
     else if (section == participantsSection)
     {
@@ -214,6 +224,7 @@
         }
         
         createButton = createButtonCell.mxkButton;
+        createButton.titleLabel.font = [UIFont systemFontOfSize:17];
         [createButton setTitle:NSLocalizedStringFromTable(@"room_creation_create", @"Vector", nil) forState:UIControlStateNormal];
         [createButton setTitle:NSLocalizedStringFromTable(@"room_creation_create", @"Vector", nil) forState:UIControlStateHighlighted];
         
@@ -227,23 +238,23 @@
     {
         if (indexPath.row == 0)
         {
-            MXKTableViewCellWithSearchBar *addParticipantsSearchCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithSearchBar defaultReuseIdentifier]];
-            if (!addParticipantsSearchCell)
+            cell = addParticipantsSearchBarCell;
+            if (isAddParticipantsSearchBarEditing)
             {
-                addParticipantsSearchCell = [[MXKTableViewCellWithSearchBar alloc] init];
+                [addParticipantsSearchBarCell.mxkSearchBar becomeFirstResponder];
             }
-            
-            addParticipantsSearchBar = addParticipantsSearchCell.mxkSearchBar;
-            addParticipantsSearchBar.backgroundColor = [UIColor clearColor];
-            addParticipantsSearchBar.text = addParticipantsSearchText;
-            addParticipantsSearchBar.returnKeyType = UIReturnKeyDone;
-            addParticipantsSearchBar.delegate = self;
-            if (addParticipantsSearchText.length)
+        }
+        else if (indexPath.row == addParticipantsSeparatorCellIndex)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"addParticipantsSeparator"];
+            if (!cell)
             {
-                [addParticipantsSearchBar becomeFirstResponder];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"addParticipantsSeparator"];
+                UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 8, cell.frame.size.width, 2)];
+                separator.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                separator.backgroundColor = [UIColor blackColor];
+                [cell.contentView addSubview:separator];
             }
-            
-            cell = addParticipantsSearchCell;
         }
         else
         {
@@ -349,6 +360,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == addParticipantsSection && indexPath.row == addParticipantsSeparatorCellIndex)
+    {
+        return 10;
+    }
     return 44;
 }
 
@@ -510,6 +525,7 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
+    isAddParticipantsSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
     return YES;
 }
@@ -523,6 +539,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     // "Done" key has been pressed
+    isAddParticipantsSearchBarEditing = NO;
     [searchBar resignFirstResponder];
 }
 
@@ -530,9 +547,10 @@
 {
     // Leave search
     [searchBar resignFirstResponder];
-    addParticipantsSearchBar = nil;
-    addParticipantsSearchText = nil;
+    
+    searchBar.text = addParticipantsSearchText = nil;
     filteredParticipants = nil;
+    isAddParticipantsSearchBarEditing = NO;
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (addParticipantsSection, 1)];
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
