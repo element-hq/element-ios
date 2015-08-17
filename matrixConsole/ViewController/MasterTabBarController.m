@@ -40,9 +40,6 @@
     ContactsViewController *contactsViewController;
     
     SettingsViewController *settingsViewController;
-    
-    // mediaPicker
-    UIImagePickerController *mediaPicker;
 }
 
 @end
@@ -156,8 +153,6 @@
     recentsViewController = nil;
     contactsViewController = nil;
     settingsViewController = nil;
-    
-    [self dismissMediaPicker];
 }
 
 #pragma mark -
@@ -165,16 +160,9 @@
 - (void)restoreInitialDisplay
 {
     // Dismiss potential media picker
-    if (mediaPicker)
+    if (self.presentedViewController)
     {
-        if (mediaPicker.delegate && [mediaPicker.delegate respondsToSelector:@selector(imagePickerControllerDidCancel:)])
-        {
-            [mediaPicker.delegate imagePickerControllerDidCancel:mediaPicker];
-        }
-        else
-        {
-            [self dismissMediaPicker];
-        }
+        [self dismissViewControllerAnimated:NO completion:nil];
     }
     
     [self popRoomViewControllerAnimated:NO];
@@ -271,28 +259,6 @@
         [recentsNavigationController popToViewController:recentsViewController animated:animated];
         // Release the current selected room
         [recentsViewController closeSelectedRoom];
-    }
-}
-
-- (BOOL)isPresentingMediaPicker
-{
-    return nil != mediaPicker;
-}
-
-- (void)presentMediaPicker:(UIImagePickerController*)aMediaPicker
-{
-    [self dismissMediaPicker];
-    [self presentViewController:aMediaPicker animated:YES completion:^{
-        mediaPicker = aMediaPicker;
-    }];
-}
-- (void)dismissMediaPicker
-{
-    if (mediaPicker)
-    {
-        [self dismissViewControllerAnimated:NO completion:nil];
-        mediaPicker.delegate = nil;
-        mediaPicker = nil;
     }
 }
 
