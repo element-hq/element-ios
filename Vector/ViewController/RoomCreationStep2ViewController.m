@@ -269,9 +269,11 @@
                 
                 [filteredParticipantCell render:filteredParticipants[index]];
                 
-                // Trick, the 'add' icon is displayed here by using the matrixUserIconview which is visible for matrix contact only.
-                filteredParticipantCell.matrixUserIconViewHeightConstraint.constant = 30;
-                filteredParticipantCell.matrixUserIconView.image = [UIImage imageNamed:@"add"];
+                // Show 'add' icon.
+                filteredParticipantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+                filteredParticipantCell.contactAccessoryViewHeightConstraint.constant = 30;
+                filteredParticipantCell.contactAccessoryView.image = [UIImage imageNamed:@"add"];
+                filteredParticipantCell.contactAccessoryView.hidden = NO;
                 filteredParticipantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 
                 cell = filteredParticipantCell;
@@ -292,8 +294,8 @@
             
             [participantCell render:contact];
             
-            // Trick, remove matrixUserIconview image to hide it.
-            participantCell.matrixUserIconView.image = nil;
+            // Hide accessory view.
+            participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
             participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else
@@ -343,9 +345,11 @@
                     [participantCell render:contact];
                 }
                 
-                // Trick, the 'remove' icon is displayed here by using the matrixUserIconview which is visible for matrix contact only.
-                participantCell.matrixUserIconViewHeightConstraint.constant = 30;
-                participantCell.matrixUserIconView.image = [UIImage imageNamed:@"remove"];
+                // Show 'remove' icon.
+                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+                participantCell.contactAccessoryViewHeightConstraint.constant = 30;
+                participantCell.contactAccessoryView.image = [UIImage imageNamed:@"remove"];
+                participantCell.contactAccessoryView.hidden = NO;
                 participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
             }
         }
