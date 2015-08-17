@@ -679,7 +679,7 @@
                 
                 // Check conditions to display this notification
                 if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                    && ![self.masterTabBarController isPresentingMediaPicker])
+                    && !self.masterTabBarController.presentedViewController)
                 {
                     
                     MXKEventFormatterError error;
