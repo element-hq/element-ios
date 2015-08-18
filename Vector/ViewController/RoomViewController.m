@@ -23,8 +23,8 @@
 
 @interface RoomViewController ()
 {
-    // Members list
-    id membersListener;
+    UIButton *menuButton;
+    UIView   *menuView;
     
     // Voip call options
     UIButton *voipVoiceCallButton;
@@ -35,8 +35,6 @@
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
 }
-
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *showRoomMembersButtonItem;
 
 @property (strong, nonatomic) MXKAlert *actionMenu;
 
@@ -56,6 +54,20 @@
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    menuButton.frame = CGRectMake(0, 0, 36, 36);
+    UIImage *menuImage = [UIImage imageNamed:@"icon_menu"];
+    [menuButton setImage:menuImage forState:UIControlStateNormal];
+    [menuButton setImage:menuImage forState:UIControlStateHighlighted];
+    [menuButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuButton];
+    
+    CGFloat menuViewWidth = (self.view.frame.size.width > 200) ? 200 : self.view.frame.size.width;
+    menuView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, menuViewWidth, 132)];
+    menuView.backgroundColor = [UIColor redColor];
+    menuView.hidden = YES;
+    [self.view addSubview:menuView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,15 +90,6 @@
     {
         [self.actionMenu dismiss:NO];
         self.actionMenu = nil;
-    }
-    
-    if (self.roomDataSource)
-    {
-        if (membersListener)
-        {
-            [self.roomDataSource.room removeListener:membersListener];
-            membersListener = nil;
-        }
     }
 }
 
@@ -128,49 +131,12 @@
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
 {
-    // Remove members listener (if any) before changing dataSource.
-    if (membersListener)
-    {
-        [self.roomDataSource.room removeListener:membersListener];
-        membersListener = nil;
-    }
-    
     [super displayRoom:dataSource];
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
-    
-    // Update UI by considering dataSource state
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
-    {
-        // Register a listener for events that concern room members
-        if (!membersListener)
-        {
-            membersListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                
-                // Consider only live event
-                if (direction == MXEventDirectionForwards)
-                {
-                    // Update navigation bar items
-                    [self updateNavigationBarButtonItems];
-                }
-            }];
-        }
-    }
-    else
-    {
-        // Remove members listener if any.
-        if (membersListener)
-        {
-            [self.roomDataSource.room removeListener:membersListener];
-            membersListener = nil;
-        }
-    }
-    
-    // Update navigation bar items
-    [self updateNavigationBarButtonItems];
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
@@ -210,12 +176,6 @@
 
 - (void)destroy
 {
-    if (membersListener)
-    {
-        [self.roomDataSource.room removeListener:membersListener];
-        membersListener = nil;
-    }
-    
     if (self.actionMenu)
     {
         [self.actionMenu dismiss:NO];
@@ -223,52 +183,6 @@
     }
     
     [super destroy];
-}
-
-#pragma mark -
-
-- (void)updateNavigationBarButtonItems
-{
-    // Update navigation bar buttons according to room members count
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
-    {
-        // Check conditions to display voip call buttons
-        if (self.roomDataSource.room.state.members.count == 2 && self.mainSession.callManager)
-        {
-            if (!voipVoiceCallBarButtonItem || !voipVideoCallBarButtonItem)
-            {
-                voipVoiceCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                voipVoiceCallButton.frame = CGRectMake(0, 0, 36, 36);
-                UIImage *voiceImage = [UIImage imageNamed:@"voip"];
-                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateNormal];
-                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateHighlighted];
-                [voipVoiceCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                voipVoiceCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVoiceCallButton];
-                
-                voipVideoCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                voipVideoCallButton.frame = CGRectMake(0, 0, 36, 36);
-                UIImage *videoImage = [UIImage imageNamed:@"video"];
-                [voipVideoCallButton setImage:videoImage forState:UIControlStateNormal];
-                [voipVideoCallButton setImage:videoImage forState:UIControlStateHighlighted];
-                [voipVideoCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                voipVideoCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVideoCallButton];
-            }
-            
-            _showRoomMembersButtonItem.enabled = YES;
-            
-            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem, voipVideoCallBarButtonItem, voipVoiceCallBarButtonItem];
-        }
-        else
-        {
-            _showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
-            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
-        }
-    }
-    else
-    {
-        _showRoomMembersButtonItem.enabled = NO;
-        self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
-    }
 }
 
 #pragma mark - MXKDataSource delegate
@@ -330,13 +244,20 @@
     }
 }
 
+#pragma mark - MXKRoomInputToolbarViewDelegate
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
+{
+    [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
+}
+
 #pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == voipVoiceCallButton || sender == voipVideoCallButton)
+    if (sender == menuButton)
     {
-        [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:(sender == voipVideoCallButton)];
+        menuView.hidden = !menuView.isHidden;
     }
 }
 

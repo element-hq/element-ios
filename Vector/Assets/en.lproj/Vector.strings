@@ -24,7 +24,7 @@
 "next" = "Next";
 "back" = "Back";
 
-// Room creation
+// Chat creation
 "room_creation_title" = "New Chat";
 "room_creation_account" = "Account";
 "room_creation_appearance" = "Appearance";
@@ -41,6 +41,12 @@
 "room_creation_create" = "Create Chat";
 "room_creation_add_participants" = "Add Participants";
 "room_creation_participants" = "Participants";
+
+// Chat
+"room_option_start_group_voice" = "Start group audio chat";
+"room_option_start_group_video" = "Start group video chat";
+"room_option_share_location" = "Share location";
+"room_option_share_contact" = "Share contact";
 
 // Settings
 "account_logout_all" = "Logout all accounts";

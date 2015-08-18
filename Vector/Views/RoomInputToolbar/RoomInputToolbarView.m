@@ -28,6 +28,11 @@
 
 @interface RoomInputToolbarView()
 {
+    /**
+     The current height of the toolbar.
+     */
+    CGFloat actualToolBarHeight;
+    
     MediaPickerViewController *mediaPicker;
 }
 
@@ -57,13 +62,19 @@
 {
     [super awakeFromNib];
     
-    self.attachMediaButton.backgroundColor = [UIColor clearColor];
-    [self.attachMediaButton setImage:[UIImage imageNamed:@"attach_media"] forState:UIControlStateNormal];
-    [self.attachMediaButton setImage:[UIImage imageNamed:@"attach_media"] forState:UIControlStateHighlighted];
+    // Remove default toolbar background color
+    self.backgroundColor = [UIColor whiteColor];
     
-    self.optionMenuButton.backgroundColor = [UIColor clearColor];
-    [self.optionMenuButton setImage:[UIImage imageNamed:@"send_other"] forState:UIControlStateNormal];
-    [self.optionMenuButton setImage:[UIImage imageNamed:@"send_other"] forState:UIControlStateHighlighted];
+    self.startVoiceCallLabel.text = NSLocalizedStringFromTable(@"room_option_start_group_voice", @"Vector", nil);
+    self.startVoiceCallLabel.numberOfLines = 0;
+    self.startVideoCallLabel.text = NSLocalizedStringFromTable(@"room_option_start_group_video", @"Vector", nil);
+    self.startVideoCallLabel.numberOfLines = 0;
+    self.shareLocationLabel.text = NSLocalizedStringFromTable(@"room_option_share_location", @"Vector", nil);
+    self.shareLocationLabel.numberOfLines = 0;
+    self.shareContactLabel.text = NSLocalizedStringFromTable(@"room_option_share_contact", @"Vector", nil);
+    self.shareContactLabel.numberOfLines = 0;
+    
+    actualToolBarHeight = self.frame.size.height;
 }
 
 #pragma mark - HPGrowingTextView delegate
@@ -85,6 +96,13 @@
     }
     
     [super growingTextViewDidChange:growingTextView];
+}
+
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+{
+    actualToolBarHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    
+    [super growingTextView:growingTextView willChangeHeight:height];
 }
 
 #pragma mark - Override MXKRoomInputToolbarView
@@ -110,7 +128,49 @@
     }
     else if (button == self.optionMenuButton)
     {
-        //TODO
+        if (self.optionMenuView.isHidden)
+        {
+            actualToolBarHeight += self.optionMenuView.frame.size.height;
+            self.messageComposerContainerTopConstraint.constant += self.optionMenuView.frame.size.height;
+        }
+        else
+        {
+            actualToolBarHeight -= self.optionMenuView.frame.size.height;
+            self.messageComposerContainerTopConstraint.constant -= self.optionMenuView.frame.size.height;
+        }
+        
+        // Update toolbar superview
+        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:)])
+        {
+            [self.delegate roomInputToolbarView:self heightDidChanged:actualToolBarHeight];
+        }
+        
+        // Refresh max height of the growning text
+        self.maxHeight = self.maxHeight;
+        
+        self.optionMenuView.hidden = !self.optionMenuView.isHidden;
+    }
+    else if (button == self.startVoiceCallButton)
+    {
+        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
+        {
+            [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
+        }
+    }
+    else if (button == self.startVideoCallButton)
+    {
+        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
+        {
+            [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
+        }
+    }
+    else if (button == self.shareLocationButton)
+    {
+        // TODO
+    }
+    else if (button == self.shareContactButton)
+    {
+        // TODO
     }
     
     [super onTouchUpInside:button];

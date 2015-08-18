@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,11 +12,197 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="41"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSL-yA-AVi" userLabel="Option Menu View">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kUX-bM-pqB" userLabel="Separator View">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="wn1-2b-seV"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oTG-WT-raO" userLabel="voiceCallButtonView">
+                            <rect key="frame" x="8" y="2" width="284" height="36"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jel-mh-ONW" userLabel="startVoiceCallButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="Jel-mh-ONW" secondAttribute="height" multiplier="1:1" id="YPJ-6g-bzH"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="voice_call.png">
+                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted" image="voice_call.png"/>
+                                    <connections>
+                                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="pAx-jp-BGW"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start audio chat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG8-kL-koL">
+                                    <rect key="frame" x="41" y="0.0" width="243" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="Jel-mh-ONW" firstAttribute="leading" secondItem="oTG-WT-raO" secondAttribute="leading" id="8zC-Wy-xYQ"/>
+                                <constraint firstItem="Jel-mh-ONW" firstAttribute="top" secondItem="oTG-WT-raO" secondAttribute="top" id="91c-MR-EIL"/>
+                                <constraint firstAttribute="trailing" secondItem="nG8-kL-koL" secondAttribute="trailing" id="Etl-Vp-Y5B"/>
+                                <constraint firstItem="nG8-kL-koL" firstAttribute="top" secondItem="oTG-WT-raO" secondAttribute="top" id="RGV-dk-cCT"/>
+                                <constraint firstItem="nG8-kL-koL" firstAttribute="leading" secondItem="Jel-mh-ONW" secondAttribute="trailing" constant="5" id="SMW-eY-hsP"/>
+                                <constraint firstAttribute="bottom" secondItem="nG8-kL-koL" secondAttribute="bottom" id="ewl-0V-cYl"/>
+                                <constraint firstAttribute="bottom" secondItem="Jel-mh-ONW" secondAttribute="bottom" id="kvO-gk-V21"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FTt-lj-eOg" userLabel="videoCallButtonView">
+                            <rect key="frame" x="308" y="2" width="284" height="36"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hn0-fF-IAm" userLabel="startVideoCallButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="hn0-fF-IAm" secondAttribute="height" multiplier="1:1" id="zht-bC-4qQ"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="video_call.png">
+                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted" image="video_call.png"/>
+                                    <connections>
+                                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="upn-cj-hqK"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start video chat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhv-aK-hmK">
+                                    <rect key="frame" x="41" y="0.0" width="243" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="hn0-fF-IAm" secondAttribute="bottom" id="4Hs-fM-xnf"/>
+                                <constraint firstAttribute="trailing" secondItem="Qhv-aK-hmK" secondAttribute="trailing" id="R2N-fR-hOy"/>
+                                <constraint firstItem="hn0-fF-IAm" firstAttribute="leading" secondItem="FTt-lj-eOg" secondAttribute="leading" id="TPk-bq-AFF"/>
+                                <constraint firstItem="hn0-fF-IAm" firstAttribute="top" secondItem="FTt-lj-eOg" secondAttribute="top" id="W2T-Hy-JQC"/>
+                                <constraint firstItem="Qhv-aK-hmK" firstAttribute="top" secondItem="FTt-lj-eOg" secondAttribute="top" id="k76-by-bb1"/>
+                                <constraint firstAttribute="bottom" secondItem="Qhv-aK-hmK" secondAttribute="bottom" id="oQq-mQ-OgW"/>
+                                <constraint firstItem="Qhv-aK-hmK" firstAttribute="leading" secondItem="hn0-fF-IAm" secondAttribute="trailing" constant="5" id="rki-kJ-MX2"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="87t-6b-zMl" userLabel="shareLocationButtonView">
+                            <rect key="frame" x="8" y="42" width="284" height="36"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zr8-63-d18" userLabel="shareLocationButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="Zr8-63-d18" secondAttribute="height" multiplier="1:1" id="u0d-Lc-oCW"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="share_location.png">
+                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted" image="share_location.png"/>
+                                    <connections>
+                                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="5z4-cX-lIl"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Id3-nH-7Y6">
+                                    <rect key="frame" x="41" y="0.0" width="243" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Id3-nH-7Y6" secondAttribute="trailing" id="50N-sw-KNW"/>
+                                <constraint firstItem="Id3-nH-7Y6" firstAttribute="top" secondItem="87t-6b-zMl" secondAttribute="top" id="6Zq-5H-VSd"/>
+                                <constraint firstAttribute="bottom" secondItem="Id3-nH-7Y6" secondAttribute="bottom" id="7M8-3w-dK8"/>
+                                <constraint firstAttribute="bottom" secondItem="Zr8-63-d18" secondAttribute="bottom" id="FqR-cY-Dg9"/>
+                                <constraint firstItem="Zr8-63-d18" firstAttribute="top" secondItem="87t-6b-zMl" secondAttribute="top" id="MKv-4N-bUK"/>
+                                <constraint firstItem="Zr8-63-d18" firstAttribute="leading" secondItem="87t-6b-zMl" secondAttribute="leading" id="p3v-IC-fZ9"/>
+                                <constraint firstItem="Id3-nH-7Y6" firstAttribute="leading" secondItem="Zr8-63-d18" secondAttribute="trailing" constant="5" id="zWn-jI-yrD"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rZn-dW-pQG" userLabel="shareContactButtonView">
+                            <rect key="frame" x="308" y="42" width="284" height="36"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pc9-aU-j6t" userLabel="shareContactButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="pc9-aU-j6t" secondAttribute="height" multiplier="1:1" id="2wU-1l-xpp"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" image="share_contact.png">
+                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted" image="share_contact.png"/>
+                                    <connections>
+                                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Nnw-rl-jDT"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share contact" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-SF-a80">
+                                    <rect key="frame" x="41" y="0.0" width="243" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="pc9-aU-j6t" firstAttribute="leading" secondItem="rZn-dW-pQG" secondAttribute="leading" id="2uW-o8-UZd"/>
+                                <constraint firstAttribute="bottom" secondItem="2FA-SF-a80" secondAttribute="bottom" id="3Lz-qx-SAz"/>
+                                <constraint firstItem="pc9-aU-j6t" firstAttribute="top" secondItem="rZn-dW-pQG" secondAttribute="top" id="SLz-qm-7LX"/>
+                                <constraint firstAttribute="bottom" secondItem="pc9-aU-j6t" secondAttribute="bottom" id="TIO-uL-Ooe"/>
+                                <constraint firstItem="2FA-SF-a80" firstAttribute="leading" secondItem="pc9-aU-j6t" secondAttribute="trailing" constant="5" id="YXs-p6-7C5"/>
+                                <constraint firstItem="2FA-SF-a80" firstAttribute="top" secondItem="rZn-dW-pQG" secondAttribute="top" id="qGx-6K-wAm"/>
+                                <constraint firstAttribute="trailing" secondItem="2FA-SF-a80" secondAttribute="trailing" id="ySq-j0-Sdv"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="oTG-WT-raO" firstAttribute="height" secondItem="eSL-yA-AVi" secondAttribute="height" multiplier="0.5" constant="-4" id="0X9-WJ-kUY"/>
+                        <constraint firstItem="FTt-lj-eOg" firstAttribute="top" secondItem="kUX-bM-pqB" secondAttribute="bottom" constant="1" id="1nt-a9-a1W"/>
+                        <constraint firstAttribute="bottom" secondItem="87t-6b-zMl" secondAttribute="bottom" constant="2" id="5VF-mi-mwE"/>
+                        <constraint firstItem="oTG-WT-raO" firstAttribute="leading" secondItem="eSL-yA-AVi" secondAttribute="leading" constant="8" id="6SO-bV-UoM"/>
+                        <constraint firstItem="kUX-bM-pqB" firstAttribute="leading" secondItem="eSL-yA-AVi" secondAttribute="leading" id="8ey-wV-Xha"/>
+                        <constraint firstItem="rZn-dW-pQG" firstAttribute="leading" secondItem="87t-6b-zMl" secondAttribute="trailing" constant="16" id="BmX-fQ-MKm"/>
+                        <constraint firstAttribute="bottom" secondItem="rZn-dW-pQG" secondAttribute="bottom" constant="2" id="Bvq-tC-ExY"/>
+                        <constraint firstItem="kUX-bM-pqB" firstAttribute="top" secondItem="eSL-yA-AVi" secondAttribute="top" id="Jpo-MZ-Q2I"/>
+                        <constraint firstAttribute="height" constant="80" id="OOi-IP-o2p"/>
+                        <constraint firstItem="87t-6b-zMl" firstAttribute="width" secondItem="oTG-WT-raO" secondAttribute="width" id="VMG-yY-TPX"/>
+                        <constraint firstItem="87t-6b-zMl" firstAttribute="leading" secondItem="eSL-yA-AVi" secondAttribute="leading" constant="8" id="ZgE-Kp-XLI"/>
+                        <constraint firstAttribute="trailing" secondItem="kUX-bM-pqB" secondAttribute="trailing" id="ZxZ-dq-7Hb"/>
+                        <constraint firstItem="FTt-lj-eOg" firstAttribute="height" secondItem="oTG-WT-raO" secondAttribute="height" id="c9m-Nz-h82"/>
+                        <constraint firstItem="FTt-lj-eOg" firstAttribute="width" secondItem="oTG-WT-raO" secondAttribute="width" id="h3z-AU-wc3"/>
+                        <constraint firstItem="oTG-WT-raO" firstAttribute="height" secondItem="rZn-dW-pQG" secondAttribute="height" id="ihY-Wq-sAK"/>
+                        <constraint firstItem="oTG-WT-raO" firstAttribute="width" secondItem="rZn-dW-pQG" secondAttribute="width" id="jOl-Gz-C0M"/>
+                        <constraint firstItem="FTt-lj-eOg" firstAttribute="leading" secondItem="oTG-WT-raO" secondAttribute="trailing" constant="16" id="l2p-6O-vTy"/>
+                        <constraint firstItem="oTG-WT-raO" firstAttribute="width" secondItem="eSL-yA-AVi" secondAttribute="width" multiplier="0.5" constant="-16" id="oMN-Sy-xl5"/>
+                        <constraint firstItem="87t-6b-zMl" firstAttribute="height" secondItem="oTG-WT-raO" secondAttribute="height" id="txk-s3-F00"/>
+                        <constraint firstItem="oTG-WT-raO" firstAttribute="top" secondItem="kUX-bM-pqB" secondAttribute="bottom" constant="1" id="wwB-43-X0z"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ln-yI-ef9" userLabel="Separator View">
+                    <rect key="frame" x="0.0" y="-1" width="600" height="1"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="WBM-ts-zPX"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                    <rect key="frame" x="8" y="4" width="460" height="33"/>
+                    <rect key="frame" x="8" y="8" width="460" height="25"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
-                            <rect key="frame" x="0.0" y="0.0" width="460" height="33"/>
+                            <rect key="frame" x="0.0" y="0.0" width="460" height="25"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
@@ -27,30 +214,6 @@
                         <constraint firstAttribute="bottom" secondItem="wgb-ON-N29" secondAttribute="bottom" id="fFG-SH-Hjh"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
-                    <rect key="frame" x="513" y="0.0" width="41" height="41"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="height" multiplier="1:1" id="f0T-3f-BJu"/>
-                    </constraints>
-                    <connections>
-                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="WbU-WH-gwL"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Owf-M8-qJi" userLabel="menu Button">
-                    <rect key="frame" x="555" y="0.0" width="41" height="41"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="height" multiplier="1:1" id="1Ni-y7-Nsa"/>
-                        <constraint firstAttribute="width" constant="41" id="9FZ-CI-diT"/>
-                    </constraints>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Cxg-BO-TfK"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
                     <rect key="frame" x="476" y="3" width="36" height="36"/>
                     <constraints>
@@ -61,31 +224,56 @@
                         <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Y9g-uz-rAz"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
+                    <rect key="frame" x="513" y="0.0" width="41" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="height" multiplier="1:1" id="f0T-3f-BJu"/>
+                    </constraints>
+                    <state key="normal" image="attach_media.png"/>
+                    <state key="highlighted" image="attach_media.png"/>
+                    <connections>
+                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="WbU-WH-gwL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Owf-M8-qJi" userLabel="menu Button">
+                    <rect key="frame" x="555" y="0.0" width="41" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="height" multiplier="1:1" id="1Ni-y7-Nsa"/>
+                        <constraint firstAttribute="width" constant="41" id="9FZ-CI-diT"/>
+                    </constraints>
+                    <state key="normal" image="send_other.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted" image="send_other.png"/>
+                    <connections>
+                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Cxg-BO-TfK"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="3ln-yI-ef9" secondAttribute="bottom" constant="8" id="8tt-Kg-HS7"/>
+                <constraint firstAttribute="trailing" secondItem="eSL-yA-AVi" secondAttribute="trailing" id="E9Z-qG-wCp"/>
                 <constraint firstAttribute="trailing" secondItem="Owf-M8-qJi" secondAttribute="trailing" constant="4" id="Gjp-VM-BFw"/>
-                <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="4" id="Gsc-LN-yec"/>
+                <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="8" id="Gsc-LN-yec"/>
+                <constraint firstItem="eSL-yA-AVi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Lhf-VQ-nmh"/>
+                <constraint firstItem="3ln-yI-ef9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="MxF-rL-NLz"/>
                 <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="1" id="PB6-14-KBC"/>
-                <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="8" id="QiS-Qt-q6t"/>
-                <constraint firstAttribute="centerY" secondItem="Owf-M8-qJi" secondAttribute="centerY" id="Tnh-rh-LJx"/>
-                <constraint firstAttribute="centerY" secondItem="Hga-l8-Wua" secondAttribute="centerY" id="U29-yX-mV5"/>
                 <constraint firstItem="Owf-M8-qJi" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" constant="1" id="VBF-Cx-fhG"/>
-                <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="W1p-U9-VVV"/>
-                <constraint firstAttribute="centerY" secondItem="G8Z-CM-tGs" secondAttribute="centerY" id="n0Y-h7-V7S"/>
+                <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="W1p-U9-VVV"/>
+                <constraint firstItem="eSL-yA-AVi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ceD-4c-5tS"/>
+                <constraint firstItem="Hga-l8-Wua" firstAttribute="centerY" secondItem="QWp-NV-uh5" secondAttribute="centerY" id="hVD-4P-kP3"/>
+                <constraint firstItem="G8Z-CM-tGs" firstAttribute="centerY" secondItem="QWp-NV-uh5" secondAttribute="centerY" constant="0.5" id="ibt-XP-0Ed"/>
+                <constraint firstAttribute="trailing" secondItem="3ln-yI-ef9" secondAttribute="trailing" id="pUd-7j-25i"/>
                 <constraint firstItem="G8Z-CM-tGs" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="8" id="q5z-Gg-gxD"/>
                 <constraint firstItem="Owf-M8-qJi" firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="width" id="sWE-Of-hto"/>
                 <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="v1f-6D-q3u"/>
+                <constraint firstItem="Owf-M8-qJi" firstAttribute="centerY" secondItem="QWp-NV-uh5" secondAttribute="centerY" id="vPZ-14-CzS"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="QiS-Qt-q6t"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="attachMediaButton" destination="Hga-l8-Wua" id="Osr-ek-c91"/>
                 <outlet property="growingTextView" destination="wgb-ON-N29" id="nwF-uV-Ng9"/>
@@ -93,8 +281,25 @@
                 <outlet property="messageComposerContainerBottomConstraint" destination="Gsc-LN-yec" id="tnh-uf-g5s"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="W1p-U9-VVV" id="ETg-Iu-GEf"/>
                 <outlet property="optionMenuButton" destination="Owf-M8-qJi" id="fCV-Ky-xSN"/>
+                <outlet property="optionMenuView" destination="eSL-yA-AVi" id="70Q-8x-A57"/>
                 <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
+                <outlet property="shareContactButton" destination="pc9-aU-j6t" id="tuS-fr-cFs"/>
+                <outlet property="shareContactLabel" destination="2FA-SF-a80" id="6js-hS-zJu"/>
+                <outlet property="shareLocationButton" destination="Zr8-63-d18" id="Fn3-mt-MOz"/>
+                <outlet property="shareLocationLabel" destination="Id3-nH-7Y6" id="6Ve-3R-dvQ"/>
+                <outlet property="startVideoCallButton" destination="hn0-fF-IAm" id="exH-u8-1sw"/>
+                <outlet property="startVideoCallLabel" destination="Qhv-aK-hmK" id="h1O-wO-l9e"/>
+                <outlet property="startVoiceCallButton" destination="Jel-mh-ONW" id="Sfu-Ef-sWI"/>
+                <outlet property="startVoiceCallLabel" destination="nG8-kL-koL" id="s8I-kj-ZOp"/>
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="attach_media.png" width="31" height="31"/>
+        <image name="send_other.png" width="31" height="31"/>
+        <image name="share_contact.png" width="31" height="31"/>
+        <image name="share_location.png" width="31" height="31"/>
+        <image name="video_call.png" width="31" height="31"/>
+        <image name="voice_call.png" width="31" height="31"/>
+    </resources>
 </document>

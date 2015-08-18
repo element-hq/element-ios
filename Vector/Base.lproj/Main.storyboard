@@ -30,18 +30,11 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="icon_users.png" id="3d6-ln-ICU" userLabel="showRoomMembers">
-                            <inset key="imageInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
-                            <connections>
-                                <action selector="showRoomMembers:" destination="msb-ol-2LB" id="Ouh-KX-Nj7"/>
-                                <segue destination="y7N-Cs-bXh" kind="show" identifier="showMemberList" id="CyV-7r-Ykf"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="aas-th-FW1" id="SFz-1s-ywg"/>
-                        <outlet property="showRoomMembersButtonItem" destination="3d6-ln-ICU" id="Qh7-yj-G7e"/>
                         <segue destination="qlN-Mb-ZH7" kind="show" identifier="showMemberDetails" id="9Sj-Yf-p2I"/>
+                        <segue destination="y7N-Cs-bXh" kind="show" identifier="showMemberList" id="2sI-aY-muu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -288,12 +281,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon_users.png" width="35" height="25"/>
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="17E-G9-IZ6"/>
         <segue reference="Vo4-8x-dtH"/>
-        <segue reference="m9P-N3-WZN"/>
+        <segue reference="9Sj-Yf-p2I"/>
     </inferredMetricsTieBreakers>
 </document>
