@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */; };
+		F001D75F1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D7561B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib */; };
+		F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7581B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m */; };
+		F001D7611B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D7591B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib */; };
+		F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */; };
+		F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */; };
+		F001D7661B82198B00A162C3 /* attach_media.png in Resources */ = {isa = PBXBuildFile; fileRef = F001D7641B82198B00A162C3 /* attach_media.png */; };
+		F001D7691B821A8500A162C3 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = F001D7681B821A8500A162C3 /* send.png */; };
+		F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */; };
+		F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
 		F0316E3A1B7DF45A00F03620 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E381B7DF45A00F03620 /* add.png */; };
 		F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E391B7DF45A00F03620 /* add@2x.png */; };
@@ -75,6 +85,20 @@
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F001D7541B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingBubbleTableViewCell.h; sourceTree = "<group>"; };
+		F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIncomingBubbleTableViewCell.m; sourceTree = "<group>"; };
+		F001D7561B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIncomingBubbleTableViewCell.xib; sourceTree = "<group>"; };
+		F001D7571B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingBubbleTableViewCell.h; sourceTree = "<group>"; };
+		F001D7581B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingBubbleTableViewCell.m; sourceTree = "<group>"; };
+		F001D7591B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingBubbleTableViewCell.xib; sourceTree = "<group>"; };
+		F001D75B1B8207C000A162C3 /* RoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomInputToolbarView.h; sourceTree = "<group>"; };
+		F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomInputToolbarView.m; sourceTree = "<group>"; };
+		F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomInputToolbarView.xib; sourceTree = "<group>"; };
+		F001D7641B82198B00A162C3 /* attach_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attach_media.png; sourceTree = "<group>"; };
+		F001D7681B821A8500A162C3 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = "<group>"; };
+		F001D76A1B821E4F00A162C3 /* MediaPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPickerViewController.h; sourceTree = "<group>"; };
+		F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerViewController.m; sourceTree = "<group>"; };
+		F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPickerViewController.xib; sourceTree = "<group>"; };
 		F0316E381B7DF45A00F03620 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		F0316E391B7DF45A00F03620 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
 		F0316E3C1B7E28DE00F03620 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
@@ -181,6 +205,38 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F001D7521B8207C000A162C3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F001D7531B8207C000A162C3 /* RoomBubbleList */,
+				F001D75A1B8207C000A162C3 /* RoomInputToolbar */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F001D7531B8207C000A162C3 /* RoomBubbleList */ = {
+			isa = PBXGroup;
+			children = (
+				F001D7541B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.h */,
+				F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */,
+				F001D7561B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib */,
+				F001D7571B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.h */,
+				F001D7581B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m */,
+				F001D7591B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib */,
+			);
+			path = RoomBubbleList;
+			sourceTree = "<group>";
+		};
+		F001D75A1B8207C000A162C3 /* RoomInputToolbar */ = {
+			isa = PBXGroup;
+			children = (
+				F001D75B1B8207C000A162C3 /* RoomInputToolbarView.h */,
+				F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */,
+				F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */,
+			);
+			path = RoomInputToolbar;
+			sourceTree = "<group>";
+		};
 		F094A9991B78D8F000B1FBBF = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +265,7 @@
 				F094AA101B78E42600B1FBBF /* Model */,
 				F094AA131B78E42600B1FBBF /* Resources */,
 				F094AA151B78E42600B1FBBF /* ViewController */,
+				F001D7521B8207C000A162C3 /* Views */,
 				F094A9A91B78D8F000B1FBBF /* AppDelegate.h */,
 				F094A9AA1B78D8F000B1FBBF /* AppDelegate.m */,
 				F094A9B21B78D8F000B1FBBF /* Main.storyboard */,
@@ -294,6 +351,9 @@
 				F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */,
 				F094AA201B78E42600B1FBBF /* MasterTabBarController.h */,
 				F094AA211B78E42600B1FBBF /* MasterTabBarController.m */,
+				F001D76A1B821E4F00A162C3 /* MediaPickerViewController.h */,
+				F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */,
+				F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */,
 				F094AA221B78E42600B1FBBF /* RecentsViewController.h */,
 				F094AA231B78E42600B1FBBF /* RecentsViewController.m */,
 				F0DD7D801B7B363300C4BE02 /* RoomCreationStep1ViewController.h */,
@@ -313,6 +373,8 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F001D7681B821A8500A162C3 /* send.png */,
+				F001D7641B82198B00A162C3 /* attach_media.png */,
 				F0316E451B7E4C9A00F03620 /* placeholder.png */,
 				F0316E461B7E4C9A00F03620 /* placeholder@2x.png */,
 				F0316E3C1B7E28DE00F03620 /* remove.png */,
@@ -427,24 +489,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */,
 				F0DD7D651B7AA8C900C4BE02 /* logo@2x.png in Resources */,
 				F0DD7D611B7AA8C900C4BE02 /* hide@2x.png in Resources */,
 				F0DD7D751B7AA8C900C4BE02 /* typing@2x.png in Resources */,
 				F0316E3A1B7DF45A00F03620 /* add.png in Resources */,
 				F0DD7D671B7AA8C900C4BE02 /* members@2x.png in Resources */,
 				F0DD7D721B7AA8C900C4BE02 /* tab_settings.png in Resources */,
+				F001D7611B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib in Resources */,
 				F0DD7D7B1B7AA8C900C4BE02 /* voip@2x.png in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
 				F0DD7D7E1B7AAA3C00C4BE02 /* icon_users.png in Resources */,
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
 				F0DD7D4C1B7AA8C900C4BE02 /* attach.png in Resources */,
 				F0316E3E1B7E28DE00F03620 /* remove.png in Resources */,
+				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
 				F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */,
 				F0DD7D691B7AA8C900C4BE02 /* menu@2x.png in Resources */,
 				F0DD7D731B7AA8C900C4BE02 /* tab_settings@2x.png in Resources */,
 				F0316E481B7E4C9A00F03620 /* placeholder@2x.png in Resources */,
+				F001D75F1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib in Resources */,
 				F0DD7D641B7AA8C900C4BE02 /* logo.png in Resources */,
 				F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */,
+				F001D7691B821A8500A162C3 /* send.png in Resources */,
 				F0DD7D7F1B7AAA3C00C4BE02 /* icon_users@2x.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */,
@@ -454,6 +521,7 @@
 				F0DD7D7A1B7AA8C900C4BE02 /* voip.png in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
+				F001D7661B82198B00A162C3 /* attach_media.png in Resources */,
 				F0DD7D6D1B7AA8C900C4BE02 /* search@2x.png in Resources */,
 				F0DD7D791B7AA8C900C4BE02 /* video@2x.png in Resources */,
 				F0DD7D661B7AA8C900C4BE02 /* members.png in Resources */,
@@ -516,6 +584,8 @@
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F094AA051B78E3D400B1FBBF /* empty.mm in Sources */,
+				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
+				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
@@ -523,6 +593,8 @@
 				F094AA2D1B78E42600B1FBBF /* RecentListDataSource.m in Sources */,
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,
 				F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */,
+				F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */,
+				F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */,
 				F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */,
 				F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */,
 				F094AA341B78E42600B1FBBF /* MasterTabBarController.m in Sources */,

@@ -16,11 +16,10 @@
 
 #import "RoomViewController.h"
 
-#import "MXKRoomBubbleTableViewCell.h"
-
 #import "AppDelegate.h"
-
 #import "RageShakeManager.h"
+
+#import "RoomInputToolbarView.h"
 
 @interface RoomViewController ()
 {
@@ -52,8 +51,8 @@
     // Set room title view
     [self setRoomTitleViewClass:MXKRoomTitleViewWithTopic.class];
     
-    // Replace the default input toolbar view with the one based on `HPGrowingTextView`.
-    [self setRoomInputToolbarViewClass:MXKRoomInputToolbarViewWithHPGrowingText.class];
+    // Replace the default input toolbar view.
+    [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
