@@ -47,6 +47,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
 }
 
 - (void)dealloc
@@ -74,6 +76,17 @@
 - (void)destroy
 {
     [super destroy];
+}
+
+#pragma mark -
+
+- (IBAction)onButtonPressed:(id)sender
+{
+    if (sender == self.navigationItem.leftBarButtonItem)
+    {
+        // Cancel has been pressed
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end

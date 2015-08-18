@@ -12,10 +12,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                    <rect key="frame" x="8" y="4" width="497" height="33"/>
+                    <rect key="frame" x="8" y="4" width="460" height="33"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
-                            <rect key="frame" x="0.0" y="0.0" width="497" height="33"/>
+                            <rect key="frame" x="0.0" y="0.0" width="460" height="33"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
@@ -27,7 +27,7 @@
                         <constraint firstAttribute="bottom" secondItem="wgb-ON-N29" secondAttribute="bottom" id="fFG-SH-Hjh"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="left Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
                     <rect key="frame" x="513" y="0.0" width="41" height="41"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -37,7 +37,7 @@
                         <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="WbU-WH-gwL"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Owf-M8-qJi" userLabel="right Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Owf-M8-qJi" userLabel="menu Button">
                     <rect key="frame" x="555" y="0.0" width="41" height="41"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -51,16 +51,29 @@
                         <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Cxg-BO-TfK"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
+                    <rect key="frame" x="476" y="3" width="36" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="G8Z-CM-tGs" secondAttribute="height" multiplier="1:1" id="Kiq-QD-GMV"/>
+                    </constraints>
+                    <state key="normal" title="Send"/>
+                    <connections>
+                        <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Y9g-uz-rAz"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Owf-M8-qJi" secondAttribute="trailing" constant="4" id="Gjp-VM-BFw"/>
                 <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="4" id="Gsc-LN-yec"/>
+                <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="1" id="PB6-14-KBC"/>
                 <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="8" id="QiS-Qt-q6t"/>
                 <constraint firstAttribute="centerY" secondItem="Owf-M8-qJi" secondAttribute="centerY" id="Tnh-rh-LJx"/>
                 <constraint firstAttribute="centerY" secondItem="Hga-l8-Wua" secondAttribute="centerY" id="U29-yX-mV5"/>
                 <constraint firstItem="Owf-M8-qJi" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" constant="1" id="VBF-Cx-fhG"/>
                 <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="W1p-U9-VVV"/>
+                <constraint firstAttribute="centerY" secondItem="G8Z-CM-tGs" secondAttribute="centerY" id="n0Y-h7-V7S"/>
+                <constraint firstItem="G8Z-CM-tGs" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="8" id="q5z-Gg-gxD"/>
                 <constraint firstItem="Owf-M8-qJi" firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="width" id="sWE-Of-hto"/>
                 <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="v1f-6D-q3u"/>
             </constraints>
@@ -68,13 +81,19 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="QiS-Qt-q6t"/>
+                </mask>
+            </variation>
             <connections>
+                <outlet property="attachMediaButton" destination="Hga-l8-Wua" id="Osr-ek-c91"/>
                 <outlet property="growingTextView" destination="wgb-ON-N29" id="nwF-uV-Ng9"/>
-                <outlet property="leftInputToolbarButton" destination="Hga-l8-Wua" id="jaa-D6-e6X"/>
                 <outlet property="messageComposerContainer" destination="QWp-NV-uh5" id="APR-B5-ogC"/>
                 <outlet property="messageComposerContainerBottomConstraint" destination="Gsc-LN-yec" id="tnh-uf-g5s"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="W1p-U9-VVV" id="ETg-Iu-GEf"/>
-                <outlet property="rightInputToolbarButton" destination="Owf-M8-qJi" id="UQH-fw-chf"/>
+                <outlet property="optionMenuButton" destination="Owf-M8-qJi" id="fCV-Ky-xSN"/>
+                <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
             </connections>
         </view>
     </objects>

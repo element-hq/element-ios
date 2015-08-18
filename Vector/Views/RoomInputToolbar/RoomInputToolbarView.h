@@ -24,5 +24,7 @@
  */
 @interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <MediaPickerViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *optionMenuButton;
 
 @end

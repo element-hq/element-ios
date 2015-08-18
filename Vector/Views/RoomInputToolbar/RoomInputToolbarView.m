@@ -57,57 +57,41 @@
 {
     [super awakeFromNib];
     
-    self.leftInputToolbarButton.backgroundColor = [UIColor clearColor];
-    [self.leftInputToolbarButton setImage:[UIImage imageNamed:@"attach_media"] forState:UIControlStateNormal];
-    [self.leftInputToolbarButton setImage:[UIImage imageNamed:@"attach_media"] forState:UIControlStateHighlighted];
+    self.attachMediaButton.backgroundColor = [UIColor clearColor];
+    [self.attachMediaButton setImage:[UIImage imageNamed:@"attach_media"] forState:UIControlStateNormal];
+    [self.attachMediaButton setImage:[UIImage imageNamed:@"attach_media"] forState:UIControlStateHighlighted];
     
-    self.rightInputToolbarButton.backgroundColor = [UIColor clearColor];
-    [self.rightInputToolbarButton setImage:[UIImage imageNamed:@"send"] forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setImage:[UIImage imageNamed:@"send"] forState:UIControlStateHighlighted];
-    [self.rightInputToolbarButton setTitle:nil forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
-    self.rightInputToolbarButton.enabled = YES;
-}
-
-- (void)setTextMessage:(NSString *)textMessage
-{
-    [super setTextMessage:textMessage];
-    
-    // Force right button to be enabled (even if the text input is empty)
-    self.rightInputToolbarButton.enabled = YES;
+    self.optionMenuButton.backgroundColor = [UIColor clearColor];
+    [self.optionMenuButton setImage:[UIImage imageNamed:@"send_other"] forState:UIControlStateNormal];
+    [self.optionMenuButton setImage:[UIImage imageNamed:@"send_other"] forState:UIControlStateHighlighted];
 }
 
 #pragma mark - HPGrowingTextView delegate
 
-- (void)growingTextViewDidChange:(HPGrowingTextView *)sender
-{
-    [super growingTextViewDidChange:sender];
-    
-    // Force right button to be enabled (even if the text input is empty)
-    self.rightInputToolbarButton.enabled = YES;
-}
-
 - (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
 {
-    NSString *message = self.textMessage;
+    // The return sends the message rather than giving a carriage return.
+    [self onTouchUpInside:self.rightInputToolbarButton];
     
-    // Reset message
-    self.textMessage = nil;
-    
-    // Send button has been pressed
-    if (message.length && [self.delegate respondsToSelector:@selector(roomInputToolbarView:sendTextMessage:)])
+    return NO;
+}
+
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
+{
+    // Clean the carriage return added on return press
+    if ([self.textMessage isEqualToString:@"\n"])
     {
-        [self.delegate roomInputToolbarView:self sendTextMessage:message];
+        self.textMessage = nil;
     }
     
-    return YES;
+    [super growingTextViewDidChange:growingTextView];
 }
 
 #pragma mark - Override MXKRoomInputToolbarView
 
 - (IBAction)onTouchUpInside:(UIButton*)button
 {
-    if (button == self.leftInputToolbarButton)
+    if (button == self.attachMediaButton)
     {
         // Check whether media attachment is supported
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
@@ -117,44 +101,19 @@
             UINavigationController *navigationController = [UINavigationController new];
             [navigationController pushViewController:mediaPicker animated:NO];
             
-            [self.delegate roomInputToolbarView:self presentViewController:mediaPicker];
+            [self.delegate roomInputToolbarView:self presentViewController:navigationController];
         }
         else
         {
             NSLog(@"[RoomInputToolbarView] Attach media is not supported");
         }
     }
-    else if (button == self.rightInputToolbarButton)
+    else if (button == self.optionMenuButton)
     {
-        // Check whether media attachment is supported
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
-        {
-            mediaPicker = [MediaPickerViewController mediaPickerViewController];
-            mediaPicker.delegate = self;
-            UINavigationController *navigationController = [UINavigationController new];
-            [navigationController pushViewController:mediaPicker animated:NO];
-            
-            [self.delegate roomInputToolbarView:self presentViewController:mediaPicker];
-        }
-        else
-        {
-            NSLog(@"[RoomInputToolbarView] Attach media is not supported");
-        }
+        //TODO
     }
-//    else if (button == self.rightInputToolbarButton)
-//    {
-//        
-//        NSString *message = self.textMessage;
-//        
-//        // Reset message
-//        self.textMessage = nil;
-//        
-//        // Send button has been pressed
-//        if (message.length && [self.delegate respondsToSelector:@selector(roomInputToolbarView:sendTextMessage:)])
-//        {
-//            [self.delegate roomInputToolbarView:self sendTextMessage:message];
-//        }
-//    }
+    
+    [super onTouchUpInside:button];
 }
 
 
