@@ -156,6 +156,9 @@
         {
             [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
         }
+        
+        // Hide option menu
+        [self onTouchUpInside:self.optionMenuButton];
     }
     else if (button == self.startVideoCallButton)
     {
@@ -163,14 +166,23 @@
         {
             [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
         }
+        
+        // Hide option menu
+        [self onTouchUpInside:self.optionMenuButton];
     }
     else if (button == self.shareLocationButton)
     {
         // TODO
+        
+        // Hide option menu
+        [self onTouchUpInside:self.optionMenuButton];
     }
     else if (button == self.shareContactButton)
     {
         // TODO
+        
+        // Hide option menu
+        [self onTouchUpInside:self.optionMenuButton];
     }
     
     [super onTouchUpInside:button];

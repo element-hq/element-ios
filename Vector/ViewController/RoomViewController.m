@@ -33,7 +33,7 @@
     MXRoomMember *selectedRoomMember;
 }
 
-@property (strong, nonatomic) MXKAlert *actionMenu;
+@property (strong, nonatomic) MXKAlert *currentAlert;
 
 @end
 
@@ -70,6 +70,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+
     [super viewWillAppear:animated];
 }
 
@@ -78,10 +79,15 @@
     [super viewWillDisappear:animated];
     
     // hide action
-    if (self.actionMenu)
+    if (self.currentAlert)
     {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
+        [self.currentAlert dismiss:NO];
+        self.currentAlert = nil;
+    }
+    
+    if (self.menuListView.superview)
+    {
+        [self.menuListView removeFromSuperview];
     }
 }
 
@@ -168,10 +174,10 @@
 
 - (void)destroy
 {
-    if (self.actionMenu)
+    if (self.currentAlert)
     {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
+        [self.currentAlert dismiss:NO];
+        self.currentAlert = nil;
     }
     
     [super destroy];

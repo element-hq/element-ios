@@ -25,11 +25,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oTG-WT-raO" userLabel="voiceCallButtonView">
                             <rect key="frame" x="8" y="3" width="284" height="36"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jel-mh-ONW" userLabel="startVoiceCallButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="Jel-mh-ONW" secondAttribute="height" multiplier="1:1" id="YPJ-6g-bzH"/>
-                                    </constraints>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jel-mh-ONW" userLabel="startVoiceCallButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="284" height="36"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <state key="normal" image="voice_call.png">
                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -53,19 +50,17 @@
                                 <constraint firstItem="Jel-mh-ONW" firstAttribute="top" secondItem="oTG-WT-raO" secondAttribute="top" id="91c-MR-EIL"/>
                                 <constraint firstAttribute="trailing" secondItem="nG8-kL-koL" secondAttribute="trailing" id="Etl-Vp-Y5B"/>
                                 <constraint firstItem="nG8-kL-koL" firstAttribute="top" secondItem="oTG-WT-raO" secondAttribute="top" id="RGV-dk-cCT"/>
-                                <constraint firstItem="nG8-kL-koL" firstAttribute="leading" secondItem="Jel-mh-ONW" secondAttribute="trailing" constant="5" id="SMW-eY-hsP"/>
+                                <constraint firstItem="nG8-kL-koL" firstAttribute="leading" secondItem="oTG-WT-raO" secondAttribute="leading" constant="41" id="S8b-fK-4HB"/>
                                 <constraint firstAttribute="bottom" secondItem="nG8-kL-koL" secondAttribute="bottom" id="ewl-0V-cYl"/>
+                                <constraint firstAttribute="trailing" secondItem="Jel-mh-ONW" secondAttribute="trailing" id="jCe-Rv-O7D"/>
                                 <constraint firstAttribute="bottom" secondItem="Jel-mh-ONW" secondAttribute="bottom" id="kvO-gk-V21"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FTt-lj-eOg" userLabel="videoCallButtonView">
                             <rect key="frame" x="308" y="3" width="284" height="36"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hn0-fF-IAm" userLabel="startVideoCallButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="hn0-fF-IAm" secondAttribute="height" multiplier="1:1" id="zht-bC-4qQ"/>
-                                    </constraints>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hn0-fF-IAm" userLabel="startVideoCallButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="284" height="36"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <state key="normal" image="video_call.png">
                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -86,22 +81,20 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="hn0-fF-IAm" secondAttribute="bottom" id="4Hs-fM-xnf"/>
+                                <constraint firstAttribute="trailing" secondItem="hn0-fF-IAm" secondAttribute="trailing" id="AqD-vS-919"/>
                                 <constraint firstAttribute="trailing" secondItem="Qhv-aK-hmK" secondAttribute="trailing" id="R2N-fR-hOy"/>
                                 <constraint firstItem="hn0-fF-IAm" firstAttribute="leading" secondItem="FTt-lj-eOg" secondAttribute="leading" id="TPk-bq-AFF"/>
                                 <constraint firstItem="hn0-fF-IAm" firstAttribute="top" secondItem="FTt-lj-eOg" secondAttribute="top" id="W2T-Hy-JQC"/>
+                                <constraint firstItem="Qhv-aK-hmK" firstAttribute="leading" secondItem="FTt-lj-eOg" secondAttribute="leading" constant="41" id="hba-ty-S4P"/>
                                 <constraint firstItem="Qhv-aK-hmK" firstAttribute="top" secondItem="FTt-lj-eOg" secondAttribute="top" id="k76-by-bb1"/>
                                 <constraint firstAttribute="bottom" secondItem="Qhv-aK-hmK" secondAttribute="bottom" id="oQq-mQ-OgW"/>
-                                <constraint firstItem="Qhv-aK-hmK" firstAttribute="leading" secondItem="hn0-fF-IAm" secondAttribute="trailing" constant="5" id="rki-kJ-MX2"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="87t-6b-zMl" userLabel="shareLocationButtonView">
                             <rect key="frame" x="8" y="42" width="284" height="36"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zr8-63-d18" userLabel="shareLocationButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="Zr8-63-d18" secondAttribute="height" multiplier="1:1" id="u0d-Lc-oCW"/>
-                                    </constraints>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zr8-63-d18" userLabel="shareLocationButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="284" height="36"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <state key="normal" image="share_location.png">
                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -126,18 +119,16 @@
                                 <constraint firstAttribute="bottom" secondItem="Id3-nH-7Y6" secondAttribute="bottom" id="7M8-3w-dK8"/>
                                 <constraint firstAttribute="bottom" secondItem="Zr8-63-d18" secondAttribute="bottom" id="FqR-cY-Dg9"/>
                                 <constraint firstItem="Zr8-63-d18" firstAttribute="top" secondItem="87t-6b-zMl" secondAttribute="top" id="MKv-4N-bUK"/>
+                                <constraint firstAttribute="trailing" secondItem="Zr8-63-d18" secondAttribute="trailing" id="RjZ-Kh-z3F"/>
+                                <constraint firstItem="Id3-nH-7Y6" firstAttribute="leading" secondItem="87t-6b-zMl" secondAttribute="leading" constant="41" id="hSv-RN-V6O"/>
                                 <constraint firstItem="Zr8-63-d18" firstAttribute="leading" secondItem="87t-6b-zMl" secondAttribute="leading" id="p3v-IC-fZ9"/>
-                                <constraint firstItem="Id3-nH-7Y6" firstAttribute="leading" secondItem="Zr8-63-d18" secondAttribute="trailing" constant="5" id="zWn-jI-yrD"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rZn-dW-pQG" userLabel="shareContactButtonView">
                             <rect key="frame" x="308" y="42" width="284" height="36"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pc9-aU-j6t" userLabel="shareContactButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="pc9-aU-j6t" secondAttribute="height" multiplier="1:1" id="2wU-1l-xpp"/>
-                                    </constraints>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pc9-aU-j6t" userLabel="shareContactButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="284" height="36"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <state key="normal" image="share_contact.png">
                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -159,10 +150,11 @@
                             <constraints>
                                 <constraint firstItem="pc9-aU-j6t" firstAttribute="leading" secondItem="rZn-dW-pQG" secondAttribute="leading" id="2uW-o8-UZd"/>
                                 <constraint firstAttribute="bottom" secondItem="2FA-SF-a80" secondAttribute="bottom" id="3Lz-qx-SAz"/>
+                                <constraint firstItem="2FA-SF-a80" firstAttribute="leading" secondItem="rZn-dW-pQG" secondAttribute="leading" constant="41" id="ICA-4w-IfL"/>
                                 <constraint firstItem="pc9-aU-j6t" firstAttribute="top" secondItem="rZn-dW-pQG" secondAttribute="top" id="SLz-qm-7LX"/>
                                 <constraint firstAttribute="bottom" secondItem="pc9-aU-j6t" secondAttribute="bottom" id="TIO-uL-Ooe"/>
-                                <constraint firstItem="2FA-SF-a80" firstAttribute="leading" secondItem="pc9-aU-j6t" secondAttribute="trailing" constant="5" id="YXs-p6-7C5"/>
                                 <constraint firstItem="2FA-SF-a80" firstAttribute="top" secondItem="rZn-dW-pQG" secondAttribute="top" id="qGx-6K-wAm"/>
+                                <constraint firstAttribute="trailing" secondItem="pc9-aU-j6t" secondAttribute="trailing" id="uf1-FC-mGM"/>
                                 <constraint firstAttribute="trailing" secondItem="2FA-SF-a80" secondAttribute="trailing" id="ySq-j0-Sdv"/>
                             </constraints>
                         </view>
