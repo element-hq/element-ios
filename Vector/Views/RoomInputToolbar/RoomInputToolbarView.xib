@@ -16,14 +16,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kUX-bM-pqB" userLabel="Separator View">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="2"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="wn1-2b-seV"/>
+                                <constraint firstAttribute="height" constant="2" id="wn1-2b-seV"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oTG-WT-raO" userLabel="voiceCallButtonView">
-                            <rect key="frame" x="8" y="2" width="284" height="36"/>
+                            <rect key="frame" x="8" y="3" width="284" height="36"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jel-mh-ONW" userLabel="startVoiceCallButton">
                                     <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
@@ -59,7 +59,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FTt-lj-eOg" userLabel="videoCallButtonView">
-                            <rect key="frame" x="308" y="2" width="284" height="36"/>
+                            <rect key="frame" x="308" y="3" width="284" height="36"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hn0-fF-IAm" userLabel="startVideoCallButton">
                                     <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
@@ -192,10 +192,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ln-yI-ef9" userLabel="Separator View">
-                    <rect key="frame" x="0.0" y="-1" width="600" height="1"/>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="-2" width="600" height="2"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="WBM-ts-zPX"/>
+                        <constraint firstAttribute="height" constant="2" id="WBM-ts-zPX"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">

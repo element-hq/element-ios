@@ -18,5 +18,11 @@
 
 @interface RoomViewController : MXKRoomViewController
 
+@property (strong, nonatomic) IBOutlet UIView *menuListView;
+
+@property (weak, nonatomic) IBOutlet UIButton *searchInChatButton;
+@property (weak, nonatomic) IBOutlet UIButton *participantsButton;
+@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
+
 @end
 

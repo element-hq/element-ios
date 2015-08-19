@@ -487,7 +487,7 @@
         }
         else
         {
-            self.navigationItem.rightBarButtonItem.enabled = (inputs.mxSession);
+            self.navigationItem.rightBarButtonItem.enabled = (inputs.mxSession != 0);
         }
     }
 }

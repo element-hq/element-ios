@@ -23,9 +23,6 @@
 
 @interface RoomViewController ()
 {
-    UIButton *menuButton;
-    UIView   *menuView;
-    
     // Voip call options
     UIButton *voipVoiceCallButton;
     UIButton *voipVideoCallButton;
@@ -55,19 +52,14 @@
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    menuButton.frame = CGRectMake(0, 0, 36, 36);
-    UIImage *menuImage = [UIImage imageNamed:@"icon_menu"];
-    [menuButton setImage:menuImage forState:UIControlStateNormal];
-    [menuButton setImage:menuImage forState:UIControlStateHighlighted];
-    [menuButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuButton];
+    self.navigationItem.rightBarButtonItem.target = self;
+    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     
-    CGFloat menuViewWidth = (self.view.frame.size.width > 200) ? 200 : self.view.frame.size.width;
-    menuView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, menuViewWidth, 132)];
-    menuView.backgroundColor = [UIColor redColor];
-    menuView.hidden = YES;
-    [self.view addSubview:menuView];
+    self.menuListView.layer.borderColor = [UIColor blackColor].CGColor;
+    self.menuListView.layer.borderWidth = 2;
+    self.menuListView.layer.cornerRadius = 20;
+    // Set autoresizing flag to support device rotation
+    self.menuListView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
 }
 
 - (void)didReceiveMemoryWarning
@@ -246,6 +238,17 @@
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
 
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
+{
+    // Remove sub menu if user starts typing
+    if (typing && self.menuListView.superview)
+    {
+        [self.menuListView removeFromSuperview];
+    }
+    
+    [super roomInputToolbarView:toolbarView isTyping:typing];
+}
+
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
     [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
@@ -255,9 +258,43 @@
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == menuButton)
+    if (sender == self.navigationItem.rightBarButtonItem)
     {
-        menuView.hidden = !menuView.isHidden;
+        if (self.menuListView.superview)
+        {
+            [self.menuListView removeFromSuperview];
+        }
+        else
+        {
+            UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
+            [currentWindow addSubview:self.menuListView];
+            
+            CGRect frame = self.menuListView.frame;
+            // Align on top right corner
+            CGFloat xPosition = CGRectGetWidth(currentWindow.frame) - CGRectGetWidth(frame) - 10;
+            frame.origin = CGPointMake(ceil(xPosition), self.bubblesTableView.contentInset.top - 15);
+            self.menuListView.frame = frame;
+        }
+    }
+    else
+    {
+        if (self.menuListView.superview)
+        {
+            [self.menuListView removeFromSuperview];
+        }
+        
+        if (sender == self.searchInChatButton)
+        {
+            // TODO
+        }
+        else if (sender == self.participantsButton)
+        {
+            [self performSegueWithIdentifier:@"showMemberList" sender:self];
+        }
+        else if (sender == self.settingsButton)
+        {
+            // TODO
+        }
     }
 }
 
