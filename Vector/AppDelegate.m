@@ -183,12 +183,17 @@
         if ([recents isKindOfClass:[UISplitViewController class]])
         {
             UISplitViewController *splitViewController = (UISplitViewController *)recents;
-            UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+            UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
+            if ([detailsViewController isKindOfClass:[UINavigationController class]])
+            {
+                UINavigationController *navigationController = (UINavigationController*)detailsViewController;
+                detailsViewController = navigationController.topViewController;
+            }
             
             // IOS >= 8
             if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
             {
-                navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+                detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
                 
                 // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
                 // to avoid empty room View Controller in portrait orientation
