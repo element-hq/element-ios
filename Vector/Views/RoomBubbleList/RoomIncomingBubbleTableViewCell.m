@@ -16,18 +16,16 @@
 
 #import "RoomIncomingBubbleTableViewCell.h"
 
-#import "NSBundle+MatrixKit.h"
-
-#pragma mark - UI Constant definitions
-#define MXKROOMBUBBLETABLEVIEWCELL_INCOMING_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN -10
-
 @implementation RoomIncomingBubbleTableViewCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.typingBadge.image = [NSBundle mxk_imageFromMXKAssetsBundleWithName:@"icon_keyboard"];
+}
+
+- (void)dealloc
+{
+//    [self stopTypingIndicatorAnimating];
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -36,56 +34,20 @@
     
     if (self.bubbleData)
     {
-        // Check whether the previous message has been sent by the same user.
-        // The user's picture and name are displayed only for the first message.
-        // Handle sender's picture and adjust view's constraints
-        if (self.bubbleData.isSameSenderAsPreviousBubble)
-        {
-            self.pictureView.hidden = YES;
-            self.msgTextViewTopConstraint.constant = self.class.cellWithOriginalXib.msgTextViewTopConstraint.constant + MXKROOMBUBBLETABLEVIEWCELL_INCOMING_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
-            self.attachViewTopConstraint.constant = self.class.cellWithOriginalXib.attachViewTopConstraint.constant + MXKROOMBUBBLETABLEVIEWCELL_INCOMING_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
-            
-            if (!self.dateTimeLabelContainer.hidden)
-            {
-                self.dateTimeLabelContainerTopConstraint.constant += MXKROOMBUBBLETABLEVIEWCELL_INCOMING_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
-            }
-        }
+        // TODO handle here pagination display per day
         
-        // Display user's display name except if the name appears in the displayed text (see emote and membership event)
-        self.userNameLabel.hidden = (self.bubbleData.isSameSenderAsPreviousBubble || self.bubbleData.startsWithSenderName);
-        self.userNameLabel.text = self.bubbleData.senderDisplayName;
-        // Set typing badge visibility
-        self.typingBadge.hidden = (self.pictureView.hidden || !self.bubbleData.isTyping);
-        if (!self.typingBadge.hidden)
-        {
-            [self.typingBadge.superview bringSubviewToFront:self.typingBadge];
-        }
+        // TODO handle here timestamp display
+        
+        // TODO handle here typing indicator
     }
 }
 
-+ (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+- (void)didEndDisplay
 {
-    CGFloat rowHeight = [super heightForCellData:cellData withMaximumWidth:maxWidth];
+    [super didEndDisplay];
     
-    MXKRoomBubbleCellData *bubbleData = (MXKRoomBubbleCellData*)cellData;
-    
-    // Check whether the previous message has been sent by the same user.
-    // The user's picture and name are displayed only for the first message.
-    if (bubbleData.isSameSenderAsPreviousBubble)
-    {
-        // Reduce top margin -> row height reduction
-        rowHeight += MXKROOMBUBBLETABLEVIEWCELL_INCOMING_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN;
-    }
-    else
-    {
-        // We consider a minimun cell height in order to display correctly user's picture
-        if (rowHeight < self.cellWithOriginalXib.frame.size.height)
-        {
-            rowHeight = self.cellWithOriginalXib.frame.size.height;
-        }
-    }
-    
-    return rowHeight;
+    // Stop potential typing indicator
+//    [self stopTypingIndicatorAnimating];
 }
 
 @end

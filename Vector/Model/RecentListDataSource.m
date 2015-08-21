@@ -18,6 +18,8 @@
 
 #import "AppDelegate.h"
 
+#import "EventFormatter.h"
+
 #import "NSBundle+MatrixKit.h"
 
 @interface RecentListDataSource ()
@@ -54,6 +56,9 @@
     self = [super init];
     if (self)
     {
+        self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
+        self.eventFormatter.isForSubtitle = YES;
+        
         highlightedPublicRooms = @[@"#matrix:matrix.org", @"#matrix-dev:matrix.org", @"#matrix-fr:matrix.org"]; // Add here a room name to highlight its display in public room list
     }
     return self;

@@ -15,9 +15,12 @@
  */
 
 #import "AppDelegate.h"
+
+#import "RoomDataSource.h"
+#import "EventFormatter.h"
+
 #import "RoomViewController.h"
 #import "SettingsViewController.h"
-#import "MXKContactManager.h"
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
@@ -435,6 +438,9 @@
 
 - (void)initMatrixSessions
 {
+    // Set first RoomDataSource class used in Vector
+    [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
+    
     // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
     {
@@ -684,7 +690,7 @@
         if (account.enableInAppNotifications)
         {
             // Build MXEvent -> NSString formatter
-            MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
+            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
             eventFormatter.isForSubtitle = YES;
             
             [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {

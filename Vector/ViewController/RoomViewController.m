@@ -222,6 +222,8 @@
             [self dismissKeyboard];
             
             MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
+            [membersDataSource finalizeInitialization];
+            
             [membersController displayList:membersDataSource];
         }
     }
