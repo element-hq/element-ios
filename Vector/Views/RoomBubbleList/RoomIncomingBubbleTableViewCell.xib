@@ -13,6 +13,25 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHb-iw-6Ls" userLabel="Pagination Title View">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SC6-wP-Sb1" userLabel="Pagination Label">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SC6-wP-Sb1" firstAttribute="top" secondItem="mHb-iw-6Ls" secondAttribute="top" id="05J-5e-TsX"/>
+                            <constraint firstItem="SC6-wP-Sb1" firstAttribute="leading" secondItem="mHb-iw-6Ls" secondAttribute="leading" id="10e-ka-8AP"/>
+                            <constraint firstAttribute="bottom" secondItem="SC6-wP-Sb1" secondAttribute="bottom" id="Hfe-h7-X6l"/>
+                            <constraint firstAttribute="height" id="SUG-s3-1qS"/>
+                            <constraint firstAttribute="trailing" secondItem="SC6-wP-Sb1" secondAttribute="trailing" id="xTG-7Q-vR9"/>
+                        </constraints>
+                    </view>
                     <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgp-Z5-rAj" userLabel="Picture View" customClass="MXKImageView">
                         <rect key="frame" x="8" y="5" width="40" height="40"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -91,35 +110,41 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="5" id="2Ih-ga-N9s"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="3" id="6mM-Ag-m0K"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="18" id="96U-67-5TP"/>
+                    <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="mHb-iw-6Ls" secondAttribute="bottom" constant="5" id="ASj-aq-5YL"/>
+                    <constraint firstItem="mHb-iw-6Ls" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" id="B1O-gb-ayW"/>
                     <constraint firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" constant="8" id="Bkh-h2-JOQ"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
-                    <constraint firstItem="q9c-0p-QyP" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="Ixr-7h-f8j"/>
                     <constraint firstItem="zwq-eh-8Fb" firstAttribute="centerX" secondItem="hgp-Z5-rAj" secondAttribute="centerX" id="Jse-fI-be0"/>
                     <constraint firstItem="zwq-eh-8Fb" firstAttribute="top" secondItem="hgp-Z5-rAj" secondAttribute="bottom" id="L78-IF-L1h"/>
                     <constraint firstAttribute="bottom" secondItem="5IE-JS-uf3" secondAttribute="bottom" id="SHN-tC-zsJ"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="8" id="Shz-6S-kGd"/>
                     <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="3" id="YWK-C2-15w"/>
-                    <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="mkw-3s-H8B"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="mHb-iw-6Ls" secondAttribute="bottom" constant="10" id="ghz-PN-FzI"/>
                     <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
+                    <constraint firstItem="mHb-iw-6Ls" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" id="qq3-B4-3cd"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerX" secondItem="Cot-3X-2cU" secondAttribute="centerX" id="sF7-QL-vdj"/>
+                    <constraint firstItem="q9c-0p-QyP" firstAttribute="top" secondItem="mHb-iw-6Ls" secondAttribute="bottom" constant="3" id="tiE-cI-fiC"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="8" id="tuw-aU-ncu"/>
+                    <constraint firstAttribute="trailing" secondItem="mHb-iw-6Ls" secondAttribute="trailing" id="uNt-jN-bmL"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="51" id="uig-Xh-7m6"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="fdx-qs-8en" secondAttribute="centerY" id="v0F-Ts-14P"/>
+                    <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="mHb-iw-6Ls" secondAttribute="bottom" constant="18" id="wtf-lP-Lxu"/>
                     <constraint firstAttribute="trailing" secondItem="fdx-qs-8en" secondAttribute="trailing" constant="13" id="xKk-Gz-moE"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="attachViewTopConstraint" destination="96U-67-5TP" id="Ugm-cH-32E"/>
+                <outlet property="attachViewTopConstraint" destination="wtf-lP-Lxu" id="sVw-mt-4qK"/>
                 <outlet property="attachViewWidthConstraint" destination="9zO-jU-qTb" id="fOO-VW-fe1"/>
                 <outlet property="attachmentView" destination="5IE-JS-uf3" id="imT-1z-hR1"/>
                 <outlet property="messageTextView" destination="HTH-5n-MSU" id="YN4-iK-gNc"/>
                 <outlet property="msgTextViewLeadingConstraint" destination="uig-Xh-7m6" id="kgj-3v-ECW"/>
-                <outlet property="msgTextViewTopConstraint" destination="mkw-3s-H8B" id="lON-oG-Xx9"/>
+                <outlet property="msgTextViewTopConstraint" destination="ghz-PN-FzI" id="1hn-Bo-e5J"/>
                 <outlet property="msgTextViewTrailingConstraint" destination="Shz-6S-kGd" id="5ib-m6-Lna"/>
+                <outlet property="paginationLabel" destination="SC6-wP-Sb1" id="I0W-fL-st5"/>
+                <outlet property="paginationTitleView" destination="mHb-iw-6Ls" id="eqJ-6o-ssD"/>
+                <outlet property="paginationTitleViewHeightConstraint" destination="SUG-s3-1qS" id="vRn-Kz-pFO"/>
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
                 <outlet property="playIconView" destination="Cot-3X-2cU" id="KEF-KK-Og1"/>
                 <outlet property="progressChartView" destination="hJj-TC-pxK" id="Zz3-s5-Qqr"/>

@@ -64,9 +64,19 @@
     {
         showBubbleDateTimeFlag = self.bubbleData.showBubbleDateTime;
         
-        // TODO handle here pagination display per day
+        // Check whether a new pagination start at this bubble
+        if (self.bubbleData.isPaginationFirstBubble)
+        {
+            self.paginationTitleViewHeightConstraint.constant = 20;
+            self.paginationLabel.text = [self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO];
+        }
+        else
+        {
+            self.paginationTitleViewHeightConstraint.constant = 0;
+        }
         
-        // TODO handle here timestamp display
+        
+        // TODO handle here pagination display per day
         
         // TODO handle here typing indicator
     }
@@ -78,6 +88,22 @@
     
     // Stop potential typing indicator
 //    [self stopTypingIndicatorAnimating];
+}
+
++ (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    CGFloat rowHeight = [super heightForCellData:cellData withMaximumWidth:maxWidth];
+    
+    MXKRoomBubbleCellData *bubbleData = (MXKRoomBubbleCellData*)cellData;
+    
+    // Check whether a new pagination start at this bubble
+    // The pagination label is displayed with the first bubble of the pagination
+    if (bubbleData.isPaginationFirstBubble)
+    {
+        rowHeight += 20;
+    }
+    
+    return rowHeight;
 }
 
 @end

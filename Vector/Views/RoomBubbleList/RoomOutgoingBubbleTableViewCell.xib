@@ -13,6 +13,25 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pad-g3-2YJ" id="fCg-ju-gnG">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5qO-6t-JGu" userLabel="Pagination Title View">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9V1-wd-HBV" userLabel="Pagination Label">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9V1-wd-HBV" secondAttribute="trailing" id="4jU-WQ-tG5"/>
+                            <constraint firstItem="9V1-wd-HBV" firstAttribute="leading" secondItem="5qO-6t-JGu" secondAttribute="leading" id="FVB-YZ-JhH"/>
+                            <constraint firstItem="9V1-wd-HBV" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="top" id="LM6-wa-FXE"/>
+                            <constraint firstAttribute="bottom" secondItem="9V1-wd-HBV" secondAttribute="bottom" id="XE6-GH-S6o"/>
+                            <constraint firstAttribute="height" id="kzS-ck-Uee"/>
+                        </constraints>
+                    </view>
                     <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="ezT-Dl-ESR" userLabel="Picture View" customClass="MXKImageView">
                         <rect key="frame" x="552" y="5" width="40" height="40"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -79,16 +98,19 @@
                 <constraints>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerX" secondItem="Mqf-7a-bsm" secondAttribute="centerX" id="1b6-1l-hg0"/>
                     <constraint firstAttribute="trailing" secondItem="ezT-Dl-ESR" secondAttribute="trailing" constant="8" id="3Pd-Qy-Xva"/>
+                    <constraint firstItem="5qO-6t-JGu" firstAttribute="top" secondItem="fCg-ju-gnG" secondAttribute="top" id="3Yt-cQ-TkB"/>
+                    <constraint firstItem="SIW-l4-PfI" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="18" id="54V-TK-4fN"/>
                     <constraint firstAttribute="bottom" secondItem="tgO-Rv-C7R" secondAttribute="bottom" id="7C3-Tl-mMq"/>
-                    <constraint firstItem="tgO-Rv-C7R" firstAttribute="top" secondItem="fCg-ju-gnG" secondAttribute="top" constant="10" id="8Sy-eu-tYs"/>
                     <constraint firstItem="ezT-Dl-ESR" firstAttribute="leading" secondItem="SIW-l4-PfI" secondAttribute="trailing" constant="3" id="9z3-D2-2SS"/>
+                    <constraint firstItem="5qO-6t-JGu" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leading" id="Bjw-VQ-gHR"/>
                     <constraint firstItem="apW-hM-veR" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="18" id="LFn-vp-m0v"/>
-                    <constraint firstItem="SIW-l4-PfI" firstAttribute="top" secondItem="fCg-ju-gnG" secondAttribute="top" constant="18" id="QDm-tP-KWa"/>
-                    <constraint firstItem="ezT-Dl-ESR" firstAttribute="top" secondItem="fCg-ju-gnG" secondAttribute="top" constant="5" id="aHl-KA-68x"/>
+                    <constraint firstItem="tgO-Rv-C7R" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="10" id="Lge-A2-1YG"/>
+                    <constraint firstItem="ezT-Dl-ESR" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="5" id="aQe-yA-zJm"/>
                     <constraint firstAttribute="bottom" secondItem="SIW-l4-PfI" secondAttribute="bottom" id="fMN-Th-SOT"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerY" secondItem="ZC1-hT-7fs" secondAttribute="centerY" id="ffI-vh-SW3"/>
                     <constraint firstItem="tgO-Rv-C7R" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="8" id="hwr-aa-TB4"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerX" secondItem="ZC1-hT-7fs" secondAttribute="centerX" id="jah-TA-P0P"/>
+                    <constraint firstAttribute="trailing" secondItem="5qO-6t-JGu" secondAttribute="trailing" id="qgw-mb-Y0X"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerY" secondItem="Mqf-7a-bsm" secondAttribute="centerY" id="sKJ-ny-LjM"/>
                     <constraint firstItem="apW-hM-veR" firstAttribute="centerY" secondItem="SIW-l4-PfI" secondAttribute="centerY" id="wmh-x1-U32"/>
                     <constraint firstAttribute="trailing" secondItem="tgO-Rv-C7R" secondAttribute="trailing" constant="51" id="xYz-lp-c7K"/>
@@ -97,13 +119,16 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="activityIndicator" destination="Mqf-7a-bsm" id="toi-nL-eJa"/>
-                <outlet property="attachViewTopConstraint" destination="QDm-tP-KWa" id="Ku6-FC-jqo"/>
+                <outlet property="attachViewTopConstraint" destination="54V-TK-4fN" id="oYR-7i-5xN"/>
                 <outlet property="attachViewWidthConstraint" destination="iGr-e7-bde" id="uD4-aU-1Ru"/>
                 <outlet property="attachmentView" destination="SIW-l4-PfI" id="L4H-ub-pPI"/>
                 <outlet property="messageTextView" destination="tgO-Rv-C7R" id="LZ5-hQ-AbQ"/>
                 <outlet property="msgTextViewLeadingConstraint" destination="hwr-aa-TB4" id="c9j-8p-cpx"/>
-                <outlet property="msgTextViewTopConstraint" destination="8Sy-eu-tYs" id="7yx-oJ-KBP"/>
+                <outlet property="msgTextViewTopConstraint" destination="Lge-A2-1YG" id="6hV-2G-05H"/>
                 <outlet property="msgTextViewTrailingConstraint" destination="xYz-lp-c7K" id="ubt-P4-J2o"/>
+                <outlet property="paginationLabel" destination="9V1-wd-HBV" id="RCb-5L-4EU"/>
+                <outlet property="paginationTitleView" destination="5qO-6t-JGu" id="jkw-h4-tK3"/>
+                <outlet property="paginationTitleViewHeightConstraint" destination="kzS-ck-Uee" id="0dT-PB-NMS"/>
                 <outlet property="pictureView" destination="ezT-Dl-ESR" id="YsO-Kp-xaD"/>
                 <outlet property="playIconView" destination="ZC1-hT-7fs" id="zeH-8B-gxw"/>
                 <outlet property="progressChartView" destination="Oec-kb-Tsz" id="uoq-6v-6Tm"/>
