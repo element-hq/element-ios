@@ -16,6 +16,13 @@
 
 #import "RoomIncomingBubbleTableViewCell.h"
 
+@interface RoomIncomingBubbleTableViewCell ()
+{
+    BOOL showBubbleDateTimeFlag;
+}
+
+@end
+
 @implementation RoomIncomingBubbleTableViewCell
 
 - (void)awakeFromNib
@@ -28,12 +35,35 @@
 //    [self stopTypingIndicatorAnimating];
 }
 
+- (void)setAllTextHighlighted:(BOOL)allTextHighlighted
+{
+    if (allTextHighlighted)
+    {
+        // Hide timestamp during selection
+        self.bubbleData.showBubbleDateTime = NO;
+    }
+    else
+    {
+        // Restore the actual value of the showBubbleDateTime flag
+        self.bubbleData.showBubbleDateTime = showBubbleDateTimeFlag;
+    }
+    
+    super.allTextHighlighted = allTextHighlighted;
+}
+
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
     
+    if (!self.pictureView.isHidden)
+    {
+        [self.pictureView.layer setCornerRadius:5];
+    }
+    
     if (self.bubbleData)
     {
+        showBubbleDateTimeFlag = self.bubbleData.showBubbleDateTime;
+        
         // TODO handle here pagination display per day
         
         // TODO handle here timestamp display

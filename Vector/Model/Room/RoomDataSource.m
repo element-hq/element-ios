@@ -17,6 +17,7 @@
 #import "RoomDataSource.h"
 
 #import "EventFormatter.h"
+#import "RoomBubbleCellData.h"
 #import "RoomIncomingBubbleTableViewCell.h"
 #import "RoomOutgoingBubbleTableViewCell.h"
 
@@ -27,8 +28,8 @@
     self = [super initWithRoomId:roomId andMatrixSession:matrixSession];
     if (self)
     {
-        // Keep default Cell data class (MXKRoomBubbleCellDataWithAppendingMode)
-//        [self registerCellDataClass:MXKRoomBubbleCellDataWithAppendingMode.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
+        // Replace default Cell data class
+        [self registerCellDataClass:RoomBubbleCellData.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
         
         // Replace cell view classes
         [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgBubbleTableViewCellIdentifier];

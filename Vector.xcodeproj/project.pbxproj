@@ -27,6 +27,7 @@
 		F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E3D1B7E28DE00F03620 /* remove@2x.png */; };
 		F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E451B7E4C9A00F03620 /* placeholder.png */; };
 		F0316E481B7E4C9A00F03620 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E461B7E4C9A00F03620 /* placeholder@2x.png */; };
+		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -112,6 +113,8 @@
 		F0316E3D1B7E28DE00F03620 /* remove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove@2x.png"; sourceTree = "<group>"; };
 		F0316E451B7E4C9A00F03620 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		F0316E461B7E4C9A00F03620 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
+		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
+		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -259,6 +262,8 @@
 		F08BE09F1B87064000C480FB /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */,
+				F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */,
 				F08BE0A01B87064000C480FB /* RoomDataSource.h */,
 				F08BE0A11B87064000C480FB /* RoomDataSource.m */,
 			);
@@ -628,6 +633,7 @@
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,
 				F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */,
 				F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */,
+				F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */,
 				F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */,
 				F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */,
 				F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */,

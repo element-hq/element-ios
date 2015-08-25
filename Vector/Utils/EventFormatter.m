@@ -39,6 +39,14 @@
     return self;
 }
 
+- (NSDictionary*)stringAttributesForEventTimestamp
+{
+    return @{
+             NSForegroundColorAttributeName : [UIColor lightGrayColor],
+             NSFontAttributeName: [UIFont systemFontOfSize:10]
+             };
+}
+
 
 #pragma mark - Timestamp formatting
 

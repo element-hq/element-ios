@@ -187,9 +187,14 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Override default implementation in case of tap on avatar
-    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
+    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
     {
+        self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
+        NSLog(@"    -> Turn %@ cells date", self.roomDataSource.showBubblesDateTime ? @"ON" : @"OFF");
+    }
+    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
+    {
+        // Override default implementation in case of tap on avatar
         selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
         if (selectedRoomMember)
         {

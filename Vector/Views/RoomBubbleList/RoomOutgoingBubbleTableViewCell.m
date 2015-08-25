@@ -19,14 +19,44 @@
 #pragma mark - UI Constant definitions
 #define MXKROOMBUBBLETABLEVIEWCELL_OUTGOING_HEIGHT_REDUCTION_WHEN_SENDER_INFO_IS_HIDDEN -10
 
+@interface RoomOutgoingBubbleTableViewCell ()
+{
+    BOOL showBubbleDateTimeFlag;
+}
+
+@end
+
 @implementation RoomOutgoingBubbleTableViewCell
+
+- (void)setAllTextHighlighted:(BOOL)allTextHighlighted
+{
+    if (allTextHighlighted)
+    {
+        // Hide timestamp during selection
+        self.bubbleData.showBubbleDateTime = NO;
+    }
+    else
+    {
+        // Restore the actual value of the showBubbleDateTime flag
+        self.bubbleData.showBubbleDateTime = showBubbleDateTimeFlag;
+    }
+    
+    super.allTextHighlighted = allTextHighlighted;
+}
 
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
     
+    if (!self.pictureView.isHidden)
+    {
+        [self.pictureView.layer setCornerRadius:5];
+    }
+    
     if (self.bubbleData)
     {
+        showBubbleDateTimeFlag = self.bubbleData.showBubbleDateTime;
+        
         // TODO handle here pagination display per day
         
         // TODO handle here timestamp display

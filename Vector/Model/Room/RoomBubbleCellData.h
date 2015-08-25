@@ -14,16 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MXKRoomBubbleCellDataWithAppendingMode.h"
 
 /**
- `EventFormatter` class inherits from `MXKEventFormatter` to define Vector formatting
+ `RoomBubbleCellData` defines Vector bubble cell data model.
  */
-@interface EventFormatter : MXKEventFormatter
-
-/**
- String attributes for event timestamp displayed in chat history.
- */
-- (NSDictionary*)stringAttributesForEventTimestamp;
+@interface RoomBubbleCellData : MXKRoomBubbleCellDataWithAppendingMode
 
 @end
