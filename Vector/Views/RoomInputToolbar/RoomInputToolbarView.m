@@ -28,11 +28,6 @@
 
 @interface RoomInputToolbarView()
 {
-    /**
-     The current height of the toolbar.
-     */
-    CGFloat actualToolBarHeight;
-    
     MediaPickerViewController *mediaPicker;
 }
 
@@ -75,8 +70,6 @@
     self.shareContactLabel.numberOfLines = 0;
     
     self.rightInputToolbarButton.hidden = YES;
-    
-    actualToolBarHeight = self.frame.size.height;
 }
 
 #pragma mark - HPGrowingTextView delegate
@@ -105,6 +98,12 @@
         self.attachMediaButton.hidden = YES;
         self.optionMenuButton.hidden = YES;
         
+        if (self.optionMenuView.isHidden == NO)
+        {
+            // Hide option menu
+            [self onTouchUpInside:self.optionMenuButton];
+        }
+        
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
     }
     else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
@@ -119,9 +118,21 @@
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
-    actualToolBarHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    // Update height of the main toolbar (message composer)
+    self.mainToolbarHeightConstraint.constant = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
     
-    [super growingTextView:growingTextView willChangeHeight:height];
+    // Compute height of the whole toolbar (including potential option menu)
+    CGFloat updatedHeight = self.mainToolbarHeightConstraint.constant;
+    if (self.optionMenuView.isHidden == NO)
+    {
+        updatedHeight += self.optionMenuView.frame.size.height;
+    }
+    
+    // Update toolbar superview
+    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
+    {
+        [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:nil];
+    }
 }
 
 #pragma mark - Override MXKRoomInputToolbarView
@@ -147,27 +158,30 @@
     }
     else if (button == self.optionMenuButton)
     {
+        // Compute the height of the whole toolbar (message composer + option menu (if any))
+        CGFloat updatedHeight = self.mainToolbarHeightConstraint.constant;
+        BOOL hideOptionMenuView = !self.optionMenuView.isHidden;
+        
         if (self.optionMenuView.isHidden)
         {
-            actualToolBarHeight += self.optionMenuView.frame.size.height;
-            self.messageComposerContainerTopConstraint.constant += self.optionMenuView.frame.size.height;
-        }
-        else
-        {
-            actualToolBarHeight -= self.optionMenuView.frame.size.height;
-            self.messageComposerContainerTopConstraint.constant -= self.optionMenuView.frame.size.height;
+            // The option menu will appear
+            updatedHeight += self.optionMenuView.frame.size.height;
+            self.optionMenuView.hidden = NO;
         }
         
         // Update toolbar superview
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:)])
+        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
         {
-            [self.delegate roomInputToolbarView:self heightDidChanged:actualToolBarHeight];
+            [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:^(BOOL finished) {
+                if (hideOptionMenuView)
+                {
+                    self.optionMenuView.hidden = YES;
+                }
+            }];
         }
         
         // Refresh max height of the growning text
         self.maxHeight = self.maxHeight;
-        
-        self.optionMenuView.hidden = !self.optionMenuView.isHidden;
     }
     else if (button == self.startVoiceCallButton)
     {

@@ -48,7 +48,7 @@
     
     // Replace the default input toolbar view.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-    self.roomInputToolbarContainerHeightConstraint.constant = 49;
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -71,7 +71,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-
     [super viewWillAppear:animated];
 }
 
