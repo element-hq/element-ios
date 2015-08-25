@@ -24,6 +24,8 @@
  */
 @interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <MediaPickerViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
+
 @property (weak, nonatomic) IBOutlet UIView *optionMenuView;
 @property (weak, nonatomic) IBOutlet UIButton *startVoiceCallButton;
 @property (weak, nonatomic) IBOutlet UILabel *startVoiceCallLabel;

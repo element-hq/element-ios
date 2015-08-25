@@ -48,6 +48,7 @@
     
     // Replace the default input toolbar view.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+    self.roomInputToolbarContainerHeightConstraint.constant = 49;
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];

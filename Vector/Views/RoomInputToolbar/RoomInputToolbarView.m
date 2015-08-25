@@ -74,6 +74,8 @@
     self.shareContactLabel.text = NSLocalizedStringFromTable(@"room_option_share_contact", @"Vector", nil);
     self.shareContactLabel.numberOfLines = 0;
     
+    self.rightInputToolbarButton.hidden = YES;
+    
     actualToolBarHeight = self.frame.size.height;
 }
 
@@ -96,6 +98,23 @@
     }
     
     [super growingTextViewDidChange:growingTextView];
+    
+    if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
+    {
+        self.rightInputToolbarButton.hidden = NO;
+        self.attachMediaButton.hidden = YES;
+        self.optionMenuButton.hidden = YES;
+        
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
+    }
+    else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
+    {
+        self.rightInputToolbarButton.hidden = YES;
+        self.attachMediaButton.hidden = NO;
+        self.optionMenuButton.hidden = NO;
+        
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
+    }
 }
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
