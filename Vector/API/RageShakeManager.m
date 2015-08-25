@@ -191,7 +191,7 @@ static RageShakeManager* sharedInstance = nil;
             [mailComposer setSubject:@"Matrix bug report"];
         }
 
-        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@matrix.org"]];
+        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@vector.im"]];
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
