@@ -23,11 +23,8 @@
 
 @interface RoomViewController ()
 {
-    // Voip call options
-    UIButton *voipVoiceCallButton;
-    UIButton *voipVideoCallButton;
-    UIBarButtonItem *voipVoiceCallBarButtonItem;
-    UIBarButtonItem *voipVideoCallBarButtonItem;
+    // The constraint used to animate menu list display
+    NSLayoutConstraint *menuListTopConstraint;
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
@@ -56,11 +53,65 @@
     self.navigationItem.rightBarButtonItem.target = self;
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     
-    self.menuListView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.menuListView.layer.borderWidth = 2;
-    self.menuListView.layer.cornerRadius = 20;
-    // Set autoresizing flag to support device rotation
-    self.menuListView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+    // Localize strings
+    self.searchMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_search", @"Vector", nil);
+    self.participantsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_participants", @"Vector", nil);
+    self.favouriteMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_favourite", @"Vector", nil);
+    self.settingsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_settings", @"Vector", nil);
+    
+   // Add the menu list view outside the main view
+    CGRect frame = self.menuListView.frame;
+    frame.origin.y = self.topLayoutGuide.length - frame.size.height;
+    self.menuListView.frame = frame;
+    [self.view addSubview:self.menuListView];
+    
+    // Define menu list view constraints
+    self.menuListView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                      relatedBy:0
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0
+                                                                       constant:0];
+    
+    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                       relatedBy:0
+                                                                          toItem:self.view
+                                                                       attribute:NSLayoutAttributeRight
+                                                                      multiplier:1.0
+                                                                        constant:0];
+    
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0
+                                                                         constant:self.menuListView.frame.size.height];
+    
+    menuListTopConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.topLayoutGuide
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    
+    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+    {
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, heightConstraint, menuListTopConstraint]];
+    }
+    else
+    {
+        [self.view addConstraint:leftConstraint];
+        [self.view addConstraint:rightConstraint];
+        [self.view addConstraint:menuListTopConstraint];
+        [self.menuListView addConstraint:heightConstraint];
+    }
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,10 +136,8 @@
         self.currentAlert = nil;
     }
     
-    if (self.menuListView.superview)
-    {
-        [self.menuListView removeFromSuperview];
-    }
+    // Hide menu list view
+    menuListTopConstraint.constant = 0;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -183,6 +232,17 @@
     [super destroy];
 }
 
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    // Hide the menu list view when keyboard if displayed
+    if (keyboardHeight && menuListTopConstraint.constant != 0)
+    {
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+    }
+    
+    super.keyboardHeight = keyboardHeight;
+}
+
 #pragma mark - MXKDataSource delegate
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
@@ -254,9 +314,9 @@
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
 {
     // Remove sub menu if user starts typing
-    if (typing && self.menuListView.superview)
+    if (typing && menuListTopConstraint.constant != 0)
     {
-        [self.menuListView removeFromSuperview];
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
     }
     
     [super roomInputToolbarView:toolbarView isTyping:typing];
@@ -273,38 +333,46 @@
 {
     if (sender == self.navigationItem.rightBarButtonItem)
     {
-        if (self.menuListView.superview)
+        // Hide/show the menu list by updating its top constraint
+        if (menuListTopConstraint.constant)
         {
-            [self.menuListView removeFromSuperview];
+            // Hide the menu
+            menuListTopConstraint.constant = 0;
         }
         else
         {
-            UIWindow* currentWindow = [UIApplication sharedApplication].keyWindow;
-            [currentWindow addSubview:self.menuListView];
+            [self dismissKeyboard];
             
-            CGRect frame = self.menuListView.frame;
-            // Align on top right corner
-            CGFloat xPosition = CGRectGetWidth(currentWindow.frame) - CGRectGetWidth(frame) - 10;
-            frame.origin = CGPointMake(ceil(xPosition), self.bubblesTableView.contentInset.top - 15);
-            self.menuListView.frame = frame;
+            // Show the menu
+            menuListTopConstraint.constant = self.menuListView.frame.size.height;
         }
+        
+        // Refresh layout with animation
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished){
+                         }];
     }
     else
     {
-        if (self.menuListView.superview)
-        {
-            [self.menuListView removeFromSuperview];
-        }
+        // Hide menu without animation
+        menuListTopConstraint.constant = 0;
         
-        if (sender == self.searchInChatButton)
+        if (sender == self.searchMenuButton)
         {
             // TODO
         }
-        else if (sender == self.participantsButton)
+        else if (sender == self.participantsMenuButton)
         {
             [self performSegueWithIdentifier:@"showMemberList" sender:self];
         }
-        else if (sender == self.settingsButton)
+        else if (sender == self.favouriteMenuButton)
+        {
+            // TODO
+        }
+        else if (sender == self.settingsMenuButton)
         {
             // TODO
         }

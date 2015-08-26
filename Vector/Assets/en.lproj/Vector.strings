@@ -43,8 +43,10 @@
 "room_creation_participants" = "Participants";
 
 // Chat
-"room_menu_search_in_chat" = "Search in chat";
+"room_menu_search" = "Search";
 "room_menu_participants" = "Participants";
+"room_menu_favourite" = "Favourite";
+"room_menu_unfavourite" = "Unfavourite";
 "room_menu_settings" = "Settings";
 "room_option_start_group_voice" = "Start group audio chat";
 "room_option_start_group_video" = "Start group video chat";
