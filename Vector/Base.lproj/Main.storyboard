@@ -23,7 +23,7 @@
         <!--Room-->
         <scene sceneID="UrN-g2-oG1">
             <objects>
-                <viewController title="Room" id="msb-ol-2LB" customClass="RoomViewController" sceneMemberID="viewController">
+                <viewController title="Room" hidesBottomBarWhenPushed="YES" id="msb-ol-2LB" customClass="RoomViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="3Zt-Wl-J6o">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="aas-th-FW1" userLabel="Room title view container">
@@ -228,7 +228,7 @@
         <!--Room Members-->
         <scene sceneID="5AK-8u-TUO">
             <objects>
-                <tableViewController id="y7N-Cs-bXh" userLabel="Room Members" customClass="RoomMembersViewController" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="y7N-Cs-bXh" userLabel="Room Members" customClass="RoomMembersViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Oe9-1Y-zhS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -249,7 +249,7 @@
         <!--Room Member Details View Controller-->
         <scene sceneID="q1J-Wz-aLa">
             <objects>
-                <tableViewController id="qlN-Mb-ZH7" customClass="MXKRoomMemberDetailsViewController" sceneMemberID="viewController"/>
+                <tableViewController hidesBottomBarWhenPushed="YES" id="qlN-Mb-ZH7" customClass="MXKRoomMemberDetailsViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrY-z4-HGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2895" y="488"/>
@@ -257,7 +257,7 @@
         <!--Authentication View Controller-->
         <scene sceneID="FoA-N2-3aF">
             <objects>
-                <viewController id="ZlD-EU-ncw" customClass="AuthenticationViewController" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="ZlD-EU-ncw" customClass="AuthenticationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="crg-iM-twR"/>
                         <viewControllerLayoutGuide type="bottom" id="gbK-Nm-HUT"/>
@@ -318,7 +318,7 @@
         <!--Account Details View Controller-->
         <scene sceneID="V8G-Oz-3KA">
             <objects>
-                <tableViewController id="KeQ-Sp-kmH" customClass="AccountDetailsViewController" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="KeQ-Sp-kmH" customClass="AccountDetailsViewController" sceneMemberID="viewController">
                     <connections>
                         <segue destination="h5x-Kb-9pa" kind="show" identifier="showGlobalNotificationSettings" id="kgj-1g-opx"/>
                     </connections>
@@ -330,7 +330,7 @@
         <!--Global notification settings-->
         <scene sceneID="QZt-ZR-Vkj">
             <objects>
-                <tableViewController title="Global notification settings" id="h5x-Kb-9pa" customClass="GlobalNotificationSettingsViewController" sceneMemberID="viewController"/>
+                <tableViewController title="Global notification settings" hidesBottomBarWhenPushed="YES" id="h5x-Kb-9pa" customClass="GlobalNotificationSettingsViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iOf-Cf-2Ew" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1661" y="2776"/>
@@ -472,8 +472,8 @@
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="17E-G9-IZ6"/>
+        <segue reference="m9P-N3-WZN"/>
         <segue reference="Vo4-8x-dtH"/>
-        <segue reference="9Sj-Yf-p2I"/>
+        <segue reference="17E-G9-IZ6"/>
     </inferredMetricsTieBreakers>
 </document>
