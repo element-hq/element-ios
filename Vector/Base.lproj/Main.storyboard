@@ -158,10 +158,10 @@
                                 <constraint firstAttribute="trailing" secondItem="LXt-JD-IQk" secondAttribute="trailing" id="ziw-m9-KHE"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J1u-dg-Fnb" userLabel="Settings button View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1u-dg-Fnb" userLabel="Settings button View">
                             <rect key="frame" x="0.0" y="132" width="600" height="44"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LzI-qU-WEx">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LzI-qU-WEx">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -173,7 +173,7 @@
                                         <action selector="onButtonPressed:" destination="msb-ol-2LB" eventType="touchUpInside" id="nTd-oe-EiN"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOA-DR-q63">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOA-DR-q63">
                                     <rect key="frame" x="44" y="0.0" width="556" height="44"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -208,14 +208,18 @@
                         <constraint firstItem="UHB-PE-OYb" firstAttribute="top" secondItem="Hik-C0-w1p" secondAttribute="bottom" id="FLI-Nb-amR"/>
                         <constraint firstAttribute="trailing" secondItem="T1v-sT-eZ0" secondAttribute="trailing" id="GUm-7X-lIV"/>
                         <constraint firstAttribute="bottom" secondItem="KSi-QI-yS3" secondAttribute="bottom" id="ImG-tQ-YPG"/>
+                        <constraint firstItem="J1u-dg-Fnb" firstAttribute="width" secondItem="T1v-sT-eZ0" secondAttribute="width" id="J4u-Kd-FHa"/>
                         <constraint firstItem="T1v-sT-eZ0" firstAttribute="width" secondItem="UHB-PE-OYb" secondAttribute="width" id="MIw-bL-MOC"/>
                         <constraint firstItem="T1v-sT-eZ0" firstAttribute="top" secondItem="B8M-FQ-SbW" secondAttribute="top" id="PWh-3P-aqs"/>
                         <constraint firstItem="UHB-PE-OYb" firstAttribute="leading" secondItem="B8M-FQ-SbW" secondAttribute="leading" id="UYe-0J-EM2"/>
                         <constraint firstItem="T1v-sT-eZ0" firstAttribute="leading" secondItem="B8M-FQ-SbW" secondAttribute="leading" id="XhR-c1-hYS"/>
                         <constraint firstItem="T1v-sT-eZ0" firstAttribute="width" secondItem="Hik-C0-w1p" secondAttribute="width" id="asH-cB-qXm"/>
+                        <constraint firstItem="J1u-dg-Fnb" firstAttribute="top" secondItem="UHB-PE-OYb" secondAttribute="bottom" id="faY-ym-yM1"/>
+                        <constraint firstItem="J1u-dg-Fnb" firstAttribute="leading" secondItem="B8M-FQ-SbW" secondAttribute="leading" id="gxa-yr-1MC"/>
                         <constraint firstItem="T1v-sT-eZ0" firstAttribute="height" secondItem="Hik-C0-w1p" secondAttribute="height" id="ixa-QD-KAH"/>
                         <constraint firstItem="KSi-QI-yS3" firstAttribute="leading" secondItem="B8M-FQ-SbW" secondAttribute="leading" id="vEN-4p-Z8Y"/>
                         <constraint firstItem="Hik-C0-w1p" firstAttribute="leading" secondItem="B8M-FQ-SbW" secondAttribute="leading" id="zBW-pK-aZH"/>
+                        <constraint firstItem="J1u-dg-Fnb" firstAttribute="height" secondItem="T1v-sT-eZ0" secondAttribute="height" id="zrq-1q-YpH"/>
                     </constraints>
                 </view>
             </objects>
