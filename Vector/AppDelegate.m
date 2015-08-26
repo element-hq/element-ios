@@ -871,7 +871,8 @@
             {
                 // open it
                 [self.masterTabBarController showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
-            } else
+            }
+            else
             {
                 // create a new room
                 [mxSession createRoom:nil
@@ -909,13 +910,28 @@
 
 #pragma mark - SplitViewController delegate
 
+- (void)splitViewController:(UISplitViewController *)splitViewController willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode
+{
+    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary viewcontrollers of the splitviewcontroller.
+    if (displayMode == UISplitViewControllerDisplayModePrimaryHidden)
+    {
+        self.masterTabBarController.tabBar.hidden = YES;
+    }
+    else
+    {
+        self.masterTabBarController.tabBar.hidden = NO;
+    }
+    [splitViewController.view setNeedsLayout];
+}
+
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
     if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
-    } else
+    }
+    else
     {
         return NO;
     }

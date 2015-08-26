@@ -119,6 +119,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    // Restore the tabbar hidden manually on iOS 8 and later (see viewWillDisappear)
+    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
+    {
+        // Check whether the recents list is actually visible before showing the tabbar
+        if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden)
+        {
+            self.tabBarController.tabBar.hidden = NO;
+            [self.splitViewController.view setNeedsLayout];
+        }
+    }
     
     [self updateNavigationBarTitle];
     
@@ -158,6 +170,19 @@
     }
     
     [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
+    
+    // Check whether the user is still navigating into recents tab
+    if ([AppDelegate theDelegate].masterTabBarController.selectedIndex == TABBAR_RECENTS_INDEX)
+    {
+        // Chat screen should be displayed without tabbar, but hidesBottomBarWhenPushed flag has no effect in case of splitviewcontroller use.
+        // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary viewcontrollers of the splitviewcontroller.
+        // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
+        if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
+        {
+            self.tabBarController.tabBar.hidden = YES;
+            [self.splitViewController.view setNeedsLayout];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -165,7 +190,8 @@
     [super viewDidAppear:animated];
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed)
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
     {
         // Release the current selected room (if any).
         [self closeSelectedRoom];
@@ -455,9 +481,10 @@
         shouldScrollToTopOnRefresh = NO;
     }
     
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
     // the selected room (if any) is updated and kept visible.
-    if (self.splitViewController && !self.splitViewController.isCollapsed)
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
     {
         [self refreshCurrentSelectedCell:YES];
     }

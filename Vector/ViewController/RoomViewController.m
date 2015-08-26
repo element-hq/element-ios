@@ -174,6 +174,13 @@
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
+    contentInset.bottom = self.bottomLayoutGuide.length;
+    self.bubblesTableView.contentInset = contentInset;
+}
+
 #pragma mark - Override MXKRoomViewController
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
