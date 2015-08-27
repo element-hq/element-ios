@@ -52,6 +52,7 @@
     
     self.navigationItem.rightBarButtonItem.target = self;
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     
     // Localize strings
     self.searchMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_search", @"Vector", nil);
@@ -186,6 +187,8 @@
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
 {
     [super displayRoom:dataSource];
+    
+    self.navigationItem.rightBarButtonItem.enabled = (dataSource != nil);
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -230,6 +233,8 @@
 
 - (void)destroy
 {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
     if (self.currentAlert)
     {
         [self.currentAlert dismiss:NO];
