@@ -52,6 +52,13 @@
     self.delegate = self;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    UIEdgeInsets contentInset = self.tableView.contentInset;
+    contentInset.bottom = self.bottomLayoutGuide.length;
+    self.tableView.contentInset = contentInset;
+}
+
 - (void)dealloc
 {
     selectedMember = nil;
