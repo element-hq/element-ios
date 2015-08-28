@@ -71,3 +71,4 @@
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
+"camera_access_not_granted" = "Vector doesn't have permission to use Camera, please change privacy settings";

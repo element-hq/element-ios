@@ -35,7 +35,7 @@
 
 /**
  */
-@interface MediaPickerViewController : MXKViewController
+@interface MediaPickerViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 /**
  *  Returns the `UINib` object initialized for a `MediaPickerViewController`.
@@ -53,6 +53,19 @@
  *  @return An initialized `MediaPickerViewController` object if successful, `nil` otherwise.
  */
 + (instancetype)mediaPickerViewController;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
+
+@property (weak, nonatomic) IBOutlet UIView *captureViewContainer;
+@property (weak, nonatomic) IBOutlet UILabel *captureLabel;
+@property (weak, nonatomic) IBOutlet UIView *cameraPreviewContainerView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *cameraActivityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
+
+@property (weak, nonatomic) IBOutlet UIView *libraryViewContainer;
+@property (weak, nonatomic) IBOutlet UILabel *libraryLabel;
+@property (weak, nonatomic) IBOutlet UICollectionView *recentPicturesCollectionView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentPictureCollectionViewHeightConstraint;
 
 /**
  The delegate for the view controller.

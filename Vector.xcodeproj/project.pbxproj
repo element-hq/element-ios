@@ -17,6 +17,7 @@
 		F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */; };
 		F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */; };
 		F001D7701B83243900A162C3 /* send_other.png in Resources */ = {isa = PBXBuildFile; fileRef = F001D76F1B83243900A162C3 /* send_other.png */; };
+		F0037A141B90A50300A44013 /* switch_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F0037A131B90A50300A44013 /* switch_camera.png */; };
 		F00E08401B8380CF0057012C /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = F00E083E1B8380CF0057012C /* settings.png */; };
 		F00E08411B8380CF0057012C /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F00E083F1B8380CF0057012C /* settings@2x.png */; };
 		F0294CF01B85F31900A928EE /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0294CEF1B85F31900A928EE /* tab_recents.png */; };
@@ -104,6 +105,7 @@
 		F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerViewController.m; sourceTree = "<group>"; };
 		F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPickerViewController.xib; sourceTree = "<group>"; };
 		F001D76F1B83243900A162C3 /* send_other.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_other.png; sourceTree = "<group>"; };
+		F0037A131B90A50300A44013 /* switch_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_camera.png; sourceTree = "<group>"; };
 		F00E083E1B8380CF0057012C /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		F00E083F1B8380CF0057012C /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
 		F0294CEF1B85F31900A928EE /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0037A131B90A50300A44013 /* switch_camera.png */,
 				F0294CEF1B85F31900A928EE /* tab_recents.png */,
 				F00E083E1B8380CF0057012C /* settings.png */,
 				F00E083F1B8380CF0057012C /* settings@2x.png */,
@@ -556,6 +559,7 @@
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */,
 				F0DD7D601B7AA8C900C4BE02 /* hide.png in Resources */,
+				F0037A141B90A50300A44013 /* switch_camera.png in Resources */,
 				F0DD7D741B7AA8C900C4BE02 /* typing.png in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
