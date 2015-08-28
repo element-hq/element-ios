@@ -57,8 +57,10 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 
 @property (weak, nonatomic) IBOutlet UIView *captureViewContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captureViewContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *captureLabel;
 @property (weak, nonatomic) IBOutlet UIView *cameraPreviewContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraPreviewContainerAspectRatio;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *cameraActivityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
 

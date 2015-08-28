@@ -41,6 +41,8 @@
     MXKAlert *alert;
 }
 
+@property (nonatomic) AVCaptureVideoOrientation previewOrientation;
+
 @end
 
 @implementation MediaPickerViewController
@@ -72,6 +74,16 @@
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
+    
+    // Adjust layout according to screen size
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    CGFloat maxSize = (screenSize.height > screenSize.width) ? screenSize.height : screenSize.width;
+    self.captureViewContainerHeightConstraint.constant = maxSize / 2;
+    [self.view layoutIfNeeded];
+    
+    // Adjust camera preview ratio
+    self.previewOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
+    
     
 //    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumRecentlyAdded options:nil];
 //    
@@ -125,9 +137,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
-    cameraPreviewLayer.hidden = NO;
 }
 
 - (BOOL)shouldAutorotate
@@ -151,11 +160,9 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-        [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)orientation];
+        self.previewOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
         
-        cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
-        
+        // Show camera preview with delay to hide awful animation
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             [self.cameraActivityIndicator stopAnimating];
@@ -171,6 +178,27 @@
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)toInterfaceOrientation];
+}
+
+- (void)checkDeviceAuthorizationStatus
+{
+    NSString *mediaType = AVMediaTypeVideo;
+    
+    [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
+        if (!granted)
+        {
+            // Not granted access to mediaType
+            __weak typeof(self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil) style:MXKAlertStyleAlert];
+                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->alert = nil;
+                }];
+                [alert showInViewController:self];
+            });
+        }
+    }];
 }
 
 #pragma mark - Override MXKViewController
@@ -195,9 +223,84 @@
         // Cancel has been pressed
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
+    else if (sender == self.cameraSwitchButton)
+    {
+        [self toggleCamera];
+    }
 }
 
-#pragma mark - Video handling methods
+#pragma mark - Capture handling methods
+
+- (void)setPreviewOrientation:(AVCaptureVideoOrientation)previewOrientation
+{
+    // Check whether the preview ratio must be inverted
+    CGFloat ratio = 0.0;
+    switch (previewOrientation)
+    {
+        case AVCaptureVideoOrientationPortrait:
+        case AVCaptureVideoOrientationPortraitUpsideDown:
+        {
+            if (self.cameraPreviewContainerAspectRatio.multiplier > 1)
+            {
+                ratio = (1 / self.cameraPreviewContainerAspectRatio.multiplier);
+            }
+            break;
+        }
+        case AVCaptureVideoOrientationLandscapeRight:
+        case AVCaptureVideoOrientationLandscapeLeft:
+        {
+            if (self.cameraPreviewContainerAspectRatio.multiplier < 1)
+            {
+                ratio = (1 / self.cameraPreviewContainerAspectRatio.multiplier);
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    
+    if (ratio)
+    {
+        // Replace the current ratio constraint by a new one
+        if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)])
+        {
+            [NSLayoutConstraint deactivateConstraints:@[self.cameraPreviewContainerAspectRatio]];
+        }
+        else
+        {
+            [self.view removeConstraint:self.cameraPreviewContainerAspectRatio];
+        }
+        
+        self.cameraPreviewContainerAspectRatio = [NSLayoutConstraint constraintWithItem:self.cameraPreviewContainerView
+                                                                              attribute:NSLayoutAttributeWidth
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self.cameraPreviewContainerView
+                                                                              attribute:NSLayoutAttributeHeight
+                                                                             multiplier:ratio
+                                                                               constant:0.0f];
+        
+        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+        {
+            [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
+        }
+        else
+        {
+            [self.view addConstraint:self.cameraPreviewContainerAspectRatio];
+        }
+        
+        // Force layout refresh
+        [self.view layoutIfNeeded];
+    }
+    
+    // Refresh camera preview layer
+    if (cameraPreviewLayer)
+    {
+        [[cameraPreviewLayer connection] setVideoOrientation:previewOrientation];
+        cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
+    }
+    
+    _previewOrientation = previewOrientation;
+}
 
 - (void)setupAVCapture
 {
@@ -206,6 +309,8 @@
         NSLog(@"Attemping to setup AVCapture when it is already started!");
         return;
     }
+    
+    [self.cameraActivityIndicator startAnimating];
     
     // Get the Camera Device
     AVCaptureDevice *frontCamera = nil;
@@ -296,17 +401,15 @@
         // Create the AVCapture Session
         captureSession = [[AVCaptureSession alloc] init];
         
-        [captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+        [captureSession setSessionPreset:AVCaptureSessionPreset640x480];
         
         cameraPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
         cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
+        [[cameraPreviewLayer connection] setVideoOrientation:self.previewOrientation];
         cameraPreviewLayer.masksToBounds = NO;
-        cameraPreviewLayer.hidden = YES;
         cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
         cameraPreviewLayer.backgroundColor = [[UIColor blackColor] CGColor];
-        cameraPreviewLayer.cornerRadius = 5.0;
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-        [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)orientation];
+        cameraPreviewLayer.borderWidth = 2;
         
         [self.cameraPreviewContainerView.layer addSublayer:cameraPreviewLayer];
         [captureSession addInput:currentCameraInput];
@@ -314,7 +417,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(caughtAVRuntimeError:) name:AVCaptureSessionRuntimeErrorNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AVCaptureSessionDidStartRunning:) name:AVCaptureSessionDidStartRunningNotification object:nil];
         
-        [self.cameraActivityIndicator startAnimating];
+        
         [captureSession startRunning];
         
         movieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
@@ -323,7 +426,16 @@
             [captureSession addOutput:movieFileOutput];
             AVCaptureConnection *connection = [movieFileOutput connectionWithMediaType:AVMediaTypeVideo];
             if ([connection isVideoStabilizationSupported])
-                [connection setEnablesVideoStabilizationWhenAvailable:YES];
+            {
+                if ([connection respondsToSelector:@selector(setPreferredVideoStabilizationMode:)])
+                {
+                    [connection setPreferredVideoStabilizationMode:YES];
+                }
+                else
+                {
+                    [connection setEnablesVideoStabilizationWhenAvailable:YES];
+                }
+            }
         }
         
         stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
@@ -332,6 +444,10 @@
             [stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
             [captureSession addOutput:stillImageOutput];
         }
+    }
+    else
+    {
+        [self.cameraActivityIndicator stopAnimating];
     }
 }
 
@@ -386,7 +502,7 @@
     [self tearDownAVCapture];
 }
 
-- (IBAction)toggleCamera:(id)sender
+- (void)toggleCamera
 {
     if (frontCameraInput && backCameraInput)
     {
@@ -434,8 +550,6 @@
     }
 }
 
-#pragma mark - UI
-
 - (void)runStillImageCaptureAnimation
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -445,26 +559,6 @@
             [cameraPreviewLayer setOpacity:1.0];
         }];
     });
-}
-
-- (void)checkDeviceAuthorizationStatus
-{
-    NSString *mediaType = AVMediaTypeVideo;
-    
-    [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
-        if (!granted)
-        {
-            // Not granted access to mediaType
-            __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil) style:MXKAlertStyleAlert];
-                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->alert = nil;
-                }];
-            });
-        }
-    }];
 }
 
 #pragma mark - UICollectionViewDataSource
