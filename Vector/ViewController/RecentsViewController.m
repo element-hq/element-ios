@@ -171,17 +171,14 @@
     
     [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
     
-    // Check whether the user is still navigating into recents tab
-    if ([AppDelegate theDelegate].masterTabBarController.selectedIndex == TABBAR_RECENTS_INDEX)
+    // Chat screen should be displayed without tabbar, but hidesBottomBarWhenPushed flag has no effect in case of splitviewcontroller use.
+    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary view controllers of the splitviewcontroller
+    // when the primary view controller is hidden.
+    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
     {
-        // Chat screen should be displayed without tabbar, but hidesBottomBarWhenPushed flag has no effect in case of splitviewcontroller use.
-        // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary viewcontrollers of the splitviewcontroller.
-        // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
-        if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
-        {
-            self.tabBarController.tabBar.hidden = YES;
-            [self.splitViewController.view setNeedsLayout];
-        }
+        self.tabBarController.tabBar.hidden = YES;
+        [self.splitViewController.view setNeedsLayout];
     }
 }
 
@@ -201,6 +198,17 @@
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Restore the tabbar by defaut when the user leaves the recents tab
+    if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX)
+    {
+        self.tabBarController.tabBar.hidden = NO;
     }
 }
 
