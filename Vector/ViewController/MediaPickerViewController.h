@@ -83,7 +83,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *recentPicturesCollectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentPictureCollectionViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *libraryOpenButton;
-@property (weak, nonatomic) IBOutlet UIButton *libraryAttachButton;
+@property (weak, nonatomic) IBOutlet UIButton *libraryChooseButton;
 
 /**
  The delegate for the view controller.

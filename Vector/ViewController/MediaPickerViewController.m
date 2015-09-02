@@ -16,15 +16,16 @@
 
 #import "MediaPickerViewController.h"
 
-#import <Photos/PHCollection.h>
-#import <Photos/PHFetchResult.h>
-#import <Photos/PHFetchOptions.h>
-#import <Photos/PHAsset.h>
+#import "MediaAssetCollectionViewCell.h"
+
+#import <Photos/Photos.h>
 
 #import <MediaPlayer/MediaPlayer.h>
 
-static void * CapturingStillImageContext = &CapturingStillImageContext;
-static void * RecordingContext = &RecordingContext;
+static void *CapturingStillImageContext = &CapturingStillImageContext;
+static void *RecordingContext = &RecordingContext;
+
+NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellId";
 
 @interface MediaPickerViewController ()
 {
@@ -51,6 +52,8 @@ static void * RecordingContext = &RecordingContext;
     MXKAlert *alert;
     
     PHFetchResult *assetsFetchResult;
+    
+    NSMutableArray *selectedAssets;
 }
 
 @property (nonatomic) AVCaptureVideoOrientation previewOrientation;
@@ -88,6 +91,9 @@ static void * RecordingContext = &RecordingContext;
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
     
+    // Register collection view cell class
+    [self.recentPicturesCollectionView registerClass:MediaAssetCollectionViewCell.class forCellWithReuseIdentifier:recentItemCollectionViewCellId];
+    
     // Adjust layout according to screen size
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     CGFloat maxSize = (screenSize.height > screenSize.width) ? screenSize.height : screenSize.width;
@@ -98,7 +104,7 @@ static void * RecordingContext = &RecordingContext;
     self.previewOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
     
     // Set default media type
-    self.mediaTypes = @[(NSString *)kUTTypeImage];
+    self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
     
     // Check camera access before set up AV capture
     [self checkDeviceAuthorizationStatus];
@@ -107,7 +113,7 @@ static void * RecordingContext = &RecordingContext;
     // Set button status
     self.cameraRetakeButton.enabled = NO;
     self.cameraChooseButton.enabled = NO;
-    self.libraryAttachButton.enabled = NO;
+    self.libraryChooseButton.enabled = NO;
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 }
@@ -246,15 +252,23 @@ static void * RecordingContext = &RecordingContext;
     if (assetsFetchResult.count)
     {
         self.recentPicturesCollectionView.hidden = NO;
-        self.recentPictureCollectionViewHeightConstraint.constant = 100;
-        self.libraryAttachButton.hidden = NO;
+        self.recentPictureCollectionViewHeightConstraint.constant = 130;
+        self.libraryChooseButton.hidden = NO;
+        
+        selectedAssets = [NSMutableArray arrayWithCapacity:assetsFetchResult.count];
+        for (NSUInteger index = 0; index < assetsFetchResult.count; index++)
+        {
+            [selectedAssets addObject:@NO];
+        }
+        
         [self.recentPicturesCollectionView reloadData];
     }
     else
     {
         self.recentPicturesCollectionView.hidden = YES;
         self.recentPictureCollectionViewHeightConstraint.constant = 0;
-        self.libraryAttachButton.hidden = YES;
+        self.libraryChooseButton.hidden = YES;
+        selectedAssets = nil;
     }
 }
 
@@ -397,6 +411,51 @@ static void * RecordingContext = &RecordingContext;
             self.cameraChooseButton.enabled = YES;
             [self.cameraActivityIndicator stopAnimating];
         }
+    }
+    else if (sender == self.libraryChooseButton && selectedAssets && self.delegate)
+    {
+        self.libraryChooseButton.enabled = NO;
+        [self.activityIndicator startAnimating];
+        
+        for (NSUInteger index = 0; index < selectedAssets.count; index++)
+        {
+            PHImageRequestOptions *imageOption = [[PHImageRequestOptions alloc] init];
+            imageOption.synchronous = YES;
+            PHVideoRequestOptions *videoOption = [[PHVideoRequestOptions alloc] init];
+            
+            if ([selectedAssets[index] boolValue])
+            {
+                PHAsset *asset = assetsFetchResult[index];
+                
+                if (asset.mediaType == PHAssetMediaTypeImage)
+                {
+                    [[PHImageManager defaultManager] requestImageDataForAsset:asset options:imageOption resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+                        
+                        UIImage *image = [UIImage imageWithData:imageData];
+                        [self.delegate mediaPickerController:self didSelectImage:image];
+                        
+                    }];
+                }
+                else if (asset.mediaType == PHAssetMediaTypeVideo)
+                {
+                    [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:videoOption resultHandler:^(AVAsset *avAsset, AVAudioMix *audioMix, NSDictionary *info) {
+                        
+                        if ([avAsset isKindOfClass:[AVURLAsset class]])
+                        {
+                            AVURLAsset *avURLAsset = (AVURLAsset*)avAsset;
+                            [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
+                        }
+                        
+                    }];
+                }
+                
+                // reset selection
+                selectedAssets[index] = @NO;
+            }
+        }
+        
+        [self.activityIndicator stopAnimating];
+        [self.recentPicturesCollectionView reloadData];
     }
 }
 
@@ -693,11 +752,13 @@ static void * RecordingContext = &RecordingContext;
     {
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
+        isVideoCaptureMode = NO;
     }
     else
     {
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
+        isVideoCaptureMode = YES;
     }
 }
 
@@ -920,13 +981,84 @@ static void * RecordingContext = &RecordingContext;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 0;//assetsFetchResult.count;
+    return assetsFetchResult.count;
 }
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    MediaAssetCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:recentItemCollectionViewCellId forIndexPath:indexPath];
+    
+    if (indexPath.row < assetsFetchResult.count)
+    {
+        PHAsset *asset = assetsFetchResult[indexPath.row];
+        
+        // Assets are display in full height in collection view
+        CGFloat collectionCellHeight = self.recentPictureCollectionViewHeightConstraint.constant;
+        // Request an image with the collection cell height by keeping ratio
+        CGSize cellSize = CGSizeMake((asset.pixelWidth * collectionCellHeight) / asset.pixelHeight, collectionCellHeight);
+        
+        PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+        option.synchronous = YES;
+        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFit options:option resultHandler:^(UIImage *result, NSDictionary *info) {
+            cell.imageView.image = result;
+        }];
+        
+        cell.selectionImageView.hidden = ![selectedAssets[indexPath.row] boolValue];
+    }
+    
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < assetsFetchResult.count)
+    {
+        if ([selectedAssets[indexPath.row] boolValue])
+        {
+            selectedAssets[indexPath.row] = @NO;
+            
+            // Update attach button status by checking selected assets array
+            self.libraryChooseButton.enabled = NO;
+            for (NSNumber *number in selectedAssets)
+            {
+                if (number.boolValue)
+                {
+                    self.libraryChooseButton.enabled = YES;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            selectedAssets[indexPath.row] = @YES;
+            self.libraryChooseButton.enabled = YES;
+        }
+        
+        [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+        
+        // Refresh locally the table
+        [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    }
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < assetsFetchResult.count)
+    {
+        PHAsset *asset = assetsFetchResult[indexPath.row];
+        
+        // Assets are display in full height in collection view
+        CGFloat collectionCellHeight = self.recentPictureCollectionViewHeightConstraint.constant;
+        CGSize cellSize = CGSizeMake((asset.pixelWidth * collectionCellHeight) / asset.pixelHeight, collectionCellHeight);
+        
+        return cellSize;
+    }
+    return CGSizeZero;
 }
 
 @end

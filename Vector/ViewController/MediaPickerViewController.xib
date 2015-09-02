@@ -22,7 +22,7 @@
                 <outlet property="captureLabel" destination="uts-4w-rUd" id="PlQ-hG-6Ms"/>
                 <outlet property="captureViewContainer" destination="cE0-0g-Su5" id="cr5-6S-9rj"/>
                 <outlet property="captureViewContainerHeightConstraint" destination="wSV-4d-wK0" id="Icf-uj-RMG"/>
-                <outlet property="libraryAttachButton" destination="ioK-2h-a8C" id="W0u-DT-ddh"/>
+                <outlet property="libraryChooseButton" destination="ioK-2h-a8C" id="Ejk-NV-aGw"/>
                 <outlet property="libraryLabel" destination="peT-9h-pw6" id="r4c-oJ-QBj"/>
                 <outlet property="libraryOpenButton" destination="Iem-Jz-DfR" id="s87-yh-f9F"/>
                 <outlet property="libraryViewContainer" destination="QeN-lu-6hK" id="hHu-hn-fXS"/>
@@ -69,12 +69,12 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="xHg-kl-L3w"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sO8-Ds-mXZ" userLabel="Camera Mode Button">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sO8-Ds-mXZ" userLabel="Camera Mode Button">
                                     <rect key="frame" x="180" y="37" width="31" height="31"/>
-                                    <state key="normal" image="camera_mode.png">
+                                    <state key="normal" image="camera_video.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <state key="highlighted" image="camera_mode.png"/>
+                                    <state key="highlighted" image="camera_video.png"/>
                                     <connections>
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="nvH-aw-ZJK"/>
                                     </connections>
@@ -144,9 +144,11 @@
                                 <constraint firstItem="PkX-yh-JhO" firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" multiplier="3/2" id="X65-AQ-3jq"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="top" secondItem="PXk-ZD-TYS" secondAttribute="top" id="Yc4-hC-fc3"/>
                                 <constraint firstItem="uRG-b0-CjY" firstAttribute="top" secondItem="w7z-f3-kdT" secondAttribute="bottom" constant="5" id="ZcV-Ea-NN1"/>
+                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="leading" secondItem="w7z-f3-kdT" secondAttribute="leading" id="ZdZ-67-BUd"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="width" secondItem="oF6-b2-322" secondAttribute="width" id="Zem-wK-IXz"/>
                                 <constraint firstItem="PkX-yh-JhO" firstAttribute="centerY" secondItem="uRG-b0-CjY" secondAttribute="centerY" constant="0.5" id="cAA-A1-uXM"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="centerX" secondItem="dxP-iB-dWk" secondAttribute="centerX" id="dhO-04-amL"/>
+                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="top" secondItem="w7z-f3-kdT" secondAttribute="top" id="lOa-v3-8Nb"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="centerY" secondItem="oF6-b2-322" secondAttribute="centerY" id="nH2-Ay-Kdw"/>
                                 <constraint firstAttribute="trailing" secondItem="uts-4w-rUd" secondAttribute="trailing" constant="8" id="oLC-h9-pmq"/>
                                 <constraint firstItem="uts-4w-rUd" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" constant="8" id="qrM-Rm-0IH"/>
@@ -157,7 +159,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QeN-lu-6hK" userLabel="Library View">
-                            <rect key="frame" x="0.0" y="401" width="600" height="190"/>
+                            <rect key="frame" x="0.0" y="401" width="600" height="220"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="peT-9h-pw6" userLabel="Select Picture Label">
                                     <rect key="frame" x="8" y="15" width="584" height="21"/>
@@ -169,12 +171,13 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Cnz-mP-gE5">
-                                    <rect key="frame" x="0.0" y="40" width="600" height="100"/>
+                                    <rect key="frame" x="0.0" y="40" width="600" height="130"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="100" id="Hdu-9B-aYr"/>
+                                        <constraint firstAttribute="height" constant="130" id="Hdu-9B-aYr"/>
                                     </constraints>
-                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wY5-ZF-Ge2">
-                                        <size key="itemSize" width="60" height="80"/>
+                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="5" id="wY5-ZF-Ge2">
+                                        <size key="itemSize" width="100" height="130"/>
                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -185,7 +188,7 @@
                                     </connections>
                                 </collectionView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iem-Jz-DfR" userLabel="Library Button">
-                                    <rect key="frame" x="125" y="150" width="48" height="30"/>
+                                    <rect key="frame" x="125" y="180" width="48" height="30"/>
                                     <state key="normal" title="Library">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -194,12 +197,12 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="h5r-0H-Rhm"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioK-2h-a8C" userLabel="Attach Button">
-                                    <rect key="frame" x="432" y="150" width="45" height="30"/>
-                                    <state key="normal" title="Attach">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioK-2h-a8C" userLabel="Choose Button">
+                                    <rect key="frame" x="432" y="180" width="45" height="30"/>
+                                    <state key="normal" title="Choose">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <state key="highlighted" title="Attach"/>
+                                    <state key="highlighted" title="Choose"/>
                                     <connections>
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="PyK-xX-zEd"/>
                                     </connections>
@@ -209,8 +212,8 @@
                                 <constraint firstAttribute="bottom" secondItem="ioK-2h-a8C" secondAttribute="bottom" constant="10" id="Aj0-Vj-FTt"/>
                                 <constraint firstAttribute="trailing" secondItem="Cnz-mP-gE5" secondAttribute="trailing" id="BJe-4u-jQP"/>
                                 <constraint firstItem="peT-9h-pw6" firstAttribute="top" secondItem="QeN-lu-6hK" secondAttribute="top" constant="15" id="BWQ-EY-Oun"/>
-                                <constraint firstItem="Cnz-mP-gE5" firstAttribute="bottom" secondItem="peT-9h-pw6" secondAttribute="bottom" constant="104" id="RBw-gb-qhI"/>
-                                <constraint firstAttribute="height" constant="190" id="aRE-Ox-5IJ"/>
+                                <constraint firstItem="Cnz-mP-gE5" firstAttribute="bottom" secondItem="peT-9h-pw6" secondAttribute="bottom" constant="134" id="RBw-gb-qhI"/>
+                                <constraint firstAttribute="height" constant="220" id="aRE-Ox-5IJ"/>
                                 <constraint firstItem="peT-9h-pw6" firstAttribute="leading" secondItem="QeN-lu-6hK" secondAttribute="leading" constant="8" id="gjX-QW-MTM"/>
                                 <constraint firstAttribute="bottom" secondItem="Iem-Jz-DfR" secondAttribute="bottom" constant="10" id="nWl-5v-GE4"/>
                                 <constraint firstAttribute="trailing" secondItem="peT-9h-pw6" secondAttribute="trailing" constant="8" id="neB-S2-nGo"/>
@@ -243,7 +246,7 @@
     </objects>
     <resources>
         <image name="camera_capture.png" width="31" height="31"/>
-        <image name="camera_mode.png" width="31" height="31"/>
         <image name="camera_switch.png" width="31" height="31"/>
+        <image name="camera_video.png" width="31" height="31"/>
     </resources>
 </document>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="eCk-zY-LXq" customClass="MediaAssetCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N3d-C1-PMc">
+                        <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
+                    </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="YB6-Jv-WMr" userLabel="Selection Image View">
+                        <rect key="frame" x="0.0" y="55" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="fDo-LF-4CI"/>
+                            <constraint firstAttribute="height" constant="25" id="yQL-WA-w9j"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="YB6-Jv-WMr" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" id="43S-Eh-tnF"/>
+                <constraint firstItem="N3d-C1-PMc" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" id="9AB-A9-pwf"/>
+                <constraint firstAttribute="bottom" secondItem="YB6-Jv-WMr" secondAttribute="bottom" id="RTC-59-huH"/>
+                <constraint firstItem="N3d-C1-PMc" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" id="rVE-KB-Bz9"/>
+                <constraint firstAttribute="bottom" secondItem="N3d-C1-PMc" secondAttribute="bottom" id="sGG-Tg-p9M"/>
+                <constraint firstAttribute="trailing" secondItem="N3d-C1-PMc" secondAttribute="trailing" id="u8Y-ib-8Ih"/>
+            </constraints>
+            <connections>
+                <outlet property="imageView" destination="N3d-C1-PMc" id="QEf-jc-amr"/>
+                <outlet property="selectionImageView" destination="YB6-Jv-WMr" id="4lH-AL-CLq"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="selection_tick.png" width="31" height="31"/>
+    </resources>
+</document>
