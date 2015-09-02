@@ -610,7 +610,7 @@ static void * RecordingContext = &RecordingContext;
                 }
             }
         }
-        [self addObserver:self forKeyPath:@"movieFileOutput.recording" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:RecordingContext];
+        [movieFileOutput addObserver:self forKeyPath:@"recording" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:RecordingContext];
         
         stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
         if ([captureSession canAddOutput:stillImageOutput])
@@ -618,7 +618,7 @@ static void * RecordingContext = &RecordingContext;
             [stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
             [captureSession addOutput:stillImageOutput];
         }
-        [self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
+        [stillImageOutput addObserver:self forKeyPath:@"capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
         
     }
     else
@@ -648,14 +648,14 @@ static void * RecordingContext = &RecordingContext;
     
     if (movieFileOutput)
     {
-        [self removeObserver:self forKeyPath:@"movieFileOutput.recording" context:RecordingContext];
+        [movieFileOutput removeObserver:self forKeyPath:@"recording" context:RecordingContext];
         movieFileOutput = nil;
     }
     
     if (stillImageOutput)
     {
+        [stillImageOutput removeObserver:self forKeyPath:@"capturingStillImage" context:CapturingStillImageContext];
         stillImageOutput = nil;
-        [self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
     }
     
     currentCameraInput = nil;
