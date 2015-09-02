@@ -272,7 +272,7 @@ static void * RecordingContext = &RecordingContext;
         outputVideoFileURL = nil;
     }
     
-    self.cameraCaptureImageView.hidden = YES;
+    self.cameraCaptureContainerView.hidden = YES;
     
     self.cameraModeButton.enabled = YES;
     self.cameraSwitchButton.enabled = YES;
@@ -363,7 +363,7 @@ static void * RecordingContext = &RecordingContext;
                 
             }];
         }
-        else if (!self.cameraCaptureImageView.isHidden && self.cameraCaptureImageView.image)
+        else if (!self.cameraCaptureContainerView.isHidden && self.cameraCaptureImageView.image)
         {
             [MXKMediaManager saveImageToPhotosLibrary:self.cameraCaptureImageView.image success:^{
                 
@@ -805,7 +805,7 @@ static void * RecordingContext = &RecordingContext;
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 
                 self.cameraCaptureImageView.image = [[UIImage alloc] initWithData:imageData];
-                self.cameraCaptureImageView.hidden = NO;
+                self.cameraCaptureContainerView.hidden = NO;
                 self.cameraRetakeButton.enabled = YES;
                 self.cameraChooseButton.enabled = YES;
                 
