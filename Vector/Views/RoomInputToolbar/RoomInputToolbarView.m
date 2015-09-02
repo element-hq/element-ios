@@ -16,6 +16,8 @@
 
 #import "RoomInputToolbarView.h"
 
+#import <MediaPlayer/MediaPlayer.h>
+
 //#import <MediaPlayer/MediaPlayer.h>
 //#import <MobileCoreServices/MobileCoreServices.h>
 //
@@ -29,6 +31,8 @@
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
+    
+    MPMoviePlayerController *tmpVideoPlayer;
 }
 
 @end
@@ -145,6 +149,7 @@
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
         {
             mediaPicker = [MediaPickerViewController mediaPickerViewController];
+            mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
             mediaPicker.delegate = self;
             UINavigationController *navigationController = [UINavigationController new];
             [navigationController pushViewController:mediaPicker animated:NO];
@@ -540,36 +545,55 @@
 //    }];
 //}
 
-#pragma mark - Media Picker handling
+#pragma mark - MediaPickerViewController Delegate
 
-//- (void)dismissMediaPicker
-//{
-//    mediaPicker.delegate = nil;
-//    
-//    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:dismissMediaPicker:)])
-//    {
-//        [self.delegate roomInputToolbarView:self dismissMediaPicker:mediaPicker];
-//    }
-//}
-//
-//- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
-//{
-//    // Finalize video attachment
-//    UIImage* videoThumbnail = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
-//    NSURL* selectedVideo = [tmpVideoPlayer contentURL];
-//    [tmpVideoPlayer stop];
-//    tmpVideoPlayer = nil;
-//    
-//    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:sendVideo:withThumbnail:)])
-//    {
-//        [self.delegate roomInputToolbarView:self sendVideo:selectedVideo withThumbnail:videoThumbnail];
-//    }
-//    else
-//    {
-//        NSLog(@"[RoomInputToolbarView] Attach video is not supported");
-//    }
-//    
-//    [self dismissMediaPicker];
-//}
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image
+{
+    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:sendImage:)])
+    {
+        [self.delegate roomInputToolbarView:self sendImage:image];
+    }
+    else
+    {
+        NSLog(@"[RoomInputToolbarView] Attach image is not supported");
+    }
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoLocalURL
+{
+    // Create video thumbnail
+    tmpVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoLocalURL];
+    if (tmpVideoPlayer)
+    {
+        [tmpVideoPlayer setShouldAutoplay:NO];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
+                                                     name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
+                                                   object:nil];
+        [tmpVideoPlayer requestThumbnailImagesAtTimes:@[@1.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
+        // We will finalize video attachment when thumbnail will be available (see movie player callback)
+        return;
+    }
+}
+
+- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
+{
+    // Finalize video attachment
+    UIImage* videoThumbnail = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
+    NSURL* selectedVideo = [tmpVideoPlayer contentURL];
+    [tmpVideoPlayer stop];
+    tmpVideoPlayer = nil;
+    
+    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:sendVideo:withThumbnail:)])
+    {
+        [self.delegate roomInputToolbarView:self sendVideo:selectedVideo withThumbnail:videoThumbnail];
+    }
+    else
+    {
+        NSLog(@"[RoomInputToolbarView] Attach video is not supported");
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
+}
 
 @end

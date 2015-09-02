@@ -21,8 +21,15 @@
 #import <Photos/PHFetchOptions.h>
 #import <Photos/PHAsset.h>
 
+#import <MediaPlayer/MediaPlayer.h>
+
+static void * CapturingStillImageContext = &CapturingStillImageContext;
+static void * RecordingContext = &RecordingContext;
+
 @interface MediaPickerViewController ()
 {
+    BOOL isVideoCaptureMode;
+    
     AVCaptureSession *captureSession;
     AVCaptureDeviceInput *frontCameraInput;
     AVCaptureDeviceInput *backCameraInput;
@@ -34,14 +41,20 @@
     AVCaptureVideoPreviewLayer *cameraPreviewLayer;
     Boolean canToggleCamera;
     
+    NSURL *outputVideoFileURL;
+    MPMoviePlayerController *videoPlayer;
+    
     dispatch_queue_t cameraQueue;
     
     BOOL lockInterfaceRotation;
     
     MXKAlert *alert;
+    
+    PHFetchResult *assetsFetchResult;
 }
 
 @property (nonatomic) AVCaptureVideoOrientation previewOrientation;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
 
 @end
 
@@ -84,33 +97,19 @@
     // Adjust camera preview ratio
     self.previewOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
     
-    
-//    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumRecentlyAdded options:nil];
-//    
-//    //set up fetch options, mediaType is image.
-//    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-//    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-//    options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
-//    
-//    for (NSInteger i =0; i < smartAlbums.count; i++)
-//    {
-//        PHAssetCollection *assetCollection = smartAlbums[i];
-//        PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
-//        
-//        NSLog(@"sub album title is %@, count is %tu", assetCollection.localizedTitle, assetsFetchResult.count);
-//        if (assetsFetchResult.count > 0)
-//        {
-//            for (PHAsset *asset in assetsFetchResult)
-//            {
-//                //you have got your image type asset.
-//                NSLog(@"%@", asset);
-//            }
-//        }
-//    }
+    // Set default media type
+    self.mediaTypes = @[(NSString *)kUTTypeImage];
     
     // Check camera access before set up AV capture
     [self checkDeviceAuthorizationStatus];
     [self setupAVCapture];
+    
+    // Set button status
+    self.cameraRetakeButton.enabled = NO;
+    self.cameraChooseButton.enabled = NO;
+    self.libraryAttachButton.enabled = NO;
+    
+    [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 }
 
 - (void)dealloc
@@ -201,6 +200,89 @@
     }];
 }
 
+#pragma mark -
+
+- (void)setMediaTypes:(NSArray *)mediaTypes
+{
+    _mediaTypes = mediaTypes;
+    
+    // Retrieve recents snapshot for the selected media types
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumRecentlyAdded options:nil];
+    
+    // Set up fetch options.
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    if ([mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
+    {
+        if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"(mediaType = %d) || (mediaType = %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+            self.cameraModeButton.hidden = NO;
+            isVideoCaptureMode = NO;
+        }
+        else
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
+            self.cameraModeButton.hidden = YES;
+            isVideoCaptureMode = NO;
+        }
+    }
+    else if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+    {
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeVideo];
+        self.cameraModeButton.hidden = YES;
+        isVideoCaptureMode = YES;
+    }
+    
+    // Only one album is expected
+    if (smartAlbums.count)
+    {
+        PHAssetCollection *assetCollection = smartAlbums[0];
+        assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+        
+        NSLog(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", assetsFetchResult.count);
+    }
+    
+    if (assetsFetchResult.count)
+    {
+        self.recentPicturesCollectionView.hidden = NO;
+        self.recentPictureCollectionViewHeightConstraint.constant = 100;
+        self.libraryAttachButton.hidden = NO;
+        [self.recentPicturesCollectionView reloadData];
+    }
+    else
+    {
+        self.recentPicturesCollectionView.hidden = YES;
+        self.recentPictureCollectionViewHeightConstraint.constant = 0;
+        self.libraryAttachButton.hidden = YES;
+    }
+}
+
+- (void)reset
+{
+    if (videoPlayer)
+    {
+        [videoPlayer.view removeFromSuperview];
+        videoPlayer = nil;
+    }
+
+    if (outputVideoFileURL)
+    {
+        [[NSFileManager defaultManager] removeItemAtURL:outputVideoFileURL error:nil];
+        outputVideoFileURL = nil;
+    }
+    
+    self.cameraCaptureImageView.hidden = YES;
+    
+    self.cameraModeButton.enabled = YES;
+    self.cameraSwitchButton.enabled = YES;
+    
+    self.cameraChooseButton.enabled = NO;
+    self.cameraRetakeButton.enabled = NO;
+    
+    self.cameraCaptureButton.enabled = YES;
+}
+
 #pragma mark - Override MXKViewController
 
 - (void)destroy
@@ -212,20 +294,109 @@
     [super destroy];
 }
 
-#pragma mark -
+#pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender
 {
     if (sender == self.navigationItem.leftBarButtonItem)
     {
         [self stopAVCapture];
+        [self reset];
          
         // Cancel has been pressed
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
+    else if (sender == self.cameraModeButton)
+    {
+        [self toggleCaptureMode];
+    }
     else if (sender == self.cameraSwitchButton)
     {
         [self toggleCamera];
+    }
+    else if (sender == self.cameraCaptureButton)
+    {
+        if (isVideoCaptureMode)
+        {
+            [self toggleMovieRecording];
+        }
+        else
+        {
+            [self snapStillImage];
+        }
+    }
+    else if (sender == self.cameraRetakeButton)
+    {
+        [self reset];
+    }
+    else if (sender == self.cameraChooseButton)
+    {
+        self.cameraChooseButton.enabled = NO;
+        [self.cameraActivityIndicator startAnimating];
+        
+        if (outputVideoFileURL)
+        {
+            [MXKMediaManager saveMediaToPhotosLibrary:outputVideoFileURL isImage:NO success:^{
+                
+                if (self.delegate)
+                {
+                    [self.delegate mediaPickerController:self didSelectVideo:outputVideoFileURL];
+                }
+                
+                [self.cameraActivityIndicator stopAnimating];
+                outputVideoFileURL = nil;
+                
+                [self reset];
+                
+            } failure:^(NSError *error) {
+                
+                self.cameraChooseButton.enabled = YES;
+                [self.cameraActivityIndicator stopAnimating];
+                
+                __weak typeof(self) weakSelf = self;
+                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"save_media_failed", @"Vector", nil) style:MXKAlertStyleAlert];
+                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->alert = nil;
+                }];
+                [alert showInViewController:self];
+                
+            }];
+        }
+        else if (!self.cameraCaptureImageView.isHidden && self.cameraCaptureImageView.image)
+        {
+            [MXKMediaManager saveImageToPhotosLibrary:self.cameraCaptureImageView.image success:^{
+                
+                if (self.delegate)
+                {
+                    [self.delegate mediaPickerController:self didSelectImage:self.cameraCaptureImageView.image];
+                }
+                
+                [self.cameraActivityIndicator stopAnimating];
+                                
+                [self reset];
+                
+            } failure:^(NSError *error) {
+                
+                self.cameraChooseButton.enabled = YES;
+                [self.cameraActivityIndicator stopAnimating];
+                
+                __weak typeof(self) weakSelf = self;
+                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"save_media_failed", @"Vector", nil) style:MXKAlertStyleAlert];
+                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->alert = nil;
+                }];
+                [alert showInViewController:self];
+                
+            }];
+        }
+        else
+        {
+            NSLog(@"[MediaPickerVC] Selection is empty");
+            self.cameraChooseButton.enabled = YES;
+            [self.cameraActivityIndicator stopAnimating];
+        }
     }
 }
 
@@ -396,6 +567,8 @@
         }
     }
     
+    self.cameraSwitchButton.hidden = (!frontCamera || !backCamera);
+    
     if (currentCameraInput)
     {
         // Create the AVCapture Session
@@ -437,6 +610,7 @@
                 }
             }
         }
+        [self addObserver:self forKeyPath:@"movieFileOutput.recording" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:RecordingContext];
         
         stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
         if ([captureSession canAddOutput:stillImageOutput])
@@ -444,6 +618,8 @@
             [stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
             [captureSession addOutput:stillImageOutput];
         }
+        [self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
+        
     }
     else
     {
@@ -470,8 +646,17 @@
     backCameraInput = nil;
     captureSession = nil;
     
-    movieFileOutput = nil;
-    stillImageOutput = nil;
+    if (movieFileOutput)
+    {
+        [self removeObserver:self forKeyPath:@"movieFileOutput.recording" context:RecordingContext];
+        movieFileOutput = nil;
+    }
+    
+    if (stillImageOutput)
+    {
+        stillImageOutput = nil;
+        [self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
+    }
     
     currentCameraInput = nil;
     
@@ -500,6 +685,20 @@
 - (void)AVCaptureSessionDidStopRunning:(NSNotification*)note
 {
     [self tearDownAVCapture];
+}
+
+- (void)toggleCaptureMode
+{
+    if (isVideoCaptureMode)
+    {
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
+    }
 }
 
 - (void)toggleCamera
@@ -550,6 +749,89 @@
     }
 }
 
+- (void)toggleMovieRecording
+{
+    self.cameraCaptureButton.enabled = NO;
+    
+    dispatch_async(cameraQueue, ^{
+        if (![movieFileOutput isRecording])
+        {
+            lockInterfaceRotation = YES;
+            
+            if ([[UIDevice currentDevice] isMultitaskingSupported])
+            {
+                // Setup background task. This is needed because the captureOutput:didFinishRecordingToOutputFileAtURL: callback is not received until the App returns to the foreground unless you request background execution time.
+                [self setBackgroundRecordingID:[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundRecordingID];
+                    self.backgroundRecordingID = UIBackgroundTaskInvalid;
+                    
+                    NSLog(@"[MediaPickerVC] pauseInBackgroundTask : %08lX expired", (unsigned long)self.backgroundRecordingID);
+                }]];
+                
+                NSLog(@"[MediaPickerVC] pauseInBackgroundTask : %08lX starts", (unsigned long)self.backgroundRecordingID);
+            }
+            
+            // Update the orientation on the movie file output video connection before starting recording.
+            [[movieFileOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[cameraPreviewLayer connection] videoOrientation]];
+            
+            // Turning OFF flash for video recording
+            [MediaPickerViewController setFlashMode:AVCaptureFlashModeOff forDevice:[currentCameraInput device]];
+            
+            // Start recording to a temporary file.
+            NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
+            [movieFileOutput startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
+        }
+        else
+        {
+            [movieFileOutput stopRecording];
+        }
+    });
+}
+
+- (void)snapStillImage
+{
+    dispatch_async(cameraQueue, ^{
+        // Update the orientation on the still image output video connection before capturing.
+        [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[cameraPreviewLayer connection] videoOrientation]];
+        
+        // Flash set to Auto for Still Capture
+        [MediaPickerViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[currentCameraInput device]];
+        
+        // Capture a still image.
+        [stillImageOutput captureStillImageAsynchronouslyFromConnection:[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+            
+            if (imageDataSampleBuffer)
+            {
+                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                
+                self.cameraCaptureImageView.image = [[UIImage alloc] initWithData:imageData];
+                self.cameraCaptureImageView.hidden = NO;
+                self.cameraRetakeButton.enabled = YES;
+                self.cameraChooseButton.enabled = YES;
+                
+                self.cameraCaptureButton.enabled = NO;
+            }
+        }];
+    });
+}
+
++ (void)setFlashMode:(AVCaptureFlashMode)flashMode forDevice:(AVCaptureDevice *)device
+{
+    if ([device hasFlash] && [device isFlashModeSupported:flashMode])
+    {
+        NSError *error = nil;
+        if ([device lockForConfiguration:&error])
+        {
+            [device setFlashMode:flashMode];
+            [device unlockForConfiguration];
+        }
+        else
+        {
+            NSLog(@"[MediaPickerVC] %@", error);
+        }
+    }
+}
+
 - (void)runStillImageCaptureAnimation
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -561,11 +843,84 @@
     });
 }
 
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == CapturingStillImageContext)
+    {
+        BOOL isCapturingStillImage = [change[NSKeyValueChangeNewKey] boolValue];
+        
+        if (isCapturingStillImage)
+        {
+            [self runStillImageCaptureAnimation];
+        }
+    }
+    else if (context == RecordingContext)
+    {
+        BOOL isRecording = [change[NSKeyValueChangeNewKey] boolValue];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (isRecording)
+            {
+                self.cameraModeButton.enabled = NO;
+                self.cameraSwitchButton.enabled = NO;
+                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
+                self.cameraCaptureButton.enabled = YES;
+            }
+            else
+            {
+                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
+                self.cameraCaptureButton.enabled = NO;
+            }
+        });
+    }
+    else
+    {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+#pragma mark - File Output Delegate
+
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
+{
+    if (error)
+    {
+        NSLog(@"[MediaPickerVC] %@", error);
+    }
+    
+    lockInterfaceRotation = NO;
+    
+    outputVideoFileURL = outputFileURL;
+    
+    // Display video player
+    videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:outputVideoFileURL];
+    if (videoPlayer)
+    {
+        [videoPlayer setShouldAutoplay:NO];
+        videoPlayer.scalingMode = MPMovieScalingModeAspectFit;
+        videoPlayer.view.frame = self.cameraPreviewContainerView.frame;
+        [self.view addSubview:videoPlayer.view];
+    }
+    
+    self.cameraRetakeButton.enabled = YES;
+    self.cameraChooseButton.enabled = YES;
+    
+    UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
+    if (backgroundRecordingID != UIBackgroundTaskInvalid)
+    {
+        [[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
+        [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
+        NSLog(@"[MediaPickerVC] >>>>> background pause task finished");
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 0;
+    return 0;//assetsFetchResult.count;
 }
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:

@@ -17,7 +17,13 @@
 		F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */; };
 		F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */; };
 		F001D7701B83243900A162C3 /* send_other.png in Resources */ = {isa = PBXBuildFile; fileRef = F001D76F1B83243900A162C3 /* send_other.png */; };
-		F0037A141B90A50300A44013 /* switch_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = F0037A131B90A50300A44013 /* switch_camera.png */; };
+		F00B1BCA1B95CC68001806E3 /* camera_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BC71B95CC68001806E3 /* camera_capture.png */; };
+		F00B1BCB1B95CC68001806E3 /* camera_record.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BC81B95CC68001806E3 /* camera_record.png */; };
+		F00B1BCC1B95CC68001806E3 /* camera_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BC91B95CC68001806E3 /* camera_stop.png */; };
+		F00B1BCF1B95D22E001806E3 /* camera_mode.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BCD1B95D22E001806E3 /* camera_mode.png */; };
+		F00B1BD01B95D22E001806E3 /* camera_switch.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BCE1B95D22E001806E3 /* camera_switch.png */; };
+		F00B1BD31B95D478001806E3 /* camera_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BD11B95D478001806E3 /* camera_picture.png */; };
+		F00B1BD41B95D478001806E3 /* camera_video.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BD21B95D478001806E3 /* camera_video.png */; };
 		F00E08401B8380CF0057012C /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = F00E083E1B8380CF0057012C /* settings.png */; };
 		F00E08411B8380CF0057012C /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F00E083F1B8380CF0057012C /* settings@2x.png */; };
 		F0294CF01B85F31900A928EE /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0294CEF1B85F31900A928EE /* tab_recents.png */; };
@@ -105,7 +111,13 @@
 		F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerViewController.m; sourceTree = "<group>"; };
 		F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPickerViewController.xib; sourceTree = "<group>"; };
 		F001D76F1B83243900A162C3 /* send_other.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_other.png; sourceTree = "<group>"; };
-		F0037A131B90A50300A44013 /* switch_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_camera.png; sourceTree = "<group>"; };
+		F00B1BC71B95CC68001806E3 /* camera_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_capture.png; sourceTree = "<group>"; };
+		F00B1BC81B95CC68001806E3 /* camera_record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_record.png; sourceTree = "<group>"; };
+		F00B1BC91B95CC68001806E3 /* camera_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_stop.png; sourceTree = "<group>"; };
+		F00B1BCD1B95D22E001806E3 /* camera_mode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_mode.png; sourceTree = "<group>"; };
+		F00B1BCE1B95D22E001806E3 /* camera_switch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_switch.png; sourceTree = "<group>"; };
+		F00B1BD11B95D478001806E3 /* camera_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_picture.png; sourceTree = "<group>"; };
+		F00B1BD21B95D478001806E3 /* camera_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_video.png; sourceTree = "<group>"; };
 		F00E083E1B8380CF0057012C /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		F00E083F1B8380CF0057012C /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
 		F0294CEF1B85F31900A928EE /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
@@ -410,7 +422,13 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				F0037A131B90A50300A44013 /* switch_camera.png */,
+				F00B1BD11B95D478001806E3 /* camera_picture.png */,
+				F00B1BD21B95D478001806E3 /* camera_video.png */,
+				F00B1BCD1B95D22E001806E3 /* camera_mode.png */,
+				F00B1BCE1B95D22E001806E3 /* camera_switch.png */,
+				F00B1BC71B95CC68001806E3 /* camera_capture.png */,
+				F00B1BC81B95CC68001806E3 /* camera_record.png */,
+				F00B1BC91B95CC68001806E3 /* camera_stop.png */,
 				F0294CEF1B85F31900A928EE /* tab_recents.png */,
 				F00E083E1B8380CF0057012C /* settings.png */,
 				F00E083F1B8380CF0057012C /* settings@2x.png */,
@@ -536,6 +554,7 @@
 				F0316E3A1B7DF45A00F03620 /* add.png in Resources */,
 				F0DD7D671B7AA8C900C4BE02 /* members@2x.png in Resources */,
 				F001D7701B83243900A162C3 /* send_other.png in Resources */,
+				F00B1BCB1B95CC68001806E3 /* camera_record.png in Resources */,
 				F0DD7D721B7AA8C900C4BE02 /* tab_settings.png in Resources */,
 				F001D7611B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
@@ -544,6 +563,7 @@
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
 				F0294CF01B85F31900A928EE /* tab_recents.png in Resources */,
 				F0DD7D4C1B7AA8C900C4BE02 /* attach.png in Resources */,
+				F00B1BD41B95D478001806E3 /* camera_video.png in Resources */,
 				F0316E3E1B7E28DE00F03620 /* remove.png in Resources */,
 				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
 				F0E956C01B834430004C1699 /* share_location.png in Resources */,
@@ -552,19 +572,22 @@
 				F0DD7D731B7AA8C900C4BE02 /* tab_settings@2x.png in Resources */,
 				F0E956C61B834573004C1699 /* voice_call.png in Resources */,
 				F0316E481B7E4C9A00F03620 /* placeholder@2x.png in Resources */,
+				F00B1BCF1B95D22E001806E3 /* camera_mode.png in Resources */,
 				F001D75F1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib in Resources */,
 				F0DD7D641B7AA8C900C4BE02 /* logo.png in Resources */,
 				F0316E3B1B7DF45A00F03620 /* add@2x.png in Resources */,
 				F0DD7D7F1B7AAA3C00C4BE02 /* icon_users@2x.png in Resources */,
+				F00B1BCA1B95CC68001806E3 /* camera_capture.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */,
 				F0DD7D601B7AA8C900C4BE02 /* hide.png in Resources */,
-				F0037A141B90A50300A44013 /* switch_camera.png in Resources */,
 				F0DD7D741B7AA8C900C4BE02 /* typing.png in Resources */,
+				F00B1BD31B95D478001806E3 /* camera_picture.png in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
 				F001D7661B82198B00A162C3 /* attach_media.png in Resources */,
 				F0DD7D6D1B7AA8C900C4BE02 /* search@2x.png in Resources */,
+				F00B1BCC1B95CC68001806E3 /* camera_stop.png in Resources */,
 				F0DD7D661B7AA8C900C4BE02 /* members.png in Resources */,
 				F094AA061B78E3D400B1FBBF /* Vector-Defaults.plist in Resources */,
 				F0DD7D4D1B7AA8C900C4BE02 /* attach@2x.png in Resources */,
@@ -572,6 +595,7 @@
 				F00E08401B8380CF0057012C /* settings.png in Resources */,
 				F0E956C81B836CCD004C1699 /* icon_menu.png in Resources */,
 				F0DD7D6C1B7AA8C900C4BE02 /* search.png in Resources */,
+				F00B1BD01B95D22E001806E3 /* camera_switch.png in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

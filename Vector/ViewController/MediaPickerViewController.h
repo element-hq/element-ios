@@ -24,18 +24,26 @@
 @protocol MediaPickerViewControllerDelegate <NSObject>
 
 /**
- Tells the delegate.
+ Tells the delegate that the user select an image.
  
  @param mediaPickerController the `MediaPickerViewController` instance.
- @param .
+ @param image the UIImage hosting the image data to send.
  */
-- (void)todo:(MediaPickerViewController *)mediaPickerController;
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image;
+
+/**
+ Tells the delegate that the user select a video.
+ 
+ @param mediaPickerController the `MediaPickerViewController` instance.
+ @param videoLocalURL the local filesystem path of the video to send.
+ */
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoLocalURL;
 
 @end
 
 /**
  */
-@interface MediaPickerViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface MediaPickerViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, AVCaptureFileOutputRecordingDelegate>
 
 /**
  *  Returns the `UINib` object initialized for a `MediaPickerViewController`.
@@ -60,20 +68,36 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captureViewContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *captureLabel;
 @property (weak, nonatomic) IBOutlet UIView *cameraPreviewContainerView;
+@property (weak, nonatomic) IBOutlet UIImageView *cameraCaptureImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraPreviewContainerAspectRatio;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *cameraActivityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *cameraModeButton;
 @property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraCaptureButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraRetakeButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraChooseButton;
 
 @property (weak, nonatomic) IBOutlet UIView *libraryViewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *libraryLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *recentPicturesCollectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentPictureCollectionViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *libraryOpenButton;
+@property (weak, nonatomic) IBOutlet UIButton *libraryAttachButton;
 
 /**
  The delegate for the view controller.
  */
 @property (nonatomic) id<MediaPickerViewControllerDelegate> delegate;
 
+/**
+ The array of the media types supported by the picker (default value is an array containing kUTTypeImage).
+ */
+@property (nonatomic) NSArray *mediaTypes;
+
+/**
+ The label of the selection button (default value is "Choose").
+ */
+@property (nonatomic) NSString *selectionButtonCustomLabel;
 
 @end
 
