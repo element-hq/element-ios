@@ -31,8 +31,6 @@
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
-    
-    MPMoviePlayerController *tmpVideoPlayer;
 }
 
 @end
@@ -561,39 +559,24 @@
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoLocalURL
 {
-    // Create video thumbnail
-    tmpVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoLocalURL];
-    if (tmpVideoPlayer)
-    {
-        [tmpVideoPlayer setShouldAutoplay:NO];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
-                                                     name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
-                                                   object:nil];
-        [tmpVideoPlayer requestThumbnailImagesAtTimes:@[@1.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
-        // We will finalize video attachment when thumbnail will be available (see movie player callback)
-        return;
-    }
-}
-
-- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
-{
-    // Finalize video attachment
-    UIImage* videoThumbnail = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
-    NSURL* selectedVideo = [tmpVideoPlayer contentURL];
-    [tmpVideoPlayer stop];
-    tmpVideoPlayer = nil;
-    
     if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:sendVideo:withThumbnail:)])
     {
-        [self.delegate roomInputToolbarView:self sendVideo:selectedVideo withThumbnail:videoThumbnail];
+        // Retrieve the video frame at 1 sec to define the video thumbnail
+        AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalURL options:nil];
+        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+        assetImageGenerator.appliesPreferredTrackTransform = YES;
+        CMTime time = CMTimeMake(1, 1);
+        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+        
+        // Finalize video attachment
+        UIImage* videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+        
+        [self.delegate roomInputToolbarView:self sendVideo:videoLocalURL withThumbnail:videoThumbnail];
     }
     else
     {
         NSLog(@"[RoomInputToolbarView] Attach video is not supported");
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
 }
 
 @end

@@ -54,7 +54,7 @@
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7z-f3-kdT" userLabel="Preview Container View">
                                     <rect key="frame" x="180" y="37" width="240" height="320"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="w7z-f3-kdT" secondAttribute="height" multiplier="3:4" id="pq0-bZ-KaJ"/>
                                     </constraints>
