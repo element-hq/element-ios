@@ -135,20 +135,18 @@
                                 </button>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="uSU-qr-XnK" firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" multiplier="0.5" id="Bum-4v-TdL"/>
                                 <constraint firstItem="uts-4w-rUd" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="8" id="Dua-l7-fL2"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="height" secondItem="oF6-b2-322" secondAttribute="height" id="EKr-38-VDJ"/>
                                 <constraint firstAttribute="centerX" secondItem="w7z-f3-kdT" secondAttribute="centerX" id="F0v-GZ-U3n"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="top" secondItem="uts-4w-rUd" secondAttribute="bottom" constant="8" id="FX3-E3-rR4"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="trailing" secondItem="PXk-ZD-TYS" secondAttribute="trailing" id="NBc-2m-4yz"/>
-                                <constraint firstItem="uRG-b0-CjY" firstAttribute="centerY" secondItem="uSU-qr-XnK" secondAttribute="centerY" constant="-0.5" id="RqV-3a-gMc"/>
+                                <constraint firstItem="uRG-b0-CjY" firstAttribute="centerY" secondItem="uSU-qr-XnK" secondAttribute="centerY" id="RqV-3a-gMc"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="centerY" secondItem="dxP-iB-dWk" secondAttribute="centerY" constant="-3" id="VJR-vg-mUx"/>
-                                <constraint firstItem="PkX-yh-JhO" firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" multiplier="3/2" id="X65-AQ-3jq"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="top" secondItem="PXk-ZD-TYS" secondAttribute="top" id="Yc4-hC-fc3"/>
                                 <constraint firstItem="uRG-b0-CjY" firstAttribute="top" secondItem="w7z-f3-kdT" secondAttribute="bottom" constant="5" id="ZcV-Ea-NN1"/>
                                 <constraint firstItem="sO8-Ds-mXZ" firstAttribute="leading" secondItem="w7z-f3-kdT" secondAttribute="leading" id="ZdZ-67-BUd"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="width" secondItem="oF6-b2-322" secondAttribute="width" id="Zem-wK-IXz"/>
-                                <constraint firstItem="PkX-yh-JhO" firstAttribute="centerY" secondItem="uRG-b0-CjY" secondAttribute="centerY" constant="0.5" id="cAA-A1-uXM"/>
+                                <constraint firstItem="PkX-yh-JhO" firstAttribute="centerY" secondItem="uRG-b0-CjY" secondAttribute="centerY" id="cAA-A1-uXM"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="centerX" secondItem="dxP-iB-dWk" secondAttribute="centerX" id="dhO-04-amL"/>
                                 <constraint firstItem="sO8-Ds-mXZ" firstAttribute="top" secondItem="w7z-f3-kdT" secondAttribute="top" id="lOa-v3-8Nb"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="centerY" secondItem="oF6-b2-322" secondAttribute="centerY" id="nH2-Ay-Kdw"/>
@@ -161,7 +159,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QeN-lu-6hK" userLabel="Library View">
-                            <rect key="frame" x="0.0" y="401" width="600" height="225"/>
+                            <rect key="frame" x="0.0" y="401" width="600" height="228"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="peT-9h-pw6" userLabel="Select Picture Label">
                                     <rect key="frame" x="8" y="15" width="584" height="21"/>
@@ -190,7 +188,7 @@
                                     </connections>
                                 </collectionView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iem-Jz-DfR" userLabel="Library Button">
-                                    <rect key="frame" x="124" y="183" width="50" height="32"/>
+                                    <rect key="frame" x="125" y="186" width="50" height="32"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Library">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -201,7 +199,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioK-2h-a8C" userLabel="Choose Button">
-                                    <rect key="frame" x="426" y="183" width="57" height="32"/>
+                                    <rect key="frame" x="422" y="186" width="57" height="32"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Choose">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -213,11 +211,13 @@
                                 </button>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="ioK-2h-a8C" firstAttribute="centerX" secondItem="QeN-lu-6hK" secondAttribute="centerX" multiplier="1.5" id="7tR-T3-Kb4"/>
                                 <constraint firstAttribute="bottom" secondItem="ioK-2h-a8C" secondAttribute="bottom" constant="10" id="Aj0-Vj-FTt"/>
                                 <constraint firstAttribute="trailing" secondItem="Cnz-mP-gE5" secondAttribute="trailing" id="BJe-4u-jQP"/>
                                 <constraint firstItem="peT-9h-pw6" firstAttribute="top" secondItem="QeN-lu-6hK" secondAttribute="top" constant="15" id="BWQ-EY-Oun"/>
                                 <constraint firstItem="Cnz-mP-gE5" firstAttribute="bottom" secondItem="peT-9h-pw6" secondAttribute="bottom" constant="140" id="RBw-gb-qhI"/>
-                                <constraint firstAttribute="height" constant="225" id="aRE-Ox-5IJ"/>
+                                <constraint firstItem="Iem-Jz-DfR" firstAttribute="centerX" secondItem="QeN-lu-6hK" secondAttribute="centerX" multiplier="0.5" id="Wrc-mh-qE1"/>
+                                <constraint firstAttribute="height" constant="228" id="aRE-Ox-5IJ"/>
                                 <constraint firstItem="peT-9h-pw6" firstAttribute="leading" secondItem="QeN-lu-6hK" secondAttribute="leading" constant="8" id="gjX-QW-MTM"/>
                                 <constraint firstAttribute="bottom" secondItem="Iem-Jz-DfR" secondAttribute="bottom" constant="10" id="nWl-5v-GE4"/>
                                 <constraint firstAttribute="trailing" secondItem="peT-9h-pw6" secondAttribute="trailing" constant="8" id="neB-S2-nGo"/>
@@ -226,15 +226,15 @@
                         </view>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="Iem-Jz-DfR" firstAttribute="centerX" secondItem="uSU-qr-XnK" secondAttribute="centerX" constant="-1" id="0bt-RV-j9W"/>
                         <constraint firstItem="cE0-0g-Su5" firstAttribute="top" secondItem="ZfS-wG-RjJ" secondAttribute="top" id="1Kz-qe-p3Y"/>
                         <constraint firstItem="QeN-lu-6hK" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="bottom" id="DVo-pQ-Dg5"/>
                         <constraint firstItem="cE0-0g-Su5" firstAttribute="centerX" secondItem="ZfS-wG-RjJ" secondAttribute="centerX" id="Fqd-7G-H68"/>
                         <constraint firstItem="cE0-0g-Su5" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="IZE-p0-8AN"/>
+                        <constraint firstItem="Iem-Jz-DfR" firstAttribute="centerX" secondItem="uSU-qr-XnK" secondAttribute="centerX" id="Q6r-Zi-WDK"/>
                         <constraint firstAttribute="bottom" secondItem="QeN-lu-6hK" secondAttribute="bottom" id="XIT-bd-OlA"/>
+                        <constraint firstItem="PkX-yh-JhO" firstAttribute="centerX" secondItem="ioK-2h-a8C" secondAttribute="centerX" id="bWf-Uj-Hfh"/>
                         <constraint firstAttribute="trailing" secondItem="cE0-0g-Su5" secondAttribute="trailing" id="c8a-IH-WgO"/>
                         <constraint firstItem="QeN-lu-6hK" firstAttribute="leading" secondItem="ZfS-wG-RjJ" secondAttribute="leading" id="e0b-PE-U5c"/>
-                        <constraint firstItem="PkX-yh-JhO" firstAttribute="centerX" secondItem="ioK-2h-a8C" secondAttribute="centerX" constant="-3.5" id="f58-YA-4qh"/>
                         <constraint firstAttribute="trailing" secondItem="QeN-lu-6hK" secondAttribute="trailing" id="kbe-Uh-tug"/>
                     </constraints>
                 </scrollView>

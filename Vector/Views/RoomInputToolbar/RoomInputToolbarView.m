@@ -24,10 +24,6 @@
 //#import <AssetsLibrary/ALAsset.h>
 //#import <AssetsLibrary/ALAssetRepresentation.h>
 
-#define MXKROOM_INPUT_TOOLBAR_VIEW_LARGE_IMAGE_SIZE    1024
-#define MXKROOM_INPUT_TOOLBAR_VIEW_MEDIUM_IMAGE_SIZE   768
-#define MXKROOM_INPUT_TOOLBAR_VIEW_SMALL_IMAGE_SIZE    512
-
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
