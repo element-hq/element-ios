@@ -77,8 +77,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                                           bundle:[NSBundle bundleForClass:[MediaPickerViewController class]]];
 }
 
-
-
 #pragma mark -
 
 - (void)viewDidLoad
@@ -116,12 +114,17 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     self.libraryChooseButton.enabled = NO;
     
     // Set camera preview background
-    self.cameraCaptureContainerView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+    self.cameraPreviewContainerView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
-    // TODO Localized string
-    
+    // Set label and button text
+    self.libraryLabel.text = NSLocalizedStringFromTable(@"media_picker_choose_from_library", @"Vector", nil);
+    [self.cameraRetakeButton setTitle:NSLocalizedStringFromTable(@"media_picker_retake", @"Vector", nil) forState:UIControlStateNormal];
+    [self.cameraRetakeButton setTitle:NSLocalizedStringFromTable(@"media_picker_retake", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.libraryOpenButton setTitle:NSLocalizedStringFromTable(@"media_picker_library", @"Vector", nil) forState:UIControlStateNormal];
+    [self.libraryOpenButton setTitle:NSLocalizedStringFromTable(@"media_picker_library", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.selectionButtonCustomLabel = _selectionButtonCustomLabel ? _selectionButtonCustomLabel : NSLocalizedStringFromTable(@"media_picker_choose", @"Vector", nil);
 }
 
 - (void)dealloc
@@ -231,12 +234,16 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
             options.predicate = [NSPredicate predicateWithFormat:@"(mediaType = %d) || (mediaType = %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
             self.cameraModeButton.hidden = NO;
             isVideoCaptureMode = NO;
+            
+            self.captureLabel.text = NSLocalizedStringFromTable(@"media_picker_both_capture_title", @"Vector", nil);
         }
         else
         {
             options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
             self.cameraModeButton.hidden = YES;
             isVideoCaptureMode = NO;
+            
+            self.captureLabel.text = NSLocalizedStringFromTable(@"media_picker_picture_capture_title", @"Vector", nil);
         }
     }
     else if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
@@ -244,6 +251,8 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeVideo];
         self.cameraModeButton.hidden = YES;
         isVideoCaptureMode = YES;
+        
+        self.captureLabel.text = NSLocalizedStringFromTable(@"media_picker_video_capture_title", @"Vector", nil);
     }
     
     // Only one album is expected
@@ -276,6 +285,16 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         self.libraryChooseButton.hidden = YES;
         selectedAssets = nil;
     }
+}
+
+- (void)setSelectionButtonCustomLabel:(NSString *)selectionButtonCustomLabel
+{
+    _selectionButtonCustomLabel = selectionButtonCustomLabel;
+    
+    [self.cameraChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateNormal];
+    [self.cameraChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateHighlighted];
+    [self.libraryChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateNormal];
+    [self.libraryChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateHighlighted];
 }
 
 - (void)reset
@@ -381,7 +400,10 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 [self.cameraActivityIndicator stopAnimating];
                 outputVideoFileURL = nil;
                 
-                [self reset];
+                // Dismiss the picker
+                [self onButtonPressed:self.navigationItem.leftBarButtonItem];
+                // Else reset
+//                [self reset];
                 
             } failure:^(NSError *error) {
                 
@@ -409,7 +431,10 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 
                 [self.cameraActivityIndicator stopAnimating];
                                 
-                [self reset];
+                // Dismiss the picker
+                [self onButtonPressed:self.navigationItem.leftBarButtonItem];
+                // Else reset
+//                [self reset];
                 
             } failure:^(NSError *error) {
                 
@@ -436,7 +461,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     else if (sender == self.libraryChooseButton && selectedAssets && self.delegate)
     {
         self.libraryChooseButton.enabled = NO;
-        [self.activityIndicator startAnimating];
         
         PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
         for (NSUInteger index = 0; index < selectedAssets.count; index++)
@@ -472,8 +496,11 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
             }
         }
         
-        [self.activityIndicator stopAnimating];
-        [self.recentPicturesCollectionView reloadData];
+
+        // Dismiss the picker
+        [self onButtonPressed:self.navigationItem.leftBarButtonItem];
+        // Else reload recents collection
+//        [self.recentPicturesCollectionView reloadData];
     }
 }
 
@@ -1107,6 +1134,8 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         }];
         
         cell.selectionImageView.hidden = ![selectedAssets[indexPath.row] boolValue];
+        
+        cell.videoIconImageView.hidden = (asset.mediaType == PHAssetMediaTypeImage);
     }
     
     return cell;

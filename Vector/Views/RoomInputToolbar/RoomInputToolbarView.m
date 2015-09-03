@@ -148,6 +148,7 @@
         {
             mediaPicker = [MediaPickerViewController mediaPickerViewController];
             mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+            mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
             mediaPicker.delegate = self;
             UINavigationController *navigationController = [UINavigationController new];
             [navigationController pushViewController:mediaPicker animated:NO];

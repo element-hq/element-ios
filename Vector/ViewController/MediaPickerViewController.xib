@@ -112,7 +112,8 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uSU-qr-XnK" userLabel="Retake Button">
-                                    <rect key="frame" x="126" y="365" width="48" height="30"/>
+                                    <rect key="frame" x="125" y="364" width="51" height="32"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Retake">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -122,7 +123,8 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PkX-yh-JhO" userLabel="Choose Button">
-                                    <rect key="frame" x="424" y="365" width="53" height="30"/>
+                                    <rect key="frame" x="422" y="364" width="57" height="32"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Choose">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -159,7 +161,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QeN-lu-6hK" userLabel="Library View">
-                            <rect key="frame" x="0.0" y="401" width="600" height="220"/>
+                            <rect key="frame" x="0.0" y="401" width="600" height="225"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="peT-9h-pw6" userLabel="Select Picture Label">
                                     <rect key="frame" x="8" y="15" width="584" height="21"/>
@@ -171,7 +173,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Cnz-mP-gE5">
-                                    <rect key="frame" x="0.0" y="40" width="600" height="130"/>
+                                    <rect key="frame" x="0.0" y="46" width="600" height="130"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="130" id="Hdu-9B-aYr"/>
@@ -188,7 +190,8 @@
                                     </connections>
                                 </collectionView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iem-Jz-DfR" userLabel="Library Button">
-                                    <rect key="frame" x="125" y="180" width="48" height="30"/>
+                                    <rect key="frame" x="124" y="183" width="50" height="32"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Library">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -197,8 +200,9 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="h5r-0H-Rhm"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioK-2h-a8C" userLabel="Choose Button">
-                                    <rect key="frame" x="432" y="180" width="45" height="30"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ioK-2h-a8C" userLabel="Choose Button">
+                                    <rect key="frame" x="426" y="183" width="57" height="32"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <state key="normal" title="Choose">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -212,8 +216,8 @@
                                 <constraint firstAttribute="bottom" secondItem="ioK-2h-a8C" secondAttribute="bottom" constant="10" id="Aj0-Vj-FTt"/>
                                 <constraint firstAttribute="trailing" secondItem="Cnz-mP-gE5" secondAttribute="trailing" id="BJe-4u-jQP"/>
                                 <constraint firstItem="peT-9h-pw6" firstAttribute="top" secondItem="QeN-lu-6hK" secondAttribute="top" constant="15" id="BWQ-EY-Oun"/>
-                                <constraint firstItem="Cnz-mP-gE5" firstAttribute="bottom" secondItem="peT-9h-pw6" secondAttribute="bottom" constant="134" id="RBw-gb-qhI"/>
-                                <constraint firstAttribute="height" constant="220" id="aRE-Ox-5IJ"/>
+                                <constraint firstItem="Cnz-mP-gE5" firstAttribute="bottom" secondItem="peT-9h-pw6" secondAttribute="bottom" constant="140" id="RBw-gb-qhI"/>
+                                <constraint firstAttribute="height" constant="225" id="aRE-Ox-5IJ"/>
                                 <constraint firstItem="peT-9h-pw6" firstAttribute="leading" secondItem="QeN-lu-6hK" secondAttribute="leading" constant="8" id="gjX-QW-MTM"/>
                                 <constraint firstAttribute="bottom" secondItem="Iem-Jz-DfR" secondAttribute="bottom" constant="10" id="nWl-5v-GE4"/>
                                 <constraint firstAttribute="trailing" secondItem="peT-9h-pw6" secondAttribute="trailing" constant="8" id="neB-S2-nGo"/>

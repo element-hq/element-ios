@@ -36,5 +36,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIImageView *selectionImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *videoIconImageView;
 
 @end

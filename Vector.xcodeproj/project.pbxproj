@@ -37,6 +37,7 @@
 		F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E451B7E4C9A00F03620 /* placeholder.png */; };
 		F0316E481B7E4C9A00F03620 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0316E461B7E4C9A00F03620 /* placeholder@2x.png */; };
 		F040A9ED1B9836B8004C07C8 /* camera_play.png in Resources */ = {isa = PBXBuildFile; fileRef = F040A9EC1B9836B8004C07C8 /* camera_play.png */; };
+		F040A9EF1B987684004C07C8 /* icon_video.png in Resources */ = {isa = PBXBuildFile; fileRef = F040A9EE1B987684004C07C8 /* icon_video.png */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
@@ -134,6 +135,7 @@
 		F0316E451B7E4C9A00F03620 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		F0316E461B7E4C9A00F03620 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
 		F040A9EC1B9836B8004C07C8 /* camera_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_play.png; sourceTree = "<group>"; };
+		F040A9EE1B987684004C07C8 /* icon_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_video.png; sourceTree = "<group>"; };
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
@@ -440,6 +442,7 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F040A9EE1B987684004C07C8 /* icon_video.png */,
 				F040A9EC1B9836B8004C07C8 /* camera_play.png */,
 				F00B1BDB1B96EF09001806E3 /* selection_tick.png */,
 				F00B1BD11B95D478001806E3 /* camera_picture.png */,
@@ -611,6 +614,7 @@
 				F00B1BCC1B95CC68001806E3 /* camera_stop.png in Resources */,
 				F0DD7D661B7AA8C900C4BE02 /* members.png in Resources */,
 				F094AA061B78E3D400B1FBBF /* Vector-Defaults.plist in Resources */,
+				F040A9EF1B987684004C07C8 /* icon_video.png in Resources */,
 				F0DD7D4D1B7AA8C900C4BE02 /* attach@2x.png in Resources */,
 				F00E08411B8380CF0057012C /* settings@2x.png in Resources */,
 				F00E08401B8380CF0057012C /* settings.png in Resources */,

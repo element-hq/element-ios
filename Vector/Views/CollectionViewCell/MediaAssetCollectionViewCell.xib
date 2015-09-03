@@ -24,6 +24,9 @@
                             <constraint firstAttribute="height" constant="25" id="yQL-WA-w9j"/>
                         </constraints>
                     </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_video.png" translatesAutoresizingMaskIntoConstraints="NO" id="S1K-Sj-lhV" userLabel="video icon">
+                        <rect key="frame" x="29" y="0.0" width="31" height="31"/>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -31,6 +34,8 @@
                 <constraint firstItem="YB6-Jv-WMr" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" id="43S-Eh-tnF"/>
                 <constraint firstItem="N3d-C1-PMc" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" id="9AB-A9-pwf"/>
                 <constraint firstAttribute="bottom" secondItem="YB6-Jv-WMr" secondAttribute="bottom" id="RTC-59-huH"/>
+                <constraint firstAttribute="trailing" secondItem="S1K-Sj-lhV" secondAttribute="trailing" id="XfO-xa-DlO"/>
+                <constraint firstItem="S1K-Sj-lhV" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" id="neN-7y-A6j"/>
                 <constraint firstItem="N3d-C1-PMc" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" id="rVE-KB-Bz9"/>
                 <constraint firstAttribute="bottom" secondItem="N3d-C1-PMc" secondAttribute="bottom" id="sGG-Tg-p9M"/>
                 <constraint firstAttribute="trailing" secondItem="N3d-C1-PMc" secondAttribute="trailing" id="u8Y-ib-8Ih"/>
@@ -38,10 +43,12 @@
             <connections>
                 <outlet property="imageView" destination="N3d-C1-PMc" id="QEf-jc-amr"/>
                 <outlet property="selectionImageView" destination="YB6-Jv-WMr" id="4lH-AL-CLq"/>
+                <outlet property="videoIconImageView" destination="S1K-Sj-lhV" id="eIT-IA-DmE"/>
             </connections>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="icon_video.png" width="31" height="31"/>
         <image name="selection_tick.png" width="31" height="31"/>
     </resources>
 </document>
