@@ -576,4 +576,13 @@
     }
 }
 
+#pragma mark - Clipboard - Handle image/data paste from general pasteboard
+
+- (void)paste:(id)sender
+{
+    // TODO Custom here the validation screen for each available item
+    
+    [super paste:sender];
+}
+
 @end
