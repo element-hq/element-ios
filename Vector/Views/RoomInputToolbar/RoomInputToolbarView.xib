@@ -10,7 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RoomInputToolbarView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSL-yA-AVi" userLabel="Option Menu View">
@@ -185,17 +185,17 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a84-Vc-6ud" userLabel="MainToolBar View">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ln-yI-ef9" userLabel="Separator View">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="2"/>
+                            <rect key="frame" x="0.0" y="1" width="600" height="2"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="2" id="WBM-ts-zPX"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                            <rect key="frame" x="8" y="8" width="501" height="33"/>
+                            <rect key="frame" x="8" y="9" width="501" height="33"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
                                     <rect key="frame" x="0.0" y="0.0" width="501" height="33"/>
@@ -211,7 +211,7 @@
                             </constraints>
                         </view>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
-                            <rect key="frame" x="552" y="2" width="44" height="47"/>
+                            <rect key="frame" x="552" y="3" width="44" height="47"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="KnT-92-5v2"/>
                                 <constraint firstAttribute="width" constant="44" id="Moy-iD-5A4"/>
@@ -222,7 +222,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
-                            <rect key="frame" x="513" y="4" width="41" height="41"/>
+                            <rect key="frame" x="513" y="5" width="41" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="height" multiplier="1:1" id="f0T-3f-BJu"/>
                             </constraints>
@@ -233,7 +233,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Owf-M8-qJi" userLabel="menu Button">
-                            <rect key="frame" x="555" y="4" width="41" height="41"/>
+                            <rect key="frame" x="555" y="5" width="41" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="height" multiplier="1:1" id="1Ni-y7-Nsa"/>
                                 <constraint firstAttribute="width" constant="41" id="9FZ-CI-diT"/>
@@ -249,7 +249,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="49" id="1FO-iu-urG"/>
+                        <constraint firstAttribute="height" constant="50" id="1FO-iu-urG"/>
                         <constraint firstItem="3ln-yI-ef9" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" id="BwP-sF-qE1"/>
                         <constraint firstItem="Hga-l8-Wua" firstAttribute="top" secondItem="3ln-yI-ef9" secondAttribute="bottom" constant="2" id="EMx-zO-eVP"/>
                         <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="8" id="ErD-eB-stF"/>
@@ -257,7 +257,7 @@
                         <constraint firstAttribute="trailing" secondItem="3ln-yI-ef9" secondAttribute="trailing" id="RXB-PN-3n8"/>
                         <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="4" id="Sua-LC-3yW"/>
                         <constraint firstAttribute="bottom" secondItem="Owf-M8-qJi" secondAttribute="bottom" constant="4" id="Wo7-Qc-PSL"/>
-                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="8" id="WyZ-3i-OHi"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="9" id="WyZ-3i-OHi"/>
                         <constraint firstItem="Owf-M8-qJi" firstAttribute="top" secondItem="3ln-yI-ef9" secondAttribute="bottom" constant="2" id="ahC-Kt-Zt9"/>
                         <constraint firstItem="Hga-l8-Wua" firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="width" id="bJo-Xm-0Zt"/>
                         <constraint firstItem="QWp-NV-uh5" firstAttribute="centerY" secondItem="Owf-M8-qJi" secondAttribute="centerY" id="blc-I1-rSF"/>
@@ -269,7 +269,7 @@
                         <constraint firstItem="G8Z-CM-tGs" firstAttribute="top" secondItem="3ln-yI-ef9" secondAttribute="bottom" id="pbt-cq-38N"/>
                         <constraint firstAttribute="trailing" secondItem="Owf-M8-qJi" secondAttribute="trailing" constant="4" id="vCd-Md-dvr"/>
                         <constraint firstAttribute="bottom" secondItem="G8Z-CM-tGs" secondAttribute="bottom" id="vpk-lw-TnO"/>
-                        <constraint firstItem="3ln-yI-ef9" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="yUF-5t-x03"/>
+                        <constraint firstItem="3ln-yI-ef9" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="1" id="yUF-5t-x03"/>
                     </constraints>
                 </view>
             </subviews>
