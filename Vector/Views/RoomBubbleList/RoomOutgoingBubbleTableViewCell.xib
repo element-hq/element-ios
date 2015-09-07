@@ -54,7 +54,14 @@
                             <constraint firstAttribute="width" constant="192" id="iGr-e7-bde"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZC1-hT-7fs">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VUV-LR-uNv" userLabel="fileType Image View">
+                        <rect key="frame" x="357" y="18" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="Ej1-1Y-ao1"/>
+                            <constraint firstAttribute="width" constant="32" id="x6r-8d-opD"/>
+                        </constraints>
+                    </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZC1-hT-7fs" userLabel="playIcon Image View">
                         <rect key="frame" x="437" y="18" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="MOQ-Xi-18w"/>
@@ -105,8 +112,10 @@
                     <constraint firstItem="5qO-6t-JGu" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leading" id="Bjw-VQ-gHR"/>
                     <constraint firstItem="apW-hM-veR" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="18" id="LFn-vp-m0v"/>
                     <constraint firstItem="tgO-Rv-C7R" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="10" id="Lge-A2-1YG"/>
+                    <constraint firstItem="SIW-l4-PfI" firstAttribute="top" secondItem="VUV-LR-uNv" secondAttribute="top" id="a60-e8-DnU"/>
                     <constraint firstItem="ezT-Dl-ESR" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="5" id="aQe-yA-zJm"/>
                     <constraint firstAttribute="bottom" secondItem="SIW-l4-PfI" secondAttribute="bottom" id="fMN-Th-SOT"/>
+                    <constraint firstItem="SIW-l4-PfI" firstAttribute="leading" secondItem="VUV-LR-uNv" secondAttribute="leading" id="fev-Nr-WHC"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerY" secondItem="ZC1-hT-7fs" secondAttribute="centerY" id="ffI-vh-SW3"/>
                     <constraint firstItem="tgO-Rv-C7R" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="8" id="hwr-aa-TB4"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerX" secondItem="ZC1-hT-7fs" secondAttribute="centerX" id="jah-TA-P0P"/>
@@ -122,6 +131,7 @@
                 <outlet property="attachViewTopConstraint" destination="54V-TK-4fN" id="oYR-7i-5xN"/>
                 <outlet property="attachViewWidthConstraint" destination="iGr-e7-bde" id="uD4-aU-1Ru"/>
                 <outlet property="attachmentView" destination="SIW-l4-PfI" id="L4H-ub-pPI"/>
+                <outlet property="fileTypeIconView" destination="VUV-LR-uNv" id="3CV-J4-TiO"/>
                 <outlet property="messageTextView" destination="tgO-Rv-C7R" id="LZ5-hQ-AbQ"/>
                 <outlet property="msgTextViewLeadingConstraint" destination="hwr-aa-TB4" id="c9j-8p-cpx"/>
                 <outlet property="msgTextViewTopConstraint" destination="Lge-A2-1YG" id="6hV-2G-05H"/>

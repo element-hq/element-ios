@@ -71,7 +71,14 @@
                             <constraint firstAttribute="width" constant="192" id="9zO-jU-qTb"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cot-3X-2cU">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2t8-fN-5d3" userLabel="fileType Image View">
+                        <rect key="frame" x="51" y="18" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="54y-E7-1aB"/>
+                            <constraint firstAttribute="width" constant="32" id="hOx-2O-AeW"/>
+                        </constraints>
+                    </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cot-3X-2cU" userLabel="playIcon Image View">
                         <rect key="frame" x="131" y="18" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="8io-Wk-GzF"/>
@@ -117,8 +124,10 @@
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
                     <constraint firstItem="zwq-eh-8Fb" firstAttribute="centerX" secondItem="hgp-Z5-rAj" secondAttribute="centerX" id="Jse-fI-be0"/>
                     <constraint firstItem="zwq-eh-8Fb" firstAttribute="top" secondItem="hgp-Z5-rAj" secondAttribute="bottom" id="L78-IF-L1h"/>
+                    <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="2t8-fN-5d3" secondAttribute="top" id="S3e-ln-NMw"/>
                     <constraint firstAttribute="bottom" secondItem="5IE-JS-uf3" secondAttribute="bottom" id="SHN-tC-zsJ"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="8" id="Shz-6S-kGd"/>
+                    <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="2t8-fN-5d3" secondAttribute="leading" id="Ss5-zR-ztH"/>
                     <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="3" id="YWK-C2-15w"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="mHb-iw-6Ls" secondAttribute="bottom" constant="10" id="ghz-PN-FzI"/>
                     <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
@@ -138,6 +147,7 @@
                 <outlet property="attachViewTopConstraint" destination="wtf-lP-Lxu" id="sVw-mt-4qK"/>
                 <outlet property="attachViewWidthConstraint" destination="9zO-jU-qTb" id="fOO-VW-fe1"/>
                 <outlet property="attachmentView" destination="5IE-JS-uf3" id="imT-1z-hR1"/>
+                <outlet property="fileTypeIconView" destination="2t8-fN-5d3" id="kKg-g0-4LQ"/>
                 <outlet property="messageTextView" destination="HTH-5n-MSU" id="YN4-iK-gNc"/>
                 <outlet property="msgTextViewLeadingConstraint" destination="uig-Xh-7m6" id="kgj-3v-ECW"/>
                 <outlet property="msgTextViewTopConstraint" destination="ghz-PN-FzI" id="1hn-Bo-e5J"/>
