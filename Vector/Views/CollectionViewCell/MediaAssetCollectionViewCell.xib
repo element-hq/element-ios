@@ -25,7 +25,7 @@
                         </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_video.png" translatesAutoresizingMaskIntoConstraints="NO" id="S1K-Sj-lhV" userLabel="video icon">
-                        <rect key="frame" x="29" y="0.0" width="31" height="31"/>
+                        <rect key="frame" x="23" y="0.0" width="37" height="25"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -48,7 +48,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="icon_video.png" width="31" height="31"/>
+        <image name="icon_video.png" width="37" height="25"/>
         <image name="selection_tick.png" width="31" height="31"/>
     </resources>
 </document>
