@@ -144,6 +144,7 @@
         {
             mediaPicker = [MediaPickerViewController mediaPickerViewController];
             mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+            mediaPicker.multipleSelections = YES;
             mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
             mediaPicker.delegate = self;
             UINavigationController *navigationController = [UINavigationController new];
@@ -542,16 +543,9 @@
 
 #pragma mark - MediaPickerViewController Delegate
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL 
 {
-    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:sendImage:)])
-    {
-        [self.delegate roomInputToolbarView:self sendImage:image];
-    }
-    else
-    {
-        NSLog(@"[RoomInputToolbarView] Attach image is not supported");
-    }
+    [self sendSelectedImage:image withCompressionMode:MXKRoomInputToolbarCompressionModePrompt andLocalURL:imageURL];
 }
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoLocalURL

@@ -22,10 +22,6 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
-#define MEDIA_PICKER_VC_LARGE_IMAGE_SIZE    1024
-#define MEDIA_PICKER_VC_MEDIUM_IMAGE_SIZE   768
-#define MEDIA_PICKER_VC_SMALL_IMAGE_SIZE    512
-
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
 
@@ -46,7 +42,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     AVCaptureVideoPreviewLayer *cameraPreviewLayer;
     Boolean canToggleCamera;
     
-    NSUInteger outputPictureDataSize;
     NSURL *outputVideoFileURL;
     MPMoviePlayerController *videoPlayer;
     
@@ -58,6 +53,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     
     PHFetchResult *assetsFetchResult;
     
+    NSInteger currentSelectedAsset;
     NSMutableArray *selectedAssets;
     
     UIImagePickerController *fullLibraryPicker;
@@ -96,6 +92,8 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
+    
+    currentSelectedAsset = -1;
     
     // Register collection view cell class
     [self.recentPicturesCollectionView registerClass:MediaAssetCollectionViewCell.class forCellWithReuseIdentifier:recentItemCollectionViewCellId];
@@ -293,6 +291,23 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         self.libraryChooseButton.hidden = YES;
         selectedAssets = nil;
     }
+    currentSelectedAsset = -1;
+}
+
+- (void)setMultipleSelections:(BOOL)multipleSelections
+{
+    _multipleSelections = multipleSelections;
+    
+    if (multipleSelections == NO)
+    {
+        // Flush current selection if any
+        currentSelectedAsset = -1;
+        
+        for (NSUInteger index = 0; index < selectedAssets.count; index++)
+        {
+            selectedAssets[index] = @NO;
+        }
+    }
 }
 
 - (void)setSelectionButtonCustomLabel:(NSString *)selectionButtonCustomLabel
@@ -338,139 +353,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
     }
     self.cameraCaptureButton.enabled = YES;
-}
-
-- (void)promptCompressionForSelectedImage:(UIImage*)selectedImage withFileSize:(NSUInteger)selectedImageFileSize
-{
-    if (alert)
-    {
-        [alert dismiss:NO];
-        alert = nil;
-    }
-    
-    CGSize originalSize = selectedImage.size;
-    NSLog(@"Selected image size : %f %f", originalSize.width, originalSize.height);
-    
-    long long smallFilesize  = 0;
-    long long mediumFilesize = 0;
-    long long largeFilesize  = 0;
-    
-    long long originalFileSize = selectedImageFileSize;
-    NSLog(@"- use the photo library file size: %tu", originalFileSize);
-    
-    CGFloat maxSize = MAX(originalSize.width, originalSize.height);
-    if (maxSize >= MEDIA_PICKER_VC_SMALL_IMAGE_SIZE)
-    {
-        CGFloat factor = MEDIA_PICKER_VC_SMALL_IMAGE_SIZE / maxSize;
-        smallFilesize = factor * factor * originalFileSize;
-    }
-    else
-    {
-        NSLog(@"- too small to fit in %d", MEDIA_PICKER_VC_SMALL_IMAGE_SIZE);
-    }
-    
-    if (maxSize >= MEDIA_PICKER_VC_MEDIUM_IMAGE_SIZE)
-    {
-        CGFloat factor = MEDIA_PICKER_VC_MEDIUM_IMAGE_SIZE / maxSize;
-        mediumFilesize = factor * factor * originalFileSize;
-    }
-    else
-    {
-        NSLog(@"- too small to fit in %d", MEDIA_PICKER_VC_MEDIUM_IMAGE_SIZE);
-    }
-    
-    if (maxSize >= MEDIA_PICKER_VC_LARGE_IMAGE_SIZE)
-    {
-        CGFloat factor = MEDIA_PICKER_VC_LARGE_IMAGE_SIZE / maxSize;
-        largeFilesize = factor * factor * originalFileSize;
-    }
-    else
-    {
-        NSLog(@"- too small to fit in %d", MEDIA_PICKER_VC_LARGE_IMAGE_SIZE);
-    }
-    
-    if (smallFilesize || mediumFilesize || largeFilesize)
-    {
-        alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt"] message:nil style:MXKAlertStyleActionSheet];
-        __weak typeof(self) weakSelf = self;
-        
-        if (smallFilesize)
-        {
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], [MXKTools fileSizeToString: (int)smallFilesize]];
-            [alert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->alert = nil;
-                
-                // Send the small image
-                UIImage *smallImage = [MXKTools resize:selectedImage toFitInSize:CGSizeMake(MEDIA_PICKER_VC_SMALL_IMAGE_SIZE, MEDIA_PICKER_VC_SMALL_IMAGE_SIZE)];
-                [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:smallImage];
-                
-                // Dismiss the picker
-                [strongSelf onButtonPressed:strongSelf.navigationItem.leftBarButtonItem];
-            }];
-        }
-        
-        if (mediumFilesize)
-        {
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], [MXKTools fileSizeToString: (int)mediumFilesize]];
-            [alert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->alert = nil;
-                
-                // Send the medium image
-                UIImage *mediumImage = [MXKTools resize:selectedImage toFitInSize:CGSizeMake(MEDIA_PICKER_VC_MEDIUM_IMAGE_SIZE, MEDIA_PICKER_VC_MEDIUM_IMAGE_SIZE)];
-                [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:mediumImage];
-                
-                // Dismiss the picker
-                [strongSelf onButtonPressed:strongSelf.navigationItem.leftBarButtonItem];
-            }];
-        }
-        
-        if (largeFilesize)
-        {
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], [MXKTools fileSizeToString: (int)largeFilesize]];
-            [alert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->alert = nil;
-                
-                // Send the large image
-                UIImage *largeImage = [MXKTools resize:selectedImage toFitInSize:CGSizeMake(MEDIA_PICKER_VC_LARGE_IMAGE_SIZE, MEDIA_PICKER_VC_LARGE_IMAGE_SIZE)];
-                [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:largeImage];
-                
-                // Dismiss the picker
-                [strongSelf onButtonPressed:strongSelf.navigationItem.leftBarButtonItem];
-            }];
-        }
-        
-        NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], [MXKTools fileSizeToString: (int)originalFileSize]];
-        [alert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->alert = nil;
-            
-            // Send the original image
-            [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:selectedImage];
-            
-            // Dismiss the picker
-            [strongSelf onButtonPressed:strongSelf.navigationItem.leftBarButtonItem];
-        }];
-        
-        alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->alert = nil;
-        }];
-        
-        alert.sourceView = self.view;
-        
-        [alert showInViewController:self];
-    }
-    else
-    {
-        // Send the original image
-        [self.delegate mediaPickerController:self didSelectImage:selectedImage];
-        
-        // Dismiss the picker
-        [self onButtonPressed:self.navigationItem.leftBarButtonItem];
-    }
 }
 
 #pragma mark - Override MXKViewController
@@ -564,25 +446,11 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         }
         else if (self.cameraCaptureImageView.image)
         {
-            [MXKMediaManager saveImageToPhotosLibrary:self.cameraCaptureImageView.image success:^{
-                
-                // Prompt user about image compression
-                [self promptCompressionForSelectedImage:self.cameraCaptureImageView.image withFileSize:outputPictureDataSize];
-                
-            } failure:^(NSError *error) {
-                
-                self.cameraChooseButton.enabled = YES;
-                [self.cameraActivityIndicator stopAnimating];
-                
-                __weak typeof(self) weakSelf = self;
-                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"save_media_failed", @"Vector", nil) style:MXKAlertStyleAlert];
-                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->alert = nil;
-                }];
-                [alert showInViewController:self];
-                
-            }];
+            // Send the original image
+            [self.delegate mediaPickerController:self didSelectImage:self.cameraCaptureImageView.image withURL:nil];
+            
+            // Dismiss the picker
+            [self onButtonPressed:self.navigationItem.leftBarButtonItem];
         }
         else
         {
@@ -617,8 +485,10 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                                                if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
                                                {
                                                    // Here the fullSizeImageURL is related to a local file path
-                                                   UIImage *image = [UIImage imageWithContentsOfFile:contentEditingInput.fullSizeImageURL.path];
-                                                   [self.delegate mediaPickerController:self didSelectImage:image];
+                                                   NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                                   UIImage *image = [UIImage imageWithData:data];
+                                                   
+                                                   [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
                                                }
                                                else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
                                                {
@@ -638,6 +508,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 selectedAssets[index] = @NO;
             }
         }
+        currentSelectedAsset = -1;
 
         // Dismiss the picker
         [self onButtonPressed:self.navigationItem.leftBarButtonItem];
@@ -1112,7 +983,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 
                 self.cameraCaptureImageView.image = [[UIImage alloc] initWithData:imageData];
-                outputPictureDataSize = imageData.length;
                 
                 self.cameraCaptureContainerView.hidden = NO;
                 
@@ -1293,6 +1163,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         if ([selectedAssets[indexPath.row] boolValue])
         {
             selectedAssets[indexPath.row] = @NO;
+            currentSelectedAsset = -1;
             
             // Update attach button status by checking selected assets array
             self.libraryChooseButton.enabled = NO;
@@ -1308,6 +1179,18 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         else
         {
             selectedAssets[indexPath.row] = @YES;
+            if (!self.isMultipleSelections)
+            {
+                // Only one item can be selected at once
+                if (currentSelectedAsset != -1 && currentSelectedAsset < selectedAssets.count)
+                {
+                    selectedAssets[currentSelectedAsset] = @NO;
+                    // Refresh locally the table
+                    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:currentSelectedAsset inSection:0]]];
+                }
+                currentSelectedAsset = indexPath.row;
+            }
+            
             self.libraryChooseButton.enabled = YES;
         }
         
@@ -1361,20 +1244,12 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 // Dismiss the image view
                 [strongSelf dismissImageValidationView];
                 
-                NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+                // Send the original image by considering its asset url
+                NSURL *assetURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+                [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:selectedImage withURL:assetURL];
                 
-                PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[imageURL] options:nil];
-                if (result.count)
-                {
-                    PHAsset *asset = result[0];
-                    PHContentEditingInputRequestOptions *option = [[PHContentEditingInputRequestOptions alloc] init];
-                    [asset requestContentEditingInputWithOptions:option completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                        NSData *selectedImageFileData = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                        
-                        // Prompt user about image compression
-                        [strongSelf promptCompressionForSelectedImage:selectedImage withFileSize:selectedImageFileData.length];
-                    }];
-                }
+                // Dismiss the picker
+                [strongSelf onButtonPressed:strongSelf.navigationItem.leftBarButtonItem];
             }];
             
             // the user wants to use an other image

@@ -28,8 +28,9 @@
  
  @param mediaPickerController the `MediaPickerViewController` instance.
  @param image the UIImage hosting the image data to send.
+ @param imageURL the url that references the image in the file system or in the AssetsLibrary framework (nil if the image is not stored in Photos library).
  */
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image;
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL*)imageURL;
 
 /**
  Tells the delegate that the user select a video.
@@ -94,6 +95,11 @@
  The array of the media types supported by the picker (default value is an array containing kUTTypeImage).
  */
 @property (nonatomic) NSArray *mediaTypes;
+
+/**
+ Tell whether multiple media can be selected at once in recents collection (default is NO).
+ */
+@property (nonatomic, getter=isMultipleSelections) BOOL multipleSelections;
 
 /**
  The label of the selection button (default value is "Choose").
