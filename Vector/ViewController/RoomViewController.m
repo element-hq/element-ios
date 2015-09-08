@@ -259,6 +259,12 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
+    // Remove sub menu if user tap on table view
+    if (menuListTopConstraint.constant != 0)
+    {
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+    }
+    
     if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
     {
         self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
@@ -389,6 +395,19 @@
             // TODO
         }
     }
+}
+
+#pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Remove sub menu if user tap on table view
+    if (menuListTopConstraint.constant != 0)
+    {
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+    }
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 @end
