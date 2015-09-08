@@ -420,29 +420,12 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         
         if (outputVideoFileURL)
         {
-            [MXKMediaManager saveMediaToPhotosLibrary:outputVideoFileURL isImage:NO success:^{
-                
-                [self.delegate mediaPickerController:self didSelectVideo:outputVideoFileURL];
-                // Reset here output video url, we let the delegate remove the temporary file after use...
-                outputVideoFileURL = nil;
-                
-                // Dismiss the picker
-                [self onButtonPressed:self.navigationItem.leftBarButtonItem];
-                
-            } failure:^(NSError *error) {
-                
-                self.cameraChooseButton.enabled = YES;
-                [self.cameraActivityIndicator stopAnimating];
-                
-                __weak typeof(self) weakSelf = self;
-                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"save_media_failed", @"Vector", nil) style:MXKAlertStyleAlert];
-                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->alert = nil;
-                }];
-                [alert showInViewController:self];
-                
-            }];
+            [self.delegate mediaPickerController:self didSelectVideo:outputVideoFileURL isCameraRecording:YES];
+            // Reset here output video url, we let the delegate remove the temporary file after use...
+            outputVideoFileURL = nil;
+            
+            // Dismiss the picker
+            [self onButtonPressed:self.navigationItem.leftBarButtonItem];
         }
         else if (self.cameraCaptureImageView.image)
         {
@@ -473,41 +456,63 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     {
         self.libraryChooseButton.enabled = NO;
         
-        PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
-        for (NSUInteger index = 0; index < selectedAssets.count; index++)
+        if ([self.delegate respondsToSelector:@selector(mediaPickerController:didSelectAssets:)])
         {
-            if ([selectedAssets[index] boolValue])
+            NSMutableArray *array = [NSMutableArray array];
+            for (NSUInteger index = 0; index < selectedAssets.count; index++)
             {
-                PHAsset *asset = assetsFetchResult[index];
-                [asset requestContentEditingInputWithOptions:editOptions
-                                           completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                               
-                                               if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
-                                               {
-                                                   // Here the fullSizeImageURL is related to a local file path
-                                                   NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                                   UIImage *image = [UIImage imageWithData:data];
+                if ([selectedAssets[index] boolValue])
+                {
+                    PHAsset *asset = assetsFetchResult[index];
+                    [array addObject:asset];
+                    
+                    // Reset selection
+                    selectedAssets[index] = @NO;
+                }
+            }
+            
+            [self.delegate mediaPickerController:self didSelectAssets:array];
+        }
+        else
+        {
+            PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
+            for (NSUInteger index = 0; index < selectedAssets.count; index++)
+            {
+                if ([selectedAssets[index] boolValue])
+                {
+                    PHAsset *asset = assetsFetchResult[index];
+                    [asset requestContentEditingInputWithOptions:editOptions
+                                               completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                                    
-                                                   [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
-                                               }
-                                               else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
-                                               {
-                                                   if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
+                                                   if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
                                                    {
-                                                       AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
-                                                       [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
+                                                       // Here the fullSizeImageURL is related to a local file path
+                                                       NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                                       UIImage *image = [UIImage imageWithData:data];
+                                                       
+                                                       [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
                                                    }
-                                                   else
+                                                   else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
                                                    {
-                                                       NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                                                       if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
+                                                       {
+                                                           AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
+                                                           [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL] isCameraRecording:NO];
+                                                       }
+                                                       else
+                                                       {
+                                                           NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                                                       }
                                                    }
-                                               }
-                                           }];
-                
-                // Reset selection
-                selectedAssets[index] = @NO;
+                                               }];
+                    
+                    // Reset selection
+                    selectedAssets[index] = @NO;
+                }
             }
         }
+        
+        // reset
         currentSelectedAsset = -1;
 
         // Dismiss the picker
@@ -1276,7 +1281,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
     {
         NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
-        [self.delegate mediaPickerController:self didSelectVideo:selectedVideo];
+        [self.delegate mediaPickerController:self didSelectVideo:selectedVideo isCameraRecording:NO];
         
         // Dismiss the picker
         [self onButtonPressed:self.navigationItem.leftBarButtonItem];

@@ -36,9 +36,20 @@
  Tells the delegate that the user select a video.
  
  @param mediaPickerController the `MediaPickerViewController` instance.
- @param videoLocalURL the local filesystem path of the video to send.
+ @param videoURL the local url of the video to send.
+ @param isCameraRecording tells whether the provided video has just been recorded.
  */
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoLocalURL;
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording;
+
+@optional
+/**
+ Tells the delegate that the user select a set of assets.
+ This callback is used only when multiple selections is allowed (see 'multipleSelections' property)
+ 
+ @param mediaPickerController the `MediaPickerViewController` instance.
+ @param assets the array of selected assets (PHAsset instances).
+ */
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray*)assets;
 
 @end
 

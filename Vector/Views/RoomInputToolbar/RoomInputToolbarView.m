@@ -18,11 +18,7 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
-//#import <MediaPlayer/MediaPlayer.h>
-//#import <MobileCoreServices/MobileCoreServices.h>
-//
-//#import <AssetsLibrary/ALAsset.h>
-//#import <AssetsLibrary/ALAssetRepresentation.h>
+#import <Photos/Photos.h>
 
 @interface RoomInputToolbarView()
 {
@@ -142,15 +138,26 @@
         // Check whether media attachment is supported
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
         {
-            mediaPicker = [MediaPickerViewController mediaPickerViewController];
-            mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-            mediaPicker.multipleSelections = YES;
-            mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
-            mediaPicker.delegate = self;
-            UINavigationController *navigationController = [UINavigationController new];
-            [navigationController pushViewController:mediaPicker animated:NO];
-            
-            [self.delegate roomInputToolbarView:self presentViewController:navigationController];
+            // MediaPickerViewController is based on the Photos framework. So it is available only for iOS 8 and later.
+            Class PHAsset_class = NSClassFromString(@"PHAsset");
+            if (PHAsset_class)
+            {
+                mediaPicker = [MediaPickerViewController mediaPickerViewController];
+                mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+                mediaPicker.multipleSelections = YES;
+                mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
+                mediaPicker.delegate = self;
+                UINavigationController *navigationController = [UINavigationController new];
+                [navigationController pushViewController:mediaPicker animated:NO];
+                
+                [self.delegate roomInputToolbarView:self presentViewController:navigationController];
+            }
+            else
+            {
+                // We use UIImagePickerController by default for iOS < 8
+                self.leftInputToolbarButton = self.attachMediaButton;
+                [super onTouchUpInside:self.leftInputToolbarButton];
+            }
         }
         else
         {
@@ -228,319 +235,6 @@
     [super destroy];
 }
 
-//#pragma mark - UIImagePickerControllerDelegate
-//
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-//{
-//    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-//    if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
-//    {
-//        
-//        /*
-//         NSData *dataOfGif = [NSData dataWithContentsOfFile: [info objectForKey:UIImagePickerControllerReferenceURL]];
-//         
-//         NSLog(@"%d", dataOfGif.length);
-//         
-//         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-//         [library assetForURL:[info objectForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset)
-//         {
-//         
-//         NSLog(@"%@", asset.defaultRepresentation.metadata);
-//         
-//         
-//         NSLog(@"%@", asset.defaultRepresentation.url);
-//         
-//         NSData *dataOfGif = [NSData dataWithContentsOfURL: asset.defaultRepresentation.url];
-//         
-//         NSLog(@"%d", dataOfGif.length);
-//         ;
-//         
-//         } failureBlock:^(NSError *error)
-//         {
-//         
-//         }];
-//         
-//         */
-//        
-//        if (![self.delegate respondsToSelector:@selector(roomInputToolbarView:sendImage:)])
-//        {
-//            NSLog(@"[RoomInputToolbarView] Attach image is not supported");
-//        }
-//        else
-//        {
-//            UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-//            if (selectedImage)
-//            {
-//                // media picker does not offer a preview
-//                // so add a preview to let the user validates his selection
-//                if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
-//                {
-//                    __weak typeof(self) weakSelf = self;
-//                    
-//                    imageValidationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
-//                    imageValidationView.stretchable = YES;
-//                    
-//                    // the user validates the image
-//                    [imageValidationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle)
-//                    {
-//                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                        
-//                        // Dismiss the image view
-//                        [strongSelf dismissImageValidationView];
-//                       
-//                        // prompt user about image compression
-//                        [strongSelf promptCompressionForSelectedImage:info];
-//                    }];
-//                    
-//                    // the user wants to use an other image
-//                    [imageValidationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle)
-//                    {
-//                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                        
-//                        // dismiss the image view
-//                        [strongSelf dismissImageValidationView];
-//                        
-//                        // Open again media gallery
-//                        strongSelf->mediaPicker = [[UIImagePickerController alloc] init];
-//                        strongSelf->mediaPicker.delegate = strongSelf;
-//                        strongSelf->mediaPicker.sourceType = picker.sourceType;
-//                        strongSelf->mediaPicker.allowsEditing = NO;
-//                        strongSelf->mediaPicker.mediaTypes = picker.mediaTypes;
-//                        [strongSelf.delegate roomInputToolbarView:strongSelf presentMediaPicker:strongSelf->mediaPicker];
-//                    }];
-//                    
-//                    imageValidationView.image = selectedImage;
-//                    [imageValidationView showFullScreen];
-//                }
-//                else
-//                {
-//                    // Save the original image in user's photos library and suggest compression before sending image
-//                    [MXKMediaManager saveImageToPhotosLibrary:selectedImage success:nil failure:nil];
-//                    [self promptCompressionForSelectedImage:info];
-//                }
-//            }
-//        }
-//    }
-//    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
-//    {
-//        NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
-//        
-//        // Check the selected video, and ignore multiple calls (observed when user pressed several time Choose button)
-//        if (selectedVideo && !tmpVideoPlayer)
-//        {
-//            if (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary)
-//            {
-//                [MXKMediaManager saveMediaToPhotosLibrary:selectedVideo isImage:NO success:nil failure:nil];
-//            }
-//            
-//            // Create video thumbnail
-//            tmpVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideo];
-//            if (tmpVideoPlayer)
-//            {
-//                [tmpVideoPlayer setShouldAutoplay:NO];
-//                [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                         selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
-//                                                             name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
-//                                                           object:nil];
-//                [tmpVideoPlayer requestThumbnailImagesAtTimes:@[@1.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
-//                // We will finalize video attachment when thumbnail will be available (see movie player callback)
-//                return;
-//            }
-//        }
-//    }
-//    
-//    [self dismissMediaPicker];
-//}
-//
-//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-//{
-//    [self dismissMediaPicker];
-//}
-//
-//- (void)dismissImageValidationView
-//{
-//    if (imageValidationView)
-//    {
-//        [imageValidationView dismissSelection];
-//        [imageValidationView removeFromSuperview];
-//        imageValidationView = nil;
-//    }
-//}
-//
-//- (void)promptCompressionForSelectedImage:(NSDictionary*)selectedImageInfo
-//{
-//    if (currentAlert)
-//    {
-//        [currentAlert dismiss:NO];
-//        currentAlert = nil;
-//    }
-//    
-//    UIImage *selectedImage = [selectedImageInfo objectForKey:UIImagePickerControllerOriginalImage];
-//    CGSize originalSize = selectedImage.size;
-//    NSLog(@"Selected image size : %f %f", originalSize.width, originalSize.height);
-//    
-//    [self getSelectedImageFileData:selectedImageInfo success:^(NSData *selectedImageFileData) {
-//        
-//        long long smallFilesize  = 0;
-//        long long mediumFilesize = 0;
-//        long long largeFilesize  = 0;
-//        
-//        // succeed to get the file size (provided by the photo library)
-//        long long originalFileSize = selectedImageFileData.length;
-//        NSLog(@"- use the photo library file size: %tu", originalFileSize);
-//        
-//        CGFloat maxSize = MAX(originalSize.width, originalSize.height);
-//        if (maxSize >= MXKROOM_INPUT_TOOLBAR_VIEW_SMALL_IMAGE_SIZE)
-//        {
-//            CGFloat factor = MXKROOM_INPUT_TOOLBAR_VIEW_SMALL_IMAGE_SIZE / maxSize;
-//            smallFilesize = factor * factor * originalFileSize;
-//        }
-//        else
-//        {
-//            NSLog(@"- too small to fit in %d", MXKROOM_INPUT_TOOLBAR_VIEW_SMALL_IMAGE_SIZE);
-//        }
-//        
-//        if (maxSize >= MXKROOM_INPUT_TOOLBAR_VIEW_MEDIUM_IMAGE_SIZE)
-//        {
-//            CGFloat factor = MXKROOM_INPUT_TOOLBAR_VIEW_MEDIUM_IMAGE_SIZE / maxSize;
-//            mediumFilesize = factor * factor * originalFileSize;
-//        }
-//        else
-//        {
-//            NSLog(@"- too small to fit in %d", MXKROOM_INPUT_TOOLBAR_VIEW_MEDIUM_IMAGE_SIZE);
-//        }
-//        
-//        if (maxSize >= MXKROOM_INPUT_TOOLBAR_VIEW_LARGE_IMAGE_SIZE)
-//        {
-//            CGFloat factor = MXKROOM_INPUT_TOOLBAR_VIEW_LARGE_IMAGE_SIZE / maxSize;
-//            largeFilesize = factor * factor * originalFileSize;
-//        }
-//        else
-//        {
-//            NSLog(@"- too small to fit in %d", MXKROOM_INPUT_TOOLBAR_VIEW_LARGE_IMAGE_SIZE);
-//        }
-//        
-//        if (smallFilesize || mediumFilesize || largeFilesize)
-//        {
-//            currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt"] message:nil style:MXKAlertStyleActionSheet];
-//            __weak typeof(self) weakSelf = self;
-//            
-//            if (smallFilesize)
-//            {
-//                NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], [MXKTools fileSizeToString: (int)smallFilesize]];
-//                [currentAlert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-//                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                    strongSelf->currentAlert = nil;
-//                    
-//                    // Send the small image
-//                    UIImage *smallImage = [MXKTools resize:selectedImage toFitInSize:CGSizeMake(MXKROOM_INPUT_TOOLBAR_VIEW_SMALL_IMAGE_SIZE, MXKROOM_INPUT_TOOLBAR_VIEW_SMALL_IMAGE_SIZE)];
-//                    [strongSelf.delegate roomInputToolbarView:weakSelf sendImage:smallImage];
-//                }];
-//            }
-//            
-//            if (mediumFilesize)
-//            {
-//                NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], [MXKTools fileSizeToString: (int)mediumFilesize]];
-//                [currentAlert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-//                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                    strongSelf->currentAlert = nil;
-//                    
-//                    // Send the medium image
-//                    UIImage *mediumImage = [MXKTools resize:selectedImage toFitInSize:CGSizeMake(MXKROOM_INPUT_TOOLBAR_VIEW_MEDIUM_IMAGE_SIZE, MXKROOM_INPUT_TOOLBAR_VIEW_MEDIUM_IMAGE_SIZE)];
-//                    [strongSelf.delegate roomInputToolbarView:weakSelf sendImage:mediumImage];
-//                }];
-//            }
-//            
-//            if (largeFilesize)
-//            {
-//                NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], [MXKTools fileSizeToString: (int)largeFilesize]];
-//                [currentAlert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-//                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                    strongSelf->currentAlert = nil;
-//                    
-//                    // Send the large image
-//                    UIImage *largeImage = [MXKTools resize:selectedImage toFitInSize:CGSizeMake(MXKROOM_INPUT_TOOLBAR_VIEW_LARGE_IMAGE_SIZE, MXKROOM_INPUT_TOOLBAR_VIEW_LARGE_IMAGE_SIZE)];
-//                    [strongSelf.delegate roomInputToolbarView:weakSelf sendImage:largeImage];
-//                }];
-//            }
-//            
-//            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], [MXKTools fileSizeToString: (int)originalFileSize]];
-//            [currentAlert addActionWithTitle:title style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-//                __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                strongSelf->currentAlert = nil;
-//                
-//                // Send the original image
-//                [strongSelf.delegate roomInputToolbarView:weakSelf sendImage:selectedImage];
-//            }];
-//            
-//            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-//                __strong __typeof(weakSelf)strongSelf = weakSelf;
-//                strongSelf->currentAlert = nil;
-//            }];
-//            
-//            currentAlert.sourceView = self;
-//            
-//            [self.delegate roomInputToolbarView:self presentMXKAlert:currentAlert];
-//        }
-//        else
-//        {
-//            // Send the original image
-//            [self.delegate roomInputToolbarView:self sendImage:selectedImage];
-//        }
-//    } failure:^(NSError *error) {
-//        
-//        // Send the original image
-//        [self.delegate roomInputToolbarView:self sendImage:selectedImage];
-//    }];
-//}
-
-//- (void)getSelectedImageFileData:(NSDictionary*)selectedImageInfo success:(void (^)(NSData *selectedImageFileData))success failure:(void (^)(NSError *error))failure
-//{
-//    ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
-//    [assetLibrary assetForURL:[selectedImageInfo valueForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
-//        
-//        NSData *selectedImageFileData;
-//        
-//        // asset may be nil if the image is not saved in photos library
-//        if (asset)
-//        {
-//            ALAssetRepresentation* assetRepresentation = [asset defaultRepresentation];
-//            
-//            // Check whether the user select an image with a cropping
-//            if ([[assetRepresentation metadata] objectForKey:@"AdjustmentXMP"])
-//            {
-//                // In case of crop we have to consider the original image
-//                selectedImageFileData = UIImageJPEGRepresentation([selectedImageInfo objectForKey:UIImagePickerControllerOriginalImage], 0.9);
-//            }
-//            else
-//            {
-//                // cannot use assetRepresentation size to get the image size
-//                // it gives wrong result with panorama picture
-//                unsigned long imageDataSize = (unsigned long)[assetRepresentation size];
-//                uint8_t* imageDataBytes = malloc(imageDataSize);
-//                [assetRepresentation getBytes:imageDataBytes fromOffset:0 length:imageDataSize error:nil];
-//                
-//                selectedImageFileData = [NSData dataWithBytesNoCopy:imageDataBytes length:imageDataSize freeWhenDone:YES];
-//            }
-//        }
-//        else
-//        {
-//            selectedImageFileData = UIImageJPEGRepresentation([selectedImageInfo objectForKey:UIImagePickerControllerOriginalImage], 0.9);
-//        }
-//        
-//        if (success)
-//        {
-//            success (selectedImageFileData);
-//        }
-//    } failureBlock:^(NSError *err) {
-//        
-//        if (failure)
-//        {
-//            failure (err);
-//        }
-//    }];
-//}
-
 #pragma mark - MediaPickerViewController Delegate
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL 
@@ -548,25 +242,44 @@
     [self sendSelectedImage:image withCompressionMode:MXKRoomInputToolbarCompressionModePrompt andLocalURL:imageURL];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoLocalURL
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
 {
-    if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:sendVideo:withThumbnail:)])
+    [self sendSelectedVideo:videoURL isCameraRecording:isCameraRecording];
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
+{
+    // We don't prompt user about image compression if several items have been selected
+    MXKRoomInputToolbarCompressionMode imageCompressionMode = (assets.count > 1) ? MXKRoomInputToolbarCompressionModeMedium : MXKRoomInputToolbarCompressionModePrompt;
+    
+    PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
+    for (NSUInteger index = 0; index < assets.count; index++)
     {
-        // Retrieve the video frame at 1 sec to define the video thumbnail
-        AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalURL options:nil];
-        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
-        assetImageGenerator.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMake(1, 1);
-        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
-        
-        // Finalize video attachment
-        UIImage* videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
-        
-        [self.delegate roomInputToolbarView:self sendVideo:videoLocalURL withThumbnail:videoThumbnail];
-    }
-    else
-    {
-        NSLog(@"[RoomInputToolbarView] Attach video is not supported");
+        PHAsset *asset = assets[index];
+        [asset requestContentEditingInputWithOptions:editOptions
+                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                                       
+                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
+                                       {
+                                           // Here the fullSizeImageURL is related to a local file path
+                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                           UIImage *image = [UIImage imageWithData:data];
+                                           
+                                           [self sendSelectedImage:image withCompressionMode:imageCompressionMode andLocalURL:contentEditingInput.fullSizeImageURL];
+                                       }
+                                       else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
+                                       {
+                                           if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
+                                           {
+                                               AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
+                                               [self sendSelectedVideo:[avURLAsset URL] isCameraRecording:NO];
+                                           }
+                                           else
+                                           {
+                                               NSLog(@"[RoomInputToolbarView] Selected video asset is not initialized from an URL!");
+                                           }
+                                       }
+                                   }];
     }
 }
 
