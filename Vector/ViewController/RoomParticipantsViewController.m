@@ -402,6 +402,9 @@
             
             // Refresh display
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            
+            UITableViewHeaderFooterView *participantsSectionHeader = [self.tableView headerViewForSection:participantsSection];
+            participantsSectionHeader.textLabel.text = [self tableView:self.tableView titleForHeaderInSection:participantsSection];
         }
     }
 }
