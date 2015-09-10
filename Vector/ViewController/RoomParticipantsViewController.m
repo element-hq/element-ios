@@ -238,7 +238,7 @@
             filteredParticipantCell.contactAccessoryViewHeightConstraint.constant = 30;
             filteredParticipantCell.contactAccessoryView.image = [UIImage imageNamed:@"add"];
             filteredParticipantCell.contactAccessoryView.hidden = NO;
-            filteredParticipantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            filteredParticipantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell = filteredParticipantCell;
         }
@@ -320,7 +320,7 @@
                 participantCell.contactAccessoryViewHeightConstraint.constant = 30;
                 participantCell.contactAccessoryView.image = [UIImage imageNamed:@"remove"];
                 participantCell.contactAccessoryView.hidden = NO;
-                participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
         }
         
