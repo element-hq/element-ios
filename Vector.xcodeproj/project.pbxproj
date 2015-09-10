@@ -62,6 +62,7 @@
 		F094AA361B78E42600B1FBBF /* RoomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA251B78E42600B1FBBF /* RoomMembersViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
+		F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */; };
 		F0DD7D4C1B7AA8C900C4BE02 /* attach.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DD7D1C1B7AA8C900C4BE02 /* attach.png */; };
 		F0DD7D4D1B7AA8C900C4BE02 /* attach@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DD7D1D1B7AA8C900C4BE02 /* attach@2x.png */; };
 		F0DD7D601B7AA8C900C4BE02 /* hide.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DD7D301B7AA8C900C4BE02 /* hide.png */; };
@@ -178,6 +179,8 @@
 		F094AA271B78E42600B1FBBF /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F094AA281B78E42600B1FBBF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		F094AA291B78E42600B1FBBF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomParticipantsViewController.h; sourceTree = "<group>"; };
+		F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomParticipantsViewController.m; sourceTree = "<group>"; };
 		F0DD7D1C1B7AA8C900C4BE02 /* attach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attach.png; sourceTree = "<group>"; };
 		F0DD7D1D1B7AA8C900C4BE02 /* attach@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attach@2x.png"; sourceTree = "<group>"; };
 		F0DD7D301B7AA8C900C4BE02 /* hide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hide.png; sourceTree = "<group>"; };
@@ -420,6 +423,8 @@
 				F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */,
 				F094AA201B78E42600B1FBBF /* MasterTabBarController.h */,
 				F094AA211B78E42600B1FBBF /* MasterTabBarController.m */,
+				F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */,
+				F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */,
 				F001D76A1B821E4F00A162C3 /* MediaPickerViewController.h */,
 				F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */,
 				F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */,
@@ -676,6 +681,7 @@
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F094AA051B78E3D400B1FBBF /* empty.mm in Sources */,
+				F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */,
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
 				F00B1BD81B96E5DD001806E3 /* MediaAssetCollectionViewCell.m in Sources */,

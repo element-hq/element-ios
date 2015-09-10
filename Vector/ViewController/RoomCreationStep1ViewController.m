@@ -70,11 +70,6 @@
     {
         [self addMatrixSession:mxSession];
     }
-    
-    // Add a little white space below the navigation bar
-    UIEdgeInsets contentInset = self.tableView.contentInset;
-    contentInset.top += 15;
-    self.tableView.contentInset = contentInset;
 }
 
 - (void)didReceiveMemoryWarning
@@ -204,7 +199,7 @@
         RoomCreationStep2ViewController *viewController = segue.destinationViewController;
         viewController.roomCreationInputs = inputs;
         
-        // Hide back button title
+        // Force back button title
         self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"back", @"Vector", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
@@ -234,7 +229,8 @@
         {
             account = [mxAccounts firstObject];
             inputs.mxSession = account.mxSession;
-            self.navigationItem.rightBarButtonItem.enabled = (inputs.roomName.length);
+            self.navigationItem.rightBarButtonItem.enabled = (inputs.roomName.length || roomNameTextField.text.length);
+            
             count = 1;
         }
         else
@@ -352,8 +348,10 @@
             }
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_creation_appearance_name", @"Vector", nil);
+            
+            roomNameCell.mxkTextField.text = roomNameTextField ? roomNameTextField.text : inputs.roomName;
+            
             roomNameTextField = roomNameCell.mxkTextField;
-            roomNameTextField.text = inputs.roomName;
             roomNameTextField.delegate = self;
             [roomNameTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
@@ -415,11 +413,6 @@
     }
     
     return 60;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 30;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -487,7 +480,7 @@
         }
         else
         {
-            self.navigationItem.rightBarButtonItem.enabled = (inputs.mxSession != 0);
+            self.navigationItem.rightBarButtonItem.enabled = (inputs.mxSession != nil);
         }
     }
 }

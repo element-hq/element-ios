@@ -16,11 +16,21 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "RoomParticipantsViewController.h"
+@interface RoomParticipantsViewController : MXKTableViewController <UISearchBarDelegate>
 
-@interface RoomCreationStep2ViewController : RoomParticipantsViewController
+/**
+ The matrix id of the current user (nil if the user is not a participant of the room).
+ */
+@property (nonatomic) NSString *userMatrixId;
 
-@property (nonatomic) MXKRoomCreationInputs* roomCreationInputs;
+/**
+ The matrix ids of the room participants. The room admin must be at the first position (if different than user).
+ */
+@property (nonatomic) NSArray *roomParticipants;
+
+/**
+ */
+@property (nonatomic) BOOL isAddParticipantSearchBarEditing;
 
 @end
 

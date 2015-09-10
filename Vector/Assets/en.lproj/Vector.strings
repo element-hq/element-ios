@@ -23,6 +23,7 @@
 "mark_all_as_read_prompt" = "Mark all as read?";
 "next" = "Next";
 "back" = "Back";
+"create" = "Create";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -38,9 +39,12 @@
 "room_creation_make_public_prompt_msg" = "Are you sure you want to make this chat public? Anyone can read your messages and join the chat.";
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
-"room_creation_create" = "Create Chat";
-"room_creation_add_participants" = "Add Participants";
-"room_creation_participants" = "Participants";
+
+// Chat participants
+"room_participants_title" = "Participants";
+"room_participants_add_participant" = "Add participant";
+"room_participants_one_participant" = "1 participant";
+"room_participants_multi_participants" = "%d participants";
 
 // Chat
 "room_menu_search" = "Search";
