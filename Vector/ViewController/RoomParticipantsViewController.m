@@ -31,20 +31,17 @@
     
     MXKAlert *currentAlert;
     
-    /**
-     Mask view while processing a request
-     */
+    // Mask view while processing a request
     UIActivityIndicatorView * pendingMaskSpinnerView;
     
-    /**
-     The members events listener.
-     */
+    // The members events listener.
     id membersListener;
     
-    /**
-     Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
-     */
+    // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
+    
+    // Internal measurement
+    CGFloat actionButtonWidth;
 }
 
 @end
@@ -83,6 +80,19 @@
     if (! mxkContactsById)
     {
         mxkContactsById = [NSMutableDictionary dictionary];
+    }
+    
+    // Measure the minimum width of the action button displayed in participant cells
+    MXKContactTableCell *tmpCell = [[MXKContactTableCell alloc] init];
+    UIButton *actionButton = tmpCell.contactAccessoryButton;
+    [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
+    [actionButton sizeToFit];
+    actionButtonWidth = actionButton.frame.size.width;
+    [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
+    [actionButton sizeToFit];
+    if (actionButton.frame.size.width > actionButtonWidth)
+    {
+        actionButtonWidth = actionButton.frame.size.width;
     }
 }
 
@@ -506,6 +516,8 @@
             if (!filteredParticipantCell)
             {
                 filteredParticipantCell = [[MXKContactTableCell alloc] init];
+                filteredParticipantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeRoundedCorner;
+                filteredParticipantCell.hideMatrixPresence = YES;
             }
             
             [filteredParticipantCell render:filteredParticipants[indexPath.row]];
@@ -529,6 +541,8 @@
         if (!participantCell)
         {
             participantCell = [[MXKContactTableCell alloc] init];
+            participantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeRoundedCorner;
+            participantCell.hideMatrixPresence = YES;
         }
         
         if (userMatrixId && indexPath.row == 0)
@@ -551,7 +565,7 @@
                 [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
                 [actionButton sizeToFit];
                 participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
+                participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
                 [participantCell needsUpdateConstraints];
                 participantCell.contactAccessoryView.hidden = NO;
             }
@@ -616,7 +630,7 @@
                     [actionButton sizeToFit];
                     
                     participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                    participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
+                    participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
                     participantCell.contactAccessoryView.hidden = NO;
                 }
                 else
