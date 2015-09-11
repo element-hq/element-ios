@@ -94,6 +94,12 @@
 
 - (void)destroy
 {
+    if (leaveRoomNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
+        leaveRoomNotificationObserver = nil;
+    }
+    
     if (membersListener)
     {
         [self.mxRoom removeListener:membersListener];
@@ -125,21 +131,6 @@
     
     // Refresh display
     [self.tableView reloadData];
-    
-    // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
-    leaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        // Check whether the user will leave the room related to the displayed participants
-        if (notif.object == self.mxRoom.mxSession)
-        {
-            NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
-            if (roomId && [roomId isEqualToString:self.mxRoom.state.roomId])
-            {
-                // We remove the current view controller.
-                [self withdrawViewControllerAnimated:YES completion:nil];
-            }
-        }
-    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -151,19 +142,18 @@
         [currentAlert dismiss:NO];
         currentAlert = nil;
     }
-    
-    if (leaveRoomNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
-        leaveRoomNotificationObserver = nil;
-    }
 }
 
 #pragma mark -
 
 - (void)setMxRoom:(MXRoom *)mxRoom
 {
-    // Remove the previous live listener
+    // Remove the previous listener
+    if (leaveRoomNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
+        leaveRoomNotificationObserver = nil;
+    }
     if (membersListener)
     {
         [self.mxRoom removeListener:membersListener];
@@ -176,6 +166,21 @@
     
     if (mxRoom)
     {
+        // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
+        leaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            // Check whether the user will leave the room related to the displayed participants
+            if (notif.object == self.mxRoom.mxSession)
+            {
+                NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
+                if (roomId && [roomId isEqualToString:self.mxRoom.state.roomId])
+                {
+                    // We remove the current view controller.
+                    [self withdrawViewControllerAnimated:YES completion:nil];
+                }
+            }
+        }];
+        
         // Register a listener for events that concern room members
         NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomPowerLevels];
         membersListener = [self.mxRoom listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
@@ -537,16 +542,24 @@
             
             [participantCell render:contact];
             
-            // Show 'Leave' buton.
-            participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-            UIButton *actionButton = participantCell.contactAccessoryButton;
-            actionButton.hidden = NO;
-            [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
-            [actionButton sizeToFit];
-            participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-            participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
-            [participantCell needsUpdateConstraints];
-            participantCell.contactAccessoryView.hidden = NO;
+            if (self.mxRoom)
+            {
+                // Show 'Leave' buton.
+                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+                UIButton *actionButton = participantCell.contactAccessoryButton;
+                actionButton.hidden = NO;
+                [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
+                [actionButton sizeToFit];
+                participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
+                participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
+                [participantCell needsUpdateConstraints];
+                participantCell.contactAccessoryView.hidden = NO;
+            }
+            else
+            {
+                // Hide accessory view.
+                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+            }
             
             participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
@@ -591,18 +604,31 @@
                     [participantCell render:contact];
                 }
                 
-                // Show 'remove' button.
-                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                UIButton *actionButton = participantCell.contactAccessoryButton;
-                actionButton.hidden = NO;
-                [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
-                [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                actionButton.tag = indexPath.row;
-                [actionButton sizeToFit];
-                
-                participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
-                participantCell.contactAccessoryView.hidden = NO;
+                if (self.mxRoom)
+                {
+                    // Show 'remove' button.
+                    participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+                    UIButton *actionButton = participantCell.contactAccessoryButton;
+                    actionButton.hidden = NO;
+                    [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
+                    [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                    actionButton.tag = indexPath.row;
+                    [actionButton sizeToFit];
+                    
+                    participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
+                    participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
+                    participantCell.contactAccessoryView.hidden = NO;
+                }
+                else
+                {
+                    // Show 'remove' icon.
+                    participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+                    participantCell.contactAccessoryViewHeightConstraint.constant = 30;
+                    participantCell.contactAccessoryViewWidthConstraint.constant = 30;
+                    participantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"remove"];
+                    participantCell.contactAccessoryImageView.hidden = NO;
+                    participantCell.contactAccessoryView.hidden = NO;
+                }
                 
                 participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -640,7 +666,26 @@
 {
     NSInteger index = indexPath.row;
     
-    if (indexPath.section == searchResultSection)
+    if ((indexPath.section == participantsSection) && (self.mxRoom == nil))
+    {
+        if (userMatrixId)
+        {
+            index --;
+        }
+        
+        if (index < mutableParticipants.count)
+        {
+            [mxkContactsById removeObjectForKey:mutableParticipants[index]];
+            [mutableParticipants removeObjectAtIndex:index];
+            
+            // Refresh display
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            
+            UITableViewHeaderFooterView *participantsSectionHeader = [tableView headerViewForSection:participantsSection];
+            participantsSectionHeader.textLabel.text = [self tableView:tableView titleForHeaderInSection:participantsSection];
+        }
+    }
+    else if (indexPath.section == searchResultSection)
     {
         if (index < filteredParticipants.count)
         {

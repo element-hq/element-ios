@@ -16,6 +16,11 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+/**
+ 'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
+ 
+ When this property is nil, the view controller is able to handle a list of participants without room reference (see inherited class 'RoomCreationStep2ViewController').
+ */
 @interface RoomParticipantsViewController : MXKTableViewController <UISearchBarDelegate>
 {
 @protected
@@ -43,11 +48,12 @@
 }
 
 /**
- A matrix room (nil by default)
+ A matrix room (nil by default).
  */
 @property (nonatomic) MXRoom *mxRoom;
 
 /**
+ Tell whether a search session is in progress
  */
 @property (nonatomic) BOOL isAddParticipantSearchBarEditing;
 
