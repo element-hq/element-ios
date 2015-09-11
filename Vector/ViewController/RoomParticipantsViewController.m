@@ -563,7 +563,10 @@
                 UIButton *actionButton = participantCell.contactAccessoryButton;
                 actionButton.hidden = NO;
                 [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
+                [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                actionButton.tag = 0;
                 [actionButton sizeToFit];
+                
                 participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
                 participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
                 [participantCell needsUpdateConstraints];
