@@ -196,6 +196,8 @@
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
+    
+    self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
