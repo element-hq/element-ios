@@ -21,6 +21,8 @@
 
 #import "RoomInputToolbarView.h"
 
+#import "RoomParticipantsViewController.h"
+
 @interface RoomViewController ()
 {
     // The constraint used to animate menu list display
@@ -295,34 +297,15 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showMemberList"])
+    if ([[segue identifier] isEqualToString:@"showRoomParticipants"])
     {
-        if ([pushedViewController isKindOfClass:[MXKRoomMemberListViewController class]])
+        if ([pushedViewController isKindOfClass:[RoomParticipantsViewController class]])
         {
-            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)pushedViewController;
-            
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
-            [membersDataSource finalizeInitialization];
-            
-            [membersController displayList:membersDataSource];
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
-    {
-        if (selectedRoomMember)
-        {
-            MXKRoomMemberDetailsViewController *memberViewController = pushedViewController;
-            // Set rageShake handler
-            memberViewController.rageShakeManager = [RageShakeManager sharedManager];
-            // Set delegate to handle start chat option
-            memberViewController.delegate = [AppDelegate theDelegate];
-            
-            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
-            
-            selectedRoomMember = nil;
+            RoomParticipantsViewController* participantsViewController = (RoomParticipantsViewController*)pushedViewController;
+            participantsViewController.mxRoom = self.roomDataSource.room;
         }
     }
 }
@@ -384,7 +367,7 @@
         }
         else if (sender == self.participantsMenuButton)
         {
-            [self performSegueWithIdentifier:@"showMemberList" sender:self];
+            [self performSegueWithIdentifier:@"showRoomParticipants" sender:self];
         }
         else if (sender == self.favouriteMenuButton)
         {

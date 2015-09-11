@@ -17,16 +17,35 @@
 #import <MatrixKit/MatrixKit.h>
 
 @interface RoomParticipantsViewController : MXKTableViewController <UISearchBarDelegate>
+{
+@protected
+    /**
+     The matrix id of the current user (nil if the user is not a participant of the room).
+     */
+    NSString *userMatrixId;
+    
+    /**
+     Section indexes
+     */
+    NSInteger addParticipantsSection;
+    NSInteger searchResultSection;
+    NSInteger participantsSection;
+    
+    /**
+     Mutable list of participants
+     */
+    NSMutableArray *mutableParticipants;
+    
+    /**
+     Store MXKContact instance by matrix user id
+     */
+    NSMutableDictionary *mxkContactsById;
+}
 
 /**
- The matrix id of the current user (nil if the user is not a participant of the room).
+ A matrix room (nil by default)
  */
-@property (nonatomic) NSString *userMatrixId;
-
-/**
- The matrix ids of the room participants. The room admin must be at the first position (if different than user).
- */
-@property (nonatomic) NSArray *roomParticipants;
+@property (nonatomic) MXRoom *mxRoom;
 
 /**
  */

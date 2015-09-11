@@ -65,7 +65,7 @@
     [super viewWillDisappear:animated];
     
     // Update the selected participants
-    _roomCreationInputs.roomParticipants = self.roomParticipants;
+    _roomCreationInputs.roomParticipants = mutableParticipants;
     
     // TODO Shall we cancel room creation on Back? Shall we prompt user? Shall we disable back during room creation
 //    [roomCreationRequest cancel];
@@ -80,10 +80,10 @@
     
     if (roomCreationInputs.mxSession)
     {
-        self.userMatrixId = roomCreationInputs.mxSession.myUser.userId;
+        userMatrixId = roomCreationInputs.mxSession.myUser.userId;
     }
     
-    self.roomParticipants = roomCreationInputs.roomParticipants;
+    mutableParticipants = [NSMutableArray arrayWithArray:roomCreationInputs.roomParticipants];
 }
 
 #pragma mark - Override RoomParticipantsViewController
@@ -102,6 +102,119 @@
     super.isAddParticipantSearchBarEditing = isAddParticipantSearchBarEditing;
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == participantsSection)
+    {
+        MXKContactTableCell *participantCell = [tableView dequeueReusableCellWithIdentifier:[MXKContactTableCell defaultReuseIdentifier]];
+        if (!participantCell)
+        {
+            participantCell = [[MXKContactTableCell alloc] init];
+        }
+        
+        if (userMatrixId && indexPath.row == 0)
+        {
+            MXKContact *contact = [mxkContactsById objectForKey:userMatrixId];
+            if (! contact)
+            {
+                contact = [[MXKContact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
+                [mxkContactsById setObject:contact forKey:userMatrixId];
+            }
+            
+            [participantCell render:contact];
+            
+            // Hide accessory view.
+            participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+            participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        else
+        {
+            NSInteger index = indexPath.row;
+            
+            if (userMatrixId)
+            {
+                index --;
+            }
+            
+            if (index < mutableParticipants.count)
+            {
+                NSString *userId = mutableParticipants[index];
+                MXKContact *contact = [mxkContactsById objectForKey:userId];
+                if (!contact)
+                {
+                    // Create this missing contact
+                    // Look for the corresponding MXUser
+                    NSArray *sessions = self.mxSessions;
+                    MXUser *mxUser;
+                    for (MXSession *session in sessions)
+                    {
+                        mxUser = [session userWithUserId:userId];
+                        if (mxUser)
+                        {
+                            contact = [[MXKContact alloc] initMatrixContactWithDisplayName:((mxUser.displayname.length > 0) ? mxUser.displayname : userId) andMatrixID:userId];
+                            break;
+                        }
+                    }
+                    
+                    if (contact)
+                    {
+                        [mxkContactsById setObject:contact forKey:userId];
+                    }
+                    
+                }
+                
+                if (contact)
+                {
+                    [participantCell render:contact];
+                }
+                
+                // Show 'remove' icon.
+                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+                participantCell.contactAccessoryViewHeightConstraint.constant = 30;
+                participantCell.contactAccessoryViewWidthConstraint.constant = 30;
+                participantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"remove"];
+                participantCell.contactAccessoryImageView.hidden = NO;
+                participantCell.contactAccessoryView.hidden = NO;
+                
+                participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+        }
+        
+        return participantCell;
+    }
+    
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == participantsSection)
+    {
+        NSInteger index = indexPath.row;
+        
+        if (userMatrixId)
+        {
+            index --;
+        }
+        
+        if (index < mutableParticipants.count)
+        {
+            [mxkContactsById removeObjectForKey:mutableParticipants[index]];
+            [mutableParticipants removeObjectAtIndex:index];
+            
+            // Refresh display
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            
+            UITableViewHeaderFooterView *participantsSectionHeader = [tableView headerViewForSection:participantsSection];
+            participantsSectionHeader.textLabel.text = [self tableView:tableView titleForHeaderInSection:participantsSection];
+        }
+    }
+    else
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender
@@ -113,7 +226,7 @@
         [self startActivityIndicator];
         
         // Update the selected participants
-        _roomCreationInputs.roomParticipants = self.roomParticipants;
+        _roomCreationInputs.roomParticipants = mutableParticipants;
         
         // Create new room
         roomCreationRequest = [_roomCreationInputs.mxSession createRoom:_roomCreationInputs.roomName

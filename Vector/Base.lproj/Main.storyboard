@@ -46,8 +46,7 @@
                         <outlet property="searchMenuLabel" destination="1IX-d8-Pu3" id="4xs-ti-XyD"/>
                         <outlet property="settingsMenuButton" destination="LzI-qU-WEx" id="dlp-Uc-6YU"/>
                         <outlet property="settingsMenuLabel" destination="vOA-DR-q63" id="M5D-fX-cTx"/>
-                        <segue destination="qlN-Mb-ZH7" kind="show" identifier="showMemberDetails" id="9Sj-Yf-p2I"/>
-                        <segue destination="y7N-Cs-bXh" kind="show" identifier="showMemberList" id="2sI-aY-muu"/>
+                        <segue destination="y7N-Cs-bXh" kind="show" identifier="showRoomParticipants" id="2sI-aY-muu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -225,11 +224,11 @@
             </objects>
             <point key="canvasLocation" x="1596" y="81"/>
         </scene>
-        <!--Room Members-->
+        <!--Room Participants View Controller-->
         <scene sceneID="5AK-8u-TUO">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="y7N-Cs-bXh" userLabel="Room Members" customClass="RoomMembersViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Oe9-1Y-zhS">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="y7N-Cs-bXh" customClass="RoomParticipantsViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="20" sectionFooterHeight="10" id="Oe9-1Y-zhS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -238,21 +237,10 @@
                             <outlet property="delegate" destination="y7N-Cs-bXh" id="RVg-Nq-nNy"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <segue destination="qlN-Mb-ZH7" kind="show" identifier="showDetails" id="m9P-N3-WZN"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Exe-4N-jYR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2895" y="-290"/>
-        </scene>
-        <!--Room Member Details View Controller-->
-        <scene sceneID="q1J-Wz-aLa">
-            <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="qlN-Mb-ZH7" customClass="MXKRoomMemberDetailsViewController" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mrY-z4-HGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2895" y="488"/>
         </scene>
         <!--Authentication View Controller-->
         <scene sceneID="FoA-N2-3aF">
@@ -472,7 +460,6 @@
         <image name="tab_settings.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="m9P-N3-WZN"/>
         <segue reference="Vo4-8x-dtH"/>
         <segue reference="17E-G9-IZ6"/>
     </inferredMetricsTieBreakers>

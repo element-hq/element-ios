@@ -59,7 +59,6 @@
 		F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */; };
 		F094AA341B78E42600B1FBBF /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA211B78E42600B1FBBF /* MasterTabBarController.m */; };
 		F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA231B78E42600B1FBBF /* RecentsViewController.m */; };
-		F094AA361B78E42600B1FBBF /* RoomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA251B78E42600B1FBBF /* RoomMembersViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
 		F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */; };
@@ -173,8 +172,6 @@
 		F094AA211B78E42600B1FBBF /* MasterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTabBarController.m; sourceTree = "<group>"; };
 		F094AA221B78E42600B1FBBF /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
 		F094AA231B78E42600B1FBBF /* RecentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsViewController.m; sourceTree = "<group>"; };
-		F094AA241B78E42600B1FBBF /* RoomMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMembersViewController.h; sourceTree = "<group>"; };
-		F094AA251B78E42600B1FBBF /* RoomMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMembersViewController.m; sourceTree = "<group>"; };
 		F094AA261B78E42600B1FBBF /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		F094AA271B78E42600B1FBBF /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F094AA281B78E42600B1FBBF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -434,8 +431,6 @@
 				F0DD7D811B7B363300C4BE02 /* RoomCreationStep1ViewController.m */,
 				F0DD7D861B7B507100C4BE02 /* RoomCreationStep2ViewController.h */,
 				F0DD7D871B7B507100C4BE02 /* RoomCreationStep2ViewController.m */,
-				F094AA241B78E42600B1FBBF /* RoomMembersViewController.h */,
-				F094AA251B78E42600B1FBBF /* RoomMembersViewController.m */,
 				F094AA261B78E42600B1FBBF /* RoomViewController.h */,
 				F094AA271B78E42600B1FBBF /* RoomViewController.m */,
 				F094AA281B78E42600B1FBBF /* SettingsViewController.h */,
@@ -688,7 +683,6 @@
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
-				F094AA361B78E42600B1FBBF /* RoomMembersViewController.m in Sources */,
 				F094AA2D1B78E42600B1FBBF /* RecentListDataSource.m in Sources */,
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,
 				F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */,

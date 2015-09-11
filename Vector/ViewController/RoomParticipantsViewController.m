@@ -22,20 +22,29 @@
 
 @interface RoomParticipantsViewController ()
 {
-    NSMutableArray *participants;
-    
-    // Add participants
-    NSInteger addParticipantsSection;
+    // Add participants section
     MXKTableViewCellWithSearchBar *addParticipantsSearchBarCell;
     NSString *addParticipantsSearchText;
     
-    // Search result
-    NSInteger searchResultSection;
+    // Search result section
     NSMutableArray *filteredParticipants;
     
-    // Participants
-    NSInteger participantsSection;
-    NSMutableDictionary *participantsByIds;
+    MXKAlert *currentAlert;
+    
+    /**
+     Mask view while processing a request
+     */
+    UIActivityIndicatorView * pendingMaskSpinnerView;
+    
+    /**
+     The members events listener.
+     */
+    id membersListener;
+    
+    /**
+     Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
+     */
+    id leaveRoomNotificationObserver;
 }
 
 @end
@@ -65,6 +74,16 @@
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
     _isAddParticipantSearchBarEditing = NO;
+    
+    if (! mutableParticipants)
+    {
+        mutableParticipants = [NSMutableArray array];
+    }
+    
+    if (! mxkContactsById)
+    {
+        mxkContactsById = [NSMutableDictionary dictionary];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,11 +94,27 @@
 
 - (void)destroy
 {
+    if (membersListener)
+    {
+        [self.mxRoom removeListener:membersListener];
+        membersListener = nil;
+    }
+    
+    _mxRoom = nil;
+    
     addParticipantsSearchBarCell = nil;
     filteredParticipants = nil;
-    participantsByIds = nil;
+    mxkContactsById = nil;
     
-    participants = nil;
+    mutableParticipants = nil;
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
+    [self removePendingActionMask];
     
     [super destroy];
 }
@@ -90,23 +125,112 @@
     
     // Refresh display
     [self.tableView reloadData];
+    
+    // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
+    leaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // Check whether the user will leave the room related to the displayed participants
+        if (notif.object == self.mxRoom.mxSession)
+        {
+            NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
+            if (roomId && [roomId isEqualToString:self.mxRoom.state.roomId])
+            {
+                // We remove the current view controller.
+                [self withdrawViewControllerAnimated:YES completion:nil];
+            }
+        }
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
+    if (leaveRoomNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
+        leaveRoomNotificationObserver = nil;
+    }
 }
 
 #pragma mark -
 
-- (void)setRoomParticipants:(NSArray *)roomParticipants
+- (void)setMxRoom:(MXRoom *)mxRoom
 {
-    participants = [NSMutableArray arrayWithArray:roomParticipants];
-}
-
-- (NSArray*)roomParticipants
-{
-    return participants;
+    // Remove the previous live listener
+    if (membersListener)
+    {
+        [self.mxRoom removeListener:membersListener];
+    }
+    
+    _mxRoom = mxRoom;
+    
+    // Refresh displayed participants from the current room members
+    [self refreshParticipantsFromRoomMembers];
+    
+    if (mxRoom)
+    {
+        // Register a listener for events that concern room members
+        NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomPowerLevels];
+        membersListener = [self.mxRoom listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+            
+            // Consider only live event
+            if (direction == MXEventDirectionForwards)
+            {
+                switch (event.eventType)
+                {
+                    case MXEventTypeRoomMember:
+                    {
+                        // Take into account updated member
+                        // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
+                        if ([event.userId isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
+                        {
+                            MXRoomMember *mxMember = [self.mxRoom.state memberWithUserId:event.userId];
+                            if (mxMember)
+                            {
+                                [self addRoomMemberToParticipants:mxMember];
+                            }
+                        }
+                        
+                        if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
+                        {
+                            MXRoomMember *mxMember = [self.mxRoom.state memberWithUserId:event.stateKey];
+                            if (mxMember)
+                            {
+                                [self addRoomMemberToParticipants:mxMember];
+                            }
+                        }
+                        
+                        break;
+                    }
+                    case MXEventTypeRoomPowerLevels:
+                    {
+                        [self refreshParticipantsFromRoomMembers];
+                        break;
+                    }
+                    default:
+                        break;
+                        
+                }
+                
+                // Refresh participants display (if visible)
+                if (participantsSection != -1)
+                {
+                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (participantsSection, 1)];
+                    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+                }
+            }
+            
+        }];
+    }
+    
+    [self.tableView reloadData];
 }
 
 - (void)setIsAddParticipantSearchBarEditing:(BOOL)isAddParticipantsSearchBarEditing
@@ -118,6 +242,154 @@
         // Switch the display between search result and participants list
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (1, 1)];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+#pragma mark - Internals
+
+- (void)refreshParticipantsFromRoomMembers
+{
+    // Flush existing participants list
+    mutableParticipants = [NSMutableArray array];
+    mxkContactsById = [NSMutableDictionary dictionary];
+    userMatrixId = nil;
+    
+    if (self.mxRoom)
+    {
+        NSArray *members = self.mxRoom.state.members;
+        NSString *userId = self.mxRoom.mxSession.myUser.userId;
+        
+        for (MXRoomMember *mxMember in members)
+        {
+            // Update the current participants list
+            if ([mxMember.userId isEqualToString:userId])
+            {
+                if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+                {
+                    // The user is in this room
+                    userMatrixId = userId;
+                }
+            }
+            else
+            {
+                [self addRoomMemberToParticipants:mxMember];
+            }
+        }
+    }
+}
+
+- (void)addRoomMemberToParticipants:(MXRoomMember*)mxMember
+{
+    // Remove previous occurrence of this member (if any)
+    if (mutableParticipants.count)
+    {
+        NSUInteger index = [mutableParticipants indexOfObject:mxMember.userId];
+        if (index != NSNotFound)
+        {
+            [mxkContactsById removeObjectForKey:mxMember.userId];
+            [mutableParticipants removeObjectAtIndex:index];
+        }
+    }
+    
+    // Add this member after checking his status
+    if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+    {
+        // Check whether this member is admin
+        BOOL isAdmin = ([self.mxRoom.state memberNormalizedPowerLevel:mxMember.userId] == 1);
+        
+        // Prepare the display name of this member
+        NSString *displayName = mxMember.displayname;
+        if (displayName.length == 0)
+        {
+            // Look for the corresponding MXUser in matrix session
+            MXUser *mxUser = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
+            if (mxUser)
+            {
+                displayName = ((mxUser.displayname.length > 0) ? mxUser.displayname : mxMember.userId);
+            }
+            else
+            {
+                displayName = mxMember.userId;
+            }
+        }
+        if (isAdmin)
+        {
+            displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
+        }
+        
+        // Create the contact related to this member
+        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
+        [mxkContactsById setObject:contact forKey:mxMember.userId];
+        
+        // Add this participant (admin is in first position, the other are sorted in alphabetical order).
+        NSUInteger index = 0;
+        if (isAdmin)
+        {
+            // Check whether there is other admin
+            for (NSString *userId in mutableParticipants)
+            {
+                if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
+                {
+                    contact = [mxkContactsById objectForKey:userId];
+                    
+                    // Sort admin in alphabetical order
+                    if ([displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    {
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }
+        else
+        {
+            for (NSString *userId in mutableParticipants)
+            {
+                // Pass admin(s)
+                if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
+                {
+                    index++;
+                }
+                else
+                {
+                    contact = [mxkContactsById objectForKey:userId];
+                    
+                    // Sort in alphabetical order
+                    if ([displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    {
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }
+        
+        // Add this participant
+        [mutableParticipants insertObject:mxMember.userId atIndex:index];
+    }
+}
+
+- (void)addPendingActionMask
+{
+    // Add a spinner above the tableview to avoid that the user tap on any other button
+    pendingMaskSpinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    pendingMaskSpinnerView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+    pendingMaskSpinnerView.frame = self.tableView.frame;
+    pendingMaskSpinnerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+    
+    // append it
+    [self.tableView.superview addSubview:pendingMaskSpinnerView];
+    
+    // animate it
+    [pendingMaskSpinnerView startAnimating];
+}
+
+- (void)removePendingActionMask
+{
+    if (pendingMaskSpinnerView)
+    {
+        [pendingMaskSpinnerView removeFromSuperview];
+        pendingMaskSpinnerView = nil;
     }
 }
 
@@ -157,8 +429,8 @@
     }
     else if (section == participantsSection)
     {
-        count = self.roomParticipants.count;
-        if (self.userMatrixId)
+        count = mutableParticipants.count;
+        if (userMatrixId)
         {
             count++;
         }
@@ -175,8 +447,8 @@
     }
     else if (section == participantsSection)
     {
-        NSInteger count = self.roomParticipants.count;
-        if (self.userMatrixId)
+        NSInteger count = mutableParticipants.count;
+        if (userMatrixId)
         {
             count++;
         }
@@ -236,8 +508,11 @@
             // Show 'add' icon.
             filteredParticipantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
             filteredParticipantCell.contactAccessoryViewHeightConstraint.constant = 30;
-            filteredParticipantCell.contactAccessoryView.image = [UIImage imageNamed:@"add"];
+            filteredParticipantCell.contactAccessoryViewWidthConstraint.constant = 30;
+            filteredParticipantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"add"];
+            filteredParticipantCell.contactAccessoryImageView.hidden = NO;
             filteredParticipantCell.contactAccessoryView.hidden = NO;
+            
             filteredParticipantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell = filteredParticipantCell;
@@ -251,38 +526,43 @@
             participantCell = [[MXKContactTableCell alloc] init];
         }
         
-        if (self.userMatrixId && indexPath.row == 0)
+        if (userMatrixId && indexPath.row == 0)
         {
-            MXKContact *contact = [participantsByIds objectForKey:self.userMatrixId];
+            MXKContact *contact = [mxkContactsById objectForKey:userMatrixId];
             if (! contact)
             {
-                contact = [[MXKContact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:self.userMatrixId];
-                if (!participantsByIds)
-                {
-                    participantsByIds = [NSMutableDictionary dictionary];
-                }
-                [participantsByIds setObject:contact forKey:self.userMatrixId];
+                contact = [[MXKContact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
+                [mxkContactsById setObject:contact forKey:userMatrixId];
             }
             
             [participantCell render:contact];
             
-            // Hide accessory view.
+            // Show 'Leave' buton.
             participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
+            UIButton *actionButton = participantCell.contactAccessoryButton;
+            actionButton.hidden = NO;
+            [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
+            [actionButton sizeToFit];
+            participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
+            participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
+            [participantCell needsUpdateConstraints];
+            participantCell.contactAccessoryView.hidden = NO;
+            
             participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else
         {
             NSInteger index = indexPath.row;
             
-            if (self.userMatrixId)
+            if (userMatrixId)
             {
                 index --;
             }
             
-            if (index < participants.count)
+            if (index < mutableParticipants.count)
             {
-                NSString *userId = participants[index];
-                MXKContact *contact = [participantsByIds objectForKey:userId];
+                NSString *userId = mutableParticipants[index];
+                MXKContact *contact = [mxkContactsById objectForKey:userId];
                 if (!contact)
                 {
                     // Create this missing contact
@@ -301,11 +581,7 @@
                     
                     if (contact)
                     {
-                        if (!participantsByIds)
-                        {
-                            participantsByIds = [NSMutableDictionary dictionary];
-                        }
-                        [participantsByIds setObject:contact forKey:userId];
+                        [mxkContactsById setObject:contact forKey:userId];
                     }
                     
                 }
@@ -315,11 +591,19 @@
                     [participantCell render:contact];
                 }
                 
-                // Show 'remove' icon.
+                // Show 'remove' button.
                 participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                participantCell.contactAccessoryViewHeightConstraint.constant = 30;
-                participantCell.contactAccessoryView.image = [UIImage imageNamed:@"remove"];
+                UIButton *actionButton = participantCell.contactAccessoryButton;
+                actionButton.hidden = NO;
+                [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
+                [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+                actionButton.tag = indexPath.row;
+                [actionButton sizeToFit];
+                
+                participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
+                participantCell.contactAccessoryViewWidthConstraint.constant = actionButton.frame.size.width;
                 participantCell.contactAccessoryView.hidden = NO;
+                
                 participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
         }
@@ -352,11 +636,6 @@
     }
 }
 
-//- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return 1;
-//}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger index = indexPath.row;
@@ -370,41 +649,162 @@
             NSArray *identifiers = contact.matrixIdentifiers;
             if (identifiers.count)
             {
-                [participants addObject:identifiers.firstObject];
+                NSString *participantId = identifiers.firstObject;
                 
                 // Handle a mapping contact by userId for selected participants
-                if (!participantsByIds)
+                [mxkContactsById setObject:contact forKey:participantId];
+
+                // Invite this user if a room is defined
+                if (self.mxRoom)
                 {
-                    participantsByIds = [NSMutableDictionary dictionary];
+                    [self addPendingActionMask];
+                    [self.mxRoom inviteUser:participantId success:^{
+                        
+                        [self removePendingActionMask];
+                        
+                        // Refresh display by leaving search session
+                        [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+                        
+                    } failure:^(NSError *error) {
+                        
+                        [self removePendingActionMask];
+                        
+                        NSLog(@"[RoomParticipantsVC] Invite %@ failed: %@", participantId, error);
+                        // Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        
+                    }];
                 }
-                [participantsByIds setObject:contact forKey:identifiers.firstObject];
+                else
+                {
+                    // Update here the mutable list of participants
+                    [mutableParticipants addObject:participantId];
+                    // Refresh display by leaving search session
+                    [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+                }
             }
             
-//            [filteredParticipants removeObjectAtIndex:index];
-//            // Refresh display
-//            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             
-            // Leave search session
-            [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
         }
     }
-    else if (indexPath.section == participantsSection)
-    { 
-        if (self.userMatrixId)
+}
+
+#pragma mark - Actions
+
+- (IBAction)onButtonPressed:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]])
+    {
+        UIButton *actionButton = (UIButton*)sender;
+        NSInteger index = actionButton.tag;
+        __weak typeof(self) weakSelf = self;
+        
+        if (currentAlert)
         {
-            index --;
+            [currentAlert dismiss:NO];
+            currentAlert = nil;
         }
         
-        if (index < participants.count)
+        if (userMatrixId && index == 0 && [actionButton.titleLabel.text isEqualToString:NSLocalizedStringFromTable(@"leave", @"Vector", nil)])
         {
-            [participantsByIds removeObjectForKey:participants[index]];
-            [participants removeObjectAtIndex:index];
+            // Leave ?
+            currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
+                                                   message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
+                                                     style:MXKAlertStyleAlert];
             
-            // Refresh display
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                        style:MXKAlertActionStyleCancel
+                                                                      handler:^(MXKAlert *alert) {
+                                                                          
+                                                                          __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                          strongSelf->currentAlert = nil;
+                                                                          
+                                                                      }];
             
-            UITableViewHeaderFooterView *participantsSectionHeader = [self.tableView headerViewForSection:participantsSection];
-            participantsSectionHeader.textLabel.text = [self tableView:self.tableView titleForHeaderInSection:participantsSection];
+            [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+                                       style:MXKAlertActionStyleDefault
+                                     handler:^(MXKAlert *alert) {
+                                         
+                                         __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                         strongSelf->currentAlert = nil;
+                                         
+                                         [strongSelf addPendingActionMask];
+                                         [strongSelf.mxRoom leave:^{
+                                             
+                                             [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+                                             
+                                         } failure:^(NSError *error) {
+                                             
+                                             [strongSelf removePendingActionMask];
+                                             NSLog(@"[RoomParticipantsVC] Leave room %@ failed: %@", strongSelf.mxRoom.state.roomId, error);
+                                             // Alert user
+                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                             
+                                         }];
+                                         
+                                     }];
+            
+            [currentAlert showInViewController:self];
+        }
+        else if ([actionButton.titleLabel.text isEqualToString:NSLocalizedStringFromTable(@"remove", @"Vector", nil)])
+        {
+            if (userMatrixId)
+            {
+                index --;
+            }
+            
+            if (index < mutableParticipants.count)
+            {
+                NSString *memberUserId = mutableParticipants[index];
+                MXKContact *contact = [mxkContactsById objectForKey:memberUserId];
+                
+                // Kick ?
+                NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_remove_prompt_msg", @"Vector", nil), (contact ? contact.displayName : memberUserId)];
+                currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_remove_prompt_title", @"Vector", nil)
+                                                       message:promptMsg
+                                                         style:MXKAlertStyleAlert];
+                
+                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                            style:MXKAlertActionStyleCancel
+                                                                          handler:^(MXKAlert *alert) {
+                                                                              
+                                                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                              strongSelf->currentAlert = nil;
+                                                                              
+                                                                          }];
+                
+                [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                                           style:MXKAlertActionStyleDefault
+                                         handler:^(MXKAlert *alert) {
+                                             
+                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                             strongSelf->currentAlert = nil;
+                                             
+                                             [strongSelf addPendingActionMask];
+                                             [strongSelf.mxRoom kickUser:memberUserId
+                                                       reason:nil
+                                                      success:^{
+                                                          
+                                                          [strongSelf removePendingActionMask];
+                                                          
+                                                          [strongSelf->mxkContactsById removeObjectForKey:memberUserId];
+                                                          [strongSelf->mutableParticipants removeObjectAtIndex:index];
+                                                          
+                                                          // Refresh display
+                                                          [strongSelf.tableView reloadData];
+                                                          
+                                                      } failure:^(NSError *error) {
+                                                          
+                                                          [strongSelf removePendingActionMask];
+                                                          NSLog(@"[RoomParticipantsVC] Kick %@ failed: %@", memberUserId, error);
+                                                          // Alert user
+                                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                          
+                                                      }];
+                                         }];
+                
+                [currentAlert showInViewController:self];
+            }
         }
     }
 }
@@ -434,9 +834,9 @@
             {
                 for (NSString *userId in identifiers)
                 {
-                    if (!participants || [participants indexOfObject:userId] == NSNotFound)
+                    if (!mutableParticipants || [mutableParticipants indexOfObject:userId] == NSNotFound)
                     {
-                        if (![userId isEqualToString:self.userMatrixId])
+                        if (![userId isEqualToString:userMatrixId])
                         {
                             MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                             [mxUsers addObject:splitContact];
@@ -447,9 +847,9 @@
             else if (identifiers.count)
             {
                 NSString *userId = identifiers.firstObject;
-                if (!participants || [participants indexOfObject:userId] == NSNotFound)
+                if (!mutableParticipants || [mutableParticipants indexOfObject:userId] == NSNotFound)
                 {
-                    if (![userId isEqualToString:self.userMatrixId])
+                    if (![userId isEqualToString:userMatrixId])
                     {
                         [mxUsers addObject:contact];
                     }

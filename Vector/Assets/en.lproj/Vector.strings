@@ -24,6 +24,8 @@
 "next" = "Next";
 "back" = "Back";
 "create" = "Create";
+"leave" = "Leave";
+"remove" = "Remove";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -45,6 +47,11 @@
 "room_participants_add_participant" = "Add participant";
 "room_participants_one_participant" = "1 participant";
 "room_participants_multi_participants" = "%d participants";
+"room_participants_leave_prompt_title" = "Leave?";
+"room_participants_leave_prompt_msg" = "Are you sure you want to leave this chat?";
+"room_participants_remove_prompt_title" = "Remove?";
+"room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
+"room_participants_admin_name" = "%@ (admin)";
 
 // Chat
 "room_menu_search" = "Search";
