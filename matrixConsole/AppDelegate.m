@@ -446,6 +446,20 @@
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised)
         {
+            // Set the VoIP call stack (if supported).
+            id<MXCallStack> callStack;
+
+#ifdef MX_CALL_STACK_OPENWEBRTC
+            callStack = [[MXOpenWebRTCCallStack alloc] init];
+#endif
+#ifdef MX_CALL_STACK_ENDPOINT
+            callStack = [[MXEndpointCallStack alloc] initWithMatrixId:mxSession.myUser.userId];
+#endif
+            if (callStack)
+            {
+                [mxSession enableVoIPWithCallStack:callStack];
+            }
+            
             // Report this session to contact manager
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
             
@@ -494,7 +508,7 @@
     // Register an observer in order to handle new account
     addedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Launch matrix session for this new account
+        // Finalize the initialization of this new account
         MXKAccount *account = notif.object;
         if (account)
         {
@@ -539,23 +553,6 @@
 
     // Observers have been defined, we start now a matrix session for each enabled accounts.
     [accountManager openSessionForActiveAccounts];
-
-    // Set the VoIP call stack
-    for (MXKAccount *account in accountManager.accounts)
-    {
-        id<MXCallStack> callStack;
-
-#ifdef MX_CALL_STACK_OPENWEBRTC
-        callStack = [[MXOpenWebRTCCallStack alloc] init];
-#endif
-#ifdef MX_CALL_STACK_ENDPOINT
-        callStack = [[MXEndpointCallStack alloc] initWithMatrixId:account.mxSession.myUser.userId];
-#endif
-        if (callStack)
-        {
-            [account.mxSession enableVoIPWithCallStack:callStack];
-        }
-    }
     
     // Check whether we're already logged in
     NSArray *mxAccounts = accountManager.accounts;
