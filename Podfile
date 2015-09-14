@@ -24,12 +24,6 @@ pod 'MatrixKit', '~> 0.2.3’
 
 pod 'GBDeviceInfo', '~> 2.2.9'
 
-
-### OpenWebRTC call stack ###
-# The wrapper lib between MatrixSDK and OpenWebRTC-SDK
-pod 'MatrixOpenWebRTCWrapper', :git => 'https://github.com/matrix-org/matrix-ios-openwebrtc-wrapper.git', :branch => 'master'
-pod 'OpenWebRTC-SDK', :git => 'https://github.com/matrix-org/openwebrtc-ios-sdk.git', :branch => 'cvo_support'
-
 end
 
 target "matrixConsole" do
