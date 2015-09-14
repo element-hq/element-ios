@@ -43,9 +43,5 @@
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated;
 
-- (BOOL)isPresentingMediaPicker;
-- (void)presentMediaPicker:(UIImagePickerController*)mediaPicker;
-- (void)dismissMediaPicker;
-
 @end
 
