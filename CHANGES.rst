@@ -1,3 +1,12 @@
+Changes in Console in 0.5.3 (2015-09-14)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.2.3).
+
+Bug fixes:
+ * Bug Fix: App crashes on iPad iOS7.
+
 Changes in Console in 0.5.2 (2015-08-13)
 ===============================================
 
