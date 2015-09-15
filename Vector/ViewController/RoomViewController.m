@@ -274,15 +274,6 @@
         self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
         NSLog(@"    -> Turn %@ cells date", self.roomDataSource.showBubblesDateTime ? @"ON" : @"OFF");
     }
-    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
-    {
-        // Override default implementation in case of tap on avatar
-        selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
-        if (selectedRoomMember)
-        {
-            [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
-        }
-    }
     else
     {
         // Keep default implementation for other actions
