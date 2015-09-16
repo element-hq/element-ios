@@ -361,6 +361,8 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 {
     [self stopAVCapture];
     
+    [self reset];
+    
     [self dismissImageValidationView];
     [self dismissMediaPicker];
     
@@ -375,11 +377,8 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 {
     if (sender == self.navigationItem.leftBarButtonItem)
     {
-        [self stopAVCapture];
-        [self reset];
-         
         // Cancel has been pressed
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        [self withdrawViewControllerAnimated:YES completion:nil];
     }
     else if (sender == self.cameraModeButton)
     {
@@ -420,20 +419,16 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         
         if (outputVideoFileURL)
         {
-            [self.delegate mediaPickerController:self didSelectVideo:outputVideoFileURL isCameraRecording:YES];
-            // Reset here output video url, we let the delegate remove the temporary file after use...
+            // Reset here output video url attribute to not remove the temporary file while the delegate uses it.
+            // We let the delegate remove the temporary file after use...
+            NSURL *selectedVideoURL = outputVideoFileURL;
             outputVideoFileURL = nil;
-            
-            // Dismiss the picker
-            [self onButtonPressed:self.navigationItem.leftBarButtonItem];
+            [self.delegate mediaPickerController:self didSelectVideo:selectedVideoURL isCameraRecording:YES];
         }
         else if (self.cameraCaptureImageView.image)
         {
             // Send the original image
             [self.delegate mediaPickerController:self didSelectImage:self.cameraCaptureImageView.image withURL:nil];
-            
-            // Dismiss the picker
-            [self onButtonPressed:self.navigationItem.leftBarButtonItem];
         }
         else
         {
@@ -514,9 +509,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         
         // reset
         currentSelectedAsset = -1;
-
-        // Dismiss the picker
-        [self onButtonPressed:self.navigationItem.leftBarButtonItem];
     }
 }
 
@@ -1252,9 +1244,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 // Send the original image by considering its asset url
                 NSURL *assetURL = [info valueForKey:UIImagePickerControllerReferenceURL];
                 [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:selectedImage withURL:assetURL];
-                
-                // Dismiss the picker
-                [strongSelf onButtonPressed:strongSelf.navigationItem.leftBarButtonItem];
             }];
             
             // the user wants to use an other image
@@ -1282,9 +1271,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     {
         NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
         [self.delegate mediaPickerController:self didSelectVideo:selectedVideo isCameraRecording:NO];
-        
-        // Dismiss the picker
-        [self onButtonPressed:self.navigationItem.leftBarButtonItem];
     }
 }
 

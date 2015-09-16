@@ -232,6 +232,8 @@
 
 - (void)destroy
 {
+    [self dismissMediaPicker];
+    
     [super destroy];
 }
 
@@ -239,16 +241,22 @@
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL 
 {
+    [self dismissMediaPicker];
+    
     [self sendSelectedImage:image withCompressionMode:MXKRoomInputToolbarCompressionModePrompt andLocalURL:imageURL];
 }
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
 {
+    [self dismissMediaPicker];
+    
     [self sendSelectedVideo:videoURL isCameraRecording:isCameraRecording];
 }
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
 {
+    [self dismissMediaPicker];
+    
     // We don't prompt user about image compression if several items have been selected
     MXKRoomInputToolbarCompressionMode imageCompressionMode = (assets.count > 1) ? MXKRoomInputToolbarCompressionModeMedium : MXKRoomInputToolbarCompressionModePrompt;
     
@@ -280,6 +288,17 @@
                                            }
                                        }
                                    }];
+    }
+}
+
+#pragma mark - Media picker handling
+
+- (void)dismissMediaPicker
+{
+    if (mediaPicker)
+    {
+        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
+        mediaPicker = nil;
     }
 }
 
