@@ -365,15 +365,6 @@
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setApnsDeviceToken:deviceToken];
     
-    // force send the push token once per app start
-    if (!isAPNSRegistered)
-    {
-        NSArray *mxAccounts = accountManager.activeAccounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            account.enablePushNotifications = YES;
-        }
-    }
     isAPNSRegistered = YES;
 }
 
