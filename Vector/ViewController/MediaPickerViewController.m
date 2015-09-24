@@ -165,7 +165,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     return !lockInterfaceRotation;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskAll;
 }

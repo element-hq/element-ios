@@ -384,7 +384,7 @@
     UIView *sectionHeader = nil;
     NSString* sectionTitle;
     BOOL isShrinked = NO;
-    NSInteger buttonTag;
+    NSInteger buttonTag = 0;
     
     if (section < _publicRoomsFirstSection)
     {
