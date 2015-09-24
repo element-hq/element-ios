@@ -210,7 +210,10 @@ static RageShakeManager* sharedInstance = nil;
             NSString *disabled = account.disabled ? @" (disabled)" : @"";
             
             [message appendFormat:@"userId: %@%@\n", account.mxCredentials.userId, disabled];
-            [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
+            if (account.mxSession.myUser.displayname)
+            {
+                [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
+            }
             [message appendFormat:@"homeServerURL: %@\n", account.mxCredentials.homeServer];
         }
         
@@ -224,7 +227,7 @@ static RageShakeManager* sharedInstance = nil;
         }
         [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Device info\n"];
-        [message appendFormat:@"model: %@\n", [GBDeviceInfo deviceDetails].modelString];
+        [message appendFormat:@"model: %@\n", [GBDeviceInfo deviceInfo].modelString];
         [message appendFormat:@"operatingSystem: %@ %@\n", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
         
         [mailComposer setMessageBody:message isHTML:NO];

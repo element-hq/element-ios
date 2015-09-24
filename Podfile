@@ -22,7 +22,7 @@ pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :br
 #pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
-pod 'GBDeviceInfo', '~> 2.2.9'
+pod 'GBDeviceInfo', '~> 3.4.0'
 
 ### OpenWebRTC call stack ###
 # The wrapper lib between MatrixSDK and OpenWebRTC-SDK
