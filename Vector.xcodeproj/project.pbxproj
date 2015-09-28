@@ -39,6 +39,8 @@
 		F040A9ED1B9836B8004C07C8 /* camera_play.png in Resources */ = {isa = PBXBuildFile; fileRef = F040A9EC1B9836B8004C07C8 /* camera_play.png */; };
 		F040A9EF1B987684004C07C8 /* icon_video.png in Resources */ = {isa = PBXBuildFile; fileRef = F040A9EE1B987684004C07C8 /* icon_video.png */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
+		F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F084DAAC1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m */; settings = {ASSET_TAGS = (); }; };
+		F084DAAF1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F084DAAD1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib */; settings = {ASSET_TAGS = (); }; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -138,6 +140,9 @@
 		F040A9EE1B987684004C07C8 /* icon_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_video.png; sourceTree = "<group>"; };
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
+		F084DAAB1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsEmailIdentityBasedView.h; sourceTree = "<group>"; };
+		F084DAAC1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsEmailIdentityBasedView.m; sourceTree = "<group>"; };
+		F084DAAD1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsEmailIdentityBasedView.xib; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -244,6 +249,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F084DAAA1BB57BD100B4C530 /* Authentication */,
 				F00B1BD51B96E5DD001806E3 /* CollectionViewCell */,
 				F001D7531B8207C000A162C3 /* RoomBubbleList */,
 				F001D75A1B8207C000A162C3 /* RoomInputToolbar */,
@@ -282,6 +288,16 @@
 				F00B1BD91B96EAF3001806E3 /* MediaAssetCollectionViewCell.xib */,
 			);
 			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		F084DAAA1BB57BD100B4C530 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				F084DAAB1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.h */,
+				F084DAAC1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m */,
+				F084DAAD1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 		F08BE09B1B87025B00C480FB /* Utils */ = {
@@ -581,6 +597,7 @@
 				F0DD7D721B7AA8C900C4BE02 /* tab_settings.png in Resources */,
 				F001D7611B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
+				F084DAAF1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib in Resources */,
 				F0E956BF1B834430004C1699 /* share_contact.png in Resources */,
 				F0DD7D7E1B7AAA3C00C4BE02 /* icon_users.png in Resources */,
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
@@ -678,6 +695,7 @@
 				F094AA051B78E3D400B1FBBF /* empty.mm in Sources */,
 				F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */,
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
+				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
 				F00B1BD81B96E5DD001806E3 /* MediaAssetCollectionViewCell.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,

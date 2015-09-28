@@ -27,6 +27,16 @@
 "leave" = "Leave";
 "remove" = "Remove";
 
+// Authentication
+"auth_sign_in" = "Sign in";
+"auth_login" = "Log in";
+"auth_create_account" = "Create a new account";
+"auth_create_account_title" = "Create an account";
+"auth_register" = "Register";
+"auth_back_to_login" = "I already have an account";
+"auth_email_placeholder" = "Email address";
+"auth_password_placeholder" = "Password";
+
 // Chat creation
 "room_creation_title" = "New Chat";
 "room_creation_account" = "Account";
