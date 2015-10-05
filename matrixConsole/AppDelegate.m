@@ -22,6 +22,8 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "NSData+MatrixKit.h"
+
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -423,6 +425,52 @@
 
 - (void)initMatrixSessions
 {
+    [MXKAccount registerOnCertificateChangeBlock:^BOOL(MXKAccount *mxAccount, NSData *certificate) {
+        
+        __block BOOL isTrusted;
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        MXCredentials *mxCredentials = mxAccount.mxCredentials;
+        
+        NSString *title = [NSBundle mxk_localizedStringForKey:@"ssl_could_not_verify"];
+        NSString *existing_expl = mxCredentials.allowedCertificate ? [NSBundle mxk_localizedStringForKey:@"ssl_expected_existing_expl"] : [NSBundle mxk_localizedStringForKey:@"ssl_unexpected_existing_expl"];
+        NSString *homeserverURLStr = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"ssl_homeserver_url"], mxCredentials.homeServer];
+        NSString *fingerprint = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"ssl_fingerprint_hash"], @"SHA256"];
+        NSString *certFingerprint = [certificate SHA256AsHexString];
+        
+        NSString *msg = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@\n\n%@\n\n%@", [NSBundle mxk_localizedStringForKey:@"ssl_cert_not_trust"], existing_expl, homeserverURLStr, fingerprint, certFingerprint, [NSBundle mxk_localizedStringForKey:@"ssl_only_accept"]];
+        
+        MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+        alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ssl_remain_offline"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            isTrusted = NO;
+            dispatch_semaphore_signal(semaphore);
+            
+        }];
+        [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ssl_trust"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            isTrusted = YES;
+            dispatch_semaphore_signal(semaphore);
+            
+        }];
+        [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ssl_logout_account"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            isTrusted = NO;
+            dispatch_semaphore_signal(semaphore);
+            
+            [[MXKAccountManager sharedManager] removeAccount:mxAccount];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert showInViewController:[self.masterTabBarController selectedViewController]];
+        });
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        return isTrusted;
+
+    }];
+    
     // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
     {
