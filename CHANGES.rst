@@ -1,3 +1,9 @@
+Changes in Console in 0.5.4 (2015-10-14)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.2.4): fix App crash on iOS 9.
+
 Changes in Console in 0.5.3 (2015-09-14)
 ===============================================
 
