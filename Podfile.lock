@@ -26,7 +26,7 @@ PODS:
   - Mantle (1.5.5):
     - Mantle/extobjc (= 1.5.5)
   - Mantle/extobjc (1.5.5)
-  - MatrixKit (0.2.3):
+  - MatrixKit (0.2.4):
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.7.6)
     - MatrixSDK (~> 0.5.3)
@@ -36,7 +36,7 @@ PODS:
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 2.2.9)
-  - MatrixKit (~> 0.2.3)
+  - MatrixKit (~> 0.2.4)
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
@@ -44,7 +44,7 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: fb90c5e0d100923b61f0db81de56daefbb67b103
   Mantle: 1b29072a707453975b200a173cf77ec1e2810b75
-  MatrixKit: e04bb14c378d574e7ed52642dfa14cdb6a1ea3e6
+  MatrixKit: 3f320321ca2b3f74ad390385af67c5a8de7fb232
   MatrixSDK: 2749331571cd7499f4c4bd50b2772617a66d3969
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
