@@ -40,6 +40,8 @@
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
         
+        self.useCustomDateTimeLabel = YES;
+        
         // TODO custom here self.eventsFilterForMessages according to Vector requirements
         
         // Set bubble pagination

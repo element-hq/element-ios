@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,6 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pad-g3-2YJ" id="fCg-ju-gnG">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5qO-6t-JGu" userLabel="Pagination Title View">
@@ -61,6 +63,13 @@
                             <constraint firstAttribute="width" constant="32" id="x6r-8d-opD"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bNu-fp-aEv" userLabel="ReceiptsContainer">
+                        <rect key="frame" x="11" y="10" width="61" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="EaU-Hw-6x0"/>
+                            <constraint firstAttribute="width" constant="61" id="jpA-Mm-utW"/>
+                        </constraints>
+                    </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZC1-hT-7fs" userLabel="playIcon Image View">
                         <rect key="frame" x="437" y="18" width="32" height="32"/>
                         <constraints>
@@ -109,15 +118,17 @@
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="18" id="54V-TK-4fN"/>
                     <constraint firstAttribute="bottom" secondItem="tgO-Rv-C7R" secondAttribute="bottom" id="7C3-Tl-mMq"/>
                     <constraint firstItem="ezT-Dl-ESR" firstAttribute="leading" secondItem="SIW-l4-PfI" secondAttribute="trailing" constant="3" id="9z3-D2-2SS"/>
+                    <constraint firstItem="bNu-fp-aEv" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="10" id="Aw3-5i-gEh"/>
                     <constraint firstItem="5qO-6t-JGu" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leading" id="Bjw-VQ-gHR"/>
                     <constraint firstItem="apW-hM-veR" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="18" id="LFn-vp-m0v"/>
                     <constraint firstItem="tgO-Rv-C7R" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="10" id="Lge-A2-1YG"/>
+                    <constraint firstItem="bNu-fp-aEv" firstAttribute="leading" secondItem="fCg-ju-gnG" secondAttribute="leadingMargin" constant="3" id="Wx9-ZD-Vfn"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="top" secondItem="VUV-LR-uNv" secondAttribute="top" id="a60-e8-DnU"/>
                     <constraint firstItem="ezT-Dl-ESR" firstAttribute="top" secondItem="5qO-6t-JGu" secondAttribute="bottom" constant="5" id="aQe-yA-zJm"/>
                     <constraint firstAttribute="bottom" secondItem="SIW-l4-PfI" secondAttribute="bottom" id="fMN-Th-SOT"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="leading" secondItem="VUV-LR-uNv" secondAttribute="leading" id="fev-Nr-WHC"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerY" secondItem="ZC1-hT-7fs" secondAttribute="centerY" id="ffI-vh-SW3"/>
-                    <constraint firstItem="tgO-Rv-C7R" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="8" id="hwr-aa-TB4"/>
+                    <constraint firstItem="tgO-Rv-C7R" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fCg-ju-gnG" secondAttribute="leading" constant="69" id="hwr-aa-TB4"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerX" secondItem="ZC1-hT-7fs" secondAttribute="centerX" id="jah-TA-P0P"/>
                     <constraint firstAttribute="trailing" secondItem="5qO-6t-JGu" secondAttribute="trailing" id="qgw-mb-Y0X"/>
                     <constraint firstItem="SIW-l4-PfI" firstAttribute="centerY" secondItem="Mqf-7a-bsm" secondAttribute="centerY" id="sKJ-ny-LjM"/>
@@ -131,6 +142,7 @@
                 <outlet property="attachViewTopConstraint" destination="54V-TK-4fN" id="oYR-7i-5xN"/>
                 <outlet property="attachViewWidthConstraint" destination="iGr-e7-bde" id="uD4-aU-1Ru"/>
                 <outlet property="attachmentView" destination="SIW-l4-PfI" id="L4H-ub-pPI"/>
+                <outlet property="bubbleInfoContainer" destination="bNu-fp-aEv" id="MUg-ZT-VVk"/>
                 <outlet property="fileTypeIconView" destination="VUV-LR-uNv" id="3CV-J4-TiO"/>
                 <outlet property="messageTextView" destination="tgO-Rv-C7R" id="LZ5-hQ-AbQ"/>
                 <outlet property="msgTextViewLeadingConstraint" destination="hwr-aa-TB4" id="c9j-8p-cpx"/>
