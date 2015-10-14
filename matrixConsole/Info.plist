@@ -65,5 +65,9 @@
 	<string>Console</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechrome</string>
+	</array>
 </dict>
 </plist>
