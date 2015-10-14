@@ -15,6 +15,8 @@
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
 		F01449A31B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */; };
 		F01449B41B56B14D00EA7D73 /* AccountDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */; };
+		F01C113F1BCEA23E00FCDE1E /* matrixConsole.png in Resources */ = {isa = PBXBuildFile; fileRef = F01C113E1BCEA23E00FCDE1E /* matrixConsole.png */; settings = {ASSET_TAGS = (); }; };
+		F01C11411BCEA27C00FCDE1E /* matrixConsole@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F01C11401BCEA27C00FCDE1E /* matrixConsole@2x.png */; settings = {ASSET_TAGS = (); }; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */; };
 		F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */; };
@@ -30,7 +32,6 @@
 		F08DCBDB1A093BFA008C65B6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */; };
 		F0A1A5F71B73C1370061FE52 /* icon_users.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A1A5EB1B73C1370061FE52 /* icon_users.png */; };
 		F0A1A5F81B73C1370061FE52 /* icon_users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A1A5EC1B73C1370061FE52 /* icon_users@2x.png */; };
-		F0A1A5F91B73C1370061FE52 /* matrixConsole.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A1A5ED1B73C1370061FE52 /* matrixConsole.jpg */; };
 		F0A1A5FA1B73C1370061FE52 /* tab_home.ico in Resources */ = {isa = PBXBuildFile; fileRef = F0A1A5EE1B73C1370061FE52 /* tab_home.ico */; };
 		F0A1A5FB1B73C1370061FE52 /* tab_recents.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A1A5EF1B73C1370061FE52 /* tab_recents.png */; };
 		F0A1A5FC1B73C1370061FE52 /* tab_recents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A1A5F01B73C1370061FE52 /* tab_recents@2x.png */; };
@@ -69,6 +70,8 @@
 		F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalNotificationSettingsViewController.m; sourceTree = "<group>"; };
 		F01449B21B56B14D00EA7D73 /* AccountDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDetailsViewController.h; sourceTree = "<group>"; };
 		F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDetailsViewController.m; sourceTree = "<group>"; };
+		F01C113E1BCEA23E00FCDE1E /* matrixConsole.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixConsole.png; sourceTree = "<group>"; };
+		F01C11401BCEA27C00FCDE1E /* matrixConsole@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "matrixConsole@2x.png"; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F03EF5EC19F171EB00A0EE52 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
@@ -95,7 +98,6 @@
 		F08DCBDA1A093BFA008C65B6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F0A1A5EB1B73C1370061FE52 /* icon_users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_users.png; sourceTree = "<group>"; };
 		F0A1A5EC1B73C1370061FE52 /* icon_users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_users@2x.png"; sourceTree = "<group>"; };
-		F0A1A5ED1B73C1370061FE52 /* matrixConsole.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrixConsole.jpg; sourceTree = "<group>"; };
 		F0A1A5EE1B73C1370061FE52 /* tab_home.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = tab_home.ico; sourceTree = "<group>"; };
 		F0A1A5EF1B73C1370061FE52 /* tab_recents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_recents.png; sourceTree = "<group>"; };
 		F0A1A5F01B73C1370061FE52 /* tab_recents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_recents@2x.png"; sourceTree = "<group>"; };
@@ -275,9 +277,10 @@
 		F0A1A5E81B73C1370061FE52 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F01C11401BCEA27C00FCDE1E /* matrixConsole@2x.png */,
+				F01C113E1BCEA23E00FCDE1E /* matrixConsole.png */,
 				F0A1A5EB1B73C1370061FE52 /* icon_users.png */,
 				F0A1A5EC1B73C1370061FE52 /* icon_users@2x.png */,
-				F0A1A5ED1B73C1370061FE52 /* matrixConsole.jpg */,
 				F0A1A5EE1B73C1370061FE52 /* tab_home.ico */,
 				F0A1A5EF1B73C1370061FE52 /* tab_recents.png */,
 				F0A1A5F01B73C1370061FE52 /* tab_recents@2x.png */,
@@ -381,7 +384,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A1A6061B73C66F0061FE52 /* Localizable.strings in Resources */,
-				F0A1A5F91B73C1370061FE52 /* matrixConsole.jpg in Resources */,
+				F01C11411BCEA27C00FCDE1E /* matrixConsole@2x.png in Resources */,
+				F01C113F1BCEA23E00FCDE1E /* matrixConsole.png in Resources */,
 				F0A1A5F81B73C1370061FE52 /* icon_users@2x.png in Resources */,
 				F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */,
 				F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */,
