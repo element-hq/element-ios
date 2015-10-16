@@ -24,5 +24,7 @@
  */
 @property (nonatomic) MXKAppSettings *settings;
 
+- (BOOL)isChromeInstalled;
+
 @end
 
