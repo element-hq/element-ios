@@ -410,7 +410,8 @@
         if (mxAccounts.count == 1)
         {
             dedicatedAccount = mxAccounts.firstObject;
-        } else
+        }
+        else
         {
             for (MXKAccount *account in mxAccounts)
             {
@@ -431,8 +432,7 @@
             if (state == UIApplicationStateInactive)
             {
 #ifdef DEBUG
-                // log the full userInfo only in DEBUG
-                NSLog(@"[AppDelegate] didReceiveRemoteNotification : update the tabbar");
+                NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
 #endif
                 
                 [self.masterTabBarController showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
