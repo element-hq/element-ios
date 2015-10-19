@@ -68,19 +68,19 @@
     NSTimeInterval interval = -[date timeIntervalSinceDate:today] - localZoneOffset;
     if (interval > 60*60*24*6)
     {
-        dateFormat = @"EEE MMM dd yyyy";
+        [dateFormatter setDateFormat:@"EEE MMM dd yyyy"];
         return [super dateStringFromDate:date withTime:time];
     }
     else if (interval > 60*60*24)
     {
-        dateFormat = @"EEEE";
+        [dateFormatter setDateFormat:@"EEEE"];
         return [super dateStringFromDate:date withTime:time];
     }
     else if (interval > 0)
     {
         if (time)
         {
-            dateFormat = nil;
+            [dateFormatter setDateFormat:nil];
             return [NSString stringWithFormat:@"yesterday %@", [super dateStringFromDate:date withTime:YES]];
         }
         return @"yesterday";
@@ -89,7 +89,7 @@
     {
         if (time)
         {
-            dateFormat = nil;
+            [dateFormatter setDateFormat:nil];
             return [NSString stringWithFormat:@"today %@", [super dateStringFromDate:date withTime:YES]];
         }
         return @"today";
@@ -97,7 +97,7 @@
     else
     {
         // Date in future
-        dateFormat = @"EEE MMM dd yyyy";
+        [dateFormatter setDateFormat:@"EEE MMM dd yyyy"];
         return [super dateStringFromDate:date withTime:time];
     }
 }
