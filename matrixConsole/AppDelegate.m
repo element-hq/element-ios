@@ -291,6 +291,10 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
+
+    // cancel any background sync before resuming
+    // i.e. warn IOS that there is no new data with any received push.
+    [self cancelBackgroundSync];
     
     _isAppForeground = YES;
 }
@@ -375,6 +379,15 @@
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
 }
 
+- (void)cancelBackgroundSync
+{
+    if (_completionHandler)
+    {
+        _completionHandler(UIBackgroundFetchResultNoData);
+        _completionHandler = nil;
+    }
+}
+
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
 #ifdef DEBUG
@@ -382,43 +395,92 @@
     NSLog(@"[AppDelegate] APNS: %@", userInfo);
 #endif
     
-    completionHandler(UIBackgroundFetchResultNoData);
-    
-    // Jump to the concerned room only if the app is transitioning from the background
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive)
+    // Look for the room id
+    NSString* roomId = [userInfo objectForKey:@"room_id"];
+    if (roomId.length)
     {
-        // Look for the room id
-        NSString* roomId = [userInfo objectForKey:@"room_id"];
-        if (roomId.length)
+        // TODO retrieve the right matrix session
+        
+        //**************
+        // Patch consider the first session which knows the room id
+        MXKAccount *dedicatedAccount = nil;
+        
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+        
+        if (mxAccounts.count == 1)
         {
-            // TODO retrieve the right matrix session
-            
-            //**************
-            // Patch consider the first session which knows the room id
-            MXSession *mxSession;
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            
-            if (mxAccounts.count == 1)
+            dedicatedAccount = mxAccounts.firstObject;
+        }
+        else
+        {
+            for (MXKAccount *account in mxAccounts)
             {
-                MXKAccount *account = mxAccounts.firstObject;
-                mxSession = account.mxSession;
-            } else
-            {
-                for (MXKAccount *account in mxAccounts)
+                if ([account.mxSession roomWithRoomId:roomId])
                 {
-                    if ([account.mxSession roomWithRoomId:roomId])
-                    {
-                        mxSession = account.mxSession;
-                        break;
-                    }
+                    dedicatedAccount = account;
+                    break;
                 }
             }
-            //**************
+        }
+        
+        // sanity checks
+        if (dedicatedAccount && dedicatedAccount.mxSession)
+        {
+            UIApplicationState state = [UIApplication sharedApplication].applicationState;
             
-            
-            [self.masterTabBarController showRoom:roomId withMatrixSession:mxSession];
+            // Jump to the concerned room only if the app is transitioning from the background
+            if (state == UIApplicationStateInactive)
+            {
+#ifdef DEBUG
+                NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
+#endif
+                
+                [self.masterTabBarController showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+            }
+            else if (!_completionHandler && (state == UIApplicationStateBackground))
+            {
+                _completionHandler = completionHandler;
+                
+#ifdef DEBUG
+                NSLog(@"[AppDelegate] : starts a catchup");
+#endif
+                
+                [dedicatedAccount catchup:20000 success:^{
+#ifdef DEBUG
+                    NSLog(@"[AppDelegate] : the catchup succeeds");
+#endif
+                    
+                    if (_completionHandler)
+                    {
+                        _completionHandler(UIBackgroundFetchResultNewData);
+                        _completionHandler = nil;
+                    }
+                } failure:^(NSError *error) {
+#ifdef DEBUG
+                    NSLog(@"[AppDelegate] : the catchup fails");
+#endif
+                    
+                    if (_completionHandler)
+                    {
+                        _completionHandler(UIBackgroundFetchResultNoData);
+                        _completionHandler = nil;
+                    }
+                }];
+
+                // wait that the background sync is done
+                return;
+            }
+        }
+        else
+        {
+#ifdef DEBUG
+            NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
+#endif
         }
     }
+    
+    completionHandler(UIBackgroundFetchResultNoData);
+    
 }
 
 #pragma mark - Matrix sessions handling
