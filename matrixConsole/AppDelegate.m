@@ -471,6 +471,12 @@
                 return;
             }
         }
+        else
+        {
+#ifdef DEBUG
+            NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
+#endif
+        }
     }
     
     completionHandler(UIBackgroundFetchResultNoData);
