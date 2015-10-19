@@ -384,7 +384,7 @@
     if (_completionHandler)
     {
         _completionHandler(UIBackgroundFetchResultNoData);
-        _completionHandler = NULL;
+        _completionHandler = nil;
     }
 }
 
@@ -403,7 +403,7 @@
         
         //**************
         // Patch consider the first session which knows the room id
-        MXKAccount *dedicatedAccount = NULL;
+        MXKAccount *dedicatedAccount = nil;
         
         NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
         
@@ -453,7 +453,7 @@
                     if (_completionHandler)
                     {
                         _completionHandler(UIBackgroundFetchResultNewData);
-                        _completionHandler = NULL;
+                        _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
 #ifdef DEBUG
@@ -463,7 +463,7 @@
                     if (_completionHandler)
                     {
                         _completionHandler(UIBackgroundFetchResultNoData);
-                        _completionHandler = NULL;
+                        _completionHandler = nil;
                     }
                 }];
 
