@@ -172,6 +172,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
+#endif
+    
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
     {
@@ -223,14 +227,35 @@
         [self initMatrixSessions];
     }
     
-    // clear the notifications counter
-    [self clearNotifications];
+    NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    // The application is launched if there is a new notification
+    if ((remoteNotif) && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground))
+    {
+        // do something when the app is launched on background
+        
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
+#endif
+    }
+    else
+    {
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
+#endif
+        // clear the notifications counter
+        [self clearNotifications];
+    }
     
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationWillResignActive");
+#endif
+    
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
@@ -256,6 +281,10 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationDidEnterBackground");
+#endif
+    
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
@@ -288,6 +317,10 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationWillEnterForeground");
+#endif
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
@@ -301,6 +334,10 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationDidBecomeActive");
+#endif
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
@@ -335,6 +372,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationWillTerminate");
+#endif
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -766,6 +806,10 @@
 
 - (void)clearNotifications
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] clearNotifications");
+#endif
+    
     // force to clear the notification center
     // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
     // so resetting it does not clear the notifications center.
