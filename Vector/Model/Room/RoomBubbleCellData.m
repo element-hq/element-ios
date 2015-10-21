@@ -102,7 +102,7 @@
         [super prepareBubbleComponentsPosition];
         
         // Check whether the position of other components need to be refreshed
-        if (self.dataType != MXKRoomBubbleCellDataTypeText || !savedShouldUpdateComponentsPosition || bubbleComponents.count < 2)
+        if (self.attachment || !savedShouldUpdateComponentsPosition || bubbleComponents.count < 2)
         {
             return;
         }
