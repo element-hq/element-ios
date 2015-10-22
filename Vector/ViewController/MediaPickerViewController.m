@@ -16,8 +16,6 @@
 
 #import "MediaPickerViewController.h"
 
-#import "MediaAssetCollectionViewCell.h"
-
 #import <Photos/Photos.h>
 
 #import <MediaPlayer/MediaPlayer.h>
@@ -96,7 +94,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     currentSelectedAsset = -1;
     
     // Register collection view cell class
-    [self.recentPicturesCollectionView registerClass:MediaAssetCollectionViewCell.class forCellWithReuseIdentifier:recentItemCollectionViewCellId];
+    [self.recentPicturesCollectionView registerClass:MXKMediaCollectionViewCell.class forCellWithReuseIdentifier:recentItemCollectionViewCellId];
     
     // Adjust layout according to screen size
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
@@ -1126,7 +1124,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MediaAssetCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:recentItemCollectionViewCellId forIndexPath:indexPath];
+    MXKMediaCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:recentItemCollectionViewCellId forIndexPath:indexPath];
     
     if (indexPath.row < assetsFetchResult.count)
     {
@@ -1140,12 +1138,17 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
         PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
         option.synchronous = YES;
         [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFit options:option resultHandler:^(UIImage *result, NSDictionary *info) {
-            cell.imageView.image = result;
+            cell.mxkImageView.image = result;
         }];
         
-        cell.selectionImageView.hidden = ![selectedAssets[indexPath.row] boolValue];
+        cell.bottomLeftIcon.image = [UIImage imageNamed:@"selection_tick"];
+        cell.bottomLeftIcon.hidden = ![selectedAssets[indexPath.row] boolValue];
         
-        cell.videoIconImageView.hidden = (asset.mediaType == PHAssetMediaTypeImage);
+        cell.topRightIcon.image = [UIImage imageNamed:@"icon_video"];
+        cell.topRightIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
+        
+        // Disable user interaction in mxkImageView, in order to let collection handle user selection
+        cell.mxkImageView.userInteractionEnabled = NO;
     }
     
     return cell;

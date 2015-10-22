@@ -23,8 +23,6 @@
 		F00B1BD01B95D22E001806E3 /* camera_switch.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BCE1B95D22E001806E3 /* camera_switch.png */; };
 		F00B1BD31B95D478001806E3 /* camera_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BD11B95D478001806E3 /* camera_picture.png */; };
 		F00B1BD41B95D478001806E3 /* camera_video.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BD21B95D478001806E3 /* camera_video.png */; };
-		F00B1BD81B96E5DD001806E3 /* MediaAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F00B1BD71B96E5DD001806E3 /* MediaAssetCollectionViewCell.m */; };
-		F00B1BDA1B96EAF3001806E3 /* MediaAssetCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BD91B96EAF3001806E3 /* MediaAssetCollectionViewCell.xib */; };
 		F00B1BDC1B96EF09001806E3 /* selection_tick.png in Resources */ = {isa = PBXBuildFile; fileRef = F00B1BDB1B96EF09001806E3 /* selection_tick.png */; };
 		F00E08401B8380CF0057012C /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = F00E083E1B8380CF0057012C /* settings.png */; };
 		F00E08411B8380CF0057012C /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F00E083F1B8380CF0057012C /* settings@2x.png */; };
@@ -123,9 +121,6 @@
 		F00B1BCE1B95D22E001806E3 /* camera_switch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_switch.png; sourceTree = "<group>"; };
 		F00B1BD11B95D478001806E3 /* camera_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_picture.png; sourceTree = "<group>"; };
 		F00B1BD21B95D478001806E3 /* camera_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_video.png; sourceTree = "<group>"; };
-		F00B1BD61B96E5DD001806E3 /* MediaAssetCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAssetCollectionViewCell.h; sourceTree = "<group>"; };
-		F00B1BD71B96E5DD001806E3 /* MediaAssetCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAssetCollectionViewCell.m; sourceTree = "<group>"; };
-		F00B1BD91B96EAF3001806E3 /* MediaAssetCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAssetCollectionViewCell.xib; sourceTree = "<group>"; };
 		F00B1BDB1B96EF09001806E3 /* selection_tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selection_tick.png; sourceTree = "<group>"; };
 		F00E083E1B8380CF0057012C /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		F00E083F1B8380CF0057012C /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
@@ -250,7 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				F084DAAA1BB57BD100B4C530 /* Authentication */,
-				F00B1BD51B96E5DD001806E3 /* CollectionViewCell */,
 				F001D7531B8207C000A162C3 /* RoomBubbleList */,
 				F001D75A1B8207C000A162C3 /* RoomInputToolbar */,
 			);
@@ -278,16 +272,6 @@
 				F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */,
 			);
 			path = RoomInputToolbar;
-			sourceTree = "<group>";
-		};
-		F00B1BD51B96E5DD001806E3 /* CollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				F00B1BD61B96E5DD001806E3 /* MediaAssetCollectionViewCell.h */,
-				F00B1BD71B96E5DD001806E3 /* MediaAssetCollectionViewCell.m */,
-				F00B1BD91B96EAF3001806E3 /* MediaAssetCollectionViewCell.xib */,
-			);
-			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		F084DAAA1BB57BD100B4C530 /* Authentication */ = {
@@ -515,6 +499,7 @@
 				F094A99F1B78D8F000B1FBBF /* Frameworks */,
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				44C35695CFA4F9799C449367 /* Copy Pods Resources */,
+				CE74DDBF8318D6A2441D715E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -620,7 +605,6 @@
 				F00B1BCA1B95CC68001806E3 /* camera_capture.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				F0316E471B7E4C9A00F03620 /* placeholder.png in Resources */,
-				F00B1BDA1B96EAF3001806E3 /* MediaAssetCollectionViewCell.xib in Resources */,
 				F0DD7D601B7AA8C900C4BE02 /* hide.png in Resources */,
 				F0DD7D741B7AA8C900C4BE02 /* typing.png in Resources */,
 				F00B1BD31B95D478001806E3 /* camera_picture.png in Resources */,
@@ -682,6 +666,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		CE74DDBF8318D6A2441D715E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Vector/Pods-Vector-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -697,7 +696,6 @@
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
-				F00B1BD81B96E5DD001806E3 /* MediaAssetCollectionViewCell.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
