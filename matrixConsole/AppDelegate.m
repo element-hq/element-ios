@@ -770,6 +770,12 @@
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error
 {
+    // Ignore fake error, or connection cancellation error
+    if (!error || ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+    {
+        return nil;
+    }
+    
     // Ignore network reachability error when the app is already offline
     if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
     {
