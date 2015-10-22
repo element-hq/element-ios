@@ -818,7 +818,7 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
         {
             [publicRoomCell render:publicRoom];
             // Highlight?
-            publicRoomCell.focused = (publicRoomCell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:publicRoomCell.roomDisplayName.text] != NSNotFound);
+            publicRoomCell.highlightedPublicRoom = (publicRoomCell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:publicRoomCell.roomDisplayName.text] != NSNotFound);
         }
         
         cell = publicRoomCell;
