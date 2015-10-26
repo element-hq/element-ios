@@ -228,9 +228,26 @@
         // Add matrix observers and initialize matrix sessions.
         [self initMatrixSessions];
     }
+
+    NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
     
-    // clear the notifications counter
-    [self clearNotifications];
+    // The application is launched if there is a new notification
+    if ((remoteNotif) && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground))
+    {
+        // do something when the app is launched on background
+        
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
+#endif
+    }
+    else
+    {
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
+#endif
+        // clear the notifications counter
+        [self clearNotifications];
+    }
     
     return YES;
 }
