@@ -157,7 +157,8 @@
 
 - (IBAction)logout:(id)sender
 {
-    [[AppDelegate theDelegate] logout];
+    // Logout all matrix account
+    [[MXKAccountManager sharedManager] logout];
 }
 
 - (IBAction)onButtonPressed:(id)sender
