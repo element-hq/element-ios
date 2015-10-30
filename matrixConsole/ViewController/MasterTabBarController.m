@@ -141,7 +141,10 @@
     [super didReceiveMemoryWarning];
     
     // Dispose of any resources that can be recreated.
-    [[AppDelegate theDelegate] reloadMatrixSessions:NO];
+    
+    // Memory warnings are now handled by 'MXKRoomDataSourceManager' instance to reload unused data source.
+    // It is not required to reload all matrix sessions here
+//    [[AppDelegate theDelegate] reloadMatrixSessions:NO];
 }
 
 - (void)dealloc
