@@ -313,6 +313,7 @@
 				F07A80CF19DD9DE700B621A1 /* Frameworks */,
 				F07A80D019DD9DE700B621A1 /* Resources */,
 				3496B335A95D95AB2A8DCEF4 /* Copy Pods Resources */,
+				56D720977680A8858FD17E8D /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -427,6 +428,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56D720977680A8858FD17E8D /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-matrixConsole/Pods-matrixConsole-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A063750719371855C7755702 /* Check Pods Manifest.lock */ = {
