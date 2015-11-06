@@ -1,3 +1,23 @@
+Changes in Console in 0.5.5 (2015-11-06)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.2.5).
+ * APNS handling: APNS registration is forced only at the first launch. 
+ * Fix screen flickering on logout.
+ * AppDelegate: Handle unrecognized certificates by prompting user during authentication challenge.
+ * Allow Chrome to be set as the default link handler.
+ * SettingsViewController: reload table view only when it is visible.
+
+Bug fixes:
+ * HomeViewController: Public room selection is ignored during search session.
+
+Changes in Console in 0.5.4 (2015-10-14)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.2.4): fix App crash on iOS 9.
+
 Changes in Console in 0.5.3 (2015-09-14)
 ===============================================
 
