@@ -8,7 +8,7 @@ target "matrixConsole" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Console has been built
-pod 'MatrixKit', '~> 0.2.4'
+pod 'MatrixKit', '~> 0.2.5'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -22,7 +22,7 @@ pod 'MatrixKit', '~> 0.2.4'
 #pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
 #pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
 
-pod 'GBDeviceInfo', '~> 2.2.9'
+pod 'GBDeviceInfo', '~> 3.4.0'
 
 end
 

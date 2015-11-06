@@ -20,6 +20,10 @@
 	<true/>
 	<key>showLeftMembersInRoomMemberList</key>
 	<false/>
+	<key>httpLinkScheme</key>
+	<string>http</string>
+	<key>httpsLinkScheme</key>
+	<string>https</string>
 	<key>syncLocalContacts</key>
 	<false/>
 	<key>maxAllowedMediaCacheSize</key>

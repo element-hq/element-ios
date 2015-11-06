@@ -15,8 +15,8 @@
 		F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F013EEEB1A40D437002BB093 /* matrixConsole-Defaults.plist */; };
 		F01449A31B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */; };
 		F01449B41B56B14D00EA7D73 /* AccountDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */; };
-		F01C11441BCEA3F300FCDE1E /* matrixConsole.png in Resources */ = {isa = PBXBuildFile; fileRef = F01C11421BCEA3F300FCDE1E /* matrixConsole.png */; settings = {ASSET_TAGS = (); }; };
-		F01C11451BCEA3F300FCDE1E /* matrixConsole@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F01C11431BCEA3F300FCDE1E /* matrixConsole@2x.png */; settings = {ASSET_TAGS = (); }; };
+		F01C113F1BCEA23E00FCDE1E /* matrixConsole.png in Resources */ = {isa = PBXBuildFile; fileRef = F01C113E1BCEA23E00FCDE1E /* matrixConsole.png */; settings = {ASSET_TAGS = (); }; };
+		F01C11411BCEA27C00FCDE1E /* matrixConsole@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F01C11401BCEA27C00FCDE1E /* matrixConsole@2x.png */; settings = {ASSET_TAGS = (); }; };
 		F03EF5F619F171EB00A0EE52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */; };
 		F03EF5F719F171EB00A0EE52 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5ED19F171EB00A0EE52 /* AuthenticationViewController.m */; };
 		F03EF5F819F171EB00A0EE52 /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03EF5EF19F171EB00A0EE52 /* MasterTabBarController.m */; };
@@ -70,8 +70,8 @@
 		F01449A21B53E06A00EA7D73 /* GlobalNotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalNotificationSettingsViewController.m; sourceTree = "<group>"; };
 		F01449B21B56B14D00EA7D73 /* AccountDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDetailsViewController.h; sourceTree = "<group>"; };
 		F01449B31B56B14D00EA7D73 /* AccountDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDetailsViewController.m; sourceTree = "<group>"; };
-		F01C11421BCEA3F300FCDE1E /* matrixConsole.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixConsole.png; sourceTree = "<group>"; };
-		F01C11431BCEA3F300FCDE1E /* matrixConsole@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "matrixConsole@2x.png"; sourceTree = "<group>"; };
+		F01C113E1BCEA23E00FCDE1E /* matrixConsole.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = matrixConsole.png; sourceTree = "<group>"; };
+		F01C11401BCEA27C00FCDE1E /* matrixConsole@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "matrixConsole@2x.png"; sourceTree = "<group>"; };
 		F03EF5EA19F171EB00A0EE52 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F03EF5EB19F171EB00A0EE52 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F03EF5EC19F171EB00A0EE52 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
@@ -277,8 +277,8 @@
 		F0A1A5E81B73C1370061FE52 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				F01C11421BCEA3F300FCDE1E /* matrixConsole.png */,
-				F01C11431BCEA3F300FCDE1E /* matrixConsole@2x.png */,
+				F01C11401BCEA27C00FCDE1E /* matrixConsole@2x.png */,
+				F01C113E1BCEA23E00FCDE1E /* matrixConsole.png */,
 				F0A1A5EB1B73C1370061FE52 /* icon_users.png */,
 				F0A1A5EC1B73C1370061FE52 /* icon_users@2x.png */,
 				F0A1A5EE1B73C1370061FE52 /* tab_home.ico */,
@@ -385,8 +385,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A1A6061B73C66F0061FE52 /* Localizable.strings in Resources */,
-				F01C11451BCEA3F300FCDE1E /* matrixConsole@2x.png in Resources */,
-				F01C11441BCEA3F300FCDE1E /* matrixConsole.png in Resources */,
+				F01C11411BCEA27C00FCDE1E /* matrixConsole@2x.png in Resources */,
+				F01C113F1BCEA23E00FCDE1E /* matrixConsole.png in Resources */,
 				F0A1A5F81B73C1370061FE52 /* icon_users@2x.png in Resources */,
 				F07A80E419DD9DE700B621A1 /* Main.storyboard in Resources */,
 				F013EEEC1A40D437002BB093 /* matrixConsole-Defaults.plist in Resources */,
@@ -628,6 +628,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "libstdc++";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = matrixConsole/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -642,6 +643,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "libstdc++";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = matrixConsole/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

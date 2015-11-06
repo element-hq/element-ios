@@ -52,7 +52,7 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
     
     // Search in public rooms
     UIBarButtonItem *searchButton;
-    BOOL             searchBarShouldEndEditing;
+    BOOL             ignoreSearchRequest;
     NSMutableDictionary  *filteredPublicRoomsDict;
 }
 
@@ -141,6 +141,9 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
 {
     [super viewWillAppear:animated];
     
+    // Restore search mechanism (if enabled)
+    ignoreSearchRequest = NO;
+    
     // Refresh all listed public rooms
     [self refreshPublicRooms:nil];
 }
@@ -148,6 +151,9 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    // The user may still press search button whereas the view disappears
+    ignoreSearchRequest = YES;
     
     // Leave potential search session
     if (!_publicRoomsSearchBar.isHidden)
@@ -458,6 +464,12 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
 
 - (IBAction)search:(id)sender
 {
+    // The user may have pressed search button whereas the view controller was disappearing
+    if (ignoreSearchRequest)
+    {
+        return;
+    }
+    
     if (_publicRoomsSearchBar.isHidden)
     {
         // Check whether there are data in which search
@@ -468,7 +480,6 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
             _publicRoomsSearchBarHeightConstraint.constant = 44;
             [self.view setNeedsUpdateConstraints];
             
-            searchBarShouldEndEditing = NO;
             [_publicRoomsSearchBar becomeFirstResponder];
         }
     }
@@ -807,7 +818,7 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
         {
             [publicRoomCell render:publicRoom];
             // Highlight?
-            publicRoomCell.focused = (publicRoomCell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:publicRoomCell.roomDisplayName.text] != NSNotFound);
+            publicRoomCell.highlightedPublicRoom = (publicRoomCell.roomDisplayName.text && [highlightedPublicRooms indexOfObject:publicRoomCell.roomDisplayName.text] != NSNotFound);
         }
         
         cell = publicRoomCell;
@@ -894,11 +905,11 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
                 UIImage *chevron;
                 if ([shrinkedHomeServers indexOfObject:homeserver] != NSNotFound)
                 {
-                    chevron = [UIImage imageNamed:@"disclosure"];
+                    chevron = [NSBundle mxk_imageFromMXKAssetsBundleWithName:@"disclosure"];
                 }
                 else
                 {
-                    chevron =[UIImage imageNamed:@"shrink"];
+                    chevron =[NSBundle mxk_imageFromMXKAssetsBundleWithName:@"shrink"];
                 }
                 UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
                 chevronView.contentMode = UIViewContentModeCenter;
@@ -935,17 +946,18 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
     }
     else
     {
-        // Hide the keyboard when user select a room
-        [self dismissKeyboard];
-        
-        // Handle multi-sessions here
+        // Here the user has selected a public room.
+        // Prompt user to select an account in case of multi-sessions before opening this room
         [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount)
         {
+            // Retrieve the selected public room.
             MXPublicRoom *publicRoom;
-            NSInteger index = indexPath.section - publicRoomsFirstSection;
-            if (index < homeServers.count)
+            
+            // CAUTION: The public room must be retrieved before dismissing the keyboard, because the table view may be reloaded when keyboard is dismissed.
+            NSInteger homeServerIndex = indexPath.section - publicRoomsFirstSection;
+            if (homeServerIndex < homeServers.count)
             {
-                NSString *homeserver = [homeServers objectAtIndex:index];
+                NSString *homeserver = [homeServers objectAtIndex:homeServerIndex];
                 NSArray *publicRooms = nil;
                 if (filteredPublicRoomsDict)
                 {
@@ -961,6 +973,9 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
                     publicRoom = [publicRooms objectAtIndex:indexPath.row];
                 }
             }
+            
+            // Hide the keyboard when user selects a room
+            [self dismissKeyboard];
             
             if (publicRoom)
             {
@@ -1005,17 +1020,6 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
 }
 
 #pragma mark - UISearchBarDelegate
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    searchBarShouldEndEditing = NO;
-    return YES;
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
-    return searchBarShouldEndEditing;
-}
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
@@ -1065,14 +1069,12 @@ NSString *const kHomeViewControllerCreateRoomCellId = @"kHomeViewControllerCreat
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     // "Done" key has been pressed
-    searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     // Leave search
-    searchBarShouldEndEditing = YES;
     [searchBar resignFirstResponder];
     
     _publicRoomsSearchBar.hidden = YES;

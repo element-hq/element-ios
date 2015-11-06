@@ -32,6 +32,8 @@
 #define SETTINGS_SECTION_ROOMS_SHOW_UNSUPPORTED_EVENTS_INDEX    2
 #define SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX               3
 #define SETTINGS_SECTION_ROOMS_DISPLAY_LEFT_MEMBERS_INDEX       4
+#define SETTINGS_SECTION_ROOMS_OPEN_LINKS_IN_CHROME             5 // Note that this is the same as below; an offset is added at layout time if Chrome is actually installed
+// Anything below here should be addressed by its index + afterChromeOffset
 #define SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX             5
 #define SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX                6
 #define SETTINGS_SECTION_ROOMS_INDEX_COUNT                      7
@@ -57,11 +59,14 @@
     UISwitch *allEventsSwitch;
     UISwitch *redactionsSwitch;
     UISwitch *unsupportedEventsSwitch;
+    UISwitch *useChromeEventsSwitch;
     UISwitch *sortMembersSwitch;
     UISwitch *displayLeftMembersSwitch;
     MXKTableViewCellWithLabelAndSlider* maxCacheSizeCell;
     NSUInteger minimumCacheSize;
     UIButton *clearCacheButton;
+
+    NSInteger afterChromeOffset;
 }
 
 @end
@@ -72,7 +77,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
+
     // Consider the standard settings by default
     _settings = [MXKAppSettings standardAppSettings];
     
@@ -86,6 +91,46 @@
     
     // Setup `MXKRoomMemberListViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (BOOL)isChromeInstalled
+{
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)destroy
+{
+    [self reset];
+    
+    [super destroy];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!_settings)
+    {
+        // Consider the standard settings by default
+        _settings = [MXKAppSettings standardAppSettings];
+    }
+    
+    selectedCountryCode = countryCode = [_settings phonebookCountryCode];
+    
+    // Update the minimum cache size with the current value
+    // Dispatch this operation to not freeze the app
+    dispatch_async(dispatch_get_main_queue(), ^{
+        minimumCacheSize = self.minCachesSize;
+    });
+    
+    // Refresh display
+    [self.tableView reloadData];
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -124,41 +169,6 @@
     }];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)destroy
-{
-    [self reset];
-    
-    [super destroy];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (!_settings)
-    {
-        // Consider the standard settings by default
-        _settings = [MXKAppSettings standardAppSettings];
-    }
-    
-    selectedCountryCode = countryCode = [_settings phonebookCountryCode];
-    
-    // Update the minimum cache size with the current value
-    // Dispatch this operation to not freeze the app
-    dispatch_async(dispatch_get_main_queue(), ^{
-        minimumCacheSize = self.minCachesSize;
-    });
-    
-    // Refresh display
-    [self.tableView reloadData];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -174,6 +184,24 @@
     }
     
     countryCode = [_settings phonebookCountryCode];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Remove observers
+    if (removedAccountObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:removedAccountObserver];
+        removedAccountObserver = nil;
+    }
+    
+    if (accountUserInfoObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:accountUserInfoObserver];
+        accountUserInfoObserver = nil;
+    }
 }
 
 #pragma mark - Internal methods
@@ -202,6 +230,7 @@
     allEventsSwitch = nil;
     redactionsSwitch = nil;
     unsupportedEventsSwitch = nil;
+    useChromeEventsSwitch = nil;
     sortMembersSwitch = nil;
     displayLeftMembersSwitch = nil;
     maxCacheSizeCell = nil;
@@ -233,7 +262,8 @@
 
 - (IBAction)logout:(id)sender
 {
-    [[AppDelegate theDelegate] logout];
+    // Logout all matrix account
+    [[MXKAccountManager sharedManager] logout];
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -249,6 +279,11 @@
     else if (sender == unsupportedEventsSwitch)
     {
         _settings.showUnsupportedEventsInRoomHistory = unsupportedEventsSwitch.on;
+    }
+    else if (sender == useChromeEventsSwitch)
+    {
+        _settings.httpLinkScheme = useChromeEventsSwitch.on ? @"googlechrome" : @"http";
+        _settings.httpsLinkScheme = useChromeEventsSwitch.on ? @"googlechromes" : @"https";
     }
     else if (sender == sortMembersSwitch)
     {
@@ -321,6 +356,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    afterChromeOffset = [self isChromeInstalled] ? 1 : 0;
+
     NSInteger count = 0;
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX)
     {
@@ -339,7 +376,7 @@
     }
     else if (section == SETTINGS_SECTION_ROOMS_INDEX)
     {
-        count = SETTINGS_SECTION_ROOMS_INDEX_COUNT;
+        count = SETTINGS_SECTION_ROOMS_INDEX_COUNT + afterChromeOffset;
     }
     else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX)
     {
@@ -471,7 +508,7 @@
     }
     else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX)
     {
-        if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX)
+        if (indexPath.row == SETTINGS_SECTION_ROOMS_CLEAR_CACHE_INDEX + afterChromeOffset)
         {
             MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!clearCacheBtnCell)
@@ -490,7 +527,7 @@
             
             cell = clearCacheBtnCell;
         }
-        else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX)
+        else if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX + afterChromeOffset)
         {
             maxCacheSizeCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSlider defaultReuseIdentifier]];
             if (!maxCacheSizeCell)
@@ -534,6 +571,12 @@
                 roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_unsupported_events", @"MatrixConsole", nil);
                 roomsSettingCell.mxkSwitch.on = [_settings showUnsupportedEventsInRoomHistory];
                 unsupportedEventsSwitch = roomsSettingCell.mxkSwitch;
+            }
+            else if (indexPath.row == SETTINGS_SECTION_ROOMS_OPEN_LINKS_IN_CHROME && afterChromeOffset == 1)
+            {
+                roomsSettingCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_open_links_in_chrome", @"MatrixConsole", nil);
+                roomsSettingCell.mxkSwitch.on = [[_settings httpLinkScheme] isEqualToString: @"googlechrome"];
+                useChromeEventsSwitch = roomsSettingCell.mxkSwitch;
             }
             else if (indexPath.row == SETTINGS_SECTION_ROOMS_SORT_MEMBERS_INDEX)
             {
@@ -603,7 +646,7 @@
     }
     else if (indexPath.section == SETTINGS_SECTION_ROOMS_INDEX)
     {
-        if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX)
+        if (indexPath.row == SETTINGS_SECTION_ROOMS_SET_CACHE_SIZE_INDEX + afterChromeOffset)
         {
             return 88;
         }

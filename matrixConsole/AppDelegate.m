@@ -22,6 +22,8 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "NSData+MatrixKit.h"
+
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -170,6 +172,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
+#endif
+    
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
     {
@@ -221,14 +227,35 @@
         [self initMatrixSessions];
     }
     
-    // clear the notifications counter
-    [self clearNotifications];
+    NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    // The application is launched if there is a new notification
+    if ((remoteNotif) && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground))
+    {
+        // do something when the app is launched on background
+        
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
+#endif
+    }
+    else
+    {
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
+#endif
+        // clear the notifications counter
+        [self clearNotifications];
+    }
     
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationWillResignActive");
+#endif
+    
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
@@ -254,6 +281,10 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationDidEnterBackground");
+#endif
+    
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
@@ -286,15 +317,27 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationWillEnterForeground");
+#endif
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
+
+    // cancel any background sync before resuming
+    // i.e. warn IOS that there is no new data with any received push.
+    [self cancelBackgroundSync];
     
     _isAppForeground = YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationDidBecomeActive");
+#endif
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
@@ -329,6 +372,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] applicationWillTerminate");
+#endif
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -359,26 +405,27 @@
 
 - (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    NSLog(@"[AppDelegate] Got APNS token!");
+    NSUInteger len = ((deviceToken.length > 8) ? 8 : deviceToken.length / 2);
+    NSLog(@"[AppDelegate] Got APNS token! (%@ ...)", [deviceToken subdataWithRange:NSMakeRange(0, len)]);
     
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setApnsDeviceToken:deviceToken];
     
-    // force send the push token once per app start
-    if (!isAPNSRegistered)
-    {
-        NSArray *mxAccounts = accountManager.activeAccounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            account.enablePushNotifications = YES;
-        }
-    }
     isAPNSRegistered = YES;
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
+}
+
+- (void)cancelBackgroundSync
+{
+    if (_completionHandler)
+    {
+        _completionHandler(UIBackgroundFetchResultNoData);
+        _completionHandler = nil;
+    }
 }
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
@@ -388,49 +435,144 @@
     NSLog(@"[AppDelegate] APNS: %@", userInfo);
 #endif
     
-    completionHandler(UIBackgroundFetchResultNoData);
-    
-    // Jump to the concerned room only if the app is transitioning from the background
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive)
+    // Look for the room id
+    NSString* roomId = [userInfo objectForKey:@"room_id"];
+    if (roomId.length)
     {
-        // Look for the room id
-        NSString* roomId = [userInfo objectForKey:@"room_id"];
-        if (roomId.length)
+        // TODO retrieve the right matrix session
+        
+        //**************
+        // Patch consider the first session which knows the room id
+        MXKAccount *dedicatedAccount = nil;
+        
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+        
+        if (mxAccounts.count == 1)
         {
-            // TODO retrieve the right matrix session
-            
-            //**************
-            // Patch consider the first session which knows the room id
-            MXSession *mxSession;
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            
-            if (mxAccounts.count == 1)
+            dedicatedAccount = mxAccounts.firstObject;
+        }
+        else
+        {
+            for (MXKAccount *account in mxAccounts)
             {
-                MXKAccount *account = mxAccounts.firstObject;
-                mxSession = account.mxSession;
-            } else
-            {
-                for (MXKAccount *account in mxAccounts)
+                if ([account.mxSession roomWithRoomId:roomId])
                 {
-                    if ([account.mxSession roomWithRoomId:roomId])
-                    {
-                        mxSession = account.mxSession;
-                        break;
-                    }
+                    dedicatedAccount = account;
+                    break;
                 }
             }
-            //**************
+        }
+        
+        // sanity checks
+        if (dedicatedAccount && dedicatedAccount.mxSession)
+        {
+            UIApplicationState state = [UIApplication sharedApplication].applicationState;
             
-            
-            [self.masterTabBarController showRoom:roomId withMatrixSession:mxSession];
+            // Jump to the concerned room only if the app is transitioning from the background
+            if (state == UIApplicationStateInactive)
+            {
+#ifdef DEBUG
+                NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
+#endif
+                
+                [self.masterTabBarController showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+            }
+            else if (!_completionHandler && (state == UIApplicationStateBackground))
+            {
+                _completionHandler = completionHandler;
+                
+#ifdef DEBUG
+                NSLog(@"[AppDelegate] : starts a catchup");
+#endif
+                
+                [dedicatedAccount catchup:20000 success:^{
+#ifdef DEBUG
+                    NSLog(@"[AppDelegate] : the catchup succeeds");
+#endif
+                    
+                    if (_completionHandler)
+                    {
+                        _completionHandler(UIBackgroundFetchResultNewData);
+                        _completionHandler = nil;
+                    }
+                } failure:^(NSError *error) {
+#ifdef DEBUG
+                    NSLog(@"[AppDelegate] : the catchup fails");
+#endif
+                    
+                    if (_completionHandler)
+                    {
+                        _completionHandler(UIBackgroundFetchResultNoData);
+                        _completionHandler = nil;
+                    }
+                }];
+
+                // wait that the background sync is done
+                return;
+            }
+        }
+        else
+        {
+#ifdef DEBUG
+            NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
+#endif
         }
     }
+    
+    completionHandler(UIBackgroundFetchResultNoData);
+    
 }
 
 #pragma mark - Matrix sessions handling
 
 - (void)initMatrixSessions
 {
+    [MXKAccount registerOnCertificateChangeBlock:^BOOL(MXKAccount *mxAccount, NSData *certificate) {
+        
+        __block BOOL isTrusted;
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        MXCredentials *mxCredentials = mxAccount.mxCredentials;
+        
+        NSString *title = [NSBundle mxk_localizedStringForKey:@"ssl_could_not_verify"];
+        NSString *existing_expl = mxCredentials.allowedCertificate ? [NSBundle mxk_localizedStringForKey:@"ssl_expected_existing_expl"] : [NSBundle mxk_localizedStringForKey:@"ssl_unexpected_existing_expl"];
+        NSString *homeserverURLStr = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"ssl_homeserver_url"], mxCredentials.homeServer];
+        NSString *fingerprint = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"ssl_fingerprint_hash"], @"SHA256"];
+        NSString *certFingerprint = [certificate SHA256AsHexString];
+        
+        NSString *msg = [NSString stringWithFormat:@"%@\n\n%@\n\n%@\n\n%@\n\n%@\n\n%@", [NSBundle mxk_localizedStringForKey:@"ssl_cert_not_trust"], existing_expl, homeserverURLStr, fingerprint, certFingerprint, [NSBundle mxk_localizedStringForKey:@"ssl_only_accept"]];
+        
+        MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+        alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ssl_remain_offline"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            isTrusted = NO;
+            dispatch_semaphore_signal(semaphore);
+            
+        }];
+        [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ssl_trust"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            isTrusted = YES;
+            dispatch_semaphore_signal(semaphore);
+            
+        }];
+        [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ssl_logout_account"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            isTrusted = NO;
+            dispatch_semaphore_signal(semaphore);
+            
+            [[MXKAccountManager sharedManager] removeAccount:mxAccount];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert showInViewController:[self.masterTabBarController selectedViewController]];
+        });
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        return isTrusted;
+
+    }];
+    
     // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
     {
@@ -628,6 +770,12 @@
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error
 {
+    // Ignore fake error, or connection cancellation error
+    if (!error || ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+    {
+        return nil;
+    }
+    
     // Ignore network reachability error when the app is already offline
     if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
     {
@@ -664,6 +812,10 @@
 
 - (void)clearNotifications
 {
+#ifdef DEBUG
+    NSLog(@"[AppDelegate] clearNotifications");
+#endif
+    
     // force to clear the notification center
     // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
     // so resetting it does not clear the notifications center.

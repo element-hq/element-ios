@@ -21,6 +21,9 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate> {
     BOOL isAPNSRegistered;
+    
+    // background sync management    
+    void (^_completionHandler)(UIBackgroundFetchResult);
 }
 
 @property (strong, nonatomic) UIWindow *window;

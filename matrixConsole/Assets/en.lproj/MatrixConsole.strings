@@ -40,6 +40,7 @@
 "settings_country_select" = "Select your country";
 "settings_show_redactions" = "Show redactions";
 "settings_show_unsupported_events" = "Show unsupported events";
+"settings_open_links_in_chrome" = "Open links in Chrome";
 "settings_max_cache_size" = "Maximum cache size (%@)";
 
 // Accounts
