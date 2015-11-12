@@ -8,7 +8,7 @@ target "matrixConsole" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Console has been built
-#pod 'MatrixKit', '~> 0.2.5'
+#pod 'MatrixKit', '~> 0.2.6'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
