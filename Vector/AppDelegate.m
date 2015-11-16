@@ -15,9 +15,12 @@
  */
 
 #import "AppDelegate.h"
+
+#import "RoomDataSource.h"
+#import "EventFormatter.h"
+
 #import "RoomViewController.h"
 #import "SettingsViewController.h"
-#import "MXKContactManager.h"
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
@@ -128,7 +131,7 @@
             _build = buildNumber;
         } else
         {
-            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"MatrixConsole", nil);
+            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
         }
     }
     return _build;
@@ -176,19 +179,24 @@
         self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
         self.masterTabBarController.delegate = self;
         
-        // By default the "Home" tab is focused
-        [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+        // By default the "Recents" tab is focused
+        [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
         
         UIViewController* recents = [self.masterTabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
         if ([recents isKindOfClass:[UISplitViewController class]])
         {
             UISplitViewController *splitViewController = (UISplitViewController *)recents;
-            UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+            UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
+            if ([detailsViewController isKindOfClass:[UINavigationController class]])
+            {
+                UINavigationController *navigationController = (UINavigationController*)detailsViewController;
+                detailsViewController = navigationController.topViewController;
+            }
             
             // IOS >= 8
             if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
             {
-                navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+                detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
                 
                 // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
                 // to avoid empty room View Controller in portrait orientation
@@ -220,9 +228,26 @@
         // Add matrix observers and initialize matrix sessions.
         [self initMatrixSessions];
     }
+
+    NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
     
-    // clear the notifications counter
-    [self clearNotifications];
+    // The application is launched if there is a new notification
+    if ((remoteNotif) && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground))
+    {
+        // do something when the app is launched on background
+        
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
+#endif
+    }
+    else
+    {
+#ifdef DEBUG
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
+#endif
+        // clear the notifications counter
+        [self clearNotifications];
+    }
     
     return YES;
 }
@@ -280,6 +305,10 @@
     
     // clear the notifications counter
     [self clearNotifications];
+    
+    // cancel any background sync before resuming
+    // i.e. warn IOS that there is no new data with any received push.
+    [self cancelBackgroundSync];
     
     _isAppForeground = NO;
 }
@@ -341,11 +370,10 @@
         if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
         {
             // Registration on iOS 8 and later
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-                                                                                                 |UIRemoteNotificationTypeSound
-                                                                                                 |UIRemoteNotificationTypeAlert) categories:nil];
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
             [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        } else
+        }
+        else
         {
             [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
         }
@@ -359,26 +387,27 @@
 
 - (void)application:(UIApplication*)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    NSLog(@"[AppDelegate] Got APNS token!");
+    NSUInteger len = ((deviceToken.length > 8) ? 8 : deviceToken.length / 2);
+    NSLog(@"[AppDelegate] Got APNS token! (%@ ...)", [deviceToken subdataWithRange:NSMakeRange(0, len)]);
     
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setApnsDeviceToken:deviceToken];
     
-    // force send the push token once per app start
-    if (!isAPNSRegistered)
-    {
-        NSArray *mxAccounts = accountManager.activeAccounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            account.enablePushNotifications = YES;
-        }
-    }
     isAPNSRegistered = YES;
 }
 
 - (void)application:(UIApplication*)app didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"[AppDelegate] Failed to register for APNS: %@", error);
+}
+
+- (void)cancelBackgroundSync
+{
+    if (_completionHandler)
+    {
+        _completionHandler(UIBackgroundFetchResultNoData);
+        _completionHandler = nil;
+    }
 }
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
@@ -388,49 +417,99 @@
     NSLog(@"[AppDelegate] APNS: %@", userInfo);
 #endif
     
-    completionHandler(UIBackgroundFetchResultNoData);
-    
-    // Jump to the concerned room only if the app is transitioning from the background
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive)
+    // Look for the room id
+    NSString* roomId = [userInfo objectForKey:@"room_id"];
+    if (roomId.length)
     {
-        // Look for the room id
-        NSString* roomId = [userInfo objectForKey:@"room_id"];
-        if (roomId.length)
+        // TODO retrieve the right matrix session
+        
+        //**************
+        // Patch consider the first session which knows the room id
+        MXKAccount *dedicatedAccount = nil;
+        
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+        
+        if (mxAccounts.count == 1)
         {
-            // TODO retrieve the right matrix session
-            
-            //**************
-            // Patch consider the first session which knows the room id
-            MXSession *mxSession;
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            
-            if (mxAccounts.count == 1)
+            dedicatedAccount = mxAccounts.firstObject;
+        }
+        else
+        {
+            for (MXKAccount *account in mxAccounts)
             {
-                MXKAccount *account = mxAccounts.firstObject;
-                mxSession = account.mxSession;
-            } else
-            {
-                for (MXKAccount *account in mxAccounts)
+                if ([account.mxSession roomWithRoomId:roomId])
                 {
-                    if ([account.mxSession roomWithRoomId:roomId])
-                    {
-                        mxSession = account.mxSession;
-                        break;
-                    }
+                    dedicatedAccount = account;
+                    break;
                 }
             }
-            //**************
+        }
+        
+        // sanity checks
+        if (dedicatedAccount && dedicatedAccount.mxSession)
+        {
+            UIApplicationState state = [UIApplication sharedApplication].applicationState;
             
-            
-            [self.masterTabBarController showRoom:roomId withMatrixSession:mxSession];
+            // Jump to the concerned room only if the app is transitioning from the background
+            if (state == UIApplicationStateInactive)
+            {
+#ifdef DEBUG
+                NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
+#endif
+                
+                [self.masterTabBarController showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+            }
+            else if (!_completionHandler && (state == UIApplicationStateBackground))
+            {
+                _completionHandler = completionHandler;
+                
+#ifdef DEBUG
+                NSLog(@"[AppDelegate] : starts a catchup");
+#endif
+                
+                [dedicatedAccount catchup:20000 success:^{
+#ifdef DEBUG
+                    NSLog(@"[AppDelegate] : the catchup succeeds");
+#endif
+                    
+                    if (_completionHandler)
+                    {
+                        _completionHandler(UIBackgroundFetchResultNewData);
+                        _completionHandler = nil;
+                    }
+                } failure:^(NSError *error) {
+#ifdef DEBUG
+                    NSLog(@"[AppDelegate] : the catchup fails");
+#endif
+                    
+                    if (_completionHandler)
+                    {
+                        _completionHandler(UIBackgroundFetchResultNoData);
+                        _completionHandler = nil;
+                    }
+                }];
+                
+                // wait that the background sync is done
+                return;
+            }
+        }
+        else
+        {
+#ifdef DEBUG
+            NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
+#endif
         }
     }
+    completionHandler(UIBackgroundFetchResultNoData);
 }
 
 #pragma mark - Matrix sessions handling
 
 - (void)initMatrixSessions
 {
+    // Set first RoomDataSource class used in Vector
+    [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
+    
     // Register matrix session state observer in order to handle multi-sessions.
     matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
     {
@@ -564,9 +643,6 @@
         // Set up push notifications
         [self registerUserNotificationSettings];
         
-        // When user is already logged, we launch the app on Recents
-        [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
-        
         // Observe inApp notifications toggle change for each account
         for (MXKAccount *account in mxAccounts)
         {
@@ -625,12 +701,18 @@
     // Reset the contact manager
     [[MXKContactManager sharedManager] reset];
     
-    // By default the "Home" tab is focussed
-    [self.masterTabBarController setSelectedIndex:TABBAR_HOME_INDEX];
+    // By default the "Recents" tab is focussed
+    [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
 }
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error
 {
+    // Ignore fake error, or connection cancellation error
+    if (!error || ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+    {
+        return nil;
+    }
+    
     // Ignore network reachability error when the app is already offline
     if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
     {
@@ -683,14 +765,14 @@
         if (account.enableInAppNotifications)
         {
             // Build MXEvent -> NSString formatter
-            MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:account.mxSession];
+            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
             eventFormatter.isForSubtitle = YES;
             
             [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
                 
                 // Check conditions to display this notification
                 if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                    && ![self.masterTabBarController isPresentingMediaPicker])
+                    && !self.masterTabBarController.presentedViewController)
                 {
                     
                     MXKEventFormatterError error;
@@ -728,7 +810,7 @@
                                                                           weakSelf.mxInAppNotification = nil;
                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
                                                                       }];
-                        [self.mxInAppNotification addActionWithTitle:NSLocalizedStringFromTable(@"view", @"MatrixConsole", nil)
+                        [self.mxInAppNotification addActionWithTitle:NSLocalizedStringFromTable(@"view", @"Vector", nil)
                                                                style:MXKAlertActionStyleDefault
                                                              handler:^(MXKAlert *alert)
                          {
@@ -864,7 +946,8 @@
             {
                 // open it
                 [self.masterTabBarController showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
-            } else
+            }
+            else
             {
                 // create a new room
                 [mxSession createRoom:nil
@@ -902,13 +985,28 @@
 
 #pragma mark - SplitViewController delegate
 
+- (void)splitViewController:(UISplitViewController *)splitViewController willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode
+{
+    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary viewcontrollers of the splitviewcontroller.
+    if (displayMode == UISplitViewControllerDisplayModePrimaryHidden)
+    {
+        self.masterTabBarController.tabBar.hidden = YES;
+    }
+    else
+    {
+        self.masterTabBarController.tabBar.hidden = NO;
+    }
+    [splitViewController.view setNeedsLayout];
+}
+
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
     if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
-    } else
+    }
+    else
     {
         return NO;
     }
@@ -1022,7 +1120,7 @@
     // Create statusBarButton
     callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width,topBarSize.height);
-    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"MatrixConsole", nil);
+    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"Vector", nil);
     
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateNormal];
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];

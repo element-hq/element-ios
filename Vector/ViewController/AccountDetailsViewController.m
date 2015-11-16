@@ -71,23 +71,13 @@
         {
             globalNotifSettingsBtnCell = [[MXKTableViewCellWithButton alloc] init];
         }
-        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"MatrixConsole", nil) forState:UIControlStateNormal];
-        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"MatrixConsole", nil) forState:UIControlStateHighlighted];
+        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"Vector", nil) forState:UIControlStateNormal];
+        [globalNotifSettingsBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"notification_settings_global_notification_settings", @"Vector", nil) forState:UIControlStateHighlighted];
         [globalNotifSettingsBtnCell.mxkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         globalNotifSettingsButton = globalNotifSettingsBtnCell.mxkButton;
         
         cell = globalNotifSettingsBtnCell;
-        
-        
-//        MXKTableViewCellWithTextView *userInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
-//        if (!userInfoCell)
-//        {
-//            userInfoCell = [[MXKTableViewCellWithTextView alloc] init];
-//        }
-//        
-//        userInfoCell.mxkTextView.text = NSLocalizedStringFromTable(@"settings_webclient_push", @"MatrixConsole", nil);
-//        cell = userInfoCell;
     }
     else
     {
@@ -99,23 +89,6 @@
 
 
 #pragma mark - TableView delegate
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (indexPath.section == notificationsSection)
-//    {
-//        if (indexPath.row == globalNotificationSettingsRowIndex)
-//        {
-//            UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
-//            textView.font = [UIFont systemFontOfSize:14];
-//            textView.text = NSLocalizedStringFromTable(@"settings_webclient_push", @"MatrixConsole", nil);
-//            CGSize contentSize = [textView sizeThatFits:textView.frame.size];
-//            return contentSize.height + 1;
-//        }
-//    }
-//    
-//    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-//}
 
 - (void)onButtonPressed:(id)sender
 {

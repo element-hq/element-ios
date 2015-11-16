@@ -16,30 +16,23 @@
 
 #import "RoomViewController.h"
 
-#import "MXKRoomBubbleTableViewCell.h"
-
 #import "AppDelegate.h"
-
 #import "RageShakeManager.h"
+
+#import "RoomInputToolbarView.h"
+
+#import "RoomParticipantsViewController.h"
 
 @interface RoomViewController ()
 {
-    // Members list
-    id membersListener;
-    
-    // Voip call options
-    UIButton *voipVoiceCallButton;
-    UIButton *voipVideoCallButton;
-    UIBarButtonItem *voipVoiceCallBarButtonItem;
-    UIBarButtonItem *voipVideoCallBarButtonItem;
+    // The constraint used to animate menu list display
+    NSLayoutConstraint *menuListTopConstraint;
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
 }
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *showRoomMembersButtonItem;
-
-@property (strong, nonatomic) MXKAlert *actionMenu;
+@property (strong, nonatomic) MXKAlert *currentAlert;
 
 @end
 
@@ -52,11 +45,76 @@
     // Set room title view
     [self setRoomTitleViewClass:MXKRoomTitleViewWithTopic.class];
     
-    // Replace the default input toolbar view with the one based on `HPGrowingTextView`.
-    [self setRoomInputToolbarViewClass:MXKRoomInputToolbarViewWithHPGrowingText.class];
+    // Replace the default input toolbar view.
+    [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.navigationItem.rightBarButtonItem.target = self;
+    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    // Localize strings
+    self.searchMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_search", @"Vector", nil);
+    self.participantsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_participants", @"Vector", nil);
+    self.favouriteMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_favourite", @"Vector", nil);
+    self.settingsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_settings", @"Vector", nil);
+    
+   // Add the menu list view outside the main view
+    CGRect frame = self.menuListView.frame;
+    frame.origin.y = self.topLayoutGuide.length - frame.size.height;
+    self.menuListView.frame = frame;
+    [self.view addSubview:self.menuListView];
+    
+    // Define menu list view constraints
+    self.menuListView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                      relatedBy:0
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                     multiplier:1.0
+                                                                       constant:0];
+    
+    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                       relatedBy:0
+                                                                          toItem:self.view
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                      multiplier:1.0
+                                                                        constant:0];
+    
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0
+                                                                         constant:self.menuListView.frame.size.height];
+    
+    menuListTopConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.topLayoutGuide
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    
+    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+    {
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, heightConstraint, menuListTopConstraint]];
+    }
+    else
+    {
+        [self.view addConstraint:leftConstraint];
+        [self.view addConstraint:rightConstraint];
+        [self.view addConstraint:menuListTopConstraint];
+        [self.menuListView addConstraint:heightConstraint];
+    }
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,20 +133,14 @@
     [super viewWillDisappear:animated];
     
     // hide action
-    if (self.actionMenu)
+    if (self.currentAlert)
     {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
+        [self.currentAlert dismiss:NO];
+        self.currentAlert = nil;
     }
     
-    if (self.roomDataSource)
-    {
-        if (membersListener)
-        {
-            [self.roomDataSource.room removeListener:membersListener];
-            membersListener = nil;
-        }
-    }
+    // Hide menu list view
+    menuListTopConstraint.constant = 0;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -125,53 +177,27 @@
     [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
+    contentInset.bottom = self.bottomLayoutGuide.length;
+    self.bubblesTableView.contentInset = contentInset;
+}
+
 #pragma mark - Override MXKRoomViewController
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
 {
-    // Remove members listener (if any) before changing dataSource.
-    if (membersListener)
-    {
-        [self.roomDataSource.room removeListener:membersListener];
-        membersListener = nil;
-    }
-    
     [super displayRoom:dataSource];
+    
+    self.navigationItem.rightBarButtonItem.enabled = (dataSource != nil);
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
-    // Update UI by considering dataSource state
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
-    {
-        // Register a listener for events that concern room members
-        if (!membersListener)
-        {
-            membersListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                
-                // Consider only live event
-                if (direction == MXEventDirectionForwards)
-                {
-                    // Update navigation bar items
-                    [self updateNavigationBarButtonItems];
-                }
-            }];
-        }
-    }
-    else
-    {
-        // Remove members listener if any.
-        if (membersListener)
-        {
-            [self.roomDataSource.room removeListener:membersListener];
-            membersListener = nil;
-        }
-    }
-    
-    // Update navigation bar items
-    [self updateNavigationBarButtonItems];
+    self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
@@ -211,79 +237,42 @@
 
 - (void)destroy
 {
-    if (membersListener)
-    {
-        [self.roomDataSource.room removeListener:membersListener];
-        membersListener = nil;
-    }
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    if (self.actionMenu)
+    if (self.currentAlert)
     {
-        [self.actionMenu dismiss:NO];
-        self.actionMenu = nil;
+        [self.currentAlert dismiss:NO];
+        self.currentAlert = nil;
     }
     
     [super destroy];
 }
 
-#pragma mark -
-
-- (void)updateNavigationBarButtonItems
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
-    // Update navigation bar buttons according to room members count
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady)
+    // Hide the menu list view when keyboard if displayed
+    if (keyboardHeight && menuListTopConstraint.constant != 0)
     {
-        // Check conditions to display voip call buttons
-        if (self.roomDataSource.room.state.members.count == 2 && self.mainSession.callManager)
-        {
-            if (!voipVoiceCallBarButtonItem || !voipVideoCallBarButtonItem)
-            {
-                voipVoiceCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                voipVoiceCallButton.frame = CGRectMake(0, 0, 36, 36);
-                UIImage *voiceImage = [UIImage imageNamed:@"voice"];
-                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateNormal];
-                [voipVoiceCallButton setImage:voiceImage forState:UIControlStateHighlighted];
-                [voipVoiceCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                voipVoiceCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVoiceCallButton];
-                
-                voipVideoCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                voipVideoCallButton.frame = CGRectMake(0, 0, 36, 36);
-                UIImage *videoImage = [UIImage imageNamed:@"video"];
-                [voipVideoCallButton setImage:videoImage forState:UIControlStateNormal];
-                [voipVideoCallButton setImage:videoImage forState:UIControlStateHighlighted];
-                [voipVideoCallButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                voipVideoCallBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:voipVideoCallButton];
-            }
-            
-            _showRoomMembersButtonItem.enabled = YES;
-            
-            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem, voipVideoCallBarButtonItem, voipVoiceCallBarButtonItem];
-        }
-        else
-        {
-            _showRoomMembersButtonItem.enabled = ([self.roomDataSource.room.state members].count != 0);
-            self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
-        }
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
     }
-    else
-    {
-        _showRoomMembersButtonItem.enabled = NO;
-        self.navigationItem.rightBarButtonItems = @[_showRoomMembersButtonItem];
-    }
+    
+    super.keyboardHeight = keyboardHeight;
 }
 
 #pragma mark - MXKDataSource delegate
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Override default implementation in case of tap on avatar
-    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
+    // Remove sub menu if user tap on table view
+    if (menuListTopConstraint.constant != 0)
     {
-        selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
-        if (selectedRoomMember)
-        {
-            [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
-        }
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+    }
+    
+    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
+    {
+        self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
+        NSLog(@"    -> Turn %@ cells date", self.roomDataSource.showBubblesDateTime ? @"ON" : @"OFF");
     }
     else
     {
@@ -301,44 +290,100 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showMemberList"])
+    if ([[segue identifier] isEqualToString:@"showRoomParticipants"])
     {
-        if ([pushedViewController isKindOfClass:[MXKRoomMemberListViewController class]])
+        if ([pushedViewController isKindOfClass:[RoomParticipantsViewController class]])
         {
-            MXKRoomMemberListViewController* membersController = (MXKRoomMemberListViewController*)pushedViewController;
-            
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            MXKRoomMemberListDataSource *membersDataSource = [[MXKRoomMemberListDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
-            [membersController displayList:membersDataSource];
+            RoomParticipantsViewController* participantsViewController = (RoomParticipantsViewController*)pushedViewController;
+            participantsViewController.mxRoom = self.roomDataSource.room;
         }
     }
-    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
+}
+
+#pragma mark - MXKRoomInputToolbarViewDelegate
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
+{
+    // Remove sub menu if user starts typing
+    if (typing && menuListTopConstraint.constant != 0)
     {
-        if (selectedRoomMember)
-        {
-            MXKRoomMemberDetailsViewController *memberViewController = pushedViewController;
-            // Set rageShake handler
-            memberViewController.rageShakeManager = [RageShakeManager sharedManager];
-            // Set delegate to handle start chat option
-            memberViewController.delegate = [AppDelegate theDelegate];
-            
-            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
-            
-            selectedRoomMember = nil;
-        }
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
     }
+    
+    [super roomInputToolbarView:toolbarView isTyping:typing];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
+{
+    [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
 }
 
 #pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == voipVoiceCallButton || sender == voipVideoCallButton)
+    if (sender == self.navigationItem.rightBarButtonItem)
     {
-        [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:(sender == voipVideoCallButton)];
+        // Hide/show the menu list by updating its top constraint
+        if (menuListTopConstraint.constant)
+        {
+            // Hide the menu
+            menuListTopConstraint.constant = 0;
+        }
+        else
+        {
+            [self dismissKeyboard];
+            
+            // Show the menu
+            menuListTopConstraint.constant = self.menuListView.frame.size.height;
+        }
+        
+        // Refresh layout with animation
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished){
+                         }];
     }
+    else
+    {
+        // Hide menu without animation
+        menuListTopConstraint.constant = 0;
+        
+        if (sender == self.searchMenuButton)
+        {
+            // TODO
+        }
+        else if (sender == self.participantsMenuButton)
+        {
+            [self performSegueWithIdentifier:@"showRoomParticipants" sender:self];
+        }
+        else if (sender == self.favouriteMenuButton)
+        {
+            // TODO
+        }
+        else if (sender == self.settingsMenuButton)
+        {
+            // TODO
+        }
+    }
+}
+
+#pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Remove sub menu if user tap on table view
+    if (menuListTopConstraint.constant != 0)
+    {
+        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+    }
+    
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 @end

@@ -16,13 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-// SMS
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMessageComposeViewController.h>
+@interface RoomCreationStep1ViewController : MXKTableViewController <UITextFieldDelegate>
 
-/**
- 'ContactsViewController' inherits MXKContactListViewController to handle contact list.
- */
-@interface ContactsViewController : MXKContactListViewController <MXKContactListViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 @end
 

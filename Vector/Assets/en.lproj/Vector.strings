@@ -18,6 +18,89 @@
 "recents" = "Recents";
 "accounts" = "Accounts";
 
+// Actions
+"view" = "View";
+"mark_all_as_read_prompt" = "Mark all as read?";
+"next" = "Next";
+"back" = "Back";
+"create" = "Create";
+"leave" = "Leave";
+"remove" = "Remove";
+
+// Authentication
+"auth_sign_in" = "Sign in";
+"auth_login" = "Log in";
+"auth_create_account" = "Create a new account";
+"auth_create_account_title" = "Create an account";
+"auth_register" = "Register";
+"auth_back_to_login" = "I already have an account";
+"auth_email_placeholder" = "Email address";
+"auth_password_placeholder" = "Password";
+
+// Chat creation
+"room_creation_title" = "New Chat";
+"room_creation_account" = "Account";
+"room_creation_appearance" = "Appearance";
+"room_creation_appearance_name" = "Name";
+"room_creation_appearance_picture" = "Chat picture (optional)";
+"room_creation_privacy" = "Privacy";
+"room_creation_private_room" = "This chat is private";
+"room_creation_public_room" = "This chat is public";
+"room_creation_make_public" = "Make public";
+"room_creation_make_public_prompt_title" = "Make this chat public?";
+"room_creation_make_public_prompt_msg" = "Are you sure you want to make this chat public? Anyone can read your messages and join the chat.";
+"room_creation_keep_private" = "Keep private";
+"room_creation_make_private" = "Make private";
+
+// Chat participants
+"room_participants_title" = "Participants";
+"room_participants_add_participant" = "Add participant";
+"room_participants_one_participant" = "1 participant";
+"room_participants_multi_participants" = "%d participants";
+"room_participants_leave_prompt_title" = "Leave?";
+"room_participants_leave_prompt_msg" = "Are you sure you want to leave this chat?";
+"room_participants_remove_prompt_title" = "Remove?";
+"room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
+"room_participants_admin_name" = "%@ (admin)";
+
+// Chat
+"room_menu_search" = "Search";
+"room_menu_participants" = "Participants";
+"room_menu_favourite" = "Favourite";
+"room_menu_unfavourite" = "Unfavourite";
+"room_menu_settings" = "Settings";
+"room_option_start_group_voice" = "Start group audio chat";
+"room_option_start_group_video" = "Start group video chat";
+"room_option_share_location" = "Share location";
+"room_option_share_contact" = "Share contact";
+
+// Settings
+"account_logout_all" = "Logout all accounts";
+
+"settings_config_ios_console_version" = "Console version: %@";
+"settings_config_ios_kit_version" = "MatrixKit version: %@";
+"settings_config_ios_sdk_version" = "MatrixSDK version: %@";
+"settings_config_build_number" = "Build: %@";
+"settings_config_no_build_info" = "(no build info)";
+"settings_title_config" = "Configuration";
+"settings_clear_cache" = "Clear cache";
+
+"notification_settings_global_notification_settings" = "Global Notification Settings";
+
+// Media picker
+"media_picker_picture_capture_title" = "Take a picture";
+"media_picker_video_capture_title" = "Record a video";
+"media_picker_both_capture_title" = "Take a picture or a video";
+"media_picker_retake" = "Retake";
+"media_picker_choose" = "Choose";
+"media_picker_attach" = "Attach";
+
+"media_picker_choose_from_library" = "Choose from library";
+"media_picker_library" = "Library";
+
 // Others
+"you" = "You";
+"public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
+"camera_access_not_granted" = "Vector doesn't have permission to use Camera, please change privacy settings";

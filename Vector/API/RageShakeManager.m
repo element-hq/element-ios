@@ -67,7 +67,7 @@ static RageShakeManager* sharedInstance = nil;
 - (void)promptCrashReportInViewController:(UIViewController*)viewController {
     if ([MXLogger crashLog] && [MFMailComposeViewController canSendMail]) {
         
-        confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
+        confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
         
         __weak typeof(self) weakSelf = self;
         [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
@@ -110,7 +110,7 @@ static RageShakeManager* sharedInstance = nil;
         && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION)) {
         
         if ([responder isKindOfClass:[UIViewController class]] && [MFMailComposeViewController canSendMail]) {
-            confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"MatrixConsole", nil)  message:nil style:MXKAlertStyleAlert];
+            confirmationAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil style:MXKAlertStyleAlert];
             
             __weak typeof(self) weakSelf = self;
             [confirmationAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
@@ -191,7 +191,7 @@ static RageShakeManager* sharedInstance = nil;
             [mailComposer setSubject:@"Matrix bug report"];
         }
 
-        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@matrix.org"]];
+        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@vector.im"]];
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
@@ -210,7 +210,11 @@ static RageShakeManager* sharedInstance = nil;
             NSString *disabled = account.disabled ? @" (disabled)" : @"";
             
             [message appendFormat:@"userId: %@%@\n", account.mxCredentials.userId, disabled];
-            [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
+            if (account.mxSession.myUser.displayname)
+            {
+                [message appendFormat:@"displayname: %@\n", account.mxSession.myUser.displayname];
+            }
+            
             [message appendFormat:@"homeServerURL: %@\n", account.mxCredentials.homeServer];
         }
         
@@ -224,7 +228,7 @@ static RageShakeManager* sharedInstance = nil;
         }
         [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Device info\n"];
-        [message appendFormat:@"model: %@\n", [GBDeviceInfo deviceDetails].modelString];
+        [message appendFormat:@"model: %@\n", [GBDeviceInfo deviceInfo].modelString];
         [message appendFormat:@"operatingSystem: %@ %@\n", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
         
         [mailComposer setMessageBody:message isHTML:NO];

@@ -23,9 +23,10 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "RecentListDataSource.h"
+
 @interface RecentsViewController ()
 {
-    
     // Recents refresh handling
     BOOL shouldScrollToTopOnRefresh;
     
@@ -62,11 +63,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    
-    // Add navigation items
-    NSArray *rightBarButtonItems = self.navigationItem.rightBarButtonItems;
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createNewRoom:)];
-    self.navigationItem.rightBarButtonItems = rightBarButtonItems ? [rightBarButtonItems arrayByAddingObject:addButton] : @[addButton];
     
     // Prepare tap gesture on title bar
     navigationBarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
@@ -123,6 +119,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    // Restore the tabbar hidden manually on iOS 8 and later (see viewWillDisappear)
+    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
+    {
+        // Check whether the recents list is actually visible before showing the tabbar
+        if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden)
+        {
+            self.tabBarController.tabBar.hidden = NO;
+            [self.splitViewController.view setNeedsLayout];
+        }
+    }
     
     [self updateNavigationBarTitle];
     
@@ -131,6 +139,15 @@
     if (indexPath)
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    
+    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
+    if (recentListDataSource)
+    {
+        [self startActivityIndicator];
+        [recentListDataSource refreshPublicRooms:nil onComplete:^{
+            [self stopActivityIndicator];
+        }];
     }
     
     [self.navigationController.navigationBar addGestureRecognizer:navigationBarTapGesture];
@@ -153,6 +170,16 @@
     }
     
     [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
+    
+    // Chat screen should be displayed without tabbar, but hidesBottomBarWhenPushed flag has no effect in case of splitviewcontroller use.
+    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary view controllers of the splitviewcontroller
+    // when the primary view controller is hidden.
+    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
+    {
+        self.tabBarController.tabBar.hidden = YES;
+        [self.splitViewController.view setNeedsLayout];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -160,7 +187,8 @@
     [super viewDidAppear:animated];
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed)
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
     {
         // Release the current selected room (if any).
         [self closeSelectedRoom];
@@ -170,6 +198,78 @@
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Restore the tabbar by defaut when the user leaves the recents tab
+    if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX)
+    {
+        self.tabBarController.tabBar.hidden = NO;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 35;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Check whether the selected row is a public room or not
+    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
+    if (recentListDataSource && recentListDataSource.publicRoomsFirstSection != -1 && indexPath.section >= recentListDataSource.publicRoomsFirstSection)
+    {
+        MXPublicRoom *publicRoom = [recentListDataSource publicRoomAtIndexPath:indexPath];
+        if (publicRoom)
+        {
+            // Handle multi-sessions here
+            [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
+                // Check whether the user has already joined the selected public room
+                if ([selectedAccount.mxSession roomWithRoomId:publicRoom.roomId])
+                {
+                    // Open selected room
+                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                }
+                else
+                {
+                    // Join the selected room
+                    UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+                    if (selectedCell)
+                    {
+                        CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
+                        loadingWheel.center = center;
+                        [selectedCell addSubview:loadingWheel];
+                    }
+                    [loadingWheel startAnimating];
+                    [selectedAccount.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room)
+                     {
+                         // Show joined room
+                         [loadingWheel stopAnimating];
+                         [loadingWheel removeFromSuperview];
+                         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                     } failure:^(NSError *error)
+                     {
+                         NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+                         //Alert user
+                         [loadingWheel stopAnimating];
+                         [loadingWheel removeFromSuperview];
+                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                     }];
+                }
+                
+            }];
+        }
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    else
+    {
+        // Let super handle the selected row
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
 }
 
@@ -221,18 +321,13 @@
 
 - (void)updateNavigationBarTitle
 {
-    NSString *title = NSLocalizedStringFromTable(@"recents", @"MatrixConsole", nil);
+    NSString *title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
     
     if (self.dataSource.unreadCount)
     {
         title = [NSString stringWithFormat:@"%@ (%tu)", title, self.dataSource.unreadCount];
     }
     self.navigationItem.title = title;
-}
-
-- (void)createNewRoom:(id)sender
-{
-    [[AppDelegate theDelegate].masterTabBarController showRoomCreationForm];
 }
 
 - (void)scrollToTop
@@ -293,7 +388,7 @@
     {
         __weak typeof(self) weakSelf = self;
         
-        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"MatrixConsole", nil) message:nil style:MXKAlertStyleAlert];
+        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"Vector", nil) message:nil style:MXKAlertStyleAlert];
         
         markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
                                                 {
@@ -319,6 +414,9 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+    
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
         UIViewController *controller;
@@ -355,8 +453,6 @@
             [currentRoomViewController displayRoom:roomDataSource];
         }
         
-        // Reset unread count for this room
-        //[roomDataSource resetUnreadCount]; // @TODO: This automatically done by roomDataSource. Is it a good thing?
         [self updateNavigationBarTitle];
         
         if (self.splitViewController)
@@ -375,7 +471,7 @@
         }
         
         // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"back", @"Vector", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
@@ -393,9 +489,10 @@
         shouldScrollToTopOnRefresh = NO;
     }
     
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
     // the selected room (if any) is updated and kept visible.
-    if (self.splitViewController && !self.splitViewController.isCollapsed)
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
     {
         [self refreshCurrentSelectedCell:YES];
     }

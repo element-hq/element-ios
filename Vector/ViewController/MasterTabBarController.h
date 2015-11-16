@@ -18,11 +18,9 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#define TABBAR_HOME_INDEX      0
-#define TABBAR_RECENTS_INDEX   1
-#define TABBAR_CONTACTS_INDEX  2
-#define TABBAR_SETTINGS_INDEX  3
-#define TABBAR_COUNT           4
+#define TABBAR_RECENTS_INDEX   0
+#define TABBAR_SETTINGS_INDEX  1
+#define TABBAR_COUNT           2
 
 @interface MasterTabBarController : UITabBarController
 
@@ -38,14 +36,9 @@
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
 - (void)showAuthenticationScreen;
-- (void)showRoomCreationForm;
 - (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated;
-
-- (BOOL)isPresentingMediaPicker;
-- (void)presentMediaPicker:(UIImagePickerController*)mediaPicker;
-- (void)dismissMediaPicker;
 
 @end
 

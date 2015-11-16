@@ -3,7 +3,7 @@
 //  VectorTests
 //
 //  Created by Guillaume Foret on 10/08/15.
-//  Copyright (c) 2015 matrix.org. All rights reserved.
+//  Copyright (c) 2015 vector.im. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

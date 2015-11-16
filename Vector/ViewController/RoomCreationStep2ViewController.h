@@ -16,7 +16,14 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomMembersViewController : MXKRoomMemberListViewController <MXKRoomMemberListViewControllerDelegate>
+#import "RoomParticipantsViewController.h"
+
+/**
+ 'RoomCreationStep2ViewController' inherits of 'RoomParticipantsViewController' to handle the participants list of the new created room.
+ */
+@interface RoomCreationStep2ViewController : RoomParticipantsViewController
+
+@property (nonatomic) MXKRoomCreationInputs* roomCreationInputs;
 
 @end
 
