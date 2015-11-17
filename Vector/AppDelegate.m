@@ -17,10 +17,14 @@
 #import "AppDelegate.h"
 
 #import "RoomDataSource.h"
+#import "RecentListDataSource.h"
+
 #import "EventFormatter.h"
 
-#import "RoomViewController.h"
+#import "RecentsViewController.h"
 #import "SettingsViewController.h"
+#import "RoomViewController.h"
+
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
@@ -41,7 +45,7 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
-@interface AppDelegate () <UISplitViewControllerDelegate>
+@interface AppDelegate ()
 {
     /**
      Reachability observer
@@ -84,6 +88,17 @@
      Account picker used in case of multiple account.
      */
     MXKAlert *accountPicker;
+    
+    /**
+     Array of `MXSession` instances.
+     */
+    NSMutableArray *mxSessionArray;
+    
+    /**
+     Application main view controllers
+     */
+    UINavigationController *recentsNavigationController;
+    RecentsViewController  *recentsViewController;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -174,60 +189,72 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
+    mxSessionArray = [NSMutableArray array];
+    
+    // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
+    // to the recents list in Recents Tab.
+    // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
+    UIViewController* recents = self.window.rootViewController;
+    recentsNavigationController = nil;
+    if ([recents isKindOfClass:[UISplitViewController class]])
     {
-        self.masterTabBarController = (MasterTabBarController*)self.window.rootViewController;
-        self.masterTabBarController.delegate = self;
+        UISplitViewController *splitViewController = (UISplitViewController *)recents;
+        splitViewController.delegate = self;
         
-        // By default the "Recents" tab is focused
-        [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
+        recentsNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
-        UIViewController* recents = [self.masterTabBarController.viewControllers objectAtIndex:TABBAR_RECENTS_INDEX];
-        if ([recents isKindOfClass:[UISplitViewController class]])
+        UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
+        if ([detailsViewController isKindOfClass:[UINavigationController class]])
         {
-            UISplitViewController *splitViewController = (UISplitViewController *)recents;
-            UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
-            if ([detailsViewController isKindOfClass:[UINavigationController class]])
-            {
-                UINavigationController *navigationController = (UINavigationController*)detailsViewController;
-                detailsViewController = navigationController.topViewController;
-            }
-            
-            // IOS >= 8
-            if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
-            {
-                detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-                
-                // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
-                // to avoid empty room View Controller in portrait orientation
-                // else, the user cannot select a room
-                // shouldHideViewController delegate method is also implemented
-                if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
-                {
-                    splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-                }
-            }
-            
-            splitViewController.delegate = self;
-        }
-        else
-        {
-            // Patch missing image in tabBarItem for iOS < 8.0
-            recents.tabBarItem.image = [[UIImage imageNamed:@"tab_recents"] imageWithRenderingMode:UIImageRenderingModeAutomatic];
+            UINavigationController *navigationController = (UINavigationController*)detailsViewController;
+            detailsViewController = navigationController.topViewController;
         }
         
-        _isAppForeground = NO;
-        
-        // Retrieve custom configuration
-        NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
-        NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
-        NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
-        [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        // Add matrix observers and initialize matrix sessions.
-        [self initMatrixSessions];
+        // IOS >= 8
+        if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+        {
+            detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
+            
+            // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
+            // to avoid empty room View Controller in portrait orientation
+            // else, the user cannot select a room
+            // shouldHideViewController delegate method is also implemented
+            if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
+            {
+                splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+            }
+        }
     }
+    else if ([recents isKindOfClass:[UINavigationController class]])
+    {
+        recentsNavigationController = (UINavigationController*)recents;
+    }
+    
+    if (recentsNavigationController)
+    {
+        for (UIViewController *viewController in recentsNavigationController.viewControllers)
+        {
+            if ([viewController isKindOfClass:[RecentsViewController class]])
+            {
+                recentsViewController = (RecentsViewController*)viewController;
+            }
+        }
+    }
+    
+    // Sanity check
+    NSAssert(recentsViewController, @"Something wrong in Main.storyboard");
+    
+    _isAppForeground = NO;
+    
+    // Retrieve custom configuration
+    NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
+    NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
+    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // Add matrix observers and initialize matrix sessions.
+    [self initMatrixSessions];
 
     NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
     
@@ -336,29 +363,104 @@
         
     }];
     
-    // Resume all existing matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-    for (MXKAccount *account in mxAccounts)
+    // Check whether we're not logged in
+    if (![MXKAccountManager sharedManager].accounts.count)
     {
-        [account resume];
+        [self showAuthenticationScreen];
     }
-    
-    // refresh the contacts list
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-    [[MXKContactManager sharedManager] loadLocalContacts];
-    
-    _isAppForeground = YES;
-    
-    // check if the app crashed last time
-    if ([MXLogger crashLog])
+    else
     {
-        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
+        // Resume all existing matrix sessions
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+        for (MXKAccount *account in mxAccounts)
+        {
+            [account resume];
+        }
+        
+        // refresh the contacts list
+        [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+        [[MXKContactManager sharedManager] loadLocalContacts];
+        
+        _isAppForeground = YES;
+        
+        // check if the app crashed last time
+        if ([MXLogger crashLog])
+        {
+            [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
+        }
     }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Application layout handling
+
+- (void)showAuthenticationScreen
+{
+    [self restoreInitialDisplay];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [recentsViewController performSegueWithIdentifier:@"showAuth" sender:self];
+        
+    });
+}
+
+- (void)popRoomViewControllerAnimated:(BOOL)animated
+{
+    // Force back to recents list if room details is displayed in Recents Tab
+    if (recentsViewController)
+    {
+        [recentsNavigationController popToViewController:recentsViewController animated:animated];
+        // Release the current selected room
+        [recentsViewController closeSelectedRoom];
+    }
+}
+
+- (MXKAlert*)showErrorAsAlert:(NSError*)error
+{
+    // Ignore fake error, or connection cancellation error
+    if (!error || ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+    {
+        return nil;
+    }
+    
+    // Ignore network reachability error when the app is already offline
+    if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
+        return nil;
+    }
+    
+    if (self.errorNotification)
+    {
+        [self.errorNotification dismiss:NO];
+    }
+    
+    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    if (!title)
+    {
+        title = [NSBundle mxk_localizedStringForKey:@"error"];
+    }
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    
+    self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                                                {
+                                                    [AppDelegate theDelegate].errorNotification = nil;
+                                                }];
+    
+    [self.errorNotification showInViewController:self.window.rootViewController];
+    
+    // Switch in offline mode in case of network reachability error
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
+        self.isOffline = YES;
+    }
+    
+    return self.errorNotification;
 }
 
 #pragma mark - APNS methods
@@ -457,7 +559,7 @@
                 NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
 #endif
                 
-                [self.masterTabBarController showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+                [self showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
             }
             else if (!_completionHandler && (state == UIApplicationStateBackground))
             {
@@ -503,6 +605,17 @@
     completionHandler(UIBackgroundFetchResultNoData);
 }
 
+- (void)clearNotifications
+{
+    // force to clear the notification center
+    // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
+    // so resetting it does not clear the notifications center.
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
 #pragma mark - Matrix sessions handling
 
 - (void)initMatrixSessions
@@ -528,8 +641,8 @@
             // Report this session to contact manager
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
             
-            // Update all view controllers thanks to tab bar controller
-            [self.masterTabBarController addMatrixSession:mxSession];
+            // Store this new session and update existing view controllers
+            [self addMatrixSession:mxSession];
             
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
@@ -548,11 +661,11 @@
         else if (mxSession.state == MXSessionStateClosed)
         {
             [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
-            [self.masterTabBarController removeMatrixSession:mxSession];
+            [self removeMatrixSession:mxSession];
         }
         
         // Restore call observer only if all session are running
-        NSArray *mxSessions = self.masterTabBarController.mxSessions;
+        NSArray *mxSessions = self.mxSessions;
         BOOL shouldAddMatrixCallObserver = (mxSessions.count);
         for (mxSession in mxSessions)
         {
@@ -651,6 +764,48 @@
     }
 }
 
+- (NSArray*)mxSessions
+{
+    return [NSArray arrayWithArray:mxSessionArray];
+}
+
+- (void)addMatrixSession:(MXSession *)mxSession
+{
+    if (mxSession)
+    {
+        // Update recents data source (The recents view controller will be updated by its data source)
+        if (!mxSessionArray.count)
+        {
+            // This is the first added session, list all the recents for the logged user
+            RecentListDataSource *recentlistDataSource = [[RecentListDataSource alloc] initWithMatrixSession:mxSession];
+            [recentsViewController displayList:recentlistDataSource];
+        }
+        else
+        {
+            [recentsViewController.dataSource addMatrixSession:mxSession];
+        }
+        
+        [mxSessionArray addObject:mxSession];
+    }
+}
+
+- (void)removeMatrixSession:(MXSession*)mxSession
+{
+    // Update recents data source
+    [recentsViewController.dataSource removeMatrixSession:mxSession];
+    
+    [mxSessionArray removeObject:mxSession];
+    
+    // Check whether there are others sessions
+    if (!mxSessionArray.count)
+    {
+        // Keep reference on existing dataSource to release it properly
+        MXKRecentsDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
+        [recentsViewController displayList:nil];
+        [previousRecentlistDataSource destroy];
+    }
+}
+
 - (void)reloadMatrixSessions:(BOOL)clearCache
 {
     // Reload all running matrix sessions
@@ -661,7 +816,7 @@
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-    [self.masterTabBarController popRoomViewControllerAnimated:NO];
+    [self popRoomViewControllerAnimated:NO];
     
     if (clearCache)
     {
@@ -693,70 +848,59 @@
     [[MXKAccountManager sharedManager] logout];
     
     // Return to authentication screen
-    [self.masterTabBarController showAuthenticationScreen];
+    [self showAuthenticationScreen];
     
     // Reset App settings
     [[MXKAppSettings standardAppSettings] reset];
     
     // Reset the contact manager
     [[MXKContactManager sharedManager] reset];
-    
-    // By default the "Recents" tab is focussed
-    [self.masterTabBarController setSelectedIndex:TABBAR_RECENTS_INDEX];
 }
 
-- (MXKAlert*)showErrorAsAlert:(NSError*)error
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    // Ignore fake error, or connection cancellation error
-    if (!error || ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath])
     {
-        return nil;
+        // Flush and restore Matrix data
+        [self reloadMatrixSessions:NO];
+    }
+    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
+    {
+        [self enableInAppNotificationsForAccount:(MXKAccount*)object];
+    }
+}
+
+- (void)addMatrixCallObserver
+{
+    if (matrixCallObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
     }
     
-    // Ignore network reachability error when the app is already offline
-    if (self.isOffline && [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    // Register call observer in order to handle new opened session
+    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
     {
-        return nil;
-    }
-    
-    if (self.errorNotification)
-    {
-        [self.errorNotification dismiss:NO];
-    }
-    
-    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-    if (!title)
-    {
-        title = [NSBundle mxk_localizedStringForKey:@"error"];
-    }
-    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
-    
-    self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-    {
-        [AppDelegate theDelegate].errorNotification = nil;
+        
+        // Ignore the call if a call is already in progress
+        if (!currentCallViewController)
+        {
+            MXCall *mxCall = (MXCall*)notif.object;
+            
+            currentCallViewController = [MXKCallViewController callViewController:mxCall];
+            currentCallViewController.delegate = self;
+            
+            // FIXME GFO Check whether present call from self.window.rootViewController is working
+            [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
+                currentCallViewController.isPresented = YES;
+            }];
+            
+            // Hide system status bar
+            [UIApplication sharedApplication].statusBarHidden = YES;
+        }
     }];
-    [self.errorNotification showInViewController:[self.masterTabBarController selectedViewController]];
-    
-    // Switch in offline mode in case of network reachability error
-    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
-    {
-        self.isOffline = YES;
-    }
-    
-    return self.errorNotification;
 }
 
-- (void)clearNotifications
-{
-    // force to clear the notification center
-    // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
-    // so resetting it does not clear the notifications center.
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-}
+#pragma mark - Matrix Accounts handling
 
 - (void)enableInAppNotificationsForAccount:(MXKAccount*)account
 {
@@ -771,10 +915,9 @@
             [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
                 
                 // Check conditions to display this notification
-                if (![self.masterTabBarController.visibleRoomId isEqualToString:event.roomId]
-                    && !self.masterTabBarController.presentedViewController)
+                if (![self.visibleRoomId isEqualToString:event.roomId]
+                    && !self.window.rootViewController.presentedViewController)
                 {
-                    
                     MXKEventFormatterError error;
                     NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
                     if (messageText.length && (error == MXKEventFormatterErrorNone))
@@ -816,10 +959,10 @@
                          {
                              weakSelf.mxInAppNotification = nil;
                              // Show the room
-                             [weakSelf.masterTabBarController showRoom:event.roomId withMatrixSession:account.mxSession];
+                             [weakSelf showRoom:event.roomId withMatrixSession:account.mxSession];
                          }];
                         
-                        [self.mxInAppNotification showInViewController:[self.masterTabBarController selectedViewController]];
+                        [self.mxInAppNotification showInViewController:self.window.rootViewController];
                     }
                 }
             }];
@@ -836,51 +979,6 @@
         self.mxInAppNotification = nil;
     }
 }
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath])
-    {
-        // Flush and restore Matrix data
-        [self reloadMatrixSessions:NO];
-    }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
-    {
-        [self enableInAppNotificationsForAccount:(MXKAccount*)object];
-    }
-}
-
-- (void)addMatrixCallObserver
-{
-    if (matrixCallObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
-    }
-    
-    // Register call observer in order to handle new opened session
-    matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
-    {
-        
-        // Ignore the call if a call is already in progress
-        if (!currentCallViewController)
-        {
-            MXCall *mxCall = (MXCall*)notif.object;
-            
-            currentCallViewController = [MXKCallViewController callViewController:mxCall];
-            currentCallViewController.delegate = self;
-            
-            UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
-            [selectedViewController presentViewController:currentCallViewController animated:YES completion:^{
-                currentCallViewController.isPresented = YES;
-            }];
-            
-            // Hide system status bar
-            [UIApplication sharedApplication].statusBarHidden = YES;
-        }
-    }];
-}
-
-#pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection
 {
@@ -923,130 +1021,89 @@
             strongSelf->accountPicker = nil;
         }];
         
-        accountPicker.sourceView = [self.masterTabBarController selectedViewController].view;
-        [accountPicker showInViewController:[self.masterTabBarController selectedViewController]];
+        accountPicker.sourceView = self.window.rootViewController.view;
+        [accountPicker showInViewController:self.window.rootViewController];
     }
 }
 
 #pragma mark - Matrix Rooms handling
 
+- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession
+{
+    [self restoreInitialDisplay];
+    
+    // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [recentsViewController selectRoomWithId:roomId inMatrixSession:mxSession];
+    });
+}
+
+- (void)setVisibleRoomId:(NSString *)roomId
+{
+    if (roomId)
+    {
+        // Enable inApp notification for this room in all existing accounts.
+        NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
+        for (MXKAccount *account in mxAccounts)
+        {
+            [account updateNotificationListenerForRoomId:roomId ignore:NO];
+        }
+    }
+    
+    _visibleRoomId = roomId;
+}
+
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId
 {
     // Handle here potential multiple accounts
     [self selectMatrixAccount:^(MXKAccount *selectedAccount)
-    {
-        MXSession *mxSession = selectedAccount.mxSession;
-        
-        if (mxSession)
-        {
-            MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
-            
-            // if the room exists
-            if (mxRoom)
-            {
-                // open it
-                [self.masterTabBarController showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
-            }
-            else
-            {
-                // create a new room
-                [mxSession createRoom:nil
-                           visibility:kMXRoomVisibilityPrivate
-                            roomAlias:nil
-                                topic:nil
-                              success:^(MXRoom *room)
-                {
-                    // invite the other user only if it is defined and not onself
-                    if (userId && ![mxSession.myUser.userId isEqualToString:userId])
-                    {
-                        // add the user
-                        [room inviteUser:userId success:^{
-                        } failure:^(NSError *error)
-                        {
-                            NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                            //Alert user
-                            [self showErrorAsAlert:error];
-                        }];
-                    }
-                    
-                    // Open created room
-                    [self.masterTabBarController showRoom:room.state.roomId withMatrixSession:mxSession];
-                    
-                } failure:^(NSError *error)
-                {
-                    NSLog(@"[AppDelegate] Create room failed: %@", error);
-                    //Alert user
-                    [self showErrorAsAlert:error];
-                }];
-            }
-        }
-    }];
-}
-
-#pragma mark - SplitViewController delegate
-
-- (void)splitViewController:(UISplitViewController *)splitViewController willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode
-{
-    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary viewcontrollers of the splitviewcontroller.
-    if (displayMode == UISplitViewControllerDisplayModePrimaryHidden)
-    {
-        self.masterTabBarController.tabBar.hidden = YES;
-    }
-    else
-    {
-        self.masterTabBarController.tabBar.hidden = NO;
-    }
-    [splitViewController.view setNeedsLayout];
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
-{
-    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
-    {
-        // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-{
-    // oniPad devices, force to display the primary and the secondary viewcontroller
-    // to avoid empty room View Controller in portrait orientation
-    // else, the user cannot select a room
-    return NO;
-}
-
-#pragma mark - UITabBarControllerDelegate delegate
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
-{
-    BOOL res = YES;
-    
-    if (tabBarController.selectedIndex == TABBAR_SETTINGS_INDEX)
-    {
-        // Prompt user to save unsaved profile changes before switching to another tab
-        UIViewController* selectedViewController = [tabBarController selectedViewController];
-        if ([selectedViewController isKindOfClass:[UINavigationController class]])
-        {
-            UIViewController *topViewController = ((UINavigationController*)selectedViewController).topViewController;
-            if ([topViewController isKindOfClass:[MXKAccountDetailsViewController class]])
-            {
-                res = [((MXKAccountDetailsViewController *)topViewController) shouldLeave:^()
-                {
-                    [topViewController.navigationController popViewControllerAnimated:NO];
-                    
-                    // This block is called when tab change is delayed to prompt user about his profile changes
-                    NSUInteger nextSelectedViewController = [tabBarController.viewControllers indexOfObject:viewController];
-                    tabBarController.selectedIndex = nextSelectedViewController;
-                }];
-            }
-        }
-    }
-    return res;
+     {
+         MXSession *mxSession = selectedAccount.mxSession;
+         
+         if (mxSession)
+         {
+             MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
+             
+             // if the room exists
+             if (mxRoom)
+             {
+                 // open it
+                 [self showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
+             }
+             else
+             {
+                 // create a new room
+                 [mxSession createRoom:nil
+                            visibility:kMXRoomVisibilityPrivate
+                             roomAlias:nil
+                                 topic:nil
+                               success:^(MXRoom *room)
+                  {
+                      // invite the other user only if it is defined and not onself
+                      if (userId && ![mxSession.myUser.userId isEqualToString:userId])
+                      {
+                          // add the user
+                          [room inviteUser:userId success:^{
+                          } failure:^(NSError *error)
+                           {
+                               NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                               //Alert user
+                               [self showErrorAsAlert:error];
+                           }];
+                      }
+                      
+                      // Open created room
+                      [self showRoom:room.state.roomId withMatrixSession:mxSession];
+                      
+                  } failure:^(NSError *error)
+                  {
+                      NSLog(@"[AppDelegate] Create room failed: %@", error);
+                      //Alert user
+                      [self showErrorAsAlert:error];
+                  }];
+             }
+         }
+     }];
 }
 
 #pragma mark - MXKCallViewControllerDelegate
@@ -1164,8 +1221,8 @@
 {
     [self removeCallStatusBar];
     
-    UIViewController *selectedViewController = [self.masterTabBarController selectedViewController];
-    [selectedViewController presentViewController:currentCallViewController animated:YES completion:^{
+    // FIXME GFO check whether self.window.rootViewController may present the call
+    [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
         currentCallViewController.isPresented = YES;
     }];
 }
@@ -1188,6 +1245,42 @@
     }
     rootController.view.frame = frame;
     [rootController.view setNeedsLayout];
+}
+
+#pragma mark -
+
+- (void)restoreInitialDisplay
+{
+    // Dismiss potential media picker
+    if (self.window.rootViewController.presentedViewController)
+    {
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    [self popRoomViewControllerAnimated:NO];
+}
+
+#pragma mark - SplitViewController delegate
+
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
+{
+    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
+    {
+        // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    // oniPad devices, force to display the primary and the secondary viewcontroller
+    // to avoid empty room View Controller in portrait orientation
+    // else, the user cannot select a room
+    return NO;
 }
 
 @end

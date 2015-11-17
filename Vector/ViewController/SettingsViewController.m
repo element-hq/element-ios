@@ -80,6 +80,14 @@
         // Refresh table to remove this account
         [self.tableView reloadData];
     }];
+
+    // Add each matrix session, to update the view controller appearance according to mx sessions state
+    // FIXME GFO We should observe added/removed matrix sessions during view controller use.
+    NSArray *sessions = [AppDelegate theDelegate].mxSessions;
+    for (MXSession *mxSession in sessions)
+    {
+        [self addMatrixSession:mxSession];
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -22,7 +22,7 @@
 "view" = "View";
 "mark_all_as_read_prompt" = "Mark all as read?";
 "next" = "Next";
-"back" = "Back";
+"back" = "";
 "create" = "Create";
 "leave" = "Leave";
 "remove" = "Remove";

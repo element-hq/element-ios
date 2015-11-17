@@ -165,7 +165,7 @@
     if (self.roomDataSource)
     {
         // Set visible room id
-        [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
+        [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
     }
 }
 
@@ -174,7 +174,7 @@
     [super viewDidDisappear:animated];
     
     // Reset visible room id
-    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
+    [AppDelegate theDelegate].visibleRoomId = nil;
 }
 
 - (void)viewDidLayoutSubviews
@@ -217,7 +217,7 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room)
              {
                  // Show the room
-                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:self.mainSession];
+                 [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
                  NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);

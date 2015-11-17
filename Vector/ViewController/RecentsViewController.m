@@ -62,7 +62,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
     // Prepare tap gesture on title bar
     navigationBarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
@@ -119,18 +118,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Restore the tabbar hidden manually on iOS 8 and later (see viewWillDisappear)
-    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
-    {
-        // Check whether the recents list is actually visible before showing the tabbar
-        if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden)
-        {
-            self.tabBarController.tabBar.hidden = NO;
-            [self.splitViewController.view setNeedsLayout];
-        }
-    }
     
     [self updateNavigationBarTitle];
     
@@ -170,16 +157,6 @@
     }
     
     [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
-    
-    // Chat screen should be displayed without tabbar, but hidesBottomBarWhenPushed flag has no effect in case of splitviewcontroller use.
-    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary view controllers of the splitviewcontroller
-    // when the primary view controller is hidden.
-    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
-    {
-        self.tabBarController.tabBar.hidden = YES;
-        [self.splitViewController.view setNeedsLayout];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -204,12 +181,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-    // Restore the tabbar by defaut when the user leaves the recents tab
-    if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX)
-    {
-        self.tabBarController.tabBar.hidden = NO;
-    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -232,7 +203,7 @@
                 if ([selectedAccount.mxSession roomWithRoomId:publicRoom.roomId])
                 {
                     // Open selected room
-                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                    [[AppDelegate theDelegate] showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
                 }
                 else
                 {
@@ -251,7 +222,7 @@
                          // Show joined room
                          [loadingWheel stopAnimating];
                          [loadingWheel removeFromSuperview];
-                         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
+                         [[AppDelegate theDelegate] showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
                      } failure:^(NSError *error)
                      {
                          NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
@@ -469,10 +440,10 @@
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
-        
-        // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"back", @"Vector", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     }
+    
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"back", @"Vector", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKDataSourceDelegate
