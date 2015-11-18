@@ -21,5 +21,14 @@
  `RoomExtraInfosInfoView` instance is a view used to display extra information
  */
 @interface RoomExtraInfosInfoView : MXKRoomExtraInfoView
+
+@property (weak, nonatomic) IBOutlet UIImageView *typingImageView;
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainHeightConstraint;
+
+
+// update the displayed typing message.
+// nil message hides the typing icon too.
+- (void)updateTypingMessage:(NSString*)message;
 @end

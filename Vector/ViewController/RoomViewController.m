@@ -126,6 +126,12 @@
         [self.menuListView addConstraint:heightConstraint];
     }
     [self.view setNeedsUpdateConstraints];
+    
+    if (self.roomDataSource)
+    {
+       // this room view controller has its own typing management.
+       self.roomDataSource.showTypingNotifications = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -458,6 +464,8 @@
     // get the room member names
     NSMutableArray *names = [[NSMutableArray alloc] init];
     
+    // keeps the only the first two users
+    // 
     for(int i = 0; i < MIN(count, 2); i++) {
         NSString* name = [currentTypingUsers objectAtIndex:i];
         
@@ -489,7 +497,7 @@
         text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
     }
     
-    //((RoomInputToolbarView*)self.inputToolbarView).typingNotifLabel.text = text;
+    [((RoomExtraInfosInfoView*) self.extraInfoView) updateTypingMessage:text];
 }
 
 @end

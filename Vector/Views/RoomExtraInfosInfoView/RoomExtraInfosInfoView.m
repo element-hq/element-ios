@@ -47,5 +47,28 @@
     
     // Remove default toolbar background color
     self.backgroundColor = [UIColor whiteColor];
+    
+    // TODO : put this mint grey color as a resource
+    self.typingImageView.backgroundColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
+    self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2; 
+    
 }
+
+// update the displayed typing message.
+// nil message hides the typing icon too.
+- (void)updateTypingMessage:(NSString*)message
+{
+    if (message)
+    {
+        self.typingImageView.hidden = false;
+        self.messageLabel.hidden = false;
+        self.messageLabel.text = message;
+    }
+    else
+    {
+        self.typingImageView.hidden = true;
+        self.messageLabel.hidden = true;
+    }
+}
+
 @end
