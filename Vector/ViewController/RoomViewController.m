@@ -30,6 +30,12 @@
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
+
+    // List of members who are typing in the room.
+    NSArray *currentTypingUsers;
+    
+    // Typing notifications listener.
+    id typingNotifListener;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -126,6 +132,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self listenTypingNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -141,6 +149,8 @@
     
     // Hide menu list view
     menuListTopConstraint.constant = 0;
+    
+    [self removeTypingNotificationsListener];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -384,6 +394,97 @@
     }
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+#pragma mark - typing management
+
+- (void)removeTypingNotificationsListener
+{
+    if (self.roomDataSource)
+    {
+        // Remove the previous live listener
+        if (typingNotifListener)
+        {
+            [self.roomDataSource.room removeListener:typingNotifListener];
+            currentTypingUsers = nil;
+        }
+    }
+}
+
+- (void)listenTypingNotifications
+{
+    if (self.roomDataSource)
+    {
+        // Add typing notification listener
+        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState)
+                               {
+                                   
+                                   // Handle only live events
+                                   if (direction == MXEventDirectionForwards)
+                                   {
+                                       // Retrieve typing users list
+                                       NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
+                                       // Remove typing info for the current user
+                                       NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
+                                       if (index != NSNotFound)
+                                       {
+                                           [typingUsers removeObjectAtIndex:index];
+                                       }
+                                       // Ignore this notification if both arrays are empty
+                                       if (currentTypingUsers.count || typingUsers.count)
+                                       {
+                                           currentTypingUsers = typingUsers;
+                                           [self refreshTypingView];
+                                       }
+                                   }
+                               }];
+        
+        currentTypingUsers = self.roomDataSource.room.typingUsers;
+        [self refreshTypingView];
+    }
+}
+
+
+- (void)refreshTypingView
+{
+    NSString* text = nil;
+    NSUInteger count = currentTypingUsers.count;
+    
+    // get the room member names
+    NSMutableArray *names = [[NSMutableArray alloc] init];
+    
+    for(int i = 0; i < MIN(count, 2); i++) {
+        NSString* name = [currentTypingUsers objectAtIndex:i];
+        
+        MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+        
+        if (nil != member)
+        {
+            name = member.displayname;
+        }
+        
+        [names addObject:name];
+    }
+    
+    
+    if (0 == count)
+    {
+        // something to do ?
+    }
+    else if (1 == count)
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+    }
+    else if (2 == count)
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+    }
+    else
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+    }
+    
+    //((RoomInputToolbarView*)self.inputToolbarView).typingNotifLabel.text = text;
 }
 
 @end
