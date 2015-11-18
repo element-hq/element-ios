@@ -21,6 +21,8 @@
 
 #import "RoomInputToolbarView.h"
 
+#import "RoomExtraInfosInfoView.h"
+
 #import "RoomParticipantsViewController.h"
 
 @interface RoomViewController ()
@@ -54,6 +56,9 @@
     // Replace the default input toolbar view.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
+    
+    // set extra area
+    [self setRoomExtraInfoViewClass:RoomExtraInfosInfoView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];

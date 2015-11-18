@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71BE02361BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71BE02341BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m */; settings = {ASSET_TAGS = (); }; };
+		71BE02371BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71BE02351BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib */; settings = {ASSET_TAGS = (); }; };
 		F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */; };
 		F001D75F1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D7561B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib */; };
 		F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7581B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m */; };
@@ -100,6 +102,9 @@
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
+		71BE02331BFCA5E800D0B1DA /* RoomExtraInfosInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomExtraInfosInfoView.h; path = RoomExtraInfosInfoView/RoomExtraInfosInfoView.h; sourceTree = "<group>"; };
+		71BE02341BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomExtraInfosInfoView.m; path = RoomExtraInfosInfoView/RoomExtraInfosInfoView.m; sourceTree = "<group>"; };
+		71BE02351BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomExtraInfosInfoView.xib; path = RoomExtraInfosInfoView/RoomExtraInfosInfoView.xib; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F001D7541B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingBubbleTableViewCell.h; sourceTree = "<group>"; };
 		F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIncomingBubbleTableViewCell.m; sourceTree = "<group>"; };
@@ -232,6 +237,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		71BE02321BFCA54800D0B1DA /* RoomExtraInfosInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				71BE02331BFCA5E800D0B1DA /* RoomExtraInfosInfoView.h */,
+				71BE02341BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m */,
+				71BE02351BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib */,
+			);
+			name = RoomExtraInfosInfoView;
+			sourceTree = "<group>";
+		};
 		E1451F540F8BC02A7FB7AA31 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,6 +261,7 @@
 			children = (
 				F084DAAA1BB57BD100B4C530 /* Authentication */,
 				F001D7531B8207C000A162C3 /* RoomBubbleList */,
+				71BE02321BFCA54800D0B1DA /* RoomExtraInfosInfoView */,
 				F001D75A1B8207C000A162C3 /* RoomInputToolbar */,
 			);
 			path = Views;
@@ -499,7 +515,6 @@
 				F094A99F1B78D8F000B1FBBF /* Frameworks */,
 				F094A9A01B78D8F000B1FBBF /* Resources */,
 				44C35695CFA4F9799C449367 /* Copy Pods Resources */,
-				CE74DDBF8318D6A2441D715E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -620,6 +635,7 @@
 				F00E08411B8380CF0057012C /* settings@2x.png in Resources */,
 				F00E08401B8380CF0057012C /* settings.png in Resources */,
 				F0E956C81B836CCD004C1699 /* icon_menu.png in Resources */,
+				71BE02371BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib in Resources */,
 				F0DD7D6C1B7AA8C900C4BE02 /* search.png in Resources */,
 				F00B1BD01B95D22E001806E3 /* camera_switch.png in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
@@ -666,21 +682,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		CE74DDBF8318D6A2441D715E /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Vector/Pods-Vector-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -698,6 +699,7 @@
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
+				71BE02361BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
 				F094AA2D1B78E42600B1FBBF /* RecentListDataSource.m in Sources */,
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,
