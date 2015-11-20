@@ -42,6 +42,9 @@
         calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
 
         localTimeZone = [NSTimeZone localTimeZone];
+
+        // FIXME use the color defined in room settings
+        self.bingTextColor = [UIColor colorWithRed:98.0f / 255.0f green:206.0f / 255.0f blue:156.0f / 255.0f alpha:1.0f];
     }
     return self;
 }
