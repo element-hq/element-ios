@@ -15,16 +15,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-zL-9bw" userLabel="Bing indicator">
-                        <rect key="frame" x="0.0" y="0.0" width="5" height="74"/>
+                        <rect key="frame" x="0.0" y="0.0" width="8" height="74"/>
                         <animations/>
                         <color key="backgroundColor" red="0.028153735484073149" green="0.82494870580808077" blue="0.051896891282274656" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="74" id="C2z-3m-zJG"/>
-                            <constraint firstAttribute="width" constant="5" id="TWc-jq-awv"/>
+                            <constraint firstAttribute="width" constant="8" id="TWc-jq-awv"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
-                        <rect key="frame" x="8" y="16" width="42" height="42"/>
+                        <rect key="frame" x="11" y="16" width="42" height="42"/>
                         <animations/>
                         <color key="backgroundColor" white="0.89720269880000003" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -33,9 +33,9 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastEventDescription" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
-                        <rect key="frame" x="58" y="42" width="535" height="18"/>
+                        <rect key="frame" x="61" y="40" width="532" height="20"/>
                         <animations/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -49,8 +49,8 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
-                        <rect key="frame" x="58" y="10" width="456" height="23"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
+                        <rect key="frame" x="61" y="15" width="453" height="23"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -69,7 +69,7 @@
                     <constraint firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" constant="8" id="YqC-WC-Wqe"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="8" id="cmh-bM-EmX"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="7" id="t2m-pb-5zd"/>
-                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="10" id="tY3-6V-A3B"/>
+                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="15" id="tY3-6V-A3B"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
