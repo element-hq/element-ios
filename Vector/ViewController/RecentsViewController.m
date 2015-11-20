@@ -17,13 +17,9 @@
 #import "RecentsViewController.h"
 #import "RoomViewController.h"
 
-#import "AppDelegate.h"
-
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
-
-#import "RecentListDataSource.h"
 
 @interface RecentsViewController ()
 {
@@ -39,10 +35,6 @@
     
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSIndexPath *currentSelectedCellIndexPath;
-    
-    // "Mark all as read" option
-    UITapGestureRecognizer *navigationBarTapGesture;
-    MXKAlert *markAllAsReadAlert;
 }
 
 @end
@@ -52,22 +44,19 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
+    
+    self.navigationItem.title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    // Prepare tap gesture on title bar
-    navigationBarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
-    [navigationBarTapGesture setNumberOfTouchesRequired:1];
-    [navigationBarTapGesture setNumberOfTapsRequired:1];
-    [navigationBarTapGesture setDelegate:self];
     
     // Initialisation
     currentSelectedCellIndexPath = nil;
@@ -86,19 +75,6 @@
 
 - (void)destroy
 {
-    if (markAllAsReadAlert)
-        
-    {
-        [markAllAsReadAlert dismiss:NO];
-        markAllAsReadAlert = nil;
-    }
-    
-    if (navigationBarTapGesture)
-    {
-        [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
-        navigationBarTapGesture = nil;
-    }
-    
     [super destroy];
 }
 
@@ -119,25 +95,12 @@
 {
     [super viewWillAppear:animated];
     
-    [self updateNavigationBarTitle];
-    
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
     if (indexPath)
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
-    
-    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
-    if (recentListDataSource)
-    {
-        [self startActivityIndicator];
-        [recentListDataSource refreshPublicRooms:nil onComplete:^{
-            [self stopActivityIndicator];
-        }];
-    }
-    
-    [self.navigationController.navigationBar addGestureRecognizer:navigationBarTapGesture];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -149,14 +112,6 @@
     
     selectedRoomId = nil;
     selectedRoomSession = nil;
-    
-    if (markAllAsReadAlert)
-    {
-        [markAllAsReadAlert dismiss:NO];
-        markAllAsReadAlert = nil;
-    }
-    
-    [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -181,67 +136,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 35;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Check whether the selected row is a public room or not
-    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
-    if (recentListDataSource && recentListDataSource.publicRoomsFirstSection != -1 && indexPath.section >= recentListDataSource.publicRoomsFirstSection)
-    {
-        MXPublicRoom *publicRoom = [recentListDataSource publicRoomAtIndexPath:indexPath];
-        if (publicRoom)
-        {
-            // Handle multi-sessions here
-            [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
-                // Check whether the user has already joined the selected public room
-                if ([selectedAccount.mxSession roomWithRoomId:publicRoom.roomId])
-                {
-                    // Open selected room
-                    [[AppDelegate theDelegate] showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
-                }
-                else
-                {
-                    // Join the selected room
-                    UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-                    if (selectedCell)
-                    {
-                        CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
-                        loadingWheel.center = center;
-                        [selectedCell addSubview:loadingWheel];
-                    }
-                    [loadingWheel startAnimating];
-                    [selectedAccount.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room)
-                     {
-                         // Show joined room
-                         [loadingWheel stopAnimating];
-                         [loadingWheel removeFromSuperview];
-                         [[AppDelegate theDelegate] showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
-                     } failure:^(NSError *error)
-                     {
-                         NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
-                         //Alert user
-                         [loadingWheel stopAnimating];
-                         [loadingWheel removeFromSuperview];
-                         [[AppDelegate theDelegate] showErrorAsAlert:error];
-                     }];
-                }
-                
-            }];
-        }
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
-    else
-    {
-        // Let super handle the selected row
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    }
 }
 
 #pragma mark -
@@ -290,23 +184,13 @@
 
 #pragma mark - Internal methods
 
-- (void)updateNavigationBarTitle
-{
-    NSString *title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
-    
-    if (self.dataSource.unreadCount)
-    {
-        title = [NSString stringWithFormat:@"%@ (%tu)", title, self.dataSource.unreadCount];
-    }
-    self.navigationItem.title = title;
-}
-
 - (void)scrollToTop
 {
-    // stop any scrolling effect
+    // Stop any scrolling effect before scrolling to the tableview top
     [UIView setAnimationsEnabled:NO];
-    // before scrolling to the tableview top
+
     self.recentsTableView.contentOffset = CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top);
+    
     [UIView setAnimationsEnabled:YES];
 }
 
@@ -347,37 +231,6 @@
         {
             [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
         }
-    }
-}
-
-#pragma mark -
-
-- (void)onNavigationBarTap:(id)sender
-{
-    if (self.dataSource.unreadCount)
-        
-    {
-        __weak typeof(self) weakSelf = self;
-        
-        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"Vector", nil) message:nil style:MXKAlertStyleAlert];
-        
-        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-                                                {
-                                                    typeof(self) strongSelf = weakSelf;
-                                                    strongSelf->markAllAsReadAlert = nil;
-                                                }];
-        
-        [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-         {
-             typeof(self) strongSelf = weakSelf;
-             
-             strongSelf->markAllAsReadAlert = nil;
-             
-             [strongSelf.dataSource markAllAsRead];
-             [strongSelf updateNavigationBarTitle];
-         }];
-        
-        [markAllAsReadAlert showInViewController:self];
     }
 }
 
@@ -424,8 +277,6 @@
             [currentRoomViewController displayRoom:roomDataSource];
         }
         
-        [self updateNavigationBarTitle];
-        
         if (self.splitViewController)
         {
             // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
@@ -447,11 +298,9 @@
 }
 
 #pragma mark - MXKDataSourceDelegate
+
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    // Update the unreadCount in the title
-    [self updateNavigationBarTitle];
-    
     [self.recentsTableView reloadData];
     
     if (shouldScrollToTopOnRefresh)
@@ -470,6 +319,7 @@
 }
 
 #pragma mark - MXKRecentListViewControllerDelegate
+
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
     // Open the room

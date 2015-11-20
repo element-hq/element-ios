@@ -51,7 +51,6 @@
 		F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA091B78E42600B1FBBF /* RageShakeManager.m */; };
 		F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F094AA0B1B78E42600B1FBBF /* Localizable.strings */; };
 		F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F094AA0D1B78E42600B1FBBF /* Vector.strings */; };
-		F094AA2D1B78E42600B1FBBF /* RecentListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA121B78E42600B1FBBF /* RecentListDataSource.m */; };
 		F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094AA141B78E42600B1FBBF /* countryCodes.plist */; };
 		F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */; };
 		F094AA301B78E42600B1FBBF /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */; };
@@ -154,8 +153,6 @@
 		F094AA091B78E42600B1FBBF /* RageShakeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RageShakeManager.m; sourceTree = "<group>"; };
 		F094AA0C1B78E42600B1FBBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F094AA0E1B78E42600B1FBBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Vector.strings; sourceTree = "<group>"; };
-		F094AA111B78E42600B1FBBF /* RecentListDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentListDataSource.h; sourceTree = "<group>"; };
-		F094AA121B78E42600B1FBBF /* RecentListDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentListDataSource.m; sourceTree = "<group>"; };
 		F094AA141B78E42600B1FBBF /* countryCodes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = countryCodes.plist; sourceTree = "<group>"; };
 		F094AA161B78E42600B1FBBF /* AccountDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDetailsViewController.h; sourceTree = "<group>"; };
 		F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDetailsViewController.m; sourceTree = "<group>"; };
@@ -386,8 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				F08BE09F1B87064000C480FB /* Room */,
-				F094AA111B78E42600B1FBBF /* RecentListDataSource.h */,
-				F094AA121B78E42600B1FBBF /* RecentListDataSource.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -682,7 +677,6 @@
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
-				F094AA2D1B78E42600B1FBBF /* RecentListDataSource.m in Sources */,
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,
 				F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */,
 				F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */,
