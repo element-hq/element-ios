@@ -23,6 +23,8 @@
 
 #import "RoomParticipantsViewController.h"
 
+#import "RoomDetailsViewController.h"
+
 @interface RoomViewController ()
 {
     // The constraint used to animate menu list display
@@ -384,6 +386,23 @@
     }
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+#pragma mark - RoomDetailsViewController management
+
+- (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
+{
+    // instead of opening a text edition
+    // launch a dedicated viewcontroller.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RoomDetailsViewController* controller = [RoomDetailsViewController roomDetailsViewController];
+        [controller initWithSession:self.roomDataSource.mxSession andRoomId:self.roomDataSource.roomId];
+        
+        [self.navigationController pushViewController:controller animated:YES];
+    });
+    
+    // cancel any requested edition
+    return NO;
 }
 
 @end
