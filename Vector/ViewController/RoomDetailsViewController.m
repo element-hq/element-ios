@@ -40,7 +40,6 @@
 
 @implementation RoomDetailsViewController
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -49,6 +48,13 @@
     
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
     self.tableView.separatorColor = [UIColor clearColor];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self dismissFirstResponder];
 }
 
 - (NSMutableDictionary*)getUpdatedItems
@@ -60,6 +66,21 @@
     
     return updatedItems;
 }
+
+- (void)dismissFirstResponder
+{
+    if ([topicTextView isFirstResponder])
+    {
+        [topicTextView resignFirstResponder];
+    }
+    
+    if ([nameTextField isFirstResponder])
+    {
+        [nameTextField resignFirstResponder];
+    }
+}
+
+
 #pragma mark - UITextViewDelegate
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -239,10 +260,15 @@
 {
     if (self.tableView == aTableView)
     {
-        if ([topicTextView isFirstResponder])
-        {
-            
-        }
+        [self dismissFirstResponder];
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView == self.tableView)
+    {
+        [self dismissFirstResponder];
     }
 }
 
