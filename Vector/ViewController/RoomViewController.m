@@ -303,6 +303,20 @@
             participantsViewController.mxRoom = self.roomDataSource.room;
         }
     }
+    else if ([[segue identifier] isEqualToString:@"showRoomDetails"])
+    {
+        if ([pushedViewController isKindOfClass:[RoomDetailsViewController class]])
+        {
+            // Dismiss keyboard
+            [self dismissKeyboard];
+            
+            RoomDetailsViewController* detailsViewController = (RoomDetailsViewController*)pushedViewController;
+            [detailsViewController initWithSession:self.roomDataSource.mxSession andRoomId:self.roomDataSource.roomId];
+        }
+    }
+    
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
@@ -395,10 +409,7 @@
     // instead of opening a text edition
     // launch a dedicated viewcontroller.
     dispatch_async(dispatch_get_main_queue(), ^{
-        RoomDetailsViewController* controller = [RoomDetailsViewController roomDetailsViewController];
-        [controller initWithSession:self.roomDataSource.mxSession andRoomId:self.roomDataSource.roomId];
-        
-        [self.navigationController pushViewController:controller animated:YES];
+        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     });
     
     // cancel any requested edition

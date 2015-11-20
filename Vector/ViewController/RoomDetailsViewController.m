@@ -33,8 +33,12 @@
     // updated user data
     NSMutableDictionary<NSString*, id> *updatedItems;
     
+    // active items
     UITextView* topicTextView;
     UITextField* nameTextField;
+    
+    // pending http operation
+    MXHTTPOperation* pendingOperation;
 }
 @end
 
@@ -44,6 +48,8 @@
 {
     [super viewDidLoad];
     
+    // TODO use a color panel
+    // not an hard coded one.
     CGFloat item = (242.0f / 255.0);
     
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
@@ -56,6 +62,21 @@
     
     [self dismissFirstResponder];
 }
+
+- (void)destroy
+{
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    if (pendingOperation)
+    {
+        [pendingOperation cancel];
+        pendingOperation = nil;
+    }
+    
+    [super destroy];
+}
+
+#pragma mark - private
 
 - (NSMutableDictionary*)getUpdatedItems
 {
@@ -80,13 +101,26 @@
     }
 }
 
+- (void)showUpdatingSpinner
+{
+    // TODO : wait that we have the final behaviour
+    self.view.alpha = 0.5f;
+    self.view.userInteractionEnabled = NO;
+}
 
-#pragma mark - UITextViewDelegate
+- (void)hideUpdatingSpinner
+{
+    // TODO : wait that we have the final behaviour
+    self.view.alpha = 1.0f;
+    self.view.userInteractionEnabled = YES;
+}
+
+#pragma mark - actions
 
 - (void)textViewDidChange:(UITextView *)textView
 {
     // avoid nil pointer
-    NSString* text = (!textView.text) ? textView.text : @"";
+    NSString* text = (textView.text) ? textView.text : @"";
     
     if (topicTextView == textView)
     {
@@ -94,17 +128,92 @@
     }
 }
 
-#pragma mark - field updates
-
 - (IBAction)onTextFieldUpdate:(UITextField*)textField
 {
     // avoid nil pointer
-    NSString* text = (!textField.text) ? textField.text : @"";
+    NSString* text = (textField.text) ? textField.text : @"";
     
     if (nameTextField == textField)
     {
-        [updatedItems setObject:text forKey:@"ROOM_SECTION_NAME"];
+        [[self getUpdatedItems] setObject:text forKey:@"ROOM_SECTION_NAME"];
     }
+}
+
+- (IBAction)onDone:(id)sender
+{
+    // check if there is some update
+    if (mxRoomState && updatedItems && (updatedItems.count > 0))
+    {
+        // has a new room name
+        if ([updatedItems objectForKey:@"ROOM_SECTION_NAME"])
+        {
+            NSString* newName = [updatedItems objectForKey:@"ROOM_SECTION_NAME"];
+            
+            if (![newName isEqualToString:mxRoomState.name])
+            {
+                [self showUpdatingSpinner];
+                __weak typeof(self) weakSelf = self;
+                
+                pendingOperation = [mxRoom setName:newName success:^{
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->pendingOperation = nil;
+                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_NAME"];
+                    [strongSelf onDone:nil];
+                    
+                } failure:^(NSError *error) {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    // TODO should stop the saving ?
+                    // continue the saving by now
+                    strongSelf->pendingOperation = nil;
+                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_NAME"];
+                    [strongSelf onDone:nil];
+                    
+                    NSLog(@"[onDone] Rename room failed: %@", error);
+                }];
+                
+                return;
+            }
+        }
+        
+        // has a new room topic
+        if ([updatedItems objectForKey:@"ROOM_SECTION_TOPIC"])
+        {
+            NSString* newTopic = [updatedItems objectForKey:@"ROOM_SECTION_TOPIC"];
+            
+            if (![newTopic isEqualToString:mxRoomState.topic])
+            {
+                [self showUpdatingSpinner];
+                __weak typeof(self) weakSelf = self;
+                
+                pendingOperation = [mxRoom setTopic:newTopic success:^{
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->pendingOperation = nil;
+                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+                    [strongSelf onDone:nil];
+                    
+                } failure:^(NSError *error) {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    // TODO should stop the saving ?
+                    // continue the saving by now
+                    strongSelf->pendingOperation = nil;
+                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+                    [strongSelf onDone:nil];
+                    
+                    NSLog(@"[onDone] Rename topic failed: %@", error);
+                }];
+                
+                return;
+            }
+        }
+    }
+    
+    [self hideUpdatingSpinner];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDataSource
