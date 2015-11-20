@@ -20,6 +20,8 @@
 #import "TableViewCellWithLabelAndLargeTextView.h"
 #import "TableViewCellSeparator.h"
 
+#import "RageShakeManager.h"
+
 #define ROOM_SECTION 0
 
 #define ROOM_SECTION_NAME  0
@@ -54,6 +56,9 @@
     
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
     self.tableView.separatorColor = [UIColor clearColor];
+    
+    // Setup `RoomDetailsViewController` properties
+    self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated
