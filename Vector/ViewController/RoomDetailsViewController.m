@@ -56,11 +56,19 @@
     self.tableView.separatorColor = [UIColor clearColor];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
     [self dismissFirstResponder];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
 }
 
 - (void)destroy
@@ -136,6 +144,19 @@
     if (nameTextField == textField)
     {
         [[self getUpdatedItems] setObject:text forKey:@"ROOM_SECTION_NAME"];
+    }
+}
+
+- (void)didMXSessionStateChange:(NSNotification *)notif
+{
+    // Check this is our Matrix session that has changed
+    if (notif.object == self.session)
+    {
+        // refresh when the session sync is done.
+        if (MXSessionStateRunning == self.session.state)
+        {
+            [self.tableView reloadData];
+        }
     }
 }
 
