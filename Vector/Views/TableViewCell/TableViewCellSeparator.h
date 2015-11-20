@@ -16,11 +16,7 @@
 
 #import "MXKTableViewCell.h"
 
-@interface TableViewCellWithLabelAndLargeTextView : MXKTableViewCell
-{
-}
+@interface TableViewCellSeparator : MXKTableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
-@property (strong, nonatomic) IBOutlet UITextView *mxkTextView;
 
 @end

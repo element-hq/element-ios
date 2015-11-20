@@ -14,13 +14,8 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCell.h"
+#import "TableViewCellSeparator.h"
 
-@interface TableViewCellWithLabelAndLargeTextView : MXKTableViewCell
-{
-}
-
-@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
-@property (strong, nonatomic) IBOutlet UITextView *mxkTextView;
+@implementation TableViewCellSeparator
 
 @end

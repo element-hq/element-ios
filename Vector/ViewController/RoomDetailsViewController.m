@@ -18,6 +18,7 @@
 
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
+#import "TableViewCellSeparator.h"
 
 #define ROOM_SECTION 0
 
@@ -91,7 +92,8 @@
 {
     if (section == ROOM_SECTION)
     {
-        return ROOM_SECTION_COUNT;
+        // add separators
+        return ROOM_SECTION_COUNT * 2 + 1;
     }
     
     return 0;
@@ -115,10 +117,21 @@
 {
     if (indexPath.section == ROOM_SECTION)
     {
-         if (indexPath.row == ROOM_SECTION_TOPIC)
-         {
-             return ROOM_TOPIC_CELL_HEIGHT;
-         }
+        NSInteger row = indexPath.row;
+        
+        // is a separator ?
+        if ((row % 2) == 0)
+        {
+            return 1.0f;
+        }
+        
+        // retrieve row as a ROOM_SECTION_XX index
+        row = (row - 1) / 2;
+        
+        if (row == ROOM_SECTION_TOPIC)
+        {
+            return ROOM_TOPIC_CELL_HEIGHT;
+        }
     }
     
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
@@ -126,12 +139,31 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger row = indexPath.row;
     UITableViewCell* cell = nil;
     
     // general settings
     if (indexPath.section == ROOM_SECTION)
     {
-        if (indexPath.row == ROOM_SECTION_TOPIC)
+        if ((row % 2) == 0)
+        {
+            UITableViewCell* sepCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellSeparator defaultReuseIdentifier]];
+            
+            if (!sepCell)
+            {
+                sepCell = [[TableViewCellSeparator alloc] init];
+            }
+            
+            // the borders are drawn in dark grey
+            sepCell.contentView.backgroundColor = ((row == 0) || (row == ROOM_SECTION_COUNT * 2)) ? [UIColor darkGrayColor] : [UIColor lightGrayColor];
+            
+            return sepCell;
+        }
+        
+        // retrieve row as a ROOM_SECTION_XX index
+        row = (row - 1) / 2;
+        
+        if (row == ROOM_SECTION_TOPIC)
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
             
@@ -165,7 +197,7 @@
             
             cell = roomTopicCell;
         }
-        else if (indexPath.row == ROOM_SECTION_NAME)
+        else if (row == ROOM_SECTION_NAME)
         {
             TableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndTextField defaultReuseIdentifier]];
             
