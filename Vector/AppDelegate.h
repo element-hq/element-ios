@@ -53,7 +53,7 @@
 
 #pragma mark - Matrix Sessions handling
 
-// Add a matrix session. This session is propagated to all view controllers handled by the tab bar controller.
+// Add a matrix session.
 - (void)addMatrixSession:(MXSession*)mxSession;
 
 // Remove a matrix session.

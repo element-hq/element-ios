@@ -82,7 +82,6 @@
     }];
 
     // Add each matrix session, to update the view controller appearance according to mx sessions state
-    // FIXME GFO We should observe added/removed matrix sessions during view controller use.
     NSArray *sessions = [AppDelegate theDelegate].mxSessions;
     for (MXSession *mxSession in sessions)
     {
@@ -101,6 +100,22 @@
     [self reset];
     
     [super destroy];
+}
+
+- (void)onMatrixSessionStateDidChange:(NSNotification *)notif
+{
+    MXSession *mxSession = notif.object;
+    
+    // Check whether the concerned session is a new one which is not already associated with this view controller.
+    if (mxSession.state == MXSessionStateInitialised && [self.mxSessions indexOfObject:mxSession] != NSNotFound)
+    {
+        // Store this new session
+        [self addMatrixSession:mxSession];
+    }
+    else
+    {
+        [super onMatrixSessionStateDidChange:notif];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

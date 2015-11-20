@@ -638,12 +638,8 @@
         // Check whether the concerned session is a new one
         if (mxSession.state == MXSessionStateInitialised)
         {
-            // Report this session to contact manager
-            [[MXKContactManager sharedManager] addMatrixSession:mxSession];
-            
-            // Store this new session and update existing view controllers
+            // Store this new session
             [self addMatrixSession:mxSession];
-            
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -660,7 +656,6 @@
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
-            [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
             [self removeMatrixSession:mxSession];
         }
         
@@ -773,6 +768,9 @@
 {
     if (mxSession)
     {
+        // Report this session to contact manager
+        [[MXKContactManager sharedManager] addMatrixSession:mxSession];
+        
         // Update recents data source (The recents view controller will be updated by its data source)
         if (!mxSessionArray.count)
         {
@@ -791,6 +789,8 @@
 
 - (void)removeMatrixSession:(MXSession*)mxSession
 {
+    [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
+    
     // Update recents data source
     [recentsViewController.dataSource removeMatrixSession:mxSession];
     
