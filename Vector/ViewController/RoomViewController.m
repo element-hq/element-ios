@@ -23,6 +23,8 @@
 
 #import "RoomParticipantsViewController.h"
 
+#import "RoomDetailsViewController.h"
+
 @interface RoomViewController ()
 {
     // The constraint used to animate menu list display
@@ -301,6 +303,20 @@
             participantsViewController.mxRoom = self.roomDataSource.room;
         }
     }
+    else if ([[segue identifier] isEqualToString:@"showRoomDetails"])
+    {
+        if ([pushedViewController isKindOfClass:[RoomDetailsViewController class]])
+        {
+            // Dismiss keyboard
+            [self dismissKeyboard];
+            
+            RoomDetailsViewController* detailsViewController = (RoomDetailsViewController*)pushedViewController;
+            [detailsViewController initWithSession:self.roomDataSource.mxSession andRoomId:self.roomDataSource.roomId];
+        }
+    }
+    
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
@@ -384,6 +400,20 @@
     }
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+#pragma mark - RoomDetailsViewController management
+
+- (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
+{
+    // instead of opening a text edition
+    // launch a dedicated viewcontroller.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+    });
+    
+    // cancel any requested edition
+    return NO;
 }
 
 @end
