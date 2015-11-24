@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		71BE02361BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71BE02341BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m */; settings = {ASSET_TAGS = (); }; };
-		71BE02371BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71BE02351BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib */; settings = {ASSET_TAGS = (); }; };
+		71EBE6671C04872A00E7D953 /* RoomActivitiesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71EBE6651C04872A00E7D953 /* RoomActivitiesView.m */; settings = {ASSET_TAGS = (); }; };
+		71EBE6681C04872A00E7D953 /* RoomActivitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71EBE6661C04872A00E7D953 /* RoomActivitiesView.xib */; settings = {ASSET_TAGS = (); }; };
 		F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */; };
 		F001D75F1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D7561B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib */; };
 		F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7581B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m */; };
@@ -102,9 +102,9 @@
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
-		71BE02331BFCA5E800D0B1DA /* RoomExtraInfosInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomExtraInfosInfoView.h; path = RoomExtraInfosInfoView/RoomExtraInfosInfoView.h; sourceTree = "<group>"; };
-		71BE02341BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomExtraInfosInfoView.m; path = RoomExtraInfosInfoView/RoomExtraInfosInfoView.m; sourceTree = "<group>"; };
-		71BE02351BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomExtraInfosInfoView.xib; path = RoomExtraInfosInfoView/RoomExtraInfosInfoView.xib; sourceTree = "<group>"; };
+		71EBE6641C04872A00E7D953 /* RoomActivitiesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomActivitiesView.h; path = RoomActivitiesView/RoomActivitiesView.h; sourceTree = "<group>"; };
+		71EBE6651C04872A00E7D953 /* RoomActivitiesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomActivitiesView.m; path = RoomActivitiesView/RoomActivitiesView.m; sourceTree = "<group>"; };
+		71EBE6661C04872A00E7D953 /* RoomActivitiesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomActivitiesView.xib; path = RoomActivitiesView/RoomActivitiesView.xib; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F001D7541B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingBubbleTableViewCell.h; sourceTree = "<group>"; };
 		F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIncomingBubbleTableViewCell.m; sourceTree = "<group>"; };
@@ -237,14 +237,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		71BE02321BFCA54800D0B1DA /* RoomExtraInfosInfoView */ = {
+		71BE02321BFCA54800D0B1DA /* RoomActivitiesView */ = {
 			isa = PBXGroup;
 			children = (
-				71BE02331BFCA5E800D0B1DA /* RoomExtraInfosInfoView.h */,
-				71BE02341BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m */,
-				71BE02351BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib */,
+				71EBE6641C04872A00E7D953 /* RoomActivitiesView.h */,
+				71EBE6651C04872A00E7D953 /* RoomActivitiesView.m */,
+				71EBE6661C04872A00E7D953 /* RoomActivitiesView.xib */,
 			);
-			name = RoomExtraInfosInfoView;
+			name = RoomActivitiesView;
 			sourceTree = "<group>";
 		};
 		E1451F540F8BC02A7FB7AA31 /* Pods */ = {
@@ -261,7 +261,7 @@
 			children = (
 				F084DAAA1BB57BD100B4C530 /* Authentication */,
 				F001D7531B8207C000A162C3 /* RoomBubbleList */,
-				71BE02321BFCA54800D0B1DA /* RoomExtraInfosInfoView */,
+				71BE02321BFCA54800D0B1DA /* RoomActivitiesView */,
 				F001D75A1B8207C000A162C3 /* RoomInputToolbar */,
 			);
 			path = Views;
@@ -597,6 +597,7 @@
 				F0DD7D721B7AA8C900C4BE02 /* tab_settings.png in Resources */,
 				F001D7611B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.xib in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
+				71EBE6681C04872A00E7D953 /* RoomActivitiesView.xib in Resources */,
 				F084DAAF1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib in Resources */,
 				F0E956BF1B834430004C1699 /* share_contact.png in Resources */,
 				F0DD7D7E1B7AAA3C00C4BE02 /* icon_users.png in Resources */,
@@ -635,7 +636,6 @@
 				F00E08411B8380CF0057012C /* settings@2x.png in Resources */,
 				F00E08401B8380CF0057012C /* settings.png in Resources */,
 				F0E956C81B836CCD004C1699 /* icon_menu.png in Resources */,
-				71BE02371BFCA5E800D0B1DA /* RoomExtraInfosInfoView.xib in Resources */,
 				F0DD7D6C1B7AA8C900C4BE02 /* search.png in Resources */,
 				F00B1BD01B95D22E001806E3 /* camera_switch.png in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
@@ -693,13 +693,13 @@
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F094AA051B78E3D400B1FBBF /* empty.mm in Sources */,
+				71EBE6671C04872A00E7D953 /* RoomActivitiesView.m in Sources */,
 				F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */,
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
-				71BE02361BFCA5E800D0B1DA /* RoomExtraInfosInfoView.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
 				F094AA2D1B78E42600B1FBBF /* RecentListDataSource.m in Sources */,
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,

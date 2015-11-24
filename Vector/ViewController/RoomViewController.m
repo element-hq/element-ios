@@ -21,7 +21,7 @@
 
 #import "RoomInputToolbarView.h"
 
-#import "RoomExtraInfosInfoView.h"
+#import "RoomActivitiesView.h"
 
 #import "RoomParticipantsViewController.h"
 
@@ -58,7 +58,7 @@
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
     
     // set extra area
-    [self setRoomExtraInfoViewClass:RoomExtraInfosInfoView.class];
+    [self setRoomActivitiesViewClass:RoomActivitiesView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -497,7 +497,10 @@
         text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
     }
     
-    [((RoomExtraInfosInfoView*) self.extraInfoView) updateTypingMessage:text];
+    if (self.activitiesView)
+    {
+        [((RoomActivitiesView*) self.activitiesView) updateTypingMessage:text];
+    }
 }
 
 @end

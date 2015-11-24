@@ -20,7 +20,7 @@
 /**
  `RoomExtraInfosInfoView` instance is a view used to display extra information
  */
-@interface RoomExtraInfosInfoView : MXKRoomExtraInfoView
+@interface RoomActivitiesView : MXKRoomActivitiesView
 
 @property (weak, nonatomic) IBOutlet UIImageView *typingImageView;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;

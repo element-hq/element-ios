@@ -14,26 +14,14 @@
  limitations under the License.
  */
 
-#import "RoomExtraInfosInfoView.h"
+#import "RoomActivitiesView.h"
 
-@implementation RoomExtraInfosInfoView
+@implementation RoomActivitiesView
 
 + (UINib *)nib
 {
-    return [UINib nibWithNibName:NSStringFromClass([RoomExtraInfosInfoView class])
-                          bundle:[NSBundle bundleForClass:[RoomExtraInfosInfoView class]]];
-}
-
-+ (instancetype)roomExtraInfoView
-{
-    if ([[self class] nib])
-    {
-        return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-    }
-    else
-    {
-        return [[self alloc] init];
-    }
+    return [UINib nibWithNibName:NSStringFromClass([RoomActivitiesView class])
+                          bundle:[NSBundle bundleForClass:[RoomActivitiesView class]]];
 }
 
 - (CGFloat)height
