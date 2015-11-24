@@ -14,6 +14,8 @@
 		717928481C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717928411C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib */; settings = {ASSET_TAGS = (); }; };
 		717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */; settings = {ASSET_TAGS = (); }; };
 		7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */; settings = {ASSET_TAGS = (); }; };
+		71EBE66D1C04C4D300E7D953 /* RoomActivitiesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71EBE66B1C04C4D300E7D953 /* RoomActivitiesView.m */; settings = {ASSET_TAGS = (); }; };
+		71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */; settings = {ASSET_TAGS = (); }; };
 		F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */; };
 		F001D75F1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D7561B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.xib */; };
 		F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D7581B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m */; };
@@ -116,6 +118,9 @@
 		717928421C03852C00407D96 /* TableViewCellWithLabelAndTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndTextField.h; path = TableViewCell/TableViewCellWithLabelAndTextField.h; sourceTree = "<group>"; };
 		717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndTextField.m; path = TableViewCell/TableViewCellWithLabelAndTextField.m; sourceTree = "<group>"; };
 		717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndTextField.xib; path = TableViewCell/TableViewCellWithLabelAndTextField.xib; sourceTree = "<group>"; };
+		71EBE66A1C04C4D300E7D953 /* RoomActivitiesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomActivitiesView.h; path = RoomActivitiesView/RoomActivitiesView.h; sourceTree = "<group>"; };
+		71EBE66B1C04C4D300E7D953 /* RoomActivitiesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomActivitiesView.m; path = RoomActivitiesView/RoomActivitiesView.m; sourceTree = "<group>"; };
+		71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomActivitiesView.xib; path = RoomActivitiesView/RoomActivitiesView.xib; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F001D7541B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingBubbleTableViewCell.h; sourceTree = "<group>"; };
 		F001D7551B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIncomingBubbleTableViewCell.m; sourceTree = "<group>"; };
@@ -262,6 +267,16 @@
 			name = TableViewCell;
 			sourceTree = "<group>";
 		};
+		71EBE6691C04C4BE00E7D953 /* RoomActivitiesView */ = {
+			isa = PBXGroup;
+			children = (
+				71EBE66A1C04C4D300E7D953 /* RoomActivitiesView.h */,
+				71EBE66B1C04C4D300E7D953 /* RoomActivitiesView.m */,
+				71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */,
+			);
+			name = RoomActivitiesView;
+			sourceTree = "<group>";
+		};
 		E1451F540F8BC02A7FB7AA31 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +289,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71EBE6691C04C4BE00E7D953 /* RoomActivitiesView */,
 				7179283B1C0384DE00407D96 /* TableViewCell */,
 				F00C47821BFF77C800DBABC9 /* RoomList */,
 				F084DAAA1BB57BD100B4C530 /* Authentication */,
@@ -639,6 +655,7 @@
 				F0316E3E1B7E28DE00F03620 /* remove.png in Resources */,
 				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
 				F0E956C01B834430004C1699 /* share_location.png in Resources */,
+				71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */,
 				F0316E3F1B7E28DE00F03620 /* remove@2x.png in Resources */,
 				F0E956C31B834541004C1699 /* video_call.png in Resources */,
 				717928461C03852C00407D96 /* TableViewCellSeparator.xib in Resources */,
@@ -740,6 +757,7 @@
 				F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */,
 				F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */,
 				F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */,
+				71EBE66D1C04C4D300E7D953 /* RoomActivitiesView.m in Sources */,
 				F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */,
 				F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */,
 				F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */,
