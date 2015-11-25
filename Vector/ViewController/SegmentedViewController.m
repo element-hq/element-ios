@@ -21,6 +21,13 @@
     // list of displayed UIViewControllers
     NSArray* viewControllers;
     
+    // displayed viewController
+    UIViewController *displayedViewController;
+    NSLayoutConstraint *displayedVCTopConstraint;
+    NSLayoutConstraint *displayedVCLeftConstraint;
+    NSLayoutConstraint *displayedVCWidthConstraint;
+    NSLayoutConstraint *displayedVCHeightConstraint;
+    
     // list of NSString
     NSArray* sectionTitles;
     
@@ -95,13 +102,10 @@
     }
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    selectedIndex = 1;
-    
+        
     // Adjust Top
     [self removeConstraint:self.view constraint:self.selectionContainerTopConstraint];
     
@@ -127,14 +131,14 @@
 {
     NSMutableArray* labels = [[NSMutableArray alloc] init];
     
-    int count = 4;
+    NSUInteger count = viewControllers.count;
     
-    for(int index = 0; index < count; index++)
+    for(NSUInteger index = 0; index < count; index++)
     {
         // create programmatically each label
         UILabel *label = [[UILabel alloc] init];
         
-        label.text = label.text = [NSString stringWithFormat:@"toto %d", index];
+        label.text = [sectionTitles objectAtIndex:index];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = greenVectorColor;
         label.backgroundColor = [UIColor clearColor];
@@ -283,14 +287,63 @@
 
 - (void)displaySelectedViewController
 {
-    /*
-     - (void) displayContentController: (UIViewController*) content;
-     {
-     [self addChildViewController:content];
-     content.view.frame = [self frameForContentController];
-     [self.view addSubview:self.currentClientView];
-     [content didMoveToParentViewController:self];
-     }*/
+    if (displayedViewController)
+    {
+        [displayedViewController.view removeFromSuperview];
+        [displayedViewController removeFromParentViewController];
+        
+        [self removeConstraint:displayedViewController.view constraint:displayedVCWidthConstraint];
+        [self removeConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
+        [self removeConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
+        [self removeConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
+    }
+    
+    displayedViewController = [viewControllers objectAtIndex:selectedIndex];
+    
+    [self addChildViewController:displayedViewController];
+    
+    [displayedViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.viewControllerContainer addSubview:displayedViewController.view];
+    
+    
+    displayedVCTopConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self.viewControllerContainer
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0f
+                                                             constant:0.0f];
+    [self addConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
+    
+    displayedVCLeftConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+                                                             attribute:NSLayoutAttributeLeading
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.viewControllerContainer
+                                                             attribute:NSLayoutAttributeLeading
+                                                            multiplier:1.0f
+                                                              constant:0.0f];
+    
+    [self addConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
+    
+    displayedVCWidthConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.viewControllerContainer
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                       multiplier:1.0
+                                                                         constant:0];
+    [self addConstraint:displayedViewController.view constraint:displayedVCWidthConstraint];
+    
+    displayedVCHeightConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+                                                              attribute:NSLayoutAttributeHeight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.viewControllerContainer
+                                                              attribute:NSLayoutAttributeHeight
+                                                             multiplier:1.0
+                                                               constant:0];
+    [self addConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
+    
+    [displayedViewController didMoveToParentViewController:self];
 }
 
 #pragma mark - touch event
