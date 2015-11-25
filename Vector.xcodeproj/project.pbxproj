@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7165A2591C05CD42003635D7 /* SegmentedViewController.m */; settings = {ASSET_TAGS = (); }; };
+		7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		7179283A1C03847E00407D96 /* RoomDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717928391C03847E00407D96 /* RoomDetailsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7179283D1C03852C00407D96 /* TableViewCellSeparator.m */; settings = {ASSET_TAGS = (); }; };
 		717928461C03852C00407D96 /* TableViewCellSeparator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7179283E1C03852C00407D96 /* TableViewCellSeparator.xib */; settings = {ASSET_TAGS = (); }; };
@@ -107,6 +109,9 @@
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
+		7165A2581C05CD42003635D7 /* SegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedViewController.h; sourceTree = "<group>"; };
+		7165A2591C05CD42003635D7 /* SegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedViewController.m; sourceTree = "<group>"; };
+		7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentedViewController.xib; sourceTree = "<group>"; };
 		717928381C03847E00407D96 /* RoomDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDetailsViewController.h; sourceTree = "<group>"; };
 		717928391C03847E00407D96 /* RoomDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDetailsViewController.m; sourceTree = "<group>"; };
 		7179283C1C03852C00407D96 /* TableViewCellSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellSeparator.h; path = TableViewCell/TableViewCellSeparator.h; sourceTree = "<group>"; };
@@ -501,6 +506,9 @@
 				F094AA271B78E42600B1FBBF /* RoomViewController.m */,
 				F094AA281B78E42600B1FBBF /* SettingsViewController.h */,
 				F094AA291B78E42600B1FBBF /* SettingsViewController.m */,
+				7165A2581C05CD42003635D7 /* SegmentedViewController.h */,
+				7165A2591C05CD42003635D7 /* SegmentedViewController.m */,
+				7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -639,6 +647,7 @@
 				F0DD7D751B7AA8C900C4BE02 /* typing@2x.png in Resources */,
 				F0316E3A1B7DF45A00F03620 /* add.png in Resources */,
 				F0DD7D671B7AA8C900C4BE02 /* members@2x.png in Resources */,
+				7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */,
 				F001D7701B83243900A162C3 /* send_other.png in Resources */,
 				7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */,
 				F00B1BCB1B95CC68001806E3 /* camera_record.png in Resources */,
@@ -747,6 +756,7 @@
 				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
+				7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */,
 				7179283A1C03847E00407D96 /* RoomDetailsViewController.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
