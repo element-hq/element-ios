@@ -94,6 +94,10 @@
     {
         actionButtonWidth = actionButton.frame.size.width;
     }
+    
+    // ensure that the separator line is not displayed
+    self.tableView.separatorColor = [UIColor clearColor];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -945,6 +949,9 @@
 {
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
+    
+    // TODO : it should be an application constant value
+    searchBar.barTintColor = searchBar.tintColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
     
     return YES;
 }
