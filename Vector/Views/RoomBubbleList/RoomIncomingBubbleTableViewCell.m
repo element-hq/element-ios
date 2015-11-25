@@ -55,11 +55,6 @@
 {
     [super render:cellData];
     
-    if (!self.pictureView.isHidden)
-    {
-        [self.pictureView.layer setCornerRadius:5];
-    }
-    
     if (self.bubbleData)
     {
         showBubbleDateTimeFlag = self.bubbleData.showBubbleDateTime;

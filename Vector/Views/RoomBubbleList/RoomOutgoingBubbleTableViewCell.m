@@ -48,11 +48,6 @@
 {
     [super render:cellData];
     
-    if (!self.pictureView.isHidden)
-    {
-        [self.pictureView.layer setCornerRadius:5];
-    }
-    
     if (self.bubbleData)
     {
         showBubbleDateTimeFlag = self.bubbleData.showBubbleDateTime;
@@ -67,6 +62,11 @@
         {
             self.paginationTitleViewHeightConstraint.constant = 0;
         }
+        
+        // Display user's display name except if the name appears in the displayed text (see emote and membership event)
+        self.userNameLabel.hidden = (self.bubbleData.shouldHideSenderInformation || self.bubbleData.startsWithSenderName);
+        self.userNameLabel.text = self.bubbleData.senderDisplayName;
+        
         
         // TODO handle here unsent
         
