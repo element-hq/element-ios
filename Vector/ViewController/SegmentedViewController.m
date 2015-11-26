@@ -147,6 +147,7 @@
         UILabel *label = [[UILabel alloc] init];
         
         label.text = [sectionTitles objectAtIndex:index];
+        label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = greenVectorColor;
         label.backgroundColor = [UIColor clearColor];
@@ -297,6 +298,14 @@
 {
     if (displayedViewController)
     {
+        NSUInteger index = [viewControllers indexOfObject:displayedViewController];
+        
+        if (index != NSNotFound)
+        {
+            UILabel* label = [sectionLabels objectAtIndex:index];
+            label.font = [UIFont systemFontOfSize:17];
+        }
+        
         [displayedViewController.view removeFromSuperview];
         [displayedViewController removeFromParentViewController];
         
@@ -305,6 +314,9 @@
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
     }
+    
+    UILabel* label = [sectionLabels objectAtIndex:selectedIndex];
+    label.font = [UIFont boldSystemFontOfSize:17];
     
     displayedViewController = [viewControllers objectAtIndex:selectedIndex];
     

@@ -84,6 +84,7 @@
 "settings_clear_cache" = "Clear cache";
 
 // Room Details
+"room_details_title" = "Room Details";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
 "room_details_people" = "People";

@@ -260,6 +260,7 @@
             [settingsViewController initWithSession:session andRoomId:roomid];
             [viewControllers addObject:settingsViewController];
             
+            segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
             [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
         }
     }
