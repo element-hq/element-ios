@@ -42,6 +42,8 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
+#import "VectorDesignValues.h"
+
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
@@ -188,6 +190,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // define the navigation bar text color
+    [[UINavigationBar appearance] setTintColor:VECTOR_GREEN_COLOR];
+    
     // Override point for customization after application launch.
     mxSessionArray = [NSMutableArray array];
     
