@@ -80,25 +80,33 @@
 
 - (void)addConstraint:(UIView*)view constraint:(NSLayoutConstraint*)aConstraint
 {
-    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+    // sanity check
+    if (view && aConstraint)
     {
-        [NSLayoutConstraint activateConstraints:@[aConstraint]];
-    }
-    else
-    {
-        [view addConstraint:aConstraint];
+        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+        {
+            [NSLayoutConstraint activateConstraints:@[aConstraint]];
+        }
+        else
+        {
+            [view addConstraint:aConstraint];
+        }
     }
 }
 
 - (void)removeConstraint:(UIView*)view constraint:(NSLayoutConstraint*)aConstraint
 {
-    if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)])
+    // sanity check
+    if (view && aConstraint)
     {
-        [NSLayoutConstraint deactivateConstraints:@[aConstraint]];
-    }
-    else
-    {
-        [view removeConstraint:aConstraint];
+        if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)])
+        {
+            [NSLayoutConstraint deactivateConstraints:@[aConstraint]];
+        }
+        else
+        {
+            [view removeConstraint:aConstraint];
+        }
     }
 }
 

@@ -86,6 +86,8 @@
 // Room Details
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
+"room_details_people" = "People";
+"room_details_settings" = "Settings";
 
 "notification_settings_global_notification_settings" = "Global Notification Settings";
 

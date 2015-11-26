@@ -25,7 +25,8 @@
 
 #import "RoomParticipantsViewController.h"
 
-#import "RoomDetailsViewController.h"
+#import "SegmentedViewController.h"
+#import "RoomSettingsViewController.h"
 
 @interface RoomViewController ()
 {
@@ -234,18 +235,37 @@
     
     if ([[segue identifier] isEqualToString:@"showRoomDetails"])
     {
-        if ([pushedViewController isKindOfClass:[RoomDetailsViewController class]])
+        if ([pushedViewController isKindOfClass:[SegmentedViewController class]])
         {
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            RoomDetailsViewController* detailsViewController = (RoomDetailsViewController*)pushedViewController;
-            [detailsViewController initWithSession:self.roomDataSource.mxSession andRoomId:self.roomDataSource.roomId];
+            SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
+            
+            MXSession* session = self.roomDataSource.mxSession;
+            NSString* roomid = self.roomDataSource.roomId;
+            
+            NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
+            NSMutableArray* titles = [[NSMutableArray alloc] init];
+            
+            // members screens
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
+            
+            RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
+            participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            [viewControllers addObject:participantsViewController];
+            
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
+            RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
+            [settingsViewController initWithSession:session andRoomId:roomid];
+            [viewControllers addObject:settingsViewController];
+            
+            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
         }
     }
     
     // Hide back button title
-    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKRoomInputToolbarViewDelegate

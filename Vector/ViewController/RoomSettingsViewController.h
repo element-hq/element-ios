@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomDetailsViewController : MXKRoomDetailsViewController<UITextViewDelegate>
+@interface RoomSettingsViewController : MXKRoomSettingsViewController<UITextViewDelegate>
 
 @end
 

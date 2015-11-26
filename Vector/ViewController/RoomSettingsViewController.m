@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "RoomDetailsViewController.h"
+#import "RoomSettingsViewController.h"
 
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
@@ -30,7 +30,7 @@
 
 #define ROOM_TOPIC_CELL_HEIGHT 99
 
-@interface RoomDetailsViewController ()
+@interface RoomSettingsViewController ()
 {
     // updated user data
     NSMutableDictionary<NSString*, id> *updatedItems;
@@ -44,7 +44,7 @@
 }
 @end
 
-@implementation RoomDetailsViewController
+@implementation RoomSettingsViewController
 
 - (void)viewDidLoad
 {
@@ -57,7 +57,7 @@
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
     self.tableView.separatorColor = [UIColor clearColor];
     
-    // Setup `RoomDetailsViewController` properties
+    // Setup `RoomSettingsViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
