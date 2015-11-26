@@ -29,9 +29,6 @@
 
 @interface RoomViewController ()
 {
-    // The constraint used to animate menu list display
-    NSLayoutConstraint *menuListTopConstraint;
-    
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
 
@@ -69,65 +66,7 @@
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    // Localize strings
-    self.searchMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_search", @"Vector", nil);
-    self.participantsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_participants", @"Vector", nil);
-    self.favouriteMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_favourite", @"Vector", nil);
-    self.settingsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_settings", @"Vector", nil);
-    
-   // Add the menu list view outside the main view
-    CGRect frame = self.menuListView.frame;
-    frame.origin.y = self.topLayoutGuide.length - frame.size.height;
-    self.menuListView.frame = frame;
-    [self.view addSubview:self.menuListView];
-    
-    // Define menu list view constraints
-    self.menuListView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                      relatedBy:0
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                     multiplier:1.0
-                                                                       constant:0];
-    
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                       relatedBy:0
-                                                                          toItem:self.view
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                      multiplier:1.0
-                                                                        constant:0];
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0
-                                                                         constant:self.menuListView.frame.size.height];
-    
-    menuListTopConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                   attribute:NSLayoutAttributeBottom
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:self.topLayoutGuide
-                                                                   attribute:NSLayoutAttributeBottom
-                                                                  multiplier:1.0f
-                                                                    constant:0.0f];
-    
-    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-    {
-        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, heightConstraint, menuListTopConstraint]];
-    }
-    else
-    {
-        [self.view addConstraint:leftConstraint];
-        [self.view addConstraint:rightConstraint];
-        [self.view addConstraint:menuListTopConstraint];
-        [self.menuListView addConstraint:heightConstraint];
-    }
-    [self.view setNeedsUpdateConstraints];
+    // Localize strings here
     
     if (self.roomDataSource)
     {
@@ -159,9 +98,6 @@
         [self.currentAlert dismiss:NO];
         self.currentAlert = nil;
     }
-    
-    // Hide menu list view
-    menuListTopConstraint.constant = 0;
     
     [self removeTypingNotificationsListener];
 }
@@ -271,27 +207,10 @@
     [super destroy];
 }
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    // Hide the menu list view when keyboard if displayed
-    if (keyboardHeight && menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
-    super.keyboardHeight = keyboardHeight;
-}
-
 #pragma mark - MXKDataSource delegate
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Remove sub menu if user tap on table view
-    if (menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
     if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
     {
         self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
@@ -313,18 +232,7 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showRoomParticipants"])
-    {
-        if ([pushedViewController isKindOfClass:[RoomParticipantsViewController class]])
-        {
-            // Dismiss keyboard
-            [self dismissKeyboard];
-            
-            RoomParticipantsViewController* participantsViewController = (RoomParticipantsViewController*)pushedViewController;
-            participantsViewController.mxRoom = self.roomDataSource.room;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showRoomDetails"])
+    if ([[segue identifier] isEqualToString:@"showRoomDetails"])
     {
         if ([pushedViewController isKindOfClass:[RoomDetailsViewController class]])
         {
@@ -342,17 +250,6 @@
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
 
-- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
-{
-    // Remove sub menu if user starts typing
-    if (typing && menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
-    [super roomInputToolbarView:toolbarView isTyping:typing];
-}
-
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
     [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
@@ -364,49 +261,7 @@
 {
     if (sender == self.navigationItem.rightBarButtonItem)
     {
-        // Hide/show the menu list by updating its top constraint
-        if (menuListTopConstraint.constant)
-        {
-            // Hide the menu
-            menuListTopConstraint.constant = 0;
-        }
-        else
-        {
-            [self dismissKeyboard];
-            
-            // Show the menu
-            menuListTopConstraint.constant = self.menuListView.frame.size.height;
-        }
-        
-        // Refresh layout with animation
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             [self.view layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
-    else
-    {
-        // Hide menu without animation
-        menuListTopConstraint.constant = 0;
-        
-        if (sender == self.searchMenuButton)
-        {
-            // TODO
-        }
-        else if (sender == self.participantsMenuButton)
-        {
-            [self performSegueWithIdentifier:@"showRoomParticipants" sender:self];
-        }
-        else if (sender == self.favouriteMenuButton)
-        {
-            // TODO
-        }
-        else if (sender == self.settingsMenuButton)
-        {
-            // TODO
-        }
+        // FIXME Launch messages search session
     }
 }
 
@@ -414,12 +269,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Remove sub menu if user tap on table view
-    if (menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
@@ -427,13 +276,13 @@
 
 - (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
 {
-    // instead of opening a text edition
-    // launch a dedicated viewcontroller.
+    // Instead of editing room title, we open room details view here
     dispatch_async(dispatch_get_main_queue(), ^{
+        
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        
     });
     
-    // cancel any requested edition
     return NO;
 }
 
@@ -457,34 +306,33 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState)
-                               {
-                                   
-                                   // Handle only live events
-                                   if (direction == MXEventDirectionForwards)
-                                   {
-                                       // Retrieve typing users list
-                                       NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
-                                       // Remove typing info for the current user
-                                       NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
-                                       if (index != NSNotFound)
-                                       {
-                                           [typingUsers removeObjectAtIndex:index];
-                                       }
-                                       // Ignore this notification if both arrays are empty
-                                       if (currentTypingUsers.count || typingUsers.count)
-                                       {
-                                           currentTypingUsers = typingUsers;
-                                           [self refreshTypingView];
-                                       }
-                                   }
-                               }];
+        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+            
+            // Handle only live events
+            if (direction == MXEventDirectionForwards)
+            {
+                // Retrieve typing users list
+                NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
+                // Remove typing info for the current user
+                NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
+                if (index != NSNotFound)
+                {
+                    [typingUsers removeObjectAtIndex:index];
+                }
+                // Ignore this notification if both arrays are empty
+                if (currentTypingUsers.count || typingUsers.count)
+                {
+                    currentTypingUsers = typingUsers;
+                    [self refreshTypingView];
+                }
+            }
+            
+        }];
         
         currentTypingUsers = self.roomDataSource.room.typingUsers;
         [self refreshTypingView];
     }
 }
-
 
 - (void)refreshTypingView
 {
@@ -495,8 +343,8 @@
     NSMutableArray *names = [[NSMutableArray alloc] init];
     
     // keeps the only the first two users
-    // 
-    for(int i = 0; i < MIN(count, 2); i++) {
+    for(int i = 0; i < MIN(count, 2); i++)
+    {
         NSString* name = [currentTypingUsers objectAtIndex:i];
         
         MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
@@ -508,7 +356,6 @@
         
         [names addObject:name];
     }
-    
     
     if (0 == count)
     {
@@ -534,6 +381,4 @@
 }
 
 @end
-
-
 

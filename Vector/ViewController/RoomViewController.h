@@ -18,16 +18,5 @@
 
 @interface RoomViewController : MXKRoomViewController
 
-@property (strong, nonatomic) IBOutlet UIView *menuListView;
-
-@property (weak, nonatomic) IBOutlet UIButton *searchMenuButton;
-@property (weak, nonatomic) IBOutlet UILabel *searchMenuLabel;
-@property (weak, nonatomic) IBOutlet UIButton *participantsMenuButton;
-@property (weak, nonatomic) IBOutlet UILabel *participantsMenuLabel;
-@property (weak, nonatomic) IBOutlet UIButton *favouriteMenuButton;
-@property (weak, nonatomic) IBOutlet UILabel *favouriteMenuLabel;
-@property (weak, nonatomic) IBOutlet UIButton *settingsMenuButton;
-@property (weak, nonatomic) IBOutlet UILabel *settingsMenuLabel;
-
 @end
 
