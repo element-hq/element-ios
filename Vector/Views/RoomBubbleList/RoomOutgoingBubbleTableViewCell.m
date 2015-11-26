@@ -63,11 +63,6 @@
             self.paginationTitleViewHeightConstraint.constant = 0;
         }
         
-        // Display user's display name except if the name appears in the displayed text (see emote and membership event)
-        self.userNameLabel.hidden = (self.bubbleData.shouldHideSenderInformation || self.bubbleData.startsWithSenderName);
-        self.userNameLabel.text = self.bubbleData.senderDisplayName;
-        
-        
         // TODO handle here unsent
         
         // Add unsent label for failed components
