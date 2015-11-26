@@ -16,6 +16,8 @@
 
 #import "SegmentedViewController.h"
 
+#import "VectorDesignValues.h"
+
 @interface SegmentedViewController ()
 {
     // list of displayed UIViewControllers
@@ -40,9 +42,6 @@
     
     // the index of the viewcontroller displayed at first load
     NSUInteger selectedIndex;
-    
-    // the UI item color
-    UIColor *greenVectorColor;
 }
 
 @end
@@ -129,9 +128,6 @@
     
     [self addConstraint:self.selectionContainer constraint:self.selectionContainerTopConstraint];
     
-    // TODO : it should be an application constant value
-    greenVectorColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
-    
     [self createSegmentedViews];
 }
 
@@ -149,7 +145,7 @@
         label.text = [sectionTitles objectAtIndex:index];
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = greenVectorColor;
+        label.textColor = VECTOR_GREEN_COLOR;
         label.backgroundColor = [UIColor clearColor];
         
         // the constraint defines the label frame
@@ -241,7 +237,7 @@
 {
     // create the selected marker view
     selectedMarkerView = [[UIView alloc] init];
-    selectedMarkerView.backgroundColor = greenVectorColor;
+    selectedMarkerView.backgroundColor = VECTOR_GREEN_COLOR;
     [selectedMarkerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.selectionContainer addSubview:selectedMarkerView];
     

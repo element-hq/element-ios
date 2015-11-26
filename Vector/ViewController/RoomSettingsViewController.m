@@ -22,6 +22,8 @@
 
 #import "RageShakeManager.h"
 
+#import "VectorDesignValues.h"
+
 #define ROOM_SECTION 0
 
 #define ROOM_SECTION_NAME  0
@@ -64,6 +66,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)];
+    doneButton.tintColor = VECTOR_GREEN_COLOR;
+    
+    // this viewController can be displayed
+    // 1- with a "standard" push mode
+    // 2- within a segmentedViewController i.e. inside another viewcontroller
+    // so, we need to use the parent controller when it is required.
+    UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
+    topViewController.navigationItem.rightBarButtonItem = doneButton;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
 }

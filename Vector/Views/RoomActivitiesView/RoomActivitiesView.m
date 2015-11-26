@@ -16,6 +16,8 @@
 
 #import "RoomActivitiesView.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomActivitiesView
 
 + (UINib *)nib
@@ -36,8 +38,7 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor whiteColor];
     
-    // TODO : put this mint grey color as a resource
-    self.typingImageView.backgroundColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
+    self.typingImageView.backgroundColor = VECTOR_GREEN_COLOR;
     self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2; 
     
 }

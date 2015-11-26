@@ -20,6 +20,8 @@
 
 #import "AppDelegate.h"
 
+#import "VectorDesignValues.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Add participants section
@@ -951,7 +953,7 @@
     searchBar.showsCancelButton = YES;
     
     // TODO : it should be an application constant value
-    searchBar.barTintColor = searchBar.tintColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
+    searchBar.barTintColor = searchBar.tintColor = VECTOR_GREEN_COLOR;
     
     return YES;
 }

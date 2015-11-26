@@ -261,7 +261,7 @@
             [viewControllers addObject:settingsViewController];
             
             segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:1];
         }
     }
     

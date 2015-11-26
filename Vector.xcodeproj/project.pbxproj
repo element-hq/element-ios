@@ -123,6 +123,7 @@
 		717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndTextField.xib; path = TableViewCell/TableViewCellWithLabelAndTextField.xib; sourceTree = "<group>"; };
 		71C5F2931C074ACC004C094B /* RoomSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSettingsViewController.h; sourceTree = "<group>"; };
 		71C5F2941C074ACC004C094B /* RoomSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSettingsViewController.m; sourceTree = "<group>"; };
+		71C5F2991C077007004C094B /* VectorDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorDesignValues.h; sourceTree = "<group>"; };
 		71EBE66A1C04C4D300E7D953 /* RoomActivitiesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomActivitiesView.h; path = RoomActivitiesView/RoomActivitiesView.h; sourceTree = "<group>"; };
 		71EBE66B1C04C4D300E7D953 /* RoomActivitiesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomActivitiesView.m; path = RoomActivitiesView/RoomActivitiesView.m; sourceTree = "<group>"; };
 		71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomActivitiesView.xib; path = RoomActivitiesView/RoomActivitiesView.xib; sourceTree = "<group>"; };
@@ -359,6 +360,7 @@
 		F08BE09B1B87025B00C480FB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				71C5F2991C077007004C094B /* VectorDesignValues.h */,
 				F08BE09C1B87025B00C480FB /* EventFormatter.h */,
 				F08BE09D1B87025B00C480FB /* EventFormatter.m */,
 			);
