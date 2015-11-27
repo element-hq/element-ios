@@ -84,7 +84,8 @@
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
     addParticipantsSearchBarCell.mxkSearchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-
+    [self refreshSearchBarItemsColor:addParticipantsSearchBarCell.mxkSearchBar];
+    
     _isAddParticipantSearchBarEditing = NO;
     
     if (! mutableParticipants)
@@ -895,6 +896,30 @@
 
 #pragma mark - UISearchBar delegate
 
+- (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
+{
+    // caret color
+    searchBar.barTintColor = searchBar.tintColor = VECTOR_GREEN_COLOR;
+    searchBar.tintColor = VECTOR_GREEN_COLOR;
+    
+    // text color
+    UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+    searchBarTextField.textColor = VECTOR_GREEN_COLOR;
+    
+    // Magnifying glass icon.
+    UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
+    leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    leftImageView.tintColor = VECTOR_GREEN_COLOR;
+
+    // Clear button
+    UIButton *clearButton = [searchBarTextField valueForKey:@"_clearButton"];
+    [clearButton setImage:[clearButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    clearButton.tintColor = VECTOR_GREEN_COLOR;
+    
+    // place holder
+    [searchBarTextField setValue:VECTOR_GREEN_COLOR forKeyPath:@"_placeholderLabel.textColor"];
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSInteger previousFilteredCount = filteredParticipants.count;
@@ -968,8 +993,7 @@
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
     
-    // TODO : it should be an application constant value
-    searchBar.barTintColor = searchBar.tintColor = VECTOR_GREEN_COLOR;
+    [self refreshSearchBarItemsColor:searchBar];
     
     return YES;
 }
