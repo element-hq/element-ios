@@ -50,18 +50,15 @@
 
 @implementation RoomParticipantsViewController
 
-- (IBAction)onEdit:(id)sender
+- (void)addNavBarButtons
 {
-    // TODO add actions here
-}
-
-- (void)addRightNavBarButton
-{
-    // TODO manage other mode than edit
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEdit:)];
-    
+    // this viewController can be displayed
+    // 1- with a "standard" push mode
+    // 2- within a segmentedViewController i.e. inside another viewcontroller
+    // so, we need to use the parent controller when it is required.
     UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
-    topViewController.navigationItem.rightBarButtonItem = rightButton;
+    topViewController.navigationItem.rightBarButtonItem = nil;
+    topViewController.navigationItem.leftBarButtonItem = nil;
 }
 
 - (void)viewDidLoad
@@ -114,14 +111,14 @@
     // ensure that the separator line is not displayed
     self.tableView.separatorColor = [UIColor clearColor];
     
-    [self addRightNavBarButton];
+    [self addNavBarButtons];
 }
 
 // this method is called when the viewcontroller is displayed inside another one.
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    [self addRightNavBarButton];
+    [self addNavBarButtons];
 }
 
 - (void)didReceiveMemoryWarning

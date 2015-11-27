@@ -35,7 +35,7 @@
 @interface RoomSettingsViewController ()
 {
     // updated user data
-    NSMutableDictionary<NSString*, id> *updatedItems;
+    NSMutableDictionary<NSString*, id> *updatedItemsDict;
     
     // active items
     UITextView* topicTextView;
@@ -48,16 +48,22 @@
 
 @implementation RoomSettingsViewController
 
-- (void)addDoneButton
+- (UINavigationItem*) getNavigationItem
 {
-    doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)];
-    
     // this viewController can be displayed
     // 1- with a "standard" push mode
     // 2- within a segmentedViewController i.e. inside another viewcontroller
     // so, we need to use the parent controller when it is required.
     UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
-    topViewController.navigationItem.rightBarButtonItem = doneButton;
+    
+    return topViewController.navigationItem;
+}
+
+- (void)addNavBarButtons
+{
+    [self getNavigationItem].rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSave:)];
+    [self getNavigationItem].rightBarButtonItem.enabled = ([self getUpdatedItemsDict].count != 0);
+    [self getNavigationItem].leftBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
 }
 
 - (void)viewDidLoad
@@ -74,7 +80,7 @@
     // Setup `RoomSettingsViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    [self addDoneButton];
+    [self addNavBarButtons];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,7 +102,7 @@
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    [self addDoneButton];
+    [self addNavBarButtons];
 }
 
 - (void)destroy
@@ -114,14 +120,14 @@
 
 #pragma mark - private
 
-- (NSMutableDictionary*)getUpdatedItems
+- (NSMutableDictionary*)getUpdatedItemsDict
 {
-    if (!updatedItems)
+    if (!updatedItemsDict)
     {
-        updatedItems = [[NSMutableDictionary alloc] init];
+        updatedItemsDict = [[NSMutableDictionary alloc] init];
     }
     
-    return updatedItems;
+    return updatedItemsDict;
 }
 
 - (void)dismissFirstResponder
@@ -160,7 +166,18 @@
     
     if (topicTextView == textView)
     {
-        [[self getUpdatedItems] setObject:text forKey:@"ROOM_SECTION_TOPIC"];
+        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        
+        if ([text isEqualToString:mxRoomState.topic])
+        {
+            [dict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+        }
+        else
+        {
+            [dict setObject:text forKey:@"ROOM_SECTION_TOPIC"];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
     }
 }
 
@@ -171,7 +188,18 @@
     
     if (nameTextField == textField)
     {
-        [[self getUpdatedItems] setObject:text forKey:@"ROOM_SECTION_NAME"];
+        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        
+        if ([text isEqualToString:mxRoomState.name])
+        {
+            [dict removeObjectForKey:@"ROOM_SECTION_NAME"];
+        }
+        else
+        {
+            [dict setObject:text forKey:@"ROOM_SECTION_NAME"];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
     }
 }
 
@@ -188,15 +216,21 @@
     }
 }
 
-- (IBAction)onDone:(id)sender
+- (IBAction)onCancel:(id)sender
+{
+    // warn if there is a pending update ?
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)onSave:(id)sender
 {
     // check if there is some update
-    if (mxRoomState && updatedItems && (updatedItems.count > 0))
+    if (mxRoomState && updatedItemsDict && (updatedItemsDict.count > 0))
     {
         // has a new room name
-        if ([updatedItems objectForKey:@"ROOM_SECTION_NAME"])
+        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
         {
-            NSString* newName = [updatedItems objectForKey:@"ROOM_SECTION_NAME"];
+            NSString* newName = [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"];
             
             if (![newName isEqualToString:mxRoomState.name])
             {
@@ -207,8 +241,8 @@
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_NAME"];
-                    [strongSelf onDone:nil];
+                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_NAME"];
+                    [strongSelf onSave:nil];
                     
                 } failure:^(NSError *error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -216,8 +250,8 @@
                     // TODO should stop the saving ?
                     // continue the saving by now
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_NAME"];
-                    [strongSelf onDone:nil];
+                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_NAME"];
+                    [strongSelf onSave:nil];
                     
                     NSLog(@"[onDone] Rename room failed: %@", error);
                 }];
@@ -227,9 +261,9 @@
         }
         
         // has a new room topic
-        if ([updatedItems objectForKey:@"ROOM_SECTION_TOPIC"])
+        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"])
         {
-            NSString* newTopic = [updatedItems objectForKey:@"ROOM_SECTION_TOPIC"];
+            NSString* newTopic = [updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"];
             
             if (![newTopic isEqualToString:mxRoomState.topic])
             {
@@ -240,8 +274,8 @@
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_TOPIC"];
-                    [strongSelf onDone:nil];
+                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+                    [strongSelf onSave:nil];
                     
                 } failure:^(NSError *error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -249,8 +283,8 @@
                     // TODO should stop the saving ?
                     // continue the saving by now
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_TOPIC"];
-                    [strongSelf onDone:nil];
+                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+                    [strongSelf onSave:nil];
                     
                     NSLog(@"[onDone] Rename topic failed: %@", error);
                 }];
@@ -359,9 +393,9 @@
             roomTopicCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
             topicTextView = roomTopicCell.mxkTextView;
             
-            if (updatedItems && [updatedItems objectForKey:@"ROOM_SECTION_TOPIC"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"])
             {
-                roomTopicCell.mxkTextView.text = (NSString*)[updatedItems objectForKey:@"ROOM_SECTION_TOPIC"];
+                roomTopicCell.mxkTextView.text = (NSString*)[updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"];
             }
             else
             {
@@ -388,9 +422,9 @@
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
             roomNameCell.mxkTextField.userInteractionEnabled = YES;
             
-            if (updatedItems && [updatedItems objectForKey:@"ROOM_SECTION_NAME"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
             {
-                roomNameCell.mxkTextField.text = (NSString*)[updatedItems objectForKey:@"ROOM_SECTION_NAME"];
+                roomNameCell.mxkTextField.text = (NSString*)[updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"];
             }
             else
             {
