@@ -35,6 +35,8 @@
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+@property (nonatomic, readonly) UINavigationController *recentsNavigationController;
+
 // Associated matrix sessions (empty by default).
 @property (nonatomic, readonly) NSArray *mxSessions;
 
