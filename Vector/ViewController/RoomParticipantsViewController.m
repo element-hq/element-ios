@@ -177,6 +177,12 @@
         [currentAlert dismiss:NO];
         currentAlert = nil;
     }
+ 
+    // cancel any pending search
+    if (addParticipantsSearchBarCell.mxkSearchBar)
+    {
+        [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+    }
 }
 
 #pragma mark -
