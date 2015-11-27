@@ -244,10 +244,6 @@
             
             MXSession* session = self.roomDataSource.mxSession;
             NSString* roomid = self.roomDataSource.roomId;
-            
-            // to display a red navbar when the home server cannot be reached.
-            [segmentedViewController addMatrixSession:session];
-            
             NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
             NSMutableArray* titles = [[NSMutableArray alloc] init];
             
@@ -266,6 +262,9 @@
             
             segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
             [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+            
+            // to display a red navbar when the home server cannot be reached.
+            [segmentedViewController addMatrixSession:session];
         }
     }
     

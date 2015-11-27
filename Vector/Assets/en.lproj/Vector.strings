@@ -63,6 +63,7 @@
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_admin_name" = "%@ (admin)";
+"room_participants_invite_another_user" = "Invite another user";
 
 // Chat
 "room_option_start_group_voice" = "Start group audio chat";
