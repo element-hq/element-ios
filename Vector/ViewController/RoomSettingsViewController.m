@@ -43,6 +43,11 @@
     
     // pending http operation
     MXHTTPOperation* pendingOperation;
+    
+    // the updating spinner
+    UIActivityIndicatorView* updatingSpinner;
+    
+    MXKAlert *currentAlert;
 }
 @end
 
@@ -145,16 +150,27 @@
 
 - (void)showUpdatingSpinner
 {
-    // TODO : wait that we have the final behaviour
-    self.view.alpha = 0.5f;
-    self.view.userInteractionEnabled = NO;
+    self.tableView.userInteractionEnabled = NO;
+    
+    // Add a spinner
+    updatingSpinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    updatingSpinner.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+    updatingSpinner.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+    updatingSpinner.hidesWhenStopped = NO;
+    [updatingSpinner startAnimating];
+    updatingSpinner.center = self.view.center;
+    [self.view addSubview:updatingSpinner];
 }
 
 - (void)hideUpdatingSpinner
 {
-    // TODO : wait that we have the final behaviour
-    self.view.alpha = 1.0f;
-    self.view.userInteractionEnabled = YES;
+    self.tableView.userInteractionEnabled = YES;
+    
+    if (updatingSpinner)
+    {
+        [updatingSpinner removeFromSuperview];
+        updatingSpinner = nil;
+    }
 }
 
 #pragma mark - actions
@@ -222,6 +238,40 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)onSaveFailed:(NSString*)message withKey:(NSString*)key
+{
+    __weak typeof(self) weakSelf = self;
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                           message:message
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:MXKAlertActionStyleCancel
+                                                              handler:^(MXKAlert *alert) {
+                                                                  
+                                                                  // save anything else
+                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                  [strongSelf->updatedItemsDict removeObjectForKey:key];
+                                                                  strongSelf->currentAlert = nil;
+                                                                  [strongSelf onSave:nil];
+                                                                  
+                                                              }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil)
+                               style:MXKAlertActionStyleDefault
+                             handler:^(MXKAlert *alert) {
+                                 
+                                 // try again
+                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                 strongSelf->currentAlert = nil;
+                                 [strongSelf onSave:nil];
+                                 
+                             }];
+    
+    [currentAlert showInViewController:self];
+}
+
 - (IBAction)onSave:(id)sender
 {
     // check if there is some update
@@ -247,11 +297,13 @@
                 } failure:^(NSError *error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
-                    // TODO should stop the saving ?
-                    // continue the saving by now
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_NAME"];
-                    [strongSelf onSave:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_room_name", @"Vector", nil) withKey:@"ROOM_SECTION_NAME"];
+                        
+                    });
                     
                     NSLog(@"[onDone] Rename room failed: %@", error);
                 }];
@@ -279,12 +331,14 @@
                     
                 } failure:^(NSError *error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    
-                    // TODO should stop the saving ?
-                    // continue the saving by now
+
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
-                    [strongSelf onSave:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_topic", @"Vector", nil) withKey:@"ROOM_SECTION_TOPIC"];
+                        
+                    });
                     
                     NSLog(@"[onDone] Rename topic failed: %@", error);
                 }];
@@ -401,7 +455,8 @@
             {
                 roomTopicCell.mxkTextView.text = mxRoomState.topic;
             }
-            
+                        
+            roomTopicCell.mxkTextView.tintColor = VECTOR_GREEN_COLOR;
             roomTopicCell.mxkTextView.delegate = self;
             
             // disable the edition if the user cannoy update it
@@ -421,6 +476,7 @@
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
             roomNameCell.mxkTextField.userInteractionEnabled = YES;
+            roomNameCell.mxkTextField.tintColor = VECTOR_GREEN_COLOR;
             
             if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
             {
