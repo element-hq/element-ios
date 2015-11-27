@@ -360,6 +360,10 @@
     [self addConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
     
     [displayedViewController didMoveToParentViewController:self];
+ 
+    // refresh the navbar background color
+    // to display if the homeserver is reachable.
+    [self onMatrixSessionChange];
 }
 
 #pragma mark - touch event
