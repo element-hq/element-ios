@@ -81,8 +81,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self addDoneButton];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
 }
 
@@ -92,6 +90,13 @@
     
     [self dismissFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
+}
+
+// this method is called when the viewcontroller is displayed inside another one.
+- (void)didMoveToParentViewController:(nullable UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
+    [self addDoneButton];
 }
 
 - (void)destroy
