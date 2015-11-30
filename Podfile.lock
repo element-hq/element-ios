@@ -24,30 +24,30 @@ PODS:
     - GBJailbreakDetection (~> 1.0)
   - GBJailbreakDetection (1.3.0)
   - HPGrowingTextView (1.1)
-  - libPhoneNumber-iOS (0.8.8)
-  - Mantle (2.0.5):
-    - Mantle/extobjc (= 2.0.5)
-  - Mantle/extobjc (2.0.5)
-  - MatrixKit (0.2.7):
+  - libPhoneNumber-iOS (0.8.10)
+  - Mantle (2.0.6):
+    - Mantle/extobjc (= 2.0.6)
+  - Mantle/extobjc (2.0.6)
+  - MatrixKit (0.2.8):
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.7)
-    - MatrixSDK (~> 0.5.6)
-  - MatrixSDK (0.5.6):
+    - MatrixSDK (~> 0.5.7)
+  - MatrixSDK (0.5.7):
     - AFNetworking (~> 2.6.0)
     - Mantle (~> 2.0.5)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 3.4.0)
-  - MatrixKit (~> 0.2.7)
+  - MatrixKit (~> 0.2.8)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   GBDeviceInfo: bab0f43d351b6f641a626cd7d21492abef1afe46
   GBJailbreakDetection: a216773574b62dddb6c876ffdb52c54ac05e27e0
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  libPhoneNumber-iOS: fe877b7c44c270a9da2082d3e2892d5316f6a2f9
-  Mantle: 1912395033f601de5adc8ee91e48f46e4c7051ad
-  MatrixKit: 7e201f0624d6627988ee97c7b636a6a2abb41196
-  MatrixSDK: 47a452d56248eae27bbb332b33280986c1f1a854
+  libPhoneNumber-iOS: 7bfd00f843fdcd82b5182b463e8eb3b27579f41d
+  Mantle: 299966b00759634931699f69cb6a30b9239b944d
+  MatrixKit: 6e29026871d4125ce238917f02cc1daacb2b72bf
+  MatrixSDK: e4a596b9adf09c3d49d8d214754014cb1f3f2e94
 
 COCOAPODS: 0.39.0

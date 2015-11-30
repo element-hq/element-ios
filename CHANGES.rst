@@ -1,3 +1,14 @@
+Changes in Console in 0.5.7 (2015-11-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.2.8).
+ * defaults.plist: add pusher app ids definition.
+
+Bug fixes:
+ * SettingsViewController: Account details view is not removed on logout.
+ * SYIOS-177: Clear MXStore if the app systematically crashes at startup.
+
 Changes in Console in 0.5.6 (2015-11-13)
 ===============================================
 

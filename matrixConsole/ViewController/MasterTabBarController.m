@@ -210,12 +210,8 @@
     // Update recents data source
     [recentsViewController.dataSource removeMatrixSession:mxSession];
     
-    // Update home tab
-    [homeViewController removeMatrixSession:mxSession];
-    // Update contacts tab
-    [contactsViewController removeMatrixSession:mxSession];
-    // Update settings tab
-    [settingsViewController removeMatrixSession:mxSession];
+    // Note: This session is removed automatically in home, contacts and settings tab
+    // See MXKViewController or MXKTableViewController class.
     
     [mxSessionArray removeObject:mxSession];
     
