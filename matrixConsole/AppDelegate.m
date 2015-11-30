@@ -172,10 +172,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
-#endif
-    
+
     // Override point for customization after application launch.
     if ([self.window.rootViewController isKindOfClass:[MasterTabBarController class]])
     {
@@ -233,16 +231,12 @@
     if ((remoteNotif) && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground))
     {
         // do something when the app is launched on background
-        
-#ifdef DEBUG
         NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
-#endif
     }
     else
     {
-#ifdef DEBUG
         NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
-#endif
+
         // clear the notifications counter
         [self clearNotifications];
     }
@@ -252,10 +246,8 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] applicationWillResignActive");
-#endif
-    
+
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
@@ -281,10 +273,8 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] applicationDidEnterBackground");
-#endif
-    
+
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
@@ -317,10 +307,8 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
-#endif
-    
+
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
@@ -334,9 +322,21 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
+
+    // Check if the app crashed last time
+    if ([MXLogger crashLog])
+    {
+#ifndef DEBUG
+        // In distributed version, clear the cache to not annoy user more.
+        // In debug mode, the developer will be pleased to investigate what is wrong in the cache.
+        NSLog(@"[AppDelegate] Clear the cache due to app crash");
+        [self reloadMatrixSessions:YES];
 #endif
+
+        // Ask the user to send a bug report
+        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
+    }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
@@ -362,19 +362,11 @@
     [[MXKContactManager sharedManager] loadLocalContacts];
     
     _isAppForeground = YES;
-    
-    // check if the app crashed last time
-    if ([MXLogger crashLog])
-    {
-        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
-    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] applicationWillTerminate");
-#endif
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -471,24 +463,18 @@
             // Jump to the concerned room only if the app is transitioning from the background
             if (state == UIApplicationStateInactive)
             {
-#ifdef DEBUG
                 NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
-#endif
-                
+
                 [self.masterTabBarController showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
             }
             else if (!_completionHandler && (state == UIApplicationStateBackground))
             {
                 _completionHandler = completionHandler;
                 
-#ifdef DEBUG
                 NSLog(@"[AppDelegate] : starts a background sync");
-#endif
-                
+
                 [dedicatedAccount catchup:20000 success:^{
-#ifdef DEBUG
                     NSLog(@"[AppDelegate] : the background sync succeeds");
-#endif
                     
                     if (_completionHandler)
                     {
@@ -496,10 +482,9 @@
                         _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
-#ifdef DEBUG
                     NSLog(@"[AppDelegate] : the background sync fails");
-#endif
-                    
+
+
                     if (_completionHandler)
                     {
                         _completionHandler(UIBackgroundFetchResultNoData);
@@ -513,9 +498,7 @@
         }
         else
         {
-#ifdef DEBUG
             NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
-#endif
         }
     }
     
@@ -812,10 +795,8 @@
 
 - (void)clearNotifications
 {
-#ifdef DEBUG
     NSLog(@"[AppDelegate] clearNotifications");
-#endif
-    
+
     // force to clear the notification center
     // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
     // so resetting it does not clear the notifications center.
