@@ -262,16 +262,13 @@
     if ((remoteNotif) && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground))
     {
         // do something when the app is launched on background
-        
-#ifdef DEBUG
+
         NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
-#endif
     }
     else
     {
-#ifdef DEBUG
         NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
-#endif
+
         // clear the notifications counter
         [self clearNotifications];
     }
@@ -351,6 +348,21 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+
+    // Check if the app crashed last time
+    if ([MXLogger crashLog])
+    {
+#ifndef DEBUG
+        // In distributed version, clear the cache to not annoy user more.
+        // In debug mode, the developer will be pleased to investigate what is wrong in the cache.
+        NSLog(@"[AppDelegate] Clear the cache due to app crash");
+        [self reloadMatrixSessions:YES];
+#endif
+
+        // Ask the user to send a bug report
+        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
+    }
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
@@ -382,12 +394,6 @@
         [[MXKContactManager sharedManager] loadLocalContacts];
         
         _isAppForeground = YES;
-        
-        // check if the app crashed last time
-        if ([MXLogger crashLog])
-        {
-            [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
-        }
     }
 }
 
@@ -555,24 +561,18 @@
             // Jump to the concerned room only if the app is transitioning from the background
             if (state == UIApplicationStateInactive)
             {
-#ifdef DEBUG
                 NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
-#endif
                 
                 [self showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
             }
             else if (!_completionHandler && (state == UIApplicationStateBackground))
             {
                 _completionHandler = completionHandler;
-                
-#ifdef DEBUG
+
                 NSLog(@"[AppDelegate] : starts a catchup");
-#endif
                 
                 [dedicatedAccount catchup:20000 success:^{
-#ifdef DEBUG
                     NSLog(@"[AppDelegate] : the catchup succeeds");
-#endif
                     
                     if (_completionHandler)
                     {
@@ -580,9 +580,7 @@
                         _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
-#ifdef DEBUG
                     NSLog(@"[AppDelegate] : the catchup fails");
-#endif
                     
                     if (_completionHandler)
                     {
@@ -597,9 +595,7 @@
         }
         else
         {
-#ifdef DEBUG
             NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
-#endif
         }
     }
     completionHandler(UIBackgroundFetchResultNoData);
