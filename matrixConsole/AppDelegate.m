@@ -337,6 +337,20 @@
 #ifdef DEBUG
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
 #endif
+
+    // Check if the app crashed last time
+    if ([MXLogger crashLog])
+    {
+#ifndef DEBUG
+        // In distributed version, clear the cache to not annoy user more.
+        // In debug mode, the developer will be pleased to investigate what is wrong in the cache.
+        NSLog(@"[AppDelegate] Clear the cache due to app crash");
+        [self reloadMatrixSessions:YES];
+#endif
+
+        // Ask the user to send a bug report
+        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
+    }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
@@ -362,12 +376,6 @@
     [[MXKContactManager sharedManager] loadLocalContacts];
     
     _isAppForeground = YES;
-    
-    // check if the app crashed last time
-    if ([MXLogger crashLog])
-    {
-        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.masterTabBarController.selectedViewController];
-    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
