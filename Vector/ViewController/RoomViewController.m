@@ -23,6 +23,8 @@
 
 #import "RoomActivitiesView.h"
 
+#import "RoomTitleViewWithTopic.h"
+
 #import "RoomParticipantsViewController.h"
 
 #import "SegmentedViewController.h"
@@ -51,7 +53,7 @@
     [super viewDidLoad];
     
     // Set room title view
-    [self setRoomTitleViewClass:MXKRoomTitleViewWithTopic.class];
+    [self setRoomTitleViewClass:RoomTitleViewWithTopic.class];
     
     // Replace the default input toolbar view.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
