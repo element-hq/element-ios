@@ -35,6 +35,9 @@
     
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSIndexPath *currentSelectedCellIndexPath;
+    
+    // display a gradient view above the tableview
+    CAGradientLayer* tableViewMaskLayer;
 }
 
 @end
@@ -101,6 +104,30 @@
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
+    
+    if (!tableViewMaskLayer)
+    {
+        tableViewMaskLayer = [CAGradientLayer layer];
+        
+        CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+        CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+        
+        tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+        
+        // display a gradient to the rencents bottom (20% of the bottom of the screen)
+        tableViewMaskLayer.locations = [NSArray arrayWithObjects:
+                                        [NSNumber numberWithFloat:0],
+                                        [NSNumber numberWithFloat:0.8],
+                                        [NSNumber numberWithFloat:1.0], nil];
+        
+        tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        tableViewMaskLayer.anchorPoint = CGPointZero;
+        
+        // CAConstraint is not supported on IOS.
+        // it seems only being supported on Mac OS.
+        // so viewDidLayoutSubviews will refresh the layout bounds.
+        [self.view.layer addSublayer:tableViewMaskLayer];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -136,6 +163,25 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+}
+
+- (void) viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    // sanity check
+    if (tableViewMaskLayer)
+    {
+        CGRect currentBounds = tableViewMaskLayer.bounds;
+        CGRect newBounds = CGRectIntegral(self.view.frame);
+        
+        // check if there is an update
+        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
+        {
+            newBounds.origin = CGPointZero;
+            tableViewMaskLayer.bounds = newBounds;
+        }
+    }
 }
 
 #pragma mark -
