@@ -318,6 +318,107 @@
     }
 }
 
+#pragma mark - swipe actions
+
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+static NSMutableDictionary* backgroundByImageNameDict;
+
+- (UIColor*)getBackgroundColor:(NSString*)imageName
+{
+    if (!imageName)
+    {
+        return [UIColor lightGrayColor];
+    }
+    
+    if (!backgroundByImageNameDict)
+    {
+        backgroundByImageNameDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    UIColor* bgColor = [backgroundByImageNameDict objectForKey:imageName];
+    
+    if (!bgColor)
+    {
+        bgColor = [[UIColor alloc] initWithPatternImage:[self imageWithImage:[UIImage imageNamed:imageName] scaledToSize:CGSizeMake(74, 74)]];
+        [backgroundByImageNameDict setObject:bgColor forKey:imageName];
+    }
+    
+    return bgColor;
+}
+
+// for IOS >= 8 devices
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    
+    MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
+    
+    if (room)
+    {
+        /*
+        // pushes settings
+        BOOL hasSomePushes = YES;
+        NSString* pushMessage = hasSomePushes ? @"Mute" : @"Unmute";
+        
+        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:pushMessage handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            [self mutePushRules:hasSomePushes atIndexPath:indexPath];
+        }];
+        
+        muteAction.backgroundColor = [self getBackgroundColor:nil];
+        [actions insertObject:muteAction atIndex:0];
+        
+        // favorites management
+        NSDictionary* tags = [[NSDictionary alloc] init];
+        
+        // sanity cg
+        if (room.accountData.tags)
+        {
+            tags = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
+        }
+    
+    
+        UITableViewRowAction *moreAction2 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Button2" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            //[self.tableView setEditing:NO];
+        }];
+        moreAction2.backgroundColor = [self getBackgroundColor:nil];
+        [actions addObject:moreAction2];
+        */
+        
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Leave"  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            [self leaveRecentsAtIndexPath:indexPath];
+        }];
+        leaveAction.backgroundColor = [self getBackgroundColor:nil];
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
+}
+
+- (void)leaveRecentsAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.dataSource leaveRoomAtIndexPath:indexPath];
+    [self.recentsTableView setEditing:NO];
+}
+
+- (void)mutePushRules:(BOOL)mute atIndexPath:(NSIndexPath *)indexPath
+{
+    [self.recentsTableView setEditing:NO];
+}
+
+// require by editActionsForRowAtIndexPath
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // No statement or algorithm is needed in here. Just the implementation
+}
+
+
 #pragma mark - MXKRecentListViewControllerDelegate
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
