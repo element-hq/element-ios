@@ -516,7 +516,7 @@
             if (!filteredParticipantCell)
             {
                 filteredParticipantCell = [[MXKContactTableCell alloc] init];
-                filteredParticipantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeRoundedCorner;
+                filteredParticipantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeCircle;
                 filteredParticipantCell.hideMatrixPresence = YES;
             }
             
@@ -541,7 +541,7 @@
         if (!participantCell)
         {
             participantCell = [[MXKContactTableCell alloc] init];
-            participantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeRoundedCorner;
+            participantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeCircle;
             participantCell.hideMatrixPresence = YES;
         }
         
