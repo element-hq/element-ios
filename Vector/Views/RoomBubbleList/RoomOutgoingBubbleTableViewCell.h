@@ -21,6 +21,9 @@
  */
 @interface RoomOutgoingBubbleTableViewCell : MXKRoomOutgoingBubbleTableViewCell
 
+// FIXME GFO
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
 @property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *paginationTitleViewHeightConstraint;

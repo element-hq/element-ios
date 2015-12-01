@@ -70,6 +70,18 @@
             self.paginationTitleViewHeightConstraint.constant = 0;
         }
         
+        // FIXME remove this temporary code
+        if (self.attachmentView && self.bubbleData.isAttachmentWithThumbnail)
+        {
+            self.attachmentView.hidden = NO;
+            self.messageTextView.hidden = YES;
+        }
+        else
+        {
+            self.attachmentView.hidden = YES;
+            self.messageTextView.hidden = NO;
+        }
+        
         
         // TODO handle here pagination display per day
         

@@ -32,10 +32,14 @@
         [self registerCellDataClass:RoomBubbleCellData.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
         
         // Replace cell view classes
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgBubbleTableViewCellIdentifier];
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingAttachmentBubbleTableViewCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingTextMsgBubbleTableViewCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingAttachmentBubbleTableViewCellIdentifier];
+        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgCellIdentifier];
+        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgHiddenSenderCellIdentifier];
+        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingAttachmentCellIdentifier];
+        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingAttachmentHiddenSenderCellIdentifier];
+        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingTextMsgCellIdentifier];
+        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingTextMsgHiddenSenderCellIdentifier];
+        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingAttachmentCellIdentifier];
+        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingAttachmentHiddenSenderCellIdentifier];
         
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];

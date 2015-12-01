@@ -59,6 +59,9 @@
                         <rect key="frame" x="51" y="10" width="97" height="39"/>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="97" id="WeN-Sq-2TZ"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -157,6 +160,7 @@
                 <outlet property="msgTextViewLeadingConstraint" destination="uig-Xh-7m6" id="kgj-3v-ECW"/>
                 <outlet property="msgTextViewTopConstraint" destination="ghz-PN-FzI" id="1hn-Bo-e5J"/>
                 <outlet property="msgTextViewTrailingConstraint" destination="Shz-6S-kGd" id="5ib-m6-Lna"/>
+                <outlet property="msgTextViewWidthConstraint" destination="WeN-Sq-2TZ" id="I3u-xU-NJG"/>
                 <outlet property="paginationLabel" destination="SC6-wP-Sb1" id="I0W-fL-st5"/>
                 <outlet property="paginationTitleView" destination="mHb-iw-6Ls" id="eqJ-6o-ssD"/>
                 <outlet property="paginationTitleViewHeightConstraint" destination="SUG-s3-1qS" id="vRn-Kz-pFO"/>
