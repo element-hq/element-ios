@@ -64,7 +64,7 @@
     return topViewController.navigationItem;
 }
 
-- (void)addNavBarButtons
+- (void)setNavBarButtons
 {
     [self getNavigationItem].rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSave:)];
     [self getNavigationItem].rightBarButtonItem.enabled = ([self getUpdatedItemsDict].count != 0);
@@ -85,7 +85,7 @@
     // Setup `RoomSettingsViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    [self addNavBarButtons];
+    [self setNavBarButtons];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,7 +107,7 @@
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    [self addNavBarButtons];
+    [self setNavBarButtons];
 }
 
 - (void)destroy

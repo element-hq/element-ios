@@ -50,7 +50,7 @@
 
 @implementation RoomParticipantsViewController
 
-- (void)addNavBarButtons
+- (void)setNavBarButtons
 {
     // this viewController can be displayed
     // 1- with a "standard" push mode
@@ -117,14 +117,14 @@
     // ensure that the separator line is not displayed
     self.tableView.separatorColor = [UIColor clearColor];
     
-    [self addNavBarButtons];
+    [self setNavBarButtons];
 }
 
 // this method is called when the viewcontroller is displayed inside another one.
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    [self addNavBarButtons];
+    [self setNavBarButtons];
 }
 
 - (void)didReceiveMemoryWarning
