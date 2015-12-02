@@ -20,6 +20,8 @@
 
 #import "AppDelegate.h"
 
+#import "VectorDesignValues.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Add participants section
@@ -48,6 +50,17 @@
 
 @implementation RoomParticipantsViewController
 
+- (void)setNavBarButtons
+{
+    // this viewController can be displayed
+    // 1- with a "standard" push mode
+    // 2- within a segmentedViewController i.e. inside another viewcontroller
+    // so, we need to use the parent controller when it is required.
+    UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
+    topViewController.navigationItem.rightBarButtonItem = nil;
+    topViewController.navigationItem.leftBarButtonItem = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,6 +83,9 @@
     //    addParticipantsSearchBarCell.mxkSearchBar.barTintColor = [UIColor whiteColor]; // set barTint in case of UISearchBarStyleDefault (= UISearchBarStyleProminent)
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
+    addParticipantsSearchBarCell.mxkSearchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+    [self refreshSearchBarItemsColor:addParticipantsSearchBarCell.mxkSearchBar];
+    
     _isAddParticipantSearchBarEditing = NO;
     
     if (! mutableParticipants)
@@ -86,14 +102,29 @@
     MXKContactTableCell *tmpCell = [[MXKContactTableCell alloc] init];
     UIButton *actionButton = tmpCell.contactAccessoryButton;
     [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
+    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
     [actionButton sizeToFit];
+    
     actionButtonWidth = actionButton.frame.size.width;
     [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
+    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
     [actionButton sizeToFit];
     if (actionButton.frame.size.width > actionButtonWidth)
     {
         actionButtonWidth = actionButton.frame.size.width;
     }
+    
+    // ensure that the separator line is not displayed
+    self.tableView.separatorColor = [UIColor clearColor];
+    
+    [self setNavBarButtons];
+}
+
+// this method is called when the viewcontroller is displayed inside another one.
+- (void)didMoveToParentViewController:(nullable UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
+    [self setNavBarButtons];
 }
 
 - (void)didReceiveMemoryWarning
@@ -151,6 +182,12 @@
     {
         [currentAlert dismiss:NO];
         currentAlert = nil;
+    }
+ 
+    // cancel any pending search
+    if (addParticipantsSearchBarCell.mxkSearchBar)
+    {
+        [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
     }
 }
 
@@ -436,7 +473,7 @@
     
     if (section == addParticipantsSection)
     {
-        count = 2;
+        count = 1;
     }
     else if (section == searchResultSection)
     {
@@ -456,11 +493,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == addParticipantsSection)
-    {
-        return NSLocalizedStringFromTable(@"room_participants_add_participant", @"Vector", nil);
-    }
-    else if (section == participantsSection)
+    if (section == participantsSection)
     {
         NSInteger count = mutableParticipants.count;
         if (userMatrixId)
@@ -476,7 +509,6 @@
         {
             return NSLocalizedStringFromTable(@"room_participants_one_participant", @"Vector", nil);
         }
-        
     }
     return nil;
 }
@@ -493,18 +525,6 @@
             if (_isAddParticipantSearchBarEditing)
             {
                 [addParticipantsSearchBarCell.mxkSearchBar becomeFirstResponder];
-            }
-        }
-        else if (indexPath.row == 1)
-        {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"addParticipantsSeparator"];
-            if (!cell)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"addParticipantsSeparator"];
-                UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 8, cell.frame.size.width, 2)];
-                separator.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                separator.backgroundColor = [UIColor blackColor];
-                [cell.contentView addSubview:separator];
             }
         }
     }
@@ -563,6 +583,7 @@
                 UIButton *actionButton = participantCell.contactAccessoryButton;
                 actionButton.hidden = NO;
                 [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
+                [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
                 [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
                 actionButton.tag = 0;
                 [actionButton sizeToFit];
@@ -628,6 +649,7 @@
                     UIButton *actionButton = participantCell.contactAccessoryButton;
                     actionButton.hidden = NO;
                     [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
+                    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
                     [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
                     actionButton.tag = indexPath.row;
                     [actionButton sizeToFit];
@@ -668,6 +690,7 @@
     return 44;
 }
 
+
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     if([view isKindOfClass:[UITableViewHeaderFooterView class]])
@@ -675,7 +698,7 @@
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *) view;
         tableViewHeaderFooterView.textLabel.text = [tableViewHeaderFooterView.textLabel.text capitalizedString];
         tableViewHeaderFooterView.textLabel.font = [UIFont boldSystemFontOfSize:17];
-        tableViewHeaderFooterView.textLabel.textColor = [UIColor blackColor];
+        tableViewHeaderFooterView.textLabel.textColor = VECTOR_GREEN_COLOR;
     }
 }
 
@@ -873,6 +896,30 @@
 
 #pragma mark - UISearchBar delegate
 
+- (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
+{
+    // caret color
+    searchBar.barTintColor = searchBar.tintColor = VECTOR_GREEN_COLOR;
+    searchBar.tintColor = VECTOR_GREEN_COLOR;
+    
+    // text color
+    UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+    searchBarTextField.textColor = VECTOR_GREEN_COLOR;
+    
+    // Magnifying glass icon.
+    UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
+    leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    leftImageView.tintColor = VECTOR_GREEN_COLOR;
+
+    // Clear button
+    UIButton *clearButton = [searchBarTextField valueForKey:@"_clearButton"];
+    [clearButton setImage:[clearButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    clearButton.tintColor = VECTOR_GREEN_COLOR;
+    
+    // place holder
+    [searchBarTextField setValue:VECTOR_GREEN_COLOR forKeyPath:@"_placeholderLabel.textColor"];
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSInteger previousFilteredCount = filteredParticipants.count;
@@ -945,6 +992,8 @@
 {
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
+    
+    [self refreshSearchBarItemsColor:searchBar];
     
     return YES;
 }

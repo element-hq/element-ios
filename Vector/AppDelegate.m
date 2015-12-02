@@ -42,6 +42,8 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
+#import "VectorDesignValues.h"
+
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
@@ -97,7 +99,6 @@
     /**
      Application main view controllers
      */
-    UINavigationController *recentsNavigationController;
     RecentsViewController  *recentsViewController;
 }
 
@@ -188,6 +189,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // define the navigation bar text color
+    [[UINavigationBar appearance] setTintColor:VECTOR_GREEN_COLOR];
+    
     // Override point for customization after application launch.
     mxSessionArray = [NSMutableArray array];
     
@@ -195,13 +199,13 @@
     // to the recents list in Recents Tab.
     // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
     UIViewController* recents = self.window.rootViewController;
-    recentsNavigationController = nil;
+    _recentsNavigationController = nil;
     if ([recents isKindOfClass:[UISplitViewController class]])
     {
         UISplitViewController *splitViewController = (UISplitViewController *)recents;
         splitViewController.delegate = self;
         
-        recentsNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+        _recentsNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
         UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
         if ([detailsViewController isKindOfClass:[UINavigationController class]])
@@ -227,12 +231,12 @@
     }
     else if ([recents isKindOfClass:[UINavigationController class]])
     {
-        recentsNavigationController = (UINavigationController*)recents;
+        _recentsNavigationController = (UINavigationController*)recents;
     }
     
-    if (recentsNavigationController)
+    if (_recentsNavigationController)
     {
-        for (UIViewController *viewController in recentsNavigationController.viewControllers)
+        for (UIViewController *viewController in _recentsNavigationController.viewControllers)
         {
             if ([viewController isKindOfClass:[RecentsViewController class]])
             {
@@ -420,7 +424,7 @@
     // Force back to recents list if room details is displayed in Recents Tab
     if (recentsViewController)
     {
-        [recentsNavigationController popToViewController:recentsViewController animated:animated];
+        [_recentsNavigationController popToViewController:recentsViewController animated:animated];
         // Release the current selected room
         [recentsViewController closeSelectedRoom];
     }

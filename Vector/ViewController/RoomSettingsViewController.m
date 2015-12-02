@@ -14,13 +14,15 @@
  limitations under the License.
  */
 
-#import "RoomDetailsViewController.h"
+#import "RoomSettingsViewController.h"
 
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
 #import "TableViewCellSeparator.h"
 
 #import "RageShakeManager.h"
+
+#import "VectorDesignValues.h"
 
 #define ROOM_SECTION 0
 
@@ -30,10 +32,10 @@
 
 #define ROOM_TOPIC_CELL_HEIGHT 99
 
-@interface RoomDetailsViewController ()
+@interface RoomSettingsViewController ()
 {
     // updated user data
-    NSMutableDictionary<NSString*, id> *updatedItems;
+    NSMutableDictionary<NSString*, id> *updatedItemsDict;
     
     // active items
     UITextView* topicTextView;
@@ -41,10 +43,33 @@
     
     // pending http operation
     MXHTTPOperation* pendingOperation;
+    
+    // the updating spinner
+    UIActivityIndicatorView* updatingSpinner;
+    
+    MXKAlert *currentAlert;
 }
 @end
 
-@implementation RoomDetailsViewController
+@implementation RoomSettingsViewController
+
+- (UINavigationItem*) getNavigationItem
+{
+    // this viewController can be displayed
+    // 1- with a "standard" push mode
+    // 2- within a segmentedViewController i.e. inside another viewcontroller
+    // so, we need to use the parent controller when it is required.
+    UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
+    
+    return topViewController.navigationItem;
+}
+
+- (void)setNavBarButtons
+{
+    [self getNavigationItem].rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSave:)];
+    [self getNavigationItem].rightBarButtonItem.enabled = ([self getUpdatedItemsDict].count != 0);
+    [self getNavigationItem].leftBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
+}
 
 - (void)viewDidLoad
 {
@@ -57,8 +82,10 @@
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
     self.tableView.separatorColor = [UIColor clearColor];
     
-    // Setup `RoomDetailsViewController` properties
+    // Setup `RoomSettingsViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    [self setNavBarButtons];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,6 +103,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
 }
 
+// this method is called when the viewcontroller is displayed inside another one.
+- (void)didMoveToParentViewController:(nullable UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
+    [self setNavBarButtons];
+}
+
 - (void)destroy
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -91,14 +125,14 @@
 
 #pragma mark - private
 
-- (NSMutableDictionary*)getUpdatedItems
+- (NSMutableDictionary*)getUpdatedItemsDict
 {
-    if (!updatedItems)
+    if (!updatedItemsDict)
     {
-        updatedItems = [[NSMutableDictionary alloc] init];
+        updatedItemsDict = [[NSMutableDictionary alloc] init];
     }
     
-    return updatedItems;
+    return updatedItemsDict;
 }
 
 - (void)dismissFirstResponder
@@ -116,16 +150,27 @@
 
 - (void)showUpdatingSpinner
 {
-    // TODO : wait that we have the final behaviour
-    self.view.alpha = 0.5f;
-    self.view.userInteractionEnabled = NO;
+    self.tableView.userInteractionEnabled = NO;
+    
+    // Add a spinner
+    updatingSpinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    updatingSpinner.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+    updatingSpinner.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+    updatingSpinner.hidesWhenStopped = NO;
+    [updatingSpinner startAnimating];
+    updatingSpinner.center = self.view.center;
+    [self.view addSubview:updatingSpinner];
 }
 
 - (void)hideUpdatingSpinner
 {
-    // TODO : wait that we have the final behaviour
-    self.view.alpha = 1.0f;
-    self.view.userInteractionEnabled = YES;
+    self.tableView.userInteractionEnabled = YES;
+    
+    if (updatingSpinner)
+    {
+        [updatingSpinner removeFromSuperview];
+        updatingSpinner = nil;
+    }
 }
 
 #pragma mark - actions
@@ -137,7 +182,18 @@
     
     if (topicTextView == textView)
     {
-        [[self getUpdatedItems] setObject:text forKey:@"ROOM_SECTION_TOPIC"];
+        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        
+        if ([text isEqualToString:mxRoomState.topic])
+        {
+            [dict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+        }
+        else
+        {
+            [dict setObject:text forKey:@"ROOM_SECTION_TOPIC"];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
     }
 }
 
@@ -148,7 +204,18 @@
     
     if (nameTextField == textField)
     {
-        [[self getUpdatedItems] setObject:text forKey:@"ROOM_SECTION_NAME"];
+        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        
+        if ([text isEqualToString:mxRoomState.name])
+        {
+            [dict removeObjectForKey:@"ROOM_SECTION_NAME"];
+        }
+        else
+        {
+            [dict setObject:text forKey:@"ROOM_SECTION_NAME"];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
     }
 }
 
@@ -165,15 +232,55 @@
     }
 }
 
-- (IBAction)onDone:(id)sender
+- (IBAction)onCancel:(id)sender
+{
+    // warn if there is a pending update ?
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onSaveFailed:(NSString*)message withKey:(NSString*)key
+{
+    __weak typeof(self) weakSelf = self;
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                           message:message
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:MXKAlertActionStyleCancel
+                                                              handler:^(MXKAlert *alert) {
+                                                                  
+                                                                  // save anything else
+                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                  [strongSelf->updatedItemsDict removeObjectForKey:key];
+                                                                  strongSelf->currentAlert = nil;
+                                                                  [strongSelf onSave:nil];
+                                                                  
+                                                              }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil)
+                               style:MXKAlertActionStyleDefault
+                             handler:^(MXKAlert *alert) {
+                                 
+                                 // try again
+                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                 strongSelf->currentAlert = nil;
+                                 [strongSelf onSave:nil];
+                                 
+                             }];
+    
+    [currentAlert showInViewController:self];
+}
+
+- (IBAction)onSave:(id)sender
 {
     // check if there is some update
-    if (mxRoomState && updatedItems && (updatedItems.count > 0))
+    if (mxRoomState && updatedItemsDict && (updatedItemsDict.count > 0))
     {
         // has a new room name
-        if ([updatedItems objectForKey:@"ROOM_SECTION_NAME"])
+        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
         {
-            NSString* newName = [updatedItems objectForKey:@"ROOM_SECTION_NAME"];
+            NSString* newName = [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"];
             
             if (![newName isEqualToString:mxRoomState.name])
             {
@@ -184,17 +291,19 @@
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_NAME"];
-                    [strongSelf onDone:nil];
+                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_NAME"];
+                    [strongSelf onSave:nil];
                     
                 } failure:^(NSError *error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
-                    // TODO should stop the saving ?
-                    // continue the saving by now
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_NAME"];
-                    [strongSelf onDone:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_room_name", @"Vector", nil) withKey:@"ROOM_SECTION_NAME"];
+                        
+                    });
                     
                     NSLog(@"[onDone] Rename room failed: %@", error);
                 }];
@@ -204,9 +313,9 @@
         }
         
         // has a new room topic
-        if ([updatedItems objectForKey:@"ROOM_SECTION_TOPIC"])
+        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"])
         {
-            NSString* newTopic = [updatedItems objectForKey:@"ROOM_SECTION_TOPIC"];
+            NSString* newTopic = [updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"];
             
             if (![newTopic isEqualToString:mxRoomState.topic])
             {
@@ -217,17 +326,19 @@
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_TOPIC"];
-                    [strongSelf onDone:nil];
+                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+                    [strongSelf onSave:nil];
                     
                 } failure:^(NSError *error) {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    
-                    // TODO should stop the saving ?
-                    // continue the saving by now
+
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItems removeObjectForKey:@"ROOM_SECTION_TOPIC"];
-                    [strongSelf onDone:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_topic", @"Vector", nil) withKey:@"ROOM_SECTION_TOPIC"];
+                        
+                    });
                     
                     NSLog(@"[onDone] Rename topic failed: %@", error);
                 }];
@@ -336,15 +447,16 @@
             roomTopicCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
             topicTextView = roomTopicCell.mxkTextView;
             
-            if (updatedItems && [updatedItems objectForKey:@"ROOM_SECTION_TOPIC"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"])
             {
-                roomTopicCell.mxkTextView.text = (NSString*)[updatedItems objectForKey:@"ROOM_SECTION_TOPIC"];
+                roomTopicCell.mxkTextView.text = (NSString*)[updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"];
             }
             else
             {
                 roomTopicCell.mxkTextView.text = mxRoomState.topic;
             }
-            
+                        
+            roomTopicCell.mxkTextView.tintColor = VECTOR_GREEN_COLOR;
             roomTopicCell.mxkTextView.delegate = self;
             
             // disable the edition if the user cannoy update it
@@ -364,10 +476,11 @@
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
             roomNameCell.mxkTextField.userInteractionEnabled = YES;
+            roomNameCell.mxkTextField.tintColor = VECTOR_GREEN_COLOR;
             
-            if (updatedItems && [updatedItems objectForKey:@"ROOM_SECTION_NAME"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
             {
-                roomNameCell.mxkTextField.text = (NSString*)[updatedItems objectForKey:@"ROOM_SECTION_NAME"];
+                roomNameCell.mxkTextField.text = (NSString*)[updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"];
             }
             else
             {
