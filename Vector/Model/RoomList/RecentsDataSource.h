@@ -21,4 +21,9 @@
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
+/**
+ Return the header height from the section.
+ */
+- (CGFloat)heightForHeaderInSection:(NSInteger)section;
+
 @end
