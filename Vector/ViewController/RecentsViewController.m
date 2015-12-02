@@ -362,18 +362,22 @@ static NSMutableDictionary* backgroundByImageNameDict;
     
     if (room)
     {
-        /*
-        // pushes settings
-        BOOL hasSomePushes = YES;
-        NSString* pushMessage = hasSomePushes ? @"Mute" : @"Unmute";
-        
-        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:pushMessage handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            [self mutePushRules:hasSomePushes atIndexPath:indexPath];
-        }];
-        
-        muteAction.backgroundColor = [self getBackgroundColor:nil];
-        [actions insertObject:muteAction atIndex:0];
-         */
+        if ([self.dataSource canSuspendRoomNotificationsAtIndexPath:indexPath])
+        {
+             // pushes settings
+            BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+            
+             NSString* pushMessage = !isMuted ? @"Mute" : @"Unmute";
+             
+             UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:pushMessage handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                 
+                 [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
+    
+             }];
+             
+             muteAction.backgroundColor = [self getBackgroundColor:nil];
+             [actions insertObject:muteAction atIndex:0];
+        }
         
         // favorites management
         NSDictionary* tagsDict = [[NSDictionary alloc] init];
@@ -449,10 +453,10 @@ static NSMutableDictionary* backgroundByImageNameDict;
     [self.recentsTableView setEditing:NO];
 }
 
-// require by editActionsForRowAtIndexPath
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath*)path
 {
-    // No statement or algorithm is needed in here. Just the implementation
+    [self.dataSource muteRoomNotifications:mute atIndexPath:path];
+    [self.recentsTableView setEditing:NO];
 }
 
 
