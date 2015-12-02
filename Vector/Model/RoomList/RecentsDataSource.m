@@ -220,6 +220,33 @@
 
 #pragma mark - MXKDataSourceDelegate
 
+// create an array filled with NSNull and with the same size as sourceArray
+- (NSMutableArray*)createEmptyArray:(NSArray*)sourceArray
+{
+    NSMutableArray* array = [[NSMutableArray alloc] init];
+    
+    if (sourceArray && sourceArray.count)
+    {
+        for(int i = 0; i < sourceArray.count; i++)
+        {
+            [array addObject:[NSNull null]];
+        }
+    }
+    
+    return array;
+}
+
+// remove the NSNull from an array
+- (void) removeNullItems:(NSMutableArray*)array
+{
+    NSUInteger pos;
+    
+    while((pos = [array indexOfObject:[NSNull null]]) != NSNotFound)
+    {
+        [array removeObjectAtIndex:pos];
+    }
+}
+
 - (void)refreshRoomsSections
 {
     // displayedRecentsDataSourceArray.count
@@ -231,26 +258,39 @@
     
     favoritesPos = conversationPos = lowPriorityPos = -1;
     sectionsCount = 0;
-    
+
     if (displayedRecentsDataSourceArray.count > 0)
     {
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
+        MXSession* session = recentsDataSource.mxSession;
+        
+        NSArray* sortedFavRooms = [session roomsWithTag:kMXRoomTagFavourite];
+        NSArray* sortedLowPriorRooms = [session roomsWithTag:kMXRoomTagLowPriority];
+        
+        favoritesCells = [self createEmptyArray:sortedFavRooms];
+        lowPriorityCells = [self createEmptyArray:sortedLowPriorRooms];
+        
         NSInteger count = recentsDataSource.numberOfCells;
         
         for(int index = 0; index < count; index++)
         {
+            NSUInteger pos;
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
             MXRoom* room = recentCellDataStoring.roomDataSource.room;
-            
-            NSDictionary* tags = room.accountData.tags;
-            
-            if (tags && [tags objectForKey:kMXRoomTagFavourite])
+
+            if ((pos = [sortedFavRooms indexOfObject:room]) != NSNotFound)
             {
-                [favoritesCells addObject:recentCellDataStoring];
+                if (pos < favoritesCells.count)
+                {
+                    [favoritesCells replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                }
             }
-            else  if (tags && [tags objectForKey:kMXRoomTagLowPriority])
+            else  if ((pos = [sortedLowPriorRooms indexOfObject:room]) != NSNotFound)
             {
-                [lowPriorityCells addObject:recentCellDataStoring];
+                if (pos < lowPriorityCells.count)
+                {
+                    [lowPriorityCells replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                }
             }
             else
             {
@@ -260,12 +300,14 @@
         
         int pos = 0;
         
+        [self removeNullItems:favoritesCells];
         if (favoritesCells.count > 0)
         {
             favoritesPos = pos;
             pos++;
         }
         
+        [self removeNullItems:conversationCells];
         if (conversationCells.count > 0)
         {
             conversationPos = pos;
