@@ -92,8 +92,13 @@
                                                                 // Consider only live event
                                                                 if (direction == MXEventDirectionForwards)
                                                                 {
-                                                                    // And inform the delegate about the update
-                                                                    [self.delegate dataSource:self didCellChange:nil];
+                                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                                        
+                                                                        [self refreshRoomsSections];
+                                                                        
+                                                                        // And inform the delegate about the update
+                                                                        [self.delegate dataSource:self didCellChange:nil];
+                                                                    });
                                                                 }
                                                                 
                                                             }];
@@ -215,7 +220,7 @@
 
 #pragma mark - MXKDataSourceDelegate
 
-- (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
+- (void)refreshRoomsSections
 {
     // displayedRecentsDataSourceArray.count
     // TODO manage multi accounts
@@ -238,7 +243,7 @@
             MXRoom* room = recentCellDataStoring.roomDataSource.room;
             
             NSDictionary* tags = room.accountData.tags;
-                        
+            
             if (tags && [tags objectForKey:kMXRoomTagFavourite])
             {
                 [favoritesCells addObject:recentCellDataStoring];
@@ -275,9 +280,15 @@
         
         sectionsCount = pos;
     }
-    
+}
+
+
+- (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
+{
     // Call super to keep update readyRecentsDataSourceArray.
     [super dataSource:dataSource didCellChange:changes];
+    
+    [self refreshRoomsSections];
 }
 
 #pragma mark - Override MXKDataSource
