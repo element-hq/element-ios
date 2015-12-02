@@ -35,6 +35,12 @@
     
     // Keep the selected cell index to handle correctly split view controller display in landscape mode
     NSIndexPath *currentSelectedCellIndexPath;
+    
+    // display a gradient view above the tableview
+    CAGradientLayer* tableViewMaskLayer;
+    
+    // display a button to a new room
+    UIImageView* createNewRoomImageView;
 }
 
 @end
@@ -101,6 +107,97 @@
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
+    
+    if (!tableViewMaskLayer)
+    {
+        tableViewMaskLayer = [CAGradientLayer layer];
+        
+        CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+        CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+        
+        tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+        
+        // display a gradient to the rencents bottom (20% of the bottom of the screen)
+        tableViewMaskLayer.locations = [NSArray arrayWithObjects:
+                                        [NSNumber numberWithFloat:0],
+                                        [NSNumber numberWithFloat:0.8],
+                                        [NSNumber numberWithFloat:1.0], nil];
+        
+        tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        tableViewMaskLayer.anchorPoint = CGPointZero;
+        
+        // CAConstraint is not supported on IOS.
+        // it seems only being supported on Mac OS.
+        // so viewDidLayoutSubviews will refresh the layout bounds.
+        [self.view.layer addSublayer:tableViewMaskLayer];
+    }
+    
+    if (!createNewRoomImageView)
+    {
+        createNewRoomImageView = [[UIImageView alloc] init];
+        [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:createNewRoomImageView];
+        
+        // TODO use a const value
+        createNewRoomImageView.backgroundColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
+        
+        CGFloat side = 50.0f;
+        createNewRoomImageView.layer.cornerRadius = side / 2;
+        
+        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1
+                                                                            constant:side];
+        
+        NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1
+                                                                             constant:side];
+        
+        NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                      attribute:NSLayoutAttributeCenterX
+                                                      relatedBy:NSLayoutRelationEqual
+                                                         toItem:self.view
+                                                      attribute:NSLayoutAttributeCenterX
+                                                     multiplier:1
+                                                       constant:0];
+        
+        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:createNewRoomImageView
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                            multiplier:1
+                                                                              constant:50];
+        
+        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+        {
+            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+        }
+        else
+        {
+            [createNewRoomImageView addConstraint:widthConstraint];
+            [createNewRoomImageView addConstraint:heightConstraint];
+            
+            [self.view addConstraint:bottomConstraint];
+            [self.view addConstraint:centerXConstraint];
+        }
+        
+        createNewRoomImageView.userInteractionEnabled = YES;
+        
+        // tap -> switch to text edition
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [createNewRoomImageView addGestureRecognizer:tap];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -136,6 +233,25 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+}
+
+- (void) viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    // sanity check
+    if (tableViewMaskLayer)
+    {
+        CGRect currentBounds = tableViewMaskLayer.bounds;
+        CGRect newBounds = CGRectIntegral(self.view.frame);
+        
+        // check if there is an update
+        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
+        {
+            newBounds.origin = CGPointZero;
+            tableViewMaskLayer.bounds = newBounds;
+        }
+    }
 }
 
 #pragma mark -
@@ -342,6 +458,13 @@
     shouldScrollToTopOnRefresh = YES;
     
     [super searchBarCancelButtonClicked: searchBar];
+}
+
+#pragma mark - Actions.
+
+- (void)onNewRoomPressed
+{
+    [self performSegueWithIdentifier:@"presentRoomCreationStep1" sender:self];
 }
 
 @end
