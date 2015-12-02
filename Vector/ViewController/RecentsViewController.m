@@ -373,23 +373,59 @@ static NSMutableDictionary* backgroundByImageNameDict;
         
         muteAction.backgroundColor = [self getBackgroundColor:nil];
         [actions insertObject:muteAction atIndex:0];
+         */
         
         // favorites management
-        NSDictionary* tags = [[NSDictionary alloc] init];
+        NSDictionary* tagsDict = [[NSDictionary alloc] init];
         
         // sanity cg
         if (room.accountData.tags)
         {
-            tags = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
+            tagsDict = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
         }
     
-    
-        UITableViewRowAction *moreAction2 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Button2" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            //[self.tableView setEditing:NO];
-        }];
-        moreAction2.backgroundColor = [self getBackgroundColor:nil];
-        [actions addObject:moreAction2];
-        */
+        // get the room tag
+        // use only the first one
+        NSArray<MXRoomTag*>* tags = tagsDict.allValues;
+        MXRoomTag* currentTag = nil;
+        
+        if (tags.count)
+        {
+            currentTag = [tags objectAtIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagFavourite isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Fav" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (currentTag && ([kMXRoomTagFavourite isEqualToString:currentTag.name] || [kMXRoomTagLowPriority isEqualToString:currentTag.name]))
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Std" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:nil];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagLowPriority isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Low" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
         
         UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Leave"  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             [self leaveRecentsAtIndexPath:indexPath];
@@ -407,8 +443,9 @@ static NSMutableDictionary* backgroundByImageNameDict;
     [self.recentsTableView setEditing:NO];
 }
 
-- (void)mutePushRules:(BOOL)mute atIndexPath:(NSIndexPath *)indexPath
+- (void)updateRoomTagAtIndexPath:(NSIndexPath *)indexPath to:(NSString*)tag
 {
+    [self.dataSource updateRoomTagAtIndexPath:indexPath to:tag];
     [self.recentsTableView setEditing:NO];
 }
 
