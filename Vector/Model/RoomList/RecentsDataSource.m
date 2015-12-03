@@ -251,7 +251,6 @@
 {
     // displayedRecentsDataSourceArray.count
     // TODO manage multi accounts
-    
     favoritesCells = [[NSMutableArray alloc] init];
     conversationCells = [[NSMutableArray alloc] init];
     lowPriorityCells = [[NSMutableArray alloc] init];
@@ -314,6 +313,7 @@
             pos++;
         }
         
+        [self removeNullItems:lowPriorityCells];
         if (lowPriorityCells.count > 0)
         {
             lowPriorityPos = pos;
@@ -327,10 +327,14 @@
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
+    // multi accounts management
+    [self refreshInterleavedCellDataArray:dataSource];
+
+    // refresh the 
+    [self refreshRoomsSections];
+    
     // Call super to keep update readyRecentsDataSourceArray.
     [super dataSource:dataSource didCellChange:changes];
-    
-    [self refreshRoomsSections];
 }
 
 #pragma mark - Override MXKDataSource
