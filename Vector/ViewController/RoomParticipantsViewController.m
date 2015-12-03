@@ -22,6 +22,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "Contact.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Add participants section
@@ -370,7 +372,8 @@
         }
         
         // Create the contact related to this member
-        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
+        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
+        contact.mxMember = mxMember;
         [mxkContactsById setObject:contact forKey:mxMember.userId];
         
         // Add this participant (admin is in first position, the other are sorted in alphabetical order).
@@ -567,10 +570,11 @@
         
         if (userMatrixId && indexPath.row == 0)
         {
-            MXKContact *contact = [mxkContactsById objectForKey:userMatrixId];
+            Contact *contact = [mxkContactsById objectForKey:userMatrixId];
             if (! contact)
             {
-                contact = [[MXKContact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
+                contact = [[Contact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
+                contact.mxMember = [self.mxRoom.state memberWithUserId:userMatrixId];
                 [mxkContactsById setObject:contact forKey:userMatrixId];
             }
             
@@ -613,7 +617,7 @@
             if (index < mutableParticipants.count)
             {
                 NSString *userId = mutableParticipants[index];
-                MXKContact *contact = [mxkContactsById objectForKey:userId];
+                Contact *contact = [mxkContactsById objectForKey:userId];
                 if (!contact)
                 {
                     // Create this missing contact
@@ -625,7 +629,8 @@
                         mxUser = [session userWithUserId:userId];
                         if (mxUser)
                         {
-                            contact = [[MXKContact alloc] initMatrixContactWithDisplayName:((mxUser.displayname.length > 0) ? mxUser.displayname : userId) andMatrixID:userId];
+                            contact = [[Contact alloc] initMatrixContactWithDisplayName:((mxUser.displayname.length > 0) ? mxUser.displayname : userId) andMatrixID:userId];
+                            contact.mxMember = [self.mxRoom.state memberWithUserId:userId];
                             break;
                         }
                     }
@@ -947,7 +952,8 @@
                     {
                         if (![userId isEqualToString:userMatrixId])
                         {
-                            MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
+                            Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
+                            splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
                             [mxUsers addObject:splitContact];
                         }
                     }

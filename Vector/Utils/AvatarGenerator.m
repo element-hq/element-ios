@@ -28,6 +28,11 @@ static UILabel* backgroundLabel = nil;
         blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
         alpha:1.0]
 
+
+/**
+ Init the generated avatar colors.
+ Should be the same as the webclient.
+ */
 + (void)initColorList
 {
     if (!colorsList)
@@ -39,6 +44,9 @@ static UILabel* backgroundLabel = nil;
     }
 }
 
+/**
+ Generate the selected color index in colorsList list.
+ */
 + (NSUInteger)colorIndexForText:(NSString*)text
 {
     [AvatarGenerator initColorList];
@@ -60,6 +68,9 @@ static UILabel* backgroundLabel = nil;
     return colorIndex;
 }
 
+/**
+ Create an UIImage with the text and the background color.
+ */
 + (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color
 {
     if (!backgroundLabel)
@@ -79,20 +90,18 @@ static UILabel* backgroundLabel = nil;
     // set to the top quality
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    
-    // Make the CALayer to draw in our "canvas".
     [[backgroundLabel layer] renderInContext: UIGraphicsGetCurrentContext()];
-    
-    // Fetch an UIImage of our "canvas".
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    
-    // Stop the "canvas" from accepting any input.
     UIGraphicsEndImageContext();
     
     // Return the image.
     return image;
 }
 
+/**
+ Returns the UIImage for the text and a selected color.
+ It checks first if it is not yet cached before generating one.
+ */
 + (UIImage*)avatarForText:(NSString*)text andColorIndex:(NSUInteger)colorIndex
 {
     // the images are cached to avoid create them several times
@@ -116,16 +125,64 @@ static UILabel* backgroundLabel = nil;
     return image;
 }
 
+/**
+ Generate an avatar for a text.
+ @param text the text.
+ @return the avatar image
+ */
++ (UIImage*)generateAvatarForText:(NSString*)text
+{
+    NSUInteger index = [AvatarGenerator colorIndexForText:text];
+    
+    if (text.length > 0)
+    {
+        text = [[text substringToIndex:1] uppercaseString];
+    }
+    
+    return [AvatarGenerator avatarForText:text andColorIndex:index];
+}
+
+/**
+ Generate an avatar for a room member.
+ @param mxMember the room member
+ @return the avatar image
+ */
++ (UIImage*)generateRoomMemberAvatar:(MXRoomMember*)mxMember
+{
+    // the selected color is based on the userId
+    NSUInteger index = [AvatarGenerator colorIndexForText:mxMember.userId];
+    NSString* text = mxMember.displayname ?  mxMember.displayname : mxMember.userId;
+    
+    // if the displayname is the userID
+    // skip the @
+    if (!mxMember.displayname && [text hasPrefix:@"@"])
+    {
+        text = [text substringFromIndex:1];
+    }
+    
+    if (text.length > 0)
+    {
+        text = [[text substringToIndex:1] uppercaseString];
+    }
+    
+    return [AvatarGenerator avatarForText:text andColorIndex:index];
+}
+
+/**
+ Generate an avatar for a room.
+ @param room the room
+ @return the avatar image
+ */
 + (UIImage*)generateRoomAvatar:(MXRoom*)room
 {
     NSString* displayName = room.state.displayname;
     NSString* roomId = room.state.roomId;
     
+    // the selected color is based on the roomId
     NSUInteger index = [AvatarGenerator colorIndexForText:roomId];
     NSString* text = displayName;
         
     // ignore the first #
-    // useful for the room
     if ([text hasPrefix:@"#"])
     {
         text = [text substringFromIndex:1];

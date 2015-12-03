@@ -10,6 +10,7 @@
 		71046D5E1C0C639300DCA984 /* RoomTitleViewWithTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 71046D5D1C0C639300DCA984 /* RoomTitleViewWithTopic.m */; };
 		71046D601C0C86C600DCA984 /* RoomTitleViewWithTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71046D5F1C0C86C600DCA984 /* RoomTitleViewWithTopic.xib */; };
 		71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 71352D581C10569F001D50B0 /* AvatarGenerator.m */; };
+		71352D651C10A265001D50B0 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 71352D641C10A265001D50B0 /* Contact.m */; };
 		7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7165A2591C05CD42003635D7 /* SegmentedViewController.m */; };
 		7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */; };
 		717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7179283D1C03852C00407D96 /* TableViewCellSeparator.m */; };
@@ -117,6 +118,8 @@
 		71046D5F1C0C86C600DCA984 /* RoomTitleViewWithTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomTitleViewWithTopic.xib; path = RoomTitle/RoomTitleViewWithTopic.xib; sourceTree = "<group>"; };
 		71352D571C10569F001D50B0 /* AvatarGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarGenerator.h; sourceTree = "<group>"; };
 		71352D581C10569F001D50B0 /* AvatarGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarGenerator.m; sourceTree = "<group>"; };
+		71352D631C10A265001D50B0 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contact.h; path = Contact/Contact.h; sourceTree = "<group>"; };
+		71352D641C10A265001D50B0 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Contact.m; path = Contact/Contact.m; sourceTree = "<group>"; };
 		7165A2581C05CD42003635D7 /* SegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedViewController.h; sourceTree = "<group>"; };
 		7165A2591C05CD42003635D7 /* SegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedViewController.m; sourceTree = "<group>"; };
 		7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentedViewController.xib; sourceTree = "<group>"; };
@@ -273,6 +276,15 @@
 				71046D5D1C0C639300DCA984 /* RoomTitleViewWithTopic.m */,
 			);
 			name = RoomTitle;
+			sourceTree = "<group>";
+		};
+		71352D621C10A256001D50B0 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				71352D631C10A265001D50B0 /* Contact.h */,
+				71352D641C10A265001D50B0 /* Contact.m */,
+			);
+			name = Contact;
 			sourceTree = "<group>";
 		};
 		7179283B1C0384DE00407D96 /* TableViewCell */ = {
@@ -489,6 +501,7 @@
 		F094AA101B78E42600B1FBBF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				71352D621C10A256001D50B0 /* Contact */,
 				F00C47881BFF854400DBABC9 /* RoomList */,
 				F08BE09F1B87064000C480FB /* Room */,
 			);
@@ -802,6 +815,7 @@
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
+				71352D651C10A265001D50B0 /* Contact.m in Sources */,
 				F094AA2A1B78E42600B1FBBF /* RageShakeManager.m in Sources */,
 				F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */,
 				F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */,
