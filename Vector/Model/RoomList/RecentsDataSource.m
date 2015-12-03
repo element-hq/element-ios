@@ -249,8 +249,16 @@
 
 - (void)refreshRoomsSections
 {
-    // displayedRecentsDataSourceArray.count
     // TODO manage multi accounts
+    
+    if (displayedRecentsDataSourceArray.count > 1)
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            NSLog(@">>>>>>>>>> RecentsDataSource manages only one account");
+        }
+    }
+    
     favoritesCells = [[NSMutableArray alloc] init];
     conversationCells = [[NSMutableArray alloc] init];
     lowPriorityCells = [[NSMutableArray alloc] init];
@@ -328,7 +336,8 @@
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
     // multi accounts management
-    [self refreshInterleavedCellDataArray:dataSource];
+    // TODO add a dedicated merge method
+    //[self refreshInterleavedCellDataArray:dataSource];
 
     // refresh the 
     [self refreshRoomsSections];
