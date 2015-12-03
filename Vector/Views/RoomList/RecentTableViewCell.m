@@ -16,6 +16,8 @@
 
 #import "RecentTableViewCell.h"
 
+#import "MXEvent.h"
+
 @implementation RecentTableViewCell
 
 #pragma mark - Class methods
@@ -67,6 +69,41 @@
         else
         {
             self.roomTitle.font = [UIFont systemFontOfSize:19];
+        }
+        
+        self.roomAvatar.backgroundColor = [UIColor clearColor];
+
+        
+        MXRoom* room = roomCellData.roomDataSource.room;
+        
+        NSString* roomAvatarUrl = room.state.avatar;
+        
+        // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
+        if (!roomAvatarUrl)
+        {
+            NSString* myUserId = room.mxSession.myUser.userId;
+            
+            NSArray* members = room.state.members;
+            
+            if (members.count < 3)
+            {
+                // use the member avatar only it is an active member
+                for (MXRoomMember *roomMember in members)
+                {
+                    if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
+                    {
+                        roomAvatarUrl = roomMember.avatarUrl;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (roomAvatarUrl)
+        {
+            self.roomAvatar.enableInMemoryCache = YES;
+            
+            [self.roomAvatar setImageURL:[roomCellData.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:self.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:nil];
         }
     }
     else
