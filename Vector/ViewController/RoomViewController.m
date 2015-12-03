@@ -380,7 +380,17 @@
             name = member.displayname;
         }
         
-        [names addObject:name];
+        // sanity check
+        if (name)
+        {
+            [names addObject:name];
+        }
+        else
+        {
+            // invalid member name
+            count--;
+            i--;
+        }
     }
     
     if (0 == count)
