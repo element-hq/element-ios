@@ -17,6 +17,7 @@
 // Titles
 "recents" = "Messages";
 "accounts" = "Accounts";
+"account" = "Account";
 
 // Actions
 "view" = "View";

@@ -219,7 +219,8 @@
     NSInteger count = 0;
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX)
     {
-        count = [[MXKAccountManager sharedManager] accounts].count + 1; // Add one cell in this section to display "logout all" option.
+        // manage one account by now
+        count = [[MXKAccountManager sharedManager] accounts].count;  //+ 1; // Add one cell in this section to display "logout all" option.
     }
     else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX)
     {
@@ -256,7 +257,7 @@
             
             cell = accountCell;
         }
-        else
+        /*else
         {
             MXKTableViewCellWithButton *logoutBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!logoutBtnCell)
@@ -270,7 +271,7 @@
             [logoutBtnCell.mxkButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = logoutBtnCell;
-        }
+        }*/
     }
     else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX)
     {
@@ -364,9 +365,9 @@
     
     if (section == SETTINGS_SECTION_ACCOUNTS_INDEX)
     {
-        sectionLabel.text = NSLocalizedStringFromTable(@"accounts", @"Vector", nil);
+        sectionLabel.text = NSLocalizedStringFromTable(@"account", @"Vector", nil);
         
-        UIButton *addAccount = [UIButton buttonWithType:UIButtonTypeContactAdd];
+        /*UIButton *addAccount = [UIButton buttonWithType:UIButtonTypeContactAdd];
         [addAccount addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
         
         CGRect frame = addAccount.frame;
@@ -377,7 +378,7 @@
         [sectionHeader addSubview:addAccount];
         addAccount.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         
-        sectionHeader.userInteractionEnabled = YES;
+        sectionHeader.userInteractionEnabled = YES;*/
     }
     else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX)
     {
