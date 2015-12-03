@@ -380,7 +380,15 @@
             name = member.displayname;
         }
         
-        [names addObject:name];
+        if (name)
+        {
+            [names addObject:name];
+        }
+        else
+        {
+            i--;
+            count--;
+        }
     }
     
     if (0 == count)
