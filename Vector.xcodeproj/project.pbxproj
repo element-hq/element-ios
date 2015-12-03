@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		71046D5E1C0C639300DCA984 /* RoomTitleViewWithTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 71046D5D1C0C639300DCA984 /* RoomTitleViewWithTopic.m */; };
 		71046D601C0C86C600DCA984 /* RoomTitleViewWithTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71046D5F1C0C86C600DCA984 /* RoomTitleViewWithTopic.xib */; };
+		71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 71352D581C10569F001D50B0 /* AvatarGenerator.m */; };
 		7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7165A2591C05CD42003635D7 /* SegmentedViewController.m */; };
 		7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */; };
 		717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7179283D1C03852C00407D96 /* TableViewCellSeparator.m */; };
@@ -114,6 +115,8 @@
 		71046D5C1C0C639300DCA984 /* RoomTitleViewWithTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomTitleViewWithTopic.h; path = RoomTitle/RoomTitleViewWithTopic.h; sourceTree = "<group>"; };
 		71046D5D1C0C639300DCA984 /* RoomTitleViewWithTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomTitleViewWithTopic.m; path = RoomTitle/RoomTitleViewWithTopic.m; sourceTree = "<group>"; };
 		71046D5F1C0C86C600DCA984 /* RoomTitleViewWithTopic.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomTitleViewWithTopic.xib; path = RoomTitle/RoomTitleViewWithTopic.xib; sourceTree = "<group>"; };
+		71352D571C10569F001D50B0 /* AvatarGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarGenerator.h; sourceTree = "<group>"; };
+		71352D581C10569F001D50B0 /* AvatarGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarGenerator.m; sourceTree = "<group>"; };
 		7165A2581C05CD42003635D7 /* SegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedViewController.h; sourceTree = "<group>"; };
 		7165A2591C05CD42003635D7 /* SegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedViewController.m; sourceTree = "<group>"; };
 		7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentedViewController.xib; sourceTree = "<group>"; };
@@ -376,6 +379,8 @@
 		F08BE09B1B87025B00C480FB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				71352D571C10569F001D50B0 /* AvatarGenerator.h */,
+				71352D581C10569F001D50B0 /* AvatarGenerator.m */,
 				71C5F2991C077007004C094B /* VectorDesignValues.h */,
 				F08BE09C1B87025B00C480FB /* EventFormatter.h */,
 				F08BE09D1B87025B00C480FB /* EventFormatter.m */,
@@ -790,6 +795,7 @@
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				F001D75E1B8207C000A162C3 /* RoomIncomingBubbleTableViewCell.m in Sources */,
+				71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,

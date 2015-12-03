@@ -16,6 +16,8 @@
 
 #import "RecentTableViewCell.h"
 
+#import "AvatarGenerator.h"
+
 #import "MXEvent.h"
 
 @implementation RecentTableViewCell
@@ -39,10 +41,6 @@
         // Report computed values as is
         self.roomTitle.text = roomCellData.roomDisplayname;
         self.lastEventDate.text = roomCellData.lastEventDate;
-        
-        // FIXME handle room avatar
-        self.roomAvatar.image = nil;
-        self.roomAvatar.backgroundColor = [UIColor lightGrayColor];
         
         // Manage lastEventAttributedTextMessage optional property
         if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
@@ -73,7 +71,6 @@
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];
 
-        
         MXRoom* room = roomCellData.roomDataSource.room;
         
         NSString* roomAvatarUrl = room.state.avatar;
@@ -98,12 +95,18 @@
                 }
             }
         }
+                
+        UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:room];
         
         if (roomAvatarUrl)
         {
             self.roomAvatar.enableInMemoryCache = YES;
             
-            [self.roomAvatar setImageURL:[roomCellData.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:self.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:nil];
+            [self.roomAvatar setImageURL:[roomCellData.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:self.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+        }
+        else
+        {
+            self.roomAvatar.image = avatarImage;
         }
     }
     else
@@ -111,6 +114,9 @@
         self.lastEventDescription.text = @"";
     }
 }
+
+
+
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
