@@ -387,12 +387,6 @@
         {
             [names addObject:name];
         }
-        else
-        {
-            // invalid member name
-            count--;
-            i--;
-        }
     }
     
     if (0 == count)
