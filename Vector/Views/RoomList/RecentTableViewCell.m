@@ -16,6 +16,10 @@
 
 #import "RecentTableViewCell.h"
 
+#import "AvatarGenerator.h"
+
+#import "MXEvent.h"
+
 @implementation RecentTableViewCell
 
 #pragma mark - Class methods
@@ -37,10 +41,6 @@
         // Report computed values as is
         self.roomTitle.text = roomCellData.roomDisplayname;
         self.lastEventDate.text = roomCellData.lastEventDate;
-        
-        // FIXME handle room avatar
-        self.roomAvatar.image = nil;
-        self.roomAvatar.backgroundColor = [UIColor lightGrayColor];
         
         // Manage lastEventAttributedTextMessage optional property
         if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
@@ -68,12 +68,55 @@
         {
             self.roomTitle.font = [UIFont systemFontOfSize:19];
         }
+        
+        self.roomAvatar.backgroundColor = [UIColor clearColor];
+
+        MXRoom* room = roomCellData.roomDataSource.room;
+        
+        NSString* roomAvatarUrl = room.state.avatar;
+        
+        // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
+        if (!roomAvatarUrl)
+        {
+            NSString* myUserId = room.mxSession.myUser.userId;
+            
+            NSArray* members = room.state.members;
+            
+            if (members.count < 3)
+            {
+                // use the member avatar only it is an active member
+                for (MXRoomMember *roomMember in members)
+                {
+                    if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
+                    {
+                        roomAvatarUrl = roomMember.avatarUrl;
+                        break;
+                    }
+                }
+            }
+        }
+                
+        UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:room];
+        
+        if (roomAvatarUrl)
+        {
+            self.roomAvatar.enableInMemoryCache = YES;
+            
+            [self.roomAvatar setImageURL:[roomCellData.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:self.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+        }
+        else
+        {
+            self.roomAvatar.image = avatarImage;
+        }
     }
     else
     {
         self.lastEventDescription.text = @"";
     }
 }
+
+
+
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {

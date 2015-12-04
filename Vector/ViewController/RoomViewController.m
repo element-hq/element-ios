@@ -30,6 +30,8 @@
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
 
+#import "AvatarGenerator.h"
+
 @interface RoomViewController ()
 {
     // the user taps on a member thumbnail
@@ -384,12 +386,6 @@
         if (name)
         {
             [names addObject:name];
-        }
-        else
-        {
-            // invalid member name
-            count--;
-            i--;
         }
     }
     
