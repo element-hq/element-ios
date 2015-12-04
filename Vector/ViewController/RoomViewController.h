@@ -16,9 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MXKRoomBubbleTableViewCell.h"
-
-@interface RoomViewController : MXKRoomViewController<MXKRoomBubbleTableViewCellDelegate>
+@interface RoomViewController : MXKRoomViewController
 
 @end
 

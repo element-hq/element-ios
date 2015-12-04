@@ -418,24 +418,5 @@
     }
 }
 
-#pragma mark - MXKRoomBubbleTableViewCell delegate
-
-- (UIImage*)pictureViewImage:(MXKRoomBubbleTableViewCell*)cell
-{
-    // replace the identicon icon by the Vector style one
-    if (!cell.bubbleData.senderAvatarUrl || ([cell.bubbleData.senderAvatarUrl rangeOfString:@"identicon"].location != NSNotFound))
-    {
-        return [AvatarGenerator generateRoomMemberAvatar:cell.bubbleData.senderId displayName:cell.bubbleData.senderDisplayName];
-    }
-    
-    return nil;
-}
-
-
-- (UIImage*)pictureViewPreviewImage:(MXKRoomBubbleTableViewCell*)cell
-{
-    return [AvatarGenerator generateRoomMemberAvatar:cell.bubbleData.senderId displayName:cell.bubbleData.senderDisplayName];
-}
-
 @end
 
