@@ -21,6 +21,8 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "RecentsDataSource.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -591,6 +593,13 @@ static NSMutableDictionary* backgroundByImageNameDict;
     shouldScrollToTopOnRefresh = YES;
     
     [super searchBarCancelButtonClicked: searchBar];
+}
+
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
 }
 
 #pragma mark - Actions.
