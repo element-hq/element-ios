@@ -434,6 +434,139 @@
     }
 }
 
+#pragma mark - swipe actions
+static NSMutableDictionary* backgroundByImageNameDict;
+
+- (UIColor*)getBackgroundColor:(NSString*)imageName
+{
+    if (!imageName)
+    {
+        return [UIColor lightGrayColor];
+    }
+    
+    if (!backgroundByImageNameDict)
+    {
+        backgroundByImageNameDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    UIColor* bgColor = [backgroundByImageNameDict objectForKey:imageName];
+    
+    if (!bgColor)
+    {
+        bgColor = [[UIColor alloc] initWithPatternImage:[MXKTools resizeImage:[UIImage imageNamed:imageName] toFitInSize:CGSizeMake(74, 74)]];
+        [backgroundByImageNameDict setObject:bgColor forKey:imageName];
+    }
+    
+    return bgColor;
+}
+
+// for IOS >= 8 devices
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    
+    MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
+    
+    if (room)
+    {
+        if ([self.dataSource canSuspendRoomNotificationsAtIndexPath:indexPath])
+        {
+             // pushes settings
+            BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+            
+             NSString* pushMessage = !isMuted ? @"Mute" : @"Unmute";
+             
+             UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:pushMessage handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                 
+                 [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
+    
+             }];
+             
+             muteAction.backgroundColor = [self getBackgroundColor:nil];
+             [actions insertObject:muteAction atIndex:0];
+        }
+        
+        // favorites management
+        NSDictionary* tagsDict = [[NSDictionary alloc] init];
+        
+        // sanity cg
+        if (room.accountData.tags)
+        {
+            tagsDict = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
+        }
+    
+        // get the room tag
+        // use only the first one
+        NSArray<MXRoomTag*>* tags = tagsDict.allValues;
+        MXRoomTag* currentTag = nil;
+        
+        if (tags.count)
+        {
+            currentTag = [tags objectAtIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagFavourite isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Fav" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (currentTag && ([kMXRoomTagFavourite isEqualToString:currentTag.name] || [kMXRoomTagLowPriority isEqualToString:currentTag.name]))
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Std" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:nil];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagLowPriority isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Low" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Leave"  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            [self leaveRecentsAtIndexPath:indexPath];
+        }];
+        leaveAction.backgroundColor = [self getBackgroundColor:nil];
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
+}
+
+- (void)leaveRecentsAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.dataSource leaveRoomAtIndexPath:indexPath];
+    [self.recentsTableView setEditing:NO];
+}
+
+- (void)updateRoomTagAtIndexPath:(NSIndexPath *)indexPath to:(NSString*)tag
+{
+    [self.dataSource updateRoomTagAtIndexPath:indexPath to:tag];
+    [self.recentsTableView setEditing:NO];
+}
+
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath*)path
+{
+    [self.dataSource muteRoomNotifications:mute atIndexPath:path];
+    [self.recentsTableView setEditing:NO];
+}
+
+
 #pragma mark - MXKRecentListViewControllerDelegate
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
