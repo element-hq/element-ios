@@ -22,13 +22,13 @@
 
 @interface RecentsDataSource()
 {
-    NSMutableArray* favoritesCells;
-    NSMutableArray* conversationCells;
-    NSMutableArray* lowPriorityCells;
+    NSMutableArray* favoriteCellDataArray;
+    NSMutableArray* conversationCellDataArray;
+    NSMutableArray* lowPriorityCellDataArray;
     
-    NSInteger favoritesPos;
-    NSInteger conversationPos;
-    NSInteger lowPriorityPos;
+    NSInteger favoritesSection;
+    NSInteger conversationSection;
+    NSInteger lowPrioritySection;
     NSInteger sectionsCount;
     
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
@@ -48,14 +48,14 @@
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
         
-        favoritesCells = [[NSMutableArray alloc] init];
-        conversationCells = [[NSMutableArray alloc] init];
-        lowPriorityCells = [[NSMutableArray alloc] init];
+        favoriteCellDataArray = [[NSMutableArray alloc] init];
+        conversationCellDataArray = [[NSMutableArray alloc] init];
+        lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         
-        favoritesPos = 0;
-        conversationPos = 1;
-        lowPriorityPos = 2;
-        sectionsCount = 3;
+        favoritesSection = -1;
+        conversationSection = -1;
+        lowPrioritySection = -1;
+        sectionsCount = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
     }
@@ -114,7 +114,7 @@
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if ((section == favoritesPos) || (section == conversationPos) || (section == lowPriorityPos))
+    if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
     {
         return 44.0f;
     }
@@ -137,17 +137,17 @@
 {
     NSUInteger count = 0;
     
-    if (section == favoritesPos)
+    if (section == favoritesSection)
     {
-        count = favoritesCells.count;
+        count = favoriteCellDataArray.count;
     }
-    else if (section == conversationPos)
+    else if (section == conversationSection)
     {
-        count = conversationCells.count;
+        count = conversationCellDataArray.count;
     }
-    else if (section == lowPriorityPos)
+    else if (section == lowPrioritySection)
     {
-        count = lowPriorityCells.count;
+        count = lowPriorityCellDataArray.count;
     }
 
     return count;
@@ -157,21 +157,21 @@
 {
     // add multi accounts section management
     
-    if ((section == favoritesPos) || (section == conversationPos) || (section == lowPriorityPos))
+    if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
     {
         UILabel* label = [[UILabel alloc] initWithFrame:frame];
         
         NSString* text = @"";
         
-        if (section == favoritesPos)
+        if (section == favoritesSection)
         {
             text = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
         }
-        else if (section == conversationPos)
+        else if (section == conversationSection)
         {
             text = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
         }
-        else if (section == lowPriorityPos)
+        else if (section == lowPrioritySection)
         {
             text = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
         }
@@ -189,17 +189,17 @@
 {
     id<MXKRecentCellDataStoring> cellData = nil;
     
-    if (indexPath.section == favoritesPos)
+    if (indexPath.section == favoritesSection)
     {
-        cellData = [favoritesCells objectAtIndex:indexPath.row];
+        cellData = [favoriteCellDataArray objectAtIndex:indexPath.row];
     }
-    else if (indexPath.section == conversationPos)
+    else if (indexPath.section == conversationSection)
     {
-        cellData = [conversationCells objectAtIndex:indexPath.row];
+        cellData = [conversationCellDataArray objectAtIndex:indexPath.row];
     }
-    else if (indexPath.section == lowPriorityPos)
+    else if (indexPath.section == lowPrioritySection)
     {
-        cellData = [lowPriorityCells objectAtIndex:indexPath.row];
+        cellData = [lowPriorityCellDataArray objectAtIndex:indexPath.row];
     }
     
     return cellData;
@@ -221,49 +221,27 @@
 #pragma mark - MXKDataSourceDelegate
 
 // create an array filled with NSNull and with the same size as sourceArray
-- (NSMutableArray*)createEmptyArray:(NSArray*)sourceArray
+- (NSMutableArray*)createEmptyArray:(NSUInteger)count
 {
     NSMutableArray* array = [[NSMutableArray alloc] init];
     
-    if (sourceArray && sourceArray.count)
+    for(NSUInteger i = 0; i < count; i++)
     {
-        for(int i = 0; i < sourceArray.count; i++)
-        {
-            [array addObject:[NSNull null]];
-        }
+        [array addObject:[NSNull null]];
     }
     
     return array;
 }
 
-// remove the NSNull from an array
-- (void) removeNullItems:(NSMutableArray*)array
-{
-    NSUInteger pos;
-    
-    while((pos = [array indexOfObject:[NSNull null]]) != NSNotFound)
-    {
-        [array removeObjectAtIndex:pos];
-    }
-}
-
 - (void)refreshRoomsSections
 {
-    // TODO manage multi accounts
+    // FIXME manage multi accounts
     
-    if (displayedRecentsDataSourceArray.count > 1)
-    {
-        for(int i = 0; i < 10; i++)
-        {
-            NSLog(@">>>>>>>>>> RecentsDataSource manages only one account");
-        }
-    }
+    favoriteCellDataArray = [[NSMutableArray alloc] init];
+    conversationCellDataArray = [[NSMutableArray alloc] init];
+    lowPriorityCellDataArray = [[NSMutableArray alloc] init];
     
-    favoritesCells = [[NSMutableArray alloc] init];
-    conversationCells = [[NSMutableArray alloc] init];
-    lowPriorityCells = [[NSMutableArray alloc] init];
-    
-    favoritesPos = conversationPos = lowPriorityPos = -1;
+    favoritesSection = conversationSection = lowPrioritySection = -1;
     sectionsCount = 0;
 
     if (displayedRecentsDataSourceArray.count > 0)
@@ -274,8 +252,8 @@
         NSArray* sortedFavRooms = [session roomsWithTag:kMXRoomTagFavourite];
         NSArray* sortedLowPriorRooms = [session roomsWithTag:kMXRoomTagLowPriority];
         
-        favoritesCells = [self createEmptyArray:sortedFavRooms];
-        lowPriorityCells = [self createEmptyArray:sortedLowPriorRooms];
+        favoriteCellDataArray = [self createEmptyArray:sortedFavRooms.count];
+        lowPriorityCellDataArray = [self createEmptyArray:sortedLowPriorRooms.count];
         
         NSInteger count = recentsDataSource.numberOfCells;
         
@@ -287,58 +265,64 @@
 
             if ((pos = [sortedFavRooms indexOfObject:room]) != NSNotFound)
             {
-                if (pos < favoritesCells.count)
+                if (pos < favoriteCellDataArray.count)
                 {
-                    [favoritesCells replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                    [favoriteCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
                 }
             }
             else  if ((pos = [sortedLowPriorRooms indexOfObject:room]) != NSNotFound)
             {
-                if (pos < lowPriorityCells.count)
+                if (pos < lowPriorityCellDataArray.count)
                 {
-                    [lowPriorityCells replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                    [lowPriorityCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
                 }
             }
             else
             {
-                [conversationCells addObject:recentCellDataStoring];
+                [conversationCellDataArray addObject:recentCellDataStoring];
             }
         }
         
-        int pos = 0;
+        int sectionIndex = 0;
         
-        [self removeNullItems:favoritesCells];
-        if (favoritesCells.count > 0)
+        [favoriteCellDataArray removeObject:[NSNull null]];
+        if (favoriteCellDataArray.count > 0)
         {
-            favoritesPos = pos;
-            pos++;
+            favoritesSection = sectionIndex;
+            sectionIndex++;
         }
         
-        [self removeNullItems:conversationCells];
-        if (conversationCells.count > 0)
+        [conversationCellDataArray removeObject:[NSNull null]];
+        if (conversationCellDataArray.count > 0)
         {
-            conversationPos = pos;
-            pos++;
+            conversationSection = sectionIndex;
+            sectionIndex++;
         }
         
-        [self removeNullItems:lowPriorityCells];
-        if (lowPriorityCells.count > 0)
+        [lowPriorityCellDataArray removeObject:[NSNull null]];
+        if (lowPriorityCellDataArray.count > 0)
         {
-            lowPriorityPos = pos;
-            pos++;
+            lowPrioritySection = sectionIndex;
+            sectionIndex++;
         }
         
-        sectionsCount = pos;
+        sectionsCount = sectionIndex;
     }
 }
 
-
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
-    // multi accounts management
-    // TODO add a dedicated merge method
-    //[self refreshInterleavedCellDataArray:dataSource];
-
+    // FIXME : manage multi accounts
+    // to manage multi accounts
+    // this method in MXKInterleavedRecentsDataSource must be split in two parts
+    // 1 - the intervealing cells method
+    // 2 - [super dataSource:dataSource didCellChange:changes] call.
+    // the [self refreshRoomsSections] call should be done at the end of the 1- method
+    // so a dedicated method must be implemented in MXKInterleavedRecentsDataSource
+    // this class will inherit of this new method
+    // 1 - call [super thisNewMethod]
+    // 2 - call [self refreshRoomsSections]
+    
     // refresh the 
     [self refreshRoomsSections];
     
