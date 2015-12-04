@@ -319,15 +319,6 @@
 }
 
 #pragma mark - swipe actions
-
-- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
 static NSMutableDictionary* backgroundByImageNameDict;
 
 - (UIColor*)getBackgroundColor:(NSString*)imageName
@@ -346,7 +337,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
     
     if (!bgColor)
     {
-        bgColor = [[UIColor alloc] initWithPatternImage:[self imageWithImage:[UIImage imageNamed:imageName] scaledToSize:CGSizeMake(74, 74)]];
+        bgColor = [[UIColor alloc] initWithPatternImage:[MXKTools resizeImage:[UIImage imageNamed:imageName] toFitInSize:CGSizeMake(74, 74)]];
         [backgroundByImageNameDict setObject:bgColor forKey:imageName];
     }
     
