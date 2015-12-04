@@ -471,22 +471,20 @@ static NSMutableDictionary* backgroundByImageNameDict;
     
     if (room)
     {
-        if ([self.dataSource canSuspendRoomNotificationsAtIndexPath:indexPath])
-        {
-             // pushes settings
-            BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+        
+        // pushes settings
+        BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+        
+        NSString* pushMessage = !isMuted ? @"Mute" : @"Unmute";
+        
+        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:pushMessage handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             
-             NSString* pushMessage = !isMuted ? @"Mute" : @"Unmute";
-             
-             UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:pushMessage handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                 
-                 [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
-    
-             }];
-             
-             muteAction.backgroundColor = [self getBackgroundColor:nil];
-             [actions insertObject:muteAction atIndex:0];
-        }
+            [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
+            
+        }];
+        
+        muteAction.backgroundColor = [self getBackgroundColor:nil];
+        [actions insertObject:muteAction atIndex:0];
         
         // favorites management
         NSDictionary* tagsDict = [[NSDictionary alloc] init];
