@@ -21,6 +21,8 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "RecentsDataSource.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -138,12 +140,10 @@
         [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.view addSubview:createNewRoomImageView];
         
-        // TODO use a const value
-        createNewRoomImageView.backgroundColor = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
+        createNewRoomImageView.backgroundColor = [UIColor clearColor];
+        createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
         
         CGFloat side = 50.0f;
-        createNewRoomImageView.layer.cornerRadius = side / 2;
-        
         NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
                                                                            attribute:NSLayoutAttributeWidth
                                                                            relatedBy:NSLayoutRelationEqual
@@ -435,6 +435,164 @@
     }
 }
 
+#pragma mark - swipe actions
+static NSMutableDictionary* backgroundByImageNameDict;
+
+- (UIColor*)getBackgroundColor:(NSString*)imageName
+{
+    UIColor* backgroundColor = [UIColor colorWithRed:(242.0 / 256.0) green:(242.0 / 256.0) blue:(242.0 / 256.0) alpha:1.0];
+    
+    if (!imageName)
+    {
+        return backgroundColor;
+    }
+    
+    if (!backgroundByImageNameDict)
+    {
+        backgroundByImageNameDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    UIColor* bgColor = [backgroundByImageNameDict objectForKey:imageName];
+    
+    if (!bgColor)
+    {
+        CGFloat backgroundSide = 74.0;
+        CGFloat sourceSide = 30.0;
+        
+        UIImageView* backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, backgroundSide, backgroundSide)];
+        backgroundView.backgroundColor = backgroundColor;
+        
+        CGFloat offset = (backgroundSide - sourceSide) / 2.0f;
+        
+        UIImageView* resourceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(offset, offset, sourceSide, sourceSide)];
+        resourceImageView.backgroundColor = [UIColor clearColor];
+        resourceImageView.image = [MXKTools resizeImage:[UIImage imageNamed:imageName] toSize:CGSizeMake(sourceSide, sourceSide)];
+        
+        [backgroundView addSubview:resourceImageView];
+        
+        // Create a "canvas" (image context) to draw in.
+        UIGraphicsBeginImageContextWithOptions(backgroundView.frame.size, NO, 0);
+        
+        // set to the top quality
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+        [[backgroundView layer] renderInContext: UIGraphicsGetCurrentContext()];
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+    
+        bgColor = [[UIColor alloc] initWithPatternImage:image];
+        [backgroundByImageNameDict setObject:bgColor forKey:imageName];
+    }
+    
+    return bgColor;
+}
+
+// for IOS >= 8 devices
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    
+    MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
+    
+    if (room)
+    {
+        NSString* title = @"      ";
+        
+        
+        // pushes settings
+        BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+        
+        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
+            [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
+            
+        }];
+        
+        muteAction.backgroundColor = [self getBackgroundColor:isMuted ? @"unmute_icon" : @"mute_icon"];
+        [actions insertObject:muteAction atIndex:0];
+        
+        // favorites management
+        NSDictionary* tagsDict = [[NSDictionary alloc] init];
+        
+        // sanity cg
+        if (room.accountData.tags)
+        {
+            tagsDict = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
+        }
+    
+        // get the room tag
+        // use only the first one
+        NSArray<MXRoomTag*>* tags = tagsDict.allValues;
+        MXRoomTag* currentTag = nil;
+        
+        if (tags.count)
+        {
+            currentTag = [tags objectAtIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagFavourite isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:@"favorite_icon"];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (currentTag && ([kMXRoomTagFavourite isEqualToString:currentTag.name] || [kMXRoomTagLowPriority isEqualToString:currentTag.name]))
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Std" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:nil];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:nil];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagLowPriority isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
+            }];
+            
+            action.backgroundColor = [self getBackgroundColor:@"low_priority_icon"];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            [self leaveRecentsAtIndexPath:indexPath];
+        }];
+        leaveAction.backgroundColor = [self getBackgroundColor:@"remove_icon"];
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
+}
+
+- (void)leaveRecentsAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.dataSource leaveRoomAtIndexPath:indexPath];
+    [self.recentsTableView setEditing:NO];
+}
+
+- (void)updateRoomTagAtIndexPath:(NSIndexPath *)indexPath to:(NSString*)tag
+{
+    [self.dataSource updateRoomTagAtIndexPath:indexPath to:tag];
+    [self.recentsTableView setEditing:NO];
+}
+
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath*)path
+{
+    [self.dataSource muteRoomNotifications:mute atIndexPath:path];
+    [self.recentsTableView setEditing:NO];
+}
+
+
 #pragma mark - MXKRecentListViewControllerDelegate
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
@@ -459,6 +617,13 @@
     shouldScrollToTopOnRefresh = YES;
     
     [super searchBarCancelButtonClicked: searchBar];
+}
+
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
 }
 
 #pragma mark - Actions.

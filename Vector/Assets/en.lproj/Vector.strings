@@ -54,6 +54,11 @@
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
 
+// Room recents
+"room_recents_favourites" = "FAVORITES";
+"room_recents_conversations" = "CONVERSATIONS";
+"room_recents_low_priority" = "LOW PRIORITY";
+
 // Chat participants
 "room_participants_title" = "Participants";
 "room_participants_add_participant" = "Add participant";
@@ -67,10 +72,6 @@
 "room_participants_invite_another_user" = "Invite another user";
 
 // Chat
-"room_option_start_group_voice" = "Start group audio chat";
-"room_option_start_group_video" = "Start group video chat";
-"room_option_share_location" = "Share location";
-"room_option_share_contact" = "Share contact";
 "room_one_user_is_typing" = "%@ is typing...";
 "room_two_users_are_typing" = "%@ & %@ are typing...";
 "room_many_users_are_typing" = "%@, %@ & others are typing...";
