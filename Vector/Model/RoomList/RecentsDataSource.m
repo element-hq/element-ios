@@ -20,6 +20,8 @@
 
 #import "EventFormatter.h"
 
+#import "VectorDesignValues.h"
+
 @interface RecentsDataSource()
 {
     NSMutableArray* favoriteCellDataArray;
@@ -116,7 +118,7 @@
 {
     if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
     {
-        return 44.0f;
+        return 30.0f;
     }
     
     return 0.0f;
@@ -177,7 +179,8 @@
         }
     
         label.text = [NSString stringWithFormat:@"   %@", text];
-        label.backgroundColor = [UIColor lightGrayColor];
+        label.font = [UIFont boldSystemFontOfSize:15.0];
+        label.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
         
         return label;
     }

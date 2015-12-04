@@ -23,6 +23,8 @@
 
 #import "RecentsDataSource.h"
 
+#import "VectorDesignValues.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -439,7 +441,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
 
 - (UIColor*)getBackgroundColor:(NSString*)imageName
 {
-    UIColor* backgroundColor = [UIColor colorWithRed:(242.0 / 256.0) green:(242.0 / 256.0) blue:(242.0 / 256.0) alpha:1.0];
+    UIColor* backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
     
     if (!imageName)
     {
