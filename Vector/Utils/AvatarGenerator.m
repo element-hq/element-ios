@@ -144,18 +144,19 @@ static UILabel* backgroundLabel = nil;
 
 /**
  Generate an avatar for a room member.
- @param mxMember the room member
+ @param userId the member userId
+ @param displayname the member displayname
  @return the avatar image
  */
-+ (UIImage*)generateRoomMemberAvatar:(MXRoomMember*)mxMember
++ (UIImage*)generateRoomMemberAvatar:(NSString*)userId displayName:(NSString*)displayname
 {
     // the selected color is based on the userId
-    NSUInteger index = [AvatarGenerator colorIndexForText:mxMember.userId];
-    NSString* text = mxMember.displayname ?  mxMember.displayname : mxMember.userId;
+    NSUInteger index = [AvatarGenerator colorIndexForText:userId];
+    NSString* text = displayname ? displayname : userId;
     
     // if the displayname is the userID
     // skip the @
-    if (!mxMember.displayname && [text hasPrefix:@"@"])
+    if (!displayname && [text hasPrefix:@"@"])
     {
         text = [text substringFromIndex:1];
     }

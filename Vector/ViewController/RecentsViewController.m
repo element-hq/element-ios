@@ -390,6 +390,7 @@
             
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:selectedRoomSession];
             MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:selectedRoomId create:YES];
+            roomDataSource.roomBubbleTableViewCellDelegate = currentRoomViewController;
             [currentRoomViewController displayRoom:roomDataSource];
         }
         

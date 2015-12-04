@@ -30,10 +30,11 @@
 
 /**
  Generate an avatar for a room member.
- @param mxMember the room member
+ @param userId the member userId
+ @param displayname the member displayname
  @return the avatar image
  */
-+ (UIImage*)generateRoomMemberAvatar:(MXRoomMember*)mxMember;
++ (UIImage*)generateRoomMemberAvatar:(NSString*)userId displayName:(NSString*)displayname;
 
 /**
  Generate an avatar for a text.
