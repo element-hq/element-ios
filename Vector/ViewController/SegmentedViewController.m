@@ -112,7 +112,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+
+    // Check whether the view controller has been pushed via storyboard
+    if (!self.viewControllerContainer)
+    {
+        // Instantiate view controller objects
+        [[[self class] nib] instantiateWithOwner:self options:nil];
+    }
+
     // Adjust Top
     [self removeConstraint:self.view constraint:self.selectionContainerTopConstraint];
     

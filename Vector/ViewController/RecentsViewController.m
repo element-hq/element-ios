@@ -23,6 +23,8 @@
 
 #import "RecentsDataSource.h"
 
+#import "SearchViewController.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -410,6 +412,11 @@
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
+    else if ([[segue identifier] isEqualToString:@"presentSearch"])
+    {
+        SearchViewController *searchViewController = (SearchViewController*)segue.destinationViewController;
+        [searchViewController displayWithSession:self.dataSource.mxSession];
+    }
     
     // Hide back button title
     self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -602,11 +609,16 @@ static NSMutableDictionary* backgroundByImageNameDict;
     return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
 }
 
-#pragma mark - Actions.
+#pragma mark - Actions
 
 - (void)onNewRoomPressed
 {
     [self performSegueWithIdentifier:@"presentRoomCreationStep1" sender:self];
+}
+
+- (IBAction)search:(id)sender
+{
+    [self performSegueWithIdentifier:@"presentSearch" sender:self];
 }
 
 @end
