@@ -31,6 +31,11 @@ limitations under the License.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionContainerTopConstraint;
 
 /**
+ The view controller that currently has the focus.
+ */
+@property (nonatomic, readonly) UIViewController *displayedViewController;
+
+/**
  Returns the `UINib` object initialized for a `SegmentedViewController`.
 
  @return The initialized `UINib` object or `nil` if there were errors during initialization

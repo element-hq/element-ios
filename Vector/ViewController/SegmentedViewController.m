@@ -24,7 +24,6 @@
     NSArray* viewControllers;
     
     // displayed viewController
-    UIViewController *displayedViewController;
     NSLayoutConstraint *displayedVCTopConstraint;
     NSLayoutConstraint *displayedVCLeftConstraint;
     NSLayoutConstraint *displayedVCWidthConstraint;
@@ -47,6 +46,7 @@
 @end
 
 @implementation SegmentedViewController
+@synthesize displayedViewController;
 
 #pragma mark - Class methods
 
