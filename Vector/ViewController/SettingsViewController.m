@@ -71,10 +71,17 @@
     // picker
     MediaPickerViewController* mediaPicker;
     
-    // temporary data
-    UIImage* newThumbnailImage;
-    NSURL* newThumbnailimageURL;
+    // the first responder
+    UIView* firstResponder;
     
+    // profile updates
+    // avatar
+    UIImage* newAvatarImage;
+    // the avatar image has been uploaded
+    NSString* uploadedAvatarURL;
+    
+    // new displaynamed
+    NSString* newDisplayName;
 }
 
 @end
@@ -141,6 +148,8 @@
     {
         [self addMatrixSession:mxSession];
     }
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -264,22 +273,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (IBAction)onAccountToggleChange:(id)sender
-{
-    UISwitch *accountSwitchToggle = sender;
-    
-    NSArray *accounts = [[MXKAccountManager sharedManager] accounts];
-    if (accountSwitchToggle.tag < accounts.count)
-    {
-        MXKAccount *account = [accounts objectAtIndex:accountSwitchToggle.tag];
-        account.disabled = !accountSwitchToggle.on;
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
-}
-
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -295,10 +288,27 @@
     }
 }
 
+#pragma mark - UIScrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView == self.tableView)
+    {
+        if ([firstResponder isFirstResponder])
+        {
+            [firstResponder resignFirstResponder];
+            firstResponder = nil;
+        }
+    }
+}
+
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // update the save button if there is an update
+    [self updateSaveButtonStatus];
+    
     return SETTINGS_SECTION_COUNT;
 }
 
@@ -415,9 +425,9 @@
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
             
             // if the user defines a new avatar
-            if (newThumbnailImage)
+            if (newAvatarImage)
             {
-                profileCell.mxkImageView.image = newThumbnailImage;
+                profileCell.mxkImageView.image = newAvatarImage;
             }
             else
             {
@@ -446,6 +456,13 @@
             
             displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_display_name", @"Vector", nil);
             displaynameCell.mxkTextField.text = myUser.displayname;
+            
+            displaynameCell.mxkTextField.tag = row;
+            [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            
+            [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
+            [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
             
             cell = displaynameCell;
         }
@@ -722,6 +739,12 @@
             }
         }
 
+        if ([firstResponder isFirstResponder])
+        {
+            [firstResponder resignFirstResponder];
+            firstResponder = nil;
+        }
+        
         [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -781,6 +804,121 @@
     }
 }
 
+//
+- (void)onSave:(id)sender
+{
+    [self startActivityIndicator];
+
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    MXMyUser* myUser = account.mxSession.myUser;
+    if (newDisplayName && ![myUser.displayname isEqualToString:newDisplayName])
+    {
+        // Save display name
+        __weak typeof(self) weakSelf = self;
+        [account setUserDisplayName:newDisplayName success:^{
+            
+            // Update the current displayname
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->newDisplayName = nil;
+            
+            // Go to the next change saving step
+            [strongSelf onSave:nil];
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[Vector Settings View Controller] Failed to set displayName: %@", error);
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            // Alert user
+            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+            if (!title)
+            {
+                title = [NSBundle mxk_localizedStringForKey:@"account_error_display_name_change_failed"];
+            }
+            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+            
+            MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+;
+            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+                                       {
+                                           strongSelf->newDisplayName = nil;
+                                           // Loop to end saving
+                                           [strongSelf onSave:nil];
+                                       }];
+            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
+             {
+                 // Loop to retry saving
+                 [strongSelf onSave:nil];
+             }];
+            [alert showInViewController:strongSelf];
+        }];
+        
+        return;
+    }
+    
+    if (newAvatarImage)
+    {
+        // Retrieve the current picture and make sure its orientation is up
+        UIImage *updatedPicture = [MXKTools forceImageOrientationUp:newAvatarImage];
+        
+        // Upload picture
+        MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:account.mxSession initialRange:0 andRange:1.0];
+        
+        [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url)
+         {
+             // Store uploaded picture url and trigger picture saving
+             uploadedAvatarURL = url;
+             newAvatarImage = nil;
+             
+             [self onSave:nil];
+         } failure:^(NSError *error)
+         {
+             NSLog(@"[Vector SettingsViewController] Failed to upload image: %@", error);
+             uploadedAvatarURL = nil;
+             newAvatarImage = nil;
+         }];
+        
+    }
+    else if (uploadedAvatarURL)
+    {
+        __weak typeof(self) weakSelf = self;
+        [account setUserAvatarUrl:uploadedAvatarURL
+                             success:^{
+                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                 strongSelf->uploadedAvatarURL = nil;
+                                 [strongSelf onSave:nil];
+                             }
+                             failure:^(NSError *error) {
+                                 NSLog(@"[Vector SettingsViewController] Failed to set avatar url: %@", error);
+                                
+                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                 strongSelf->uploadedAvatarURL = nil;
+                                 [strongSelf onSave:nil];
+                             }];
+    }
+    
+    [self stopActivityIndicator];
+    [self.tableView reloadData];
+}
+
+- (void)updateSaveButtonStatus
+{
+    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXMyUser* myUser = session.myUser;
+        
+    BOOL saveButtonEnabled = (nil != newAvatarImage);
+    
+    if (!saveButtonEnabled)
+    {
+        if (newDisplayName)
+        {
+            saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
+        }
+    }
+    
+    self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
+}
+
 #pragma mark - MediaPickerViewController Delegate
 
 - (void)dismissMediaPicker
@@ -795,9 +933,7 @@
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL
 {
     [self dismissMediaPicker];
-    
-    newThumbnailImage = image;
-    newThumbnailimageURL = imageURL;
+    newAvatarImage = image;
     
     [self.tableView reloadData];
 }
@@ -814,5 +950,22 @@
     [self dismissMediaPicker];
 }
 
+#pragma mark - TextField listener
+
+- (IBAction)textFieldDidChange:(id)sender
+{
+    UITextField* textField = (UITextField*)sender;
+    
+    if (textField.tag == USER_SETTINGS_DISPLAY_NAME_INDEX)
+    {
+        newDisplayName = textField.text;
+        [self updateSaveButtonStatus];
+    }
+}
+
+- (IBAction)textFieldDidBegin:(id)sender
+{
+    firstResponder = (UIView*)sender;
+}
 
 @end
