@@ -1,10 +1,18 @@
-//
-//  SearchViewController.m
-//  Vector
-//
-//  Created by Emmanuel ROHEE on 03/12/15.
-//  Copyright © 2015 matrix.org. All rights reserved.
-//
+/*
+ Copyright 2015 OpenMarket Ltd
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 
 #import "SearchViewController.h"
 
@@ -13,7 +21,14 @@
 
 @interface SearchViewController ()
 {
-    UISearchBar* searchBar;
+    // The search bar 
+    UISearchBar *searchBar;
+
+    // The view controller used under the "rooms" tab.
+    // This is a RecentsViewController which is used only for its search feature.
+    // This means that the search is done locally
+    RecentsViewController *roomsSearchViewController;
+    RecentsDataSource *roomsSearchDataSource;
 }
 
 @end
@@ -23,26 +38,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 
     searchBar = [[UISearchBar alloc] initWithFrame:self.navigationController.navigationBar.frame];
     searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     searchBar.showsCancelButton = YES;
-    searchBar.returnKeyType = UIReturnKeySearch;
+    searchBar.returnKeyType = UIReturnKeyDone; // UIReturnKeySearch
+    searchBar.delegate = self;
 
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
     self.navigationItem.titleView = searchBar;
 
     // This is a VC for searching. So, show the keyboard with the VC
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [searchBar becomeFirstResponder];
-    });
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [searchBar becomeFirstResponder];
 }
 
 - (void)displayWithSession:(MXSession *)session
@@ -51,14 +58,14 @@
     NSMutableArray* titles = [[NSMutableArray alloc] init];
 
     [titles addObject: NSLocalizedStringFromTable(@"Rooms", @"Vector", nil)];
-    RecentsViewController* recentsViewController = [RecentsViewController recentListViewController];
-    RecentsDataSource *recentlistDataSource = [[RecentsDataSource alloc] initWithMatrixSession:session];
-    [recentsViewController displayList:recentlistDataSource];
-    [viewControllers addObject:recentsViewController];
+    roomsSearchViewController = [RecentsViewController recentListViewController];
+    roomsSearchDataSource = [[RecentsDataSource alloc] initWithMatrixSession:session];
+    [roomsSearchViewController displayList:roomsSearchDataSource];
+    [viewControllers addObject:roomsSearchViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"Messages", @"Vector", nil)];
-    /*RecentsViewController**/ recentsViewController = [RecentsViewController recentListViewController];
-    /*RecentsDataSource **/recentlistDataSource = [[RecentsDataSource alloc] initWithMatrixSession:session];
+    RecentsViewController *recentsViewController = [RecentsViewController recentListViewController];
+    RecentsDataSource *recentlistDataSource = [[RecentsDataSource alloc] initWithMatrixSession:session];
     [recentsViewController displayList:recentlistDataSource];
     [viewControllers addObject:recentsViewController];
 
@@ -77,14 +84,34 @@
 
 #pragma mark - UISearchBarDelegate
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    return YES;
+    if (self.displayedViewController == roomsSearchViewController)
+    {
+        // As the search is local, it can be updated on each text change
+        if (searchText.length)
+        {
+            [roomsSearchDataSource searchWithPatterns:@[searchText]];
+        }
+        else
+        {
+            [roomsSearchDataSource searchWithPatterns:nil];
+        }
+    }
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
 {
-    return YES;
+    // "Done" key has been pressed
+    [searchBar resignFirstResponder];
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
+{
+    // Leave search
+    [searchBar resignFirstResponder];
+
+    // Leave this VC
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end
