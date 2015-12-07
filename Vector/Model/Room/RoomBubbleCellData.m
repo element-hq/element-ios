@@ -18,9 +18,24 @@
 
 #import "EventFormatter.h"
 
+#import "AvatarGenerator.h"
+
 @implementation RoomBubbleCellData
 
 #pragma mark -
+
+- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+{
+    self = [super initWithEvent:event andRoomState:roomState andRoomDataSource:roomDataSource2];
+    
+    if (self)
+    {
+        // use the matrix style placeholder
+        self.senderAvatarPlaceholder = [AvatarGenerator generateRoomMemberAvatar:self.senderId displayName:self.senderDisplayName];
+    }
+    
+    return self;
+}
 
 - (NSAttributedString*)attributedTextMessage
 {

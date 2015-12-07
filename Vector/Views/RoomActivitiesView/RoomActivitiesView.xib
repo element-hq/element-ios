@@ -75,6 +75,6 @@
         </view>
     </objects>
     <resources>
-        <image name="typing.png" width="20" height="20"/>
+        <image name="typing.png" width="16" height="15"/>
     </resources>
 </document>
