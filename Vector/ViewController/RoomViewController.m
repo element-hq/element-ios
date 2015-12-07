@@ -57,10 +57,15 @@
 {
     [super viewDidLoad];
     
+    // Register first customized cell view classes used to render bubbles
+    [self.bubblesTableView registerClass:RoomOutgoingBubbleTableViewCell.class forCellReuseIdentifier:RoomOutgoingBubbleTableViewCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingBubbleTableViewCell.class forCellReuseIdentifier:RoomIncomingBubbleTableViewCell.defaultReuseIdentifier];
+    
     // Set room title view
     [self setRoomTitleViewClass:RoomTitleViewWithTopic.class];
     
     // Replace the default input toolbar view.
+    // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
     
@@ -81,10 +86,6 @@
        // this room view controller has its own typing management.
        self.roomDataSource.showTypingNotifications = NO;
     }
-    
-    // Register here customized cell view classes used to render bubbles
-    [self.bubblesTableView registerClass:RoomOutgoingBubbleTableViewCell.class forCellReuseIdentifier:RoomOutgoingBubbleTableViewCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingBubbleTableViewCell.class forCellReuseIdentifier:RoomIncomingBubbleTableViewCell.defaultReuseIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
