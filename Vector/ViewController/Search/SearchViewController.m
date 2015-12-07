@@ -48,6 +48,8 @@
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
     self.navigationItem.titleView = searchBar;
 
+    self.backgroundImageView.image = [UIImage imageNamed:@"search_bg"];
+
     // This is a VC for searching. So, show the keyboard with the VC
     [searchBar becomeFirstResponder];
 }
@@ -82,21 +84,42 @@
     [self addMatrixSession:session];
 }
 
-#pragma mark - UISearchBarDelegate
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 
+    // Reset current results
+    [self updateSearch];
+}
+
+// Update search results under the currently selected tab
+- (void)updateSearch
+{
+    if (searchBar.text.length)
+    {
+        self.displayedViewController.view.hidden = NO;
+
+        // Forward the search request to the data source
+        if (self.displayedViewController == roomsSearchViewController)
+        {
+            [roomsSearchDataSource searchWithPatterns:@[searchBar.text]];
+        }
+    }
+    else
+    {
+        // Nothing to search = Show nothing
+        self.displayedViewController.view.hidden = YES;
+    }
+}
+
+
+#pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if (self.displayedViewController == roomsSearchViewController)
     {
         // As the search is local, it can be updated on each text change
-        if (searchText.length)
-        {
-            [roomsSearchDataSource searchWithPatterns:@[searchText]];
-        }
-        else
-        {
-            [roomsSearchDataSource searchWithPatterns:nil];
-        }
+        [self updateSearch];
     }
 }
 
