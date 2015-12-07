@@ -20,17 +20,61 @@
 
 #import "AppDelegate.h"
 
-#define SETTINGS_SECTION_ACCOUNTS_INDEX      0
-#define SETTINGS_SECTION_CONFIGURATION_INDEX 1
-#define SETTINGS_SECTION_COUNT               2
+#import "VectorDesignValues.h"
+
+#import "AvatarGenerator.h"
+
+#define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
+#define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
+#define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
+#define SETTINGS_SECTION_OTHER_INDEX                    3
+#define SETTINGS_SECTION_COUNT                          4
+
+
+#define USER_SETTINGS_PROFILE_PICTURE_INDEX     0
+#define USER_SETTINGS_DISPLAY_NAME_INDEX        1
+#define USER_SETTINGS_FIRST_NAME_INDEX          2
+#define USER_SETTINGS_SURNAME_INDEX             3
+#define USER_SETTINGS_EMAIL_ADDRESS_INDEX       4
+#define USER_SETTINGS_CHANGE_PASSWORD_INDEX     5
+#define USER_SETTINGS_PHONE_NUMBER_INDEX        6
+#define USER_SETTINGS_NIGHT_MODE_SEP_INDEX      7
+#define USER_SETTINGS_NIGHT_MODE_INDEX          8
+#define USER_SETTINGS_COUNT                     9
+
+#define NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX          0
+#define NOTIFICATION_SETTINGS_CONTAINING_MY_NAME_INDEX  1
+#define NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX          2
+#define NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX     3
+#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX   4
+#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX     5
+#define NOTIFICATION_SETTINGS_COUNT                     6
+
+#define OTHER_VERSION_INDEX         0
+#define OTHER_TERM_CONDITIONS_INDEX 1
+#define OTHER_PRIVACY_INDEX         2
+#define OTHER_CLEAR_CACHE_INDEX     3
+#define OTHER_COUNT                 4
+
 
 @interface SettingsViewController ()
 {
-    MXKAccount *selectedAccount;
+    // listener
     id removedAccountObserver;
     id accountUserInfoObserver;
+    id apnsInfoUpdateObserver;
     
-    UIButton *clearCacheButton;
+    id notificationCenterWillUpdateObserver;
+    id notificationCenterDidUpdateObserver;
+    id notificationCenterDidFailObserver;
+    
+    // picker
+    MediaPickerViewController* mediaPicker;
+    
+    // temporary data
+    UIImage* newThumbnailImage;
+    NSURL* newThumbnailimageURL;
+    
 }
 
 @end
@@ -44,6 +88,8 @@
     
     // Setup `MXKRoomMemberListViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.tableView.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -77,10 +123,18 @@
     // Add observer to handle accounts update
     accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Refresh table to remove this account
+        [self stopActivityIndicator];
         [self.tableView reloadData];
     }];
-
+    
+    // Add observer to apns
+    apnsInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self stopActivityIndicator];
+        [self.tableView reloadData];
+    }];
+    
+    
     // Add each matrix session, to update the view controller appearance according to mx sessions state
     NSArray *sessions = [AppDelegate theDelegate].mxSessions;
     for (MXSession *mxSession in sessions)
@@ -122,6 +176,40 @@
 {
     [super viewWillAppear:animated];
     
+    if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
+    {
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        // Refresh existing notification rules
+        [account.mxSession.notificationCenter refreshRules:^{
+            
+            [self stopActivityIndicator];
+            [self.tableView reloadData];
+            
+        } failure:^(NSError *error) {
+            
+            [self stopActivityIndicator];
+            
+        }];
+        
+        notificationCenterWillUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterWillUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            [self startActivityIndicator];
+        }];
+        
+        notificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            [self stopActivityIndicator];
+            [self.tableView reloadData];
+        }];
+        
+        notificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            [self stopActivityIndicator];
+            
+            // Notify MatrixKit user
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:note.userInfo[kMXNotificationCenterErrorKey]];
+        }];
+    }
+    
+    
     // Refresh display
     [self.tableView reloadData];
 }
@@ -129,6 +217,25 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    if (notificationCenterWillUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterWillUpdateObserver];
+        notificationCenterWillUpdateObserver = nil;
+    }
+    
+    if (notificationCenterDidUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterDidUpdateObserver];
+        notificationCenterDidUpdateObserver = nil;
+    }
+    
+    if (notificationCenterDidFailObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterDidFailObserver];
+        notificationCenterDidFailObserver = nil;
+    }
+    
 }
 
 #pragma mark - Internal methods
@@ -148,11 +255,13 @@
         accountUserInfoObserver = nil;
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (apnsInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:apnsInfoUpdateObserver];
+        apnsInfoUpdateObserver = nil;
+    }
     
-    selectedAccount = nil;
-
-    clearCacheButton = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction)onAccountToggleChange:(id)sender
@@ -171,27 +280,6 @@
     });
 }
 
-#pragma mark - Actions
-
-- (IBAction)addAccount:(id)sender
-{
-    [self performSegueWithIdentifier:@"addAccount" sender:self];
-}
-
-- (IBAction)logout:(id)sender
-{
-    // Logout all matrix account
-    [[MXKAccountManager sharedManager] logout];
-}
-
-- (IBAction)onButtonPressed:(id)sender
-{
-    if (sender == clearCacheButton)
-    {
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-    }
-}
-
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -201,9 +289,9 @@
     
     if ([[segue identifier] isEqualToString:@"showAccountDetails"])
     {
-        MXKAccountDetailsViewController *accountViewController = segue.destinationViewController;
-        accountViewController.mxAccount = selectedAccount;
-        selectedAccount = nil;
+        //MXKAccountDetailsViewController *accountViewController = segue.destinationViewController;
+        //accountViewController.mxAccount = selectedAccount;
+        //selectedAccount = nil;
     }
 }
 
@@ -217,83 +305,313 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = 0;
-    if (section == SETTINGS_SECTION_ACCOUNTS_INDEX)
+    
+    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
     {
-        // manage one account by now
-        count = [[MXKAccountManager sharedManager] accounts].count;  //+ 1; // Add one cell in this section to display "logout all" option.
+        count = 1;
     }
-    else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX)
+    else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
-        count = 2;
+        count = USER_SETTINGS_COUNT;
+    }
+    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
+    {
+        count = NOTIFICATION_SETTINGS_COUNT;
+    }
+    else if (section == SETTINGS_SECTION_OTHER_INDEX)
+    {
+        count = OTHER_COUNT;
     }
     
     return count;
 }
 
+- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview
+{
+    MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+    
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithLabelAndTextField alloc] init];
+    }
+    
+    cell.mxkTextField.userInteractionEnabled = YES;
+    cell.mxkTextField.borderStyle = UITextBorderStyleNone;
+    cell.mxkTextField.textAlignment = NSTextAlignmentRight;
+    cell.mxkTextField.textColor = [UIColor lightGrayColor];
+    
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
+    cell.alpha = 1.0f;
+    cell.userInteractionEnabled = YES;
+    
+    return cell;
+}
+
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview
+{
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
+    
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
+    }
+    
+    return cell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+
+    // set the cell to a default value to avoid application crashes
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    cell.backgroundColor = [UIColor redColor];
     
-    if (indexPath.section == SETTINGS_SECTION_ACCOUNTS_INDEX)
+    // check if there is a valid session
+    if (([AppDelegate theDelegate].mxSessions.count == 0) || ([MXKAccountManager sharedManager].activeAccounts.count == 0))
     {
-        NSArray *accounts = [[MXKAccountManager sharedManager] accounts];
-        if (indexPath.row < accounts.count)
-        {
-            MXKAccountTableViewCell *accountCell = [tableView dequeueReusableCellWithIdentifier:[MXKAccountTableViewCell defaultReuseIdentifier]];
-            if (!accountCell)
-            {
-                accountCell = [[MXKAccountTableViewCell alloc] init];
-            }
-            
-            accountCell.mxAccount = [accounts objectAtIndex:indexPath.row];
-            
-            // Display switch toggle in case of multiple accounts
-            if (accounts.count > 1 || accountCell.mxAccount.disabled)
-            {
-                accountCell.accountSwitchToggle.tag = indexPath.row;
-                accountCell.accountSwitchToggle.hidden = NO;
-                [accountCell.accountSwitchToggle addTarget:self action:@selector(onAccountToggleChange:) forControlEvents:UIControlEventValueChanged];
-            }
-            
-            cell = accountCell;
-        }
-        /*else
-        {
-            MXKTableViewCellWithButton *logoutBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-            if (!logoutBtnCell)
-            {
-                logoutBtnCell = [[MXKTableViewCellWithButton alloc] init];
-            }
-            [logoutBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"account_logout_all", @"Vector", nil) forState:UIControlStateNormal];
-            [logoutBtnCell.mxkButton setTitle:NSLocalizedStringFromTable(@"account_logout_all", @"Vector", nil) forState:UIControlStateHighlighted];
-            
-            [logoutBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [logoutBtnCell.mxkButton addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = logoutBtnCell;
-        }*/
+        // else use a default cell
+        return cell;
     }
-    else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX)
+    
+    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+
+    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
     {
-        if (indexPath.row == 0)
+        MXKTableViewCellWithButton *signOutCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+        if (!signOutCell)
         {
-            MXKTableViewCellWithTextView *configurationCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
-            if (!configurationCell)
+            signOutCell = [[MXKTableViewCellWithButton alloc] init];
+        }
+        
+        NSString* title = NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil);
+        
+        [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
+        [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+        [signOutCell.mxkButton setTintColor:VECTOR_GREEN_COLOR];
+        signOutCell.mxkButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        
+        [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+        [signOutCell.mxkButton addTarget:self action:@selector(onSignout:) forControlEvents:UIControlEventTouchUpInside];
+        
+        cell = signOutCell;
+    }
+    else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        MXMyUser* myUser = session.myUser;
+        
+        if (row == USER_SETTINGS_PROFILE_PICTURE_INDEX)
+        {
+            MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+            
+            if (!profileCell)
             {
-                configurationCell = [[MXKTableViewCellWithTextView alloc] init];
+                profileCell = [[MXKTableViewCellWithLabelAndMXKImageView alloc] init];
             }
+            
+            profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
+            
+            // if the user defines a new avatar
+            if (newThumbnailImage)
+            {
+                profileCell.mxkImageView.image = newThumbnailImage;
+            }
+            else
+            {
+                UIImage* avatarImage = [AvatarGenerator generateRoomMemberAvatar:myUser.userId displayName:myUser.displayname];
+                
+                if (myUser.avatarUrl)
+                {
+                    profileCell.mxkImageView.enableInMemoryCache = YES;
+                    
+                    [profileCell.mxkImageView setImageURL:[session.matrixRestClient urlOfContentThumbnail:myUser.avatarUrl toFitViewSize:profileCell.mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+                }
+                else
+                {
+                    profileCell.mxkImageView.image = avatarImage;
+                }
+            }
+            
+            [profileCell.mxkImageView.layer setCornerRadius:profileCell.mxkImageView.frame.size.width / 2];
+            profileCell.mxkImageView.clipsToBounds = YES;
+            
+            cell = profileCell;
+        }
+        else if (row == USER_SETTINGS_DISPLAY_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView];
+            
+            displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_display_name", @"Vector", nil);
+            displaynameCell.mxkTextField.text = myUser.displayname;
+            
+            cell = displaynameCell;
+        }
+        else if (row == USER_SETTINGS_FIRST_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *firstCell = [self getLabelAndTextFieldCell:tableView];
+        
+            firstCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_first_name", @"Vector", nil);
+            firstCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = firstCell;
+        }
+        else if (row == USER_SETTINGS_SURNAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *surnameCell = [self getLabelAndTextFieldCell:tableView];
+            
+            surnameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_surname", @"Vector", nil);
+            surnameCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = surnameCell;
+        }
+        else if (row == USER_SETTINGS_EMAIL_ADDRESS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView];
+            
+            emailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_email_address", @"Vector", nil);
+            emailCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = emailCell;
+        }
+        else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView];
+            
+            passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
+            passwordCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = passwordCell;
+        }
+        else if (row == USER_SETTINGS_PHONE_NUMBER_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *phonenumberCell = [self getLabelAndTextFieldCell:tableView];
+            
+            phonenumberCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
+            phonenumberCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = phonenumberCell;
+        }
+        else if (row == USER_SETTINGS_NIGHT_MODE_SEP_INDEX)
+        {
+            UITableViewCell *sepCell = [[UITableViewCell alloc] init];
+            sepCell.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+            
+            cell = sepCell;
+        }
+        else if (row == USER_SETTINGS_NIGHT_MODE_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *nightModeCell = [self getLabelAndTextFieldCell:tableView];
+                                                                    
+            nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
+            nightModeCell.mxkTextField.userInteractionEnabled = NO;
+            nightModeCell.mxkTextField.text = NSLocalizedStringFromTable(@"off", @"Vector", nil);
+            nightModeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell = nightModeCell;
+        }
+    }
+    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
+    {
+        
+        MXPushRule *rule;
+        
+        if (row == NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView];
+    
+            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_all_notif", @"Vector", nil);
+            enableAllCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
+            
+            cell = enableAllCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
+            
+            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_name", @"Vector", nil);
+            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
+            cell = myNameCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* sentToMeCell = [self getLabelAndSwitchCell:tableView];
+            sentToMeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_sent_to_me", @"Vector", nil);
+            rule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
+            cell = sentToMeCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* invitedToARoom = [self getLabelAndSwitchCell:tableView];
+            invitedToARoom.mxkLabel.text = NSLocalizedStringFromTable(@"settings_invited_to_room", @"Vector", nil);
+            rule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
+            cell = invitedToARoom;
+        }
+        else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* peopleJoinLeaveCell = [self getLabelAndSwitchCell:tableView];
+            peopleJoinLeaveCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_join_leave_rooms", @"Vector", nil);
+            rule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
+            cell = peopleJoinLeaveCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* callInvitationCell = [self getLabelAndSwitchCell:tableView];
+            callInvitationCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_call_invitations", @"Vector", nil);
+            rule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
+            cell = callInvitationCell;
+        }
+        
+        // common management
+        MXKTableViewCellWithLabelAndSwitch* switchCell = (MXKTableViewCellWithLabelAndSwitch*)cell;
+        switchCell.mxkSwitch.tag = row;
+        
+        if (rule)
+        {
+            switchCell.mxkSwitch.on = rule.enabled;
+        }
+        
+        [switchCell.mxkSwitch  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+        [switchCell.mxkSwitch addTarget:self action:@selector(onRuleUpdate:) forControlEvents:UIControlEventTouchUpInside];
+    
+    }
+    else if (section == SETTINGS_SECTION_OTHER_INDEX)
+    {
+        if (row == OTHER_VERSION_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *versionCell = [self getLabelAndTextFieldCell:tableView];
             
             NSString* appVersion = [AppDelegate theDelegate].appVersion;
             NSString* build = [AppDelegate theDelegate].build;
-            if (build.length)
-            {
-                build = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_config_build_number", @"Vector", nil), build];
-            }
-            NSString *configurationFormatText = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", NSLocalizedStringFromTable(@"settings_config_ios_console_version", @"Vector", nil), NSLocalizedStringFromTable(@"settings_config_ios_kit_version", @"Vector", nil), NSLocalizedStringFromTable(@"settings_config_ios_sdk_version", @"Vector", nil), @"%@"];
-            configurationCell.mxkTextView.text = [NSString stringWithFormat:configurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
-            cell = configurationCell;
+            
+            versionCell.mxkLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
+            versionCell.mxkTextField.userInteractionEnabled = NO;
+            versionCell.mxkTextField.text = nil;
+            
+            cell = versionCell;
         }
-        else if (indexPath.row == 1)
+        else if (row == OTHER_TERM_CONDITIONS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *termAndConditionCell = [self getLabelAndTextFieldCell:tableView];
+            
+            termAndConditionCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+            termAndConditionCell.mxkTextField.userInteractionEnabled = NO;
+            termAndConditionCell.mxkTextField.text = nil;
+            
+            cell = termAndConditionCell;
+        }
+        else if (row == OTHER_PRIVACY_INDEX)
+        {
+            MXKTableViewCellWithLabelAndTextField *privacyPolicyCell = [self getLabelAndTextFieldCell:tableView];
+            
+            privacyPolicyCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
+            privacyPolicyCell.mxkTextField.userInteractionEnabled = NO;
+            privacyPolicyCell.mxkTextField.text = nil;
+            
+            cell = privacyPolicyCell;
+        }
+        else if (row == OTHER_CLEAR_CACHE_INDEX)
         {
             MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!clearCacheBtnCell)
@@ -305,10 +623,8 @@
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             
-            clearCacheButton = clearCacheBtnCell.mxkButton;
-            
-            [clearCacheButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [clearCacheButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [clearCacheBtnCell.mxkButton addTarget:self action:@selector(onClearCache:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = clearCacheBtnCell;
         }
@@ -321,73 +637,50 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SETTINGS_SECTION_ACCOUNTS_INDEX)
-    {
-        return 50;
-    }
-    else if (indexPath.section == SETTINGS_SECTION_CONFIGURATION_INDEX && indexPath.row == 0)
-    {
-        UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, MAXFLOAT)];
-        textView.font = [UIFont systemFontOfSize:14];
-        NSString* appVersion = [AppDelegate theDelegate].appVersion;
-        NSString* build = [AppDelegate theDelegate].build;
-        if (build.length)
-        {
-            build = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_config_build_number", @"Vector", nil), build];
-        }
-        NSString *configurationFormatText = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", NSLocalizedStringFromTable(@"settings_config_ios_console_version", @"Vector", nil), NSLocalizedStringFromTable(@"settings_config_ios_kit_version", @"Vector", nil), NSLocalizedStringFromTable(@"settings_config_ios_sdk_version", @"Vector", nil), @"%@"];
-        textView.text = [NSString stringWithFormat:configurationFormatText, appVersion, MatrixKitVersion, MatrixSDKVersion, build];
-        CGSize contentSize = [textView sizeThatFits:textView.frame.size];
-        return contentSize.height + 1;
-    }
-    
-    return 44;
+    return 50;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 1;
+    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
+    {
+        return 30;
+    }
+    
+    return 60;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, sectionHeader.frame.size.width - 10, sectionHeader.frame.size.height - 10)];
+    sectionHeader.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+    
+    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
+    {
+        return sectionHeader;
+    }
+    
+    UILabel *sectionLabel = [[UILabel alloc] init];
     sectionLabel.font = [UIFont boldSystemFontOfSize:16];
     sectionLabel.backgroundColor = [UIColor clearColor];
-    [sectionHeader addSubview:sectionLabel];
     
-    if (section == SETTINGS_SECTION_ACCOUNTS_INDEX)
+    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
-        sectionLabel.text = NSLocalizedStringFromTable(@"account", @"Vector", nil);
-        
-        /*UIButton *addAccount = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        [addAccount addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
-        
-        CGRect frame = addAccount.frame;
-        frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 8;
-        frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-        addAccount.frame = frame;
-        
-        [sectionHeader addSubview:addAccount];
-        addAccount.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-        
-        sectionHeader.userInteractionEnabled = YES;*/
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
     }
-    else if (section == SETTINGS_SECTION_CONFIGURATION_INDEX)
+    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_title_config", @"Vector", nil);
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
-    else
+    else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
-        sectionHeader = nil;
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
     }
+    
+    [sectionLabel sizeToFit];
+    sectionLabel.frame = CGRectMake(10,  sectionHeader.frame.size.height - sectionLabel.frame.size.height - 5, sectionHeader.frame.size.width - 20, sectionLabel.frame.size.height);
+    [sectionHeader addSubview:sectionLabel];
+
     return sectionHeader;
 }
 
@@ -395,18 +688,131 @@
 {
     if (self.tableView == aTableView)
     {
-        if (indexPath.section == SETTINGS_SECTION_ACCOUNTS_INDEX)
+        NSInteger section = indexPath.section;
+        NSInteger row = indexPath.row;
+        
+        if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
-            NSArray *accounts = [[MXKAccountManager sharedManager] accounts];
-            if (indexPath.row < accounts.count)
+           if (row == OTHER_TERM_CONDITIONS_INDEX)
+           {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) otherButtonTitles:nil, nil];
+               [alertView setMessage:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil)];
+               [alertView show];
+           }
+           else if (row == OTHER_PRIVACY_INDEX)
+           {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) otherButtonTitles:nil, nil];
+                [alertView setMessage:NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil)];
+                [alertView show];
+           }
+        }
+        else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+        {
+            if (row == USER_SETTINGS_PROFILE_PICTURE_INDEX)
             {
-                selectedAccount = [accounts objectAtIndex:indexPath.row];
+                mediaPicker = [MediaPickerViewController mediaPickerViewController];
+                mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
+                mediaPicker.multipleSelections = NO;
+                mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
+                mediaPicker.delegate = self;
+                UINavigationController *navigationController = [UINavigationController new];
+                [navigationController pushViewController:mediaPicker animated:NO];
                 
-                [self performSegueWithIdentifier:@"showAccountDetails" sender:self];
+                [self presentViewController:navigationController animated:YES completion:nil];
             }
         }
+
         [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
+
+#pragma mark - actions
+
+- (void)onSignout:(id)sender
+{
+   [[MXKAccountManager sharedManager] logout];
+}
+
+- (void)onClearCache:(id)sender
+{
+    [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+}
+
+- (void)onRuleUpdate:(id)sender
+{
+    MXPushRule* pushRule = nil;
+    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    
+    NSInteger row = ((UIView*)sender).tag;
+    
+    if (row == NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX)
+    {
+        [self startActivityIndicator];
+        
+        // toggle the pushes
+        [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+    }
+    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_NAME_INDEX)
+    {
+        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
+    }
+    else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
+    {
+        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
+    }
+    else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
+    {
+        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
+    }
+    else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
+    {
+        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
+    }
+    else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
+    {
+        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
+    }
+    
+    if (pushRule)
+    {
+        // toggle the rule
+        [session.notificationCenter enableRule:pushRule isEnabled:!pushRule.enabled];
+    }
+}
+
+#pragma mark - MediaPickerViewController Delegate
+
+- (void)dismissMediaPicker
+{
+    if (mediaPicker)
+    {
+        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
+        mediaPicker = nil;
+    }
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL
+{
+    [self dismissMediaPicker];
+    
+    newThumbnailImage = image;
+    newThumbnailimageURL = imageURL;
+    
+    [self.tableView reloadData];
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
+{
+    // this method should not be called
+    [self dismissMediaPicker];
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
+{
+    // this method should not be called
+    [self dismissMediaPicker];
+}
+
 
 @end
