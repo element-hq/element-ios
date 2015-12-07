@@ -10,7 +10,7 @@
 
 @class MXSession;
 
-@interface SearchViewController : SegmentedViewController
+@interface SearchViewController : SegmentedViewController <UISearchBarDelegate>
 
 - (void)displayWithSession:(MXSession*)session;
 

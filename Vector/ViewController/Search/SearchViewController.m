@@ -12,6 +12,9 @@
 #import "RecentsDataSource.h"
 
 @interface SearchViewController ()
+{
+    UISearchBar* searchBar;
+}
 
 @end
 
@@ -21,6 +24,19 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    searchBar = [[UISearchBar alloc] initWithFrame:self.navigationController.navigationBar.frame];
+    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    searchBar.showsCancelButton = YES;
+    searchBar.returnKeyType = UIReturnKeySearch;
+
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem new];
+    self.navigationItem.titleView = searchBar;
+
+    // This is a VC for searching. So, show the keyboard with the VC
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [searchBar becomeFirstResponder];
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,6 +73,18 @@
 
     // to display a red navbar when the home server cannot be reached.
     [self addMatrixSession:session];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    return YES;
 }
 
 @end
