@@ -16,8 +16,6 @@
 
 #import "RecentsDataSource.h"
 
-#import "RecentTableViewCell.h"
-
 #import "EventFormatter.h"
 
 #import "VectorDesignValues.h"
@@ -44,9 +42,6 @@
     self = [super init];
     if (self)
     {
-        // Reset default view classes
-        [self registerCellViewClass:RecentTableViewCell.class forCellIdentifier:kMXKRecentCellIdentifier];
-        
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
         
@@ -210,11 +205,12 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Override this method here to use our own cellDataAtIndexPath
     id<MXKRecentCellDataStoring> cellData = [self cellDataAtIndexPath:indexPath];
     
-    if (cellData)
+    if (cellData && self.delegate)
     {
-        Class<MXKCellRendering> class = [self cellViewClassForCellIdentifier:kMXKRecentCellIdentifier];
+        Class<MXKCellRendering> class = [self.delegate cellViewClassForCellData:cellData];
         return [class heightForCellData:cellData withMaximumWidth:0];
     }
 

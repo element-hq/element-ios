@@ -17,6 +17,8 @@
 #import "RecentsViewController.h"
 #import "RoomViewController.h"
 
+#import "RecentTableViewCell.h"
+
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
@@ -76,6 +78,9 @@
     
     // The view controller handles itself the selected recent
     self.delegate = self;
+    
+    // Register here the customized cell view class used to render recents
+    [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
 }
 
 - (void)dealloc
@@ -416,6 +421,18 @@
 }
 
 #pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+{ 
+    // Return the customized recent table view cell
+    return RecentTableViewCell.class;
+}
+
+- (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
+{
+    // Return the customized recent table view cell identifier
+    return RecentTableViewCell.defaultReuseIdentifier;
+}
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {

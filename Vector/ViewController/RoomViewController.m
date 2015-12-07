@@ -30,6 +30,9 @@
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
 
+#import "RoomOutgoingBubbleTableViewCell.h"
+#import "RoomIncomingBubbleTableViewCell.h"
+
 #import "AvatarGenerator.h"
 
 @interface RoomViewController ()
@@ -78,6 +81,10 @@
        // this room view controller has its own typing management.
        self.roomDataSource.showTypingNotifications = NO;
     }
+    
+    // Register here customized cell view classes used to render bubbles
+    [self.bubblesTableView registerClass:RoomOutgoingBubbleTableViewCell.class forCellReuseIdentifier:RoomOutgoingBubbleTableViewCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingBubbleTableViewCell.class forCellReuseIdentifier:RoomIncomingBubbleTableViewCell.defaultReuseIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -210,6 +217,31 @@
     }
     
     [super destroy];
+}
+
+#pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+{
+    Class cellViewClass = nil;
+    
+    // Sanity check
+    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
+    {
+        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+        
+        // Select the suitable table view cell class
+        if (bubbleData.isIncoming)
+        {
+            cellViewClass = RoomIncomingBubbleTableViewCell.class;
+        }
+        else
+        {
+            cellViewClass = RoomOutgoingBubbleTableViewCell.class;
+        }
+    }
+    
+    return cellViewClass;
 }
 
 #pragma mark - MXKDataSource delegate
