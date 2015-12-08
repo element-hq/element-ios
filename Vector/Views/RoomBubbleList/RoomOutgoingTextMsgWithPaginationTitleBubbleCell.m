@@ -14,27 +14,18 @@
  limitations under the License.
  */
 
-#import "RoomBubbleCellData.h"
+#import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
 
-#import "EventFormatter.h"
+@implementation RoomOutgoingTextMsgWithPaginationTitleBubbleCell
 
-#import "AvatarGenerator.h"
-
-@implementation RoomBubbleCellData
-
-#pragma mark -
-
-- (instancetype)initWithEvent:(MXEvent *)event andRoomState:(MXRoomState *)roomState andRoomDataSource:(MXKRoomDataSource *)roomDataSource2
+- (void)render:(MXKCellData *)cellData
 {
-    self = [super initWithEvent:event andRoomState:roomState andRoomDataSource:roomDataSource2];
+    [super render:cellData];
     
-    if (self)
+    if (self.bubbleData)
     {
-        // use the vector style placeholder
-        self.senderAvatarPlaceholder = [AvatarGenerator generateRoomMemberAvatar:self.senderId displayName:self.senderDisplayName];
+        self.paginationLabel.text = [self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO];
     }
-    
-    return self;
 }
 
 @end

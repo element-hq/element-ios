@@ -14,15 +14,14 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomOutgoingAttachmentBubbleCell.h"
 
 /**
- `RoomIncomingBubbleTableViewCell` displays incoming message bubbles.
+ `RoomOutgoingAttachmentWithPaginationTitleBubbleCell` displays outgoing attachment bubbles and pagination title.
  */
-@interface RoomIncomingBubbleTableViewCell : MXKRoomIncomingBubbleTableViewCell
+@interface RoomOutgoingAttachmentWithPaginationTitleBubbleCell : RoomOutgoingAttachmentBubbleCell
 
 @property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
 @property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *paginationTitleViewHeightConstraint;
 
 @end
