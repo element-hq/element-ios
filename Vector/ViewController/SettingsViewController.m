@@ -301,13 +301,7 @@
     // Keep ref on destinationViewController
     [super prepareForSegue:segue sender:sender];
     
-    // FIX ME add night mode
-    /*if ([[segue identifier] isEqualToString:@"showAccountDetails"])
-    {
-        MXKAccountDetailsViewController *accountViewController = segue.destinationViewController;
-        accountViewController.mxAccount = selectedAccount;
-        selectedAccount = nil;
-    }*/
+    // FIXME add night mode
 }
 
 #pragma mark - UIScrollView delegate
@@ -743,15 +737,21 @@
         {
            if (row == OTHER_TERM_CONDITIONS_INDEX)
            {
-               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) otherButtonTitles:nil, nil];
-               [alertView setMessage:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil)];
-               [alertView show];
-           }
+               MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil) style:MXKAlertStyleAlert];
+               
+               alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+               }];
+               
+               [alert showInViewController:self];
+            }
            else if (row == OTHER_PRIVACY_INDEX)
            {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) otherButtonTitles:nil, nil];
-                [alertView setMessage:NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil)];
-                [alertView show];
+               MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil) style:MXKAlertStyleAlert];
+               
+               alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+               }];
+               
+               [alert showInViewController:self];
            }
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
@@ -1051,14 +1051,23 @@
             
                                      [self stopActivityIndicator];
 
-                                     [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"ok", @"Vector", nil) otherButtonTitles:nil] show];
-                                 
+                                     MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
+                                     
+                                     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                     }];
+                                     
+                                     [alert showInViewController:self];
+                                     
                                  } failure:^(NSError *error) {
                                      
                                       [self stopActivityIndicator];
                                      
-                                     [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"ok", @"Vector", nil) otherButtonTitles:nil] show];
+                                     MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
                                      
+                                     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                     }];
+                                     
+                                     [alert showInViewController:self];                                     
                                  }];
                              }
                              else
