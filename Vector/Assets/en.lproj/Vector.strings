@@ -31,6 +31,7 @@
 "on" = "On";
 "off" = "Off";
 "cancel" = "Cancel";
+"save" = "Save";
 
 // Authentication
 "auth_sign_in" = "Sign in";
@@ -116,6 +117,13 @@
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_clear_cache" = "Clear cache";
+
+"settings_change_password" = "Change password";
+"settings_old_password" = "old password";
+"settings_new_password" = "new password";
+"settings_confirm_password" = "confirm password";
+"settings_fail_to_update_password" = "Fail to update password";
+"settings_password_updated" = "Your password has been updated";
 
 // Room Details
 "room_details_title" = "Room Details";

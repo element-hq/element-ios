@@ -80,8 +80,14 @@
     // the avatar image has been uploaded
     NSString* uploadedAvatarURL;
     
-    // new displaynamed
+    // new display name
     NSString* newDisplayName;
+    
+    // password update
+    UITextField* currentPasswordTextField;
+    UITextField* newPasswordTextField1;
+    UITextField* newPasswordTextField2;
+    UIAlertAction* savePasswordAction;
 }
 
 @end
@@ -498,6 +504,7 @@
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView];
             
             passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
+            passwordCell.mxkTextField.text = @"*********";
             passwordCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = passwordCell;
@@ -737,6 +744,10 @@
                 
                 [self presentViewController:navigationController animated:YES completion:nil];
             }
+            else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
+            {
+                [self displayPasswordAlert];
+            }
         }
 
         if ([firstResponder isFirstResponder])
@@ -763,6 +774,12 @@
 
 - (void)onRuleUpdate:(id)sender
 {
+    // sanity check
+    if ([MXKAccountManager sharedManager].activeAccounts.count == 0)
+    {
+        return;
+    }
+    
     MXPushRule* pushRule = nil;
     MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
@@ -807,10 +824,17 @@
 //
 - (void)onSave:(id)sender
 {
+    // sanity check
+    if ([MXKAccountManager sharedManager].activeAccounts.count == 0)
+    {
+        return;
+    }
+    
     [self startActivityIndicator];
-
+    
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     MXMyUser* myUser = account.mxSession.myUser;
+    
     if (newDisplayName && ![myUser.displayname isEqualToString:newDisplayName])
     {
         // Save display name
@@ -903,20 +927,23 @@
 
 - (void)updateSaveButtonStatus
 {
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-    MXMyUser* myUser = session.myUser;
-        
-    BOOL saveButtonEnabled = (nil != newAvatarImage);
-    
-    if (!saveButtonEnabled)
+    if ([AppDelegate theDelegate].mxSessions.count > 0)
     {
-        if (newDisplayName)
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        MXMyUser* myUser = session.myUser;
+            
+        BOOL saveButtonEnabled = (nil != newAvatarImage);
+        
+        if (!saveButtonEnabled)
         {
-            saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
+            if (newDisplayName)
+            {
+                saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
+            }
         }
+        
+        self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
     }
-    
-    self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
 }
 
 #pragma mark - MediaPickerViewController Delegate
@@ -966,6 +993,97 @@
 - (IBAction)textFieldDidBegin:(id)sender
 {
     firstResponder = (UIView*)sender;
+}
+
+#pragma password update management
+
+- (IBAction)passwordTextFieldDidChange:(id)sender
+{
+    savePasswordAction.enabled = (currentPasswordTextField.text.length > 0) && (newPasswordTextField1.text.length > 2) && [newPasswordTextField1.text isEqualToString:newPasswordTextField2.text];
+}
+
+- (void)displayPasswordAlert
+{
+    UIAlertController * alert =   [UIAlertController
+                                   alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil)
+                                   message:nil
+                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    savePasswordAction = [UIAlertAction
+                         actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil)
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
+                             {
+                                [self startActivityIndicator];
+                                 
+                                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+                                 [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+            
+                                     [self stopActivityIndicator];
+
+                                     [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"ok", @"Vector", nil) otherButtonTitles:nil] show];
+                                 
+                                 } failure:^(NSError *error) {
+                                     
+                                      [self stopActivityIndicator];
+                                     
+                                     [[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"ok", @"Vector", nil) otherButtonTitles:nil] show];
+                                     
+                                 }];
+                             }
+                             else
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                             }
+                             
+                         }];
+    
+    // disable by default
+    // check if the textfields have the right value
+    savePasswordAction.enabled = NO;
+    
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                             }];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+        currentPasswordTextField = textField;
+        currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
+        currentPasswordTextField.secureTextEntry = YES;
+        [currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+         
+     }];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         newPasswordTextField1 = textField;
+         newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
+         newPasswordTextField1.secureTextEntry = YES;
+         [newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+         
+     }];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         newPasswordTextField2 = textField;
+         newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
+         newPasswordTextField2.secureTextEntry = YES;
+         [newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+         
+         newPasswordTextField2 = textField;
+     }];
+
+    
+    [alert addAction:cancel];
+    [alert addAction:savePasswordAction];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
