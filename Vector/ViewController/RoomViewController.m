@@ -34,10 +34,10 @@
 #import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
 
 #import "RoomOutgoingAttachmentBubbleCell.h"
-#import "RoomOutgoingAttachmentHiddenSenderBubbleCell.h"
+#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
 #import "RoomOutgoingTextMsgBubbleCell.h"
-#import "RoomOutgoingTextMsgHiddenSenderBubbleCell.h"
+#import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
 
 #import "AvatarGenerator.h"
@@ -69,10 +69,10 @@
     [self.bubblesTableView registerClass:RoomIncomingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingAttachmentHiddenSenderBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentHiddenSenderBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingTextMsgHiddenSenderBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgHiddenSenderBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     // Set room title view
@@ -256,7 +256,7 @@
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = MXKRoomIncomingAttachmentHiddenSenderBubbleCell.class;
+                    cellViewClass = MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
@@ -271,7 +271,7 @@
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = MXKRoomIncomingTextMsgHiddenSenderBubbleCell.class;
+                    cellViewClass = MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
@@ -290,7 +290,7 @@
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = RoomOutgoingAttachmentHiddenSenderBubbleCell.class;
+                    cellViewClass = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
@@ -305,7 +305,7 @@
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = RoomOutgoingTextMsgHiddenSenderBubbleCell.class;
+                    cellViewClass = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {

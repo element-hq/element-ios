@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import "MXKRoomOutgoingAttachmentHiddenSenderBubbleCell.h"
+#import "MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
 
 /**
- `RoomOutgoingAttachmentHiddenSenderBubbleCell` displays outgoing attachment with thumbnail, without user's name.
+ `RoomOutgoingAttachmentWithoutSenderInfoBubbleCell` displays outgoing attachment with thumbnail, without user's name.
  */
-@interface RoomOutgoingAttachmentHiddenSenderBubbleCell : MXKRoomOutgoingAttachmentHiddenSenderBubbleCell
+@interface RoomOutgoingAttachmentWithoutSenderInfoBubbleCell : MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell
 
 @end

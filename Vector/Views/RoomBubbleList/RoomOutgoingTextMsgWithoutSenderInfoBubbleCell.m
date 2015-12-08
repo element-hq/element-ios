@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-#import "RoomOutgoingAttachmentHiddenSenderBubbleCell.h"
+#import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 
-@implementation RoomOutgoingAttachmentHiddenSenderBubbleCell
+@implementation RoomOutgoingTextMsgWithoutSenderInfoBubbleCell
 
 @end

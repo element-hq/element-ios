@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import "MXKRoomOutgoingTextMsgHiddenSenderBubbleCell.h"
+#import "MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 
 /**
- `RoomOutgoingTextMsgHiddenSenderBubbleCell` displays outgoing message bubbles without user's name.
+ `RoomOutgoingTextMsgWithoutSenderInfoBubbleCell` displays outgoing message bubbles without user's name.
  */
-@interface RoomOutgoingTextMsgHiddenSenderBubbleCell : MXKRoomOutgoingTextMsgHiddenSenderBubbleCell
+@interface RoomOutgoingTextMsgWithoutSenderInfoBubbleCell : MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell
 
 @end

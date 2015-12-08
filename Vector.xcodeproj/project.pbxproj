@@ -115,12 +115,12 @@
 		F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */; };
 		F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */; };
 		F0C34B621C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B571C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib */; };
-		F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.m */; };
-		F0C34B641C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B5A1C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.xib */; };
+		F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m */; };
+		F0C34B641C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B5A1C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */; };
 		F0C34B651C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B5C1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m */; };
 		F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B5D1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib */; };
-		F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B5F1C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.m */; };
-		F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B601C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.xib */; };
+		F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B5F1C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m */; };
+		F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B601C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib */; };
 		F0C34B6F1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B6A1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m */; };
 		F0C34B701C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B6B1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib */; };
 		F0C34B711C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B6D1C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m */; };
@@ -286,15 +286,15 @@
 		F0C34B551C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingAttachmentBubbleCell.h; sourceTree = "<group>"; };
 		F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingAttachmentBubbleCell.m; sourceTree = "<group>"; };
 		F0C34B571C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentBubbleCell.xib; sourceTree = "<group>"; };
-		F0C34B581C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingAttachmentHiddenSenderBubbleCell.h; sourceTree = "<group>"; };
-		F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingAttachmentHiddenSenderBubbleCell.m; sourceTree = "<group>"; };
-		F0C34B5A1C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentHiddenSenderBubbleCell.xib; sourceTree = "<group>"; };
+		F0C34B581C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h; sourceTree = "<group>"; };
+		F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m; sourceTree = "<group>"; };
+		F0C34B5A1C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib; sourceTree = "<group>"; };
 		F0C34B5B1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingTextMsgBubbleCell.h; sourceTree = "<group>"; };
 		F0C34B5C1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingTextMsgBubbleCell.m; sourceTree = "<group>"; };
 		F0C34B5D1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingTextMsgBubbleCell.xib; sourceTree = "<group>"; };
-		F0C34B5E1C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingTextMsgHiddenSenderBubbleCell.h; sourceTree = "<group>"; };
-		F0C34B5F1C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingTextMsgHiddenSenderBubbleCell.m; sourceTree = "<group>"; };
-		F0C34B601C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingTextMsgHiddenSenderBubbleCell.xib; sourceTree = "<group>"; };
+		F0C34B5E1C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h; sourceTree = "<group>"; };
+		F0C34B5F1C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m; sourceTree = "<group>"; };
+		F0C34B601C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib; sourceTree = "<group>"; };
 		F0C34B691C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
 		F0C34B6A1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m; sourceTree = "<group>"; };
 		F0C34B6B1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
@@ -420,18 +420,18 @@
 				F0C34B551C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.h */,
 				F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */,
 				F0C34B571C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib */,
-				F0C34B581C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.h */,
-				F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.m */,
-				F0C34B5A1C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.xib */,
+				F0C34B581C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h */,
+				F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m */,
+				F0C34B5A1C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */,
 				F0C34B691C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h */,
 				F0C34B6A1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m */,
 				F0C34B6B1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib */,
 				F0C34B5B1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.h */,
 				F0C34B5C1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m */,
 				F0C34B5D1C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib */,
-				F0C34B5E1C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.h */,
-				F0C34B5F1C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.m */,
-				F0C34B601C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.xib */,
+				F0C34B5E1C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h */,
+				F0C34B5F1C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m */,
+				F0C34B601C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib */,
 				F0C34B6C1C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h */,
 				F0C34B6D1C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m */,
 				F0C34B6E1C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib */,
@@ -794,7 +794,7 @@
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
 				F02528E31C11B6FC00E1FE1B /* favorite_icon.png in Resources */,
-				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.xib in Resources */,
+				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F02528F11C11B6FC00E1FE1B /* placeholder@3x.png in Resources */,
 				F02528FB1C11B6FC00E1FE1B /* selection_tick@2x.png in Resources */,
 				F02529081C11B6FC00E1FE1B /* unmute_icon@3x.png in Resources */,
@@ -817,7 +817,7 @@
 				F02528D31C11B6FC00E1FE1B /* add.png in Resources */,
 				F02529061C11B6FC00E1FE1B /* unmute_icon.png in Resources */,
 				F02529041C11B6FC00E1FE1B /* typing@2x.png in Resources */,
-				F0C34B641C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.xib in Resources */,
+				F0C34B641C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F02528D61C11B6FC00E1FE1B /* camera_capture@2x.png in Resources */,
 				71046D601C0C86C600DCA984 /* RoomTitleViewWithTopic.xib in Resources */,
 				F02528D51C11B6FC00E1FE1B /* camera_capture.png in Resources */,
@@ -941,7 +941,7 @@
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
-				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgHiddenSenderBubbleCell.m in Sources */,
+				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F0C34B651C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				F0C34B711C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F094AA051B78E3D400B1FBBF /* empty.mm in Sources */,
@@ -969,7 +969,7 @@
 				F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */,
 				F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleViewWithTopic.m in Sources */,
-				F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentHiddenSenderBubbleCell.m in Sources */,
+				F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */,
 				F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */,
 				717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */,
