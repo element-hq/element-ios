@@ -107,7 +107,8 @@
 
 "settings_enable_all_notif" = "Enable all notifications";
 "settings_general_messages" = "General messages";
-"settings_messages_my_name" = "Messages containing my name";
+"settings_messages_my_display_name" = "Msg containing my display name";
+"settings_messages_my_user_name" = "Msg containing my user name";
 "settings_messages_sent_to_me" = "Messages sent to me";
 "settings_invited_to_room" = "When i'm invited to a room";
 "settings_join_leave_rooms" = "When people join or leave rooms";
