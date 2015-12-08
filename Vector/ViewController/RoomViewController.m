@@ -495,15 +495,15 @@
         }
     }
     
-    if (0 == count)
+    if (0 == names.count)
     {
         // something to do ?
     }
-    else if (1 == count)
+    else if (1 == names.count)
     {
         text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
     }
-    else if (2 == count)
+    else if (2 == names.count)
     {
         text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
     }
