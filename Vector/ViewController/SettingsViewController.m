@@ -287,12 +287,13 @@
     // Keep ref on destinationViewController
     [super prepareForSegue:segue sender:sender];
     
-    if ([[segue identifier] isEqualToString:@"showAccountDetails"])
+    // FIX ME add night mode
+    /*if ([[segue identifier] isEqualToString:@"showAccountDetails"])
     {
-        //MXKAccountDetailsViewController *accountViewController = segue.destinationViewController;
-        //accountViewController.mxAccount = selectedAccount;
-        //selectedAccount = nil;
-    }
+        MXKAccountDetailsViewController *accountViewController = segue.destinationViewController;
+        accountViewController.mxAccount = selectedAccount;
+        selectedAccount = nil;
+    }*/
 }
 
 #pragma mark - UIScrollView delegate
@@ -662,7 +663,7 @@
             cell = clearCacheBtnCell;
         }
     }
-    
+
     return cell;
 }
 
