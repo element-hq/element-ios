@@ -42,13 +42,14 @@
 #define USER_SETTINGS_NIGHT_MODE_INDEX          8
 #define USER_SETTINGS_COUNT                     9
 
-#define NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX          0
-#define NOTIFICATION_SETTINGS_CONTAINING_MY_NAME_INDEX  1
-#define NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX          2
-#define NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX     3
-#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX   4
-#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX     5
-#define NOTIFICATION_SETTINGS_COUNT                     6
+#define NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX                  0
+#define NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX     1
+#define NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX  2
+#define NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX                  3
+#define NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX             4
+#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX           5
+#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
+#define NOTIFICATION_SETTINGS_COUNT                             7
 
 #define OTHER_VERSION_INDEX         0
 #define OTHER_TERM_CONDITIONS_INDEX 1
@@ -550,11 +551,19 @@
             
             cell = enableAllCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_NAME_INDEX)
+        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
             
-            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_name", @"Vector", nil);
+            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_user_name", @"Vector", nil);
+            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
+            cell = myNameCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
+            
+            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_display_name", @"Vector", nil);
             rule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
             cell = myNameCell;
         }
@@ -793,9 +802,13 @@
         // toggle the pushes
         [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
     }
-    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_NAME_INDEX)
+    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
     {
         pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
+    }
+    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
+    {
+        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
     }
     else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
     {
