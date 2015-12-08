@@ -30,7 +30,7 @@
 #define SETTINGS_SECTION_OTHER_INDEX                    3
 #define SETTINGS_SECTION_COUNT                          4
 
-
+/*
 #define USER_SETTINGS_PROFILE_PICTURE_INDEX     0
 #define USER_SETTINGS_DISPLAY_NAME_INDEX        1
 #define USER_SETTINGS_FIRST_NAME_INDEX          2
@@ -41,6 +41,20 @@
 #define USER_SETTINGS_NIGHT_MODE_SEP_INDEX      7
 #define USER_SETTINGS_NIGHT_MODE_INDEX          8
 #define USER_SETTINGS_COUNT                     9
+ */
+
+#define USER_SETTINGS_PROFILE_PICTURE_INDEX     0
+#define USER_SETTINGS_DISPLAY_NAME_INDEX        1
+#define USER_SETTINGS_CHANGE_PASSWORD_INDEX     2
+#define USER_SETTINGS_COUNT                     3
+
+// hide some unsupported account settings.
+#define USER_SETTINGS_PHONE_NUMBER_INDEX        -1
+#define USER_SETTINGS_NIGHT_MODE_SEP_INDEX      -1
+#define USER_SETTINGS_NIGHT_MODE_INDEX          -1
+#define USER_SETTINGS_FIRST_NAME_INDEX          -1
+#define USER_SETTINGS_SURNAME_INDEX             -1
+#define USER_SETTINGS_EMAIL_ADDRESS_INDEX       -1
 
 #define NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX                  0
 #define NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX     1
