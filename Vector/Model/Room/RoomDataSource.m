@@ -18,8 +18,6 @@
 
 #import "EventFormatter.h"
 #import "RoomBubbleCellData.h"
-#import "RoomIncomingBubbleTableViewCell.h"
-#import "RoomOutgoingBubbleTableViewCell.h"
 
 @implementation RoomDataSource
 
@@ -30,16 +28,6 @@
     {
         // Replace default Cell data class
         [self registerCellDataClass:RoomBubbleCellData.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
-        
-        // Replace cell view classes
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgCellIdentifier];
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgHiddenSenderCellIdentifier];
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingAttachmentCellIdentifier];
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingAttachmentHiddenSenderCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingTextMsgCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingTextMsgHiddenSenderCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingAttachmentCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingAttachmentHiddenSenderCellIdentifier];
         
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];

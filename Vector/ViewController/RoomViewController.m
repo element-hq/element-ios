@@ -30,6 +30,16 @@
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
 
+#import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
+#import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
+
+#import "RoomOutgoingAttachmentBubbleCell.h"
+#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
+#import "RoomOutgoingTextMsgBubbleCell.h"
+#import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
+
 #import "AvatarGenerator.h"
 
 @interface RoomViewController ()
@@ -54,10 +64,22 @@
 {
     [super viewDidLoad];
     
+    // Register first customized cell view classes used to render bubbles
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
     // Set room title view
     [self setRoomTitleViewClass:RoomTitleViewWithTopic.class];
     
     // Replace the default input toolbar view.
+    // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
     
@@ -210,6 +232,90 @@
     }
     
     [super destroy];
+}
+
+#pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+{
+    Class cellViewClass = nil;
+    
+    // Sanity check
+    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
+    {
+        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+        
+        // Select the suitable table view cell class
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isAttachmentWithThumbnail)
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = MXKRoomIncomingAttachmentBubbleCell.class;
+                }
+            }
+            else
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = MXKRoomIncomingTextMsgBubbleCell.class;
+                }
+            }
+        }
+        else
+        {
+            // Handle here outgoing bubbles
+            if (bubbleData.isAttachmentWithThumbnail)
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomOutgoingAttachmentBubbleCell.class;
+                }
+            }
+            else
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomOutgoingTextMsgBubbleCell.class;
+                }
+            }
+        }
+    }
+    
+    return cellViewClass;
 }
 
 #pragma mark - MXKDataSource delegate
