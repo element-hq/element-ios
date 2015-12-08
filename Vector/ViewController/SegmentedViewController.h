@@ -28,6 +28,7 @@ limitations under the License.
 #pragma mark - Class methods
 @property (weak, nonatomic) IBOutlet UIView *selectionContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *viewControllerContainer;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 

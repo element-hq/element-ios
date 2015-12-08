@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="backgroundImageView" destination="KfM-OD-fTP" id="AXh-ac-GWQ"/>
                 <outlet property="selectionContainer" destination="ynH-uD-aQj" id="taa-CW-XgW"/>
+                <outlet property="selectionContainerHeightConstraint" destination="fZ1-SQ-nxS" id="kQ4-n9-Gmt"/>
                 <outlet property="selectionContainerTopConstraint" destination="eLe-5q-IfV" id="UhZ-9k-P1r"/>
                 <outlet property="view" destination="1TG-Rn-axS" id="WxL-e2-rVK"/>
                 <outlet property="viewControllerContainer" destination="Hbe-uP-aJY" id="mD3-w0-UXi"/>
