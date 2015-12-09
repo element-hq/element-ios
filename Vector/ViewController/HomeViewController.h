@@ -18,10 +18,17 @@
 
 #import "SegmentedViewController.h"
 
+@class RoomViewController;
+
 @interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;
+
+// References on the currently selected room and its view controller
+@property (nonatomic, readonly) RoomViewController *currentRoomViewController;
+@property (nonatomic, readonly) NSString  *selectedRoomId;
+@property (nonatomic, readonly) MXSession *selectedRoomSession;
 
 - (void)displayWithSession:(MXSession*)session;
 

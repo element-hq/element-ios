@@ -16,7 +16,26 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+@class HomeViewController;
+
 @interface RecentsViewController : MXKRecentListViewController
+
+/**
+ Display the recents described in the provided data source.
+
+ @param listDataSource the data source providing the recents list.
+ @param homeViewController the segmentedViewController in which the RecentsViewController is displayed.
+ */
+- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController;
+
+/**
+ Refresh the cell selection in the table.
+
+ This must be done accordingly to the currently selected room in the parent HomeViewController.
+
+ @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
+ */
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
 @end
 
