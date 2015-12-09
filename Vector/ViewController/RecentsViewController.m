@@ -27,8 +27,6 @@
 
 #import "VectorDesignValues.h"
 
-#import "SearchViewController.h"
-
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -302,11 +300,6 @@
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
-    }
-    else if ([[segue identifier] isEqualToString:@"presentSearch"])
-    {
-        SearchViewController *searchViewController = (SearchViewController*)segue.destinationViewController;
-        [searchViewController displayWithSession:self.dataSource.mxSession];
     }
     
     // Hide back button title

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3223A3E41C10AB0D00E7FD8F /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3223A3E31C10AB0D00E7FD8F /* SearchViewController.m */; };
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
 		32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200811C15C56A00A4E396 /* search_bg@2x.png */; };
 		32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200821C15C56A00A4E396 /* search_bg@3x.png */; };
@@ -138,8 +137,6 @@
 
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
-		3223A3E21C10AB0D00E7FD8F /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		3223A3E31C10AB0D00E7FD8F /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		32D200801C15C56A00A4E396 /* search_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bg.png; sourceTree = "<group>"; };
 		32D200811C15C56A00A4E396 /* search_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@2x.png"; sourceTree = "<group>"; };
 		32D200821C15C56A00A4E396 /* search_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@3x.png"; sourceTree = "<group>"; };
@@ -314,15 +311,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3223A3E11C10AAF000E7FD8F /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				3223A3E21C10AB0D00E7FD8F /* SearchViewController.h */,
-				3223A3E31C10AB0D00E7FD8F /* SearchViewController.m */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
 		6567B0BBF3C05D7F7A7F79CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -582,7 +570,6 @@
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				3223A3E11C10AAF000E7FD8F /* Search */,
 				F094AA161B78E42600B1FBBF /* AccountDetailsViewController.h */,
 				F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */,
 				F094AA181B78E42600B1FBBF /* AuthenticationViewController.h */,
@@ -925,7 +912,6 @@
 				71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */,
-				3223A3E41C10AB0D00E7FD8F /* SearchViewController.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,

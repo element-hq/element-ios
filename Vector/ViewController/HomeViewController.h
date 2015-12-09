@@ -16,7 +16,7 @@
 
 #import "SegmentedViewController.h"
 
-@interface HomeViewController : SegmentedViewController <UISearchBarDelegate>
+@interface HomeViewController : SegmentedViewController <UISearchBarDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;

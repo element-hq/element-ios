@@ -236,31 +236,11 @@
                     <connections>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="Vo4-8x-dtH"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vqM-5M-ctF"/>
-                        <segue destination="Z3B-Hn-xls" kind="show" identifier="presentSearch" id="qSw-cw-b9m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Po3-cj-dhS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2188" y="-2350"/>
-        </scene>
-        <!--Search View Controller-->
-        <scene sceneID="8iN-4m-YPt">
-            <objects>
-                <viewController id="Z3B-Hn-xls" customClass="SearchViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="dW9-Ul-v50"/>
-                        <viewControllerLayoutGuide type="bottom" id="59X-hG-qRJ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="bwK-gl-okx">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="C8X-sk-odI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2796" y="-2319"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
