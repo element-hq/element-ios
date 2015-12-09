@@ -20,6 +20,9 @@
 
 @class RoomViewController;
 
+/**
+ The `HomeViewController` screen is the main app screen.
+ */
 @interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
@@ -30,6 +33,11 @@
 @property (nonatomic, readonly) NSString  *selectedRoomId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
 
+/**
+ Start displaying the screen with a user Matrix session.
+ 
+ @param session the user Matrix session.
+ */
 - (void)displayWithSession:(MXSession*)session;
 
 /**
