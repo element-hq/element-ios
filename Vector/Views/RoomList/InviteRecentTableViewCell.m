@@ -29,6 +29,21 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    [self.leftButton.layer setCornerRadius:5];
+    self.leftButton.clipsToBounds = YES;
+    self.leftButton.backgroundColor = VECTOR_GREEN_COLOR;
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    
+    [self.rightButton.layer setCornerRadius:5];
+    self.rightButton.clipsToBounds = YES;
+    self.rightButton.backgroundColor = VECTOR_GREEN_COLOR;
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateNormal];
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateHighlighted];
+    
+    // the date is not displayed in the invitation cells.
+    self.lastEventDate.hidden = YES;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -39,7 +54,7 @@
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 79;
+    return 84;
 }
 
 @end

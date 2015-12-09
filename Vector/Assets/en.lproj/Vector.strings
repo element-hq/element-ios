@@ -32,6 +32,8 @@
 "off" = "Off";
 "cancel" = "Cancel";
 "save" = "Save";
+"join" = "Join";
+"reject" = "Reject";
 
 // Authentication
 "auth_sign_in" = "Sign in";
