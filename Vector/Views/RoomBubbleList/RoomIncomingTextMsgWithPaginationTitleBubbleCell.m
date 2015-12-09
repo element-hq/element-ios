@@ -14,12 +14,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
 
-#import "MediaPickerViewController.h"
-
-@interface SettingsViewController : MXKTableViewController<MediaPickerViewControllerDelegate>
-
+@implementation RoomIncomingTextMsgWithPaginationTitleBubbleCell
 
 @end
-

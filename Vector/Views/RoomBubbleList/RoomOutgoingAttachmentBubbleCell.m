@@ -14,12 +14,24 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomOutgoingAttachmentBubbleCell.h"
 
-#import "MediaPickerViewController.h"
+@implementation RoomOutgoingAttachmentBubbleCell
 
-@interface SettingsViewController : MXKTableViewController<MediaPickerViewControllerDelegate>
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+}
 
+- (void)render:(MXKCellData *)cellData
+{
+    [super render:cellData];
+}
+
+- (void)didEndDisplay
+{
+    [super didEndDisplay];
+}
 
 @end
-

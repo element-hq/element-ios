@@ -107,7 +107,7 @@ static UILabel* backgroundLabel = nil;
     // the images are cached to avoid create them several times
     // the key is <first upper character><index in the colors array>
     // it should be smaller than using the text as a key
-    NSString* key = [NSString stringWithFormat:@"%@%ld", text, colorIndex];
+    NSString* key = [NSString stringWithFormat:@"%@%tu", text, colorIndex];
     
     if (!imageByKeyDict)
     {

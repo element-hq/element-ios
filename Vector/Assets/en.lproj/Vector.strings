@@ -28,6 +28,10 @@
 "leave" = "Leave";
 "remove" = "Remove";
 "retry" = "Retry";
+"on" = "On";
+"off" = "Off";
+"cancel" = "Cancel";
+"save" = "Save";
 
 // Authentication
 "auth_sign_in" = "Sign in";
@@ -86,6 +90,41 @@
 "settings_config_no_build_info" = "(no build info)";
 "settings_title_config" = "Configuration";
 "settings_clear_cache" = "Clear cache";
+
+"settings_user_settings" = "USER SETTINGS";
+"settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_other" = "OTHER";
+
+"settings_sign_out" = "Sign Out";
+"settings_profile_picture" = "Profile Picture";
+"settings_display_name" = "Display Name";
+"settings_first_name" = "First Name";
+"settings_surname" = "Surname";
+"settings_email_address" = "Email Address";
+"settings_change_password" = "Change password";
+"settings_phone_number" = "Phone Number";
+"settings_night_mode" = "Night Mode";
+
+"settings_enable_all_notif" = "Enable all notifications";
+"settings_general_messages" = "General messages";
+"settings_messages_my_display_name" = "Msg containing my display name";
+"settings_messages_my_user_name" = "Msg containing my user name";
+"settings_messages_sent_to_me" = "Messages sent to me";
+"settings_invited_to_room" = "When i'm invited to a room";
+"settings_join_leave_rooms" = "When people join or leave rooms";
+"settings_call_invitations" = "Call invitations";
+
+"settings_version" = "Version %@";
+"settings_term_conditions" = "Terms & conditions";
+"settings_privacy_policy" = "Privacy Policy";
+"settings_clear_cache" = "Clear cache";
+
+"settings_change_password" = "Change password";
+"settings_old_password" = "old password";
+"settings_new_password" = "new password";
+"settings_confirm_password" = "confirm password";
+"settings_fail_to_update_password" = "Fail to update password";
+"settings_password_updated" = "Your password has been updated";
 
 // Room Details
 "room_details_title" = "Room Details";
