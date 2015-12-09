@@ -75,9 +75,13 @@
 {
     [super viewWillAppear:animated];
 
+    // Let's child display the loading not the home view controller
+    [self.activityIndicator stopAnimating];
+    self.activityIndicator = nil;
+
     [self hideSearch:NO];
 
-    // TODO: dedicated segmented viewWillAppear
+    // TODO: a dedicated segmented viewWillAppear may be more appropriate
     [self.displayedViewController viewWillAppear:animated];
 }
 
