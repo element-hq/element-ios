@@ -69,7 +69,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mvZ-se-pqQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="597" y="1236"/>
+            <point key="canvasLocation" x="414" y="1356"/>
         </scene>
         <!--Settings-->
         <scene sceneID="4CK-43-kSo">
@@ -207,36 +207,12 @@
                         <outlet property="settingsBarButtonItem" destination="RwK-LB-3ML" id="T3b-ii-7fa"/>
                         <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="EwV-tH-4jl"/>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="agy-3r-khl"/>
+                        <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vfC-8C-AsT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1364" y="-2374"/>
-        </scene>
-        <!--Recents View Controller-->
-        <scene sceneID="EAJ-Vu-76j">
-            <objects>
-                <viewController id="Foe-o5-6Ud" customClass="RecentsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Jln-Vm-ZHx"/>
-                        <viewControllerLayoutGuide type="bottom" id="PJV-eF-tdG"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="SRE-ot-NcW">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="6sO-OP-7Sv">
-                        <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="9PU-2Y-yGq"/>
-                    </navigationItem>
-                    <connections>
-                        <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vqM-5M-ctF"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Po3-cj-dhS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2188" y="-2350"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
@@ -280,6 +256,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="agy-3r-khl"/>
-        <segue reference="vqM-5M-ctF"/>
+        <segue reference="17E-G9-IZ6"/>
     </inferredMetricsTieBreakers>
 </document>
