@@ -22,10 +22,12 @@
 
 @interface RecentsDataSource()
 {
+    NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
     
+    NSInteger invitesSection;
     NSInteger favoritesSection;
     NSInteger conversationSection;
     NSInteger lowPrioritySection;
@@ -49,6 +51,7 @@
         conversationCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         
+        invitesSection = -1;
         favoritesSection = -1;
         conversationSection = -1;
         lowPrioritySection = -1;
@@ -111,7 +114,7 @@
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
+    if ((section == invitesSection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
     {
         return 30.0f;
     }
@@ -146,6 +149,11 @@
     {
         count = lowPriorityCellDataArray.count;
     }
+    else if (section == invitesSection)
+    {
+        count = invitesCellDataArray.count;
+    }
+    
 
     return count;
 }
@@ -154,7 +162,7 @@
 {
     // add multi accounts section management
     
-    if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
+    if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection) || (section == invitesSection))
     {
         UILabel* label = [[UILabel alloc] initWithFrame:frame];
         
@@ -171,6 +179,10 @@
         else if (section == lowPrioritySection)
         {
             text = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
+        }
+        else if (section == invitesSection)
+        {
+            text = NSLocalizedStringFromTable(@"room_recents_invites", @"Vector", nil);
         }
     
         label.text = [NSString stringWithFormat:@"   %@", text];
@@ -199,6 +211,10 @@
     {
         cellData = [lowPriorityCellDataArray objectAtIndex:indexPath.row];
     }
+    else if (indexPath.section == invitesSection)
+    {
+        cellData = [invitesCellDataArray objectAtIndex:indexPath.row];
+    }
     
     return cellData;
 }
@@ -211,6 +227,7 @@
     if (cellData && self.delegate)
     {
         Class<MXKCellRendering> class = [self.delegate cellViewClassForCellData:cellData];
+        
         return [class heightForCellData:cellData withMaximumWidth:0];
     }
 
@@ -240,7 +257,7 @@
     conversationCellDataArray = [[NSMutableArray alloc] init];
     lowPriorityCellDataArray = [[NSMutableArray alloc] init];
     
-    favoritesSection = conversationSection = lowPrioritySection = -1;
+    favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
 
     if (displayedRecentsDataSourceArray.count > 0)
@@ -248,9 +265,11 @@
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
         MXSession* session = recentsDataSource.mxSession;
         
+        NSArray* sortedInvitesRooms = [session invitedRooms];
         NSArray* sortedFavRooms = [session roomsWithTag:kMXRoomTagFavourite];
         NSArray* sortedLowPriorRooms = [session roomsWithTag:kMXRoomTagLowPriority];
         
+        invitesCellDataArray = [self createEmptyArray:sortedInvitesRooms.count];
         favoriteCellDataArray = [self createEmptyArray:sortedFavRooms.count];
         lowPriorityCellDataArray = [self createEmptyArray:sortedLowPriorRooms.count];
         
@@ -276,6 +295,13 @@
                     [lowPriorityCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
                 }
             }
+            else  if ((pos = [sortedInvitesRooms indexOfObject:room]) != NSNotFound)
+            {
+                if (pos < invitesCellDataArray.count)
+                {
+                    [invitesCellDataArray replaceObjectAtIndex:pos withObject:recentCellDataStoring];
+                }
+            }
             else
             {
                 [conversationCellDataArray addObject:recentCellDataStoring];
@@ -283,6 +309,13 @@
         }
         
         int sectionIndex = 0;
+        
+        [invitesCellDataArray removeObject:[NSNull null]];
+        if (invitesCellDataArray.count > 0)
+        {
+            invitesSection = sectionIndex;
+            sectionIndex++;
+        }
         
         [favoriteCellDataArray removeObject:[NSNull null]];
         if (favoriteCellDataArray.count > 0)

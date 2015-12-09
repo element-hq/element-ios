@@ -62,6 +62,7 @@
 "room_recents_favourites" = "FAVORITES";
 "room_recents_conversations" = "CONVERSATIONS";
 "room_recents_low_priority" = "LOW PRIORITY";
+"room_recents_invites" = "INVITES";
 
 // Chat participants
 "room_participants_title" = "Participants";
