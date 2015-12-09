@@ -11,6 +11,7 @@
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
 		32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200811C15C56A00A4E396 /* search_bg@2x.png */; };
 		32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200821C15C56A00A4E396 /* search_bg@3x.png */; };
+		32D200881C16C2B100A4E396 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D200871C16C2B100A4E396 /* HomeViewController.m */; };
 		71046D5E1C0C639300DCA984 /* RoomTitleViewWithTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 71046D5D1C0C639300DCA984 /* RoomTitleViewWithTopic.m */; };
 		71046D601C0C86C600DCA984 /* RoomTitleViewWithTopic.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71046D5F1C0C86C600DCA984 /* RoomTitleViewWithTopic.xib */; };
 		71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 71352D581C10569F001D50B0 /* AvatarGenerator.m */; };
@@ -142,6 +143,8 @@
 		32D200801C15C56A00A4E396 /* search_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bg.png; sourceTree = "<group>"; };
 		32D200811C15C56A00A4E396 /* search_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@2x.png"; sourceTree = "<group>"; };
 		32D200821C15C56A00A4E396 /* search_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@3x.png"; sourceTree = "<group>"; };
+		32D200861C16C2B100A4E396 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		32D200871C16C2B100A4E396 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
 		71046D5C1C0C639300DCA984 /* RoomTitleViewWithTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomTitleViewWithTopic.h; path = RoomTitle/RoomTitleViewWithTopic.h; sourceTree = "<group>"; };
 		71046D5D1C0C639300DCA984 /* RoomTitleViewWithTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomTitleViewWithTopic.m; path = RoomTitle/RoomTitleViewWithTopic.m; sourceTree = "<group>"; };
@@ -586,6 +589,8 @@
 				F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */,
 				F094AA1C1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.h */,
 				F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */,
+				32D200861C16C2B100A4E396 /* HomeViewController.h */,
+				32D200871C16C2B100A4E396 /* HomeViewController.m */,
 				F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */,
 				F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */,
 				F001D76A1B821E4F00A162C3 /* MediaPickerViewController.h */,
@@ -933,6 +938,7 @@
 				71C5F2951C074ACC004C094B /* RoomSettingsViewController.m in Sources */,
 				F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */,
 				71EBE66D1C04C4D300E7D953 /* RoomActivitiesView.m in Sources */,
+				32D200881C16C2B100A4E396 /* HomeViewController.m in Sources */,
 				F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */,
 				F001D7601B8207C000A162C3 /* RoomOutgoingBubbleTableViewCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleViewWithTopic.m in Sources */,

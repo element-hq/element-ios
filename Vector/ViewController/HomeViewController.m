@@ -27,6 +27,12 @@
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
 
+    // Display a gradient view above the screen
+    CAGradientLayer* tableViewMaskLayer;
+
+    // Display a button to a new room
+    UIImageView* createNewRoomImageView;
+
     // Backup of view when displaying search
     UIView *backupTitleView;
     UIBarButtonItem *backupLeftBarButtonItem;
@@ -36,6 +42,12 @@
 @end
 
 @implementation HomeViewController
+
+- (void)displayWithSession:(MXSession *)session
+{
+    // to display a red navbar when the home server cannot be reached.
+    [self addMatrixSession:session];
+}
 
 - (void)viewDidLoad
 {
@@ -83,14 +95,116 @@
 
     [self hideSearch:NO];
 
+    if (!tableViewMaskLayer)
+    {
+        tableViewMaskLayer = [CAGradientLayer layer];
+
+        CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+        CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+
+        tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+
+        // display a gradient to the rencents bottom (20% of the bottom of the screen)
+        tableViewMaskLayer.locations = [NSArray arrayWithObjects:
+                                        [NSNumber numberWithFloat:0],
+                                        [NSNumber numberWithFloat:0.8],
+                                        [NSNumber numberWithFloat:1.0], nil];
+
+        tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        tableViewMaskLayer.anchorPoint = CGPointZero;
+
+        // CAConstraint is not supported on IOS.
+        // it seems only being supported on Mac OS.
+        // so viewDidLayoutSubviews will refresh the layout bounds.
+        [self.view.layer addSublayer:tableViewMaskLayer];
+    }
+
+    if (!createNewRoomImageView)
+    {
+        createNewRoomImageView = [[UIImageView alloc] init];
+        [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:createNewRoomImageView];
+
+        createNewRoomImageView.backgroundColor = [UIColor clearColor];
+        createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
+
+        CGFloat side = 50.0f;
+        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1
+                                                                            constant:side];
+
+        NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1
+                                                                             constant:side];
+
+        NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1
+                                                                              constant:0];
+
+        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:createNewRoomImageView
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1
+                                                                             constant:50];
+
+        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+        {
+            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+        }
+        else
+        {
+            [createNewRoomImageView addConstraint:widthConstraint];
+            [createNewRoomImageView addConstraint:heightConstraint];
+
+            [self.view addConstraint:bottomConstraint];
+            [self.view addConstraint:centerXConstraint];
+        }
+
+        createNewRoomImageView.userInteractionEnabled = YES;
+
+        // tap -> switch to text edition
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [createNewRoomImageView addGestureRecognizer:tap];
+    }
+
     // TODO: a dedicated segmented viewWillAppear may be more appropriate
     [self.displayedViewController viewWillAppear:animated];
 }
 
-- (void)displayWithSession:(MXSession *)session
+- (void) viewDidLayoutSubviews
 {
-    // to display a red navbar when the home server cannot be reached.
-    [self addMatrixSession:session];
+    [super viewDidLayoutSubviews];
+
+    // sanity check
+    if (tableViewMaskLayer)
+    {
+        CGRect currentBounds = tableViewMaskLayer.bounds;
+        CGRect newBounds = CGRectIntegral(self.view.frame);
+
+        // check if there is an update
+        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
+        {
+            newBounds.origin = CGPointZero;
+            tableViewMaskLayer.bounds = newBounds;
+        }
+    }
 }
 
 /*
@@ -215,7 +329,7 @@
     [self hideSearch:YES];
 }
 
-#pragma mark - User's actions
+#pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender
 {
@@ -223,6 +337,11 @@
     {
         [self showSearch:YES];
     }
+}
+
+- (void)onNewRoomPressed
+{
+    [self performSegueWithIdentifier:@"presentRoomCreationStep1" sender:self];
 }
 
 @end

@@ -205,11 +205,12 @@
                     <connections>
                         <outlet property="searchBarButtonIem" destination="mxO-nq-rJ1" id="J1s-2g-XGk"/>
                         <outlet property="settingsBarButtonItem" destination="RwK-LB-3ML" id="T3b-ii-7fa"/>
+                        <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="EwV-tH-4jl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1404" y="-2374"/>
+            <point key="canvasLocation" x="1364" y="-2374"/>
         </scene>
         <!--Recents View Controller-->
         <scene sceneID="EAJ-Vu-76j">
@@ -222,20 +223,6 @@
                     <view key="view" contentMode="scaleToFill" id="SRE-ot-NcW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c5P-tg-gT3">
-                                <rect key="frame" x="275" y="556" width="50" height="44"/>
-                                <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <barButtonItem systemItem="add" id="YVc-Nq-3MW">
-                                        <connections>
-                                            <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="2DJ-TQ-1br"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
-                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
