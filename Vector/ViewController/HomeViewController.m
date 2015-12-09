@@ -48,15 +48,11 @@
 - (void)viewDidLoad
 {
     // Set up the SegmentedVC tabs before calling [super viewDidLoad]
-    MXSession *session = self.mxSessions[0];
-
     NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
     NSMutableArray* titles = [[NSMutableArray alloc] init];
 
     [titles addObject: NSLocalizedStringFromTable(@"Rooms", @"Vector", nil)];
     recentsViewController = [RecentsViewController recentListViewController];
-    recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:session];
-    [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
     recentsViewController.delegate = self;
     [viewControllers addObject:recentsViewController];
 
@@ -189,7 +185,7 @@
         [createNewRoomImageView addGestureRecognizer:tap];
     }
 
-    // TODO: a dedicated segmented viewWillAppear may be more appropriate
+    // Forward the event to the child
     [self.displayedViewController viewWillAppear:animated];
 }
 
@@ -242,10 +238,39 @@
 
 #pragma mark -
 
-- (void)displayWithSession:(MXSession *)session
+- (void)displayWithSession:(MXSession *)mxSession
 {
-    // to display a red navbar when the home server cannot be reached.
-    [self addMatrixSession:session];
+    [super addMatrixSession:mxSession];
+
+    // Init the recents data source
+    recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mxSession];
+    [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
+
+    // Do not go to search mode when first opening the home
+    [self hideSearch:NO];
+}
+
+- (void)addMatrixSession:(MXSession *)mxSession
+{
+    // Add the session to the existing recents data source
+    if (recentsDataSource)
+    {
+        [recentsDataSource addMatrixSession:mxSession];
+    }
+}
+
+- (void)removeMatrixSession:(MXSession *)mxSession
+{
+    [recentsDataSource removeMatrixSession:mxSession];
+    
+    // Check whether there are others sessions
+    if (!self.mxSessions.count)
+    {
+        // Keep reference on existing dataSource to release it properly
+        MXKRecentsDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
+        [recentsViewController displayList:nil];
+        [previousRecentlistDataSource destroy];
+    }
 }
 
 - (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
