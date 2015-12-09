@@ -18,6 +18,12 @@
 
 @implementation RoomOutgoingTextMsgWithPaginationTitleBubbleCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+}
+
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];

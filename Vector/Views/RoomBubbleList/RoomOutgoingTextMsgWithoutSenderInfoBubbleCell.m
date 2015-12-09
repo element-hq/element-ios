@@ -18,4 +18,10 @@
 
 @implementation RoomOutgoingTextMsgWithoutSenderInfoBubbleCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+}
+
 @end
