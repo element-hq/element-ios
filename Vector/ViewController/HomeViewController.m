@@ -64,6 +64,8 @@
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
+    
+    self.backgroundImageView.image = [UIImage imageNamed:@"search_bg"];
 
     // Search bar
     searchBar = [[UISearchBar alloc] init];
@@ -91,6 +93,17 @@
     [self addMatrixSession:session];
 }
 
+/*
+ #pragma mark - Navigation
+
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
+
+#pragma mark - Search
 
 - (void)showSearch:(BOOL)animated
 {
@@ -109,6 +122,8 @@
     // Show the tabs header
     if (animated)
     {
+        [self updateSearch];
+
         [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
 
@@ -116,11 +131,11 @@
                              [self.view layoutIfNeeded];
                          }
                          completion:^(BOOL finished){
-                             
                          }];
     }
     else
     {
+        [self updateSearch];
         self.selectionContainerHeightConstraint.constant = 44;
         [self.view layoutIfNeeded];
     }
@@ -144,32 +159,61 @@
                              self.selectionContainerHeightConstraint.constant = 0;
                              [self.view layoutIfNeeded];
                          }
-                         completion:^(BOOL finished){
-
-                             // Go back under the recents tab
-                             // TODO: Open the feature in SegmentedVC
-                         }];
+                         completion:nil];
     }
     else
     {
         self.selectionContainerHeightConstraint.constant = 0;
         [self.view layoutIfNeeded];
+    }
 
-        // Go back under the recents tab
-        // TODO: Open the feature in SegmentedVC
+    // Go back under the recents tab
+    // TODO: Open the feature in SegmentedVC
+    [recentsDataSource searchWithPatterns:nil];
+    self.displayedViewController.view.hidden = NO;
+}
+
+// Update search results under the currently selected tab
+- (void)updateSearch
+{
+    if (searchBar.text.length)
+    {
+        self.displayedViewController.view.hidden = NO;
+
+        // Forward the search request to the data source
+        if (self.displayedViewController == recentsViewController)
+        {
+            [recentsDataSource searchWithPatterns:@[searchBar.text]];
+        }
+    }
+    else
+    {
+        // Nothing to search = Show nothing
+        self.displayedViewController.view.hidden = YES;
     }
 }
 
+#pragma mark - UISearchBarDelegate
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (self.displayedViewController == recentsViewController)
+    {
+        // As the search is local, it can be updated on each text change
+        [self updateSearch];
+    }
 }
-*/
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
+{
+    // "Search" key has been pressed
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
+{
+    [self hideSearch:YES];
+}
 
 #pragma mark - User's actions
 
@@ -179,13 +223,6 @@
     {
         [self showSearch:YES];
     }
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self hideSearch:YES];
 }
 
 @end
