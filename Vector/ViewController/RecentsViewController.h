@@ -16,20 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
-
-/**
- Open the room with the provided identifier in a specific matrix session.
- 
- @param roomId the room identifier.
- @param mxSession the matrix session in which the room should be available.
- */
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession;
-
-/**
- Close the current selected room (if any)
- */
-- (void)closeSelectedRoom;
+@interface RecentsViewController : MXKRecentListViewController
 
 @end
 

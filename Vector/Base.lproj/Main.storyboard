@@ -206,6 +206,7 @@
                         <outlet property="searchBarButtonIem" destination="mxO-nq-rJ1" id="J1s-2g-XGk"/>
                         <outlet property="settingsBarButtonItem" destination="RwK-LB-3ML" id="T3b-ii-7fa"/>
                         <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="EwV-tH-4jl"/>
+                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="agy-3r-khl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -227,14 +228,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="6sO-OP-7Sv">
-                        <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="9PU-2Y-yGq">
-                            <connections>
-                                <segue destination="1TJ-Md-cjN" kind="show" identifier="showSettings" id="wd0-0d-DFM"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="9PU-2Y-yGq"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="Vo4-8x-dtH"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vqM-5M-ctF"/>
                     </connections>
                 </viewController>
@@ -283,8 +279,7 @@
         <image name="settings_icon.png" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rCU-QE-kdQ"/>
-        <segue reference="Vo4-8x-dtH"/>
+        <segue reference="agy-3r-khl"/>
         <segue reference="vqM-5M-ctF"/>
     </inferredMetricsTieBreakers>
 </document>

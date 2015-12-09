@@ -19,6 +19,8 @@
 #import "RecentsDataSource.h"
 #import "RecentsViewController.h"
 
+#import "RoomViewController.h"
+
 @interface HomeViewController ()
 {
     // The search bar
@@ -26,6 +28,13 @@
 
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
+
+    // Selected room description
+    NSString  *selectedRoomId;
+    MXSession *selectedRoomSession;
+
+    // Keep reference on the current room view controller to release it correctly
+    RoomViewController *currentRoomViewController;
 
     // Display a gradient view above the screen
     CAGradientLayer* tableViewMaskLayer;
@@ -49,6 +58,51 @@
     [self addMatrixSession:session];
 }
 
+
+#pragma mark -
+
+- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+{
+    if (selectedRoomId && [selectedRoomId isEqualToString:roomId]
+        && selectedRoomSession && selectedRoomSession == matrixSession)
+    {
+        // Nothing to do
+        return;
+    }
+
+    selectedRoomId = roomId;
+    selectedRoomSession = matrixSession;
+
+    if (roomId && matrixSession)
+    {
+        [self performSegueWithIdentifier:@"showDetails" sender:self];
+    }
+    else
+    {
+        [self closeSelectedRoom];
+    }
+}
+
+- (void)closeSelectedRoom
+{
+    selectedRoomId = nil;
+    selectedRoomSession = nil;
+
+    if (currentRoomViewController)
+    {
+        if (currentRoomViewController.roomDataSource)
+        {
+            // Let the manager release this room data source
+            MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+            [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
+        }
+
+        [currentRoomViewController destroy];
+        currentRoomViewController = nil;
+    }
+}
+
 - (void)viewDidLoad
 {
     // Set up the SegmentedVC tabs before calling [super viewDidLoad]
@@ -61,6 +115,7 @@
     recentsViewController = [RecentsViewController recentListViewController];
     recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:session];
     [recentsViewController displayList:recentsDataSource];
+    recentsViewController.delegate = self;
     [viewControllers addObject:recentsViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"Messages", @"Vector", nil)];
@@ -85,16 +140,23 @@
     searchBar.delegate = self;
 }
 
+- (void)dealloc
+{
+    [self closeSelectedRoom];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
     // Let's child display the loading not the home view controller
-    [self.activityIndicator stopAnimating];
-    self.activityIndicator = nil;
+    if (self.activityIndicator)
+    {
+        [self.activityIndicator stopAnimating];
+        self.activityIndicator = nil;
+    }
 
-    [self hideSearch:NO];
-
+    // Add blur mask programatically
     if (!tableViewMaskLayer)
     {
         tableViewMaskLayer = [CAGradientLayer layer];
@@ -119,6 +181,7 @@
         [self.view.layer addSublayer:tableViewMaskLayer];
     }
 
+    // Add new room button programatically
     if (!createNewRoomImageView)
     {
         createNewRoomImageView = [[UIImageView alloc] init];
@@ -188,6 +251,33 @@
     [self.displayedViewController viewWillAppear:animated];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
+    {
+        // Release the current selected room (if any).
+        [self closeSelectedRoom];
+    }
+    else
+    {
+        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+        // the selected room (if any) is highlighted.
+        [self refreshCurrentSelectedCell:YES];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    selectedRoomId = nil;
+    selectedRoomSession = nil;
+}
+
 - (void) viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -207,15 +297,113 @@
     }
 }
 
-/*
+
  #pragma mark - Navigation
 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+
+    if ([[segue identifier] isEqualToString:@"showDetails"])
+    {
+        UIViewController *controller;
+        if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]])
+        {
+            controller = [[segue destinationViewController] topViewController];
+        }
+        else
+        {
+            controller = [segue destinationViewController];
+        }
+
+        if ([controller isKindOfClass:[RoomViewController class]])
+        {
+            // Release existing Room view controller (if any)
+            if (currentRoomViewController)
+            {
+                if (currentRoomViewController.roomDataSource)
+                {
+                    // Let the manager release this room data source
+                    MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
+                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                    [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
+                }
+
+                [currentRoomViewController destroy];
+                currentRoomViewController = nil;
+            }
+
+            currentRoomViewController = (RoomViewController *)controller;
+
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:selectedRoomSession];
+            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:selectedRoomId create:YES];
+            [currentRoomViewController displayRoom:roomDataSource];
+        }
+
+        if (self.splitViewController)
+        {
+            // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
+            [self refreshCurrentSelectedCell:NO];
+
+            // IOS >= 8
+            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+            {
+                controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            }
+
+            //
+            controller.navigationItem.leftItemsSupplementBackButton = YES;
+        }
+    }
+
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
+#pragma mark - Internal methods
+
+
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+    // TODO currentSelectedCellIndexPath = nil;
+    if (currentRoomViewController)
+    {
+        // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
+        if (!selectedRoomId)
+        {
+            selectedRoomId = currentRoomViewController.roomDataSource.roomId;
+            selectedRoomSession = currentRoomViewController.mainSession;
+        }
+
+        // Look for the rank of this selected room in displayed recents
+         // TODO currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:selectedRoomSession];
+    }
+
+//    if (currentSelectedCellIndexPath)
+//    {
+//        // Select the right row
+//        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+//
+//        if (forceVisible)
+//        {
+//            // Scroll table view to make the selected row appear at second position
+//            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+//            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+//            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+//        }
+//    }
+//    else
+//    {
+//        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+//        if (indexPath)
+//        {
+//            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+//        }
+//    }
+}
+
 
 #pragma mark - Search
 
@@ -327,6 +515,14 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
 {
     [self hideSearch:YES];
+}
+
+#pragma mark - MXKRecentListViewControllerDelegate
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
+{
+    // Open the room
+    [self selectRoomWithId:roomId inMatrixSession:matrixSession];
 }
 
 #pragma mark - Actions

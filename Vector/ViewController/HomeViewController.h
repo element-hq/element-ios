@@ -14,15 +14,29 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MatrixKit.h>
+
 #import "SegmentedViewController.h"
 
-@interface HomeViewController : SegmentedViewController <UISearchBarDelegate, UIGestureRecognizerDelegate>
+@interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;
 
-
 - (void)displayWithSession:(MXSession*)session;
+
+/**
+ Open the room with the provided identifier in a specific matrix session.
+
+ @param roomId the room identifier.
+ @param mxSession the matrix session in which the room should be available.
+ */
+- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession;
+
+/**
+ Close the current selected room (if any)
+ */
+- (void)closeSelectedRoom;
 
 /**
  Action registered on `UIControlEventTouchUpInside` event for both buttons.
