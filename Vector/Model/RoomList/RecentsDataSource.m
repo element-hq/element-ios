@@ -20,6 +20,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "InviteRecentTableViewCell.h"
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -194,6 +196,33 @@
     
     return [super viewForHeaderInSection:section withFrame:frame];
 }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id<MXKRecentCellDataStoring> roomData = [self cellDataAtIndexPath:indexPath];
+    if (roomData && self.delegate)
+    {
+        NSString *cellIdentifier = [self.delegate cellReuseIdentifierForCellData:roomData];
+                
+        if (cellIdentifier)
+        {
+            UITableViewCell<MXKCellRendering> *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+            
+            // Make the bubble display the data
+            [cell render:roomData];
+            
+            // Clear the user flag, if only one recents list is available
+            if (displayedRecentsDataSourceArray.count == 1 && [cell isKindOfClass:[MXKInterleavedRecentTableViewCell class]])
+            {
+                ((MXKInterleavedRecentTableViewCell*)cell).userFlag.backgroundColor = [UIColor clearColor];
+            }
+            
+            return cell;
+        }
+    }
+    return nil;
+}
+
 
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -27,6 +27,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "InviteRecentTableViewCell.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -81,6 +83,7 @@
     
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
 }
 
 - (void)dealloc
@@ -423,15 +426,31 @@
 #pragma mark - MXKDataSourceDelegate
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
-{ 
-    // Return the customized recent table view cell
-    return RecentTableViewCell.class;
+{
+    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    
+    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomDataSource.room])
+    {
+        return RecentTableViewCell.class;
+    }
+    else
+    {
+        return InviteRecentTableViewCell.class;
+    }
 }
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
-    // Return the customized recent table view cell identifier
-    return RecentTableViewCell.defaultReuseIdentifier;
+    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    
+    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomDataSource.room])
+    {
+        return RecentTableViewCell.defaultReuseIdentifier;
+    }
+    else
+    {
+        return InviteRecentTableViewCell.defaultReuseIdentifier;
+    }
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
