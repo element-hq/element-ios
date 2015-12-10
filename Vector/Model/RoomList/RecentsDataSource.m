@@ -292,6 +292,78 @@
     return 0;
 }
 
+- (NSInteger)cellIndexPosWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession within:(NSMutableArray*)cellDataArray
+{
+    if (roomId && matrixSession && cellDataArray.count)
+    {
+        for (int index = 0; index < cellDataArray.count; index++)
+        {
+            id<MXKRecentCellDataStoring> cellDataStoring = [cellDataArray objectAtIndex:index];
+
+            if ([roomId isEqualToString:cellDataStoring.roomDataSource.roomId] && (matrixSession == cellDataStoring.roomDataSource.mxSession))
+            {
+                return index;
+            }
+        }
+    }
+
+    return NSNotFound;
+}
+
+- (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
+{
+    NSIndexPath *indexPath = nil;
+    NSInteger index = NSNotFound;
+    
+    if (!indexPath && (invitesSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:invitesCellDataArray];
+        
+        if (index != NSNotFound)
+        {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:invitesSection];
+        }
+    }
+    
+    if (!indexPath && (favoritesSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:favoriteCellDataArray];
+        
+        if (index != NSNotFound)
+        {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:favoritesSection];
+        }
+    }
+    
+    if (!indexPath && (conversationSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:conversationCellDataArray];
+        
+        if (index != NSNotFound)
+        {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:conversationSection];
+        }
+    }
+    
+    if (!indexPath && (lowPrioritySection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:lowPriorityCellDataArray];
+        
+        if (index != NSNotFound)
+        {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:lowPrioritySection];
+        }
+    }
+    
+    if (!indexPath)
+    {
+        indexPath = [super cellIndexPathWithRoomId:roomId andMatrixSession:matrixSession];
+    }
+    
+    return indexPath;
+}
+
+
 #pragma mark - MXKDataSourceDelegate
 
 // create an array filled with NSNull and with the same size as sourceArray
