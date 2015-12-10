@@ -15,15 +15,15 @@
  */
 
 #import "RecentsViewController.h"
-#import "RoomViewController.h"
-
+#import "RecentsDataSource.h"
 #import "RecentTableViewCell.h"
 
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
 
-#import "RecentsDataSource.h"
+#import "HomeViewController.h"
+#import "RoomViewController.h"
 
 #import "VectorDesignValues.h"
 
@@ -31,22 +31,9 @@
 {
     // Recents refresh handling
     BOOL shouldScrollToTopOnRefresh;
-    
-    // Selected room description
-    NSString  *selectedRoomId;
-    MXSession *selectedRoomSession;
-    
-    // Keep reference on the current room view controller to release it correctly
-    RoomViewController *currentRoomViewController;
-    
-    // Keep the selected cell index to handle correctly split view controller display in landscape mode
-    NSIndexPath *currentSelectedCellIndexPath;
-    
-    // display a gradient view above the tableview
-    CAGradientLayer* tableViewMaskLayer;
-    
-    // display a button to a new room
-    UIImageView* createNewRoomImageView;
+
+    // The "parent" segmented view controller
+    HomeViewController *homeViewController;
 }
 
 @end
@@ -70,22 +57,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Initialisation
-    currentSelectedCellIndexPath = nil;
-    
     // Setup `MXKRecentListViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // The view controller handles itself the selected recent
-    self.delegate = self;
-    
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
-}
-
-- (void)dealloc
-{
-    [self closeSelectedRoom];
 }
 
 - (void)destroy
@@ -116,95 +92,6 @@
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
-    
-    if (!tableViewMaskLayer)
-    {
-        tableViewMaskLayer = [CAGradientLayer layer];
-        
-        CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-        CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
-        
-        tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
-        
-        // display a gradient to the rencents bottom (20% of the bottom of the screen)
-        tableViewMaskLayer.locations = [NSArray arrayWithObjects:
-                                        [NSNumber numberWithFloat:0],
-                                        [NSNumber numberWithFloat:0.8],
-                                        [NSNumber numberWithFloat:1.0], nil];
-        
-        tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        tableViewMaskLayer.anchorPoint = CGPointZero;
-        
-        // CAConstraint is not supported on IOS.
-        // it seems only being supported on Mac OS.
-        // so viewDidLayoutSubviews will refresh the layout bounds.
-        [self.view.layer addSublayer:tableViewMaskLayer];
-    }
-    
-    if (!createNewRoomImageView)
-    {
-        createNewRoomImageView = [[UIImageView alloc] init];
-        [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:createNewRoomImageView];
-        
-        createNewRoomImageView.backgroundColor = [UIColor clearColor];
-        createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
-        
-        CGFloat side = 50.0f;
-        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                           attribute:NSLayoutAttributeWidth
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:nil
-                                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                                          multiplier:1
-                                                                            constant:side];
-        
-        NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                            attribute:NSLayoutAttributeHeight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:nil
-                                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                                           multiplier:1
-                                                                             constant:side];
-        
-        NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                      attribute:NSLayoutAttributeCenterX
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeCenterX
-                                                     multiplier:1
-                                                       constant:0];
-        
-        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:createNewRoomImageView
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                            multiplier:1
-                                                                              constant:50];
-        
-        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-        {
-            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
-        }
-        else
-        {
-            [createNewRoomImageView addConstraint:widthConstraint];
-            [createNewRoomImageView addConstraint:heightConstraint];
-            
-            [self.view addConstraint:bottomConstraint];
-            [self.view addConstraint:centerXConstraint];
-        }
-        
-        createNewRoomImageView.userInteractionEnabled = YES;
-        
-        // tap -> switch to text edition
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [tap setDelegate:self];
-        [createNewRoomImageView addGestureRecognizer:tap];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -213,9 +100,6 @@
     
     // Leave potential editing mode
     [self setEditing:NO];
-    
-    selectedRoomId = nil;
-    selectedRoomSession = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -227,7 +111,7 @@
     if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
     {
         // Release the current selected room (if any).
-        [self closeSelectedRoom];
+        //[self closeSelectedRoom];
     }
     else
     {
@@ -242,67 +126,12 @@
     [super viewDidDisappear:animated];
 }
 
-- (void) viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    // sanity check
-    if (tableViewMaskLayer)
-    {
-        CGRect currentBounds = tableViewMaskLayer.bounds;
-        CGRect newBounds = CGRectIntegral(self.view.frame);
-        
-        // check if there is an update
-        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
-        {
-            newBounds.origin = CGPointZero;
-            tableViewMaskLayer.bounds = newBounds;
-        }
-    }
-}
-
 #pragma mark -
 
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController2
 {
-    if (selectedRoomId && [selectedRoomId isEqualToString:roomId]
-        && selectedRoomSession && selectedRoomSession == matrixSession)
-    {
-        // Nothing to do
-        return;
-    }
-    
-    selectedRoomId = roomId;
-    selectedRoomSession = matrixSession;
-    
-    if (roomId && matrixSession)
-    {
-        [self performSegueWithIdentifier:@"showDetails" sender:self];
-    }
-    else
-    {
-        [self closeSelectedRoom];
-    }
-}
-
-- (void)closeSelectedRoom
-{
-    selectedRoomId = nil;
-    selectedRoomSession = nil;
-    
-    if (currentRoomViewController)
-    {
-        if (currentRoomViewController.roomDataSource)
-        {
-            // Let the manager release this room data source
-            MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-            [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
-        }
-
-        [currentRoomViewController destroy];
-        currentRoomViewController = nil;
-    }
+    [super displayList:listDataSource];
+    homeViewController = homeViewController2;
 }
 
 #pragma mark - Internal methods
@@ -320,20 +149,13 @@
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    currentSelectedCellIndexPath = nil;
-    if (currentRoomViewController)
+    NSIndexPath *currentSelectedCellIndexPath = nil;
+    if (homeViewController.currentRoomViewController)
     {
-        // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
-        if (!selectedRoomId)
-        {
-            selectedRoomId = currentRoomViewController.roomDataSource.roomId;
-            selectedRoomSession = currentRoomViewController.mainSession;
-        }
-        
         // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:selectedRoomSession];
+        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
     }
-    
+
     if (currentSelectedCellIndexPath)
     {
         // Select the right row
@@ -355,69 +177,6 @@
             [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     }
-}
-
-#pragma mark - Segues
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Keep ref on destinationViewController
-    [super prepareForSegue:segue sender:sender];
-    
-    if ([[segue identifier] isEqualToString:@"showDetails"])
-    {
-        UIViewController *controller;
-        if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]])
-        {
-            controller = [[segue destinationViewController] topViewController];
-        }
-        else
-        {
-            controller = [segue destinationViewController];
-        }
-        
-        if ([controller isKindOfClass:[RoomViewController class]])
-        {
-            // Release existing Room view controller (if any)
-            if (currentRoomViewController)
-            {
-                if (currentRoomViewController.roomDataSource)
-                {
-                    // Let the manager release this room data source
-                    MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
-                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-                    [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
-                }
-                
-                [currentRoomViewController destroy];
-                currentRoomViewController = nil;
-            }
-            
-            currentRoomViewController = (RoomViewController *)controller;
-            
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:selectedRoomSession];
-            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:selectedRoomId create:YES];
-            [currentRoomViewController displayRoom:roomDataSource];
-        }
-        
-        if (self.splitViewController)
-        {
-            // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-            [self refreshCurrentSelectedCell:NO];
-            
-            // IOS >= 8
-            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)])
-            {
-                controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-            }
-            
-            //
-            controller.navigationItem.leftItemsSupplementBackButton = YES;
-        }
-    }
-    
-    // Hide back button title
-    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -611,13 +370,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
 }
 
 
-#pragma mark - MXKRecentListViewControllerDelegate
 
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
-{
-    // Open the room
-    [self selectRoomWithId:roomId inMatrixSession:matrixSession];
-}
 
 #pragma mark - Override UISearchBarDelegate
 
@@ -644,11 +397,11 @@ static NSMutableDictionary* backgroundByImageNameDict;
     return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
 }
 
-#pragma mark - Actions.
+#pragma mark - Actions
 
-- (void)onNewRoomPressed
+- (IBAction)search:(id)sender
 {
-    [self performSegueWithIdentifier:@"presentRoomCreationStep1" sender:self];
+    [self performSegueWithIdentifier:@"presentSearch" sender:self];
 }
 
 @end
