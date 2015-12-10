@@ -17,6 +17,8 @@
 // the green text color
 #define VECTOR_GREEN_COLOR [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0]
 
+#define VECTOR_TEXT_BLACK_COLOR [UIColor colorWithRed:(60.0 / 256.0) green:(60.0 / 256.0) blue:(60.0 / 256.0) alpha:1.0]
+
 #define VECTOR_TEXT_GRAY_COLOR [UIColor colorWithRed:(157.0 / 256.0) green:(157.0 / 256.0) blue:(157.0 / 256.0) alpha:1.0]
 
 #define VECTOR_LIGHT_GRAY_COLOR [UIColor colorWithRed:(242.0 / 256.0) green:(242.0 / 256.0) blue:(242.0 / 256.0) alpha:1.0]
