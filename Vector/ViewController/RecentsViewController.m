@@ -455,6 +455,28 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    if ([dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        RecentsDataSource* recentsDataSource = (RecentsDataSource*)dataSource;
+    
+        recentsDataSource.onRoomInvitationReject = ^(MXRoom* room) {
+            
+            [self.recentsTableView setEditing:NO];
+            
+            [room leave:^{
+                [self.recentsTableView reloadData];
+            } failure:^(NSError *error) {
+                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed: %@", room.state.roomId, error);
+            }];
+
+        };
+        
+        recentsDataSource.onRoomInvitationAccept = ^(MXRoom* room) {
+            [self selectRoomWithId:room.state.roomId inMatrixSession:room.mxSession];
+        };
+    }
+
+    
     [self.recentsTableView reloadData];
     
     if (shouldScrollToTopOnRefresh)
@@ -662,6 +684,29 @@ static NSMutableDictionary* backgroundByImageNameDict;
 {
     return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.delegate)
+    {
+        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+        
+        // the invited rooms cannot be selected.
+        // the invitation is accepted / rejected with dedicated buttons inside the cell.
+        // cell.userInteractionEnabled = NO would also disable the button so
+        // the cell selection is trapped.
+        if (NSNotFound == [cellData.recentsDataSource.mxSession.invitedRooms indexOfObject:cellData.roomDataSource.room])
+        {
+            [self.delegate recentListViewController:self didSelectRoom:cellData.roomDataSource.roomId inMatrixSession:cellData.roomDataSource.mxSession];
+        }
+    }
+    
+    // Hide the keyboard when user select a room
+    // do not hide the searchBar until the view controller disappear
+    // on tablets / iphone 6+, the user could expect to search again while looking at a room
+    [self.recentsSearchBar resignFirstResponder];
+}
+
 
 #pragma mark - Actions.
 

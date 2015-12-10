@@ -22,6 +22,16 @@
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
 /**
+ The callback when a room invitation is rejected.
+ */
+@property (nonatomic, copy) void (^onRoomInvitationReject)(MXRoom*);
+
+/**
+ The callback when a room invitation is accepted.
+ */
+@property (nonatomic, copy) void (^onRoomInvitationAccept)(MXRoom*);
+
+/**
  Return the header height from the section.
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;

@@ -23,6 +23,7 @@
 #import "VectorDesignValues.h"
 
 @implementation InviteRecentTableViewCell
+@synthesize onRejectClick, onJoinClick;
 
 #pragma mark - Class methods
 
@@ -35,20 +36,39 @@
     self.leftButton.backgroundColor = VECTOR_GREEN_COLOR;
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton addTarget:self action:@selector(onJoinPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     self.rightButton.backgroundColor = VECTOR_GREEN_COLOR;
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateNormal];
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateHighlighted];
-    
-    // the date is not displayed in the invitation cells.
-    self.lastEventDate.hidden = YES;
+    [self.rightButton addTarget:self action:@selector(onRejectedPressed:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)onRejectedPressed:(id)sender
+{
+    if (self.onRejectClick)
+    {
+        self.onRejectClick();
+    }
+}
+
+- (void)onJoinPressed:(id)sender
+{
+    if (self.onJoinClick)
+    {
+        self.onJoinClick();
+    }
 }
 
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
+    
+    // the date is not displayed in the invitation cells.
+    self.lastEventDate.hidden = YES;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

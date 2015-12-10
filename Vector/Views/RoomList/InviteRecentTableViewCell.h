@@ -26,4 +26,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 
+/**
+ The user tap on the reject button
+ */
+@property (nonatomic, copy) void (^onRejectClick)();
+
+/**
+ The user tap on the join button
+ */
+@property (nonatomic, copy) void (^onJoinClick)();
+
 @end

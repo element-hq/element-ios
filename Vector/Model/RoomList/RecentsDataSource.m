@@ -40,6 +40,7 @@
 @end
 
 @implementation RecentsDataSource
+@synthesize onRoomInvitationReject, onRoomInvitationAccept;
 
 - (instancetype)init
 {
@@ -217,12 +218,31 @@
                 ((MXKInterleavedRecentTableViewCell*)cell).userFlag.backgroundColor = [UIColor clearColor];
             }
             
+            // on invite cell, add listeners on accept / reject buttons
+            if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
+            {
+                InviteRecentTableViewCell* inviteRecentTableViewCell = (InviteRecentTableViewCell*)cell;
+                
+                inviteRecentTableViewCell.onRejectClick = ^(){
+                    if (self.onRoomInvitationReject)
+                    {
+                        self.onRoomInvitationReject(roomData.roomDataSource.room);
+                    }
+                };
+                
+                inviteRecentTableViewCell.onJoinClick = ^(){
+                    if (self.onRoomInvitationAccept)
+                    {
+                        self.onRoomInvitationAccept(roomData.roomDataSource.room);
+                    }
+                };
+            }
+            
             return cell;
         }
     }
     return nil;
 }
-
 
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
 {
