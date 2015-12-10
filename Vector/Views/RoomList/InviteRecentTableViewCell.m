@@ -76,7 +76,7 @@
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
 {
     // The height is fixed
-    return 84;
+    return 105;
 }
 
 @end
