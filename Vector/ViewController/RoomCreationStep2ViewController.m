@@ -145,7 +145,7 @@
                                               [self stopActivityIndicator];
                                               
                                               [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                                                  [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:_roomCreationInputs.mxSession];
+                                                  [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:_roomCreationInputs.mxSession];
                                               }];
                                               
                                           } failure:^(NSError *error) {

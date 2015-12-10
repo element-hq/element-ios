@@ -18,8 +18,6 @@
 
 #import "EventFormatter.h"
 #import "RoomBubbleCellData.h"
-#import "RoomIncomingBubbleTableViewCell.h"
-#import "RoomOutgoingBubbleTableViewCell.h"
 
 @implementation RoomDataSource
 
@@ -30,12 +28,6 @@
     {
         // Replace default Cell data class
         [self registerCellDataClass:RoomBubbleCellData.class forCellIdentifier:kMXKRoomBubbleCellDataIdentifier];
-        
-        // Replace cell view classes
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingTextMsgBubbleTableViewCellIdentifier];
-        [self registerCellViewClass:RoomIncomingBubbleTableViewCell.class forCellIdentifier:kMXKRoomIncomingAttachmentBubbleTableViewCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingTextMsgBubbleTableViewCellIdentifier];
-        [self registerCellViewClass:RoomOutgoingBubbleTableViewCell.class forCellIdentifier:kMXKRoomOutgoingAttachmentBubbleTableViewCellIdentifier];
         
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];

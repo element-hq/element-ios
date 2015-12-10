@@ -65,7 +65,7 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     // Add each matrix session, to update the view controller appearance according to mx sessions state
-    NSArray *sessions = [AppDelegate theDelegate].masterTabBarController.mxSessions;
+    NSArray *sessions = [AppDelegate theDelegate].mxSessions;
     for (MXSession *mxSession in sessions)
     {
         [self addMatrixSession:mxSession];

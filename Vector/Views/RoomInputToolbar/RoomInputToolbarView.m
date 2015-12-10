@@ -54,15 +54,6 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor whiteColor];
     
-    self.startVoiceCallLabel.text = NSLocalizedStringFromTable(@"room_option_start_group_voice", @"Vector", nil);
-    self.startVoiceCallLabel.numberOfLines = 0;
-    self.startVideoCallLabel.text = NSLocalizedStringFromTable(@"room_option_start_group_video", @"Vector", nil);
-    self.startVideoCallLabel.numberOfLines = 0;
-    self.shareLocationLabel.text = NSLocalizedStringFromTable(@"room_option_share_location", @"Vector", nil);
-    self.shareLocationLabel.numberOfLines = 0;
-    self.shareContactLabel.text = NSLocalizedStringFromTable(@"room_option_share_contact", @"Vector", nil);
-    self.shareContactLabel.numberOfLines = 0;
-    
     self.rightInputToolbarButton.hidden = YES;
 }
 
@@ -90,13 +81,7 @@
     {
         self.rightInputToolbarButton.hidden = NO;
         self.attachMediaButton.hidden = YES;
-        self.optionMenuButton.hidden = YES;
-        
-        if (self.optionMenuView.isHidden == NO)
-        {
-            // Hide option menu
-            [self onTouchUpInside:self.optionMenuButton];
-        }
+        self.voiceCallButton.hidden = YES;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
     }
@@ -104,7 +89,7 @@
     {
         self.rightInputToolbarButton.hidden = YES;
         self.attachMediaButton.hidden = NO;
-        self.optionMenuButton.hidden = NO;
+        self.voiceCallButton.hidden = NO;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
     }
@@ -112,20 +97,16 @@
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
+    // FIXME GFO: Check whether mainToolbarHeightConstraint can be removed. If yes, remove it and remove
+    // this overidden method, the original one should be fine.
+    
     // Update height of the main toolbar (message composer)
     self.mainToolbarHeightConstraint.constant = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
-    
-    // Compute height of the whole toolbar (including potential option menu)
-    CGFloat updatedHeight = self.mainToolbarHeightConstraint.constant;
-    if (self.optionMenuView.isHidden == NO)
-    {
-        updatedHeight += self.optionMenuView.frame.size.height;
-    }
     
     // Update toolbar superview
     if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
     {
-        [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:nil];
+        [self.delegate roomInputToolbarView:self heightDidChanged:self.mainToolbarHeightConstraint.constant completion:nil];
     }
 }
 
@@ -164,66 +145,12 @@
             NSLog(@"[RoomInputToolbarView] Attach media is not supported");
         }
     }
-    else if (button == self.optionMenuButton)
-    {
-        // Compute the height of the whole toolbar (message composer + option menu (if any))
-        CGFloat updatedHeight = self.mainToolbarHeightConstraint.constant;
-        BOOL hideOptionMenuView = !self.optionMenuView.isHidden;
-        
-        if (self.optionMenuView.isHidden)
-        {
-            // The option menu will appear
-            updatedHeight += self.optionMenuView.frame.size.height;
-            self.optionMenuView.hidden = NO;
-        }
-        
-        // Update toolbar superview
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
-        {
-            [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:^(BOOL finished) {
-                if (hideOptionMenuView)
-                {
-                    self.optionMenuView.hidden = YES;
-                }
-            }];
-        }
-        
-        // Refresh max height of the growning text
-        self.maxHeight = self.maxHeight;
-    }
-    else if (button == self.startVoiceCallButton)
+    else if (button == self.voiceCallButton)
     {
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
         {
             [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
         }
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
-    }
-    else if (button == self.startVideoCallButton)
-    {
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
-        {
-            [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
-        }
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
-    }
-    else if (button == self.shareLocationButton)
-    {
-        // TODO
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
-    }
-    else if (button == self.shareContactButton)
-    {
-        // TODO
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
     }
     
     [super onTouchUpInside:button];

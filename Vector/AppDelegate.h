@@ -17,9 +17,8 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 
-#import "MasterTabBarController.h"
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, UISplitViewControllerDelegate>
+{
     BOOL isAPNSRegistered;
     
     // background sync management
@@ -27,7 +26,6 @@
 }
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) MasterTabBarController *masterTabBarController;
 
 @property (strong, nonatomic) MXKAlert *errorNotification;
 
@@ -37,23 +35,50 @@
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+@property (nonatomic, readonly) UINavigationController *homeNavigationController;
+
+// Associated matrix sessions (empty by default).
+@property (nonatomic, readonly) NSArray *mxSessions;
+
+// Current selected room id. nil if no room is presently visible.
+@property (strong, nonatomic) NSString *visibleRoomId;
+
 + (AppDelegate*)theDelegate;
 
-- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
+#pragma mark - Application layout handling
 
-- (void)registerUserNotificationSettings;
+- (void)showAuthenticationScreen;
 
+- (void)popRoomViewControllerAnimated:(BOOL)animated;
+
+- (MXKAlert*)showErrorAsAlert:(NSError*)error;
+
+#pragma mark - Matrix Sessions handling
+
+// Add a matrix session.
+- (void)addMatrixSession:(MXSession*)mxSession;
+
+// Remove a matrix session.
+- (void)removeMatrixSession:(MXSession*)mxSession;
+
+// Reload all running matrix sessions
 - (void)reloadMatrixSessions:(BOOL)clearCache;
 
 - (void)logout;
 
-- (MXKAlert*)showErrorAsAlert:(NSError*)error;
+#pragma mark - Matrix Accounts handling
 
-/**
- Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
- 
- @param userId 
- */
+- (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
+
+#pragma mark - APNS methods
+
+- (void)registerUserNotificationSettings;
+
+#pragma mark - Matrix Room handling
+
+- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
+
+//Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
 
 @end

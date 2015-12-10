@@ -16,6 +16,8 @@
 
 #import "EventFormatter.h"
 
+#import "VectorDesignValues.h"
+
 @interface EventFormatter ()
 {
     /**
@@ -42,6 +44,12 @@
         calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
 
         localTimeZone = [NSTimeZone localTimeZone];
+        
+        self.defaultTextColor = VECTOR_TEXT_GRAY_COLOR;
+        self.bingTextColor = VECTOR_GREEN_COLOR;
+        self.sendingTextColor = VECTOR_LIGHT_GRAY_COLOR;
+        self.errorTextColor = [UIColor redColor];
+        
     }
     return self;
 }
@@ -52,6 +60,31 @@
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
              NSFontAttributeName: [UIFont systemFontOfSize:10]
              };
+}
+
+#pragma mark event sender info
+
+- (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
+{
+    // Override this method to ignore the identicons defined by default in matrix kit.
+    
+    // Consider first the avatar url defined in provided room state (Note: this room state is supposed to not take the new event into account)
+    NSString *senderAvatarUrl = [roomState memberWithUserId:event.sender].avatarUrl;
+    
+    // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
+    if ([event.content[@"avatar_url"] length])
+    {
+        // Use the actual avatar
+        senderAvatarUrl = event.content[@"avatar_url"];
+    }
+    
+    // We ignore non mxc avatar url (The identicons are removed here).
+    if (senderAvatarUrl && [senderAvatarUrl hasPrefix:kMXContentUriScheme] == NO)
+    {
+        senderAvatarUrl = nil;
+    }
+    
+    return senderAvatarUrl;
 }
 
 

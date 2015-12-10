@@ -21,15 +21,37 @@
 
 #import "RoomInputToolbarView.h"
 
+#import "RoomActivitiesView.h"
+
+#import "RoomTitleViewWithTopic.h"
+
 #import "RoomParticipantsViewController.h"
+
+#import "SegmentedViewController.h"
+#import "RoomSettingsViewController.h"
+
+#import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
+#import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
+
+#import "RoomOutgoingAttachmentBubbleCell.h"
+#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
+#import "RoomOutgoingTextMsgBubbleCell.h"
+#import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
+
+#import "AvatarGenerator.h"
 
 @interface RoomViewController ()
 {
-    // The constraint used to animate menu list display
-    NSLayoutConstraint *menuListTopConstraint;
-    
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
+
+    // List of members who are typing in the room.
+    NSArray *currentTypingUsers;
+    
+    // Typing notifications listener.
+    id typingNotifListener;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -42,12 +64,27 @@
 {
     [super viewDidLoad];
     
+    // Register first customized cell view classes used to render bubbles
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
     // Set room title view
-    [self setRoomTitleViewClass:MXKRoomTitleViewWithTopic.class];
+    [self setRoomTitleViewClass:RoomTitleViewWithTopic.class];
     
     // Replace the default input toolbar view.
+    // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
+    
+    // set extra area
+    [self setRoomActivitiesViewClass:RoomActivitiesView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -56,65 +93,13 @@
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    // Localize strings
-    self.searchMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_search", @"Vector", nil);
-    self.participantsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_participants", @"Vector", nil);
-    self.favouriteMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_favourite", @"Vector", nil);
-    self.settingsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_settings", @"Vector", nil);
+    // Localize strings here
     
-   // Add the menu list view outside the main view
-    CGRect frame = self.menuListView.frame;
-    frame.origin.y = self.topLayoutGuide.length - frame.size.height;
-    self.menuListView.frame = frame;
-    [self.view addSubview:self.menuListView];
-    
-    // Define menu list view constraints
-    self.menuListView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                      relatedBy:0
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                     multiplier:1.0
-                                                                       constant:0];
-    
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                       relatedBy:0
-                                                                          toItem:self.view
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                      multiplier:1.0
-                                                                        constant:0];
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0
-                                                                         constant:self.menuListView.frame.size.height];
-    
-    menuListTopConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                   attribute:NSLayoutAttributeBottom
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:self.topLayoutGuide
-                                                                   attribute:NSLayoutAttributeBottom
-                                                                  multiplier:1.0f
-                                                                    constant:0.0f];
-    
-    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+    if (self.roomDataSource)
     {
-        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, heightConstraint, menuListTopConstraint]];
+       // this room view controller has its own typing management.
+       self.roomDataSource.showTypingNotifications = NO;
     }
-    else
-    {
-        [self.view addConstraint:leftConstraint];
-        [self.view addConstraint:rightConstraint];
-        [self.view addConstraint:menuListTopConstraint];
-        [self.menuListView addConstraint:heightConstraint];
-    }
-    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,6 +111,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self listenTypingNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,8 +126,7 @@
         self.currentAlert = nil;
     }
     
-    // Hide menu list view
-    menuListTopConstraint.constant = 0;
+    [self removeTypingNotificationsListener];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -165,7 +151,7 @@
     if (self.roomDataSource)
     {
         // Set visible room id
-        [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
+        [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
     }
 }
 
@@ -174,7 +160,7 @@
     [super viewDidDisappear:animated];
     
     // Reset visible room id
-    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
+    [AppDelegate theDelegate].visibleRoomId = nil;
 }
 
 - (void)viewDidLayoutSubviews
@@ -217,7 +203,7 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room)
              {
                  // Show the room
-                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:self.mainSession];
+                 [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
                  NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
@@ -248,27 +234,94 @@
     [super destroy];
 }
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+#pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    // Hide the menu list view when keyboard if displayed
-    if (keyboardHeight && menuListTopConstraint.constant != 0)
+    Class cellViewClass = nil;
+    
+    // Sanity check
+    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
     {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+        
+        // Select the suitable table view cell class
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isAttachmentWithThumbnail)
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = MXKRoomIncomingAttachmentBubbleCell.class;
+                }
+            }
+            else
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = MXKRoomIncomingTextMsgBubbleCell.class;
+                }
+            }
+        }
+        else
+        {
+            // Handle here outgoing bubbles
+            if (bubbleData.isAttachmentWithThumbnail)
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomOutgoingAttachmentBubbleCell.class;
+                }
+            }
+            else
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomOutgoingTextMsgBubbleCell.class;
+                }
+            }
+        }
     }
     
-    super.keyboardHeight = keyboardHeight;
+    return cellViewClass;
 }
 
 #pragma mark - MXKDataSource delegate
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Remove sub menu if user tap on table view
-    if (menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
     if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
     {
         self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
@@ -290,31 +343,46 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showRoomParticipants"])
+    if ([[segue identifier] isEqualToString:@"showRoomDetails"])
     {
-        if ([pushedViewController isKindOfClass:[RoomParticipantsViewController class]])
+        if ([pushedViewController isKindOfClass:[SegmentedViewController class]])
         {
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            RoomParticipantsViewController* participantsViewController = (RoomParticipantsViewController*)pushedViewController;
-            participantsViewController.mxRoom = self.roomDataSource.room;
+            SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
+            
+            MXSession* session = self.roomDataSource.mxSession;
+            NSString* roomid = self.roomDataSource.roomId;
+            NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
+            NSMutableArray* titles = [[NSMutableArray alloc] init];
+            
+            // members screens
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
+            
+            RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
+            participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            [viewControllers addObject:participantsViewController];
+            
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
+            RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
+            [settingsViewController initWithSession:session andRoomId:roomid];
+            [viewControllers addObject:settingsViewController];
+            
+            
+            segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
+            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+            
+            // to display a red navbar when the home server cannot be reached.
+            [segmentedViewController addMatrixSession:session];
         }
     }
+    
+    // Hide back button title
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
-
-- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
-{
-    // Remove sub menu if user starts typing
-    if (typing && menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
-    [super roomInputToolbarView:toolbarView isTyping:typing];
-}
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
@@ -327,49 +395,7 @@
 {
     if (sender == self.navigationItem.rightBarButtonItem)
     {
-        // Hide/show the menu list by updating its top constraint
-        if (menuListTopConstraint.constant)
-        {
-            // Hide the menu
-            menuListTopConstraint.constant = 0;
-        }
-        else
-        {
-            [self dismissKeyboard];
-            
-            // Show the menu
-            menuListTopConstraint.constant = self.menuListView.frame.size.height;
-        }
-        
-        // Refresh layout with animation
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             [self.view layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
-    else
-    {
-        // Hide menu without animation
-        menuListTopConstraint.constant = 0;
-        
-        if (sender == self.searchMenuButton)
-        {
-            // TODO
-        }
-        else if (sender == self.participantsMenuButton)
-        {
-            [self performSegueWithIdentifier:@"showRoomParticipants" sender:self];
-        }
-        else if (sender == self.favouriteMenuButton)
-        {
-            // TODO
-        }
-        else if (sender == self.settingsMenuButton)
-        {
-            // TODO
-        }
+        // FIXME Launch messages search session
     }
 }
 
@@ -377,15 +403,120 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Remove sub menu if user tap on table view
-    if (menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-@end
+#pragma mark - RoomDetailsViewController management
 
+- (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
+{
+    // Instead of editing room title, we open room details view here
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        
+    });
+    
+    return NO;
+}
+
+#pragma mark - typing management
+
+- (void)removeTypingNotificationsListener
+{
+    if (self.roomDataSource)
+    {
+        // Remove the previous live listener
+        if (typingNotifListener)
+        {
+            [self.roomDataSource.room removeListener:typingNotifListener];
+            currentTypingUsers = nil;
+        }
+    }
+}
+
+- (void)listenTypingNotifications
+{
+    if (self.roomDataSource)
+    {
+        // Add typing notification listener
+        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+            
+            // Handle only live events
+            if (direction == MXEventDirectionForwards)
+            {
+                // Retrieve typing users list
+                NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
+                // Remove typing info for the current user
+                NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
+                if (index != NSNotFound)
+                {
+                    [typingUsers removeObjectAtIndex:index];
+                }
+                // Ignore this notification if both arrays are empty
+                if (currentTypingUsers.count || typingUsers.count)
+                {
+                    currentTypingUsers = typingUsers;
+                    [self refreshTypingView];
+                }
+            }
+            
+        }];
+        
+        currentTypingUsers = self.roomDataSource.room.typingUsers;
+        [self refreshTypingView];
+    }
+}
+
+- (void)refreshTypingView
+{
+    NSString* text = nil;
+    NSUInteger count = currentTypingUsers.count;
+    
+    // get the room member names
+    NSMutableArray *names = [[NSMutableArray alloc] init];
+    
+    // keeps the only the first two users
+    for(int i = 0; i < MIN(count, 2); i++)
+    {
+        NSString* name = [currentTypingUsers objectAtIndex:i];
+        
+        MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+        
+        if (nil != member)
+        {
+            name = member.displayname;
+        }
+        
+        // sanity check
+        if (name)
+        {
+            [names addObject:name];
+        }
+    }
+    
+    if (0 == names.count)
+    {
+        // something to do ?
+    }
+    else if (1 == names.count)
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+    }
+    else if (2 == names.count)
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+    }
+    else
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+    }
+    
+    if (self.activitiesView)
+    {
+        [((RoomActivitiesView*) self.activitiesView) updateTypingMessage:text];
+    }
+}
+
+@end
 
