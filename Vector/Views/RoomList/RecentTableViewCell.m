@@ -20,6 +20,8 @@
 
 #import "MXEvent.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RecentTableViewCell
 
 #pragma mark - Class methods
@@ -52,6 +54,8 @@
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
+        self.lastEventDate.textColor = VECTOR_TEXT_GRAY_COLOR;
+        
         // Notify unreads and bing
         self.bingIndicator.hidden = YES;
         
@@ -62,11 +66,11 @@
                 self.bingIndicator.hidden = NO;
                 self.bingIndicator.backgroundColor = roomCellData.recentsDataSource.eventFormatter.bingTextColor;
             }
-            self.roomTitle.font = [UIFont boldSystemFontOfSize:19];
+            self.roomTitle.font = [UIFont boldSystemFontOfSize:17];
         }
         else
         {
-            self.roomTitle.font = [UIFont systemFontOfSize:19];
+            self.roomTitle.font = [UIFont systemFontOfSize:17];
         }
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];

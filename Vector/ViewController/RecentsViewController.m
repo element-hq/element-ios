@@ -27,6 +27,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "InviteRecentTableViewCell.h"
+
 @interface RecentsViewController ()
 {
     // Recents refresh handling
@@ -62,6 +64,7 @@
     
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
 }
 
 - (void)destroy
@@ -182,19 +185,57 @@
 #pragma mark - MXKDataSourceDelegate
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
-{ 
-    // Return the customized recent table view cell
-    return RecentTableViewCell.class;
+{
+    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    
+    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomDataSource.room])
+    {
+        return RecentTableViewCell.class;
+    }
+    else
+    {
+        return InviteRecentTableViewCell.class;
+    }
 }
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
-    // Return the customized recent table view cell identifier
-    return RecentTableViewCell.defaultReuseIdentifier;
+    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    
+    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomDataSource.room])
+    {
+        return RecentTableViewCell.defaultReuseIdentifier;
+    }
+    else
+    {
+        return InviteRecentTableViewCell.defaultReuseIdentifier;
+    }
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    if ([dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        RecentsDataSource* recentsDataSource = (RecentsDataSource*)dataSource;
+    
+        recentsDataSource.onRoomInvitationReject = ^(MXRoom* room) {
+            
+            [self.recentsTableView setEditing:NO];
+            
+            [room leave:^{
+                [self.recentsTableView reloadData];
+            } failure:^(NSError *error) {
+                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed: %@", room.state.roomId, error);
+            }];
+
+        };
+        
+        recentsDataSource.onRoomInvitationAccept = ^(MXRoom* room) {
+            [self.delegate recentListViewController:self didSelectRoom:room.state.roomId inMatrixSession:room.mxSession];
+        };
+    }
+
+    
     [self.recentsTableView reloadData];
     
     if (shouldScrollToTopOnRefresh)
@@ -395,6 +436,21 @@ static NSMutableDictionary* backgroundByImageNameDict;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
+    {
+        // hide the selection
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    else
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
 }
 
 #pragma mark - Actions

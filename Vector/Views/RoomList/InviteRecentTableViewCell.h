@@ -14,12 +14,26 @@
  limitations under the License.
  */
 
-// the green text color
-#define VECTOR_GREEN_COLOR [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0]
+#import <MatrixKit/MatrixKit.h>
 
-#define VECTOR_TEXT_GRAY_COLOR [UIColor colorWithRed:(157.0 / 256.0) green:(157.0 / 256.0) blue:(157.0 / 256.0) alpha:1.0]
+#import "RecentTableViewCell.h"
 
-#define VECTOR_LIGHT_GRAY_COLOR [UIColor colorWithRed:(242.0 / 256.0) green:(242.0 / 256.0) blue:(242.0 / 256.0) alpha:1.0]
+/**
+ `InviteRecentTableViewCell` instances display an invite to a room in the context of the recents list.
+ */
+@interface InviteRecentTableViewCell : RecentTableViewCell
 
-// to update the navigation bar buttons color
-// [[AppDelegate theDelegate] recentsNavigationController].navigationBar.tintColor = [UIColor greenColor];
+@property (weak, nonatomic) IBOutlet UIButton *leftButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightButton;
+
+/**
+ The user tap on the reject button
+ */
+@property (nonatomic, copy) void (^onRejectClick)();
+
+/**
+ The user tap on the join button
+ */
+@property (nonatomic, copy) void (^onJoinClick)();
+
+@end
