@@ -107,7 +107,7 @@
         // display a gradient to the rencents bottom (20% of the bottom of the screen)
         tableViewMaskLayer.locations = [NSArray arrayWithObjects:
                                         [NSNumber numberWithFloat:0],
-                                        [NSNumber numberWithFloat:0.8],
+                                        [NSNumber numberWithFloat:0.85],
                                         [NSNumber numberWithFloat:1.0], nil];
 
         tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
@@ -129,7 +129,7 @@
         createNewRoomImageView.backgroundColor = [UIColor clearColor];
         createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
 
-        CGFloat side = 50.0f;
+        CGFloat side = 58.0f;
         NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
                                                                            attribute:NSLayoutAttributeWidth
                                                                            relatedBy:NSLayoutRelationEqual
@@ -160,7 +160,7 @@
                                                                                toItem:createNewRoomImageView
                                                                             attribute:NSLayoutAttributeBottom
                                                                            multiplier:1
-                                                                             constant:50];
+                                                                             constant:19];
 
         if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
         {
