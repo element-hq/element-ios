@@ -705,6 +705,9 @@ static NSMutableDictionary* backgroundByImageNameDict;
     // do not hide the searchBar until the view controller disappear
     // on tablets / iphone 6+, the user could expect to search again while looking at a room
     [self.recentsSearchBar resignFirstResponder];
+    
+    // hide the selection
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 

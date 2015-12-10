@@ -110,6 +110,15 @@
     }
 }
 
+- (void)didMXSessionInviteRoomUpdate:(NSNotification *)notif
+{
+    MXSession *mxSession = notif.object;
+    if (mxSession == self.mxSession)
+    {
+        [self.delegate dataSource:self didCellChange:nil];
+    }
+}
+
 #pragma mark - UITableViewDataSource
 
 /**

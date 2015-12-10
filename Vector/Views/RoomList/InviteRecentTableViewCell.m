@@ -45,6 +45,8 @@
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateNormal];
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateHighlighted];
     [self.rightButton addTarget:self action:@selector(onRejectedPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)onRejectedPressed:(id)sender
