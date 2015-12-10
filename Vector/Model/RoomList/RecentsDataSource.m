@@ -209,48 +209,31 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<MXKRecentCellDataStoring> roomData = [self cellDataAtIndexPath:indexPath];
-    if (roomData && self.delegate)
+    UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    
+    // on invite cell, add listeners on accept / reject buttons
+    if (cell && [cell isKindOfClass:[InviteRecentTableViewCell class]])
     {
-        NSString *cellIdentifier = [self.delegate cellReuseIdentifierForCellData:roomData];
-                
-        if (cellIdentifier)
-        {
-            UITableViewCell<MXKCellRendering> *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-            
-            // Make the bubble display the data
-            [cell render:roomData];
-            
-            // Clear the user flag, if only one recents list is available
-            if (displayedRecentsDataSourceArray.count == 1 && [cell isKindOfClass:[MXKInterleavedRecentTableViewCell class]])
+        id<MXKRecentCellDataStoring> roomData = [self cellDataAtIndexPath:indexPath];
+        InviteRecentTableViewCell* inviteRecentTableViewCell = (InviteRecentTableViewCell*)cell;
+        
+        inviteRecentTableViewCell.onRejectClick = ^(){
+            if (self.onRoomInvitationReject)
             {
-                ((MXKInterleavedRecentTableViewCell*)cell).userFlag.backgroundColor = [UIColor clearColor];
+                self.onRoomInvitationReject(roomData.roomDataSource.room);
             }
-            
-            // on invite cell, add listeners on accept / reject buttons
-            if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
+        };
+        
+        inviteRecentTableViewCell.onJoinClick = ^(){
+            if (self.onRoomInvitationAccept)
             {
-                InviteRecentTableViewCell* inviteRecentTableViewCell = (InviteRecentTableViewCell*)cell;
-                
-                inviteRecentTableViewCell.onRejectClick = ^(){
-                    if (self.onRoomInvitationReject)
-                    {
-                        self.onRoomInvitationReject(roomData.roomDataSource.room);
-                    }
-                };
-                
-                inviteRecentTableViewCell.onJoinClick = ^(){
-                    if (self.onRoomInvitationAccept)
-                    {
-                        self.onRoomInvitationAccept(roomData.roomDataSource.room);
-                    }
-                };
+                self.onRoomInvitationAccept(roomData.roomDataSource.room);
             }
-            
-            return cell;
-        }
+        };
     }
-    return nil;
+    
+    return cell;
 }
 
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath

@@ -440,27 +440,17 @@ static NSMutableDictionary* backgroundByImageNameDict;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.delegate)
+    UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
     {
-        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
-        
-        // the invited rooms cannot be selected.
-        // the invitation is accepted / rejected with dedicated buttons inside the cell.
-        // cell.userInteractionEnabled = NO would also disable the button so
-        // the cell selection is trapped.
-        if (NSNotFound == [cellData.recentsDataSource.mxSession.invitedRooms indexOfObject:cellData.roomDataSource.room])
-        {
-            [self.delegate recentListViewController:self didSelectRoom:cellData.roomDataSource.roomId inMatrixSession:cellData.roomDataSource.mxSession];
-        }
+        // hide the selection
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
-    
-    // Hide the keyboard when user select a room
-    // do not hide the searchBar until the view controller disappear
-    // on tablets / iphone 6+, the user could expect to search again while looking at a room
-    [self.recentsSearchBar resignFirstResponder];
-    
-    // hide the selection
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    else
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
 }
 
 #pragma mark - Actions
