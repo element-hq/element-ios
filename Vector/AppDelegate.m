@@ -21,7 +21,7 @@
 
 #import "EventFormatter.h"
 
-#import "RecentsViewController.h"
+#import "HomeViewController.h"
 #import "SettingsViewController.h"
 #import "RoomViewController.h"
 
@@ -99,7 +99,7 @@
     /**
      Application main view controllers
      */
-    RecentsViewController  *recentsViewController;
+    HomeViewController  *homeViewController;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -199,13 +199,13 @@
     // to the recents list in Recents Tab.
     // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
     UIViewController* recents = self.window.rootViewController;
-    _recentsNavigationController = nil;
+    _homeNavigationController = nil;
     if ([recents isKindOfClass:[UISplitViewController class]])
     {
         UISplitViewController *splitViewController = (UISplitViewController *)recents;
         splitViewController.delegate = self;
         
-        _recentsNavigationController = [splitViewController.viewControllers objectAtIndex:0];
+        _homeNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
         UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
         if ([detailsViewController isKindOfClass:[UINavigationController class]])
@@ -231,22 +231,22 @@
     }
     else if ([recents isKindOfClass:[UINavigationController class]])
     {
-        _recentsNavigationController = (UINavigationController*)recents;
+        _homeNavigationController = (UINavigationController*)recents;
     }
     
-    if (_recentsNavigationController)
+    if (_homeNavigationController)
     {
-        for (UIViewController *viewController in _recentsNavigationController.viewControllers)
+        for (UIViewController *viewController in _homeNavigationController.viewControllers)
         {
-            if ([viewController isKindOfClass:[RecentsViewController class]])
+            if ([viewController isKindOfClass:[HomeViewController class]])
             {
-                recentsViewController = (RecentsViewController*)viewController;
+                homeViewController = (HomeViewController*)viewController;
             }
         }
     }
     
     // Sanity check
-    NSAssert(recentsViewController, @"Something wrong in Main.storyboard");
+    NSAssert(homeViewController, @"Something wrong in Main.storyboard");
     
     _isAppForeground = NO;
     
@@ -410,23 +410,19 @@
 
 - (void)showAuthenticationScreen
 {
-    [self restoreInitialDisplay];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [recentsViewController performSegueWithIdentifier:@"showAuth" sender:self];
-        
-    });
+    [self restoreInitialDisplay:^{
+        [homeViewController performSegueWithIdentifier:@"showAuth" sender:self];
+    }];
 }
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated
 {
     // Force back to recents list if room details is displayed in Recents Tab
-    if (recentsViewController)
+    if (homeViewController)
     {
-        [_recentsNavigationController popToViewController:recentsViewController animated:animated];
+        [_homeNavigationController popToViewController:homeViewController animated:animated];
         // Release the current selected room
-        [recentsViewController closeSelectedRoom];
+        [homeViewController closeSelectedRoom];
     }
 }
 
@@ -775,12 +771,11 @@
         if (!mxSessionArray.count)
         {
             // This is the first added session, list all the recents for the logged user
-            RecentsDataSource *recentlistDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mxSession];
-            [recentsViewController displayList:recentlistDataSource];
+            [homeViewController displayWithSession:mxSession];
         }
         else
         {
-            [recentsViewController.dataSource addMatrixSession:mxSession];
+            [homeViewController addMatrixSession:mxSession];
         }
         
         [mxSessionArray addObject:mxSession];
@@ -791,19 +786,10 @@
 {
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
     
-    // Update recents data source
-    [recentsViewController.dataSource removeMatrixSession:mxSession];
+    // Update home data sources
+    [homeViewController removeMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
-    
-    // Check whether there are others sessions
-    if (!mxSessionArray.count)
-    {
-        // Keep reference on existing dataSource to release it properly
-        MXKRecentsDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
-        [recentsViewController displayList:nil];
-        [previousRecentlistDataSource destroy];
-    }
 }
 
 - (void)reloadMatrixSessions:(BOOL)clearCache
@@ -1030,12 +1016,10 @@
 
 - (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession
 {
-    [self restoreInitialDisplay];
-    
-    // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [recentsViewController selectRoomWithId:roomId inMatrixSession:mxSession];
-    });
+    [self restoreInitialDisplay:^{
+        // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
+        [homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
+    }];
 }
 
 - (void)setVisibleRoomId:(NSString *)roomId
@@ -1249,15 +1233,22 @@
 
 #pragma mark -
 
-- (void)restoreInitialDisplay
+- (void)restoreInitialDisplay:(void (^)())completion
 {
     // Dismiss potential media picker
     if (self.window.rootViewController.presentedViewController)
     {
-        [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
+            [self popRoomViewControllerAnimated:NO];
+            completion();
+        }];
     }
-    
-    [self popRoomViewControllerAnimated:NO];
+    else
+    {
+        [self popRoomViewControllerAnimated:NO];
+        completion();
+    }
 }
 
 #pragma mark - SplitViewController delegate

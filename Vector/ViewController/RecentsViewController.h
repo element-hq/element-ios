@@ -16,20 +16,26 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate>
+@class HomeViewController;
+
+@interface RecentsViewController : MXKRecentListViewController
 
 /**
- Open the room with the provided identifier in a specific matrix session.
- 
- @param roomId the room identifier.
- @param mxSession the matrix session in which the room should be available.
+ Display the recents described in the provided data source.
+
+ @param listDataSource the data source providing the recents list.
+ @param homeViewController the segmentedViewController in which the RecentsViewController is displayed.
  */
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession;
+- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController;
 
 /**
- Close the current selected room (if any)
+ Refresh the cell selection in the table.
+
+ This must be done accordingly to the currently selected room in the parent HomeViewController.
+
+ @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
  */
-- (void)closeSelectedRoom;
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
 @end
 
