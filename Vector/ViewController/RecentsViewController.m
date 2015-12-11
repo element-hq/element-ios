@@ -223,6 +223,12 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    // do not refresh if there is a pending recent drag and drop
+    if (movingCellPath)
+    {
+        return;
+    }
+    
     if ([dataSource isKindOfClass:[RecentsDataSource class]])
     {
         RecentsDataSource* recentsDataSource = (RecentsDataSource*)dataSource;
@@ -467,7 +473,6 @@ static NSMutableDictionary* backgroundByImageNameDict;
 
 #pragma mark - recents drag & drop management
 
-
 - (void)onRecentsDragEnd
 {
     [cellSnapshot removeFromSuperview];
@@ -608,14 +613,34 @@ static NSMutableDictionary* backgroundByImageNameDict;
             
             NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
             
-            
             if (![indexPath isEqual:lastPotentialCellPath])
             {
-                [self.recentsTableView beginUpdates];
-                [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
+                if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
+                {
+                    [self.recentsTableView beginUpdates];
+                    if (recentsDataSource.movingCellIndexPath)
+                    {
+                        [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
+                    }
+                    else if (indexPath)
+                    {
+                        [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    }
+                    recentsDataSource.movingCellIndexPath = indexPath;
+                    [self.recentsTableView endUpdates];
+                }
+                // the cell cannot be moved
+                else if (recentsDataSource.movingCellIndexPath)
+                {
+                    NSIndexPath* pathToDelete = recentsDataSource.movingCellIndexPath;
+                    // remove it
+                    [self.recentsTableView beginUpdates];
+                    [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
+                    recentsDataSource.movingCellIndexPath = nil;
+                    [self.recentsTableView endUpdates];
+                }
+                
                 lastPotentialCellPath = indexPath;
-                recentsDataSource.movingCellIndexPath = indexPath;
-                [self.recentsTableView endUpdates];
             }
             
             break;

@@ -53,6 +53,11 @@
 - (BOOL)isDraggableCellAt:(NSIndexPath*)path;
 
 /**
+ Return true of the cell can be moved from a section to another one.
+ */
+- (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath;
+
+/**
  Move a cell from a path to another one.
  It is based on room Tag.
  */

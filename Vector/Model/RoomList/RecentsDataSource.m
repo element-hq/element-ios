@@ -98,10 +98,13 @@
                                                                 {
                                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                                         
-                                                                        [self refreshRoomsSections];
-                                                                        
-                                                                        // And inform the delegate about the update
-                                                                        [self.delegate dataSource:self didCellChange:nil];
+                                                                        if (!self.movingCellIndexPath)
+                                                                        {
+                                                                            [self refreshRoomsSections];
+                                                                            
+                                                                            // And inform the delegate about the update
+                                                                            [self.delegate dataSource:self didCellChange:nil];
+                                                                        }
                                                                     });
                                                                 }
                                                                 
@@ -557,8 +560,8 @@
     // the both index pathes are movable
     if (res)
     {
-        // cannot move conversation rooms in the same section
-        res &= !((oldPath.section == conversationSection) && (newPath.section == conversationSection));
+        // only the favorites cell can be moved within the same section
+        res &= (oldPath.section == favoritesSection) || (newPath.section != oldPath.section);
         
         // other cases ?
     }
