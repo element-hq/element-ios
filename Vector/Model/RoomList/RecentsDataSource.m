@@ -511,6 +511,12 @@
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
+    // lock any refresh until the 
+    if (self.movingCellIndexPath)
+    {
+        return;
+    }
+    
     // FIXME : manage multi accounts
     // to manage multi accounts
     // this method in MXKInterleavedRecentsDataSource must be split in two parts
@@ -574,7 +580,7 @@
     return nil;
 }
 
-- (void)moveCellFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
+- (void)moveCellFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure
 {
     NSLog(@"[RecentsDataSource] moveCellFrom (%d, %d) to (%d, %d)", oldPath.section, oldPath.row, newPath.section, newPath.row);
     
@@ -594,15 +600,25 @@
                withOrder:tagOrder
                  success: ^{
                      
-                     // Refresh table display
-                     if (self.delegate)
+                     NSLog(@"[RecentsDataSource] move is done");
+                     
+                     [self dataSource:self didCellChange:nil];
+                     
+                     if (moveSuccess)
                      {
-                         [self.delegate dataSource:self didCellChange:nil];
+                         moveSuccess();
                      }
                      
                  } failure:^(NSError *error) {
                      
                      NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
+                    
+                     [self dataSource:self didCellChange:nil];
+                     
+                     if (moveFailure)
+                     {
+                         moveFailure(error);
+                     }
                      
                      // Notify MatrixKit user
                      [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -611,6 +627,13 @@
     else
     {
         NSLog(@"[RecentsDataSource] cannot move this cell");
+        
+        [self dataSource:self didCellChange:nil];
+        
+        if (moveFailure)
+        {
+            moveFailure(nil);
+        }
     }
 }
 

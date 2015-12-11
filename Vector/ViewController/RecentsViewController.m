@@ -467,7 +467,18 @@ static NSMutableDictionary* backgroundByImageNameDict;
 
 #pragma mark - recents drag & drop management
 
-static UITableViewCell* cell = nil;
+
+- (void)onRecentsDragEnd
+{
+    [cellSnapshot removeFromSuperview];
+    cellSnapshot = nil;
+    movingCellPath = nil;
+    
+    lastPotentialCellPath = nil;
+    ((RecentsDataSource*)self.dataSource).movingCellIndexPath = nil;
+    
+    [self.recentsTableView reloadData];
+}
 
 - (IBAction) onRecentsLongPress:(id)sender
 {
@@ -617,26 +628,19 @@ static UITableViewCell* cell = nil;
             [cellSnapshot removeFromSuperview];
             cellSnapshot = nil;
             
-            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
-            NSInteger section = indexPath.section;
+            [self.activityIndicator startAnimating];
+            [recentsDataSource moveCellFrom:movingCellPath to: lastPotentialCellPath success:^{
+                
+                [self onRecentsDragEnd];
+                [self.activityIndicator stopAnimating];
             
-            UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+            } failure:^(NSError *error) {
+                
+                [self onRecentsDragEnd];
+                [self.activityIndicator stopAnimating];
+            
+            }];
         
-            // the destinated row is retrieved from the moving cell (center comparison)
-            int row = (location.y > cell.center.y) ? indexPath.row + 1 : indexPath.row;
-
-            [recentsDataSource moveCellFrom:movingCellPath to: lastPotentialCellPath];
-            
-            [cellSnapshot removeFromSuperview];
-            cellSnapshot = nil;
-            movingCellPath = nil;
-            
-            [self.recentsTableView beginUpdates];
-            [self.recentsTableView deleteRowsAtIndexPaths:@[lastPotentialCellPath] withRowAnimation:UITableViewRowAnimationNone];
-            lastPotentialCellPath = nil;
-            recentsDataSource.movingCellIndexPath = nil;
-            [self.recentsTableView endUpdates];
-            
             break;
         }
             
@@ -644,15 +648,7 @@ static UITableViewCell* cell = nil;
         // remove the cell and cancel the insertion
         default:
         {
-            [cellSnapshot removeFromSuperview];
-            cellSnapshot = nil;
-            movingCellPath = nil;
-            
-            [self.recentsTableView beginUpdates];
-            [self.recentsTableView deleteRowsAtIndexPaths:@[lastPotentialCellPath] withRowAnimation:UITableViewRowAnimationNone];
-            lastPotentialCellPath = nil;
-            recentsDataSource.movingCellIndexPath = nil;
-            [self.recentsTableView endUpdates];
+            [self onRecentsDragEnd];
             break;
         }
     }
