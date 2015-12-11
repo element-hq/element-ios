@@ -38,8 +38,10 @@
     HomeViewController *homeViewController;
     
     // recents drag and drop management
-    UIView *cellSnapshot;
+    UIImageView *cellSnapshot;
     NSIndexPath* movingCellPath;
+    
+    NSIndexPath* lastPotentialCellPath;
 }
 
 @end
@@ -465,6 +467,8 @@ static NSMutableDictionary* backgroundByImageNameDict;
 
 #pragma mark - recents drag & drop management
 
+static UITableViewCell* cell = nil;
+
 - (IBAction) onRecentsLongPress:(id)sender
 {
     RecentsDataSource* recentsDataSource = nil;
@@ -510,6 +514,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 UIGraphicsEndImageContext();
                 
                 cellSnapshot = [[UIImageView alloc] initWithImage:image];
+                recentsDataSource.movingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
                 
                 // display the selected cell over the tableview
                 CGPoint center = cell.center;
@@ -518,7 +523,19 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 cellSnapshot.alpha = 0.5f;
                 [self.recentsTableView addSubview:cellSnapshot];
                 
+                cell = [[UITableViewCell alloc] init];
+                cell.frame = CGRectMake(0, 0, 100, 80);
+                cell.backgroundColor = [UIColor redColor];
+                
+                [self.recentsTableView beginUpdates];
+                lastPotentialCellPath = indexPath;
+                recentsDataSource.movingCellIndexPath = indexPath;
+                
+                [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.recentsTableView endUpdates];
+            
                 movingCellPath = indexPath;
+               
             }
             break;
         }
@@ -578,6 +595,18 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 [self.recentsTableView setContentOffset:contentOffset animated:NO];
             }
             
+            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+            
+            
+            if (![indexPath isEqual:lastPotentialCellPath])
+            {
+                [self.recentsTableView beginUpdates];
+                [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
+                lastPotentialCellPath = indexPath;
+                recentsDataSource.movingCellIndexPath = indexPath;
+                [self.recentsTableView endUpdates];
+            }
+            
             break;
         }
 
@@ -596,11 +625,17 @@ static NSMutableDictionary* backgroundByImageNameDict;
             // the destinated row is retrieved from the moving cell (center comparison)
             int row = (location.y > cell.center.y) ? indexPath.row + 1 : indexPath.row;
 
-            [recentsDataSource moveCellFrom:movingCellPath to: [NSIndexPath indexPathForRow:row inSection:section]];
+            [recentsDataSource moveCellFrom:movingCellPath to: lastPotentialCellPath];
             
             [cellSnapshot removeFromSuperview];
             cellSnapshot = nil;
             movingCellPath = nil;
+            
+            [self.recentsTableView beginUpdates];
+            [self.recentsTableView deleteRowsAtIndexPaths:@[lastPotentialCellPath] withRowAnimation:UITableViewRowAnimationNone];
+            lastPotentialCellPath = nil;
+            recentsDataSource.movingCellIndexPath = nil;
+            [self.recentsTableView endUpdates];
             
             break;
         }
@@ -612,6 +647,12 @@ static NSMutableDictionary* backgroundByImageNameDict;
             [cellSnapshot removeFromSuperview];
             cellSnapshot = nil;
             movingCellPath = nil;
+            
+            [self.recentsTableView beginUpdates];
+            [self.recentsTableView deleteRowsAtIndexPaths:@[lastPotentialCellPath] withRowAnimation:UITableViewRowAnimationNone];
+            lastPotentialCellPath = nil;
+            recentsDataSource.movingCellIndexPath = nil;
+            [self.recentsTableView endUpdates];
             break;
         }
     }

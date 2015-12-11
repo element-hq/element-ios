@@ -41,6 +41,7 @@
 
 @implementation RecentsDataSource
 @synthesize onRoomInvitationReject, onRoomInvitationAccept;
+@synthesize movingCellIndexPath, movingCellBackGroundView;
 
 - (instancetype)init
 {
@@ -166,6 +167,10 @@
         count = invitesCellDataArray.count;
     }
     
+    if (self.movingCellIndexPath && (self.movingCellIndexPath.section == section))
+    {
+        count++;
+    }
 
     return count;
 }
@@ -207,10 +212,44 @@
     return [super viewForHeaderInSection:section withFrame:frame];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)anIndexPath
 {
-    UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    NSIndexPath* indexPath = anIndexPath;
     
+    if (self.movingCellIndexPath  && (self.movingCellIndexPath.section == indexPath.section))
+    {
+        if ([anIndexPath isEqual:self.movingCellIndexPath])
+        {
+            static NSString* cellIdentifier = @"VectorRecentsMovingCell";
+            
+            UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
+            
+            UIImageView* imageView = [cell viewWithTag:[cellIdentifier hash]];
+            
+            if (!imageView || (imageView != self.movingCellBackGroundView))
+            {
+                if (imageView)
+                {
+                    [imageView removeFromSuperview];
+                }
+                self.movingCellBackGroundView.tag = [cellIdentifier hash];
+                [cell.contentView addSubview:self.movingCellBackGroundView];
+            }
+            
+            self.movingCellBackGroundView.frame = self.movingCellBackGroundView.frame;
+            cell.contentView.backgroundColor = [UIColor greenColor];
+            cell.backgroundColor = [UIColor redColor];
+            
+            return cell;
+        }
+        
+        if (anIndexPath.row > self.movingCellIndexPath.row)
+        {
+            indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
+        }
+    }
+    
+    UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     // on invite cell, add listeners on accept / reject buttons
     if (cell && [cell isKindOfClass:[InviteRecentTableViewCell class]])
@@ -236,25 +275,35 @@
     return cell;
 }
 
-- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
+- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)anIndexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
+    NSInteger row = anIndexPath.row;
+    NSInteger section = anIndexPath.section;
     
-    if (indexPath.section == favoritesSection)
+    if (self.movingCellIndexPath  && (self.movingCellIndexPath.section == section))
     {
-        cellData = [favoriteCellDataArray objectAtIndex:indexPath.row];
+        if (anIndexPath.row > self.movingCellIndexPath.row)
+        {
+            row = anIndexPath.row - 1;
+        }
     }
-    else if (indexPath.section == conversationSection)
+    
+    if (section == favoritesSection)
     {
-        cellData = [conversationCellDataArray objectAtIndex:indexPath.row];
+        cellData = [favoriteCellDataArray objectAtIndex:row];
     }
-    else if (indexPath.section == lowPrioritySection)
+    else if (section== conversationSection)
     {
-        cellData = [lowPriorityCellDataArray objectAtIndex:indexPath.row];
+        cellData = [conversationCellDataArray objectAtIndex:row];
     }
-    else if (indexPath.section == invitesSection)
+    else if (section == lowPrioritySection)
     {
-        cellData = [invitesCellDataArray objectAtIndex:indexPath.row];
+        cellData = [lowPriorityCellDataArray objectAtIndex:row];
+    }
+    else if (section == invitesSection)
+    {
+        cellData = [invitesCellDataArray objectAtIndex:row];
     }
     
     return cellData;
@@ -262,6 +311,11 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.movingCellIndexPath && [indexPath isEqual:self.movingCellIndexPath])
+    {
+        return self.movingCellBackGroundView.frame.size.height;
+    }
+    
     // Override this method here to use our own cellDataAtIndexPath
     id<MXKRecentCellDataStoring> cellData = [self cellDataAtIndexPath:indexPath];
     

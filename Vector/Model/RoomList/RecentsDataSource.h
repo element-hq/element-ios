@@ -32,6 +32,17 @@
 @property (nonatomic, copy) void (^onRoomInvitationAccept)(MXRoom*);
 
 /**
+ There is a pending drag and drop cell.
+ It defines its path.
+ */
+@property (nonatomic, copy) NSIndexPath* movingCellIndexPath;
+
+/**
+ The movingCellBackgroundImage;
+ */
+@property (nonatomic) UIImageView* movingCellBackGroundView;
+
+/**
  Return the header height from the section.
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
