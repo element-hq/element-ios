@@ -37,4 +37,44 @@
     return self;
 }
 
+- (NSAttributedString*)attributedTextMessageWithHighlightedEvent:(NSString*)eventId tintColor:(UIColor*)tintColor
+{
+    // Use this method to highlight a component in text message:
+    // The selected component is unchanged, while an alpha is applied on other components.
+    NSMutableAttributedString *customAttributedTextMsg;
+    NSAttributedString *componentString;
+    
+    @synchronized(bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent* component in bubbleComponents)
+        {
+            componentString = component.attributedTextMessage;
+            
+            if ([component.event.eventId isEqualToString:eventId] == NO)
+            {
+                // Apply alpha to blur this component
+                NSMutableAttributedString *customComponentString = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+                UIColor *color = [componentString attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:nil];
+                color = [color colorWithAlphaComponent:0.2];
+                                
+                [customComponentString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, customComponentString.length)];
+                componentString = customComponentString;
+            }
+            
+            if (!customAttributedTextMsg)
+            {
+                customAttributedTextMsg = [[NSMutableAttributedString alloc] initWithAttributedString:componentString];
+            }
+            else
+            {
+                // Append attributed text
+                [customAttributedTextMsg appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
+                [customAttributedTextMsg appendAttributedString:componentString];
+            }
+        }
+    }
+    
+    return customAttributedTextMsg;
+}
+
 @end
