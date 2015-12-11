@@ -36,4 +36,15 @@
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
 
+/**
+ Return true of the cell can be moved from a section to another one.
+ */
+- (BOOL)isDraggableCellAt:(NSIndexPath*)path;
+
+/**
+ Move a cell from a path to another one.
+ It is based on room Tag.
+ */
+- (void)moveCellFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath;
+
 @end

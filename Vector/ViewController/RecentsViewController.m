@@ -39,6 +39,7 @@
     
     // recents drag and drop management
     UIView *cellSnapshot;
+    NSIndexPath* movingCellPath;
 }
 
 @end
@@ -323,7 +324,6 @@ static NSMutableDictionary* backgroundByImageNameDict;
     {
         NSString* title = @"      ";
         
-        
         // pushes settings
         BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
         
@@ -416,9 +416,6 @@ static NSMutableDictionary* backgroundByImageNameDict;
     [self.recentsTableView setEditing:NO];
 }
 
-
-
-
 #pragma mark - Override UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -467,20 +464,42 @@ static NSMutableDictionary* backgroundByImageNameDict;
 }
 
 #pragma mark - recents drag & drop management
+
 - (IBAction) onRecentsLongPress:(id)sender
 {
+    RecentsDataSource* recentsDataSource = nil;
+    
+    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+         recentsDataSource = (RecentsDataSource*)self.dataSource;
+    }
+    
+    // only support RecentsDataSource
+    if (!recentsDataSource)
+    {
+        return;
+    }
+    
     UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
     UIGestureRecognizerState state = longPress.state;
     
+    // check if there is a moving cell during the long press managemnt
+    if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
+    {
+        return;
+    }
+    
     CGPoint location = [longPress locationInView:self.recentsTableView];
-    NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
     
     switch (state)
     {
         // step 1 : display the selected cell
         case UIGestureRecognizerStateBegan:
         {
-            if (indexPath)
+            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+            
+            // check if the cell can be moved
+            if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
             {
                 UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
                 
@@ -498,6 +517,8 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 cellSnapshot.center = center;
                 cellSnapshot.alpha = 0.5f;
                 [self.recentsTableView addSubview:cellSnapshot];
+                
+                movingCellPath = indexPath;
             }
             break;
         }
@@ -565,6 +586,32 @@ static NSMutableDictionary* backgroundByImageNameDict;
         case UIGestureRecognizerStateEnded:
         {
             [cellSnapshot removeFromSuperview];
+            cellSnapshot = nil;
+            
+            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+            NSInteger section = indexPath.section;
+            
+            UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+        
+            // the destinated row is retrieved from the moving cell (center comparison)
+            int row = (location.y > cell.center.y) ? indexPath.row + 1 : indexPath.row;
+
+            [recentsDataSource moveCellFrom:movingCellPath to: [NSIndexPath indexPathForRow:row inSection:section]];
+            
+            [cellSnapshot removeFromSuperview];
+            cellSnapshot = nil;
+            movingCellPath = nil;
+            
+            break;
+        }
+            
+        // default behaviour
+        // remove the cell and cancel the insertion
+        default:
+        {
+            [cellSnapshot removeFromSuperview];
+            cellSnapshot = nil;
+            movingCellPath = nil;
             break;
         }
     }

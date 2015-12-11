@@ -482,4 +482,76 @@
     [super destroy];
 }
 
+
+#pragma mark - drag and drop managemenent
+
+- (BOOL)isDraggableCellAt:(NSIndexPath*)path
+{
+    return (path && ((path.section == favoritesSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
+}
+
+- (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
+{
+    BOOL res = [self isDraggableCellAt:oldPath] && [self isDraggableCellAt:newPath];
+    
+    // the both index pathes are movable
+    if (res)
+    {
+        // cannot move conversation rooms in the same section
+        res &= !((oldPath.section == conversationSection) && (newPath.section == conversationSection));
+        
+        // other cases ?
+    }
+    
+    return res;
+}
+
+- (NSString*)roomTagAt:(NSIndexPath*)path
+{
+    if (path.section == favoritesSection)
+    {
+        return kMXRoomTagFavourite;
+    }
+    else if (path.section == lowPrioritySection)
+    {
+        return kMXRoomTagLowPriority;
+    }
+    
+    return nil;
+}
+
+- (void)moveCellFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
+{
+    if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
+    {
+        NSString* oldRoomTag = [self roomTagAt:oldPath];
+        NSString* dstRoomTag = [self roomTagAt:newPath];
+        
+        MXRoom* room = [self getRoomAtIndexPath:oldPath];
+        
+        NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row withTag:dstRoomTag];
+        
+        NSLog(@"[MXKRecentsDataSource] Update the room %@ tag from %@ to %@ with tag order %@", room.state.roomId, oldRoomTag, dstRoomTag, tagOrder);
+        
+        [room replaceTag:oldRoomTag
+                   byTag:dstRoomTag
+               withOrder:tagOrder
+                 success: ^{
+                     
+                     // Refresh table display
+                     if (self.delegate)
+                     {
+                         [self.delegate dataSource:self didCellChange:nil];
+                     }
+                     
+                 } failure:^(NSError *error) {
+                     
+                     NSLog(@"[MXKRecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
+                     
+                     // Notify MatrixKit user
+                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                 }];
+    }
+}
+
 @end
