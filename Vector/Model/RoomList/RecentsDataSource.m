@@ -522,6 +522,8 @@
 
 - (void)moveCellFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
 {
+    NSLog(@"[RecentsDataSource] moveCellFrom (%d, %d) to (%d, %d)", oldPath.section, oldPath.row, newPath.section, newPath.row);
+    
     if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
     {
         NSString* oldRoomTag = [self roomTagAt:oldPath];
@@ -531,7 +533,7 @@
         
         NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row withTag:dstRoomTag];
         
-        NSLog(@"[MXKRecentsDataSource] Update the room %@ tag from %@ to %@ with tag order %@", room.state.roomId, oldRoomTag, dstRoomTag, tagOrder);
+        NSLog(@"[RecentsDataSource] Update the room %@ tag from %@ to %@ with tag order %@", room.state.roomId, oldRoomTag, dstRoomTag, tagOrder);
         
         [room replaceTag:oldRoomTag
                    byTag:dstRoomTag
@@ -546,11 +548,15 @@
                      
                  } failure:^(NSError *error) {
                      
-                     NSLog(@"[MXKRecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
+                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
                      
                      // Notify MatrixKit user
                      [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
                  }];
+    }
+    else
+    {
+        NSLog(@"[RecentsDataSource] cannot move this cell");
     }
 }
 
