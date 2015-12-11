@@ -36,6 +36,9 @@
 
     // The "parent" segmented view controller
     HomeViewController *homeViewController;
+    
+    // recents drag and drop management
+    UIView *cellSnapshot;
 }
 
 @end
@@ -65,6 +68,9 @@
     // Register here the customized cell view class used to render recents
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
+    [self.recentsTableView addGestureRecognizer:longPress];
 }
 
 - (void)destroy
@@ -459,5 +465,110 @@ static NSMutableDictionary* backgroundByImageNameDict;
 {
     [self performSegueWithIdentifier:@"presentSearch" sender:self];
 }
+
+#pragma mark - recents drag & drop management
+- (IBAction) onRecentsLongPress:(id)sender
+{
+    UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
+    UIGestureRecognizerState state = longPress.state;
+    
+    CGPoint location = [longPress locationInView:self.recentsTableView];
+    NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+    
+    switch (state)
+    {
+        // step 1 : display the selected cell
+        case UIGestureRecognizerStateBegan:
+        {
+            if (indexPath)
+            {
+                UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+                
+                // snapshot the cell
+                UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
+                [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
+                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                
+                cellSnapshot = [[UIImageView alloc] initWithImage:image];
+                
+                // display the selected cell over the tableview
+                CGPoint center = cell.center;
+                center.y = location.y;
+                cellSnapshot.center = center;
+                cellSnapshot.alpha = 0.5f;
+                [self.recentsTableView addSubview:cellSnapshot];
+            }
+            break;
+        }
+        
+        // step 2 : the cell must follow the finger
+        case UIGestureRecognizerStateChanged:
+        {
+            CGPoint center = cellSnapshot.center;
+            CGFloat halfHeight = cellSnapshot.frame.size.height / 2.0f;
+            CGFloat cellTop = location.y - halfHeight;
+            CGFloat cellBottom = location.y + halfHeight;
+            
+            CGPoint contentOffset =  self.recentsTableView.contentOffset;
+            CGFloat height = MIN(self.recentsTableView.frame.size.height, self.recentsTableView.contentSize.height);
+            CGFloat bottomOffset = contentOffset.y + height;
+            
+            // check if the moving cell is trying to move under the tableview
+            if (cellBottom > self.recentsTableView.contentSize.height)
+            {
+                // force the cell to stay at the tableview bottom
+                location.y = self.recentsTableView.contentSize.height - halfHeight;
+            }
+            // check if the cell is moving over the displayed tableview bottom
+            else if (cellBottom > bottomOffset)
+            {
+                CGFloat diff = cellBottom - bottomOffset;
+                
+                // moving down the cell
+                location.y -= diff;
+                // scroll up the tableview
+                contentOffset.y += diff;
+            }
+            // the moving is tryin to move over the tableview topmost
+            else if (cellTop < 0)
+            {
+                // force to stay in the topmost
+                contentOffset.y  = 0;
+                location.y = contentOffset.y + halfHeight;
+            }
+            // the moving cell is displayed over the current scroll top
+            else if (cellTop < contentOffset.y)
+            {
+                CGFloat diff = contentOffset.y - cellTop;
+             
+                // move up the cell and the table up
+                location.y -= diff;
+                contentOffset.y -= diff;
+            }
+            
+            // move the cell to follow the user finger
+            center.y = location.y;
+            cellSnapshot.center = center;
+            
+            // scroll the tableview if it is required
+            if (contentOffset.y != self.recentsTableView.contentOffset.y)
+            {
+                [self.recentsTableView setContentOffset:contentOffset animated:NO];
+            }
+            
+            break;
+        }
+
+        // step 3 : remove the view
+        // and insert when it is possible.
+        case UIGestureRecognizerStateEnded:
+        {
+            [cellSnapshot removeFromSuperview];
+            break;
+        }
+    }
+}
+
 
 @end
