@@ -616,6 +616,9 @@
 
 - (void)initMatrixSessions
 {
+    // Disable identicon use
+    [MXSDKOptions sharedInstance].disableIdenticonUseForUserAvatar = YES;
+    
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
     

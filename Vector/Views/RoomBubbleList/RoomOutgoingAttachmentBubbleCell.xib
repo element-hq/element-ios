@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,16 +16,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgp-Z5-rAj" userLabel="Picture View" customClass="MXKImageView">
-                        <rect key="frame" x="8" y="5" width="40" height="40"/>
+                        <rect key="frame" x="8" y="5" width="30" height="30"/>
                         <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="NQk-ck-Lo8"/>
-                            <constraint firstAttribute="height" constant="40" id="dNT-QU-CUG"/>
+                            <constraint firstAttribute="width" constant="30" id="NQk-ck-Lo8"/>
+                            <constraint firstAttribute="height" constant="30" id="dNT-QU-CUG"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="q9c-0p-QyP">
-                        <rect key="frame" x="51" y="3" width="480" height="20"/>
+                        <rect key="frame" x="41" y="3" width="490" height="20"/>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -35,7 +36,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="5IE-JS-uf3" userLabel="Attachment View" customClass="MXKImageView">
-                        <rect key="frame" x="51" y="18" width="192" height="23"/>
+                        <rect key="frame" x="41" y="18" width="192" height="23"/>
                         <animations/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -44,7 +45,7 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-gn-noF" userLabel="File Type Image View">
-                        <rect key="frame" x="51" y="18" width="32" height="32"/>
+                        <rect key="frame" x="41" y="18" width="32" height="32"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="OE8-oh-B7Q"/>
@@ -52,7 +53,7 @@
                         </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cot-3X-2cU" userLabel="Play Icon Image View">
-                        <rect key="frame" x="131" y="14" width="32" height="32"/>
+                        <rect key="frame" x="121" y="14" width="32" height="32"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="8io-Wk-GzF"/>
@@ -60,7 +61,7 @@
                         </constraints>
                     </imageView>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pmk-Jp-bnI">
-                        <rect key="frame" x="137" y="20" width="20" height="20"/>
+                        <rect key="frame" x="127" y="20" width="20" height="20"/>
                         <animations/>
                     </activityIndicatorView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kwd-hP-feC" userLabel="showHideDateTime">
@@ -116,6 +117,11 @@
                             <constraint firstAttribute="trailing" secondItem="eU5-iK-u8i" secondAttribute="trailing" id="teG-8q-BOX"/>
                         </constraints>
                     </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGI-kX-OHM">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -127,14 +133,18 @@
                     <constraint firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" constant="69" id="Bkh-h2-JOQ"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
                     <constraint firstItem="q9c-0p-QyP" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="Ixr-7h-f8j"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="UGI-kX-OHM" secondAttribute="bottom" constant="-8" id="JlR-jQ-Z6n"/>
                     <constraint firstAttribute="bottom" secondItem="kwd-hP-feC" secondAttribute="bottom" id="LQg-cI-Nkn"/>
                     <constraint firstAttribute="bottom" secondItem="5IE-JS-uf3" secondAttribute="bottom" constant="8" id="SHN-tC-zsJ"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="18" id="XSL-TG-m62"/>
+                    <constraint firstItem="UGI-kX-OHM" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="XxS-QH-Iab"/>
                     <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="3" id="YWK-C2-15w"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="UGI-kX-OHM" secondAttribute="trailing" constant="-8" id="dlJ-sS-OFf"/>
                     <constraint firstAttribute="trailing" secondItem="kwd-hP-feC" secondAttribute="trailing" id="f2V-Ka-kU3"/>
                     <constraint firstItem="pmk-Jp-bnI" firstAttribute="centerY" secondItem="5IE-JS-uf3" secondAttribute="centerY" id="gHM-RV-GXm"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="8" id="hQV-lO-7aQ"/>
+                    <constraint firstItem="UGI-kX-OHM" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="n2Y-Zq-t6U"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="K9X-gn-noF" secondAttribute="leading" id="p93-5h-lvW"/>
                     <constraint firstItem="pmk-Jp-bnI" firstAttribute="centerX" secondItem="5IE-JS-uf3" secondAttribute="centerX" id="qwk-Uh-gfp"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerX" secondItem="Cot-3X-2cU" secondAttribute="centerX" id="sF7-QL-vdj"/>
@@ -155,6 +165,7 @@
                 <outlet property="attachmentView" destination="5IE-JS-uf3" id="imT-1z-hR1"/>
                 <outlet property="bubbleInfoContainer" destination="IOg-Kt-8vW" id="TAw-QY-Y9e"/>
                 <outlet property="bubbleInfoContainerTopConstraint" destination="XSL-TG-m62" id="qVf-vJ-4aP"/>
+                <outlet property="bubbleOverlayContainer" destination="UGI-kX-OHM" id="4Je-5p-thN"/>
                 <outlet property="fileTypeIconView" destination="K9X-gn-noF" id="4Pj-bc-3gk"/>
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
                 <outlet property="playIconView" destination="Cot-3X-2cU" id="KEF-KK-Og1"/>

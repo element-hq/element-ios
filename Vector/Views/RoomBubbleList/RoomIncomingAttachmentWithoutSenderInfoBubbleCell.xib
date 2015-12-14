@@ -8,7 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="WmY-Jw-mqv" customClass="RoomOutgoingAttachmentWithoutSenderInfoBubbleCell">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="WmY-Jw-mqv" customClass="RoomIncomingAttachmentWithoutSenderInfoBubbleCell">
             <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
@@ -21,7 +21,7 @@
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="192" id="9zO-jU-qTb"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="WYA-Jm-3R4"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="Uqr-7d-0dv"/>
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-gn-noF" userLabel="File Type Image View">
@@ -93,11 +93,7 @@
                             <constraint firstAttribute="trailing" secondItem="eU5-iK-u8i" secondAttribute="trailing" id="teG-8q-BOX"/>
                         </constraints>
                     </view>
-                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="iBW-Wz-lra">
-                        <rect key="frame" x="127" y="14" width="20" height="20"/>
-                        <animations/>
-                    </activityIndicatorView>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wOV-0A-LiJ">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WiZ-KM-lSH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -107,22 +103,20 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="kwd-hP-feC" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" id="5bB-HV-WAA"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="wOV-0A-LiJ" secondAttribute="trailing" constant="-8" id="5sy-nH-X7j"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="8" id="96U-67-5TP"/>
-                    <constraint firstItem="wOV-0A-LiJ" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="G08-M9-INh"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
-                    <constraint firstItem="wOV-0A-LiJ" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="HxS-mm-ZLV"/>
-                    <constraint firstItem="iBW-Wz-lra" firstAttribute="centerX" secondItem="5IE-JS-uf3" secondAttribute="centerX" id="LAM-kH-fFF"/>
+                    <constraint firstItem="WiZ-KM-lSH" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="ICD-ch-XIt"/>
                     <constraint firstAttribute="bottom" secondItem="kwd-hP-feC" secondAttribute="bottom" id="LQg-cI-Nkn"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="WiZ-KM-lSH" secondAttribute="trailing" constant="-8" id="QZK-47-doo"/>
                     <constraint firstAttribute="bottom" secondItem="5IE-JS-uf3" secondAttribute="bottom" constant="8" id="SHN-tC-zsJ"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="8" id="XSL-TG-m62"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="bSL-lG-ued"/>
                     <constraint firstAttribute="trailing" secondItem="kwd-hP-feC" secondAttribute="trailing" id="f2V-Ka-kU3"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="8" id="hQV-lO-7aQ"/>
-                    <constraint firstItem="iBW-Wz-lra" firstAttribute="centerY" secondItem="5IE-JS-uf3" secondAttribute="centerY" id="otp-we-pON"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="WiZ-KM-lSH" secondAttribute="bottom" constant="-8" id="ofs-BR-F97"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="K9X-gn-noF" secondAttribute="leading" id="p93-5h-lvW"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="wOV-0A-LiJ" secondAttribute="bottom" constant="-8" id="qh5-KI-LRP"/>
+                    <constraint firstItem="WiZ-KM-lSH" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="qKa-jp-T43"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerX" secondItem="Cot-3X-2cU" secondAttribute="centerX" id="sF7-QL-vdj"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="fdx-qs-8en" secondAttribute="centerY" id="v0F-Ts-14P"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="K9X-gn-noF" secondAttribute="top" id="wkX-zQ-iQS"/>
@@ -132,15 +126,14 @@
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="activityIndicator" destination="iBW-Wz-lra" id="X26-rm-BBE"/>
                 <outlet property="attachViewBottomConstraint" destination="SHN-tC-zsJ" id="cG0-a7-eHa"/>
-                <outlet property="attachViewMinHeightConstraint" destination="WYA-Jm-3R4" id="xg6-nx-GxV"/>
+                <outlet property="attachViewMinHeightConstraint" destination="Uqr-7d-0dv" id="UIs-4K-np5"/>
                 <outlet property="attachViewTopConstraint" destination="96U-67-5TP" id="Ugm-cH-32E"/>
                 <outlet property="attachViewWidthConstraint" destination="9zO-jU-qTb" id="fOO-VW-fe1"/>
                 <outlet property="attachmentView" destination="5IE-JS-uf3" id="imT-1z-hR1"/>
                 <outlet property="bubbleInfoContainer" destination="IOg-Kt-8vW" id="TAw-QY-Y9e"/>
                 <outlet property="bubbleInfoContainerTopConstraint" destination="XSL-TG-m62" id="qVf-vJ-4aP"/>
-                <outlet property="bubbleOverlayContainer" destination="wOV-0A-LiJ" id="Ofz-kX-ZTv"/>
+                <outlet property="bubbleOverlayContainer" destination="WiZ-KM-lSH" id="07W-1f-K5G"/>
                 <outlet property="fileTypeIconView" destination="K9X-gn-noF" id="4Pj-bc-3gk"/>
                 <outlet property="playIconView" destination="Cot-3X-2cU" id="KEF-KK-Og1"/>
                 <outlet property="progressChartView" destination="hJj-TC-pxK" id="Zz3-s5-Qqr"/>

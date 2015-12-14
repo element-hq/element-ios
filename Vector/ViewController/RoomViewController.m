@@ -16,6 +16,8 @@
 
 #import "RoomViewController.h"
 
+#import "RoomDataSource.h"
+
 #import "AppDelegate.h"
 #import "RageShakeManager.h"
 
@@ -30,20 +32,29 @@
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
 
+#import "RoomIncomingTextMsgBubbleCell.h"
+#import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
 #import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
+#import "RoomIncomingAttachmentBubbleCell.h"
+#import "RoomIncomingAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
 
-#import "RoomOutgoingAttachmentBubbleCell.h"
-#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
-#import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
 #import "RoomOutgoingTextMsgBubbleCell.h"
 #import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
+#import "RoomOutgoingAttachmentBubbleCell.h"
+#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
+
+#import "MXKRoomBubbleTableViewCell+Vector.h"
 
 #import "AvatarGenerator.h"
 
 @interface RoomViewController ()
 {
+    // The customized room data source for Vector
+    RoomDataSource *customizedRoomDataSource;
+    
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
 
@@ -65,7 +76,11 @@
     [super viewDidLoad];
     
     // Register first customized cell view classes used to render bubbles
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomIncomingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
@@ -127,6 +142,12 @@
     }
     
     [self removeTypingNotificationsListener];
+    
+    if (customizedRoomDataSource)
+    {
+        // Remove select event id
+        customizedRoomDataSource.selectedEventId = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -177,6 +198,12 @@
     [super displayRoom:dataSource];
     
     self.navigationItem.rightBarButtonItem.enabled = (dataSource != nil);
+    
+    // Store ref on customized room data source
+    if ([dataSource isKindOfClass:RoomDataSource.class])
+    {
+        customizedRoomDataSource = (RoomDataSource*)dataSource;
+    }
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -231,6 +258,12 @@
         self.currentAlert = nil;
     }
     
+    if (customizedRoomDataSource)
+    {
+        customizedRoomDataSource.selectedEventId = nil;
+        customizedRoomDataSource = nil;
+    }
+    
     [super destroy];
 }
 
@@ -256,11 +289,11 @@
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = MXKRoomIncomingAttachmentBubbleCell.class;
+                    cellViewClass = RoomIncomingAttachmentBubbleCell.class;
                 }
             }
             else
@@ -271,11 +304,11 @@
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = MXKRoomIncomingTextMsgBubbleCell.class;
+                    cellViewClass = RoomIncomingTextMsgBubbleCell.class;
                 }
             }
         }
@@ -322,10 +355,94 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
+    // Handle here user actions on bubbles for Vector app
+    if (customizedRoomDataSource)
     {
-        self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
-        NSLog(@"    -> Turn %@ cells date", self.roomDataSource.showBubblesDateTime ? @"ON" : @"OFF");
+        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
+        {
+            // Retrieve the tapped event
+            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            
+            // Update display of the visible table cell view
+            NSArray* cellArray = self.bubblesTableView.visibleCells;
+            
+            // Check whether a selection already exist or not
+            if (customizedRoomDataSource.selectedEventId)
+            {
+                // Cancel the current selection
+                for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+                {
+                    if (tableViewCell.blurred)
+                    {
+                        tableViewCell.blurred = NO;
+                    }
+                    else
+                    {
+                        [tableViewCell unselectComponent];
+                    }
+                }
+                
+                customizedRoomDataSource.selectedEventId = nil;
+            }
+            else if (tappedEvent)
+            {
+                // Highlight this event in displayed message
+                
+                // Blur all table cells, except the tapped one
+                for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+                {
+                    tableViewCell.blurred = YES;
+                }
+                MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+                roomBubbleTableViewCell.blurred = NO;
+                
+                // Compute the component index if tapped event is provided
+                for (NSUInteger componentIndex = 0; componentIndex < roomBubbleTableViewCell.bubbleData.bubbleComponents.count; componentIndex++)
+                {
+                    MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents[componentIndex];
+                    if ([component.event.eventId isEqualToString:tappedEvent.eventId])
+                    {
+                        // Report the selected event id in data source to keep this event selected in case of table reload.
+                        if (customizedRoomDataSource)
+                        {
+                            customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
+                        }
+                        
+                        [roomBubbleTableViewCell selectComponent:componentIndex];
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnOverlayContainer])
+        {
+            // Cancel the current event selection
+            NSArray* cellArray = self.bubblesTableView.visibleCells;
+            
+            for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+            {
+                if (tableViewCell.blurred)
+                {
+                    tableViewCell.blurred = NO;
+                }
+                else
+                {
+                    [tableViewCell unselectComponent];
+                }
+            }
+            
+            customizedRoomDataSource.selectedEventId = nil;
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
+        {
+            // Disable default behavior
+        }
+        else
+        {
+            // Keep default implementation for other actions
+            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        }
     }
     else
     {

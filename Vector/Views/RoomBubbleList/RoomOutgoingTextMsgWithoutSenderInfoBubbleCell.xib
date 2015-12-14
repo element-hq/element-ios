@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU">
-                        <rect key="frame" x="51" y="0.0" width="97" height="34"/>
+                        <rect key="frame" x="41" y="0.0" width="97" height="34"/>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -46,20 +48,29 @@
                             <constraint firstAttribute="width" constant="61" id="tLr-6k-ArA"/>
                         </constraints>
                     </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QjD-Xs-cTU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="34"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="kwd-hP-feC" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" id="5bB-HV-WAA"/>
+                    <constraint firstItem="QjD-Xs-cTU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="Gsd-XQ-Mou"/>
                     <constraint firstAttribute="bottom" secondItem="kwd-hP-feC" secondAttribute="bottom" id="LQg-cI-Nkn"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="69" id="Shz-6S-kGd"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" id="XSL-TG-m62"/>
                     <constraint firstAttribute="trailing" secondItem="kwd-hP-feC" secondAttribute="trailing" id="f2V-Ka-kU3"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="QjD-Xs-cTU" secondAttribute="bottom" constant="-8" id="fUi-e2-On2"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="8" id="hQV-lO-7aQ"/>
+                    <constraint firstItem="QjD-Xs-cTU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="jjI-Sh-rKC"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" id="mkw-3s-H8B"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="QjD-Xs-cTU" secondAttribute="trailing" constant="-8" id="nNm-iy-vDE"/>
                     <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
-                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="51" id="uig-Xh-7m6"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="41" id="uig-Xh-7m6"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
@@ -67,6 +78,7 @@
             <connections>
                 <outlet property="bubbleInfoContainer" destination="IOg-Kt-8vW" id="TAw-QY-Y9e"/>
                 <outlet property="bubbleInfoContainerTopConstraint" destination="XSL-TG-m62" id="qVf-vJ-4aP"/>
+                <outlet property="bubbleOverlayContainer" destination="QjD-Xs-cTU" id="95s-6R-ThU"/>
                 <outlet property="messageTextView" destination="HTH-5n-MSU" id="YN4-iK-gNc"/>
                 <outlet property="msgTextViewLeadingConstraint" destination="uig-Xh-7m6" id="kgj-3v-ECW"/>
                 <outlet property="msgTextViewMinHeightConstraint" destination="4NV-GH-tbv" id="D9c-1d-tpt"/>

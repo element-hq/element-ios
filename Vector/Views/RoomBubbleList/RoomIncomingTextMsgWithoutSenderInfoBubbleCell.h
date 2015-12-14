@@ -14,16 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
 
 /**
- The data source for `RoomViewController` in Vector.
+ `RoomIncomingTextMsgWithoutSenderInfoBubbleCell` displays incoming message bubbles without sender's information.
  */
-@interface RoomDataSource : MXKRoomDataSource
-
-/**
- The event id of the current selected event if any. Default is nil.
- */
-@property(nonatomic) NSString *selectedEventId;
+@interface RoomIncomingTextMsgWithoutSenderInfoBubbleCell : MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell
 
 @end

@@ -14,16 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MXKRoomIncomingAttachmentBubbleCell.h"
 
 /**
- The data source for `RoomViewController` in Vector.
+ `RoomIncomingAttachmentBubbleCell` displays incoming attachment bubbles with sender's information.
  */
-@interface RoomDataSource : MXKRoomDataSource
-
-/**
- The event id of the current selected event if any. Default is nil.
- */
-@property(nonatomic) NSString *selectedEventId;
+@interface RoomIncomingAttachmentBubbleCell : MXKRoomIncomingAttachmentBubbleCell
 
 @end
