@@ -261,8 +261,8 @@
             }
             
             self.movingCellBackGroundView.frame = self.movingCellBackGroundView.frame;
-            cell.contentView.backgroundColor = [UIColor greenColor];
-            cell.backgroundColor = [UIColor redColor];
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor = [UIColor clearColor];
             
             return cell;
         }
