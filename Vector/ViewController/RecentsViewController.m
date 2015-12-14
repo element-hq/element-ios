@@ -249,7 +249,6 @@
             [self.delegate recentListViewController:self didSelectRoom:room.state.roomId inMatrixSession:room.mxSession];
         };
     }
-
     
     [self.recentsTableView reloadData];
     
@@ -481,6 +480,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
     
     lastPotentialCellPath = nil;
     ((RecentsDataSource*)self.dataSource).movingCellIndexPath = nil;
+    ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
     
     [self.recentsTableView reloadData];
 }
@@ -543,14 +543,11 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 cell.frame = CGRectMake(0, 0, 100, 80);
                 cell.backgroundColor = [UIColor redColor];
                 
-                [self.recentsTableView beginUpdates];
                 lastPotentialCellPath = indexPath;
                 recentsDataSource.movingCellIndexPath = indexPath;
                 
-                [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                [self.recentsTableView endUpdates];
-            
                 movingCellPath = indexPath;
+                recentsDataSource.hiddenCellIndexPath = movingCellPath;
                
             }
             break;
@@ -618,14 +615,16 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
                 {
                     [self.recentsTableView beginUpdates];
-                    if (recentsDataSource.movingCellIndexPath)
+                    if (recentsDataSource.movingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
                     {
                         [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
                     }
                     else if (indexPath)
                     {
                         [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        [self.recentsTableView deleteRowsAtIndexPaths:@[movingCellPath] withRowAnimation:UITableViewRowAnimationNone];
                     }
+                    recentsDataSource.hiddenCellIndexPath = movingCellPath;
                     recentsDataSource.movingCellIndexPath = indexPath;
                     [self.recentsTableView endUpdates];
                 }
@@ -633,10 +632,14 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 else if (recentsDataSource.movingCellIndexPath)
                 {
                     NSIndexPath* pathToDelete = recentsDataSource.movingCellIndexPath;
+                    NSIndexPath* pathToAdd = recentsDataSource.hiddenCellIndexPath;
+                    
                     // remove it
                     [self.recentsTableView beginUpdates];
                     [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
+                    [self.recentsTableView insertRowsAtIndexPaths:@[pathToAdd] withRowAnimation:UITableViewRowAnimationNone];
                     recentsDataSource.movingCellIndexPath = nil;
+                    recentsDataSource.hiddenCellIndexPath = nil;
                     [self.recentsTableView endUpdates];
                 }
                 

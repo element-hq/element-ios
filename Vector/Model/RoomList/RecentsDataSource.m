@@ -41,7 +41,7 @@
 
 @implementation RecentsDataSource
 @synthesize onRoomInvitationReject, onRoomInvitationAccept;
-@synthesize movingCellIndexPath, movingCellBackGroundView;
+@synthesize hiddenCellIndexPath, movingCellIndexPath, movingCellBackGroundView;
 
 - (instancetype)init
 {
@@ -119,7 +119,13 @@
     MXSession *mxSession = notif.object;
     if (mxSession == self.mxSession)
     {
-        [self.delegate dataSource:self didCellChange:nil];
+        if (!self.movingCellIndexPath)
+        {
+            [self refreshRoomsSections];
+            
+            // And inform the delegate about the update
+            [self.delegate dataSource:self didCellChange:nil];
+        }
     }
 }
 
@@ -149,6 +155,16 @@
     return 0;
 }
 
+- (BOOL)isMovingCellSection:(NSInteger)section
+{
+    return self.movingCellIndexPath && (self.movingCellIndexPath.section == section);
+}
+
+- (BOOL)isHiddenCellSection:(NSInteger)section
+{
+    return self.hiddenCellIndexPath && (self.hiddenCellIndexPath.section == section);
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSUInteger count = 0;
@@ -170,11 +186,16 @@
         count = invitesCellDataArray.count;
     }
     
-    if (self.movingCellIndexPath && (self.movingCellIndexPath.section == section))
+    if ([self isMovingCellSection:section])
     {
         count++;
     }
-
+    
+    if ([self isHiddenCellSection:section])
+    {
+        count--;
+    }
+    
     return count;
 }
 
@@ -250,6 +271,11 @@
         {
             indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
         }
+    }
+    
+    if (self.hiddenCellIndexPath && [anIndexPath isEqual:self.hiddenCellIndexPath])
+    {
+        indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
     }
     
     UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
