@@ -98,13 +98,8 @@
                                                                 {
                                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                                         
-                                                                        if (!self.movingCellIndexPath)
-                                                                        {
-                                                                            [self refreshRoomsSections];
-                                                                            
-                                                                            // And inform the delegate about the update
-                                                                            [self.delegate dataSource:self didCellChange:nil];
-                                                                        }
+                                                                        [self refreshRoomsSectionsAndReload];
+                                                                    
                                                                     });
                                                                 }
                                                                 
@@ -114,18 +109,23 @@
     }
 }
 
+- (void)refreshRoomsSectionsAndReload
+{
+    if (!self.movingCellIndexPath)
+    {
+        [self refreshRoomsSections];
+        
+        // And inform the delegate about the update
+        [self.delegate dataSource:self didCellChange:nil];
+    }
+}
+
 - (void)didMXSessionInviteRoomUpdate:(NSNotification *)notif
 {
     MXSession *mxSession = notif.object;
     if (mxSession == self.mxSession)
     {
-        if (!self.movingCellIndexPath)
-        {
-            [self refreshRoomsSections];
-            
-            // And inform the delegate about the update
-            [self.delegate dataSource:self didCellChange:nil];
-        }
+        [self refreshRoomsSectionsAndReload];
     }
 }
 
@@ -631,23 +631,23 @@
                      
                      NSLog(@"[RecentsDataSource] move is done");
                      
-                     [self dataSource:self didCellChange:nil];
-                     
                      if (moveSuccess)
                      {
                          moveSuccess();
                      }
                      
+                     [self refreshRoomsSectionsAndReload];
+                     
                  } failure:^(NSError *error) {
                      
                      NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
-                    
-                     [self dataSource:self didCellChange:nil];
                      
                      if (moveFailure)
                      {
                          moveFailure(error);
                      }
+                     
+                     [self refreshRoomsSectionsAndReload];
                      
                      // Notify MatrixKit user
                      [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];

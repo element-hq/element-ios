@@ -481,8 +481,6 @@ static NSMutableDictionary* backgroundByImageNameDict;
     lastPotentialCellPath = nil;
     ((RecentsDataSource*)self.dataSource).movingCellIndexPath = nil;
     ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
-    
-    [self.recentsTableView reloadData];
 }
 
 - (IBAction) onRecentsLongPress:(id)sender
