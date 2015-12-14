@@ -657,12 +657,12 @@
     {
         NSLog(@"[RecentsDataSource] cannot move this cell");
         
-        [self dataSource:self didCellChange:nil];
-        
         if (moveFailure)
         {
             moveFailure(nil);
         }
+        
+        [self refreshRoomsSectionsAndReload];
     }
 }
 
