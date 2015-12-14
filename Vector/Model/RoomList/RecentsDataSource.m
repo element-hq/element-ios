@@ -97,6 +97,7 @@
                                                                 {
                                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                                         
+                                                                        // refresh the sections
                                                                         [self refreshRoomsSections];
                                                                         
                                                                         // And inform the delegate about the update
@@ -110,11 +111,16 @@
     }
 }
 
+
 - (void)didMXSessionInviteRoomUpdate:(NSNotification *)notif
 {
     MXSession *mxSession = notif.object;
     if (mxSession == self.mxSession)
     {
+        // refresh the sections
+        [self refreshRoomsSections];
+        
+        // And inform the delegate about the update
         [self.delegate dataSource:self didCellChange:nil];
     }
 }
@@ -468,7 +474,7 @@
     // 1 - call [super thisNewMethod]
     // 2 - call [self refreshRoomsSections]
     
-    // refresh the 
+    // refresh the sections
     [self refreshRoomsSections];
     
     // Call super to keep update readyRecentsDataSourceArray.
