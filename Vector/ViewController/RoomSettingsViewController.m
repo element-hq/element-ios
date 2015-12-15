@@ -18,17 +18,22 @@
 
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
+#import "TableViewCellWithLabelAndMXKImageView.h"
+
 #import "TableViewCellSeparator.h"
 
 #import "RageShakeManager.h"
 
 #import "VectorDesignValues.h"
 
+#import "AvatarGenerator.h"
+
 #define ROOM_SECTION 0
 
-#define ROOM_SECTION_NAME  0
-#define ROOM_SECTION_TOPIC 1
-#define ROOM_SECTION_COUNT 2
+#define ROOM_SECTION_PHOTO  0
+#define ROOM_SECTION_NAME   1
+#define ROOM_SECTION_TOPIC  2
+#define ROOM_SECTION_COUNT  3
 
 #define ROOM_TOPIC_CELL_HEIGHT 99
 
@@ -430,7 +435,66 @@
         // retrieve row as a ROOM_SECTION_XX index
         row = (row - 1) / 2;
         
-        if (row == ROOM_SECTION_TOPIC)
+        if (row == ROOM_SECTION_PHOTO)
+        {
+            TableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+            
+            if (!roomPhotoCell)
+            {
+                roomPhotoCell = [[TableViewCellWithLabelAndMXKImageView alloc] init];
+            }
+            
+            roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
+            
+            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"])
+            {
+                roomPhotoCell.mxkImageView.image = (UIImage*)[updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"];
+            }
+            else
+            {
+                NSString* roomAvatarUrl = mxRoomState.avatar;
+                
+                // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
+                if (!roomAvatarUrl)
+                {
+                    NSString* myUserId = mxRoom.mxSession.myUser.userId;
+                    
+                    NSArray* members = mxRoomState.members;
+                    
+                    if (members.count < 3)
+                    {
+                        // use the member avatar only it is an active member
+                        for (MXRoomMember *roomMember in members)
+                        {
+                            if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
+                            {
+                                roomAvatarUrl = roomMember.avatarUrl;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:mxRoom];
+                
+                if (roomAvatarUrl)
+                {
+                    roomPhotoCell.mxkImageView.enableInMemoryCache = YES;
+                    
+                    [roomPhotoCell.mxkImageView setImageURL:[mxRoom.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:roomPhotoCell.mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+                }
+                else
+                {
+                    roomPhotoCell.mxkImageView.image = avatarImage;
+                }
+            }
+            
+            [roomPhotoCell.mxkImageView.layer setCornerRadius:roomPhotoCell.mxkImageView.frame.size.width / 2];
+            roomPhotoCell.mxkImageView.clipsToBounds = YES;
+            
+            cell = roomPhotoCell;
+        }
+        else if (row == ROOM_SECTION_TOPIC)
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
             
