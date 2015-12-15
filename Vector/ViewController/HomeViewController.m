@@ -447,7 +447,7 @@
                              // Do it at the end of the animation when the tabs header of the SegmentedVC is hidden
                              // so that the user cannot see the selection bar of this header moving
                              self.selectedIndex = 0;
-                             self.displayedViewController.view.hidden = NO;
+                             self.selectedViewController.view.hidden = NO;
                          }];
     }
     else
@@ -457,7 +457,7 @@
 
         // Go back to the recents tab
         self.selectedIndex = 0;
-        self.displayedViewController.view.hidden = NO;
+        self.selectedViewController.view.hidden = NO;
     }
 }
 
@@ -466,10 +466,10 @@
 {
     if (searchBar.text.length)
     {
-        self.displayedViewController.view.hidden = NO;
+        self.selectedViewController.view.hidden = NO;
 
         // Forward the search request to the data source
-        if (self.displayedViewController == recentsViewController)
+        if (self.selectedViewController == recentsViewController)
         {
             [recentsDataSource searchWithPatterns:@[searchBar.text]];
         }
@@ -477,7 +477,7 @@
     else
     {
         // Nothing to search = Show nothing
-        self.displayedViewController.view.hidden = YES;
+        self.selectedViewController.view.hidden = YES;
     }
 }
 
@@ -485,7 +485,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if (self.displayedViewController == recentsViewController)
+    if (self.selectedViewController == recentsViewController)
     {
         // As the search is local, it can be updated on each text change
         [self updateSearch];

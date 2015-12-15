@@ -40,7 +40,7 @@ limitations under the License.
 /**
  The view controller that currently has the focus.
  */
-@property (nonatomic, readonly) UIViewController *displayedViewController;
+@property (nonatomic, readonly) UIViewController *selectedViewController;
 
 /**
  Returns the `UINib` object initialized for a `SegmentedViewController`.

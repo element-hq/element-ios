@@ -43,7 +43,6 @@
 @end
 
 @implementation SegmentedViewController
-@synthesize displayedViewController;
 
 #pragma mark - Class methods
 
@@ -77,7 +76,7 @@
     if (_selectedIndex != selectedIndex)
     {
         _selectedIndex = selectedIndex;
-        [self displaySelectedViewController];
+        [self display_selectedViewController];
     }
 }
 
@@ -243,7 +242,7 @@
     
     [self addSelectedMarkerView];
     
-    [self displaySelectedViewController];
+    [self display_selectedViewController];
 }
 
 - (void)addSelectedMarkerView
@@ -303,11 +302,11 @@
     }
 }
 
-- (void)displaySelectedViewController
+- (void)display_selectedViewController
 {
-    if (displayedViewController)
+    if (_selectedViewController)
     {
-        NSUInteger index = [viewControllers indexOfObject:displayedViewController];
+        NSUInteger index = [viewControllers indexOfObject:_selectedViewController];
         
         if (index != NSNotFound)
         {
@@ -315,11 +314,11 @@
             label.font = [UIFont systemFontOfSize:17];
         }
         
-        [displayedViewController.view removeFromSuperview];
-        [displayedViewController removeFromParentViewController];
+        [_selectedViewController.view removeFromSuperview];
+        [_selectedViewController removeFromParentViewController];
         
-        [self removeConstraint:displayedViewController.view constraint:displayedVCWidthConstraint];
-        [self removeConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
+        [self removeConstraint:_selectedViewController.view constraint:displayedVCWidthConstraint];
+        [self removeConstraint:_selectedViewController.view constraint:displayedVCHeightConstraint];
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
     }
@@ -341,18 +340,18 @@
     [self addConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
 
     // Set the new selected view controller
-    displayedViewController = [viewControllers objectAtIndex:_selectedIndex];
+    _selectedViewController = [viewControllers objectAtIndex:_selectedIndex];
 
     // Make iOS invoke child viewWillAppear
-    [displayedViewController beginAppearanceTransition:YES animated:YES];
+    [_selectedViewController beginAppearanceTransition:YES animated:YES];
 
-    [self addChildViewController:displayedViewController];
+    [self addChildViewController:_selectedViewController];
     
-    [displayedViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.viewControllerContainer addSubview:displayedViewController.view];
+    [_selectedViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.viewControllerContainer addSubview:_selectedViewController.view];
     
     
-    displayedVCTopConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCTopConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                             attribute:NSLayoutAttributeTop
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem:self.viewControllerContainer
@@ -361,7 +360,7 @@
                                                              constant:0.0f];
     [self addConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
     
-    displayedVCLeftConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCLeftConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                              attribute:NSLayoutAttributeLeading
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:self.viewControllerContainer
@@ -371,26 +370,26 @@
     
     [self addConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
     
-    displayedVCWidthConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCWidthConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                                         attribute:NSLayoutAttributeWidth
                                                                         relatedBy:NSLayoutRelationEqual
                                                                            toItem:self.viewControllerContainer
                                                                         attribute:NSLayoutAttributeWidth
                                                                        multiplier:1.0
                                                                          constant:0];
-    [self addConstraint:displayedViewController.view constraint:displayedVCWidthConstraint];
+    [self addConstraint:_selectedViewController.view constraint:displayedVCWidthConstraint];
     
-    displayedVCHeightConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCHeightConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                               attribute:NSLayoutAttributeHeight
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:self.viewControllerContainer
                                                               attribute:NSLayoutAttributeHeight
                                                              multiplier:1.0
                                                                constant:0];
-    [self addConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
+    [self addConstraint:_selectedViewController.view constraint:displayedVCHeightConstraint];
     
-    [displayedViewController didMoveToParentViewController:self];
-    [displayedViewController endAppearanceTransition];
+    [_selectedViewController didMoveToParentViewController:self];
+    [_selectedViewController endAppearanceTransition];
  
     // refresh the navbar background color
     // to display if the homeserver is reachable.
@@ -409,7 +408,7 @@
         // update the selected index
         _selectedIndex = pos;
         
-        [self displaySelectedViewController];
+        [self display_selectedViewController];
     }
 }
 
