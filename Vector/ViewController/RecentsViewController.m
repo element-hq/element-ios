@@ -40,6 +40,7 @@
     // recents drag and drop management
     UIImageView *cellSnapshot;
     NSIndexPath* movingCellPath;
+    MXRoom* movingRoom;
     
     NSIndexPath* lastPotentialCellPath;
 }
@@ -477,10 +478,13 @@ static NSMutableDictionary* backgroundByImageNameDict;
     [cellSnapshot removeFromSuperview];
     cellSnapshot = nil;
     movingCellPath = nil;
+    movingRoom = nil;
     
     lastPotentialCellPath = nil;
     ((RecentsDataSource*)self.dataSource).movingCellIndexPath = nil;
     ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
+    
+    [self.activityIndicator stopAnimating];
 }
 
 - (IBAction) onRecentsLongPress:(id)sender
@@ -546,7 +550,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 
                 movingCellPath = indexPath;
                 recentsDataSource.hiddenCellIndexPath = movingCellPath;
-               
+                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
             }
             break;
         }
@@ -655,16 +659,15 @@ static NSMutableDictionary* backgroundByImageNameDict;
             cellSnapshot = nil;
             
             [self.activityIndicator startAnimating];
-            [recentsDataSource moveCellFrom:movingCellPath to: lastPotentialCellPath success:^{
+                        
+            [recentsDataSource moveRoomCell:movingRoom from:movingCellPath to:lastPotentialCellPath success:^{
                 
                 [self onRecentsDragEnd];
-                [self.activityIndicator stopAnimating];
             
             } failure:^(NSError *error) {
                 
                 [self onRecentsDragEnd];
-                [self.activityIndicator stopAnimating];
-            
+                
             }];
         
             break;

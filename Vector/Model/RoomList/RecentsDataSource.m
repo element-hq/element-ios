@@ -609,7 +609,7 @@
     return nil;
 }
 
-- (void)moveCellFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure
+- (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
 {
     NSLog(@"[RecentsDataSource] moveCellFrom (%d, %d) to (%d, %d)", oldPath.section, oldPath.row, newPath.section, newPath.row);
     
@@ -617,12 +617,11 @@
     {
         NSString* oldRoomTag = [self roomTagAt:oldPath];
         NSString* dstRoomTag = [self roomTagAt:newPath];
+        NSUInteger oldPos = (oldPath.section == newPath.section) ? oldPath.row : NSNotFound;
         
-        MXRoom* room = [self getRoomAtIndexPath:oldPath];
+        NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
         
-        NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row withTag:dstRoomTag];
-        
-        NSLog(@"[RecentsDataSource] Update the room %@ tag from %@ to %@ with tag order %@", room.state.roomId, oldRoomTag, dstRoomTag, tagOrder);
+        NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.state.displayname, oldRoomTag, dstRoomTag, tagOrder);
         
         [room replaceTag:oldRoomTag
                    byTag:dstRoomTag
@@ -635,8 +634,8 @@
                      {
                          moveSuccess();
                      }
-                     
-                     [self refreshRoomsSectionsAndReload];
+
+                     // wait the server echo to reload the tableview.
                      
                  } failure:^(NSError *error) {
                      
