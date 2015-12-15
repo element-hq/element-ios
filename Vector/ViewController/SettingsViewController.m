@@ -1007,20 +1007,24 @@
     if (assets.count > 0)
     {
         PHAsset* asset = [assets objectAtIndex:0];
+        PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
         
-        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(34, 34) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage* image, NSDictionary* info) {
-            
-            [self dismissMediaPicker];
-            
-            newAvatarImage = image;
-            [self.tableView reloadData];
-            
-        }];
+        [asset requestContentEditingInputWithOptions:editOptions
+                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                                       
+                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
+                                       {
+                                           // Here the fullSizeImageURL is related to a local file path
+                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                           UIImage *image = [UIImage imageWithData:data];
+                                           
+                                           newAvatarImage = image;
+                                           [self.tableView reloadData];
+                                       }
+                                   }];
     }
-    else
-    {
-        [self dismissMediaPicker];
-    }
+    
+    [self dismissMediaPicker];
 }
 
 #pragma mark - TextField listener

@@ -22,6 +22,7 @@
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
 #import "TableViewCellWithLabelAndMXKImageView.h"
+#import "TableViewCellWithLabelAndSwitch.h"
 
 #import "TableViewCellSeparator.h"
 
@@ -31,12 +32,15 @@
 
 #import "AvatarGenerator.h"
 
+#import "MXRoom+Vector.h"
+
 #define ROOM_SECTION 0
 
-#define ROOM_SECTION_PHOTO  0
-#define ROOM_SECTION_NAME   1
-#define ROOM_SECTION_TOPIC  2
-#define ROOM_SECTION_COUNT  3
+#define ROOM_SECTION_PHOTO               0
+#define ROOM_SECTION_NAME                1
+#define ROOM_SECTION_TOPIC               2
+#define ROOM_SECTION_MUTE_NOTIFICATIONS  3
+#define ROOM_SECTION_COUNT               4
 
 #define ROOM_TOPIC_CELL_HEIGHT 99
 
@@ -57,8 +61,14 @@
     
     MXKAlert *currentAlert;
     
+    // listen to more events than the mother class
+    id extraEventsListener;
+    
     // picker
     MediaPickerViewController* mediaPicker;
+    
+    // switches
+    UISwitch *roomNotifSwitch;
 }
 @end
 
@@ -104,6 +114,8 @@
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAccountUserInfoDidChange:) name:kMXKAccountUserInfoDidChangeNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -112,6 +124,8 @@
     
     [self dismissFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKAccountUserInfoDidChangeNotification object:nil];
 }
 
 // this method is called when the viewcontroller is displayed inside another one.
@@ -161,16 +175,19 @@
 
 - (void)showUpdatingSpinner
 {
-    self.tableView.userInteractionEnabled = NO;
-    
-    // Add a spinner
-    updatingSpinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    updatingSpinner.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-    updatingSpinner.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-    updatingSpinner.hidesWhenStopped = NO;
-    [updatingSpinner startAnimating];
-    updatingSpinner.center = self.view.center;
-    [self.view addSubview:updatingSpinner];
+    if (!updatingSpinner)
+    {
+        self.tableView.userInteractionEnabled = NO;
+        
+        // Add a spinner
+        updatingSpinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        updatingSpinner.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+        updatingSpinner.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+        updatingSpinner.hidesWhenStopped = NO;
+        [updatingSpinner startAnimating];
+        updatingSpinner.center = self.view.center;
+        [self.view addSubview:updatingSpinner];
+    }
 }
 
 - (void)hideUpdatingSpinner
@@ -243,10 +260,38 @@
     }
 }
 
+- (void)didUpdateRules:(NSNotification *)notif
+{
+    [self.tableView reloadData];
+}
+
+- (void)didAccountUserInfoDidChange:(NSNotification *)notif
+{
+    [self.tableView reloadData];
+}
+
 - (IBAction)onCancel:(id)sender
 {
-    // warn if there is a pending update ?
-    [self.navigationController popViewControllerAnimated:YES];
+    // if there are some updated fields
+    if (updatedItemsDict && (updatedItemsDict.count > 0))
+    {
+        // ensure that the user understands that the updates will be lost if
+        MXKAlert* alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_with_updates", @"Vector", nil) style:MXKAlertStyleAlert];
+        
+        [alert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        
+        [alert addActionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            [self onSave:nil];
+        }];
+        
+        [alert showInViewController:self];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)onSaveFailed:(NSString*)message withKey:(NSString*)key
@@ -285,6 +330,8 @@
 
 - (IBAction)onSave:(id)sender
 {
+    [self showUpdatingSpinner];
+    
     // check if there is some update
     if (mxRoomState && updatedItemsDict && (updatedItemsDict.count > 0))
     {
@@ -344,7 +391,6 @@
             
             if (![newName isEqualToString:mxRoomState.name])
             {
-                [self showUpdatingSpinner];
                 __weak typeof(self) weakSelf = self;
                 
                 pendingOperation = [mxRoom setName:newName success:^{
@@ -379,7 +425,6 @@
             
             if (![newTopic isEqualToString:mxRoomState.topic])
             {
-                [self showUpdatingSpinner];
                 __weak typeof(self) weakSelf = self;
                 
                 pendingOperation = [mxRoom setTopic:newTopic success:^{
@@ -407,6 +452,15 @@
             }
         }
     }
+    
+    if ([updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"])
+    {
+        [mxRoom toggleRoomNotifications:roomNotifSwitch.on];
+        [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+        [self onSave:nil];
+    }
+    
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     
     [self hideUpdatingSpinner];
     
@@ -490,7 +544,32 @@
         // retrieve row as a ROOM_SECTION_XX index
         row = (row - 1) / 2;
         
-        if (row == ROOM_SECTION_PHOTO)
+        if (row == ROOM_SECTION_MUTE_NOTIFICATIONS)
+        {
+            TableViewCellWithLabelAndSwitch *roomNotifCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
+            
+            if (!roomNotifCell)
+            {
+                roomNotifCell = [[TableViewCellWithLabelAndSwitch alloc] init];
+                [roomNotifCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
+                roomNotifCell.mxkSwitch.onTintColor = VECTOR_GREEN_COLOR;
+            }
+            
+            roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
+            roomNotifSwitch = roomNotifCell.mxkSwitch;
+            
+            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"])
+            {
+                roomNotifSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"]).boolValue;
+            }
+            else
+            {
+                roomNotifSwitch.on = mxRoom.areRoomNotificationsMuted;
+            }
+            
+            cell = roomNotifCell;
+        }
+        else if (row == ROOM_SECTION_PHOTO)
         {
             TableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
             
@@ -657,14 +736,6 @@
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView == self.tableView)
-    {
-        [self dismissFirstResponder];
-    }
-}
-
 #pragma mark - MediaPickerViewController Delegate
 
 - (void)dismissMediaPicker
@@ -702,27 +773,31 @@
     if (assets.count > 0)
     {
         PHAsset* asset = [assets objectAtIndex:0];
+        PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
         
-        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(34, 34) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage* image, NSDictionary* info) {
-            
-            [self dismissMediaPicker];
-            
-            if (image)
-            {
-                [self getNavigationItem].rightBarButtonItem.enabled = YES;
-                
-                NSMutableDictionary* dict = [self getUpdatedItemsDict];
-                [dict setObject:image forKey:@"ROOM_SECTION_PHOTO"];
-                
-                [self.tableView reloadData];
-            }
-            
-        }];
+        [asset requestContentEditingInputWithOptions:editOptions
+                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                                       
+                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
+                                       {
+                                           // Here the fullSizeImageURL is related to a local file path
+                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                           UIImage *image = [UIImage imageWithData:data];
+                                           
+                                           if (image)
+                                           {
+                                               [self getNavigationItem].rightBarButtonItem.enabled = YES;
+                                               
+                                               NSMutableDictionary* dict = [self getUpdatedItemsDict];
+                                               [dict setObject:image forKey:@"ROOM_SECTION_PHOTO"];
+                                               
+                                               [self.tableView reloadData];
+                                           }
+                                       }
+                                   }];
     }
-    else
-    {
-        [self dismissMediaPicker];
-    }
+    
+    [self dismissMediaPicker];
 }
 
 #pragma mark - actions
@@ -740,6 +815,25 @@
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
+- (void)onSwitchUpdate:(UISwitch*)uiSwitch
+{
+    if (uiSwitch == roomNotifSwitch)
+    {
+        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        
+        if (roomNotifSwitch.on == mxRoom.areRoomNotificationsMuted)
+        {
+           [dict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+        }
+        else
+        {
+            [dict setObject:[NSNumber numberWithBool:roomNotifSwitch.on] forKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
+        [self.tableView reloadData];
+    }
+}
 
 @end
 

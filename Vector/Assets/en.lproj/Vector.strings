@@ -131,6 +131,7 @@
 
 // Room Details
 "room_details_title" = "Room Details";
+"room_details_mute_notifs" = "Mute notifications";
 "room_details_photo" = "Photo";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
@@ -138,6 +139,7 @@
 "room_details_settings" = "Settings";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
+"room_details_with_updates" = "The updates will be lost : are you sure to leave ?";
 
 "notification_settings_global_notification_settings" = "Global Notification Settings";
 
