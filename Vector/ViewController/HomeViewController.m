@@ -436,6 +436,13 @@
     // Hide the tabs header
     if (animated)
     {
+        // If the currently selected tab is the recents, force to show it right now
+        // The transition looks smoother
+        if (self.selectedViewController.view.hidden == YES && self.selectedViewController == recentsViewController)
+        {
+            self.selectedViewController.view.hidden = NO;
+        }
+
         [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
 
