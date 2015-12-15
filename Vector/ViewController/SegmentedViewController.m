@@ -38,9 +38,6 @@
     // the selected marker view
     UIView* selectedMarkerView;
     NSLayoutConstraint *leftMarkerViewConstraint;
-    
-    // the index of the viewcontroller displayed at first load
-    NSUInteger selectedIndex;
 }
 
 @end
@@ -72,7 +69,16 @@
 {
     viewControllers = someViewControllers;
     sectionTitles = titles;
-    selectedIndex = index;
+    _selectedIndex = index;
+}
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    if (_selectedIndex != selectedIndex)
+    {
+        _selectedIndex = selectedIndex;
+        [self displaySelectedViewController];
+    }
 }
 
 #pragma mark -
@@ -251,7 +257,7 @@
     leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
                                                             attribute:NSLayoutAttributeLeading
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:[sectionLabels objectAtIndex:selectedIndex]
+                                                               toItem:[sectionLabels objectAtIndex:_selectedIndex]
                                                             attribute:NSLayoutAttributeLeading
                                                            multiplier:1.0
                                                              constant:0];
@@ -318,10 +324,24 @@
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
     }
     
-    UILabel* label = [sectionLabels objectAtIndex:selectedIndex];
+    UILabel* label = [sectionLabels objectAtIndex:_selectedIndex];
     label.font = [UIFont boldSystemFontOfSize:17];
-    
-    displayedViewController = [viewControllers objectAtIndex:selectedIndex];
+
+    // update the marker view position
+    [self removeConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+
+    leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
+                                                            attribute:NSLayoutAttributeLeading
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:[sectionLabels objectAtIndex:_selectedIndex]
+                                                            attribute:NSLayoutAttributeLeading
+                                                           multiplier:1.0
+                                                             constant:0];
+
+    [self addConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+
+    // Set the new selected view controller
+    displayedViewController = [viewControllers objectAtIndex:_selectedIndex];
 
     // Make iOS invoke child viewWillAppear
     [displayedViewController beginAppearanceTransition:YES animated:YES];
@@ -384,23 +404,10 @@
     NSUInteger pos = [sectionLabels indexOfObject:gestureRecognizer.view];
     
     // check if there is an update before triggering anything
-    if ((pos != NSNotFound) && (selectedIndex != pos))
+    if ((pos != NSNotFound) && (_selectedIndex != pos))
     {
         // update the selected index
-        selectedIndex = pos;
-        
-        // update the marker view position
-        [self removeConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
-        
-        leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
-                                                                attribute:NSLayoutAttributeLeading
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:[sectionLabels objectAtIndex:selectedIndex]
-                                                                attribute:NSLayoutAttributeLeading
-                                                               multiplier:1.0
-                                                                 constant:0];
-        
-        [self addConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+        _selectedIndex = pos;
         
         [self displaySelectedViewController];
     }

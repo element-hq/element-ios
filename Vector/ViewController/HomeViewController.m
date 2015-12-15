@@ -431,6 +431,8 @@
         self.navigationItem.rightBarButtonItem = backupRightBarButtonItem;
     }
 
+    [recentsDataSource searchWithPatterns:nil];
+
     // Hide the tabs header
     if (animated)
     {
@@ -440,18 +442,23 @@
                              self.selectionContainerHeightConstraint.constant = 0;
                              [self.view layoutIfNeeded];
                          }
-                         completion:nil];
+                         completion:^(BOOL finished) {
+                             // Go back to the recents tab
+                             // Do it at the end of the animation when the tabs header of the SegmentedVC is hidden
+                             // so that the user cannot see the selection bar of this header moving
+                             self.selectedIndex = 0;
+                             self.displayedViewController.view.hidden = NO;
+                         }];
     }
     else
     {
         self.selectionContainerHeightConstraint.constant = 0;
         [self.view layoutIfNeeded];
-    }
 
-    // Go back under the recents tab
-    // TODO: Open the feature in SegmentedVC
-    [recentsDataSource searchWithPatterns:nil];
-    self.displayedViewController.view.hidden = NO;
+        // Go back to the recents tab
+        self.selectedIndex = 0;
+        self.displayedViewController.view.hidden = NO;
+    }
 }
 
 // Update search results under the currently selected tab
