@@ -76,7 +76,7 @@
     if (_selectedIndex != selectedIndex)
     {
         _selectedIndex = selectedIndex;
-        [self display_selectedViewController];
+        [self displaySelectedViewController];
     }
 }
 
@@ -242,7 +242,7 @@
     
     [self addSelectedMarkerView];
     
-    [self display_selectedViewController];
+    [self displaySelectedViewController];
 }
 
 - (void)addSelectedMarkerView
@@ -302,7 +302,7 @@
     }
 }
 
-- (void)display_selectedViewController
+- (void)displaySelectedViewController
 {
     if (_selectedViewController)
     {
@@ -408,7 +408,7 @@
         // update the selected index
         _selectedIndex = pos;
         
-        [self display_selectedViewController];
+        [self displaySelectedViewController];
     }
 }
 
