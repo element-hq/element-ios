@@ -16,6 +16,9 @@
 
 #import "RoomSettingsViewController.h"
 
+#import <Photos/Photos.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
 #import "TableViewCellWithLabelAndMXKImageView.h"
@@ -53,6 +56,9 @@
     UIActivityIndicatorView* updatingSpinner;
     
     MXKAlert *currentAlert;
+    
+    // picker
+    MediaPickerViewController* mediaPicker;
 }
 @end
 
@@ -282,6 +288,55 @@
     // check if there is some update
     if (mxRoomState && updatedItemsDict && (updatedItemsDict.count > 0))
     {
+        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"])
+        {
+            // Retrieve the current picture and make sure its orientation is up
+            UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"]];
+            
+            // Upload picture
+            MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
+            
+            [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url)
+             {
+                 [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO"];
+                 [updatedItemsDict setObject:url forKey:@"ROOM_SECTION_PHOTO_URL"];
+                 
+                 [self onSave:nil];
+             } failure:^(NSError *error)
+             {
+                 NSLog(@"[Vector RoomSettingsViewController] Failed to upload image: %@", error);
+                 [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO"];
+                 [self onSave:nil];
+             }];
+            
+            return;
+        }
+        
+        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO_URL"])
+        {
+            __weak typeof(self) weakSelf = self;
+            
+            NSString* photoUrl = [updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO_URL"];
+            
+            [mxRoom setAvatar:photoUrl success:^{
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO_URL"];
+                [strongSelf onSave:nil];
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[Vector RoomSettingsViewController] Failed to update the room avatar %@", error);
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO_URL"];
+                [strongSelf onSave:nil];
+                
+            }];
+            
+            return;
+        }
+        
         // has a new room name
         if ([updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
         {
@@ -442,6 +497,10 @@
             if (!roomPhotoCell)
             {
                 roomPhotoCell = [[TableViewCellWithLabelAndMXKImageView alloc] init];
+                
+                // tap on avatar to update it
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomAvatarTap:)];
+                [roomPhotoCell.mxkImageView addGestureRecognizer:tap];
             }
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
@@ -487,10 +546,13 @@
                 {
                     roomPhotoCell.mxkImageView.image = avatarImage;
                 }
+                
+                roomPhotoCell.mxkImageView.alpha = isSuperUser ? 1.0f : 0.5f;
             }
             
             [roomPhotoCell.mxkImageView.layer setCornerRadius:roomPhotoCell.mxkImageView.frame.size.width / 2];
             roomPhotoCell.mxkImageView.clipsToBounds = YES;
+            roomPhotoCell.userInteractionEnabled = isSuperUser;
             
             cell = roomPhotoCell;
         }
@@ -573,6 +635,25 @@
     if (self.tableView == aTableView)
     {
         [self dismissFirstResponder];
+        
+        if (indexPath.section == ROOM_SECTION)
+        {
+            NSUInteger row = indexPath.row;
+            
+            // the even views are the line separator
+            if ((row % 2) == 0)
+            {
+                return;
+            }
+            
+            // retrieve row as a ROOM_SECTION_XX index
+            row = (row - 1) / 2;
+            
+            if (row == ROOM_SECTION_PHOTO)
+            {
+                [self onRoomAvatarTap:nil];
+            }
+        }
     }
 }
 
@@ -583,6 +664,82 @@
         [self dismissFirstResponder];
     }
 }
+
+#pragma mark - MediaPickerViewController Delegate
+
+- (void)dismissMediaPicker
+{
+    if (mediaPicker)
+    {
+        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
+        mediaPicker = nil;
+    }
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL
+{
+    [self dismissMediaPicker];
+    
+    if (image)
+    {
+        [self getNavigationItem].rightBarButtonItem.enabled = YES;
+        
+        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        [dict setObject:image forKey:@"ROOM_SECTION_PHOTO"];
+        
+        [self.tableView reloadData];
+    }
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
+{
+    // this method should not be called
+    [self dismissMediaPicker];
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
+{
+    if (assets.count > 0)
+    {
+        PHAsset* asset = [assets objectAtIndex:0];
+        
+        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(34, 34) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage* image, NSDictionary* info) {
+            
+            [self dismissMediaPicker];
+            
+            if (image)
+            {
+                [self getNavigationItem].rightBarButtonItem.enabled = YES;
+                
+                NSMutableDictionary* dict = [self getUpdatedItemsDict];
+                [dict setObject:image forKey:@"ROOM_SECTION_PHOTO"];
+                
+                [self.tableView reloadData];
+            }
+            
+        }];
+    }
+    else
+    {
+        [self dismissMediaPicker];
+    }
+}
+
+#pragma mark - actions
+
+- (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
+{
+    mediaPicker = [MediaPickerViewController mediaPickerViewController];
+    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    mediaPicker.multipleSelections = NO;
+    mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
+    mediaPicker.delegate = self;
+    UINavigationController *navigationController = [UINavigationController new];
+    [navigationController pushViewController:mediaPicker animated:NO];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 
 @end
 

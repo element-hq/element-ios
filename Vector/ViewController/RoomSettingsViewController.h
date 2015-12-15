@@ -16,7 +16,9 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController<UITextViewDelegate>
+#import "MediaPickerViewController.h"
+
+@interface RoomSettingsViewController : MXKRoomSettingsViewController<UITextViewDelegate, MediaPickerViewControllerDelegate>
 
 @end
 
