@@ -184,9 +184,6 @@
         [tap setDelegate:self];
         [createNewRoomImageView addGestureRecognizer:tap];
     }
-
-    // Forward the event to the child
-    [self.displayedViewController viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated

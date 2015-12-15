@@ -322,7 +322,10 @@
     label.font = [UIFont boldSystemFontOfSize:17];
     
     displayedViewController = [viewControllers objectAtIndex:selectedIndex];
-    
+
+    // Make iOS invoke child viewWillAppear
+    [displayedViewController beginAppearanceTransition:YES animated:YES];
+
     [self addChildViewController:displayedViewController];
     
     [displayedViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -367,6 +370,7 @@
     [self addConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
     
     [displayedViewController didMoveToParentViewController:self];
+    [displayedViewController endAppearanceTransition];
  
     // refresh the navbar background color
     // to display if the homeserver is reachable.
