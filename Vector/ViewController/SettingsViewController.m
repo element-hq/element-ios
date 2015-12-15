@@ -24,6 +24,9 @@
 
 #import "AvatarGenerator.h"
 
+#import <Photos/Photos.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
@@ -1001,8 +1004,23 @@
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
 {
-    // this method should not be called
-    [self dismissMediaPicker];
+    if (assets.count > 0)
+    {
+        PHAsset* asset = [assets objectAtIndex:0];
+        
+        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(34, 34) contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage* image, NSDictionary* info) {
+            
+            [self dismissMediaPicker];
+            
+            newAvatarImage = image;
+            [self.tableView reloadData];
+            
+        }];
+    }
+    else
+    {
+        [self dismissMediaPicker];
+    }
 }
 
 #pragma mark - TextField listener
