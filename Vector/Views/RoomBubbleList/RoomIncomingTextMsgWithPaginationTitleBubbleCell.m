@@ -16,6 +16,25 @@
 
 #import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomIncomingTextMsgWithPaginationTitleBubbleCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+}
+
+- (void)render:(MXKCellData *)cellData
+{
+    [super render:cellData];
+    
+    if (self.bubbleData)
+    {
+        self.paginationLabel.text = [self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO];
+    }
+}
 
 @end

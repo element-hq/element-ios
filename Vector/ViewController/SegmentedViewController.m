@@ -38,15 +38,11 @@
     // the selected marker view
     UIView* selectedMarkerView;
     NSLayoutConstraint *leftMarkerViewConstraint;
-    
-    // the index of the viewcontroller displayed at first load
-    NSUInteger selectedIndex;
 }
 
 @end
 
 @implementation SegmentedViewController
-@synthesize displayedViewController;
 
 #pragma mark - Class methods
 
@@ -72,7 +68,16 @@
 {
     viewControllers = someViewControllers;
     sectionTitles = titles;
-    selectedIndex = index;
+    _selectedIndex = index;
+}
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    if (_selectedIndex != selectedIndex)
+    {
+        _selectedIndex = selectedIndex;
+        [self displaySelectedViewController];
+    }
 }
 
 #pragma mark -
@@ -251,7 +256,7 @@
     leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
                                                             attribute:NSLayoutAttributeLeading
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:[sectionLabels objectAtIndex:selectedIndex]
+                                                               toItem:[sectionLabels objectAtIndex:_selectedIndex]
                                                             attribute:NSLayoutAttributeLeading
                                                            multiplier:1.0
                                                              constant:0];
@@ -299,9 +304,9 @@
 
 - (void)displaySelectedViewController
 {
-    if (displayedViewController)
+    if (_selectedViewController)
     {
-        NSUInteger index = [viewControllers indexOfObject:displayedViewController];
+        NSUInteger index = [viewControllers indexOfObject:_selectedViewController];
         
         if (index != NSNotFound)
         {
@@ -309,27 +314,44 @@
             label.font = [UIFont systemFontOfSize:17];
         }
         
-        [displayedViewController.view removeFromSuperview];
-        [displayedViewController removeFromParentViewController];
+        [_selectedViewController.view removeFromSuperview];
+        [_selectedViewController removeFromParentViewController];
         
-        [self removeConstraint:displayedViewController.view constraint:displayedVCWidthConstraint];
-        [self removeConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
+        [self removeConstraint:_selectedViewController.view constraint:displayedVCWidthConstraint];
+        [self removeConstraint:_selectedViewController.view constraint:displayedVCHeightConstraint];
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
         [self removeConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
     }
     
-    UILabel* label = [sectionLabels objectAtIndex:selectedIndex];
+    UILabel* label = [sectionLabels objectAtIndex:_selectedIndex];
     label.font = [UIFont boldSystemFontOfSize:17];
+
+    // update the marker view position
+    [self removeConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+
+    leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
+                                                            attribute:NSLayoutAttributeLeading
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:[sectionLabels objectAtIndex:_selectedIndex]
+                                                            attribute:NSLayoutAttributeLeading
+                                                           multiplier:1.0
+                                                             constant:0];
+
+    [self addConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+
+    // Set the new selected view controller
+    _selectedViewController = [viewControllers objectAtIndex:_selectedIndex];
+
+    // Make iOS invoke child viewWillAppear
+    [_selectedViewController beginAppearanceTransition:YES animated:YES];
+
+    [self addChildViewController:_selectedViewController];
     
-    displayedViewController = [viewControllers objectAtIndex:selectedIndex];
-    
-    [self addChildViewController:displayedViewController];
-    
-    [displayedViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.viewControllerContainer addSubview:displayedViewController.view];
+    [_selectedViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.viewControllerContainer addSubview:_selectedViewController.view];
     
     
-    displayedVCTopConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCTopConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                             attribute:NSLayoutAttributeTop
                                                             relatedBy:NSLayoutRelationEqual
                                                                toItem:self.viewControllerContainer
@@ -338,7 +360,7 @@
                                                              constant:0.0f];
     [self addConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
     
-    displayedVCLeftConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCLeftConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                              attribute:NSLayoutAttributeLeading
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:self.viewControllerContainer
@@ -348,25 +370,26 @@
     
     [self addConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
     
-    displayedVCWidthConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCWidthConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                                         attribute:NSLayoutAttributeWidth
                                                                         relatedBy:NSLayoutRelationEqual
                                                                            toItem:self.viewControllerContainer
                                                                         attribute:NSLayoutAttributeWidth
                                                                        multiplier:1.0
                                                                          constant:0];
-    [self addConstraint:displayedViewController.view constraint:displayedVCWidthConstraint];
+    [self addConstraint:_selectedViewController.view constraint:displayedVCWidthConstraint];
     
-    displayedVCHeightConstraint = [NSLayoutConstraint constraintWithItem:displayedViewController.view
+    displayedVCHeightConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                               attribute:NSLayoutAttributeHeight
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:self.viewControllerContainer
                                                               attribute:NSLayoutAttributeHeight
                                                              multiplier:1.0
                                                                constant:0];
-    [self addConstraint:displayedViewController.view constraint:displayedVCHeightConstraint];
+    [self addConstraint:_selectedViewController.view constraint:displayedVCHeightConstraint];
     
-    [displayedViewController didMoveToParentViewController:self];
+    [_selectedViewController didMoveToParentViewController:self];
+    [_selectedViewController endAppearanceTransition];
  
     // refresh the navbar background color
     // to display if the homeserver is reachable.
@@ -380,23 +403,10 @@
     NSUInteger pos = [sectionLabels indexOfObject:gestureRecognizer.view];
     
     // check if there is an update before triggering anything
-    if ((pos != NSNotFound) && (selectedIndex != pos))
+    if ((pos != NSNotFound) && (_selectedIndex != pos))
     {
         // update the selected index
-        selectedIndex = pos;
-        
-        // update the marker view position
-        [self removeConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
-        
-        leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
-                                                                attribute:NSLayoutAttributeLeading
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:[sectionLabels objectAtIndex:selectedIndex]
-                                                                attribute:NSLayoutAttributeLeading
-                                                               multiplier:1.0
-                                                                 constant:0];
-        
-        [self addConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+        _selectedIndex = pos;
         
         [self displaySelectedViewController];
     }

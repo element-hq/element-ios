@@ -33,9 +33,14 @@ limitations under the License.
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 /**
+ The index of the view controller that currently has the focus.
+ */
+@property (nonatomic) NSUInteger selectedIndex;
+
+/**
  The view controller that currently has the focus.
  */
-@property (nonatomic, readonly) UIViewController *displayedViewController;
+@property (nonatomic, readonly) UIViewController *selectedViewController;
 
 /**
  Returns the `UINib` object initialized for a `SegmentedViewController`.

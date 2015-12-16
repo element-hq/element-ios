@@ -16,6 +16,15 @@
 
 #import "RoomIncomingAttachmentBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomIncomingAttachmentBubbleCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+}
 
 @end
