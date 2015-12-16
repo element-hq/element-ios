@@ -68,9 +68,6 @@
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
-    
-    // the date is not displayed in the invitation cells.
-    self.lastEventDate.hidden = YES;
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
