@@ -410,9 +410,6 @@ static NSMutableDictionary* backgroundByImageNameDict;
     [self.recentsTableView setEditing:NO];
 }
 
-
-
-
 #pragma mark - Override UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

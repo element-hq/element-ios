@@ -22,6 +22,8 @@
 
 #import "InviteRecentTableViewCell.h"
 
+#import "MXRoom+Vector.h"
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -111,6 +113,28 @@
     }
 }
 
+- (BOOL)isRoomNotifiedAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+
+    if (room)
+    {
+        return !room.areRoomNotificationsMuted;
+    }
+    
+    return YES;
+}
+
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+    
+    // sanity check
+    if (room)
+    {
+        [room toggleRoomNotifications:mute];
+    }
+}
 
 - (void)didMXSessionInviteRoomUpdate:(NSNotification *)notif
 {
