@@ -27,9 +27,14 @@
 @property(nonatomic, readonly) BOOL areRoomNotificationsMuted;
 
 /**
- Returns YES if the oneself user is a super user i.e. he is allowed to modify the
+ Returns YES if the oneself user is a super user i.e. he is allowed to modify the room members and so on.
  */
 @property(nonatomic, readonly) BOOL isSuperUser;
+
+/**
+ Returns the vector displayname.
+ */
+@property(nonatomic, readonly) NSString* vectorDisplayname;
 
 /**
  Toggle a room rule notifications.

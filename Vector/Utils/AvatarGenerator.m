@@ -16,6 +16,8 @@
 
 #import "AvatarGenerator.h"
 
+#import "MXRoom+Vector.h"
+
 @implementation AvatarGenerator
 
 static NSMutableDictionary *imageByKeyDict = nil;
@@ -156,7 +158,7 @@ static UILabel* backgroundLabel = nil;
     
     // if the displayname is the userID
     // skip the @
-    if (!displayname && [text hasPrefix:@"@"])
+    if (!displayname && ([text hasPrefix:@"@"] || [text hasPrefix:@"#"]))
     {
         text = [text substringFromIndex:1];
     }
@@ -176,7 +178,7 @@ static UILabel* backgroundLabel = nil;
  */
 + (UIImage*)generateRoomAvatar:(MXRoom*)room
 {
-    NSString* displayName = room.state.displayname;
+    NSString* displayName = room.vectorDisplayname;
     NSString* roomId = room.state.roomId;
     
     // the selected color is based on the roomId
@@ -184,7 +186,7 @@ static UILabel* backgroundLabel = nil;
     NSString* text = displayName;
         
     // ignore the first #
-    if ([text hasPrefix:@"#"])
+    if ([text hasPrefix:@"#"] || [text hasPrefix:@"@"])
     {
         text = [text substringFromIndex:1];
     }

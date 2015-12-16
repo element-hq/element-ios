@@ -162,3 +162,10 @@
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "camera_access_not_granted" = "Vector doesn't have permission to use Camera, please change privacy settings";
+
+// room display name
+"room_displayname_invite_from" = "Invite from %@";
+"room_displayname_room_invite" = "Room Invite";
+"room_displayname_two_members" = "%@ and %@";
+"room_displayname_more_than_two_members" = "%@ and %u others";
+

@@ -240,4 +240,133 @@
     mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
+- (NSString *)vectorDisplayname
+{
+    // this algo is the one defined in
+    // https://github.com/matrix-org/matrix-js-sdk/blob/develop/lib/models/room.js#L617
+    // calculateRoomName(room, userId)
+    
+    MXRoomState* roomState = self.state;
+    
+    if (roomState.name.length > 0)
+    {
+        return roomState.name;
+    }
+    
+    NSString *alias = roomState.canonicalAlias;
+    
+    if (!alias)
+    {
+        // For rooms where canonical alias is not defined, we use the 1st alias as a workaround
+        NSArray *aliases = roomState.aliases;
+        
+        if (aliases.count)
+        {
+            alias = [aliases[0] copy];
+        }
+    }
+    
+    if (alias)
+    {
+        return alias;
+    }
+    
+    NSString* myUserId = self.mxSession.myUser.userId;
+    
+    NSArray* members = roomState.members;
+    NSMutableArray* othersActiveMembers = [[NSMutableArray alloc] init];
+    NSMutableArray* activeMembers = [[NSMutableArray alloc] init];
+    
+    for(MXRoomMember* member in members)
+    {
+        if (member.membership != MXMembershipLeave)
+        {
+            if (![member.userId isEqualToString:myUserId])
+            {
+                [othersActiveMembers addObject:member];
+            }
+            
+            [activeMembers addObject:member];
+        }
+    }
+    
+    // sort the members by their creation (oldest first)
+    othersActiveMembers = [[othersActiveMembers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        
+        uint64_t originServerTs1 = 0;
+        uint64_t originServerTs2 = 0;
+        
+        MXRoomMember* member1 = (MXRoomMember*)obj1;
+        MXRoomMember* member2 = (MXRoomMember*)obj2;
+        
+        if (member1.originalEvent)
+        {
+            originServerTs1 = member1.originalEvent.originServerTs;
+        }
+        
+        if (member2.originalEvent)
+        {
+            originServerTs2 = member2.originalEvent.originServerTs;
+        }
+        
+        if (originServerTs1 == originServerTs2)
+        {
+            return NSOrderedSame;
+        }
+        else
+        {
+            return originServerTs1 > originServerTs2 ? NSOrderedDescending : NSOrderedAscending;
+        }
+    }] mutableCopy];
+    
+    
+    NSString* displayName = @"";
+    
+    // TODO: Localisation
+    if (othersActiveMembers.count == 0)
+    {
+        if (activeMembers.count == 1)
+        {
+            MXRoomMember* member = [activeMembers objectAtIndex:0];
+            
+            if (member.membership == MXMembershipInvite)
+            {
+                if (member.originalEvent.sender)
+                {
+                    // extract who invited us to the room
+                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState memberName:member.originalEvent.sender]];
+                }
+                else
+                {
+                    displayName = NSLocalizedStringFromTable(@"room_displayname_room_invite", @"Vector", nil);
+                }
+            }
+            else
+            {
+                displayName = myUserId;
+            }
+        }
+    }
+    else if (othersActiveMembers.count == 1)
+    {
+        MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
+        
+        displayName = [roomState memberName:member.userId];
+    }
+    else if (othersActiveMembers.count == 2)
+    {
+        MXRoomMember* member1 = [othersActiveMembers objectAtIndex:0];
+        MXRoomMember* member2 = [othersActiveMembers objectAtIndex:1];
+        
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState memberName:member1.userId], [roomState memberName:member2.userId]];
+    }
+    else
+    {
+        MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState memberName:member.userId], othersActiveMembers.count - 1];
+    }
+    
+    return displayName;
+}
+
 @end

@@ -24,6 +24,8 @@
 
 #import "MXRoom+Vector.h"
 
+#import "RecentCellData.h"
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -63,9 +65,14 @@
         sectionsCount = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        // Set default data and view classes
+        [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
     }
     return self;
 }
+
+
 
 - (void)removeMatrixSession:(MXSession*)matrixSession
 {
