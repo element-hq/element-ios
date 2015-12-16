@@ -25,6 +25,9 @@
     [super awakeFromNib];
     
     self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+    
+    self.paginationLabel.textColor = VECTOR_GREEN_COLOR;
+    self.paginationSeparatorView.backgroundColor = VECTOR_GREEN_COLOR;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -33,7 +36,7 @@
     
     if (self.bubbleData)
     {
-        self.paginationLabel.text = [self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO];
+        self.paginationLabel.text = [[self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO] uppercaseString];
     }
 }
 
