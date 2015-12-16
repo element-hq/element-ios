@@ -124,7 +124,7 @@
         if (time)
         {
             [dateFormatter setDateFormat:nil];
-            return [NSString stringWithFormat:@"today %@", [super dateStringFromDate:date withTime:YES]];
+            return [NSString stringWithFormat:@"%@", [super dateStringFromDate:date withTime:YES]];
         }
         return @"today";
     }
