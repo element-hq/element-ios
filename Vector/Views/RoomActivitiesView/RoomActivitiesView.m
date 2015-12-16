@@ -35,11 +35,11 @@
 {
     [super awakeFromNib];
     
-    // Remove default toolbar background color
-    self.backgroundColor = [UIColor whiteColor];
+    self.separatorView.backgroundColor = VECTOR_GREEN_COLOR;
+    self.messageLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
     
-    self.typingImageView.backgroundColor = VECTOR_GREEN_COLOR;
-    self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2; 
+//    self.typingImageView.backgroundColor = VECTOR_GREEN_COLOR;
+//    self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2;
     
 }
 
