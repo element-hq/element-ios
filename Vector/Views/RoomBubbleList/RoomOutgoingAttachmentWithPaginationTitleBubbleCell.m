@@ -16,12 +16,16 @@
 
 #import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomOutgoingAttachmentWithPaginationTitleBubbleCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+    
+    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
 }
 
 - (void)render:(MXKCellData *)cellData

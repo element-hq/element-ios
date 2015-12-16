@@ -16,12 +16,16 @@
 
 #import "RoomOutgoingAttachmentBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomOutgoingAttachmentBubbleCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+    
+    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
 }
 
 - (void)render:(MXKCellData *)cellData

@@ -18,6 +18,8 @@
 
 #import "RoomBubbleCellData.h"
 
+#import "VectorDesignValues.h"
+
 #import <objc/runtime.h>
 
 @implementation MXKRoomBubbleTableViewCell (Vector)
@@ -34,13 +36,20 @@
     
     if (component && component.date)
     {
-        UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, component.position.y, self.bubbleInfoContainer.frame.size.width , 15)];
+        UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, component.position.y, self.bubbleInfoContainer.frame.size.width , 18)];
         
         dateTimeLabel.text = [self.bubbleData.eventFormatter timeStringFromDate:component.date];
         dateTimeLabel.textAlignment = NSTextAlignmentRight;
-        dateTimeLabel.textColor = [UIColor lightGrayColor];
-        dateTimeLabel.font = [UIFont systemFontOfSize:11];
-        dateTimeLabel.adjustsFontSizeToFitWidth = NO;
+        dateTimeLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+        {
+             dateTimeLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+        }
+        else
+        {
+             dateTimeLabel.font = [UIFont systemFontOfSize:15];
+        }
+
         dateTimeLabel.tag = componentIndex;
         
         [dateTimeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];

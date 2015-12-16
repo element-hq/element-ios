@@ -16,7 +16,16 @@
 
 #import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomIncomingTextMsgWithPaginationTitleBubbleCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+}
 
 - (void)render:(MXKCellData *)cellData
 {
