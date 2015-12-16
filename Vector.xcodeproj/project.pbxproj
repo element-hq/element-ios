@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F6A381C21810E00C12F51 /* DirectoryViewController.m */; };
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
 		32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200811C15C56A00A4E396 /* search_bg@2x.png */; };
 		32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200821C15C56A00A4E396 /* search_bg@3x.png */; };
@@ -160,6 +161,8 @@
 
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
+		325F6A371C21810E00C12F51 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
+		325F6A381C21810E00C12F51 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
 		32D200801C15C56A00A4E396 /* search_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bg.png; sourceTree = "<group>"; };
 		32D200811C15C56A00A4E396 /* search_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@2x.png"; sourceTree = "<group>"; };
 		32D200821C15C56A00A4E396 /* search_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@3x.png"; sourceTree = "<group>"; };
@@ -666,6 +669,8 @@
 				F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */,
 				F094AA181B78E42600B1FBBF /* AuthenticationViewController.h */,
 				F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */,
+				325F6A371C21810E00C12F51 /* DirectoryViewController.h */,
+				325F6A381C21810E00C12F51 /* DirectoryViewController.m */,
 				F094AA1C1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.h */,
 				F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */,
 				32D200861C16C2B100A4E396 /* HomeViewController.h */,
@@ -1028,6 +1033,7 @@
 				F0D2D9871C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				F0C34B6F1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */,
+				325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,

@@ -61,6 +61,7 @@
 "room_creation_make_private" = "Make private";
 
 // Room recents
+"room_recents_directory" = "DIRECTORY";
 "room_recents_favourites" = "FAVORITES";
 "room_recents_conversations" = "CONVERSATIONS";
 "room_recents_low_priority" = "LOW PRIORITY";

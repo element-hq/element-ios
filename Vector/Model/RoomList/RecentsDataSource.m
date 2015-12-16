@@ -24,11 +24,13 @@
 
 @interface RecentsDataSource()
 {
+    NSMutableArray* directoryCellDataArray; // Used only to display search among public rooms
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
     
+    NSInteger directorySection;
     NSInteger invitesSection;
     NSInteger favoritesSection;
     NSInteger conversationSection;
@@ -54,7 +56,8 @@
         favoriteCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
-        
+
+        directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
         conversationSection = -1;
@@ -138,7 +141,7 @@
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if ((section == invitesSection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
+    if ((section == directorySection) || (section == invitesSection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection))
     {
         return 30.0f;
     }
@@ -170,8 +173,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSUInteger count = 0;
-    
-    if (section == favoritesSection)
+
+    if (section == directorySection)
+    {
+        count = directoryCellDataArray.count;
+    }
+    else if (section == favoritesSection)
     {
         count = favoriteCellDataArray.count;
     }
@@ -205,13 +212,17 @@
 {
     // add multi accounts section management
     
-    if ((section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection) || (section == invitesSection))
+    if ((section == directorySection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection) || (section == invitesSection))
     {
         UILabel* label = [[UILabel alloc] initWithFrame:frame];
         
         NSString* text = @"";
         
-        if (section == favoritesSection)
+        if (section == directorySection)
+        {
+            text = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
+        }
+        else if (section == favoritesSection)
         {
             text = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
         }
@@ -323,7 +334,11 @@
         }
     }
     
-    if (section == favoritesSection)
+    if (section == directorySection)
+    {
+        cellData = [directoryCellDataArray objectAtIndex:row];
+    }
+    else if (section == favoritesSection)
     {
         cellData = [favoriteCellDataArray objectAtIndex:row];
     }
@@ -458,7 +473,7 @@
     conversationCellDataArray = [[NSMutableArray alloc] init];
     lowPriorityCellDataArray = [[NSMutableArray alloc] init];
     
-    favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
+    directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
 
     if (displayedRecentsDataSourceArray.count > 0)
@@ -510,7 +525,14 @@
         }
         
         int sectionIndex = 0;
-        
+
+        [directoryCellDataArray removeObject:[NSNull null]];
+        if (directoryCellDataArray.count > 0)
+        {
+            directorySection = sectionIndex;
+            sectionIndex++;
+        }
+
         [invitesCellDataArray removeObject:[NSNull null]];
         if (invitesCellDataArray.count > 0)
         {
@@ -576,6 +598,22 @@
     [super destroy];
 }
 
+#pragma mark - Override MXKRecentsDataSource
+- (void)searchWithPatterns:(NSArray *)patternsList
+{
+    [super searchWithPatterns:patternsList];
+
+    if (patternsList)
+    {
+        // Search among public rooms
+        //[sel]
+
+    }
+    else
+    {
+        [directoryCellDataArray removeAllObjects];
+    }
+}
 
 #pragma mark - drag and drop managemenent
 
