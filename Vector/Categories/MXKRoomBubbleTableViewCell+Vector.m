@@ -16,22 +16,14 @@
 
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 
+#import "RoomBubbleCellData.h"
+
 #import <objc/runtime.h>
 
 @implementation MXKRoomBubbleTableViewCell (Vector)
 
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
 {
-    // FIXME GFO uncomment the following block
-//    // Ensure that older subviews are removed
-//    // They should be (they are removed when the is not anymore used).
-//    // But, it seems that is not always true.
-//    NSArray* views = [self.bubbleInfoContainer subviews];
-//    for (UIView* view in views)
-//    {
-//        [view removeFromSuperview];
-//    }
-    
     self.bubbleInfoContainer.hidden = NO;
     
     MXKRoomBubbleComponent *component;
@@ -49,6 +41,7 @@
         dateTimeLabel.textColor = [UIColor lightGrayColor];
         dateTimeLabel.font = [UIFont systemFontOfSize:11];
         dateTimeLabel.adjustsFontSizeToFitWidth = NO;
+        dateTimeLabel.tag = componentIndex;
         
         [dateTimeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.bubbleInfoContainer addSubview:dateTimeLabel];
@@ -120,16 +113,52 @@
         
         component  = self.bubbleData.bubbleComponents[componentIndex];
         [self highlightTextMessageForEvent:component.event.eventId];
+        
+        // Blur timestamp labels which are not related to the selected component (if any)
+        for (UIView* view in self.bubbleInfoContainer.subviews)
+        {
+            // Note dateTime label tag is equal to the index of the related component.
+            if (view.tag != componentIndex)
+            {
+                view.alpha = 0.2;
+            }
+        }
+        
+        // Blur read receipts which are not related to the selected component (if any)
+        for (UIView* view in self.bubbleOverlayContainer.subviews)
+        {
+            // Note read receipt container tag is equal to the index of the related component.
+            if (view.tag != componentIndex)
+            {
+                view.alpha = 0.2;
+            }
+        }
     }
 }
 
 - (void)unselectComponent
 {
-    // FIXME GFO: handle the case of the last message thanks to showDateTime flag
+    // Remove all timestamps by default
     [self removeTimestampLabels];
+    
+    // Restore timestamp for the last message if the current bubble is the last one
+    if ([self.bubbleData isKindOfClass:RoomBubbleCellData.class])
+    {
+        RoomBubbleCellData *cellData = (RoomBubbleCellData*)self.bubbleData;
+        if (cellData.isLastBubble && cellData.bubbleComponents.count)
+        {
+            [self addTimestampLabelForComponent:cellData.bubbleComponents.count - 1];
+        }
+    }
     
     // Restore original string
     [self highlightTextMessageForEvent:nil];
+    
+    // Restore read receipts display
+    for (UIView* view in self.bubbleOverlayContainer.subviews)
+    {
+        view.alpha = 1;
+    }
 }
 
 - (void)setBlurred:(BOOL)blurred
@@ -138,13 +167,36 @@
     
     if (blurred)
     {
+        self.bubbleOverlayContainer.hidden = NO;
         self.bubbleOverlayContainer.backgroundColor = [UIColor whiteColor];
         self.bubbleOverlayContainer.alpha = 0.8;
-        self.bubbleOverlayContainer.hidden = NO;
+        self.bubbleOverlayContainer.userInteractionEnabled = YES;
+        
+        // Blur read receipts if any
+        for (UIView* view in self.bubbleOverlayContainer.subviews)
+        {
+            view.alpha = 0.2;
+        }
     }
     else
     {
-        self.bubbleOverlayContainer.hidden = YES;
+        if (self.bubbleOverlayContainer.subviews.count)
+        {
+            // Keep this overlay visible, adjust background color
+            self.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
+            self.bubbleOverlayContainer.alpha = 1;
+            self.bubbleOverlayContainer.userInteractionEnabled = NO;
+            
+            // Restore read receipts display
+            for (UIView* view in self.bubbleOverlayContainer.subviews)
+            {
+                view.alpha = 1;
+            }
+        }
+        else
+        {
+            self.bubbleOverlayContainer.hidden = YES;
+        }
     }
 }
 
