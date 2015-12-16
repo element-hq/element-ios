@@ -32,8 +32,41 @@
 @property (nonatomic, copy) void (^onRoomInvitationAccept)(MXRoom*);
 
 /**
+ There is a pending drag and drop cell.
+ It defines its path of the source cell.
+ */
+@property (nonatomic, copy) NSIndexPath* hiddenCellIndexPath;
+
+/**
+ There is a pending drag and drop cell.
+ It defines its path of the destination cell.
+ */
+@property (nonatomic, copy) NSIndexPath* droppingCellIndexPath;
+
+/**
+ The movingCellBackgroundImage;
+ */
+@property (nonatomic) UIImageView* droppingCellBackGroundView;
+
+/**
  Return the header height from the section.
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
+
+/**
+ Return true of the cell can be moved from a section to another one.
+ */
+- (BOOL)isDraggableCellAt:(NSIndexPath*)path;
+
+/**
+ Return true of the cell can be moved from a section to another one.
+ */
+- (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath;
+
+/**
+ Move a cell from a path to another one.
+ It is based on room Tag.
+ */
+- (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
 
 @end

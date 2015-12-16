@@ -41,6 +41,7 @@
 
 @implementation RecentsDataSource
 @synthesize onRoomInvitationReject, onRoomInvitationAccept;
+@synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init
 {
@@ -97,11 +98,8 @@
                                                                 {
                                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                                         
-                                                                        // refresh the sections
-                                                                        [self refreshRoomsSections];
-                                                                        
-                                                                        // And inform the delegate about the update
-                                                                        [self.delegate dataSource:self didCellChange:nil];
+                                                                        [self refreshRoomsSectionsAndReload];
+                                                                    
                                                                     });
                                                                 }
                                                                 
@@ -112,16 +110,24 @@
 }
 
 
+- (void)refreshRoomsSectionsAndReload
+{
+    // Refresh is disabled during drag&drop animation"
+    if (!self.droppingCellIndexPath)
+    {
+        [self refreshRoomsSections];
+        
+        // And inform the delegate about the update
+        [self.delegate dataSource:self didCellChange:nil];
+    }
+}
+
 - (void)didMXSessionInviteRoomUpdate:(NSNotification *)notif
 {
     MXSession *mxSession = notif.object;
     if (mxSession == self.mxSession)
     {
-        // refresh the sections
-        [self refreshRoomsSections];
-        
-        // And inform the delegate about the update
-        [self.delegate dataSource:self didCellChange:nil];
+        [self refreshRoomsSectionsAndReload];
     }
 }
 
@@ -151,6 +157,16 @@
     return 0;
 }
 
+- (BOOL)isMovingCellSection:(NSInteger)section
+{
+    return self.droppingCellIndexPath && (self.droppingCellIndexPath.section == section);
+}
+
+- (BOOL)isHiddenCellSection:(NSInteger)section
+{
+    return self.hiddenCellIndexPath && (self.hiddenCellIndexPath.section == section);
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSUInteger count = 0;
@@ -172,7 +188,16 @@
         count = invitesCellDataArray.count;
     }
     
-
+    if ([self isMovingCellSection:section])
+    {
+        count++;
+    }
+    
+    if ([self isHiddenCellSection:section])
+    {
+        count--;
+    }
+    
     return count;
 }
 
@@ -213,10 +238,52 @@
     return [super viewForHeaderInSection:section withFrame:frame];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)anIndexPath
 {
-    UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    NSIndexPath* indexPath = anIndexPath;
     
+    if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == indexPath.section))
+    {
+        if ([anIndexPath isEqual:self.droppingCellIndexPath])
+        {
+            static NSString* cellIdentifier = @"VectorRecentsMovingCell";
+            
+            UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
+            
+            // add an imageview of the cell.
+            // The image is a shot of the genuine cell.
+            // Thus, this cell has the same look as the genuine cell withourt computing it.
+            UIImageView* imageView = [cell viewWithTag:[cellIdentifier hash]];
+            
+            if (!imageView || (imageView != self.droppingCellBackGroundView))
+            {
+                if (imageView)
+                {
+                    [imageView removeFromSuperview];
+                }
+                self.droppingCellBackGroundView.tag = [cellIdentifier hash];
+                [cell.contentView addSubview:self.droppingCellBackGroundView];
+            }
+            
+            self.droppingCellBackGroundView.frame = self.droppingCellBackGroundView.frame;
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
+        }
+        
+        if (anIndexPath.row > self.droppingCellIndexPath.row)
+        {
+            indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
+        }
+    }
+    
+    if (self.hiddenCellIndexPath && [anIndexPath isEqual:self.hiddenCellIndexPath])
+    {
+        indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
+    }
+    
+    UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     // on invite cell, add listeners on accept / reject buttons
     if (cell && [cell isKindOfClass:[InviteRecentTableViewCell class]])
@@ -242,25 +309,35 @@
     return cell;
 }
 
-- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
+- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)anIndexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
+    NSInteger row = anIndexPath.row;
+    NSInteger section = anIndexPath.section;
     
-    if (indexPath.section == favoritesSection)
+    if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == section))
     {
-        cellData = [favoriteCellDataArray objectAtIndex:indexPath.row];
+        if (anIndexPath.row > self.droppingCellIndexPath.row)
+        {
+            row = anIndexPath.row - 1;
+        }
     }
-    else if (indexPath.section == conversationSection)
+    
+    if (section == favoritesSection)
     {
-        cellData = [conversationCellDataArray objectAtIndex:indexPath.row];
+        cellData = [favoriteCellDataArray objectAtIndex:row];
     }
-    else if (indexPath.section == lowPrioritySection)
+    else if (section== conversationSection)
     {
-        cellData = [lowPriorityCellDataArray objectAtIndex:indexPath.row];
+        cellData = [conversationCellDataArray objectAtIndex:row];
     }
-    else if (indexPath.section == invitesSection)
+    else if (section == lowPrioritySection)
     {
-        cellData = [invitesCellDataArray objectAtIndex:indexPath.row];
+        cellData = [lowPriorityCellDataArray objectAtIndex:row];
+    }
+    else if (section == invitesSection)
+    {
+        cellData = [invitesCellDataArray objectAtIndex:row];
     }
     
     return cellData;
@@ -268,6 +345,11 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
+    {
+        return self.droppingCellBackGroundView.frame.size.height;
+    }
+    
     // Override this method here to use our own cellDataAtIndexPath
     id<MXKRecentCellDataStoring> cellData = [self cellDataAtIndexPath:indexPath];
     
@@ -463,6 +545,12 @@
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
+    // Refresh is disabled during drag&drop animation
+    if (self.droppingCellIndexPath)
+    {
+        return;
+    }
+    
     // FIXME : manage multi accounts
     // to manage multi accounts
     // this method in MXKInterleavedRecentsDataSource must be split in two parts
@@ -486,6 +574,100 @@
 - (void)destroy
 {
     [super destroy];
+}
+
+
+#pragma mark - drag and drop managemenent
+
+- (BOOL)isDraggableCellAt:(NSIndexPath*)path
+{
+    return (path && ((path.section == favoritesSection) || (path.section == lowPrioritySection) || (path.section == conversationSection)));
+}
+
+- (BOOL)canCellMoveFrom:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath
+{
+    BOOL res = [self isDraggableCellAt:oldPath] && [self isDraggableCellAt:newPath];
+    
+    // the both index pathes are movable
+    if (res)
+    {
+        // only the favorites cell can be moved within the same section
+        res &= (oldPath.section == favoritesSection) || (newPath.section != oldPath.section);
+        
+        // other cases ?
+    }
+    
+    return res;
+}
+
+- (NSString*)roomTagAt:(NSIndexPath*)path
+{
+    if (path.section == favoritesSection)
+    {
+        return kMXRoomTagFavourite;
+    }
+    else if (path.section == lowPrioritySection)
+    {
+        return kMXRoomTagLowPriority;
+    }
+    
+    return nil;
+}
+
+- (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
+{
+    NSLog(@"[RecentsDataSource] moveCellFrom (%d, %d) to (%d, %d)", oldPath.section, oldPath.row, newPath.section, newPath.row);
+    
+    if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
+    {
+        NSString* oldRoomTag = [self roomTagAt:oldPath];
+        NSString* dstRoomTag = [self roomTagAt:newPath];
+        NSUInteger oldPos = (oldPath.section == newPath.section) ? oldPath.row : NSNotFound;
+        
+        NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
+        
+        NSLog(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.state.roomId, room.state.displayname, oldRoomTag, dstRoomTag, tagOrder);
+        
+        [room replaceTag:oldRoomTag
+                   byTag:dstRoomTag
+               withOrder:tagOrder
+                 success: ^{
+                     
+                     NSLog(@"[RecentsDataSource] move is done");
+                     
+                     if (moveSuccess)
+                     {
+                         moveSuccess();
+                     }
+
+                     // wait the server echo to reload the tableview.
+                     
+                 } failure:^(NSError *error) {
+                     
+                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
+                     
+                     if (moveFailure)
+                     {
+                         moveFailure(error);
+                     }
+                     
+                     [self refreshRoomsSectionsAndReload];
+                     
+                     // Notify MatrixKit user
+                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                 }];
+    }
+    else
+    {
+        NSLog(@"[RecentsDataSource] cannot move this cell");
+        
+        if (moveFailure)
+        {
+            moveFailure(nil);
+        }
+        
+        [self refreshRoomsSectionsAndReload];
+    }
 }
 
 @end
