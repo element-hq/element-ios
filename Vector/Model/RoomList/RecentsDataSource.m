@@ -616,7 +616,7 @@
 
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
 {
-    NSLog(@"[RecentsDataSource] moveCellFrom (%d, %d) to (%d, %d)", oldPath.section, oldPath.row, newPath.section, newPath.row);
+    NSLog(@"[RecentsDataSource] moveCellFrom (%zu, %zu) to (%zu, %zu)", oldPath.section, oldPath.row, newPath.section, newPath.row);
     
     if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
     {
