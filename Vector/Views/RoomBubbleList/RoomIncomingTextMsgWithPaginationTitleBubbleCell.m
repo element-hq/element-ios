@@ -18,4 +18,14 @@
 
 @implementation RoomIncomingTextMsgWithPaginationTitleBubbleCell
 
+- (void)render:(MXKCellData *)cellData
+{
+    [super render:cellData];
+    
+    if (self.bubbleData)
+    {
+        self.paginationLabel.text = [self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO];
+    }
+}
+
 @end

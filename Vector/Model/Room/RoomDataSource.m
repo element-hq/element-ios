@@ -20,6 +20,7 @@
 #import "RoomBubbleCellData.h"
 
 #import "MXKRoomBubbleTableViewCell+Vector.h"
+#import "AvatarGenerator.h"
 
 @implementation RoomDataSource
 
@@ -36,8 +37,7 @@
         
         // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
-        //FIXME GFO: disable default receipts display
-        //self.useCustomReceipts = YES;
+        self.useCustomReceipts = YES;
         
         // TODO custom here self.eventsFilterForMessages according to Vector requirements
         
@@ -45,6 +45,34 @@
         self.bubblesPagination = MXKRoomDataSourceBubblesPaginationPerDay;
     }
     return self;
+}
+
+- (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
+{
+    // Override this callback to force rendering of each cell with read receipts information.
+    @synchronized(bubbles)
+    {
+        for (RoomBubbleCellData *cellData in bubbles)
+        {
+            if (cellData.hasReadReceipts)
+            {
+                // Recompute the text message layout
+                cellData.attributedTextMessage = nil;
+            }
+        }
+    }
+    
+    NSArray *readEventIds = receiptEvent.readReceiptEventIds;
+    for (NSString* eventId in readEventIds)
+    {
+        id<MXKRoomBubbleCellDataStoring> bubbleData = [self cellDataOfEventWithEventId:eventId];
+        // Recompute the text message layout
+        bubbleData.attributedTextMessage = nil;
+    }
+    
+    
+    // Let super handle this receipt
+    [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -55,13 +83,127 @@
     if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
+        RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
+        
+        // Check whether this bubble is the last one
+        cellData.isLastBubble = (indexPath.row == [tableView numberOfRowsInSection:0] - 1);
         
         // Display timestamp for the last message.
-        if (indexPath.row == [tableView numberOfRowsInSection:0] - 1)
+        if (cellData.isLastBubble)
         {
-            if (bubbleCell.bubbleData.bubbleComponents.count)
+            if (cellData.bubbleComponents.count)
             {
-                [bubbleCell addTimestampLabelForComponent:bubbleCell.bubbleData.bubbleComponents.count - 1];
+                [bubbleCell addTimestampLabelForComponent:cellData.bubbleComponents.count - 1];
+            }
+        }
+        
+        // Handle read receipts display.
+        if (cellData.hasReadReceipts && self.showBubbleReceipts)
+        {
+            // Read receipts container are inserted here on the right side into the overlay container.
+            // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
+            bubbleCell.bubbleOverlayContainer.backgroundColor = [UIColor clearColor];
+            bubbleCell.bubbleOverlayContainer.alpha = 1;
+            bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
+            bubbleCell.bubbleOverlayContainer.hidden = NO;
+            
+            NSInteger index = cellData.bubbleComponents.count;
+            CGFloat bottomPositionY = bubbleCell.frame.size.height;
+            while (index--)
+            {
+                MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
+                
+                if (component.event.mxkState != MXKEventStateSendingFailed)
+                {
+                    // Get the events receipts by ignoring the current user receipt.
+                    NSArray* receipts = [self.room getEventReceipts:component.event.eventId sorted:YES];
+                    NSMutableArray *roomMembers;
+                    NSMutableArray *placeholders;
+                    
+                    // Check whether some receipts are found
+                    if (receipts.count)
+                    {
+                        // Retrieve the corresponding room members
+                        roomMembers = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                        placeholders = [[NSMutableArray alloc] initWithCapacity:receipts.count];
+                        
+                        for (MXReceiptData* data in receipts)
+                        {
+                            MXRoomMember * roomMember = [self.room.state memberWithUserId:data.userId];
+                            if (roomMember)
+                            {
+                                [roomMembers addObject:roomMember];
+                                [placeholders addObject:[AvatarGenerator generateRoomMemberAvatar:roomMember.userId displayName:roomMember.displayname]];
+                            }
+                        }
+                    }
+                    
+                    // Check whether some receipts are found
+                    if (roomMembers.count)
+                    {
+                        // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
+                        MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 12, 150, 12) andRestClient:self.mxSession.matrixRestClient];
+                        
+                        // Custom avatar display
+                        avatarsContainer.maxDisplayedAvatars = 5;
+                        avatarsContainer.avatarMargin = 6;
+                        
+                        // Set the container tag to be able to retrieve read receipts container from component index (see component selection in MXKRoomBubbleTableViewCell (Vector) category).
+                        avatarsContainer.tag = index;
+                        
+                        [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
+                        
+                        avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
+                        [bubbleCell.bubbleOverlayContainer addSubview:avatarsContainer];
+                        
+                        // Force receipts container size
+                        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                          attribute:NSLayoutAttributeWidth
+                                                                                          relatedBy:NSLayoutRelationEqual
+                                                                                             toItem:nil
+                                                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                                                         multiplier:1.0
+                                                                                           constant:150];
+                        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                            attribute:NSLayoutAttributeHeight
+                                                                                            relatedBy:NSLayoutRelationEqual
+                                                                                               toItem:nil
+                                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                                           multiplier:1.0
+                                                                                             constant:12];
+                        
+                        // Force receipts container position
+                        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                           attribute:NSLayoutAttributeTrailing
+                                                                                           relatedBy:NSLayoutRelationEqual
+                                                                                              toItem:bubbleCell.bubbleOverlayContainer
+                                                                                           attribute:NSLayoutAttributeTrailing
+                                                                                          multiplier:1.0
+                                                                                            constant:-6];
+                        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                         attribute:NSLayoutAttributeTop
+                                                                                         relatedBy:NSLayoutRelationEqual
+                                                                                            toItem:bubbleCell.bubbleOverlayContainer
+                                                                                         attribute:NSLayoutAttributeTop
+                                                                                        multiplier:1.0
+                                                                                          constant:bottomPositionY - 12];
+                        
+                        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+                        {
+                            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, rightConstraint]];
+                        }
+                        else
+                        {
+                            [avatarsContainer addConstraint:heightConstraint];
+                            [avatarsContainer addConstraint:widthConstraint];
+                            [bubbleCell.bubbleOverlayContainer addConstraint:topConstraint];
+                            [bubbleCell.bubbleOverlayContainer addConstraint:rightConstraint];
+                        }
+                    }
+                }
+                
+                // Prepare the bottom position for the next read receipt container (if any)
+                bottomPositionY = bubbleCell.msgTextViewTopConstraint.constant + component.position.y;
             }
         }
         
@@ -78,8 +220,6 @@
             else
             {
                 // Highlight the selected event in the displayed message
-                MXKRoomBubbleCellData *cellData = (MXKRoomBubbleCellData*)bubbleCell.bubbleData;
-                
                 for (NSUInteger index = 0; index < cellData.bubbleComponents.count; index ++)
                 {
                     MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
