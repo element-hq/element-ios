@@ -16,6 +16,8 @@
 
 #import "MXRoom+Vector.h"
 
+#import "AvatarGenerator.h"
+
 @interface MXRoom ()
 
 // create property for the extensions
@@ -195,6 +197,47 @@
             }
         }
     }
+}
+
+- (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
+{
+    NSString* roomAvatarUrl = self.state.avatar;
+    
+    // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
+    if (!roomAvatarUrl)
+    {
+        NSString* myUserId = self.mxSession.myUser.userId;
+        
+        NSArray* members = self.state.members;
+        
+        if (members.count < 3)
+        {
+            // use the member avatar only it is an active member
+            for (MXRoomMember *roomMember in members)
+            {
+                if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
+                {
+                    roomAvatarUrl = roomMember.avatarUrl;
+                    break;
+                }
+            }
+        }
+    }
+    
+    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:self];
+    
+    if (roomAvatarUrl)
+    {
+        mxkImageView.enableInMemoryCache = YES;
+        
+        [mxkImageView setImageURL:[self.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+    }
+    else
+    {
+        mxkImageView.image = avatarImage;
+    }
+    
+    mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
 @end

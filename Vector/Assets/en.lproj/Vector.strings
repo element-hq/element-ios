@@ -140,6 +140,8 @@
 "room_details_fail_to_update_topic" = "Fail to update the topic";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_with_updates" = "The updates will be lost : are you sure to leave ?";
+"room_details_room_is_public" = "This room is public";
+"room_details_room_is_private" = "This room is private";
 
 "notification_settings_global_notification_settings" = "Global Notification Settings";
 

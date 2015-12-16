@@ -39,8 +39,9 @@
 #define ROOM_SECTION_PHOTO               0
 #define ROOM_SECTION_NAME                1
 #define ROOM_SECTION_TOPIC               2
-#define ROOM_SECTION_MUTE_NOTIFICATIONS  3
-#define ROOM_SECTION_COUNT               4
+#define ROOM_SECTION_PRIV_PUB            3
+#define ROOM_SECTION_MUTE_NOTIFICATIONS  4
+#define ROOM_SECTION_COUNT               5
 
 #define ROOM_TOPIC_CELL_HEIGHT 99
 
@@ -590,42 +591,7 @@
             }
             else
             {
-                NSString* roomAvatarUrl = mxRoomState.avatar;
-                
-                // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
-                if (!roomAvatarUrl)
-                {
-                    NSString* myUserId = mxRoom.mxSession.myUser.userId;
-                    
-                    NSArray* members = mxRoomState.members;
-                    
-                    if (members.count < 3)
-                    {
-                        // use the member avatar only it is an active member
-                        for (MXRoomMember *roomMember in members)
-                        {
-                            if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
-                            {
-                                roomAvatarUrl = roomMember.avatarUrl;
-                                break;
-                            }
-                        }
-                    }
-                }
-                
-                UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:mxRoom];
-                
-                if (roomAvatarUrl)
-                {
-                    roomPhotoCell.mxkImageView.enableInMemoryCache = YES;
-                    
-                    [roomPhotoCell.mxkImageView setImageURL:[mxRoom.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:roomPhotoCell.mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
-                }
-                else
-                {
-                    roomPhotoCell.mxkImageView.image = avatarImage;
-                }
-                
+                [mxRoom setRoomAvatarImageIn:roomPhotoCell.mxkImageView];
                 roomPhotoCell.mxkImageView.alpha = isSuperUser ? 1.0f : 0.5f;
             }
             
@@ -703,6 +669,21 @@
             
             // Add a "textFieldDidChange" notification method to the text field control.
             [roomNameCell.mxkTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
+        }
+        else if (row == ROOM_SECTION_PRIV_PUB)
+        {
+            TableViewCellWithLabelAndTextField *privPublicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+            
+            if (!privPublicCell)
+            {
+                privPublicCell = [[TableViewCellWithLabelAndTextField alloc] init];
+            }
+            
+            privPublicCell.mxkTextField.userInteractionEnabled = NO;
+            privPublicCell.mxkTextField.text = @"";
+            privPublicCell.mxkLabel.text = mxRoom.state.isPublic ?  NSLocalizedStringFromTable(@"room_details_room_is_public", @"Vector", nil) : NSLocalizedStringFromTable(@"room_details_room_is_private", @"Vector", nil);
+            
+            cell = privPublicCell;
         }
     }
 
