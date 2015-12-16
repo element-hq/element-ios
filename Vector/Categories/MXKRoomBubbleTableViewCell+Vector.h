@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <Matrixkit/MatrixKit.h>
+#import <MatrixKit/MatrixKit.h>
 
 /**
  Define a `MXKRoomBubbleTableViewCell` category at Vector level to handle bubble customisation.
