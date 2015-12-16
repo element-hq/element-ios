@@ -25,6 +25,11 @@
 @interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <MediaPickerViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
+
+@property (weak, nonatomic) IBOutlet UIView *separatorView;
+@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;

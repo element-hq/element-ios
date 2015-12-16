@@ -16,6 +16,8 @@
 
 #import "RoomInputToolbarView.h"
 
+#import "VectorDesignValues.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 #import <Photos/Photos.h>
@@ -52,22 +54,34 @@
     [super awakeFromNib];
     
     // Remove default toolbar background color
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     
     self.rightInputToolbarButton.hidden = YES;
+    
+    self.separatorView.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+    
+    // Custom the growingTextView display
+    growingTextView.layer.cornerRadius = 0;
+    growingTextView.layer.borderWidth = 0;
+    growingTextView.backgroundColor = [UIColor clearColor];
+    
+    growingTextView.font = [UIFont systemFontOfSize:15];
+    growingTextView.textColor = VECTOR_TEXT_BLACK_COLOR;
+    
+    self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
 }
 
 #pragma mark - HPGrowingTextView delegate
 
-- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
-{
-    // The return sends the message rather than giving a carriage return.
-    [self onTouchUpInside:self.rightInputToolbarButton];
-    
-    return NO;
-}
+//- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)hpGrowingTextView
+//{
+//    // The return sends the message rather than giving a carriage return.
+//    [self onTouchUpInside:self.rightInputToolbarButton];
+//    
+//    return NO;
+//}
 
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
+- (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {
     // Clean the carriage return added on return press
     if ([self.textMessage isEqualToString:@"\n"])
@@ -75,7 +89,7 @@
         self.textMessage = nil;
     }
     
-    [super growingTextViewDidChange:growingTextView];
+    [super growingTextViewDidChange:hpGrowingTextView];
     
     if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
     {
@@ -95,18 +109,22 @@
     }
 }
 
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+- (void)growingTextView:(HPGrowingTextView *)hpGrowingTextView willChangeHeight:(float)height
 {
-    // FIXME GFO: Check whether mainToolbarHeightConstraint can be removed. If yes, remove it and remove
-    // this overidden method, the original one should be fine.
-    
     // Update height of the main toolbar (message composer)
-    self.mainToolbarHeightConstraint.constant = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    
+    if (updatedHeight < self.mainToolbarMinHeightConstraint.constant)
+    {
+        updatedHeight = self.mainToolbarMinHeightConstraint.constant;
+    }
+    
+    self.mainToolbarHeightConstraint.constant = updatedHeight;
     
     // Update toolbar superview
     if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
     {
-        [self.delegate roomInputToolbarView:self heightDidChanged:self.mainToolbarHeightConstraint.constant completion:nil];
+        [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:nil];
     }
 }
 

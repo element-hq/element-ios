@@ -96,7 +96,24 @@
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+    
+    // Set user picture in input toolbar
+    MXKImageView *userPictureView = ((RoomInputToolbarView*)self.inputToolbarView).pictureView;
+    if (userPictureView)
+    {
+        UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
+        NSString *avatarThumbURL = nil;
+        if (self.mainSession.myUser.avatarUrl)
+        {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+        }
+        userPictureView.enableInMemoryCache = YES;
+        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
+        [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
+        userPictureView.clipsToBounds = YES;
+    }
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
