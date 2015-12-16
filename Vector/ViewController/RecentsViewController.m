@@ -481,7 +481,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
     movingRoom = nil;
     
     lastPotentialCellPath = nil;
-    ((RecentsDataSource*)self.dataSource).movingCellIndexPath = nil;
+    ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
     ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
     
     [self.activityIndicator stopAnimating];
@@ -532,7 +532,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 UIGraphicsEndImageContext();
                 
                 cellSnapshot = [[UIImageView alloc] initWithImage:image];
-                recentsDataSource.movingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
+                recentsDataSource.droppingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
                 
                 // display the selected cell over the tableview
                 CGPoint center = cell.center;
@@ -546,7 +546,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 cell.backgroundColor = [UIColor redColor];
                 
                 lastPotentialCellPath = indexPath;
-                recentsDataSource.movingCellIndexPath = indexPath;
+                recentsDataSource.droppingCellIndexPath = indexPath;
                 
                 movingCellPath = indexPath;
                 recentsDataSource.hiddenCellIndexPath = movingCellPath;
@@ -617,7 +617,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
                 {
                     [self.recentsTableView beginUpdates];
-                    if (recentsDataSource.movingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
+                    if (recentsDataSource.droppingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
                     {
                         [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
                     }
@@ -627,20 +627,20 @@ static NSMutableDictionary* backgroundByImageNameDict;
                         [self.recentsTableView deleteRowsAtIndexPaths:@[movingCellPath] withRowAnimation:UITableViewRowAnimationNone];
                     }
                     recentsDataSource.hiddenCellIndexPath = movingCellPath;
-                    recentsDataSource.movingCellIndexPath = indexPath;
+                    recentsDataSource.droppingCellIndexPath = indexPath;
                     [self.recentsTableView endUpdates];
                 }
                 // the cell cannot be moved
-                else if (recentsDataSource.movingCellIndexPath)
+                else if (recentsDataSource.droppingCellIndexPath)
                 {
-                    NSIndexPath* pathToDelete = recentsDataSource.movingCellIndexPath;
+                    NSIndexPath* pathToDelete = recentsDataSource.droppingCellIndexPath;
                     NSIndexPath* pathToAdd = recentsDataSource.hiddenCellIndexPath;
                     
                     // remove it
                     [self.recentsTableView beginUpdates];
                     [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
                     [self.recentsTableView insertRowsAtIndexPaths:@[pathToAdd] withRowAnimation:UITableViewRowAnimationNone];
-                    recentsDataSource.movingCellIndexPath = nil;
+                    recentsDataSource.droppingCellIndexPath = nil;
                     recentsDataSource.hiddenCellIndexPath = nil;
                     [self.recentsTableView endUpdates];
                 }

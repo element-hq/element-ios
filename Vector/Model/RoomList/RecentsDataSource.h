@@ -41,12 +41,12 @@
  There is a pending drag and drop cell.
  It defines its path of the destination cell.
  */
-@property (nonatomic, copy) NSIndexPath* movingCellIndexPath;
+@property (nonatomic, copy) NSIndexPath* droppingCellIndexPath;
 
 /**
  The movingCellBackgroundImage;
  */
-@property (nonatomic) UIImageView* movingCellBackGroundView;
+@property (nonatomic) UIImageView* droppingCellBackGroundView;
 
 /**
  Return the header height from the section.

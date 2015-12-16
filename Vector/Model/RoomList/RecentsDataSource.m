@@ -41,7 +41,7 @@
 
 @implementation RecentsDataSource
 @synthesize onRoomInvitationReject, onRoomInvitationAccept;
-@synthesize hiddenCellIndexPath, movingCellIndexPath, movingCellBackGroundView;
+@synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init
 {
@@ -111,7 +111,8 @@
 
 - (void)refreshRoomsSectionsAndReload
 {
-    if (!self.movingCellIndexPath)
+    // Refresh is disabled during drag&drop animation"
+    if (!self.droppingCellIndexPath)
     {
         [self refreshRoomsSections];
         
@@ -157,7 +158,7 @@
 
 - (BOOL)isMovingCellSection:(NSInteger)section
 {
-    return self.movingCellIndexPath && (self.movingCellIndexPath.section == section);
+    return self.droppingCellIndexPath && (self.droppingCellIndexPath.section == section);
 }
 
 - (BOOL)isHiddenCellSection:(NSInteger)section
@@ -240,34 +241,37 @@
 {
     NSIndexPath* indexPath = anIndexPath;
     
-    if (self.movingCellIndexPath  && (self.movingCellIndexPath.section == indexPath.section))
+    if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == indexPath.section))
     {
-        if ([anIndexPath isEqual:self.movingCellIndexPath])
+        if ([anIndexPath isEqual:self.droppingCellIndexPath])
         {
             static NSString* cellIdentifier = @"VectorRecentsMovingCell";
             
             UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"VectorRecentsMovingCell"];
             
+            // add an imageview of the cell.
+            // The image is a shot of the genuine cell.
+            // Thus, this cell has the same look as the genuine cell withourt computing it.
             UIImageView* imageView = [cell viewWithTag:[cellIdentifier hash]];
             
-            if (!imageView || (imageView != self.movingCellBackGroundView))
+            if (!imageView || (imageView != self.droppingCellBackGroundView))
             {
                 if (imageView)
                 {
                     [imageView removeFromSuperview];
                 }
-                self.movingCellBackGroundView.tag = [cellIdentifier hash];
-                [cell.contentView addSubview:self.movingCellBackGroundView];
+                self.droppingCellBackGroundView.tag = [cellIdentifier hash];
+                [cell.contentView addSubview:self.droppingCellBackGroundView];
             }
             
-            self.movingCellBackGroundView.frame = self.movingCellBackGroundView.frame;
+            self.droppingCellBackGroundView.frame = self.droppingCellBackGroundView.frame;
             cell.contentView.backgroundColor = [UIColor clearColor];
             cell.backgroundColor = [UIColor clearColor];
             
             return cell;
         }
         
-        if (anIndexPath.row > self.movingCellIndexPath.row)
+        if (anIndexPath.row > self.droppingCellIndexPath.row)
         {
             indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
         }
@@ -310,9 +314,9 @@
     NSInteger row = anIndexPath.row;
     NSInteger section = anIndexPath.section;
     
-    if (self.movingCellIndexPath  && (self.movingCellIndexPath.section == section))
+    if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == section))
     {
-        if (anIndexPath.row > self.movingCellIndexPath.row)
+        if (anIndexPath.row > self.droppingCellIndexPath.row)
         {
             row = anIndexPath.row - 1;
         }
@@ -340,9 +344,9 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.movingCellIndexPath && [indexPath isEqual:self.movingCellIndexPath])
+    if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
-        return self.movingCellBackGroundView.frame.size.height;
+        return self.droppingCellBackGroundView.frame.size.height;
     }
     
     // Override this method here to use our own cellDataAtIndexPath
@@ -541,7 +545,7 @@
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
     // lock any refresh until the 
-    if (self.movingCellIndexPath)
+    if (self.droppingCellIndexPath)
     {
         return;
     }
