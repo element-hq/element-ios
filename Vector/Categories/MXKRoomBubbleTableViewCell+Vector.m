@@ -49,6 +49,7 @@
         {
              dateTimeLabel.font = [UIFont systemFontOfSize:15];
         }
+        dateTimeLabel.adjustsFontSizeToFitWidth = YES;
 
         dateTimeLabel.tag = componentIndex;
         
