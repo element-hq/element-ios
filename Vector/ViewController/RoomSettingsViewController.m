@@ -592,12 +592,12 @@
             else
             {
                 [mxRoom setRoomAvatarImageIn:roomPhotoCell.mxkImageView];
-                roomPhotoCell.mxkImageView.alpha = isSuperUser ? 1.0f : 0.5f;
+                roomPhotoCell.mxkImageView.alpha = mxRoom.isModerator ? 1.0f : 0.5f;
             }
             
             [roomPhotoCell.mxkImageView.layer setCornerRadius:roomPhotoCell.mxkImageView.frame.size.width / 2];
             roomPhotoCell.mxkImageView.clipsToBounds = YES;
-            roomPhotoCell.userInteractionEnabled = isSuperUser;
+            roomPhotoCell.userInteractionEnabled = mxRoom.isModerator;
             
             cell = roomPhotoCell;
         }
@@ -631,8 +631,8 @@
             roomTopicCell.mxkTextView.delegate = self;
             
             // disable the edition if the user cannoy update it
-            roomTopicCell.mxkTextView.editable = isSuperUser;
-            roomTopicCell.mxkTextView.textColor = isSuperUser ? [UIColor blackColor] : [UIColor lightGrayColor];
+            roomTopicCell.mxkTextView.editable = mxRoom.isModerator;
+            roomTopicCell.mxkTextView.textColor = mxRoom.isModerator ? [UIColor blackColor] : [UIColor lightGrayColor];
             
             cell = roomTopicCell;
         }
@@ -663,8 +663,8 @@
             nameTextField = roomNameCell.mxkTextField;
             
             // disable the edition if the user cannoy update it
-            roomNameCell.editable = isSuperUser;
-            roomNameCell.mxkTextField.textColor = isSuperUser ? [UIColor blackColor] : [UIColor lightGrayColor];
+            roomNameCell.editable = mxRoom.isModerator;
+            roomNameCell.mxkTextField.textColor = mxRoom.isModerator ? [UIColor blackColor] : [UIColor lightGrayColor];
             
             
             // Add a "textFieldDidChange" notification method to the text field control.

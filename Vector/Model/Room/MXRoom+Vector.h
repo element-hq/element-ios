@@ -27,9 +27,9 @@
 @property(nonatomic, readonly) BOOL areRoomNotificationsMuted;
 
 /**
- Returns YES if the oneself user is a super user i.e. he is allowed to modify the room members and so on.
+ Returns YES if the oneself user is a moderator i.e. he is allowed to update the room name or the avatar..
  */
-@property(nonatomic, readonly) BOOL isSuperUser;
+@property(nonatomic, readonly) BOOL isModerator;
 
 /**
  Returns the vector displayname.
