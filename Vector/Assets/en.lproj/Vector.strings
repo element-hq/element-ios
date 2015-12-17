@@ -132,12 +132,17 @@
 
 // Room Details
 "room_details_title" = "Room Details";
+"room_details_mute_notifs" = "Mute notifications";
+"room_details_photo" = "Photo";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
 "room_details_people" = "People";
 "room_details_settings" = "Settings";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
+"room_details_with_updates" = "The updates will be lost : are you sure to leave ?";
+"room_details_room_is_public" = "This room is public";
+"room_details_room_is_private" = "This room is private";
 
 "notification_settings_global_notification_settings" = "Global Notification Settings";
 
@@ -158,3 +163,10 @@
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "camera_access_not_granted" = "Vector doesn't have permission to use Camera, please change privacy settings";
+
+// room display name
+"room_displayname_invite_from" = "Invite from %@";
+"room_displayname_room_invite" = "Room Invite";
+"room_displayname_two_members" = "%@ and %@";
+"room_displayname_more_than_two_members" = "%@ and %u others";
+

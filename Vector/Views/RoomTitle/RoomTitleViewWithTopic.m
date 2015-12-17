@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "MXRoom+Vector.h"
+
 @implementation RoomTitleViewWithTopic
 
 - (void)refreshDisplay
@@ -26,7 +28,7 @@
     
     if (self.mxRoom)
     {
-        NSString* roomName = self.displayNameTextField.text;
+        NSString* roomName = self.mxRoom.vectorDisplayname;
         
         if (roomName)
         {

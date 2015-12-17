@@ -24,6 +24,9 @@
 
 #import "AvatarGenerator.h"
 
+#import <Photos/Photos.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
@@ -1001,7 +1004,26 @@
 
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
 {
-    // this method should not be called
+    if (assets.count > 0)
+    {
+        PHAsset* asset = [assets objectAtIndex:0];
+        PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
+        
+        [asset requestContentEditingInputWithOptions:editOptions
+                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                                       
+                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
+                                       {
+                                           // Here the fullSizeImageURL is related to a local file path
+                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                           UIImage *image = [UIImage imageWithData:data];
+                                           
+                                           newAvatarImage = image;
+                                           [self.tableView reloadData];
+                                       }
+                                   }];
+    }
+    
     [self dismissMediaPicker];
 }
 

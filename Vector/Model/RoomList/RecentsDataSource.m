@@ -22,6 +22,10 @@
 
 #import "InviteRecentTableViewCell.h"
 
+#import "MXRoom+Vector.h"
+
+#import "RecentCellData.h"
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -62,9 +66,14 @@
         sectionsCount = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        // Set default data and view classes
+        [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
     }
     return self;
 }
+
+
 
 - (void)removeMatrixSession:(MXSession*)matrixSession
 {
@@ -109,6 +118,28 @@
     }
 }
 
+- (BOOL)isRoomNotifiedAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+
+    if (room)
+    {
+        return !room.areRoomNotificationsMuted;
+    }
+    
+    return YES;
+}
+
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+    
+    // sanity check
+    if (room)
+    {
+        [room toggleRoomNotifications:mute];
+    }
+}
 
 - (void)refreshRoomsSectionsAndReload
 {

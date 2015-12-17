@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MXKTableViewCell.h"
 
-#import "MediaPickerViewController.h"
+@interface TableViewCellWithLabelAndSwitch : MXKTableViewCell
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController<UITextViewDelegate, MediaPickerViewControllerDelegate>
+@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
+@property (strong, nonatomic) IBOutlet UISwitch *mxkSwitch;
 
 @end
-

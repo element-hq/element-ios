@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2015 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,11 +14,19 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RecentCellData.h"
 
-#import "MediaPickerViewController.h"
+#import "MXRoom+Vector.h"
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController<UITextViewDelegate, MediaPickerViewControllerDelegate>
+@implementation RecentCellData
+// trick to hide the mother class property as it is readonly one.
+// self.roomDisplayname returns this value instead of the mother class.
+@synthesize roomDisplayname;
+
+- (void)update
+{
+    [super update];
+    roomDisplayname = self.roomDataSource.room.vectorDisplayname;
+}
 
 @end
-
