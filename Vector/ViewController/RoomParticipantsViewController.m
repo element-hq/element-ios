@@ -929,16 +929,17 @@
 {
     NSInteger previousFilteredCount = filteredParticipants.count;
     
-    NSMutableArray *mxUsers;
+    NSMutableArray *constacts;
+    
     if (addParticipantsSearchText.length && [searchText hasPrefix:addParticipantsSearchText])
     {
-        mxUsers = filteredParticipants;
+        constacts = filteredParticipants;
     }
     else
     {
         // Retrieve all known matrix users
         NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
-        mxUsers = [NSMutableArray arrayWithCapacity:matrixContacts.count];
+        constacts = [NSMutableArray arrayWithCapacity:matrixContacts.count];
         
         // Split contacts with several ids, and remove the current participants.
         for (MXKContact* contact in matrixContacts)
@@ -954,7 +955,7 @@
                         {
                             Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                             splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
-                            [mxUsers addObject:splitContact];
+                            [constacts addObject:splitContact];
                         }
                     }
                 }
@@ -966,7 +967,7 @@
                 {
                     if (![userId isEqualToString:userMatrixId])
                     {
-                        [mxUsers addObject:contact];
+                        [constacts addObject:contact];
                     }
                 }
             }
@@ -978,7 +979,7 @@
     NSMutableArray *indexArray = [NSMutableArray array];
     NSInteger index = 0;
     
-    for (MXKContact* contact in mxUsers)
+    for (MXKContact* contact in constacts)
     {
         if ([contact matchedWithPatterns:@[addParticipantsSearchText]])
         {
