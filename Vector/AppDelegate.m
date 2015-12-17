@@ -417,7 +417,7 @@
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated
 {
-    // Force back to recents list if room details is displayed in Recents Tab
+    // Force back to the main screen
     if (homeViewController)
     {
         [_homeNavigationController popToViewController:homeViewController animated:animated];
@@ -1243,14 +1243,24 @@
     {
         // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
+            
             [self popRoomViewControllerAnimated:NO];
-            completion();
+            
+            // Dispatch the completion in order to let navigation stack refresh itself.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion();
+            });
+            
         }];
     }
     else
     {
         [self popRoomViewControllerAnimated:NO];
-        completion();
+        
+        // Dispatch the completion in order to let navigation stack refresh itself.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
     }
 }
 
