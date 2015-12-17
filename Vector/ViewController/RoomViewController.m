@@ -375,7 +375,7 @@
     // Handle here user actions on bubbles for Vector app
     if (customizedRoomDataSource)
     {
-        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
+        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
