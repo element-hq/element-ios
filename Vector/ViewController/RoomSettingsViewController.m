@@ -632,7 +632,7 @@
             
             // disable the edition if the user cannoy update it
             roomTopicCell.mxkTextView.editable = mxRoom.isModerator;
-            roomTopicCell.mxkTextView.textColor = mxRoom.isModerator ? [UIColor blackColor] : [UIColor lightGrayColor];
+            roomTopicCell.mxkTextView.textColor = VECTOR_TEXT_GRAY_COLOR;
             
             cell = roomTopicCell;
         }
@@ -664,7 +664,7 @@
             
             // disable the edition if the user cannoy update it
             roomNameCell.editable = mxRoom.isModerator;
-            roomNameCell.mxkTextField.textColor = mxRoom.isModerator ? [UIColor blackColor] : [UIColor lightGrayColor];
+            roomNameCell.mxkTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
             
             
             // Add a "textFieldDidChange" notification method to the text field control.
