@@ -87,17 +87,8 @@
                                                                            multiplier:1.0
                                                                              constant:15];
         
-        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-        {
-            [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
-        }
-        else
-        {
-            [self.bubbleInfoContainer addConstraint:leftConstraint];
-            [self.bubbleInfoContainer addConstraint:rightConstraint];
-            [self.bubbleInfoContainer addConstraint:topConstraint];
-            [dateTimeLabel addConstraint:heightConstraint];
-        }
+        // Available on iOS 8 and later
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
     }
 }
 
