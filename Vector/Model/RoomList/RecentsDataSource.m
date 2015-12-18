@@ -114,7 +114,7 @@
 {
     if (dataSource == publicRoomsDirectoryDataSource)
     {
-         [self refreshRoomsSectionsAndReload];
+        [self refreshRoomsSectionsAndReload];
     }
     else
     {
@@ -517,13 +517,24 @@
 - (void)refreshRoomsSections
 {
     // FIXME manage multi accounts
-    
+    NSUInteger sectionIndex = 0;
+
     favoriteCellDataArray = [[NSMutableArray alloc] init];
     conversationCellDataArray = [[NSMutableArray alloc] init];
     lowPriorityCellDataArray = [[NSMutableArray alloc] init];
     
     directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
+
+    // Manage the public room search results cell outside the recents
+    // Show the cell showing the public rooms directory search result
+    // only in case of search
+    if (publicRoomsDirectoryDataSource.filter
+        && (publicRoomsDirectoryDataSource.filteredRooms.count > 0 || publicRoomsDirectoryDataSource.state == MXKDataSourceStatePreparing))
+    {
+        directorySection = sectionIndex;
+        sectionIndex++;
+    }
 
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -572,17 +583,6 @@
                 [conversationCellDataArray addObject:recentCellDataStoring];
             }
         }
-        
-        int sectionIndex = 0;
-
-        // Show the cell showing the public rooms directory search result
-        // only in case of search
-        if (publicRoomsDirectoryDataSource.filter
-            && (publicRoomsDirectoryDataSource.filteredRooms.count > 0 || publicRoomsDirectoryDataSource.state == MXKDataSourceStatePreparing))
-        {
-            directorySection = sectionIndex;
-            sectionIndex++;
-        }
 
         [invitesCellDataArray removeObject:[NSNull null]];
         if (invitesCellDataArray.count > 0)
@@ -611,9 +611,9 @@
             lowPrioritySection = sectionIndex;
             sectionIndex++;
         }
-        
-        sectionsCount = sectionIndex;
     }
+
+    sectionsCount = sectionIndex;
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
