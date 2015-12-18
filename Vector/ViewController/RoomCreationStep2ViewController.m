@@ -18,6 +18,10 @@
 
 #import "AppDelegate.h"
 
+#import "VectorContactTableViewCell.h"
+
+#import "VectorDesignValues.h"
+
 @interface RoomCreationStep2ViewController ()
 {
     UIBarButtonItem *createBarButtonItem;
@@ -102,7 +106,69 @@
     super.isAddParticipantSearchBarEditing = isAddParticipantSearchBarEditing;
 }
 
+#pragma mark - UITableView delegate
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [[NSMutableArray alloc] init];
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[VectorContactTableViewCell class]])
+    {
+        cell.accessoryView = nil;
+        
+        if (indexPath.section == participantsSection)
+        {
+            if (!userMatrixId || (indexPath.row != 0))
+            {
+                UIImageView* accessView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+                accessView.image = [UIImage imageNamed:@"remove_icon"];
+                accessView.tag = indexPath.row;
+                accessView.userInteractionEnabled = YES;
+                
+                UITapGestureRecognizer * accessViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDeleteTap:)];
+                [accessViewTapGesture setNumberOfTouchesRequired:1];
+                [accessViewTapGesture setNumberOfTapsRequired:1];
+                [accessView addGestureRecognizer:accessViewTapGesture];
+                
+                cell.accessoryView = accessView;
+            }
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        else
+        {
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+    }
+    
+    return cell;
+}
+
+
+
 #pragma mark - Actions
+
+- (void)onDeleteTap:(UIGestureRecognizer*)gestureRecognizer
+{
+    NSInteger row = gestureRecognizer.view.tag;
+    
+    if (userMatrixId)
+    {
+        row --;
+    }
+    
+    if (row < mutableParticipants.count)
+    {
+        [mutableParticipants removeObjectAtIndex:row];
+        [self.tableView reloadData];
+    }
+}
 
 - (IBAction)onButtonPressed:(id)sender
 {

@@ -47,9 +47,6 @@
     
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
-    
-    // Internal measurement
-    CGFloat actionButtonWidth;
 }
 
 @end
@@ -102,23 +99,7 @@
     {
         mxkContactsById = [NSMutableDictionary dictionary];
     }
-    
-    // Measure the minimum width of the action button displayed in participant cells
-    MXKContactTableCell *tmpCell = [[MXKContactTableCell alloc] init];
-    UIButton *actionButton = tmpCell.contactAccessoryButton;
-    [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
-    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-    [actionButton sizeToFit];
-    
-    actionButtonWidth = actionButton.frame.size.width;
-    [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
-    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-    [actionButton sizeToFit];
-    if (actionButton.frame.size.width > actionButtonWidth)
-    {
-        actionButtonWidth = actionButton.frame.size.width;
-    }
-    
+
     // ensure that the separator line is not displayed
     self.tableView.separatorColor = [UIColor clearColor];
     
