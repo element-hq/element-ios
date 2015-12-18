@@ -446,7 +446,7 @@
                 // Add actions for a failed event
                 if (selectedEvent.mxkState == MXKEventStateSendingFailed)
                 {
-                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"resend"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_resend", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -456,7 +456,7 @@
                         
                     }];
                     
-                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_delete", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -480,7 +480,7 @@
                         selectedComponent = nil;
                     }
                     
-                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"copy"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -489,7 +489,7 @@
                         
                     }];
                     
-                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"share"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -510,7 +510,7 @@
                 {
                     if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
                     {
-                        [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"save"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                             
                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                             [strongSelf cancelEventSelection];
@@ -538,7 +538,7 @@
                         }];
                     }
                     
-                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"copy"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -564,7 +564,7 @@
                         [roomBubbleTableViewCell startProgressUI];
                     }];
                     
-                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"share"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -602,7 +602,7 @@
                     NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
                     if ([MXKMediaManager existingUploaderWithId:uploadId])
                     {
-                        [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel_upload"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                             
                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                             [strongSelf cancelEventSelection];
@@ -627,7 +627,7 @@
                         NSString *cacheFilePath = roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath;
                         if ([MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
                         {
-                            [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel_download"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_download", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                                 
                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                                 [strongSelf cancelEventSelection];
@@ -645,7 +645,7 @@
                         }
                     }
                     
-                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"redact", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_redact", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
@@ -670,7 +670,7 @@
                     }];
                 }
                 
-                self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     [strongSelf cancelEventSelection];

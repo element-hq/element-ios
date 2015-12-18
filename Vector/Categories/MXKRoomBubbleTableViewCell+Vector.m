@@ -288,8 +288,8 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     // (vertical pos = (component.position.y + 9) instead of (component.position.y + 18))
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(0, component.position.y + 9, self.bubbleInfoContainer.frame.size.width , 33)];
     
-    [editButton setTitle:NSLocalizedStringFromTable(@"edit", @"Vector", nil) forState:UIControlStateNormal];
-    [editButton setTitle:NSLocalizedStringFromTable(@"edit", @"Vector", nil) forState:UIControlStateSelected];
+    [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateNormal];
+    [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateSelected];
     [editButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
     [editButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateSelected];
     editButton.titleLabel.textAlignment = NSTextAlignmentRight;
