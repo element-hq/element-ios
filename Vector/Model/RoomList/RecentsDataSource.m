@@ -21,15 +21,19 @@
 #import "VectorDesignValues.h"
 
 #import "InviteRecentTableViewCell.h"
+#import "DirectoryRecentTableViewCell.h"
+
+#import "PublicRoomsDirectoryDataSource.h"
 
 @interface RecentsDataSource()
 {
-    NSMutableArray* directoryCellDataArray; // Used only to display search among public rooms
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
-    
+
+    PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
+
     NSInteger directorySection;
     NSInteger invitesSection;
     NSInteger favoritesSection;
@@ -69,6 +73,20 @@
     return self;
 }
 
+
+- (void)addMatrixSession:(MXSession *)mxSession
+{
+    [super addMatrixSession:mxSession];
+
+    // Initialise the public room directory data source
+    // Note that it is single matrix session only for now
+    if (!publicRoomsDirectoryDataSource)
+    {
+        publicRoomsDirectoryDataSource = [[PublicRoomsDirectoryDataSource alloc] initWithMatrixSession:mxSession];
+        publicRoomsDirectoryDataSource.delegate = self;
+    }
+}
+
 - (void)removeMatrixSession:(MXSession*)matrixSession
 {
     [super removeMatrixSession:matrixSession];
@@ -83,32 +101,45 @@
             [self.mxSession removeListener:roomTagListener];
             [roomTagsListenerByUserId removeObjectForKey:matrixSession.myUser.userId];
         }
+
+        if (publicRoomsDirectoryDataSource.mxSession == matrixSession)
+        {
+            [publicRoomsDirectoryDataSource destroy];
+            publicRoomsDirectoryDataSource = nil;
+        }
     }
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didStateChange:(MXKDataSourceState)aState
 {
-    [super dataSource:dataSource didStateChange:aState];
-    
-    if ((aState == MXKDataSourceStateReady) && self.mxSession && self.mxSession.myUser && self.mxSession.myUser.userId)
+    if (dataSource == publicRoomsDirectoryDataSource)
     {
-        // Register the room tags updates to refresh the favorites order
-        id roomTagsListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
-                                                            onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
-                                                                
-                                                                // Consider only live event
-                                                                if (direction == MXEventDirectionForwards)
-                                                                {
-                                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                                        
-                                                                        [self refreshRoomsSectionsAndReload];
-                                                                    
-                                                                    });
-                                                                }
-                                                                
-                                                            }];
-        
-        [roomTagsListenerByUserId setObject:roomTagsListener forKey:self.mxSession.myUser.userId];
+         [self refreshRoomsSectionsAndReload];
+    }
+    else
+    {
+        [super dataSource:dataSource didStateChange:aState];
+
+        if ((aState == MXKDataSourceStateReady) && self.mxSession && self.mxSession.myUser && self.mxSession.myUser.userId)
+        {
+            // Register the room tags updates to refresh the favorites order
+            id roomTagsListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
+                                                                onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+
+                                                                    // Consider only live event
+                                                                    if (direction == MXEventDirectionForwards)
+                                                                    {
+                                                                        dispatch_async(dispatch_get_main_queue(), ^{
+
+                                                                            [self refreshRoomsSectionsAndReload];
+
+                                                                        });
+                                                                    }
+
+                                                                }];
+
+            [roomTagsListenerByUserId setObject:roomTagsListener forKey:self.mxSession.myUser.userId];
+        }
     }
 }
 
@@ -176,7 +207,7 @@
 
     if (section == directorySection)
     {
-        count = directoryCellDataArray.count;
+        count = 1;
     }
     else if (section == favoritesSection)
     {
@@ -252,7 +283,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)anIndexPath
 {
     NSIndexPath* indexPath = anIndexPath;
-    
+
+    // For the cell showing the public rooms directory search result,
+    // skip the MatrixKit mechanism and return directly the UITableViewCell
+    if (indexPath.section == directorySection)
+    {
+        DirectoryRecentTableViewCell *directoryCell = [tableView dequeueReusableCellWithIdentifier:DirectoryRecentTableViewCell.defaultReuseIdentifier];
+        if (!directoryCell)
+        {
+            directoryCell = [[DirectoryRecentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[DirectoryRecentTableViewCell defaultReuseIdentifier]];
+        }
+
+        [directoryCell render:publicRoomsDirectoryDataSource];
+
+        return directoryCell;
+    }
+
     if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == indexPath.section))
     {
         if ([anIndexPath isEqual:self.droppingCellIndexPath])
@@ -334,11 +380,7 @@
         }
     }
     
-    if (section == directorySection)
-    {
-        cellData = [directoryCellDataArray objectAtIndex:row];
-    }
-    else if (section == favoritesSection)
+    if (section == favoritesSection)
     {
         cellData = [favoriteCellDataArray objectAtIndex:row];
     }
@@ -360,6 +402,13 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
+    // For the cell showing the public rooms directory search result,
+    // skip the MatrixKit mechanism and return directly the cell height
+    if (indexPath.section == directorySection)
+    {
+        return DirectoryRecentTableViewCell.cellHeight;
+    }
+
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         return self.droppingCellBackGroundView.frame.size.height;
@@ -526,8 +575,10 @@
         
         int sectionIndex = 0;
 
-        [directoryCellDataArray removeObject:[NSNull null]];
-        if (directoryCellDataArray.count > 0)
+        // Show the cell showing the public rooms directory search result
+        // only in case of search
+        if (publicRoomsDirectoryDataSource.searchPattern
+            && (publicRoomsDirectoryDataSource.rooms.count > 0 || publicRoomsDirectoryDataSource.state == MXKDataSourceStatePreparing))
         {
             directorySection = sectionIndex;
             sectionIndex++;
@@ -603,15 +654,11 @@
 {
     [super searchWithPatterns:patternsList];
 
-    if (patternsList)
+    if (patternsList && publicRoomsDirectoryDataSource)
     {
-        // Search among public rooms
-        //[sel]
-
-    }
-    else
-    {
-        [directoryCellDataArray removeAllObjects];
+        // Search only on the first pattern
+        // XXX: Why is it an array?
+        publicRoomsDirectoryDataSource.searchPattern = patternsList[0];
     }
 }
 

@@ -67,6 +67,12 @@
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
 
+// Directory
+"directory_search_results_title" = "Browse directory results";
+"directory_search_results" = "%tu results found for %@";
+"directory_searching_title" = "Searching directory...";
+"directory_search_fail" = "Failed to fecth data";
+
 // Chat participants
 "room_participants_title" = "Participants";
 "room_participants_add_participant" = "Add participant";
