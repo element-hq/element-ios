@@ -158,12 +158,12 @@
                         
                         // Force receipts container size
                         NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
-                                                                                          attribute:NSLayoutAttributeWidth
-                                                                                          relatedBy:NSLayoutRelationEqual
-                                                                                             toItem:nil
-                                                                                          attribute:NSLayoutAttributeNotAnAttribute
-                                                                                         multiplier:1.0
-                                                                                           constant:150];
+                                                                                           attribute:NSLayoutAttributeWidth
+                                                                                           relatedBy:NSLayoutRelationEqual
+                                                                                              toItem:nil
+                                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                                          multiplier:1.0
+                                                                                            constant:150];
                         NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                             attribute:NSLayoutAttributeHeight
                                                                                             relatedBy:NSLayoutRelationEqual
@@ -173,13 +173,13 @@
                                                                                              constant:12];
                         
                         // Force receipts container position
-                        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
-                                                                                           attribute:NSLayoutAttributeTrailing
-                                                                                           relatedBy:NSLayoutRelationEqual
-                                                                                              toItem:bubbleCell.bubbleOverlayContainer
-                                                                                           attribute:NSLayoutAttributeTrailing
-                                                                                          multiplier:1.0
-                                                                                            constant:-6];
+                        NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                              attribute:NSLayoutAttributeTrailing
+                                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                                 toItem:bubbleCell.bubbleOverlayContainer
+                                                                                              attribute:NSLayoutAttributeTrailing
+                                                                                             multiplier:1.0
+                                                                                               constant:-6];
                         NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                          attribute:NSLayoutAttributeTop
                                                                                          relatedBy:NSLayoutRelationEqual
@@ -188,17 +188,8 @@
                                                                                         multiplier:1.0
                                                                                           constant:bottomPositionY - 12];
                         
-                        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-                        {
-                            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, rightConstraint]];
-                        }
-                        else
-                        {
-                            [avatarsContainer addConstraint:heightConstraint];
-                            [avatarsContainer addConstraint:widthConstraint];
-                            [bubbleCell.bubbleOverlayContainer addConstraint:topConstraint];
-                            [bubbleCell.bubbleOverlayContainer addConstraint:rightConstraint];
-                        }
+                        // Available on iOS 8 and later
+                        [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
                     }
                 }
                 

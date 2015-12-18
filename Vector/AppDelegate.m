@@ -189,10 +189,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Override point for customization after application launch.
+    
     // define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:VECTOR_GREEN_COLOR];
     
-    // Override point for customization after application launch.
+    // Customize the localized string table
+    [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
+    
     mxSessionArray = [NSMutableArray array];
     
     // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related

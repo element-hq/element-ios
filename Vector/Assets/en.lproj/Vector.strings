@@ -83,6 +83,15 @@
 "room_two_users_are_typing" = "%@ & %@ are typing...";
 "room_many_users_are_typing" = "%@, %@ & others are typing...";
 "room_message_placeholder" = "Type a message...";
+"room_event_action_edit" = "Edit";
+"room_event_action_copy" = "Copy";
+"room_event_action_share" = "Share";
+"room_event_action_redact" = "Redact";
+"room_event_action_save" = "Save";
+"room_event_action_resend" = "Resend";
+"room_event_action_delete" = "Delete";
+"room_event_action_cancel_upload" = "Cancel Upload";
+"room_event_action_cancel_download" = "Cancel Download";
 
 // Settings
 "account_logout_all" = "Logout all accounts";
