@@ -104,12 +104,19 @@ static UILabel* backgroundLabel = nil;
  Returns the UIImage for the text and a selected color.
  It checks first if it is not yet cached before generating one.
  */
-+ (UIImage*)avatarForText:(NSString*)text andColorIndex:(NSUInteger)colorIndex
++ (UIImage*)avatarForText:(NSString*)aText andColorIndex:(NSUInteger)colorIndex
 {
+    if ([aText hasPrefix:@"@"] || [aText hasPrefix:@"#"])
+    {
+        aText = [aText substringFromIndex:1];
+    }
+    
+    NSString* firstChar = [[aText substringToIndex:1] uppercaseString];
+    
     // the images are cached to avoid create them several times
     // the key is <first upper character><index in the colors array>
     // it should be smaller than using the text as a key
-    NSString* key = [NSString stringWithFormat:@"%@%tu", text, colorIndex];
+    NSString* key = [NSString stringWithFormat:@"%@%tu", firstChar, colorIndex];
     
     if (!imageByKeyDict)
     {
@@ -120,7 +127,7 @@ static UILabel* backgroundLabel = nil;
     
     if (!image)
     {
-        image = [AvatarGenerator imageFromText:text withBackgroundColor:[colorsList objectAtIndex:colorIndex]];
+        image = [AvatarGenerator imageFromText:firstChar withBackgroundColor:[colorsList objectAtIndex:colorIndex]];
         [imageByKeyDict setObject:image forKey:key];
     }
     
@@ -134,14 +141,7 @@ static UILabel* backgroundLabel = nil;
  */
 + (UIImage*)generateAvatarForText:(NSString*)text
 {
-    NSUInteger index = [AvatarGenerator colorIndexForText:text];
-    
-    if (text.length > 0)
-    {
-        text = [[text substringToIndex:1] uppercaseString];
-    }
-    
-    return [AvatarGenerator avatarForText:text andColorIndex:index];
+    return [AvatarGenerator avatarForText:text andColorIndex:[AvatarGenerator colorIndexForText:text]];
 }
 
 /**
@@ -156,18 +156,6 @@ static UILabel* backgroundLabel = nil;
     NSUInteger index = [AvatarGenerator colorIndexForText:userId];
     NSString* text = displayname ? displayname : userId;
     
-    // if the displayname is the userID
-    // skip the @
-    if (!displayname && ([text hasPrefix:@"@"] || [text hasPrefix:@"#"]))
-    {
-        text = [text substringFromIndex:1];
-    }
-    
-    if (text.length > 0)
-    {
-        text = [[text substringToIndex:1] uppercaseString];
-    }
-    
     return [AvatarGenerator avatarForText:text andColorIndex:index];
 }
 
@@ -181,22 +169,7 @@ static UILabel* backgroundLabel = nil;
     NSString* displayName = room.vectorDisplayname;
     NSString* roomId = room.state.roomId;
     
-    // the selected color is based on the roomId
-    NSUInteger index = [AvatarGenerator colorIndexForText:roomId];
-    NSString* text = displayName;
-        
-    // ignore the first #
-    if ([text hasPrefix:@"#"] || [text hasPrefix:@"@"])
-    {
-        text = [text substringFromIndex:1];
-    }
-    
-    if (text.length > 0)
-    {
-        text = [[text substringToIndex:1] uppercaseString];
-    }
-        
-    return [AvatarGenerator avatarForText:text andColorIndex:index];
+    return [AvatarGenerator avatarForText:displayName andColorIndex:[AvatarGenerator colorIndexForText:roomId]];
 }
 
 @end

@@ -24,11 +24,15 @@
 
 #import "Contact.h"
 
+#import "VectorContactTableViewCell.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Add participants section
     MXKTableViewCellWithSearchBar *addParticipantsSearchBarCell;
     NSString *addParticipantsSearchText;
+    
+    UIView* searchBarSeparator;
     
     // Search result section
     NSMutableArray *filteredParticipants;
@@ -82,7 +86,6 @@
     
     addParticipantsSearchBarCell = [[MXKTableViewCellWithSearchBar alloc] init];
     addParticipantsSearchBarCell.mxkSearchBar.searchBarStyle = UISearchBarStyleMinimal;
-    //    addParticipantsSearchBarCell.mxkSearchBar.barTintColor = [UIColor whiteColor]; // set barTint in case of UISearchBarStyleDefault (= UISearchBarStyleProminent)
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
     addParticipantsSearchBarCell.mxkSearchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
@@ -494,28 +497,6 @@
     return count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == participantsSection)
-    {
-        NSInteger count = mutableParticipants.count;
-        if (userMatrixId)
-        {
-            count++;
-        }
-        
-        if (count > 1)
-        {
-            return [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_multi_participants", @"Vector", nil), count];
-        }
-        else
-        {
-            return NSLocalizedStringFromTable(@"room_participants_one_participant", @"Vector", nil);
-        }
-    }
-    return nil;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -524,7 +505,16 @@
     {
         if (indexPath.row == 0)
         {
+            
             cell = addParticipantsSearchBarCell;
+            
+            CGRect frame =  addParticipantsSearchBarCell.mxkSearchBar.frame;
+            frame.size.height = addParticipantsSearchBarCell.frame.size.height;
+            
+        
+            
+            
+            
             if (_isAddParticipantSearchBarEditing)
             {
                 [addParticipantsSearchBarCell.mxkSearchBar becomeFirstResponder];
@@ -535,38 +525,32 @@
     {
         if (indexPath.row < filteredParticipants.count)
         {
-            MXKContactTableCell* filteredParticipantCell = [tableView dequeueReusableCellWithIdentifier:[MXKContactTableCell defaultReuseIdentifier]];
+            VectorContactTableViewCell* filteredParticipantCell = [tableView dequeueReusableCellWithIdentifier:[VectorContactTableViewCell defaultReuseIdentifier]];
             if (!filteredParticipantCell)
             {
-                filteredParticipantCell = [[MXKContactTableCell alloc] init];
-                filteredParticipantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeCircle;
-                filteredParticipantCell.hideMatrixPresence = YES;
+                filteredParticipantCell = [[VectorContactTableViewCell alloc] init];
             }
+            
+            filteredParticipantCell.room = self.mxRoom;
             
             [filteredParticipantCell render:filteredParticipants[indexPath.row]];
             
-            // Show 'add' icon.
-            filteredParticipantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-            filteredParticipantCell.contactAccessoryViewHeightConstraint.constant = 30;
-            filteredParticipantCell.contactAccessoryViewWidthConstraint.constant = 30;
-            filteredParticipantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"add"];
-            filteredParticipantCell.contactAccessoryImageView.hidden = NO;
-            filteredParticipantCell.contactAccessoryView.hidden = NO;
-            
-            filteredParticipantCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
             cell = filteredParticipantCell;
+            
+            filteredParticipantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != filteredParticipants.count);
         }
     }
     else if (indexPath.section == participantsSection)
     {
-        MXKContactTableCell *participantCell = [tableView dequeueReusableCellWithIdentifier:[MXKContactTableCell defaultReuseIdentifier]];
+        VectorContactTableViewCell *participantCell = [tableView dequeueReusableCellWithIdentifier:[VectorContactTableViewCell defaultReuseIdentifier]];
         if (!participantCell)
         {
-            participantCell = [[MXKContactTableCell alloc] init];
-            participantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeCircle;
-            participantCell.hideMatrixPresence = YES;
+            participantCell = [[VectorContactTableViewCell alloc] init];
         }
+        
+        participantCell.room = self.mxRoom;
+        participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != mutableParticipants.count);
+        
         
         if (userMatrixId && indexPath.row == 0)
         {
@@ -579,31 +563,6 @@
             }
             
             [participantCell render:contact];
-            
-            if (self.mxRoom)
-            {
-                // Show 'Leave' buton.
-                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                UIButton *actionButton = participantCell.contactAccessoryButton;
-                actionButton.hidden = NO;
-                [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
-                [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-                [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                actionButton.tag = 0;
-                [actionButton sizeToFit];
-                
-                participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
-                [participantCell needsUpdateConstraints];
-                participantCell.contactAccessoryView.hidden = NO;
-            }
-            else
-            {
-                // Hide accessory view.
-                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-            }
-            
-            participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else
         {
@@ -646,36 +605,10 @@
                 {
                     [participantCell render:contact];
                 }
-                
-                if (self.mxRoom)
-                {
-                    // Show 'remove' button.
-                    participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                    UIButton *actionButton = participantCell.contactAccessoryButton;
-                    actionButton.hidden = NO;
-                    [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
-                    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-                    [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                    actionButton.tag = indexPath.row;
-                    [actionButton sizeToFit];
-                    
-                    participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                    participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
-                    participantCell.contactAccessoryView.hidden = NO;
-                }
-                else
-                {
-                    // Show 'remove' icon.
-                    participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                    participantCell.contactAccessoryViewHeightConstraint.constant = 30;
-                    participantCell.contactAccessoryViewWidthConstraint.constant = 30;
-                    participantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"remove"];
-                    participantCell.contactAccessoryImageView.hidden = NO;
-                    participantCell.contactAccessoryView.hidden = NO;
-                }
-                
-                participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
+            
+
+            
         }
         
         cell = participantCell;
@@ -692,7 +625,7 @@
     {
         return 10;
     }
-    return 44;
+    return 74;
 }
 
 
@@ -909,20 +842,68 @@
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = VECTOR_GREEN_COLOR;
+    searchBarTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     leftImageView.tintColor = VECTOR_GREEN_COLOR;
-
-    // Clear button
-    UIButton *clearButton = [searchBarTextField valueForKey:@"_clearButton"];
-    [clearButton setImage:[clearButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    clearButton.tintColor = VECTOR_GREEN_COLOR;
+    
+    // remove the gray background color
+    UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
+    UIView *effectBackgroundBottom =  [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
+    effectBackgroundTop.hidden = YES;
+    effectBackgroundBottom.hidden = YES;
+    
+    // add line separator under the textfield
+    if (!searchBarSeparator)
+    {
+        searchBarSeparator = [[UIView alloc] init];
+        searchBarSeparator.backgroundColor = VECTOR_GREEN_COLOR;
+        
+        [searchBarTextField addSubview:searchBarSeparator];
+        
+        searchBarSeparator.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        NSLayoutConstraint* leftConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                      attribute:NSLayoutAttributeLeading
+                                                      relatedBy:NSLayoutRelationEqual
+                                                         toItem:searchBarTextField
+                                                      attribute:NSLayoutAttributeLeading
+                                                     multiplier:1
+                                                       constant:0];
+            
+        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                                          attribute:NSLayoutAttributeWidth
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:searchBarTextField
+                                                                          attribute:NSLayoutAttributeWidth
+                                                                         multiplier:1
+                                                                           constant:0];
+        
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:1];
+        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:searchBarTextField
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1
+                                                                            constant:0];
+        
+        
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, widthConstraint, heightConstraint, bottomConstraint]];
+    }
+    
     
     // place holder
-    [searchBarTextField setValue:VECTOR_GREEN_COLOR forKeyPath:@"_placeholderLabel.textColor"];
+    [searchBarTextField setValue:VECTOR_TEXT_GRAY_COLOR forKeyPath:@"_placeholderLabel.textColor"];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

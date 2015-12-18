@@ -34,6 +34,8 @@
 		71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */; };
 		71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F5141C218D8900E7ED8F /* RecentCellData.m */; };
 		71F7F5181C22CC7500E7ED8F /* MXRoom+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F5171C22CC7500E7ED8F /* MXRoom+Vector.m */; };
+		71F7F51D1C23079F00E7ED8F /* VectorContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F51B1C23079F00E7ED8F /* VectorContactTableViewCell.m */; };
+		71F7F51E1C23079F00E7ED8F /* VectorContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71F7F51C1C23079F00E7ED8F /* VectorContactTableViewCell.xib */; };
 		F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */; };
 		F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */; };
 		F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */; };
@@ -210,6 +212,9 @@
 		71F7F5141C218D8900E7ED8F /* RecentCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCellData.m; sourceTree = "<group>"; };
 		71F7F5161C22CC7500E7ED8F /* MXRoom+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoom+Vector.h"; sourceTree = "<group>"; };
 		71F7F5171C22CC7500E7ED8F /* MXRoom+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoom+Vector.m"; sourceTree = "<group>"; };
+		71F7F51A1C23079F00E7ED8F /* VectorContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VectorContactTableViewCell.h; path = Contact/VectorContactTableViewCell.h; sourceTree = "<group>"; };
+		71F7F51B1C23079F00E7ED8F /* VectorContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VectorContactTableViewCell.m; path = Contact/VectorContactTableViewCell.m; sourceTree = "<group>"; };
+		71F7F51C1C23079F00E7ED8F /* VectorContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VectorContactTableViewCell.xib; path = Contact/VectorContactTableViewCell.xib; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F001D75B1B8207C000A162C3 /* RoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomInputToolbarView.h; sourceTree = "<group>"; };
 		F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomInputToolbarView.m; sourceTree = "<group>"; };
@@ -444,6 +449,16 @@
 			name = RoomActivitiesView;
 			sourceTree = "<group>";
 		};
+		71F7F5191C23079100E7ED8F /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				71F7F51A1C23079F00E7ED8F /* VectorContactTableViewCell.h */,
+				71F7F51B1C23079F00E7ED8F /* VectorContactTableViewCell.m */,
+				71F7F51C1C23079F00E7ED8F /* VectorContactTableViewCell.xib */,
+			);
+			name = Contact;
+			sourceTree = "<group>";
+		};
 		E1451F540F8BC02A7FB7AA31 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -456,6 +471,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71F7F5191C23079100E7ED8F /* Contact */,
 				71046D581C0C631100DCA984 /* RoomTitle */,
 				71EBE6691C04C4BE00E7D953 /* RoomActivitiesView */,
 				7179283B1C0384DE00407D96 /* TableViewCell */,
@@ -958,6 +974,7 @@
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
+				71F7F51E1C23079F00E7ED8F /* VectorContactTableViewCell.xib in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F0C34B621C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
@@ -1053,6 +1070,7 @@
 				71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */,
 				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */,
+				71F7F51D1C23079F00E7ED8F /* VectorContactTableViewCell.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				F0D2D9871C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				F0C34B6F1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
