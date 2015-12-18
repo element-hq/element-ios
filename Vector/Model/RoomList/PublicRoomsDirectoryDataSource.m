@@ -74,7 +74,28 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         // Get the public rooms from the server
         publicRoomsRequest = [self.mxSession.matrixRestClient publicRooms:^(NSArray *rooms) {
 
-            _rooms = rooms;
+            // Order rooms by their members count
+            _rooms = [rooms sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
+                      {
+                          MXPublicRoom *firstRoom =  (MXPublicRoom*)a;
+                          MXPublicRoom *secondRoom = (MXPublicRoom*)b;
+
+                          // Compare member count
+                          if (firstRoom.numJoinedMembers < secondRoom.numJoinedMembers)
+                          {
+                              return NSOrderedDescending;
+                          }
+                          else if (firstRoom.numJoinedMembers > secondRoom.numJoinedMembers)
+                          {
+                              return NSOrderedAscending;
+                          }
+                          else
+                          {
+                              // Alphabetic order
+                              return [firstRoom.displayname compare:secondRoom.displayname options:NSCaseInsensitiveSearch];
+                          }
+                      }];
+
             lastRefreshDate = [NSDate date];
             publicRoomsRequest = nil;
 
