@@ -16,76 +16,103 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+#pragma mark - Constants definitions
+
+// Time in seconds from which public rooms data is considered as obsolete
+double const kPublicRoomsDirectoryDataExpiration = 10;
+
+#pragma mark - PublicRoomsDirectoryDataSource
+
 @interface PublicRoomsDirectoryDataSource ()
 {
     // The pending request to refresh public rooms data.
     MXHTTPOperation *publicRoomsRequest;
 
-    // TODO
-    //NSDate *lastRefreshDate;
+    // The date of the last fetched data.
+    NSDate *lastRefreshDate;
 }
 
 @end
 
 @implementation PublicRoomsDirectoryDataSource
 
-- (void)setSearchPattern:(NSString *)searchTerm
+- (void)setFilter:(NSString *)searchTerm
 {
-    if ([searchTerm isEqualToString:_searchPattern])
+    if (![searchTerm isEqualToString:_filter])
     {
-        return;
+        _filter = searchTerm;
+        [self refreshPublicRooms];
     }
-
-    _searchPattern = searchTerm;
-    [self refreshPublicRooms];
 }
 
 #pragma mark - Private methods
 
 - (void)refreshPublicRooms
 {
-    // Cancel the previous request
-    if (publicRoomsRequest)
+    // Do not refresh data if it is not too old
+    if (lastRefreshDate && -lastRefreshDate.timeIntervalSinceNow < kPublicRoomsDirectoryDataExpiration)
     {
-        [publicRoomsRequest cancel];
-    }
-
-    [self setState:MXKDataSourceStatePreparing];
-
-    publicRoomsRequest = [self.mxSession.matrixRestClient publicRooms:^(NSArray *rooms) {
-
-        publicRoomsRequest = nil;
-
-        // Apply filter if any
-        if (_searchPattern)
-        {
-            NSMutableArray *matchingRooms = [NSMutableArray array];
-            for (MXPublicRoom *publicRoom in rooms)
-            {
-                if ([matchingRooms indexOfObject:publicRoom] == NSNotFound)
-                {
-                    if ([publicRoom.displayname rangeOfString:_searchPattern options:NSCaseInsensitiveSearch].location != NSNotFound)
-                    {
-                        [matchingRooms addObject:publicRoom];
-                    }
-                }
-            }
-
-            _rooms = matchingRooms;
-        }
-        else
-        {
-            _rooms = rooms;
-        }
+        // Apply the new filter on the current data
+        [self refreshFilteredPublicRooms];
 
         [self setState:MXKDataSourceStateReady];
+    }
+    else
+    {
+        // Cancel the previous request
+        if (publicRoomsRequest)
+        {
+            [publicRoomsRequest cancel];
+        }
 
-    } failure:^(NSError *error) {
-        NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms. Error: %@", error);
+        [self setState:MXKDataSourceStatePreparing];
 
-        [self setState:MXKDataSourceStateFailed];
-    }];
+        lastRefreshDate = [NSDate date];
+
+        // Get the public rooms from the server
+        publicRoomsRequest = [self.mxSession.matrixRestClient publicRooms:^(NSArray *rooms) {
+
+            _rooms = rooms;
+            lastRefreshDate = [NSDate date];
+            publicRoomsRequest = nil;
+
+            [self refreshFilteredPublicRooms];
+
+            [self setState:MXKDataSourceStateReady];
+
+        } failure:^(NSError *error) {
+            NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms. Error: %@", error);
+            
+            [self setState:MXKDataSourceStateFailed];
+        }];
+    }
 }
+
+- (void)refreshFilteredPublicRooms
+{
+    // Apply filter if any
+    if (_filter)
+    {
+        NSMutableArray *filteredRooms = [NSMutableArray array];
+        for (MXPublicRoom *publicRoom in _rooms)
+        {
+            if ([filteredRooms indexOfObject:publicRoom] == NSNotFound)
+            {
+                if ([publicRoom.displayname rangeOfString:_filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+                {
+                    [filteredRooms addObject:publicRoom];
+                }
+            }
+        }
+
+        _filteredRooms = filteredRooms;
+    }
+    else
+    {
+        _filteredRooms = _rooms;
+    }
+}
+
 
 // Update the MXKDataSource state and the delegate
 - (void)setState:(MXKDataSourceState)newState

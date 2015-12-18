@@ -33,16 +33,20 @@
 @interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource, MXKDataSourceDelegate>
 
 /**
+ All public rooms of the directory.
+ */
+@property (nonatomic, readonly) NSArray<MXPublicRoom*> *rooms;
+
+/**
  The filter being applied. Nil if there is no filter.
  Setting a new value may trigger a request to the home server. So, the data source state
  may change to MXKDataSourceStatePreparing.
  */
-@property (nonatomic) NSString *searchPattern;
+@property (nonatomic) NSString *filter;
 
 /**
- The public room of the directory.
- The returned array is filtered according to `searchPattern`.
+ Public rooms of the directory that match `filter`.
  */
-@property (nonatomic, readonly) NSArray<MXPublicRoom*> *rooms;
+@property (nonatomic, readonly) NSArray<MXPublicRoom*> *filteredRooms;
 
 @end

@@ -47,8 +47,8 @@
         case MXKDataSourceStateReady:
             self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
             self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil),
-                                          publicRoomsDirectoryDataSource.rooms.count,
-                                          publicRoomsDirectoryDataSource.searchPattern];
+                                          publicRoomsDirectoryDataSource.filteredRooms.count,
+                                          publicRoomsDirectoryDataSource.filter];
 
             break;
 

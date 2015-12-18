@@ -577,8 +577,8 @@
 
         // Show the cell showing the public rooms directory search result
         // only in case of search
-        if (publicRoomsDirectoryDataSource.searchPattern
-            && (publicRoomsDirectoryDataSource.rooms.count > 0 || publicRoomsDirectoryDataSource.state == MXKDataSourceStatePreparing))
+        if (publicRoomsDirectoryDataSource.filter
+            && (publicRoomsDirectoryDataSource.filteredRooms.count > 0 || publicRoomsDirectoryDataSource.state == MXKDataSourceStatePreparing))
         {
             directorySection = sectionIndex;
             sectionIndex++;
@@ -658,7 +658,7 @@
     {
         // Search only on the first pattern
         // XXX: Why is it an array?
-        publicRoomsDirectoryDataSource.searchPattern = patternsList[0];
+        publicRoomsDirectoryDataSource.filter = patternsList[0];
     }
 }
 
