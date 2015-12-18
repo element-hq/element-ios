@@ -526,11 +526,10 @@
     directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
 
-    // Manage the public room search results cell outside the recents
+    // Manage the public room search results cell outside the recents.
     // Show the cell showing the public rooms directory search result
-    // only in case of search
-    if (publicRoomsDirectoryDataSource.filter
-        && (publicRoomsDirectoryDataSource.filteredRooms.count > 0 || publicRoomsDirectoryDataSource.state == MXKDataSourceStatePreparing))
+    // once a search is active
+    if (publicRoomsDirectoryDataSource.filter)
     {
         directorySection = sectionIndex;
         sectionIndex++;
