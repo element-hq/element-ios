@@ -22,18 +22,6 @@
 
 #pragma mark - Class methods
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    // Round image view
-    [_avatarImageView.layer setCornerRadius:_avatarImageView.frame.size.width / 2];
-    _avatarImageView.clipsToBounds = YES;
-
-    // TODO
-    //_avatarImageView.backgroundColor
-}
-
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource
 {
     // Show information according to the data source state

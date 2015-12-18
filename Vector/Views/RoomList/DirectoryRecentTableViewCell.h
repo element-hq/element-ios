@@ -26,7 +26,6 @@
  */
 @interface DirectoryRecentTableViewCell : MXKTableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 

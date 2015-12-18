@@ -13,17 +13,16 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="73.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="UIImageView">
+                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="TPL-8D-oME">
                         <rect key="frame" x="14" y="16" width="42" height="42"/>
-                        <color key="backgroundColor" white="0.89720269880000003" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="RX5-eD-c3c" secondAttribute="height" multiplier="1:1" id="PMK-Xn-iA9"/>
-                            <constraint firstAttribute="width" constant="42" id="QLW-H1-O6O"/>
+                            <constraint firstAttribute="width" constant="42" id="qAg-He-PXb"/>
+                            <constraint firstAttribute="width" secondItem="TPL-8D-oME" secondAttribute="height" multiplier="1:1" id="wzs-X7-8wC"/>
                         </constraints>
-                    </view>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
                         <rect key="frame" x="70" y="38" width="523" height="21"/>
                         <constraints>
@@ -33,8 +32,8 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
-                        <rect key="frame" x="70" y="14" width="33.5" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
+                        <rect key="frame" x="70" y="14" width="34" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="NW9-MB-gf4"/>
                         </constraints>
@@ -51,10 +50,10 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="0Ng-2v-0oP"/>
-                    <constraint firstItem="RX5-eD-c3c" firstAttribute="centerY" secondItem="aXz-IR-jj5" secondAttribute="centerY" id="D5z-rP-VSb"/>
+                    <constraint firstItem="TPL-8D-oME" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leadingMargin" constant="6" id="LVu-AH-5Ac"/>
+                    <constraint firstItem="TPL-8D-oME" firstAttribute="centerY" secondItem="Xgp-JV-bm1" secondAttribute="centerY" id="QYq-CA-8gL"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="dDa-ra-3O4"/>
-                    <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leadingMargin" constant="6" id="hLg-7a-J4F"/>
+                    <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="TPL-8D-oME" secondAttribute="trailing" constant="14" id="g9c-CK-uxU"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="dQt-mN-T6b" secondAttribute="leading" id="itp-0x-LhV"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="topMargin" constant="6" id="jLI-GY-QfV"/>
                     <constraint firstItem="Xgp-JV-bm1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="4" id="kg7-lm-lU8"/>
@@ -65,7 +64,6 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="avatarImageView" destination="RX5-eD-c3c" id="3Qs-Yf-dMM"/>
                 <outlet property="descriptionLabel" destination="dQt-mN-T6b" id="XON-GW-a6T"/>
                 <outlet property="titleLabel" destination="Lg1-xQ-AGn" id="uqU-hH-KT0"/>
             </connections>
@@ -73,5 +71,6 @@
     </objects>
     <resources>
         <image name="chevron.png" width="8" height="17"/>
+        <image name="placeholder.png" width="42" height="42"/>
     </resources>
 </document>
