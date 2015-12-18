@@ -18,7 +18,12 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+#import "AppDelegate.h"
+
 @interface DirectoryViewController ()
+{
+    PublicRoomsDirectoryDataSource *dataSource;
+}
 
 @end
 
@@ -41,9 +46,10 @@
     [self.tableView reloadData];
 }
 
-- (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource
+- (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
 {
     // Let the data source provide cells
+    dataSource = dataSource2;
     self.tableView.dataSource = dataSource;
 }
 
@@ -63,4 +69,11 @@
 {
     return 72;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXPublicRoom *publicRoom = dataSource.filteredRooms[indexPath.row];
+    [[AppDelegate theDelegate] showRoom:publicRoom.roomId withMatrixSession:dataSource.mxSession];
+}
+
 @end
