@@ -179,70 +179,64 @@
 {
     NSString* presenceText = nil;
     NSString* matrixId = [self getFirstMatrixId];
-    
-    if (!self.lastPresenceLabel.hidden)
+    MXRoomMember* member = [self.room.state memberWithUserId:matrixId];
+
+    // the oneself user is always active
+    if ([matrixId isEqualToString:self.room.mxSession.myUser.userId])
     {
-        NSString* presence = nil;
-        
-        MXRoomMember* member = [self.room.state memberWithUserId:matrixId];
-        
-        // the oneself user is always active
-        if ([matrixId isEqualToString:self.room.mxSession.myUser.userId])
+        presenceText = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
+    }
+    else if (!member || (member.membership != MXMembershipJoin))
+    {
+        if (member.membership == MXMembershipInvite)
         {
-            presenceText = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
+            presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
         }
-        else if (!member || (member.membership != MXMembershipJoin))
+        else if (member.membership == MXMembershipLeave)
         {
-            if (member.membership == MXMembershipInvite)
-            {
-                presence =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
-            }
-            else if (member.membership == MXMembershipLeave)
-            {
-                presence =  NSLocalizedStringFromTable(@"room_participants_leave", @"Vector", nil);
-            }
-            else if (member.membership == MXMembershipBan)
-            {
-                presence =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
-            }
+            presenceText =  NSLocalizedStringFromTable(@"room_participants_leave", @"Vector", nil);
         }
-        else
+        else if (member.membership == MXMembershipBan)
         {
-            MXUser *user = [room.mxSession userWithUserId:matrixId];
-            
-            if (user)
+            presenceText =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
+        }
+    }
+    else
+    {
+        MXUser *user = [room.mxSession userWithUserId:matrixId];
+        
+        if (user)
+        {
+            if (user.presence == MXPresenceOnline)
             {
-                if (user.presence == MXPresenceOnline)
+                presenceText  = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
+            }
+            else
+            {
+                NSUInteger lastActiveMs = user.lastActiveAgo;
+                
+                if (-1 != lastActiveMs)
                 {
-                    presence  = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
-                }
-                else
-                {
-                    NSUInteger lastActiveMs = user.lastActiveAgo;
+                    NSUInteger lastActivehour = lastActiveMs / 1000 / 60 / 60;
+                    NSUInteger lastActiveDays = lastActivehour / 24;
                     
-                    if (-1 != lastActiveMs)
+                    if (lastActivehour < 1)
                     {
-                        NSUInteger lastActivehour = lastActiveMs / 1000 / 60 / 60;
-                        NSUInteger lastActiveDays = lastActivehour / 24;
-                        
-                        if (lastActivehour < 1)
-                        {
-                            presenceText = NSLocalizedStringFromTable(@"room_participants_active_less_1_hour", @"Vector", nil);
-                        }
-                        else if (lastActivehour < 24)
-                        {
-                            presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_hours", @"Vector", nil), lastActivehour];
-                        }
-                        else
-                        {
-                            presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_days", @"Vector", nil), lastActiveDays];
-                        }
+                        presenceText = NSLocalizedStringFromTable(@"room_participants_active_less_1_hour", @"Vector", nil);
+                    }
+                    else if (lastActivehour < 24)
+                    {
+                        presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_hours", @"Vector", nil), lastActivehour];
+                    }
+                    else
+                    {
+                        presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_days", @"Vector", nil), lastActiveDays];
                     }
                 }
             }
         }
     }
-                
+
     self.lastPresenceLabel.text = presenceText;
 }
 

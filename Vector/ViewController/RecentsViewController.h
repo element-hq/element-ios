@@ -37,5 +37,13 @@
  */
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
+/**
+ Return a background color for an image resource.
+ 
+ @param imageName the image resource name
+ @return the UIColor
+ */
++ (UIColor*)getBackgroundColor:(NSString*)imageName;
+
 @end
 

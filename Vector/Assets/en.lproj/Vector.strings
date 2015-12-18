@@ -83,8 +83,8 @@
 "room_participants_leave" = "Left";
 "room_participants_ban" = "Banned";
 "room_participants_active_less_1_hour" = "Active less 1 hour ago";
-"room_participants_active_less_x_hours" = "Active less %@ hours ago";
-"room_participants_active_less_x_days" = "Active less %@ days ago";
+"room_participants_active_less_x_hours" = "Active less %lu hours ago";
+"room_participants_active_less_x_days" = "Active less %lu days ago";
 
 // Chat
 "room_one_user_is_typing" = "%@ is typing...";

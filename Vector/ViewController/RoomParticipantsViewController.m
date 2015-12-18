@@ -505,15 +505,7 @@
     {
         if (indexPath.row == 0)
         {
-            
             cell = addParticipantsSearchBarCell;
-            
-            CGRect frame =  addParticipantsSearchBarCell.mxkSearchBar.frame;
-            frame.size.height = addParticipantsSearchBarCell.frame.size.height;
-            
-        
-            
-            
             
             if (_isAddParticipantSearchBarEditing)
             {
@@ -521,48 +513,34 @@
             }
         }
     }
-    else if (indexPath.section == searchResultSection)
+    else if ((indexPath.section == searchResultSection) || (indexPath.section == participantsSection))
     {
-        if (indexPath.row < filteredParticipants.count)
-        {
-            VectorContactTableViewCell* filteredParticipantCell = [tableView dequeueReusableCellWithIdentifier:[VectorContactTableViewCell defaultReuseIdentifier]];
-            if (!filteredParticipantCell)
-            {
-                filteredParticipantCell = [[VectorContactTableViewCell alloc] init];
-            }
-            
-            filteredParticipantCell.room = self.mxRoom;
-            
-            [filteredParticipantCell render:filteredParticipants[indexPath.row]];
-            
-            cell = filteredParticipantCell;
-            
-            filteredParticipantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != filteredParticipants.count);
-        }
-    }
-    else if (indexPath.section == participantsSection)
-    {
-        VectorContactTableViewCell *participantCell = [tableView dequeueReusableCellWithIdentifier:[VectorContactTableViewCell defaultReuseIdentifier]];
+        VectorContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:[VectorContactTableViewCell defaultReuseIdentifier]];
+        
         if (!participantCell)
         {
             participantCell = [[VectorContactTableViewCell alloc] init];
         }
-        
+    
         participantCell.room = self.mxRoom;
-        participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != mutableParticipants.count);
         
+        Contact *contact = nil;
         
-        if (userMatrixId && indexPath.row == 0)
+        // oneself dedicated cell
+        if ((indexPath.section == participantsSection && userMatrixId && indexPath.row == 0))
         {
-            Contact *contact = [mxkContactsById objectForKey:userMatrixId];
-            if (! contact)
+            contact = [mxkContactsById objectForKey:userMatrixId];
+            
+            if (!contact)
             {
                 contact = [[Contact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
                 contact.mxMember = [self.mxRoom.state memberWithUserId:userMatrixId];
                 [mxkContactsById setObject:contact forKey:userMatrixId];
             }
-            
-            [participantCell render:contact];
+        }
+        else if (indexPath.section == searchResultSection)
+        {
+            contact = filteredParticipants[indexPath.row];
         }
         else
         {
@@ -576,7 +554,8 @@
             if (index < mutableParticipants.count)
             {
                 NSString *userId = mutableParticipants[index];
-                Contact *contact = [mxkContactsById objectForKey:userId];
+                contact = [mxkContactsById objectForKey:userId];
+                
                 if (!contact)
                 {
                     // Create this missing contact
@@ -600,17 +579,24 @@
                     }
                     
                 }
-                
-                if (contact)
-                {
-                    [participantCell render:contact];
-                }
             }
-            
-
-            
         }
         
+        if (indexPath.section == searchResultSection)
+        {
+            participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != filteredParticipants.count);
+        }
+        else if (userMatrixId)
+        {
+            participantCell.bottomLineSeparator.hidden = ((indexPath.row) != mutableParticipants.count);
+        }
+        else
+        {
+            participantCell.bottomLineSeparator.hidden = ((indexPath.row + 1) != mutableParticipants.count);
+        }
+        
+        [participantCell render:contact];
+    
         cell = participantCell;
     }
     
@@ -625,49 +611,19 @@
     {
         return 10;
     }
-    return 74;
-}
-
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    if([view isKindOfClass:[UITableViewHeaderFooterView class]])
-    {
-        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *) view;
-        tableViewHeaderFooterView.textLabel.text = [tableViewHeaderFooterView.textLabel.text capitalizedString];
-        tableViewHeaderFooterView.textLabel.font = [UIFont boldSystemFontOfSize:17];
-        tableViewHeaderFooterView.textLabel.textColor = VECTOR_GREEN_COLOR;
-    }
+    
+    return 74.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexPath.row;
+    NSInteger row = indexPath.row;
     
-    if ((indexPath.section == participantsSection) && (self.mxRoom == nil))
+    if (indexPath.section == searchResultSection)
     {
-        if (userMatrixId)
+        if (row < filteredParticipants.count)
         {
-            index --;
-        }
-        
-        if (index < mutableParticipants.count)
-        {
-            [mxkContactsById removeObjectForKey:mutableParticipants[index]];
-            [mutableParticipants removeObjectAtIndex:index];
-            
-            // Refresh display
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            
-            UITableViewHeaderFooterView *participantsSectionHeader = [tableView headerViewForSection:participantsSection];
-            participantsSectionHeader.textLabel.text = [self tableView:tableView titleForHeaderInSection:participantsSection];
-        }
-    }
-    else if (indexPath.section == searchResultSection)
-    {
-        if (index < filteredParticipants.count)
-        {
-            MXKContact *contact = filteredParticipants[index];
+            MXKContact *contact = filteredParticipants[row];
             
             NSArray *identifiers = contact.matrixIdentifiers;
             if (identifiers.count)
@@ -682,7 +638,7 @@
                 {
                     [self addPendingActionMask];
                     [self.mxRoom inviteUser:participantId success:^{
-                        
+                    
                         [self removePendingActionMask];
                         
                         // Refresh display by leaving search session
@@ -695,7 +651,6 @@
                         NSLog(@"[RoomParticipantsVC] Invite %@ failed: %@", participantId, error);
                         // Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
-                        
                     }];
                 }
                 else
@@ -706,20 +661,43 @@
                     [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
                 }
             }
-            
-            
         }
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    
+    // add the swipe to delete on search and participants section
+    if (indexPath.section == participantsSection)
+    {
+        NSString* title = @"        ";
+        
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
+            [self onDeleteAt:indexPath];
+        
+        }];
+        leaveAction.backgroundColor = [VectorDesignValues getBackgroundColor:@"remove_icon"];
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
+}
+
 
 #pragma mark - Actions
 
-- (IBAction)onButtonPressed:(id)sender
+- (void)onDeleteAt:(NSIndexPath*)path
 {
-    if ([sender isKindOfClass:[UIButton class]])
+    NSUInteger section = path.section;
+    NSUInteger row = path.row;
+    
+    if (section == participantsSection)
     {
-        UIButton *actionButton = (UIButton*)sender;
-        NSInteger index = actionButton.tag;
         __weak typeof(self) weakSelf = self;
         
         if (currentAlert)
@@ -728,7 +706,7 @@
             currentAlert = nil;
         }
         
-        if (userMatrixId && index == 0 && [actionButton.titleLabel.text isEqualToString:NSLocalizedStringFromTable(@"leave", @"Vector", nil)])
+        if (userMatrixId && (0 == row))
         {
             // Leave ?
             currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
@@ -754,7 +732,15 @@
                                          [strongSelf addPendingActionMask];
                                          [strongSelf.mxRoom leave:^{
                                              
-                                             [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+                                             // check if there is a parent view controller
+                                             if (strongSelf.parentViewController)
+                                             {
+                                                 [strongSelf.navigationController popViewControllerAnimated:YES];
+                                             }
+                                             else
+                                             {
+                                                 [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+                                             }
                                              
                                          } failure:^(NSError *error) {
                                              
@@ -769,16 +755,16 @@
             
             [currentAlert showInViewController:self];
         }
-        else if ([actionButton.titleLabel.text isEqualToString:NSLocalizedStringFromTable(@"remove", @"Vector", nil)])
+        else
         {
             if (userMatrixId)
             {
-                index --;
+                row --;
             }
             
-            if (index < mutableParticipants.count)
+            if (row < mutableParticipants.count)
             {
-                NSString *memberUserId = mutableParticipants[index];
+                NSString *memberUserId = mutableParticipants[row];
                 MXKContact *contact = [mxkContactsById objectForKey:memberUserId];
                 
                 // Kick ?
@@ -805,25 +791,25 @@
                                              
                                              [strongSelf addPendingActionMask];
                                              [strongSelf.mxRoom kickUser:memberUserId
-                                                       reason:nil
-                                                      success:^{
-                                                          
-                                                          [strongSelf removePendingActionMask];
-                                                          
-                                                          [strongSelf->mxkContactsById removeObjectForKey:memberUserId];
-                                                          [strongSelf->mutableParticipants removeObjectAtIndex:index];
-                                                          
-                                                          // Refresh display
-                                                          [strongSelf.tableView reloadData];
-                                                          
-                                                      } failure:^(NSError *error) {
-                                                          
-                                                          [strongSelf removePendingActionMask];
-                                                          NSLog(@"[RoomParticipantsVC] Kick %@ failed: %@", memberUserId, error);
-                                                          // Alert user
-                                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                          
-                                                      }];
+                                                                  reason:nil
+                                                                 success:^{
+                                                                     
+                                                                     [strongSelf removePendingActionMask];
+                                                                     
+                                                                     [strongSelf->mxkContactsById removeObjectForKey:memberUserId];
+                                                                     [strongSelf->mutableParticipants removeObjectAtIndex:row];
+                                                                     
+                                                                     // Refresh display
+                                                                     [strongSelf.tableView reloadData];
+                                                                     
+                                                                 } failure:^(NSError *error) {
+                                                                     
+                                                                     [strongSelf removePendingActionMask];
+                                                                     NSLog(@"[RoomParticipantsVC] Kick %@ failed: %@", memberUserId, error);
+                                                                     // Alert user
+                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                     
+                                                                 }];
                                          }];
                 
                 [currentAlert showInViewController:self];
