@@ -16,6 +16,8 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+#import "MXKPublicRoomTableViewCell.h"
+
 #pragma mark - Constants definitions
 
 // Time in seconds from which public rooms data is considered as obsolete
@@ -122,6 +124,28 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     {
         [self.delegate dataSource:self didStateChange:state];
     }
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _filteredRooms.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // For now reuse MatrixKit cells
+    // TODO: use custom cells and manage a mechanism a la MatrixKit with cellData
+    MXKPublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[MXKPublicRoomTableViewCell defaultReuseIdentifier]];
+    if (!publicRoomCell)
+    {
+        publicRoomCell = [[MXKPublicRoomTableViewCell alloc] init];
+    }
+
+    [publicRoomCell render:_filteredRooms[indexPath.row]];
+
+    return publicRoomCell;
 }
 
 @end

@@ -158,6 +158,9 @@
 "media_picker_choose_from_library" = "Choose from library";
 "media_picker_library" = "Library";
 
+// Directory
+"directory_title" = "Directory";
+
 // Others
 "you" = "You";
 "public_room_section_title" = "Public Rooms (at %@):";

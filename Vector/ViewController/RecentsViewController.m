@@ -28,6 +28,7 @@
 #import "VectorDesignValues.h"
 
 #import "InviteRecentTableViewCell.h"
+#import "DirectoryRecentTableViewCell.h"
 
 @interface RecentsViewController ()
 {
@@ -457,6 +458,11 @@ static NSMutableDictionary* backgroundByImageNameDict;
     {
         // hide the selection
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
+    {
+        // Show the directory screen
+        [homeViewController showPublicRoomsDirectory];
     }
     else
     {

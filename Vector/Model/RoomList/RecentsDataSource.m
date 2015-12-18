@@ -32,8 +32,6 @@
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
 
-    PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
-
     NSInteger directorySection;
     NSInteger invitesSection;
     NSInteger favoritesSection;
@@ -80,10 +78,10 @@
 
     // Initialise the public room directory data source
     // Note that it is single matrix session only for now
-    if (!publicRoomsDirectoryDataSource)
+    if (!_publicRoomsDirectoryDataSource)
     {
-        publicRoomsDirectoryDataSource = [[PublicRoomsDirectoryDataSource alloc] initWithMatrixSession:mxSession];
-        publicRoomsDirectoryDataSource.delegate = self;
+        _publicRoomsDirectoryDataSource = [[PublicRoomsDirectoryDataSource alloc] initWithMatrixSession:mxSession];
+        _publicRoomsDirectoryDataSource.delegate = self;
     }
 }
 
@@ -102,17 +100,17 @@
             [roomTagsListenerByUserId removeObjectForKey:matrixSession.myUser.userId];
         }
 
-        if (publicRoomsDirectoryDataSource.mxSession == matrixSession)
+        if (_publicRoomsDirectoryDataSource.mxSession == matrixSession)
         {
-            [publicRoomsDirectoryDataSource destroy];
-            publicRoomsDirectoryDataSource = nil;
+            [_publicRoomsDirectoryDataSource destroy];
+            _publicRoomsDirectoryDataSource = nil;
         }
     }
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didStateChange:(MXKDataSourceState)aState
 {
-    if (dataSource == publicRoomsDirectoryDataSource)
+    if (dataSource == _publicRoomsDirectoryDataSource)
     {
         [self refreshRoomsSectionsAndReload];
     }
@@ -294,7 +292,7 @@
             directoryCell = [[DirectoryRecentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[DirectoryRecentTableViewCell defaultReuseIdentifier]];
         }
 
-        [directoryCell render:publicRoomsDirectoryDataSource];
+        [directoryCell render:_publicRoomsDirectoryDataSource];
 
         return directoryCell;
     }
@@ -529,7 +527,7 @@
     // Manage the public room search results cell outside the recents.
     // Show the cell showing the public rooms directory search result
     // once a search is active
-    if (publicRoomsDirectoryDataSource.filter)
+    if (_publicRoomsDirectoryDataSource.filter)
     {
         directorySection = sectionIndex;
         sectionIndex++;
@@ -653,11 +651,11 @@
 {
     [super searchWithPatterns:patternsList];
 
-    if (patternsList && publicRoomsDirectoryDataSource)
+    if (patternsList && _publicRoomsDirectoryDataSource)
     {
         // Search only on the first pattern
         // XXX: Why is it an array?
-        publicRoomsDirectoryDataSource.filter = patternsList[0];
+        _publicRoomsDirectoryDataSource.filter = patternsList[0];
     }
 }
 

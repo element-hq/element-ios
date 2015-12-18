@@ -20,6 +20,7 @@
 #import "RecentsViewController.h"
 
 #import "RoomViewController.h"
+#import "DirectoryViewController.h"
 
 @interface HomeViewController ()
 {
@@ -312,6 +313,11 @@
     }
 }
 
+- (void)showPublicRoomsDirectory
+{
+    [self performSegueWithIdentifier:@"showDirectory" sender:self];
+}
+
 #pragma mark - Internal methods
 
 // Made the currently displayed child update its selected cell
@@ -378,6 +384,11 @@
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
+    }
+    else if ([[segue identifier] isEqualToString:@"showDirectory"])
+    {
+        DirectoryViewController *directoryViewController = segue.destinationViewController;
+        [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
     }
 
     // Hide back button title
