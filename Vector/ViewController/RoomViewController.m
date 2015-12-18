@@ -250,7 +250,7 @@
                  [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
-                 NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
+                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
                  //Alert user
                  [[AppDelegate theDelegate] showErrorAsAlert:error];
              }];
@@ -380,30 +380,17 @@
             // Retrieve the tapped event
             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
             
-            // Update display of the visible table cell view
-            NSArray* cellArray = self.bubblesTableView.visibleCells;
-            
             // Check whether a selection already exist or not
             if (customizedRoomDataSource.selectedEventId)
             {
-                // Cancel the current selection
-                for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
-                {
-                    if (tableViewCell.blurred)
-                    {
-                        tableViewCell.blurred = NO;
-                    }
-                    else
-                    {
-                        [tableViewCell unselectComponent];
-                    }
-                }
-                
-                customizedRoomDataSource.selectedEventId = nil;
+                [self cancelEventSelection];
             }
             else if (tappedEvent)
             {
                 // Highlight this event in displayed message
+
+                // Update display of the visible table cell view
+                NSArray* cellArray = self.bubblesTableView.visibleCells;
                 
                 // Blur all table cells, except the tapped one
                 for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
@@ -435,21 +422,272 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnOverlayContainer])
         {
             // Cancel the current event selection
-            NSArray* cellArray = self.bubblesTableView.visibleCells;
+            [self cancelEventSelection];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellVectorEditButtonPressed])
+        {
+            [self dismissKeyboard];
             
-            for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+            MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+            
+            if (selectedEvent)
             {
-                if (tableViewCell.blurred)
+                if (self.currentAlert)
                 {
-                    tableViewCell.blurred = NO;
+                    [self.currentAlert dismiss:NO];
+                    self.currentAlert = nil;
+                }
+                
+                __weak __typeof(self) weakSelf = self;
+                self.currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+                
+                // Add actions for a failed event
+                if (selectedEvent.mxkState == MXKEventStateSendingFailed)
+                {
+                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"resend"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        // Let the datasource resend. It will manage local echo, etc.
+                        [strongSelf.roomDataSource resendEventWithEventId:selectedEvent.eventId success:nil failure:nil];
+                        
+                    }];
+                    
+                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [strongSelf.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+                    }];
+                }
+                
+                // Add actions for text message
+                if (!attachment)
+                {
+                    // Retrieved data related to the selected event
+                    NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+                    MXKRoomBubbleComponent *selectedComponent;
+                    for (selectedComponent in components)
+                    {
+                        if ([selectedComponent.event.eventId isEqualToString:selectedEvent.eventId])
+                        {
+                            break;
+                        }
+                        selectedComponent = nil;
+                    }
+                    
+                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"copy"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [[UIPasteboard generalPasteboard] setString:selectedComponent.textMessage];
+                        
+                    }];
+                    
+                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"share"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        NSArray *activityItems = [NSArray arrayWithObjects:selectedComponent.textMessage, nil];
+                        
+                        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                        activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                        
+                        if (activityViewController)
+                        {
+                            [strongSelf presentViewController:activityViewController animated:YES completion:nil];
+                        }
+                        
+                    }];
+                }
+                else // Add action for attachment
+                {
+                    if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+                    {
+                        [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"save"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf cancelEventSelection];
+                            
+                            [strongSelf startActivityIndicator];
+                            
+                            [attachment save:^{
+                                
+                                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                [strongSelf stopActivityIndicator];
+                                
+                            } failure:^(NSError *error) {
+                                
+                                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                [strongSelf stopActivityIndicator];
+                                
+                                //Alert user
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                
+                            }];
+                            
+                            // Start animation in case of download during attachment preparing
+                            [roomBubbleTableViewCell startProgressUI];
+                            
+                        }];
+                    }
+                    
+                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"copy"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [strongSelf startActivityIndicator];
+                        
+                        [attachment copy:^{
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }];
+                    
+                    [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"share"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [attachment prepareShare:^(NSURL *fileURL) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            strongSelf->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+                            [strongSelf->documentInteractionController setDelegate:strongSelf];
+                            strongSelf->currentSharedAttachment = attachment;
+                            
+                            if (![strongSelf->documentInteractionController presentOptionsMenuFromRect:strongSelf.view.frame inView:strongSelf.view animated:YES])
+                            {
+                                strongSelf->documentInteractionController = nil;
+                                [attachment onShareEnded];
+                                strongSelf->currentSharedAttachment = nil;
+                            }
+                            
+                        } failure:^(NSError *error) {
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }];
+                }
+                
+                // Check status of the selected event
+                if (selectedEvent.mxkState == MXKEventStateUploading)
+                {
+                    // Upload id is stored in attachment url (nasty trick)
+                    NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
+                    if ([MXKMediaManager existingUploaderWithId:uploadId])
+                    {
+                        [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel_upload"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf cancelEventSelection];
+                            
+                            // Get again the loader
+                            MXKMediaLoader *loader = [MXKMediaManager existingUploaderWithId:uploadId];
+                            if (loader)
+                            {
+                                [loader cancel];
+                            }
+                            // Hide the progress animation
+                            roomBubbleTableViewCell.progressView.hidden = YES;
+                            
+                        }];
+                    }
+                }
+                else if (selectedEvent.mxkState != MXKEventStateSending && selectedEvent.mxkState != MXKEventStateSendingFailed)
+                {
+                    // Check whether download is in progress
+                    if (selectedEvent.isMediaAttachment)
+                    {
+                        NSString *cacheFilePath = roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath;
+                        if ([MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
+                        {
+                            [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel_download"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                [strongSelf cancelEventSelection];
+                                
+                                // Get again the loader
+                                MXKMediaLoader *loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
+                                if (loader)
+                                {
+                                    [loader cancel];
+                                }
+                                // Hide the progress animation
+                                roomBubbleTableViewCell.progressView.hidden = YES;
+                                
+                            }];
+                        }
+                    }
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"redact", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [strongSelf startActivityIndicator];
+                        
+                        [strongSelf.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                            NSLog(@"[Vector RoomVC] Redact event (%@) failed: %@", selectedEvent.eventId, error);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                    }];
+                }
+                
+                self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    [strongSelf cancelEventSelection];
+                    
+                }];
+                
+                // Do not display empty action sheet
+                if (self.currentAlert.cancelButtonIndex)
+                {
+                    self.currentAlert.sourceView = roomBubbleTableViewCell;
+                    [self.currentAlert showInViewController:self];
                 }
                 else
                 {
-                    [tableViewCell unselectComponent];
+                    self.currentAlert = nil;
                 }
             }
-            
-            customizedRoomDataSource.selectedEventId = nil;
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
         {
@@ -466,6 +704,31 @@
         // Keep default implementation for other actions
         [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
     }
+}
+
+- (void)cancelEventSelection
+{
+    if (self.currentAlert)
+    {
+        [self.currentAlert dismiss:NO];
+        self.currentAlert = nil;
+    }
+    
+    // Cancel the current selection
+    NSArray* cellArray = self.bubblesTableView.visibleCells;
+    for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+    {
+        if (tableViewCell.blurred)
+        {
+            tableViewCell.blurred = NO;
+        }
+        else
+        {
+            [tableViewCell unselectComponent];
+        }
+    }
+    
+    customizedRoomDataSource.selectedEventId = nil;
 }
 
 #pragma mark - Segues

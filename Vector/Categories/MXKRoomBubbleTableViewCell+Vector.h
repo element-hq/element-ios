@@ -17,6 +17,13 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ Action identifier used when the user pressed edit button displayed in front of a selected event.
+ 
+ The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the selected event.
+ */
+extern NSString *const kMXKRoomBubbleCellVectorEditButtonPressed;
+
+/**
  Define a `MXKRoomBubbleTableViewCell` category at Vector level to handle bubble customisation.
  */
 @interface MXKRoomBubbleTableViewCell (Vector)
@@ -51,5 +58,20 @@
  Blur the view by adding a transparent overlay. Default is NO.
  */
 @property(nonatomic) BOOL blurred;
+
+/**
+ The 'edit' button displayed in front of the selected component (if any). Default is nil.
+ */
+@property(nonatomic) UIButton *editButton;
+
+/**
+ The read receipts container associated to the selected component (if any). Default is nil.
+ */
+@property(nonatomic) MXKReceiptSendersContainer* selectedReadReceiptsContainer;
+
+/**
+ The trailing constraint of the read receipts container associated to the selected component (if any). Default is nil.
+ */
+@property(nonatomic) NSLayoutConstraint* selectedReadReceiptsContainerTrailingConstraint;
 
 @end
