@@ -24,6 +24,9 @@
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource
 {
+    self.userInteractionEnabled = NO;
+    self.chevronImageView.hidden = YES;
+
     // Show information according to the data source state
     switch (publicRoomsDirectoryDataSource.state)
     {
@@ -38,6 +41,11 @@
                                           publicRoomsDirectoryDataSource.filteredRooms.count,
                                           publicRoomsDirectoryDataSource.filter];
 
+            if (publicRoomsDirectoryDataSource.filteredRooms.count)
+            {
+                self.userInteractionEnabled = YES;
+                self.chevronImageView.hidden = NO;
+            }
             break;
 
         case MXKDataSourceStateFailed:

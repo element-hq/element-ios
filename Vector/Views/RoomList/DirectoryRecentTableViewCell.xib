@@ -64,6 +64,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="chevronImageView" destination="Xgp-JV-bm1" id="tU6-gd-lAX"/>
                 <outlet property="descriptionLabel" destination="dQt-mN-T6b" id="XON-GW-a6T"/>
                 <outlet property="titleLabel" destination="Lg1-xQ-AGn" id="uqU-hH-KT0"/>
             </connections>
