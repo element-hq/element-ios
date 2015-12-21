@@ -22,11 +22,11 @@
 
 #import "AvatarGenerator.h"
 
+#import "MXKContactManager.h"
+
 @interface ContactTableViewCell()
 {
-    /**
-     The current displayed contact.
-     */
+    // The current displayed contact.
     MXKContact *contact;
     
     /**
@@ -37,7 +37,7 @@
 @end
 
 @implementation ContactTableViewCell
-@synthesize mxRoom, mxSession;
+@synthesize mxRoom;
 
 - (void)awakeFromNib
 {
@@ -194,14 +194,14 @@
 {
     NSString* presenceText = nil;
     NSString* matrixId = [self getFirstMatrixId];
-    MXRoomMember* member = [self.mxRoom.state memberWithUserId:matrixId];
-
-    // the oneself user is always active
-    if ([matrixId isEqualToString:self.mxSession.myUser.userId])
+    MXRoomMember* member = nil;
+    
+    if (self.mxRoom)
     {
-        presenceText = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
+        member = [self.mxRoom.state memberWithUserId:matrixId];
     }
-    else if (!member || (member.membership != MXMembershipJoin))
+
+    if (!member || (member.membership != MXMembershipJoin))
     {
         if (member.membership == MXMembershipInvite)
         {
@@ -218,8 +218,19 @@
     }
     else
     {
-        MXUser *user = [self.mxSession userWithUserId:matrixId];
+        MXUser *user = nil;
         
+        // Consider here all sessions reported into contact manager
+        NSArray* mxSessions = [MXKContactManager sharedManager].mxSessions;
+        for (MXSession *mxSession in mxSessions)
+        {
+            user = [mxSession userWithUserId:matrixId];
+            if (user)
+            {
+                break;
+            }
+        }
+
         if (user)
         {
             if (user.presence == MXPresenceOnline)

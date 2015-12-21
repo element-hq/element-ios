@@ -42,9 +42,5 @@
 // This property is OPTIONAL.
 @property  (nonatomic) MXRoom* mxRoom;
 
-// The session where this contact is displayed.
-// It is MANDATORY.
-@property  (nonatomic) MXSession* mxSession;
-
 @end
 
