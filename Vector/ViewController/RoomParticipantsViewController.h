@@ -34,7 +34,6 @@
     /**
      Section indexes
      */
-    NSInteger addParticipantsSection;
     NSInteger searchResultSection;
     NSInteger participantsSection;
     

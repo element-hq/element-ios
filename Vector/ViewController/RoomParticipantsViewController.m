@@ -80,6 +80,7 @@
     }
     
     addParticipantsSearchBarCell = [[MXKTableViewCellWithSearchBar alloc] init];
+    addParticipantsSearchBarCell.contentView.backgroundColor = [UIColor whiteColor];
     addParticipantsSearchBarCell.mxkSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
@@ -100,7 +101,7 @@
 
     // ensure that the separator line is not displayed
     self.tableView.separatorColor = [UIColor clearColor];
-    
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self setNavBarButtons];
 }
 
@@ -258,6 +259,7 @@
                 // Refresh participants display (if visible)
                 if (participantsSection != -1)
                 {
+                    [self.tableView reloadData];
                     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (participantsSection, 1)];
                     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
                 }
@@ -276,8 +278,7 @@
         _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
         
         // Switch the display between search result and participants list
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (1, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadData];
     }
 }
 
@@ -435,17 +436,15 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = 0;
-    addParticipantsSection = searchResultSection = participantsSection = -1;
+    
+    searchResultSection = participantsSection = -1;
     
     if (_isAddParticipantSearchBarEditing)
     {
-        // Only "add participant" section is displayed
-        addParticipantsSection = count++;
         searchResultSection = count++;
     }
     else
     {
-        addParticipantsSection = count++;
         participantsSection = count++;
     }
     
@@ -456,11 +455,7 @@
 {
     NSInteger count = 0;
     
-    if (section == addParticipantsSection)
-    {
-        count = 1;
-    }
-    else if (section == searchResultSection)
+    if (section == searchResultSection)
     {
         count = filteredParticipants.count;
     }
@@ -485,19 +480,7 @@
 {
     UITableViewCell *cell = nil;
     
-    if (indexPath.section == addParticipantsSection)
-    {
-        if (indexPath.row == 0)
-        {
-            cell = addParticipantsSearchBarCell;
-            
-            if (_isAddParticipantSearchBarEditing)
-            {
-                [addParticipantsSearchBarCell.mxkSearchBar becomeFirstResponder];
-            }
-        }
-    }
-    else if ((indexPath.section == searchResultSection) || (indexPath.section == participantsSection))
+    if ((indexPath.section == searchResultSection) || (indexPath.section == participantsSection))
     {
         ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
         
@@ -593,13 +576,18 @@
 
 #pragma mark - UITableView delegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return addParticipantsSearchBarCell.contentView.frame.size.height;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return addParticipantsSearchBarCell.contentView;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == addParticipantsSection && indexPath.row == 1)
-    {
-        return 10;
-    }
-    
     return 74.0;
 }
 
@@ -945,8 +933,7 @@
     
     if (previousFilteredCount || filteredParticipants.count)
     {
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (searchResultSection, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadData];
     }
 }
 
