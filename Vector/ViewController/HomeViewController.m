@@ -325,9 +325,6 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Keep ref on destinationViewController
-    [super prepareForSegue:segue sender:sender];
-
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
         UIViewController *controller;
@@ -378,6 +375,11 @@
             //
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
+    }
+    else
+    {
+        // Keep ref on destinationViewController
+        [super prepareForSegue:segue sender:sender];
     }
 
     // Hide back button title
