@@ -124,14 +124,20 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         {
             if ([filteredRooms indexOfObjectIdenticalTo:publicRoom] == NSNotFound)
             {
-                // Do a OR search
+                // Do a AND search
+                BOOL matchAll = YES;
                 for (NSString *pattern in _searchPatternsList)
                 {
-                    if ([publicRoom.displayname rangeOfString:pattern options:NSCaseInsensitiveSearch].location != NSNotFound)
+                    if (pattern.length && NO == [publicRoom.displayname localizedCaseInsensitiveContainsString:pattern])
                     {
-                        [filteredRooms addObject:publicRoom];
+                        matchAll = NO;
                         break;
                     }
+                }
+
+                if (matchAll)
+                {
+                    [filteredRooms addObject:publicRoom];
                 }
             }
         }

@@ -490,10 +490,13 @@
     {
         self.selectedViewController.view.hidden = NO;
 
+        // Do a AND search on words separated by a space
+        NSArray *patterns = [searchBar.text componentsSeparatedByString:@" "];
+
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
         {
-            [recentsDataSource searchWithPatterns:@[searchBar.text]];
+            [recentsDataSource searchWithPatterns:patterns];
             recentsViewController.shouldScrollToTopOnRefresh = YES;
         }
     }

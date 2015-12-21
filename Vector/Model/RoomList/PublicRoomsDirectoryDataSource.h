@@ -39,7 +39,7 @@
 
 /**
  The filter being applied. Nil if there is no filter.
- A 'OR' search is made on the strings of the array. 
+ A 'AND' search is made with the strings of the array.
  Setting a new value may trigger a request to the home server. So, the data source state
  may change to MXKDataSourceStatePreparing.
  */
