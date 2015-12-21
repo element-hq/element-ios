@@ -114,9 +114,7 @@
 }
 
 - (void)customizeContactCell:(ContactTableViewCell*)contactTableViewCell atIndexPath:(NSIndexPath *)indexPath
-{
-    contactTableViewCell.mxSession = self.roomCreationInputs.mxSession;
-    
+{    
     if (indexPath.section == participantsSection)
     {
         if (!userMatrixId || (indexPath.row != 0))
