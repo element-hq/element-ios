@@ -37,7 +37,7 @@
 @end
 
 @implementation VectorContactTableViewCell
-@synthesize room;
+@synthesize mxRoom, mxSession;
 
 - (void)awakeFromNib
 {
@@ -47,11 +47,26 @@
     self.thumbnailView.clipsToBounds = YES;
     
     // apply the vector colours
-    self.bottomLineSeparator.backgroundColor = VECTOR_TEXT_GRAY_COLOR;
-    self.topLineSeparator.backgroundColor = VECTOR_TEXT_GRAY_COLOR;
+    self.bottomLineSeparator.backgroundColor = VECTOR_SILVER_COLOR;
+    self.topLineSeparator.backgroundColor = VECTOR_SILVER_COLOR;
     self.lastPresenceLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
 }
 
+- (void)setShowCustomAccessoryView:(BOOL)show
+{
+    _showCustomAccessoryView = show;
+    
+    if (show)
+    {
+        self.customAccessViewWidthConstraint.constant = 25;
+        self.customAccessoryViewLeadingConstraint.constant = 13;
+    }
+    else
+    {
+        self.customAccessViewWidthConstraint.constant = 0;
+        self.customAccessoryViewLeadingConstraint.constant = 0;
+    }
+}
 
 #pragma mark - MXKCellRendering
 
@@ -179,10 +194,10 @@
 {
     NSString* presenceText = nil;
     NSString* matrixId = [self getFirstMatrixId];
-    MXRoomMember* member = [self.room.state memberWithUserId:matrixId];
+    MXRoomMember* member = [self.mxRoom.state memberWithUserId:matrixId];
 
     // the oneself user is always active
-    if ([matrixId isEqualToString:self.room.mxSession.myUser.userId])
+    if ([matrixId isEqualToString:self.mxSession.myUser.userId])
     {
         presenceText = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
     }
@@ -203,7 +218,7 @@
     }
     else
     {
-        MXUser *user = [room.mxSession userWithUserId:matrixId];
+        MXUser *user = [self.mxSession userWithUserId:matrixId];
         
         if (user)
         {

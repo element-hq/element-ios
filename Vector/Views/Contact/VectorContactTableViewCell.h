@@ -30,8 +30,21 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastPresenceLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomLineSeparator;
 @property (weak, nonatomic) IBOutlet UIView *topLineSeparator;
+@property (weak, nonatomic) IBOutlet UIView *customAccessoryView;
 
-@property  (nonatomic) MXRoom* room;
+@property (nonatomic) BOOL showCustomAccessoryView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *customAccessViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *customAccessoryViewLeadingConstraint;
+
+// The room where the contact is.
+// It is used to display the member information (like invitation)
+// This property is OPTIONAL.
+@property  (nonatomic) MXRoom* mxRoom;
+
+// The session where this contact is displayed.
+// It is MANDATORY.
+@property  (nonatomic) MXSession* mxSession;
 
 @end
 

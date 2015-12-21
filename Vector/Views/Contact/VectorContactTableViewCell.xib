@@ -37,7 +37,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Display name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn" userLabel="member display name">
-                        <rect key="frame" x="69" y="14" width="105" height="21"/>
+                        <rect key="frame" x="69" y="14" width="481" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="vCd-fx-d5z"/>
                         </constraints>
@@ -54,12 +54,21 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ogo-Qt-u2C" userLabel="Custom accessory view">
+                        <rect key="frame" x="563" y="25" width="24" height="24"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="pDU-SS-0mb"/>
+                            <constraint firstAttribute="height" constant="24" id="w2M-nj-D56"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="15" id="mga-fG-I0L"/>
+                    <constraint firstItem="Ogo-Qt-u2C" firstAttribute="leading" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="13" id="oNi-JM-zCJ"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
@@ -70,13 +79,18 @@
                 <constraint firstItem="KGN-cP-igr" firstAttribute="leading" secondItem="L2L-l5-wPx" secondAttribute="leading" constant="13" id="5Ts-MV-2Oe"/>
                 <constraint firstItem="AqX-al-ZBq" firstAttribute="top" secondItem="L2L-l5-wPx" secondAttribute="top" id="84t-i4-Nm1"/>
                 <constraint firstAttribute="trailing" secondItem="AqX-al-ZBq" secondAttribute="trailing" id="B9V-Y3-xKb"/>
+                <constraint firstItem="Ogo-Qt-u2C" firstAttribute="centerY" secondItem="L2L-l5-wPx" secondAttribute="centerY" id="LYX-FJ-cz3"/>
                 <constraint firstAttribute="trailing" secondItem="KGN-cP-igr" secondAttribute="trailing" id="P2b-NY-hCQ"/>
+                <constraint firstAttribute="trailing" secondItem="Ogo-Qt-u2C" secondAttribute="trailing" constant="13" id="cWl-2f-cvI"/>
                 <constraint firstAttribute="bottom" secondItem="KGN-cP-igr" secondAttribute="bottom" id="uIP-Xo-qav"/>
                 <constraint firstItem="AqX-al-ZBq" firstAttribute="leading" secondItem="L2L-l5-wPx" secondAttribute="leading" constant="13" id="wIj-F8-G1Q"/>
             </constraints>
             <connections>
                 <outlet property="bottomLineSeparator" destination="KGN-cP-igr" id="YUW-b2-GF8"/>
                 <outlet property="contactDisplayNameLabel" destination="Lg1-xQ-AGn" id="xKB-Pw-12c"/>
+                <outlet property="customAccessViewWidthConstraint" destination="pDU-SS-0mb" id="A22-tz-iIz"/>
+                <outlet property="customAccessoryView" destination="Ogo-Qt-u2C" id="Hec-bO-0Av"/>
+                <outlet property="customAccessoryViewLeadingConstraint" destination="cWl-2f-cvI" id="WSj-ru-Qxx"/>
                 <outlet property="lastPresenceLabel" destination="dQt-mN-T6b" id="FYZ-JD-0ck"/>
                 <outlet property="thumbnailView" destination="RX5-eD-c3c" id="GBi-K9-LhK"/>
                 <outlet property="topLineSeparator" destination="AqX-al-ZBq" id="jOZ-JS-FEQ"/>

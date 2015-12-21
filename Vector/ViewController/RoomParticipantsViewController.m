@@ -24,8 +24,6 @@
 
 #import "Contact.h"
 
-#import "VectorContactTableViewCell.h"
-
 @interface RoomParticipantsViewController ()
 {
     // Add participants section
@@ -478,6 +476,11 @@
     return count;
 }
 
+- (void)customizeContactCell:(VectorContactTableViewCell*)contactCell atIndexPath:(NSIndexPath*) indexPath
+{
+    // TODO by the inherited class
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -501,9 +504,12 @@
         if (!participantCell)
         {
             participantCell = [[VectorContactTableViewCell alloc] init];
+            // do not show the custom accessory view
+            participantCell.showCustomAccessoryView = NO;
         }
     
-        participantCell.room = self.mxRoom;
+        participantCell.mxSession = self.mxRoom.mxSession;
+        participantCell.mxRoom = self.mxRoom;
         
         Contact *contact = nil;
         
@@ -573,9 +579,10 @@
         }
         else
         {
-            participantCell.bottomLineSeparator.hidden = ((indexPath.row + 1) != mutableParticipants.count);
+            participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != mutableParticipants.count);
         }
         
+        [self customizeContactCell:participantCell atIndexPath:indexPath];
         [participantCell render:contact];
     
         cell = participantCell;
