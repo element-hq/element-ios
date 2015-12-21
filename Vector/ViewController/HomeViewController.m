@@ -490,12 +490,19 @@
         if (self.selectedViewController == recentsViewController)
         {
             [recentsDataSource searchWithPatterns:@[searchBar.text]];
+            recentsViewController.shouldScrollToTopOnRefresh = YES;
         }
     }
     else
     {
         // Nothing to search = Show nothing
         self.selectedViewController.view.hidden = YES;
+
+        if (self.selectedViewController == recentsViewController)
+        {
+            [recentsDataSource searchWithPatterns:nil];
+            recentsViewController.shouldScrollToTopOnRefresh = YES;
+        }
     }
 }
 

@@ -32,9 +32,6 @@
 
 @interface RecentsViewController ()
 {
-    // Recents refresh handling
-    BOOL shouldScrollToTopOnRefresh;
-
     // The "parent" segmented view controller
     HomeViewController *homeViewController;
     
@@ -254,10 +251,10 @@
     
     [self.recentsTableView reloadData];
     
-    if (shouldScrollToTopOnRefresh)
+    if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop];
-        shouldScrollToTopOnRefresh = NO;
+        _shouldScrollToTopOnRefresh = NO;
     }
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
@@ -430,24 +427,6 @@ static NSMutableDictionary* backgroundByImageNameDict;
 {
     [self.dataSource muteRoomNotifications:mute atIndexPath:path];
     [self.recentsTableView setEditing:NO];
-}
-
-#pragma mark - Override UISearchBarDelegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    // Prepare table refresh on new search session
-    shouldScrollToTopOnRefresh = YES;
-    
-    [super searchBar:searchBar textDidChange:searchText];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    // Prepare table refresh on end of search
-    shouldScrollToTopOnRefresh = YES;
-    
-    [super searchBarCancelButtonClicked: searchBar];
 }
 
 #pragma mark - UITableView delegate

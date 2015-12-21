@@ -680,11 +680,19 @@
 {
     [super searchWithPatterns:patternsList];
 
-    if (patternsList && _publicRoomsDirectoryDataSource)
+    if (_publicRoomsDirectoryDataSource)
     {
-        // Search only on the first pattern
-        // XXX: Why is it an array?
-        _publicRoomsDirectoryDataSource.filter = patternsList[0];
+        if (patternsList)
+        {
+            // Search only on the first pattern
+            // XXX: Why is it an array?
+            _publicRoomsDirectoryDataSource.filter = patternsList[0];
+        }
+        else
+        {
+            _publicRoomsDirectoryDataSource.filter = nil;  // = patternsList
+        }
+
     }
 }
 
