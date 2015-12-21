@@ -259,7 +259,6 @@
                 // Refresh participants display (if visible)
                 if (participantsSection != -1)
                 {
-                    [self.tableView reloadData];
                     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (participantsSection, 1)];
                     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
                 }
@@ -491,7 +490,6 @@
             participantCell.showCustomAccessoryView = NO;
         }
     
-        participantCell.mxSession = self.mxRoom.mxSession;
         participantCell.mxRoom = self.mxRoom;
         
         Contact *contact = nil;
@@ -554,15 +552,21 @@
         
         if (indexPath.section == searchResultSection)
         {
+            participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
             participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != filteredParticipants.count);
-        }
-        else if (userMatrixId)
-        {
-            participantCell.bottomLineSeparator.hidden = ((indexPath.row) != mutableParticipants.count);
         }
         else
         {
-            participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != mutableParticipants.count);
+            participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            if (userMatrixId)
+            {
+                participantCell.bottomLineSeparator.hidden = ((indexPath.row) != mutableParticipants.count);
+            }
+            else
+            {
+                participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != mutableParticipants.count);
+            }
         }
         
         [self customizeContactCell:participantCell atIndexPath:indexPath];
@@ -931,9 +935,10 @@
         }
     }
     
-    if (previousFilteredCount || filteredParticipants.count)
+    if ((searchResultSection != -1) && (previousFilteredCount || filteredParticipants.count))
     {
-        [self.tableView reloadData];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(searchResultSection, 1)];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
