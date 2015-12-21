@@ -39,13 +39,14 @@
 
 /**
  The filter being applied. Nil if there is no filter.
+ A 'OR' search is made on the strings of the array. 
  Setting a new value may trigger a request to the home server. So, the data source state
  may change to MXKDataSourceStatePreparing.
  */
-@property (nonatomic) NSString *filter;
+@property (nonatomic) NSArray<NSString*> *searchPatternsList;
 
 /**
- Public rooms of the directory that match `filter`.
+ Public rooms of the directory that match `searchPatternsList`.
  */
 @property (nonatomic, readonly) NSArray<MXPublicRoom*> *filteredRooms;
 

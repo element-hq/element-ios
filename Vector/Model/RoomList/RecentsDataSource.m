@@ -556,7 +556,7 @@
     // Manage the public room search results cell outside the recents.
     // Show the cell showing the public rooms directory search result
     // once a search is active
-    if (_publicRoomsDirectoryDataSource.filter)
+    if (_publicRoomsDirectoryDataSource.searchPatternsList)
     {
         directorySection = sectionIndex;
         sectionIndex++;
@@ -682,17 +682,7 @@
 
     if (_publicRoomsDirectoryDataSource)
     {
-        if (patternsList)
-        {
-            // Search only on the first pattern
-            // XXX: Why is it an array?
-            _publicRoomsDirectoryDataSource.filter = patternsList[0];
-        }
-        else
-        {
-            _publicRoomsDirectoryDataSource.filter = nil;  // = patternsList
-        }
-
+        _publicRoomsDirectoryDataSource.searchPatternsList = patternsList;
     }
 }
 

@@ -38,11 +38,14 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
 @implementation PublicRoomsDirectoryDataSource
 
-- (void)setFilter:(NSString *)searchTerm
+- (void)setSearchPatternsList:(NSArray<NSString *> *)newSearchPatternsList
 {
-    if (![searchTerm isEqualToString:_filter])
+    NSString *searchPatternsListString = [_searchPatternsList componentsJoinedByString:@""];
+    NSString *newSearchPatternsListString = [newSearchPatternsList componentsJoinedByString:@""];
+
+    if (![newSearchPatternsListString isEqualToString:searchPatternsListString])
     {
-        _filter = searchTerm;
+        _searchPatternsList = newSearchPatternsList;
         [self refreshPublicRooms];
     }
 }
@@ -114,16 +117,21 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 - (void)refreshFilteredPublicRooms
 {
     // Apply filter if any
-    if (_filter)
+    if (_searchPatternsList)
     {
         NSMutableArray *filteredRooms = [NSMutableArray array];
         for (MXPublicRoom *publicRoom in _rooms)
         {
             if ([filteredRooms indexOfObjectIdenticalTo:publicRoom] == NSNotFound)
             {
-                if ([publicRoom.displayname rangeOfString:_filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+                // Do a OR search
+                for (NSString *pattern in _searchPatternsList)
                 {
-                    [filteredRooms addObject:publicRoom];
+                    if ([publicRoom.displayname rangeOfString:pattern options:NSCaseInsensitiveSearch].location != NSNotFound)
+                    {
+                        [filteredRooms addObject:publicRoom];
+                        break;
+                    }
                 }
             }
         }

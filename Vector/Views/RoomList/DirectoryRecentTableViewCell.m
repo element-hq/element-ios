@@ -36,10 +36,14 @@
             break;
 
         case MXKDataSourceStateReady:
+        {
+            // Concatenate all patterns into one string
+            NSString *filter = [publicRoomsDirectoryDataSource.searchPatternsList componentsJoinedByString:@" "];
+
             self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
             self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil),
                                           publicRoomsDirectoryDataSource.filteredRooms.count,
-                                          publicRoomsDirectoryDataSource.filter];
+                                          filter];
 
             if (publicRoomsDirectoryDataSource.filteredRooms.count)
             {
@@ -47,6 +51,7 @@
                 self.chevronImageView.hidden = NO;
             }
             break;
+        }
 
         case MXKDataSourceStateFailed:
             self.titleLabel.text = NSLocalizedStringFromTable(@"directory_searching_title", @"Vector", nil);
