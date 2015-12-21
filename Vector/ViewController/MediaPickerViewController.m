@@ -731,14 +731,8 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 AVCaptureConnection *connection = [movieFileOutput connectionWithMediaType:AVMediaTypeVideo];
                 if ([connection isVideoStabilizationSupported])
                 {
-                    if ([connection respondsToSelector:@selector(setPreferredVideoStabilizationMode:)])
-                    {
-                        [connection setPreferredVideoStabilizationMode:YES];
-                    }
-                    else
-                    {
-                        [connection setEnablesVideoStabilizationWhenAvailable:YES];
-                    }
+                    // Available on iOS 8 and later
+                    [connection setPreferredVideoStabilizationMode:YES];
                 }
             }
             [movieFileOutput addObserver:self forKeyPath:@"recording" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:RecordingContext];

@@ -14,17 +14,11 @@
  limitations under the License.
  */
 
-#import "RoomIncomingAttachmentBubbleCell.h"
+#import "MXKTableViewCell.h"
 
-#import "VectorDesignValues.h"
+@interface TableViewCellWithLabelAndSwitch : MXKTableViewCell
 
-@implementation RoomIncomingAttachmentBubbleCell
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
-}
+@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
+@property (strong, nonatomic) IBOutlet UISwitch *mxkSwitch;
 
 @end

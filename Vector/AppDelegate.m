@@ -189,10 +189,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Override point for customization after application launch.
+    
     // define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:VECTOR_GREEN_COLOR];
     
-    // Override point for customization after application launch.
+    // Customize the localized string table
+    [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
+    
     mxSessionArray = [NSMutableArray array];
     
     // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
@@ -417,7 +421,7 @@
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated
 {
-    // Force back to recents list if room details is displayed in Recents Tab
+    // Force back to the main screen
     if (homeViewController)
     {
         [_homeNavigationController popToViewController:homeViewController animated:animated];
@@ -475,16 +479,9 @@
 {
     if (!isAPNSRegistered)
     {
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
-        {
-            // Registration on iOS 8 and later
-            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
-            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        }
-        else
-        {
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
-        }
+        // Registration on iOS 8 and later
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     }
 }
 
@@ -1243,14 +1240,24 @@
     {
         // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
+            
             [self popRoomViewControllerAnimated:NO];
-            completion();
+            
+            // Dispatch the completion in order to let navigation stack refresh itself.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion();
+            });
+            
         }];
     }
     else
     {
         [self popRoomViewControllerAnimated:NO];
-        completion();
+        
+        // Dispatch the completion in order to let navigation stack refresh itself.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
     }
 }
 

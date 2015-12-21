@@ -22,6 +22,7 @@
  */
 @interface RoomActivitiesView : MXKRoomActivitiesView
 
+@property (weak, nonatomic) IBOutlet UIView *separatorView;
 @property (weak, nonatomic) IBOutlet UIImageView *typingImageView;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 

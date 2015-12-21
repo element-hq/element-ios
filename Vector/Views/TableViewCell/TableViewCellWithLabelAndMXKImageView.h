@@ -14,17 +14,14 @@
  limitations under the License.
  */
 
-#import "RoomIncomingAttachmentBubbleCell.h"
+#import <MatrixSDK/MatrixSDK.h>
 
-#import "VectorDesignValues.h"
+#import "MXKTableViewCell.h"
+#import "MXKImageView.h"
 
-@implementation RoomIncomingAttachmentBubbleCell
+@interface TableViewCellWithLabelAndMXKImageView : MXKTableViewCell
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
-}
+@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
+@property (strong, nonatomic) IBOutlet MXKImageView *mxkImageView;
 
 @end

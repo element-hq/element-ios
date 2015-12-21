@@ -16,12 +16,16 @@
 
 #import "RoomOutgoingTextMsgBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomOutgoingTextMsgBubbleCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+    
+    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
 }
 
 @end

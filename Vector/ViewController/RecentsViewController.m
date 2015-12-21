@@ -326,11 +326,18 @@ static NSMutableDictionary* backgroundByImageNameDict;
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray* actions = [[NSMutableArray alloc] init];
-    
     MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
     
     if (room)
     {
+        NSArray* invitedRooms = room.mxSession.invitedRooms;
+        
+        // display no action for the invited room
+        if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
+        {
+            return actions;
+        }
+        
         NSString* title = @"      ";
         
         // pushes settings

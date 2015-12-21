@@ -25,6 +25,10 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+#import "MXRoom+Vector.h"
+
+#import "RecentCellData.h"
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -67,6 +71,9 @@
         sectionsCount = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        // Set default data and view classes
+        [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
     }
     return self;
 }
@@ -141,6 +148,28 @@
     }
 }
 
+- (BOOL)isRoomNotifiedAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+
+    if (room)
+    {
+        return !room.areRoomNotificationsMuted;
+    }
+    
+    return YES;
+}
+
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom* room = [self getRoomAtIndexPath:indexPath];
+    
+    // sanity check
+    if (room)
+    {
+        [room toggleRoomNotifications:mute];
+    }
+}
 
 - (void)refreshRoomsSectionsAndReload
 {
@@ -698,7 +727,7 @@
 
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)())moveSuccess failure:(void (^)(NSError *error))moveFailure;
 {
-    NSLog(@"[RecentsDataSource] moveCellFrom (%d, %d) to (%d, %d)", oldPath.section, oldPath.row, newPath.section, newPath.row);
+    NSLog(@"[RecentsDataSource] moveCellFrom (%tu, %tu) to (%tu, %tu)", oldPath.section, oldPath.row, newPath.section, newPath.row);
     
     if ([self canCellMoveFrom:oldPath to:newPath] && ![newPath isEqual:oldPath])
     {

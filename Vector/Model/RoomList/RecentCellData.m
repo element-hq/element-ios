@@ -14,17 +14,19 @@
  limitations under the License.
  */
 
-#import "RoomIncomingAttachmentBubbleCell.h"
+#import "RecentCellData.h"
 
-#import "VectorDesignValues.h"
+#import "MXRoom+Vector.h"
 
-@implementation RoomIncomingAttachmentBubbleCell
+@implementation RecentCellData
+// trick to hide the mother class property as it is readonly one.
+// self.roomDisplayname returns this value instead of the mother class.
+@synthesize roomDisplayname;
 
-- (void)awakeFromNib
+- (void)update
 {
-    [super awakeFromNib];
-    
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+    [super update];
+    roomDisplayname = self.roomDataSource.room.vectorDisplayname;
 }
 
 @end

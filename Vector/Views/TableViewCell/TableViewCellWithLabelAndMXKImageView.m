@@ -14,17 +14,9 @@
  limitations under the License.
  */
 
-#import "RoomIncomingAttachmentBubbleCell.h"
+#import "TableViewCellWithLabelAndMXKImageView.h"
 
-#import "VectorDesignValues.h"
-
-@implementation RoomIncomingAttachmentBubbleCell
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
-}
+@implementation TableViewCellWithLabelAndMXKImageView
 
 @end
+

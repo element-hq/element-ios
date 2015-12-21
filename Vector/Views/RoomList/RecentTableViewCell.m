@@ -22,6 +22,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "MXRoom+Vector.h"
+
 @implementation RecentTableViewCell
 
 #pragma mark - Class methods
@@ -33,6 +35,8 @@
     // Round image view
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
+    
+    self.roomTitle.textColor = VECTOR_TEXT_BLACK_COLOR;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -54,64 +58,30 @@
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
-        self.lastEventDate.textColor = VECTOR_TEXT_GRAY_COLOR;
-        
         // Notify unreads and bing
-        self.bingIndicator.hidden = YES;
-        
         if (roomCellData.unreadCount)
         {
+            self.bingIndicator.hidden = NO;
             if (0 < roomCellData.unreadBingCount)
             {
-                self.bingIndicator.hidden = NO;
                 self.bingIndicator.backgroundColor = roomCellData.recentsDataSource.eventFormatter.bingTextColor;
+                self.lastEventDate.textColor = self.bingIndicator.backgroundColor;
             }
-            self.roomTitle.font = [UIFont boldSystemFontOfSize:17];
+            else
+            {
+                self.bingIndicator.backgroundColor = VECTOR_SILVER_COLOR;
+                self.lastEventDate.textColor = VECTOR_TEXT_GRAY_COLOR;
+            }
         }
         else
         {
-            self.roomTitle.font = [UIFont systemFontOfSize:17];
+            self.bingIndicator.hidden = YES;
+            self.lastEventDate.textColor = VECTOR_TEXT_GRAY_COLOR;
         }
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];
-
-        MXRoom* room = roomCellData.roomDataSource.room;
         
-        NSString* roomAvatarUrl = room.state.avatar;
-        
-        // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
-        if (!roomAvatarUrl)
-        {
-            NSString* myUserId = room.mxSession.myUser.userId;
-            
-            NSArray* members = room.state.members;
-            
-            if (members.count < 3)
-            {
-                // use the member avatar only it is an active member
-                for (MXRoomMember *roomMember in members)
-                {
-                    if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
-                    {
-                        roomAvatarUrl = roomMember.avatarUrl;
-                        break;
-                    }
-                }
-            }
-        }
-                
-        UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:room];
-        
-        if (roomAvatarUrl)
-        {
-            self.roomAvatar.enableInMemoryCache = YES;
-            
-            [self.roomAvatar setImageURL:[roomCellData.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:self.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
-        }
-        else
-        {
-            self.roomAvatar.image = avatarImage;
-        }
+        [roomCellData.roomDataSource.room setRoomAvatarImageIn:self.roomAvatar];
     }
     else
     {
