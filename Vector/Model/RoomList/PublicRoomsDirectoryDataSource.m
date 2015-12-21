@@ -119,7 +119,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         NSMutableArray *filteredRooms = [NSMutableArray array];
         for (MXPublicRoom *publicRoom in _rooms)
         {
-            if ([filteredRooms indexOfObject:publicRoom] == NSNotFound)
+            if ([filteredRooms indexOfObjectIdenticalTo:publicRoom] == NSNotFound)
             {
                 if ([publicRoom.displayname rangeOfString:_filter options:NSCaseInsensitiveSearch].location != NSNotFound)
                 {
