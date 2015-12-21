@@ -16,7 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "VectorContactTableViewCell.h"
+#import "ContactTableViewCell.h"
 
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
@@ -66,7 +66,7 @@
  @param contactCell the cell to customize.
  @param indexPath path of the cell in the tableview.
  */
-- (void)customizeContactCell:(VectorContactTableViewCell*)contactCell atIndexPath:(NSIndexPath *)indexPath;
+- (void)customizeContactCell:(ContactTableViewCell*)contactCell atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

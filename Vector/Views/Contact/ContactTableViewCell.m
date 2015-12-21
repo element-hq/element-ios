@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "VectorContactTableViewCell.h"
+#import "ContactTableViewCell.h"
 
 #import "MXKContactManager.h"
 
@@ -22,7 +22,7 @@
 
 #import "AvatarGenerator.h"
 
-@interface VectorContactTableViewCell()
+@interface ContactTableViewCell()
 {
     /**
      The current displayed contact.
@@ -36,7 +36,7 @@
 }
 @end
 
-@implementation VectorContactTableViewCell
+@implementation ContactTableViewCell
 @synthesize mxRoom, mxSession;
 
 - (void)awakeFromNib

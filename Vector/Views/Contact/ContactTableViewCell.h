@@ -23,7 +23,7 @@
 /**
  'ContactTableCell' extends MXKTableViewCell.
  */
-@interface VectorContactTableViewCell : MXKTableViewCell <MXKCellRendering>
+@interface ContactTableViewCell : MXKTableViewCell <MXKCellRendering>
 
 @property (strong, nonatomic) IBOutlet MXKImageView *thumbnailView;
 @property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;

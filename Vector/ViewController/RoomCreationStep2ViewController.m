@@ -18,7 +18,7 @@
 
 #import "AppDelegate.h"
 
-#import "VectorContactTableViewCell.h"
+#import "ContactTableViewCell.h"
 
 #import "VectorDesignValues.h"
 
@@ -113,20 +113,20 @@
     return [[NSMutableArray alloc] init];
 }
 
-- (void)customizeContactCell:(VectorContactTableViewCell*)vectorContactTableViewCell atIndexPath:(NSIndexPath *)indexPath
+- (void)customizeContactCell:(ContactTableViewCell*)contactTableViewCell atIndexPath:(NSIndexPath *)indexPath
 {
-    vectorContactTableViewCell.mxSession = self.roomCreationInputs.mxSession;
+    contactTableViewCell.mxSession = self.roomCreationInputs.mxSession;
     
     if (indexPath.section == participantsSection)
     {
         if (!userMatrixId || (indexPath.row != 0))
         {
-            if (!vectorContactTableViewCell.showCustomAccessoryView)
+            if (!contactTableViewCell.showCustomAccessoryView)
             {
-                vectorContactTableViewCell.showCustomAccessoryView = YES;
+                contactTableViewCell.showCustomAccessoryView = YES;
             }
             
-            if (vectorContactTableViewCell.customAccessoryView.subviews.count == 0)
+            if (contactTableViewCell.customAccessoryView.subviews.count == 0)
             {
                 UIImageView* accessView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
                 accessView.image = [UIImage imageNamed:@"remove_icon"];
@@ -139,26 +139,26 @@
                 [accessView addGestureRecognizer:accessViewTapGesture];
                 
                 // add the cross image once.
-                [vectorContactTableViewCell.customAccessoryView addSubview:accessView];
+                [contactTableViewCell.customAccessoryView addSubview:accessView];
             }
             else
             {
                 // update the tag because it provides the row to delete
-                UIImageView* accessView = [vectorContactTableViewCell.customAccessoryView.subviews objectAtIndex:0];
+                UIImageView* accessView = [contactTableViewCell.customAccessoryView.subviews objectAtIndex:0];
                 accessView.tag = indexPath.row;
             }
         }
         else
         {
-            vectorContactTableViewCell.showCustomAccessoryView = NO;
+            contactTableViewCell.showCustomAccessoryView = NO;
         }
         
-        vectorContactTableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        contactTableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     else
     {
-        vectorContactTableViewCell.showCustomAccessoryView = NO;
-        vectorContactTableViewCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        contactTableViewCell.showCustomAccessoryView = NO;
+        contactTableViewCell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
 }
 

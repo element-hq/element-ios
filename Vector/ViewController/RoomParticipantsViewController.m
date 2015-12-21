@@ -476,7 +476,7 @@
     return count;
 }
 
-- (void)customizeContactCell:(VectorContactTableViewCell*)contactCell atIndexPath:(NSIndexPath*) indexPath
+- (void)customizeContactCell:(ContactTableViewCell*)contactCell atIndexPath:(NSIndexPath*) indexPath
 {
     // TODO by the inherited class
 }
@@ -499,11 +499,11 @@
     }
     else if ((indexPath.section == searchResultSection) || (indexPath.section == participantsSection))
     {
-        VectorContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:[VectorContactTableViewCell defaultReuseIdentifier]];
+        ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
         
         if (!participantCell)
         {
-            participantCell = [[VectorContactTableViewCell alloc] init];
+            participantCell = [[ContactTableViewCell alloc] init];
             // do not show the custom accessory view
             participantCell.showCustomAccessoryView = NO;
         }

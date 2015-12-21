@@ -34,8 +34,8 @@
 		71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */; };
 		71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F5141C218D8900E7ED8F /* RecentCellData.m */; };
 		71F7F5181C22CC7500E7ED8F /* MXRoom+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F5171C22CC7500E7ED8F /* MXRoom+Vector.m */; };
-		71F7F51D1C23079F00E7ED8F /* VectorContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F51B1C23079F00E7ED8F /* VectorContactTableViewCell.m */; };
-		71F7F51E1C23079F00E7ED8F /* VectorContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71F7F51C1C23079F00E7ED8F /* VectorContactTableViewCell.xib */; };
+		71F7F51D1C23079F00E7ED8F /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F51B1C23079F00E7ED8F /* ContactTableViewCell.m */; };
+		71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71F7F51C1C23079F00E7ED8F /* ContactTableViewCell.xib */; };
 		71FAE1661C2439A3000A4454 /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FAE1651C2439A3000A4454 /* VectorDesignValues.m */; };
 		F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */; };
 		F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */; };
@@ -213,9 +213,9 @@
 		71F7F5141C218D8900E7ED8F /* RecentCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCellData.m; sourceTree = "<group>"; };
 		71F7F5161C22CC7500E7ED8F /* MXRoom+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoom+Vector.h"; sourceTree = "<group>"; };
 		71F7F5171C22CC7500E7ED8F /* MXRoom+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoom+Vector.m"; sourceTree = "<group>"; };
-		71F7F51A1C23079F00E7ED8F /* VectorContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VectorContactTableViewCell.h; path = Contact/VectorContactTableViewCell.h; sourceTree = "<group>"; };
-		71F7F51B1C23079F00E7ED8F /* VectorContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VectorContactTableViewCell.m; path = Contact/VectorContactTableViewCell.m; sourceTree = "<group>"; };
-		71F7F51C1C23079F00E7ED8F /* VectorContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VectorContactTableViewCell.xib; path = Contact/VectorContactTableViewCell.xib; sourceTree = "<group>"; };
+		71F7F51A1C23079F00E7ED8F /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactTableViewCell.h; path = Contact/ContactTableViewCell.h; sourceTree = "<group>"; };
+		71F7F51B1C23079F00E7ED8F /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactTableViewCell.m; path = Contact/ContactTableViewCell.m; sourceTree = "<group>"; };
+		71F7F51C1C23079F00E7ED8F /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactTableViewCell.xib; path = Contact/ContactTableViewCell.xib; sourceTree = "<group>"; };
 		71FAE1651C2439A3000A4454 /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F001D75B1B8207C000A162C3 /* RoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomInputToolbarView.h; sourceTree = "<group>"; };
@@ -454,9 +454,9 @@
 		71F7F5191C23079100E7ED8F /* Contact */ = {
 			isa = PBXGroup;
 			children = (
-				71F7F51A1C23079F00E7ED8F /* VectorContactTableViewCell.h */,
-				71F7F51B1C23079F00E7ED8F /* VectorContactTableViewCell.m */,
-				71F7F51C1C23079F00E7ED8F /* VectorContactTableViewCell.xib */,
+				71F7F51A1C23079F00E7ED8F /* ContactTableViewCell.h */,
+				71F7F51B1C23079F00E7ED8F /* ContactTableViewCell.m */,
+				71F7F51C1C23079F00E7ED8F /* ContactTableViewCell.xib */,
 			);
 			name = Contact;
 			sourceTree = "<group>";
@@ -977,7 +977,7 @@
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
-				71F7F51E1C23079F00E7ED8F /* VectorContactTableViewCell.xib in Resources */,
+				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F0C34B621C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
@@ -1074,7 +1074,7 @@
 				71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */,
 				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */,
-				71F7F51D1C23079F00E7ED8F /* VectorContactTableViewCell.m in Sources */,
+				71F7F51D1C23079F00E7ED8F /* ContactTableViewCell.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				F0D2D9871C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				F0C34B6F1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
