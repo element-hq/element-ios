@@ -403,6 +403,10 @@
     backupLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
     backupRightBarButtonItem = self.navigationItem.rightBarButtonItem;
 
+    // Reset searches
+    searchBar.text = @"";
+    [recentsDataSource searchWithPatterns:nil];
+
     // Remove navigation buttons
     self.navigationItem.rightBarButtonItem = nil;
     self.navigationItem.leftBarButtonItem = nil;
