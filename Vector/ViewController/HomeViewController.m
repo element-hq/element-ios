@@ -532,6 +532,24 @@
     [self hideSearch:YES];
 }
 
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar2
+{
+    // Keep the search bar cancel button enabled even if the keyboard is not displayed
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (UIView *subView in searchBar.subviews)
+        {
+            for (UIView *view in subView.subviews)
+            {
+                if ([view isKindOfClass:[UIButton class]])
+                {
+                    [(UIButton *)view setEnabled:YES];
+                }
+            }
+        }
+    });
+    return YES;
+}
+
 #pragma mark - MXKRecentListViewControllerDelegate
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
