@@ -73,6 +73,8 @@
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
     [self.recentsTableView addGestureRecognizer:longPress];
+
+    self.recentsTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 }
 
 - (void)destroy
