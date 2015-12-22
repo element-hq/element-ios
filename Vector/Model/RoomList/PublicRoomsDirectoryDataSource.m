@@ -129,6 +129,9 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms. Error: %@", error);
             
             [self setState:MXKDataSourceStateFailed];
+
+            // Reset the refresh date so that the user can retry the request by changing the search text input content
+            lastRefreshDate = nil;
         }];
     }
 }
