@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,11 +12,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhJ-5H-64e" userLabel="Container">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Mq-77-vvo" userLabel="Separator View">
                             <rect key="frame" x="56" y="0.0" width="534" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="jIT-QS-Muj"/>
@@ -24,7 +23,6 @@
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="typing.png" translatesAutoresizingMaskIntoConstraints="NO" id="d6j-oN-9uA">
                             <rect key="frame" x="13" y="10" width="30" height="30"/>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="657-fV-gDE"/>
@@ -33,7 +31,6 @@
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bS-1u-GUX" userLabel="Message Label">
                             <rect key="frame" x="56" y="15" width="514" height="21"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="PVB-be-euJ"/>
                             </constraints>
@@ -42,7 +39,6 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <animations/>
                     <constraints>
                         <constraint firstItem="1Mq-77-vvo" firstAttribute="leading" secondItem="qhJ-5H-64e" secondAttribute="leading" constant="56" id="2S8-TD-jHO"/>
                         <constraint firstItem="7bS-1u-GUX" firstAttribute="leading" secondItem="d6j-oN-9uA" secondAttribute="trailing" constant="13" id="6Js-Lq-pKz"/>
@@ -52,11 +48,10 @@
                         <constraint firstItem="d6j-oN-9uA" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" constant="10" id="o73-7z-XtV"/>
                         <constraint firstItem="1Mq-77-vvo" firstAttribute="top" secondItem="qhJ-5H-64e" secondAttribute="top" id="stG-o2-SK4"/>
                         <constraint firstAttribute="trailing" secondItem="7bS-1u-GUX" secondAttribute="trailing" constant="30" id="tCW-EI-6Yt"/>
-                        <constraint firstAttribute="height" constant="50" id="xPK-Yw-hQ9"/>
+                        <constraint firstAttribute="height" constant="44" id="xPK-Yw-hQ9"/>
                     </constraints>
                 </view>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="qhJ-5H-64e" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="4o2-V9-a4L"/>
