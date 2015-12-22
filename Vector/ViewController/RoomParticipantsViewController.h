@@ -16,6 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "ContactTableViewCell.h"
+
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  
@@ -32,7 +34,6 @@
     /**
      Section indexes
      */
-    NSInteger addParticipantsSection;
     NSInteger searchResultSection;
     NSInteger participantsSection;
     
@@ -56,6 +57,15 @@
  Tell whether a search session is in progress
  */
 @property (nonatomic) BOOL isAddParticipantSearchBarEditing;
+
+
+/**
+ Customize the UITableViewCell before rendering it.
+ 
+ @param contactCell the cell to customize.
+ @param indexPath path of the cell in the tableview.
+ */
+- (void)customizeContactCell:(ContactTableViewCell*)contactCell atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

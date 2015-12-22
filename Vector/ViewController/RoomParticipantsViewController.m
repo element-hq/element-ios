@@ -30,6 +30,8 @@
     MXKTableViewCellWithSearchBar *addParticipantsSearchBarCell;
     NSString *addParticipantsSearchText;
     
+    UIView* searchBarSeparator;
+    
     // Search result section
     NSMutableArray *filteredParticipants;
     
@@ -43,9 +45,6 @@
     
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
-    
-    // Internal measurement
-    CGFloat actionButtonWidth;
 }
 
 @end
@@ -81,8 +80,8 @@
     }
     
     addParticipantsSearchBarCell = [[MXKTableViewCellWithSearchBar alloc] init];
+    addParticipantsSearchBarCell.contentView.backgroundColor = [UIColor whiteColor];
     addParticipantsSearchBarCell.mxkSearchBar.searchBarStyle = UISearchBarStyleMinimal;
-    //    addParticipantsSearchBarCell.mxkSearchBar.barTintColor = [UIColor whiteColor]; // set barTint in case of UISearchBarStyleDefault (= UISearchBarStyleProminent)
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
     addParticipantsSearchBarCell.mxkSearchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
@@ -99,26 +98,10 @@
     {
         mxkContactsById = [NSMutableDictionary dictionary];
     }
-    
-    // Measure the minimum width of the action button displayed in participant cells
-    MXKContactTableCell *tmpCell = [[MXKContactTableCell alloc] init];
-    UIButton *actionButton = tmpCell.contactAccessoryButton;
-    [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
-    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-    [actionButton sizeToFit];
-    
-    actionButtonWidth = actionButton.frame.size.width;
-    [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
-    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-    [actionButton sizeToFit];
-    if (actionButton.frame.size.width > actionButtonWidth)
-    {
-        actionButtonWidth = actionButton.frame.size.width;
-    }
-    
+
     // ensure that the separator line is not displayed
     self.tableView.separatorColor = [UIColor clearColor];
-    
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self setNavBarButtons];
 }
 
@@ -294,8 +277,7 @@
         _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
         
         // Switch the display between search result and participants list
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (1, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadData];
     }
 }
 
@@ -453,17 +435,15 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = 0;
-    addParticipantsSection = searchResultSection = participantsSection = -1;
+    
+    searchResultSection = participantsSection = -1;
     
     if (_isAddParticipantSearchBarEditing)
     {
-        // Only "add participant" section is displayed
-        addParticipantsSection = count++;
         searchResultSection = count++;
     }
     else
     {
-        addParticipantsSection = count++;
         participantsSection = count++;
     }
     
@@ -474,11 +454,7 @@
 {
     NSInteger count = 0;
     
-    if (section == addParticipantsSection)
-    {
-        count = 1;
-    }
-    else if (section == searchResultSection)
+    if (section == searchResultSection)
     {
         count = filteredParticipants.count;
     }
@@ -494,116 +470,45 @@
     return count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (void)customizeContactCell:(ContactTableViewCell*)contactCell atIndexPath:(NSIndexPath*) indexPath
 {
-    if (section == participantsSection)
-    {
-        NSInteger count = mutableParticipants.count;
-        if (userMatrixId)
-        {
-            count++;
-        }
-        
-        if (count > 1)
-        {
-            return [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_multi_participants", @"Vector", nil), count];
-        }
-        else
-        {
-            return NSLocalizedStringFromTable(@"room_participants_one_participant", @"Vector", nil);
-        }
-    }
-    return nil;
+    // TODO by the inherited class
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
     
-    if (indexPath.section == addParticipantsSection)
+    if ((indexPath.section == searchResultSection) || (indexPath.section == participantsSection))
     {
-        if (indexPath.row == 0)
-        {
-            cell = addParticipantsSearchBarCell;
-            if (_isAddParticipantSearchBarEditing)
-            {
-                [addParticipantsSearchBarCell.mxkSearchBar becomeFirstResponder];
-            }
-        }
-    }
-    else if (indexPath.section == searchResultSection)
-    {
-        if (indexPath.row < filteredParticipants.count)
-        {
-            MXKContactTableCell* filteredParticipantCell = [tableView dequeueReusableCellWithIdentifier:[MXKContactTableCell defaultReuseIdentifier]];
-            if (!filteredParticipantCell)
-            {
-                filteredParticipantCell = [[MXKContactTableCell alloc] init];
-                filteredParticipantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeCircle;
-                filteredParticipantCell.hideMatrixPresence = YES;
-            }
-            
-            [filteredParticipantCell render:filteredParticipants[indexPath.row]];
-            
-            // Show 'add' icon.
-            filteredParticipantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-            filteredParticipantCell.contactAccessoryViewHeightConstraint.constant = 30;
-            filteredParticipantCell.contactAccessoryViewWidthConstraint.constant = 30;
-            filteredParticipantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"add"];
-            filteredParticipantCell.contactAccessoryImageView.hidden = NO;
-            filteredParticipantCell.contactAccessoryView.hidden = NO;
-            
-            filteredParticipantCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = filteredParticipantCell;
-        }
-    }
-    else if (indexPath.section == participantsSection)
-    {
-        MXKContactTableCell *participantCell = [tableView dequeueReusableCellWithIdentifier:[MXKContactTableCell defaultReuseIdentifier]];
+        ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
+        
         if (!participantCell)
         {
-            participantCell = [[MXKContactTableCell alloc] init];
-            participantCell.thumbnailDisplayBoxType = MXKContactTableCellThumbnailDisplayBoxTypeCircle;
-            participantCell.hideMatrixPresence = YES;
+            participantCell = [[ContactTableViewCell alloc] init];
+            // do not show the custom accessory view
+            participantCell.showCustomAccessoryView = NO;
         }
+    
+        participantCell.mxRoom = self.mxRoom;
         
-        if (userMatrixId && indexPath.row == 0)
+        Contact *contact = nil;
+        
+        // oneself dedicated cell
+        if ((indexPath.section == participantsSection && userMatrixId && indexPath.row == 0))
         {
-            Contact *contact = [mxkContactsById objectForKey:userMatrixId];
-            if (! contact)
+            contact = [mxkContactsById objectForKey:userMatrixId];
+            
+            if (!contact)
             {
                 contact = [[Contact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
                 contact.mxMember = [self.mxRoom.state memberWithUserId:userMatrixId];
                 [mxkContactsById setObject:contact forKey:userMatrixId];
             }
-            
-            [participantCell render:contact];
-            
-            if (self.mxRoom)
-            {
-                // Show 'Leave' buton.
-                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                UIButton *actionButton = participantCell.contactAccessoryButton;
-                actionButton.hidden = NO;
-                [actionButton setTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil) forState:UIControlStateNormal];
-                [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-                [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                actionButton.tag = 0;
-                [actionButton sizeToFit];
-                
-                participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
-                [participantCell needsUpdateConstraints];
-                participantCell.contactAccessoryView.hidden = NO;
-            }
-            else
-            {
-                // Hide accessory view.
-                participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-            }
-            
-            participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        else if (indexPath.section == searchResultSection)
+        {
+            contact = filteredParticipants[indexPath.row];
         }
         else
         {
@@ -617,7 +522,8 @@
             if (index < mutableParticipants.count)
             {
                 NSString *userId = mutableParticipants[index];
-                Contact *contact = [mxkContactsById objectForKey:userId];
+                contact = [mxkContactsById objectForKey:userId];
+                
                 if (!contact)
                 {
                     // Create this missing contact
@@ -641,43 +547,31 @@
                     }
                     
                 }
-                
-                if (contact)
-                {
-                    [participantCell render:contact];
-                }
-                
-                if (self.mxRoom)
-                {
-                    // Show 'remove' button.
-                    participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                    UIButton *actionButton = participantCell.contactAccessoryButton;
-                    actionButton.hidden = NO;
-                    [actionButton setTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil) forState:UIControlStateNormal];
-                    [actionButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
-                    [actionButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-                    actionButton.tag = indexPath.row;
-                    [actionButton sizeToFit];
-                    
-                    participantCell.contactAccessoryViewHeightConstraint.constant = actionButton.frame.size.height;
-                    participantCell.contactAccessoryViewWidthConstraint.constant = actionButtonWidth;
-                    participantCell.contactAccessoryView.hidden = NO;
-                }
-                else
-                {
-                    // Show 'remove' icon.
-                    participantCell.contactAccessoryViewType = MXKContactTableCellAccessoryCustom;
-                    participantCell.contactAccessoryViewHeightConstraint.constant = 30;
-                    participantCell.contactAccessoryViewWidthConstraint.constant = 30;
-                    participantCell.contactAccessoryImageView.image = [UIImage imageNamed:@"remove"];
-                    participantCell.contactAccessoryImageView.hidden = NO;
-                    participantCell.contactAccessoryView.hidden = NO;
-                }
-                
-                participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
         }
         
+        if (indexPath.section == searchResultSection)
+        {
+            participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != filteredParticipants.count);
+        }
+        else
+        {
+            participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            if (userMatrixId)
+            {
+                participantCell.bottomLineSeparator.hidden = ((indexPath.row) != mutableParticipants.count);
+            }
+            else
+            {
+                participantCell.bottomLineSeparator.hidden = ((indexPath.row+1) != mutableParticipants.count);
+            }
+        }
+        
+        [self customizeContactCell:participantCell atIndexPath:indexPath];
+        [participantCell render:contact];
+    
         cell = participantCell;
     }
     
@@ -686,55 +580,30 @@
 
 #pragma mark - UITableView delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (indexPath.section == addParticipantsSection && indexPath.row == 1)
-    {
-        return 10;
-    }
-    return 44;
+    return addParticipantsSearchBarCell.contentView.frame.size.height;
 }
 
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if([view isKindOfClass:[UITableViewHeaderFooterView class]])
-    {
-        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *) view;
-        tableViewHeaderFooterView.textLabel.text = [tableViewHeaderFooterView.textLabel.text capitalizedString];
-        tableViewHeaderFooterView.textLabel.font = [UIFont boldSystemFontOfSize:17];
-        tableViewHeaderFooterView.textLabel.textColor = VECTOR_GREEN_COLOR;
-    }
+    return addParticipantsSearchBarCell.contentView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 74.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexPath.row;
+    NSInteger row = indexPath.row;
     
-    if ((indexPath.section == participantsSection) && (self.mxRoom == nil))
+    if (indexPath.section == searchResultSection)
     {
-        if (userMatrixId)
+        if (row < filteredParticipants.count)
         {
-            index --;
-        }
-        
-        if (index < mutableParticipants.count)
-        {
-            [mxkContactsById removeObjectForKey:mutableParticipants[index]];
-            [mutableParticipants removeObjectAtIndex:index];
-            
-            // Refresh display
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            
-            UITableViewHeaderFooterView *participantsSectionHeader = [tableView headerViewForSection:participantsSection];
-            participantsSectionHeader.textLabel.text = [self tableView:tableView titleForHeaderInSection:participantsSection];
-        }
-    }
-    else if (indexPath.section == searchResultSection)
-    {
-        if (index < filteredParticipants.count)
-        {
-            MXKContact *contact = filteredParticipants[index];
+            MXKContact *contact = filteredParticipants[row];
             
             NSArray *identifiers = contact.matrixIdentifiers;
             if (identifiers.count)
@@ -749,7 +618,7 @@
                 {
                     [self addPendingActionMask];
                     [self.mxRoom inviteUser:participantId success:^{
-                        
+                    
                         [self removePendingActionMask];
                         
                         // Refresh display by leaving search session
@@ -762,7 +631,6 @@
                         NSLog(@"[RoomParticipantsVC] Invite %@ failed: %@", participantId, error);
                         // Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
-                        
                     }];
                 }
                 else
@@ -773,20 +641,44 @@
                     [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
                 }
             }
-            
-            
         }
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    
+    // add the swipe to delete on search and participants section
+    if (indexPath.section == participantsSection)
+    {
+        NSString* title = @"        ";
+        
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
+            [self onDeleteAt:indexPath];
+        
+        }];
+        
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
+}
+
 
 #pragma mark - Actions
 
-- (IBAction)onButtonPressed:(id)sender
+- (void)onDeleteAt:(NSIndexPath*)path
 {
-    if ([sender isKindOfClass:[UIButton class]])
+    NSUInteger section = path.section;
+    NSUInteger row = path.row;
+    
+    if (section == participantsSection)
     {
-        UIButton *actionButton = (UIButton*)sender;
-        NSInteger index = actionButton.tag;
         __weak typeof(self) weakSelf = self;
         
         if (currentAlert)
@@ -795,7 +687,7 @@
             currentAlert = nil;
         }
         
-        if (userMatrixId && index == 0 && [actionButton.titleLabel.text isEqualToString:NSLocalizedStringFromTable(@"leave", @"Vector", nil)])
+        if (userMatrixId && (0 == row))
         {
             // Leave ?
             currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
@@ -821,7 +713,15 @@
                                          [strongSelf addPendingActionMask];
                                          [strongSelf.mxRoom leave:^{
                                              
-                                             [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+                                             // check if there is a parent view controller
+                                             if (strongSelf.parentViewController)
+                                             {
+                                                 [strongSelf.navigationController popViewControllerAnimated:YES];
+                                             }
+                                             else
+                                             {
+                                                 [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+                                             }
                                              
                                          } failure:^(NSError *error) {
                                              
@@ -836,16 +736,16 @@
             
             [currentAlert showInViewController:self];
         }
-        else if ([actionButton.titleLabel.text isEqualToString:NSLocalizedStringFromTable(@"remove", @"Vector", nil)])
+        else
         {
             if (userMatrixId)
             {
-                index --;
+                row --;
             }
             
-            if (index < mutableParticipants.count)
+            if (row < mutableParticipants.count)
             {
-                NSString *memberUserId = mutableParticipants[index];
+                NSString *memberUserId = mutableParticipants[row];
                 MXKContact *contact = [mxkContactsById objectForKey:memberUserId];
                 
                 // Kick ?
@@ -872,25 +772,25 @@
                                              
                                              [strongSelf addPendingActionMask];
                                              [strongSelf.mxRoom kickUser:memberUserId
-                                                       reason:nil
-                                                      success:^{
-                                                          
-                                                          [strongSelf removePendingActionMask];
-                                                          
-                                                          [strongSelf->mxkContactsById removeObjectForKey:memberUserId];
-                                                          [strongSelf->mutableParticipants removeObjectAtIndex:index];
-                                                          
-                                                          // Refresh display
-                                                          [strongSelf.tableView reloadData];
-                                                          
-                                                      } failure:^(NSError *error) {
-                                                          
-                                                          [strongSelf removePendingActionMask];
-                                                          NSLog(@"[RoomParticipantsVC] Kick %@ failed: %@", memberUserId, error);
-                                                          // Alert user
-                                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                          
-                                                      }];
+                                                                  reason:nil
+                                                                 success:^{
+                                                                     
+                                                                     [strongSelf removePendingActionMask];
+                                                                     
+                                                                     [strongSelf->mxkContactsById removeObjectForKey:memberUserId];
+                                                                     [strongSelf->mutableParticipants removeObjectAtIndex:row];
+                                                                     
+                                                                     // Refresh display
+                                                                     [strongSelf.tableView reloadData];
+                                                                     
+                                                                 } failure:^(NSError *error) {
+                                                                     
+                                                                     [strongSelf removePendingActionMask];
+                                                                     NSLog(@"[RoomParticipantsVC] Kick %@ failed: %@", memberUserId, error);
+                                                                     // Alert user
+                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                     
+                                                                 }];
                                          }];
                 
                 [currentAlert showInViewController:self];
@@ -909,36 +809,85 @@
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = VECTOR_GREEN_COLOR;
+    searchBarTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     leftImageView.tintColor = VECTOR_GREEN_COLOR;
-
-    // Clear button
-    UIButton *clearButton = [searchBarTextField valueForKey:@"_clearButton"];
-    [clearButton setImage:[clearButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    clearButton.tintColor = VECTOR_GREEN_COLOR;
+    
+    // remove the gray background color
+    UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
+    UIView *effectBackgroundBottom =  [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
+    effectBackgroundTop.hidden = YES;
+    effectBackgroundBottom.hidden = YES;
+    
+    // add line separator under the textfield
+    if (!searchBarSeparator)
+    {
+        searchBarSeparator = [[UIView alloc] init];
+        searchBarSeparator.backgroundColor = VECTOR_GREEN_COLOR;
+        
+        [searchBarTextField addSubview:searchBarSeparator];
+        
+        searchBarSeparator.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        NSLayoutConstraint* leftConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                      attribute:NSLayoutAttributeLeading
+                                                      relatedBy:NSLayoutRelationEqual
+                                                         toItem:searchBarTextField
+                                                      attribute:NSLayoutAttributeLeading
+                                                     multiplier:1
+                                                       constant:0];
+            
+        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                                          attribute:NSLayoutAttributeWidth
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:searchBarTextField
+                                                                          attribute:NSLayoutAttributeWidth
+                                                                         multiplier:1
+                                                                           constant:0];
+        
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:1];
+        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:searchBarSeparator
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:searchBarTextField
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1
+                                                                            constant:0];
+        
+        
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, widthConstraint, heightConstraint, bottomConstraint]];
+    }
+    
     
     // place holder
-    [searchBarTextField setValue:VECTOR_GREEN_COLOR forKeyPath:@"_placeholderLabel.textColor"];
+    [searchBarTextField setValue:VECTOR_TEXT_GRAY_COLOR forKeyPath:@"_placeholderLabel.textColor"];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSInteger previousFilteredCount = filteredParticipants.count;
     
-    NSMutableArray *mxUsers;
+    NSMutableArray *constacts;
+    
     if (addParticipantsSearchText.length && [searchText hasPrefix:addParticipantsSearchText])
     {
-        mxUsers = filteredParticipants;
+        constacts = filteredParticipants;
     }
     else
     {
         // Retrieve all known matrix users
         NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
-        mxUsers = [NSMutableArray arrayWithCapacity:matrixContacts.count];
+        constacts = [NSMutableArray arrayWithCapacity:matrixContacts.count];
         
         // Split contacts with several ids, and remove the current participants.
         for (MXKContact* contact in matrixContacts)
@@ -954,7 +903,7 @@
                         {
                             Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                             splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
-                            [mxUsers addObject:splitContact];
+                            [constacts addObject:splitContact];
                         }
                     }
                 }
@@ -966,7 +915,7 @@
                 {
                     if (![userId isEqualToString:userMatrixId])
                     {
-                        [mxUsers addObject:contact];
+                        [constacts addObject:contact];
                     }
                 }
             }
@@ -978,7 +927,7 @@
     NSMutableArray *indexArray = [NSMutableArray array];
     NSInteger index = 0;
     
-    for (MXKContact* contact in mxUsers)
+    for (MXKContact* contact in constacts)
     {
         if ([contact matchedWithPatterns:@[addParticipantsSearchText]])
         {
@@ -987,9 +936,9 @@
         }
     }
     
-    if (previousFilteredCount || filteredParticipants.count)
+    if ((searchResultSection != -1) && (previousFilteredCount || filteredParticipants.count))
     {
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (searchResultSection, 1)];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(searchResultSection, 1)];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
     }
 }

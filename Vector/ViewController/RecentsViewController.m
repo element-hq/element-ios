@@ -269,57 +269,6 @@
 }
 
 #pragma mark - swipe actions
-static NSMutableDictionary* backgroundByImageNameDict;
-
-- (UIColor*)getBackgroundColor:(NSString*)imageName
-{
-    UIColor* backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
-    
-    if (!imageName)
-    {
-        return backgroundColor;
-    }
-    
-    if (!backgroundByImageNameDict)
-    {
-        backgroundByImageNameDict = [[NSMutableDictionary alloc] init];
-    }
-    
-    UIColor* bgColor = [backgroundByImageNameDict objectForKey:imageName];
-    
-    if (!bgColor)
-    {
-        CGFloat backgroundSide = 74.0;
-        CGFloat sourceSide = 30.0;
-        
-        UIImageView* backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, backgroundSide, backgroundSide)];
-        backgroundView.backgroundColor = backgroundColor;
-        
-        CGFloat offset = (backgroundSide - sourceSide) / 2.0f;
-        
-        UIImageView* resourceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(offset, offset, sourceSide, sourceSide)];
-        resourceImageView.backgroundColor = [UIColor clearColor];
-        resourceImageView.image = [MXKTools resizeImage:[UIImage imageNamed:imageName] toSize:CGSizeMake(sourceSide, sourceSide)];
-        
-        [backgroundView addSubview:resourceImageView];
-        
-        // Create a "canvas" (image context) to draw in.
-        UIGraphicsBeginImageContextWithOptions(backgroundView.frame.size, NO, 0);
-        
-        // set to the top quality
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-        [[backgroundView layer] renderInContext: UIGraphicsGetCurrentContext()];
-        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-
-    
-        bgColor = [[UIColor alloc] initWithPatternImage:image];
-        [backgroundByImageNameDict setObject:bgColor forKey:imageName];
-    }
-    
-    return bgColor;
-}
 
 // for IOS >= 8 devices
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -348,7 +297,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
             
         }];
         
-        muteAction.backgroundColor = [self getBackgroundColor:isMuted ? @"unmute_icon" : @"mute_icon"];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"unmute_icon" : @"mute_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
         [actions insertObject:muteAction atIndex:0];
         
         // favorites management
@@ -377,7 +326,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
             }];
             
-            action.backgroundColor = [self getBackgroundColor:@"favorite_icon"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favorite_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
             [actions insertObject:action atIndex:0];
         }
         
@@ -388,7 +337,7 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 [self updateRoomTagAtIndexPath:indexPath to:nil];
             }];
             
-            action.backgroundColor = [self getBackgroundColor:nil];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:nil backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
             [actions insertObject:action atIndex:0];
         }
         
@@ -399,14 +348,15 @@ static NSMutableDictionary* backgroundByImageNameDict;
                 [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
             }];
             
-            action.backgroundColor = [self getBackgroundColor:@"low_priority_icon"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"low_priority_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
             [actions insertObject:action atIndex:0];
         }
         
         UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             [self leaveRecentsAtIndexPath:indexPath];
         }];
-        leaveAction.backgroundColor = [self getBackgroundColor:@"remove_icon"];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        
         [actions insertObject:leaveAction atIndex:0];
     }
     

@@ -78,6 +78,14 @@
 "room_participants_admin_name" = "%@ (admin)";
 "room_participants_invite_another_user" = "Invite another user";
 
+"room_participants_active" = "Active";
+"room_participants_invite" = "Invite";
+"room_participants_leave" = "Left";
+"room_participants_ban" = "Banned";
+"room_participants_active_less_1_hour" = "Active less 1 hour ago";
+"room_participants_active_less_x_hours" = "Active less %lu hours ago";
+"room_participants_active_less_x_days" = "Active less %lu days ago";
+
 // Chat
 "room_one_user_is_typing" = "%@ is typing...";
 "room_two_users_are_typing" = "%@ & %@ are typing...";
