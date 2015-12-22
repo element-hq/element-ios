@@ -640,8 +640,8 @@
             // Store this new session
             [self addMatrixSession:mxSession];
             
-            // each room member must have his own contact.
-            [MXKContactManager sharedManager].memberContactCreation = MXKMemberContactCreationAll;
+            // Each room member will be considered as a potential contact.
+            [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {

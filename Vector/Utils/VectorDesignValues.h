@@ -39,12 +39,4 @@
 // to update the navigation bar buttons color
 // [[AppDelegate theDelegate] recentsNavigationController].navigationBar.tintColor = [UIColor greenColor];
 
-/**
- Return a background color for an image resource.
- 
- @param imageName the image resource name
- @return the UIColor
- */
-+ (UIColor*)getBackgroundColor:(NSString*)imageName;
-
 @end

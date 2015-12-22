@@ -661,7 +661,8 @@
             [self onDeleteAt:indexPath];
         
         }];
-        leaveAction.backgroundColor = [VectorDesignValues getBackgroundColor:@"remove_icon"];
+        
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
         [actions insertObject:leaveAction atIndex:0];
     }
     

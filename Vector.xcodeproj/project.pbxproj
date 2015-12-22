@@ -36,7 +36,6 @@
 		71F7F5181C22CC7500E7ED8F /* MXRoom+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F5171C22CC7500E7ED8F /* MXRoom+Vector.m */; };
 		71F7F51D1C23079F00E7ED8F /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F7F51B1C23079F00E7ED8F /* ContactTableViewCell.m */; };
 		71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71F7F51C1C23079F00E7ED8F /* ContactTableViewCell.xib */; };
-		71FAE1661C2439A3000A4454 /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FAE1651C2439A3000A4454 /* VectorDesignValues.m */; };
 		F001D7621B8207C000A162C3 /* RoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */; };
 		F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F001D75D1B8207C000A162C3 /* RoomInputToolbarView.xib */; };
 		F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */; };
@@ -216,7 +215,6 @@
 		71F7F51A1C23079F00E7ED8F /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactTableViewCell.h; path = Contact/ContactTableViewCell.h; sourceTree = "<group>"; };
 		71F7F51B1C23079F00E7ED8F /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactTableViewCell.m; path = Contact/ContactTableViewCell.m; sourceTree = "<group>"; };
 		71F7F51C1C23079F00E7ED8F /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactTableViewCell.xib; path = Contact/ContactTableViewCell.xib; sourceTree = "<group>"; };
-		71FAE1651C2439A3000A4454 /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
 		9B179239B79688A61A3F465F /* libPods-Vector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Vector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F001D75B1B8207C000A162C3 /* RoomInputToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomInputToolbarView.h; sourceTree = "<group>"; };
 		F001D75C1B8207C000A162C3 /* RoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomInputToolbarView.m; sourceTree = "<group>"; };
@@ -578,7 +576,6 @@
 				71352D571C10569F001D50B0 /* AvatarGenerator.h */,
 				71352D581C10569F001D50B0 /* AvatarGenerator.m */,
 				71C5F2991C077007004C094B /* VectorDesignValues.h */,
-				71FAE1651C2439A3000A4454 /* VectorDesignValues.m */,
 				F08BE09C1B87025B00C480FB /* EventFormatter.h */,
 				F08BE09D1B87025B00C480FB /* EventFormatter.m */,
 			);
@@ -1062,7 +1059,6 @@
 			files = (
 				F0DD7D821B7B363300C4BE02 /* RoomCreationStep1ViewController.m in Sources */,
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
-				71FAE1661C2439A3000A4454 /* VectorDesignValues.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
