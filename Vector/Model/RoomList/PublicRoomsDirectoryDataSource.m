@@ -16,7 +16,7 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "MXKPublicRoomTableViewCell.h"
+#import "PublicRoomTableViewCell.h"
 
 #pragma mark - Constants definitions
 
@@ -172,10 +172,10 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 {
     // For now reuse MatrixKit cells
     // TODO: use custom cells and manage a mechanism a la MatrixKit with cellData
-    MXKPublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[MXKPublicRoomTableViewCell defaultReuseIdentifier]];
+    PublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[PublicRoomTableViewCell defaultReuseIdentifier]];
     if (!publicRoomCell)
     {
-        publicRoomCell = [[MXKPublicRoomTableViewCell alloc] init];
+        publicRoomCell = [[PublicRoomTableViewCell alloc] init];
     }
 
     [publicRoomCell render:_filteredRooms[indexPath.row]];
