@@ -271,6 +271,9 @@
 
 - (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
+    // Force hiding the keyboard
+    [searchBar resignFirstResponder];
+
     if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
         && _selectedRoomSession && _selectedRoomSession == matrixSession)
     {
