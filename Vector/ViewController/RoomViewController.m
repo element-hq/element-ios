@@ -880,7 +880,7 @@
         
         MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
         
-        if (nil != member)
+        if (member && member.displayname.length)
         {
             name = member.displayname;
         }
