@@ -64,13 +64,44 @@
 {
     MXPublicRoom *publicRoom = dataSource.filteredRooms[indexPath.row];
 
+    // Check whether the user has already joined the selected public room
+    if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    {
+        [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+    }
+    else
+    {
+        // Join the room before opening it
+        [self startActivityIndicator];
+        [dataSource.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
+
+            [self stopActivityIndicator];
+
+            [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+
+        } failure:^(NSError *error) {
+
+            [self stopActivityIndicator];
+
+            NSLog(@"[DirectoryVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+
+            // Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+}
+
+#pragma mark - Private methods
+
+- (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
+{
     // In the master-detail case, try to come back smoothly to the "classic" display
     // (list of rooms on left in the master and the selected rooom on right in the detail)
     // Unfortunately, animation is not possible since we cannot know when it finishes.
     [self.navigationController popViewControllerAnimated:NO];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AppDelegate theDelegate].homeViewController selectRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+        [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
     });
 }
 
