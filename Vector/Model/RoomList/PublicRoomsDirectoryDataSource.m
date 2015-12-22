@@ -50,6 +50,25 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
 }
 
+- (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
+{
+    NSIndexPath *indexPath = nil;
+
+    // Look for the public room
+    for (NSInteger index = 0; index < _filteredRooms.count; index ++)
+    {
+        MXPublicRoom *room = _filteredRooms[index];
+        if ([roomId isEqualToString:room.roomId])
+        {
+            // Got it
+            indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            break;
+        }
+    }
+
+    return indexPath;
+}
+
 #pragma mark - Private methods
 
 - (void)refreshPublicRooms

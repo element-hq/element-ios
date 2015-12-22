@@ -46,6 +46,18 @@
     [self.tableView reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (self.splitViewController && !self.splitViewController.isCollapsed)
+    {
+        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+        // the selected room (if any) is highlighted.
+        [self refreshCurrentSelectedCell:YES];
+    }
+}
+
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
 {
     // Let the data source provide cells
@@ -95,14 +107,44 @@
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
-    // In the master-detail case, try to come back smoothly to the "classic" display
-    // (list of rooms on left in the master and the selected rooom on right in the detail)
-    // Unfortunately, animation is not possible since we cannot know when it finishes.
-    [self.navigationController popViewControllerAnimated:NO];
-
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
     });
+}
+
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
+{
+    HomeViewController *homeViewController = [AppDelegate theDelegate].homeViewController;
+
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+    NSIndexPath *currentSelectedCellIndexPath = nil;
+    if (homeViewController.currentRoomViewController)
+    {
+        // Look for the rank of this selected room in displayed recents
+        currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
+    }
+
+    if (currentSelectedCellIndexPath)
+    {
+        // Select the right row
+        [self.tableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+
+        if (forceVisible)
+        {
+            // Scroll table view to make the selected row appear at second position
+            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
+    }
+    else
+    {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        if (indexPath)
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    }
 }
 
 @end
