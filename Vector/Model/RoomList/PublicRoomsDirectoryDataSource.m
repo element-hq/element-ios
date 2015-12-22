@@ -178,7 +178,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         publicRoomCell = [[PublicRoomTableViewCell alloc] init];
     }
 
-    [publicRoomCell render:_filteredRooms[indexPath.row]];
+    [publicRoomCell render:_filteredRooms[indexPath.row] withMatrixSession:self.mxSession];
 
     return publicRoomCell;
 }
