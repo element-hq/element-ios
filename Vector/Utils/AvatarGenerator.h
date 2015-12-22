@@ -23,10 +23,11 @@
 
 /**
  Generate an avatar for a room.
- @param room the room
+ @param roomId the id of the room.
+ @param displayName the display name of the room.
  @return the avatar image
  */
-+ (UIImage*)generateRoomAvatar:(MXRoom*)room;
++ (UIImage*)generateRoomAvatar:(NSString*)roomId andDisplayName:(NSString*)displayName;
 
 /**
  Generate an avatar for a room member.

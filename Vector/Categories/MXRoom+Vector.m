@@ -225,7 +225,7 @@
         }
     }
     
-    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:self];
+    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:self.state.roomId andDisplayName:self.vectorDisplayname];
     
     if (roomAvatarUrl)
     {

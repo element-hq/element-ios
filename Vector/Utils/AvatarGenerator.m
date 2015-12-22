@@ -16,8 +16,6 @@
 
 #import "AvatarGenerator.h"
 
-#import "MXRoom+Vector.h"
-
 @implementation AvatarGenerator
 
 static NSMutableDictionary *imageByKeyDict = nil;
@@ -127,11 +125,6 @@ static UILabel* backgroundLabel = nil;
     return image;
 }
 
-/**
- Generate an avatar for a text.
- @param text the text.
- @return the avatar image
- */
 + (UIImage*)generateAvatarForText:(NSString*)text
 {
     NSUInteger index = [AvatarGenerator colorIndexForText:text];
@@ -144,12 +137,6 @@ static UILabel* backgroundLabel = nil;
     return [AvatarGenerator avatarForText:text andColorIndex:index];
 }
 
-/**
- Generate an avatar for a room member.
- @param userId the member userId
- @param displayname the member displayname
- @return the avatar image
- */
 + (UIImage*)generateRoomMemberAvatar:(NSString*)userId displayName:(NSString*)displayname
 {
     // the selected color is based on the userId
@@ -171,16 +158,8 @@ static UILabel* backgroundLabel = nil;
     return [AvatarGenerator avatarForText:text andColorIndex:index];
 }
 
-/**
- Generate an avatar for a room.
- @param room the room
- @return the avatar image
- */
-+ (UIImage*)generateRoomAvatar:(MXRoom*)room
++ (UIImage*)generateRoomAvatar:(NSString*)roomId andDisplayName:(NSString*)displayName
 {
-    NSString* displayName = room.vectorDisplayname;
-    NSString* roomId = room.state.roomId;
-    
     // the selected color is based on the roomId
     NSUInteger index = [AvatarGenerator colorIndexForText:roomId];
     NSString* text = displayName;
