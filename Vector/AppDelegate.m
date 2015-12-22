@@ -95,11 +95,6 @@
      Array of `MXSession` instances.
      */
     NSMutableArray *mxSessionArray;
-    
-    /**
-     Application main view controllers
-     */
-    HomeViewController  *homeViewController;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -244,13 +239,13 @@
         {
             if ([viewController isKindOfClass:[HomeViewController class]])
             {
-                homeViewController = (HomeViewController*)viewController;
+                _homeViewController = (HomeViewController*)viewController;
             }
         }
     }
     
     // Sanity check
-    NSAssert(homeViewController, @"Something wrong in Main.storyboard");
+    NSAssert(_homeViewController, @"Something wrong in Main.storyboard");
     
     _isAppForeground = NO;
     
@@ -415,18 +410,18 @@
 - (void)showAuthenticationScreen
 {
     [self restoreInitialDisplay:^{
-        [homeViewController performSegueWithIdentifier:@"showAuth" sender:self];
+        [_homeViewController performSegueWithIdentifier:@"showAuth" sender:self];
     }];
 }
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated
 {
     // Force back to the main screen
-    if (homeViewController)
+    if (_homeViewController)
     {
-        [_homeNavigationController popToViewController:homeViewController animated:animated];
+        [_homeNavigationController popToViewController:_homeViewController animated:animated];
         // Release the current selected room
-        [homeViewController closeSelectedRoom];
+        [_homeViewController closeSelectedRoom];
     }
 }
 
@@ -771,11 +766,11 @@
         if (!mxSessionArray.count)
         {
             // This is the first added session, list all the recents for the logged user
-            [homeViewController displayWithSession:mxSession];
+            [_homeViewController displayWithSession:mxSession];
         }
         else
         {
-            [homeViewController addMatrixSession:mxSession];
+            [_homeViewController addMatrixSession:mxSession];
         }
         
         [mxSessionArray addObject:mxSession];
@@ -787,7 +782,7 @@
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
     
     // Update home data sources
-    [homeViewController removeMatrixSession:mxSession];
+    [_homeViewController removeMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
 }
@@ -1018,7 +1013,7 @@
 {
     [self restoreInitialDisplay:^{
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
+        [_homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
     }];
 }
 

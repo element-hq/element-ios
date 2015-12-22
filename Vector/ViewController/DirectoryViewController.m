@@ -53,16 +53,6 @@
     self.tableView.dataSource = dataSource;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -73,7 +63,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MXPublicRoom *publicRoom = dataSource.filteredRooms[indexPath.row];
-    [[AppDelegate theDelegate] showRoom:publicRoom.roomId withMatrixSession:dataSource.mxSession];
+
+    // In the master-detail case, try to come back smoothly to the "classic" display
+    // (list of rooms on left in the master and the selected rooom on right in the detail)
+    // Unfortunately, animation is not possible since we cannot know when it finishes.
+    [self.navigationController popViewControllerAnimated:NO];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AppDelegate theDelegate].homeViewController selectRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+    });
 }
 
 @end

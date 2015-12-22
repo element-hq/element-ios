@@ -17,6 +17,8 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 
+#import "HomeViewController.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, UISplitViewControllerDelegate>
 {
     BOOL isAPNSRegistered;
@@ -24,6 +26,11 @@
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
+
+/**
+ Application main view controller
+ */
+@property (nonatomic, readonly) HomeViewController *homeViewController;
 
 @property (strong, nonatomic) UIWindow *window;
 
