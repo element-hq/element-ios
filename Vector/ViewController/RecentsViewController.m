@@ -120,11 +120,10 @@
     [super viewDidAppear:animated];
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
+    if (!self.splitViewController || self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
-        //[self closeSelectedRoom];
+        [homeViewController closeSelectedRoom];
     }
     else
     {

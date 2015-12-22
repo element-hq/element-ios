@@ -50,7 +50,12 @@
 {
     [super viewDidAppear:animated];
 
-    if (self.splitViewController && !self.splitViewController.isCollapsed)
+    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+    if (self.splitViewController && self.splitViewController.isCollapsed)
+    {
+        [[AppDelegate theDelegate].homeViewController closeSelectedRoom];
+    }
+    else
     {
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
