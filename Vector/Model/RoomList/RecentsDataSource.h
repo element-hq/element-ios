@@ -16,6 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+@class PublicRoomsDirectoryDataSource;
+
 /**
  'RecentsDataSource' class inherits from 'MXKInterleavedRecentsDataSource' to define Vector recents source.
  */
@@ -44,9 +46,14 @@
 @property (nonatomic, copy) NSIndexPath* droppingCellIndexPath;
 
 /**
- The movingCellBackgroundImage;
+ The movingCellBackgroundImage.
  */
 @property (nonatomic) UIImageView* droppingCellBackGroundView;
+
+/**
+ The data source used to manage search in public rooms.
+ */
+@property (nonatomic, readonly) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
 
 /**
  Return the header height from the section.

@@ -61,10 +61,17 @@
 "room_creation_make_private" = "Make private";
 
 // Room recents
+"room_recents_directory" = "DIRECTORY";
 "room_recents_favourites" = "FAVORITES";
 "room_recents_conversations" = "CONVERSATIONS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
+
+// Directory
+"directory_search_results_title" = "Browse directory results";
+"directory_search_results" = "%tu results found for %@";
+"directory_searching_title" = "Searching directory...";
+"directory_search_fail" = "Failed to fecth data";
 
 // Chat participants
 "room_participants_title" = "Participants";
@@ -173,6 +180,9 @@
 
 "media_picker_choose_from_library" = "Choose from library";
 "media_picker_library" = "Library";
+
+// Directory
+"directory_title" = "Directory";
 
 // Others
 "you" = "You";

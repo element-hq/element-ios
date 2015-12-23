@@ -21,6 +21,12 @@
 @interface RecentsViewController : MXKRecentListViewController
 
 /**
+ If YES, the table view will scroll at the top on the next data source refresh.
+ It comes back to NO after each refresh.
+ */
+@property (nonatomic) BOOL shouldScrollToTopOnRefresh;
+
+/**
  Display the recents described in the provided data source.
 
  @param listDataSource the data source providing the recents list.

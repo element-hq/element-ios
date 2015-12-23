@@ -54,6 +54,12 @@
 - (void)closeSelectedRoom;
 
 /**
+ Open the public rooms directory page.
+ It uses the `publicRoomsDirectoryDataSource` managed by the recents view controller data source
+ */
+- (void)showPublicRoomsDirectory;
+
+/**
  Action registered on `UIControlEventTouchUpInside` event for both buttons.
  */
 - (IBAction)onButtonPressed:(id)sender;

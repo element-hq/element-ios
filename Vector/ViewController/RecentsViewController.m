@@ -28,12 +28,10 @@
 #import "VectorDesignValues.h"
 
 #import "InviteRecentTableViewCell.h"
+#import "DirectoryRecentTableViewCell.h"
 
 @interface RecentsViewController ()
 {
-    // Recents refresh handling
-    BOOL shouldScrollToTopOnRefresh;
-
     // The "parent" segmented view controller
     HomeViewController *homeViewController;
     
@@ -75,6 +73,8 @@
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
     [self.recentsTableView addGestureRecognizer:longPress];
+
+    self.recentsTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 }
 
 - (void)destroy
@@ -120,11 +120,10 @@
     [super viewDidAppear:animated];
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
+    if (!self.splitViewController || self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
-        //[self closeSelectedRoom];
+        [homeViewController closeSelectedRoom];
     }
     else
     {
@@ -253,10 +252,10 @@
     
     [self.recentsTableView reloadData];
     
-    if (shouldScrollToTopOnRefresh)
+    if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop];
-        shouldScrollToTopOnRefresh = NO;
+        _shouldScrollToTopOnRefresh = NO;
     }
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
@@ -381,24 +380,6 @@
     [self.recentsTableView setEditing:NO];
 }
 
-#pragma mark - Override UISearchBarDelegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    // Prepare table refresh on new search session
-    shouldScrollToTopOnRefresh = YES;
-    
-    [super searchBar:searchBar textDidChange:searchText];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    // Prepare table refresh on end of search
-    shouldScrollToTopOnRefresh = YES;
-    
-    [super searchBarCancelButtonClicked: searchBar];
-}
-
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -414,6 +395,11 @@
     {
         // hide the selection
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
+    {
+        // Show the directory screen
+        [homeViewController showPublicRoomsDirectory];
     }
     else
     {

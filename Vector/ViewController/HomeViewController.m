@@ -20,6 +20,7 @@
 #import "RecentsViewController.h"
 
 #import "RoomViewController.h"
+#import "DirectoryViewController.h"
 
 @interface HomeViewController ()
 {
@@ -191,8 +192,7 @@
     [super viewDidAppear:animated];
 
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
+    if (!self.splitViewController || self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
         [self closeSelectedRoom];
@@ -209,9 +209,8 @@
 {
     [super viewWillDisappear:animated];
 
-    // TODO: Check why it was done before
-    //_selectedRoomId = nil;
-    //_selectedRoomSession = nil;
+    _selectedRoomId = nil;
+    _selectedRoomSession = nil;
 }
 
 - (void) viewDidLayoutSubviews
@@ -272,6 +271,9 @@
 
 - (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
+    // Force hiding the keyboard
+    [searchBar resignFirstResponder];
+
     if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
         && _selectedRoomSession && _selectedRoomSession == matrixSession)
     {
@@ -310,6 +312,11 @@
         [_currentRoomViewController destroy];
         _currentRoomViewController = nil;
     }
+}
+
+- (void)showPublicRoomsDirectory
+{
+    [self performSegueWithIdentifier:@"showDirectory" sender:self];
 }
 
 #pragma mark - Internal methods
@@ -376,6 +383,10 @@
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
+    else if ([[segue identifier] isEqualToString:@"showDirectory"])
+    {
+        DirectoryViewController *directoryViewController = segue.destinationViewController;
+        [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
     else
     {
         // Keep ref on destinationViewController
@@ -393,6 +404,10 @@
     backupTitleView = self.navigationItem.titleView;
     backupLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
     backupRightBarButtonItem = self.navigationItem.rightBarButtonItem;
+
+    // Reset searches
+    searchBar.text = @"";
+    [recentsDataSource searchWithPatterns:nil];
 
     // Remove navigation buttons
     self.navigationItem.rightBarButtonItem = nil;
@@ -477,16 +492,26 @@
     {
         self.selectedViewController.view.hidden = NO;
 
+        // Do a AND search on words separated by a space
+        NSArray *patterns = [searchBar.text componentsSeparatedByString:@" "];
+
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
         {
-            [recentsDataSource searchWithPatterns:@[searchBar.text]];
+            [recentsDataSource searchWithPatterns:patterns];
+            recentsViewController.shouldScrollToTopOnRefresh = YES;
         }
     }
     else
     {
         // Nothing to search = Show nothing
         self.selectedViewController.view.hidden = YES;
+
+        if (self.selectedViewController == recentsViewController)
+        {
+            [recentsDataSource searchWithPatterns:nil];
+            recentsViewController.shouldScrollToTopOnRefresh = YES;
+        }
     }
 }
 
@@ -510,6 +535,24 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
 {
     [self hideSearch:YES];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar2
+{
+    // Keep the search bar cancel button enabled even if the keyboard is not displayed
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (UIView *subView in searchBar.subviews)
+        {
+            for (UIView *view in subView.subviews)
+            {
+                if ([view isKindOfClass:[UIButton class]])
+                {
+                    [(UIButton *)view setEnabled:YES];
+                }
+            }
+        }
+    });
+    return YES;
 }
 
 #pragma mark - MXKRecentListViewControllerDelegate

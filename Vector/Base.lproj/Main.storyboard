@@ -201,11 +201,26 @@
                         <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="EwV-tH-4jl"/>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="agy-3r-khl"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vfC-8C-AsT"/>
+                        <segue destination="dP6-5F-5s0" kind="showDetail" identifier="showDirectory" action="showViewController:sender:" id="hvq-zV-OB7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1364" y="-2374"/>
+        </scene>
+        <!--Directory View Controller-->
+        <scene sceneID="zQD-eP-aY2">
+            <objects>
+                <tableViewController id="dP6-5F-5s0" customClass="DirectoryViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="JIN-S2-qUn">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yn2-Xd-dn4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2364" y="-2374"/>
         </scene>
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
