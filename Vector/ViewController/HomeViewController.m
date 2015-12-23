@@ -387,6 +387,7 @@
     {
         DirectoryViewController *directoryViewController = segue.destinationViewController;
         [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+    }
     else
     {
         // Keep ref on destinationViewController
