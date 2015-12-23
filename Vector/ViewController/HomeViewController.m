@@ -332,9 +332,6 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Keep ref on destinationViewController
-    [super prepareForSegue:segue sender:sender];
-
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
         UIViewController *controller;
@@ -390,6 +387,10 @@
     {
         DirectoryViewController *directoryViewController = segue.destinationViewController;
         [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+    else
+    {
+        // Keep ref on destinationViewController
+        [super prepareForSegue:segue sender:sender];
     }
 
     // Hide back button title

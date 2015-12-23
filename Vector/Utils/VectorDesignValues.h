@@ -14,6 +14,13 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MatrixKit.h>
+
+/**
+ `VectorDesignValues` class manages the Vector design parameters
+ */
+@interface VectorDesignValues : NSObject
+
 #pragma mark - Vector Colors
 
 #define VECTOR_GREEN_COLOR [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0]
@@ -31,3 +38,5 @@
 
 // to update the navigation bar buttons color
 // [[AppDelegate theDelegate] recentsNavigationController].navigationBar.tintColor = [UIColor greenColor];
+
+@end

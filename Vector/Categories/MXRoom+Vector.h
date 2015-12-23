@@ -55,4 +55,14 @@
  */
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView;
 
+/*
+ Observer when a rules deletion fails.
+ */
+@property id notificationCenterDidFailObserver;
+
+/*
+ Observer when a rules deletion succeeds.
+ */
+@property id notificationCenterDidUpdateObserver;
+
 @end

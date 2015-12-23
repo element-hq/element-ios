@@ -18,15 +18,7 @@
 
 #import "AvatarGenerator.h"
 
-@interface MXRoom ()
-
-// create property for the extensions
-
-// rule events observer
-@property id notificationCenterDidFailObserver;
-@property id notificationCenterDidUpdateObserver;
-
-@end
+#import <objc/runtime.h>
 
 @implementation MXRoom (Vector)
 
@@ -368,6 +360,28 @@
     }
     
     return displayName;
+}
+
+#pragma mark - observer properties management
+
+- (void)setNotificationCenterDidFailObserver:(id)anObserver
+{
+    objc_setAssociatedObject(self, @selector(notificationCenterDidFailObserver), anObserver, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id)notificationCenterDidFailObserver
+{
+    return objc_getAssociatedObject(self, @selector(notificationCenterDidFailObserver));
+}
+
+- (void)setNotificationCenterDidUpdateObserver:(id)anObserver
+{
+    objc_setAssociatedObject(self, @selector(notificationCenterDidUpdateObserver), anObserver, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id)notificationCenterDidUpdateObserver
+{
+    return objc_getAssociatedObject(self, @selector(notificationCenterDidUpdateObserver));
 }
 
 @end
