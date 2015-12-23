@@ -193,7 +193,6 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // For now reuse MatrixKit cells
-    // TODO: use custom cells and manage a mechanism a la MatrixKit with cellData
     PublicRoomTableViewCell *publicRoomCell = [tableView dequeueReusableCellWithIdentifier:[PublicRoomTableViewCell defaultReuseIdentifier]];
     if (!publicRoomCell)
     {
