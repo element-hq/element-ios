@@ -143,6 +143,18 @@
     [self createSegmentedViews];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewWillAppear and viewDidAppear
+        [_selectedViewController beginAppearanceTransition:YES animated:animated];
+        [_selectedViewController endAppearanceTransition];
+    }
+}
+
 - (void)createSegmentedViews
 {
     NSMutableArray* labels = [[NSMutableArray alloc] init];

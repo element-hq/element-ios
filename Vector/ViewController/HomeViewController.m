@@ -205,14 +205,6 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    _selectedRoomId = nil;
-    _selectedRoomSession = nil;
-}
-
 - (void) viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
