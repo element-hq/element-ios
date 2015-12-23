@@ -316,6 +316,9 @@
 
 - (void)showPublicRoomsDirectory
 {
+    // Force hiding the keyboard
+    [searchBar resignFirstResponder];
+    
     [self performSegueWithIdentifier:@"showDirectory" sender:self];
 }
 
