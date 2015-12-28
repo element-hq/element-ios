@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */; };
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
 		32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */; };
 		325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F6A381C21810E00C12F51 /* DirectoryViewController.m */; };
@@ -177,6 +178,8 @@
 
 /* Begin PBXFileReference section */
 		11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.debug.xcconfig"; sourceTree = "<group>"; };
+		323A52091C3183CC00010773 /* UIViewController+VectorSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VectorSearch.h"; sourceTree = "<group>"; };
+		323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VectorSearch.m"; sourceTree = "<group>"; };
 		32492DB01C293C8900035C79 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
 		32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableViewCell.m; sourceTree = "<group>"; };
 		32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomTableViewCell.xib; sourceTree = "<group>"; };
@@ -773,6 +776,8 @@
 				71F7F5171C22CC7500E7ED8F /* MXRoom+Vector.m */,
 				F0C34CB61C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.h */,
 				F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */,
+				323A52091C3183CC00010773 /* UIViewController+VectorSearch.h */,
+				323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1099,6 +1104,7 @@
 			files = (
 				F0DD7D821B7B363300C4BE02 /* RoomCreationStep1ViewController.m in Sources */,
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
+				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,

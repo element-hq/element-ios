@@ -408,6 +408,63 @@
     [self onMatrixSessionChange];
 }
 
+#pragma mark - Search
+
+- (void)showSearch:(BOOL)animated
+{
+    [super showSearch:animated];
+
+    // Show the tabs header
+    if (animated)
+    {
+        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+
+                             self.selectionContainerHeightConstraint.constant = 44;
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+    }
+    else
+    {
+        self.selectionContainerHeightConstraint.constant = 44;
+        [self.view layoutIfNeeded];
+    }
+}
+
+- (void)hideSearch:(BOOL)animated
+{
+    [super hideSearch:animated];
+
+    // Hide the tabs header
+    if (animated)
+    {
+        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+
+                             self.selectionContainerHeightConstraint.constant = 0;
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished) {
+                             // Go back to the main tab
+                             // Do it at the end of the animation when the tabs header of the SegmentedVC is hidden
+                             // so that the user cannot see the selection bar of this header moving
+                             self.selectedIndex = 0;
+                             self.selectedViewController.view.hidden = NO;
+                         }];
+    }
+    else
+    {
+        self.selectionContainerHeightConstraint.constant = 0;
+        [self.view layoutIfNeeded];
+
+        // Go back to the recents tab
+        self.selectedIndex = 0;
+        self.selectedViewController.view.hidden = NO;
+    }
+}
+
 #pragma mark - touch event
 
 - (void)onLabelTouch:(UIGestureRecognizer*)gestureRecognizer
