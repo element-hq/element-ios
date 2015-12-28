@@ -17,24 +17,20 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- `VectorViewController` extends MXKViewController coming from the MatrixKit.
-
- It provides features common to Vector app screens.
+ The `VectorSearch` category adds the management of the search bar in Vector screens.
  */
 
-@interface VectorViewController : MXKViewController <UISearchBarDelegate>
+@interface MXKViewController (VectorSearch) <UISearchBarDelegate>
 
 /**
  The search bar
  */
-@property (nonatomic) UISearchBar *searchBar;
-
-#pragma mark - Search
+@property (nonatomic, readonly) UISearchBar *searchBar;
 
 /**
  Show/Hide the search bar.
- 
- @param animated
+
+ @param animated or not.
  */
 - (void)showSearch:(BOOL)animated;
 - (void)hideSearch:(BOOL)animated;

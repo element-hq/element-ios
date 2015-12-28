@@ -16,14 +16,14 @@ limitations under the License.
 
 #import <MatrixSDK/MatrixSDK.h>
 
-#import "VectorViewController.h"
+#import "MXKViewController+VectorSearch.h"
 
 /**
  This view controller manages several uiviewcontrollers like UISegmentedControlled manages uiTableView
  except that the managed items are custom UIViewControllers.
  It uses a Vector design.
  */
-@interface SegmentedViewController : VectorViewController
+@interface SegmentedViewController : MXKViewController
 
 #pragma mark - Class methods
 @property (weak, nonatomic) IBOutlet UIView *selectionContainer;
