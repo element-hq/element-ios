@@ -67,6 +67,7 @@
     self.searchBar.text = @"";
 
     // Remove navigation buttons
+    self.navigationItem.hidesBackButton = YES;
     self.navigationItem.rightBarButtonItem = nil;
     self.navigationItem.leftBarButtonItem = nil;
 
@@ -80,6 +81,7 @@
     // Restore the screen header
     if (self.searchInternals.backupLeftBarButtonItem)
     {
+        self.navigationItem.hidesBackButton = NO;
         self.navigationItem.titleView = self.searchInternals.backupTitleView;
         self.navigationItem.leftBarButtonItem = self.searchInternals.backupLeftBarButtonItem;
         self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
