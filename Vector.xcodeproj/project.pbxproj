@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
 		32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */; };
+		324BA8B51C3120F500010553 /* VectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 324BA8B41C3120F500010553 /* VectorViewController.m */; };
 		325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F6A381C21810E00C12F51 /* DirectoryViewController.m */; };
 		325F6A421C21D20F00C12F51 /* DirectoryRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F6A401C21D20F00C12F51 /* DirectoryRecentTableViewCell.m */; };
 		325F6A431C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A411C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib */; };
@@ -180,6 +181,8 @@
 		32492DB01C293C8900035C79 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
 		32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableViewCell.m; sourceTree = "<group>"; };
 		32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomTableViewCell.xib; sourceTree = "<group>"; };
+		324BA8B31C3120F500010553 /* VectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorViewController.h; sourceTree = "<group>"; };
+		324BA8B41C3120F500010553 /* VectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorViewController.m; sourceTree = "<group>"; };
 		325F6A371C21810E00C12F51 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
 		325F6A381C21810E00C12F51 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
 		325F6A3F1C21D20F00C12F51 /* DirectoryRecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryRecentTableViewCell.h; sourceTree = "<group>"; };
@@ -762,6 +765,8 @@
 				7165A2581C05CD42003635D7 /* SegmentedViewController.h */,
 				7165A2591C05CD42003635D7 /* SegmentedViewController.m */,
 				7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */,
+				324BA8B31C3120F500010553 /* VectorViewController.h */,
+				324BA8B41C3120F500010553 /* VectorViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1132,6 +1137,7 @@
 				325F6A421C21D20F00C12F51 /* DirectoryRecentTableViewCell.m in Sources */,
 				F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */,
 				71F7F5181C22CC7500E7ED8F /* MXRoom+Vector.m in Sources */,
+				324BA8B51C3120F500010553 /* VectorViewController.m in Sources */,
 				F0D2D9831C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				71C5F2951C074ACC004C094B /* RoomSettingsViewController.m in Sources */,

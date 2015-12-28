@@ -24,9 +24,6 @@
 
 @interface HomeViewController ()
 {
-    // The search bar
-    UISearchBar *searchBar;
-
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
 
@@ -35,11 +32,6 @@
 
     // Display a button to a new room
     UIImageView* createNewRoomImageView;
-
-    // Backup of view when displaying search
-    UIView *backupTitleView;
-    UIBarButtonItem *backupLeftBarButtonItem;
-    UIBarButtonItem *backupRightBarButtonItem;
 }
 
 @end
@@ -72,11 +64,6 @@
     self.navigationItem.title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
     
     self.backgroundImageView.image = [UIImage imageNamed:@"search_bg"];
-
-    // Search bar
-    searchBar = [[UISearchBar alloc] init];
-    searchBar.showsCancelButton = YES;
-    searchBar.delegate = self;
 }
 
 - (void)dealloc
@@ -264,7 +251,7 @@
 - (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
     // Force hiding the keyboard
-    [searchBar resignFirstResponder];
+    [self.searchBar resignFirstResponder];
 
     if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
         && _selectedRoomSession && _selectedRoomSession == matrixSession)
@@ -309,7 +296,7 @@
 - (void)showPublicRoomsDirectory
 {
     // Force hiding the keyboard
-    [searchBar resignFirstResponder];
+    [self.searchBar resignFirstResponder];
     
     [self performSegueWithIdentifier:@"showDirectory" sender:self];
 }
@@ -397,86 +384,24 @@
 
 - (void)showSearch:(BOOL)animated
 {
-    backupTitleView = self.navigationItem.titleView;
-    backupLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
-    backupRightBarButtonItem = self.navigationItem.rightBarButtonItem;
-
+    [super showSearch:animated];
+    
     // Reset searches
-    searchBar.text = @"";
     [recentsDataSource searchWithPatterns:nil];
 
-    // Remove navigation buttons
-    self.navigationItem.rightBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = nil;
-
-    // Add the search bar and
-    self.navigationItem.titleView = searchBar;
-    [searchBar becomeFirstResponder];
-
-    // Show the tabs header
-    if (animated)
-    {
-        [self updateSearch];
-
-        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-
-                             self.selectionContainerHeightConstraint.constant = 44;
-                             [self.view layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
-    else
-    {
-        [self updateSearch];
-        self.selectionContainerHeightConstraint.constant = 44;
-        [self.view layoutIfNeeded];
-    }
+    [self updateSearch];
 }
 
 - (void)hideSearch:(BOOL)animated
 {
-    if (backupLeftBarButtonItem)
-    {
-        self.navigationItem.titleView = backupTitleView;
-        self.navigationItem.leftBarButtonItem = backupLeftBarButtonItem;
-        self.navigationItem.rightBarButtonItem = backupRightBarButtonItem;
-    }
+    [super hideSearch:animated];
 
     [recentsDataSource searchWithPatterns:nil];
 
-    // Hide the tabs header
-    if (animated)
+     // If the currently selected tab is the recents, force to show it right now
+     // The transition looks smoother
+    if (animated && self.selectedViewController.view.hidden == YES && self.selectedViewController == recentsViewController)
     {
-        // If the currently selected tab is the recents, force to show it right now
-        // The transition looks smoother
-        if (self.selectedViewController.view.hidden == YES && self.selectedViewController == recentsViewController)
-        {
-            self.selectedViewController.view.hidden = NO;
-        }
-
-        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-
-                             self.selectionContainerHeightConstraint.constant = 0;
-                             [self.view layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished) {
-                             // Go back to the recents tab
-                             // Do it at the end of the animation when the tabs header of the SegmentedVC is hidden
-                             // so that the user cannot see the selection bar of this header moving
-                             self.selectedIndex = 0;
-                             self.selectedViewController.view.hidden = NO;
-                         }];
-    }
-    else
-    {
-        self.selectionContainerHeightConstraint.constant = 0;
-        [self.view layoutIfNeeded];
-
-        // Go back to the recents tab
-        self.selectedIndex = 0;
         self.selectedViewController.view.hidden = NO;
     }
 }
@@ -484,12 +409,12 @@
 // Update search results under the currently selected tab
 - (void)updateSearch
 {
-    if (searchBar.text.length)
+    if (self.searchBar.text.length)
     {
         self.selectedViewController.view.hidden = NO;
 
         // Do a AND search on words separated by a space
-        NSArray *patterns = [searchBar.text componentsSeparatedByString:@" "];
+        NSArray *patterns = [self.searchBar.text componentsSeparatedByString:@" "];
 
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
@@ -520,35 +445,6 @@
         // As the search is local, it can be updated on each text change
         [self updateSearch];
     }
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
-{
-    // "Search" key has been pressed
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
-{
-    [self hideSearch:YES];
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar2
-{
-    // Keep the search bar cancel button enabled even if the keyboard is not displayed
-    dispatch_async(dispatch_get_main_queue(), ^{
-        for (UIView *subView in searchBar.subviews)
-        {
-            for (UIView *view in subView.subviews)
-            {
-                if ([view isKindOfClass:[UIButton class]])
-                {
-                    [(UIButton *)view setEnabled:YES];
-                }
-            }
-        }
-    });
-    return YES;
 }
 
 #pragma mark - MXKRecentListViewControllerDelegate
