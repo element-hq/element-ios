@@ -14,16 +14,16 @@
  limitations under the License.
  */
 
-#import "MXKViewController+VectorSearch.h"
+#import "UIViewController+VectorSearch.h"
 
 #import <objc/runtime.h>
 
 /**
- `MXKViewController_VectorSearch` is the internal single point storage for the search feature.
+ `UIViewController_VectorSearch` is the internal single point storage for the search feature.
  
  It hosts all required data so that only one associated object can be used in the category.
  */
-@interface MXKViewController_VectorSearch : NSObject
+@interface UIViewController_VectorSearch : NSObject
 
 // The search bar
 @property (nonatomic) UISearchBar *searchBar;
@@ -35,21 +35,21 @@
 
 @end
 
-@implementation MXKViewController_VectorSearch
+@implementation UIViewController_VectorSearch
 @end
 
 
-#pragma mark - MXKViewController+VectorSearch
+#pragma mark - UIViewController+VectorSearch
 #pragma mark -
 
-@interface MXKViewController ()
+@interface UIViewController ()
 
 // The single associated object hosting all data.
-@property(nonatomic) MXKViewController_VectorSearch *searchInternals;
+@property(nonatomic) UIViewController_VectorSearch *searchInternals;
 
 @end
 
-@implementation MXKViewController (VectorSearch)
+@implementation UIViewController (VectorSearch)
 
 - (UISearchBar *)searchBar
 {
@@ -121,18 +121,18 @@
 
 #pragma mark - Internal associated object
 
-- (void)setSearchInternals:(MXKViewController_VectorSearch *)searchInternals
+- (void)setSearchInternals:(UIViewController_VectorSearch *)searchInternals
 {
     objc_setAssociatedObject(self, @selector(searchInternals), searchInternals, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (MXKViewController_VectorSearch *)searchInternals
+- (UIViewController_VectorSearch *)searchInternals
 {
-    MXKViewController_VectorSearch *searchInternals = objc_getAssociatedObject(self, @selector(searchInternals));
+    UIViewController_VectorSearch *searchInternals = objc_getAssociatedObject(self, @selector(searchInternals));
     if (!searchInternals)
     {
         // Initialise internal data at the first call
-        searchInternals = [[MXKViewController_VectorSearch alloc] init];
+        searchInternals = [[UIViewController_VectorSearch alloc] init];
 
         UISearchBar *searchBar = [[UISearchBar alloc] init];
         searchBar.showsCancelButton = YES;

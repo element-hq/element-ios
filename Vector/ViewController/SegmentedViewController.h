@@ -16,7 +16,7 @@ limitations under the License.
 
 #import <MatrixSDK/MatrixSDK.h>
 
-#import "MXKViewController+VectorSearch.h"
+#import "UIViewController+VectorSearch.h"
 
 /**
  This view controller manages several uiviewcontrollers like UISegmentedControlled manages uiTableView
