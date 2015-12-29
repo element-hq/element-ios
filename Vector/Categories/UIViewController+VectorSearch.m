@@ -136,7 +136,7 @@
 
         UISearchBar *searchBar = [[UISearchBar alloc] init];
         searchBar.showsCancelButton = YES;
-        searchBar.delegate = self;
+        searchBar.delegate = (id<UISearchBarDelegate>)self;
         searchInternals.searchBar = searchBar;
 
         self.searchInternals = searchInternals;
