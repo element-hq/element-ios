@@ -792,7 +792,7 @@
 {
     if (sender == self.navigationItem.rightBarButtonItem)
     {
-        [self showSearch:YES];
+        // FIXME Launch messages search session
     }
 }
 
@@ -914,36 +914,6 @@
         [((RoomActivitiesView*) self.activitiesView) updateTypingMessage:text];
     }
 }
-
-#pragma mark - Search
-
-- (void)showSearch:(BOOL)animated
-{
-    [super showSearch:animated];
-
-    [self setRoomInputToolbarViewClass:nil];
-    self.roomActivitiesContainerHeightConstraint.constant = 0;
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:0 completion:nil];
-
-    // Reset searches
-    //[recentsDataSource searchWithPatterns:nil];
-
-    [self updateSearch];
-}
-
-- (void)hideSearch:(BOOL)animated
-{
-    [super hideSearch:animated];
-
-
-}
-
-// Update search results under the currently selected tab
-- (void)updateSearch
-{
-
-}
-
 
 @end
 
