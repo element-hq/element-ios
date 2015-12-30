@@ -411,12 +411,18 @@
     // Reset searches
     [recentsDataSource searchWithPatterns:nil];
 
+    createNewRoomImageView.hidden = YES;
+    tableViewMaskLayer.hidden = YES;
+
     [self updateSearch];
 }
 
 - (void)hideSearch:(BOOL)animated
 {
     [super hideSearch:animated];
+
+    createNewRoomImageView.hidden = NO;
+    tableViewMaskLayer.hidden = NO;
 
     [recentsDataSource searchWithPatterns:nil];
 
