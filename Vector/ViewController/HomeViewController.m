@@ -317,7 +317,10 @@
 {
     [super setSelectedIndex:selectedIndex];
 
-    [self updateSearch];
+    if (!self.searchBarHidden)
+    {
+        [self updateSearch];
+    }
 }
 
 #pragma mark - Internal methods

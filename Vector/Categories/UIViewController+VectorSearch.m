@@ -27,6 +27,7 @@
 
 // The search bar
 @property (nonatomic) UISearchBar *searchBar;
+@property (nonatomic) BOOL searchBarHidden;
 
 // Backup of view when displaying search
 @property (nonatomic) UIView *backupTitleView;
@@ -56,12 +57,18 @@
     return self.searchInternals.searchBar;
 }
 
+- (BOOL)searchBarHidden
+{
+    return self.searchInternals.searchBarHidden;
+}
+
 - (void)showSearch:(BOOL)animated
 {
     // Backup screen header before displaying the search bar in it
     self.searchInternals.backupTitleView = self.navigationItem.titleView;
     self.searchInternals.backupLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
     self.searchInternals.backupRightBarButtonItem = self.navigationItem.rightBarButtonItem;
+    self.searchInternals.searchBarHidden = NO;
 
     // Reset searches
     self.searchBar.text = @"";
@@ -86,6 +93,8 @@
         self.navigationItem.leftBarButtonItem = self.searchInternals.backupLeftBarButtonItem;
         self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
     }
+
+    self.searchInternals.searchBarHidden = YES;
 }
 
 #pragma mark - UISearchBarDelegate

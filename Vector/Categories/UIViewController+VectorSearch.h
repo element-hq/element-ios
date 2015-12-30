@@ -23,9 +23,14 @@
 @interface MXKViewController (VectorSearch) <UISearchBarDelegate>
 
 /**
- The search bar
+ The search bar.
  */
 @property (nonatomic, readonly) UISearchBar *searchBar;
+
+/**
+ The search bar state.
+ */
+@property (nonatomic, readonly) BOOL searchBarHidden;
 
 /**
  Show/Hide the search bar.
