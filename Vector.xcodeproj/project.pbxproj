@@ -10,6 +10,7 @@
 		3235CD851C341FAA0084EA40 /* HomeSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235CD841C341FAA0084EA40 /* HomeSearchViewController.m */; };
 		3235CD881C3423070084EA40 /* HomeSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235CD871C3423070084EA40 /* HomeSearchTableViewCell.m */; };
 		3235CD8A1C3426D10084EA40 /* HomeSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3235CD891C3426D10084EA40 /* HomeSearchTableViewCell.xib */; };
+		3235CD8D1C34309E0084EA40 /* HomeSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3235CD8C1C34309E0084EA40 /* HomeSearchCellData.m */; };
 		323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */; };
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
 		32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */; };
@@ -186,6 +187,8 @@
 		3235CD861C3423070084EA40 /* HomeSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeSearchTableViewCell.h; sourceTree = "<group>"; };
 		3235CD871C3423070084EA40 /* HomeSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeSearchTableViewCell.m; sourceTree = "<group>"; };
 		3235CD891C3426D10084EA40 /* HomeSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeSearchTableViewCell.xib; sourceTree = "<group>"; };
+		3235CD8B1C34309E0084EA40 /* HomeSearchCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeSearchCellData.h; sourceTree = "<group>"; };
+		3235CD8C1C34309E0084EA40 /* HomeSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeSearchCellData.m; sourceTree = "<group>"; };
 		323A52091C3183CC00010773 /* UIViewController+VectorSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VectorSearch.h"; sourceTree = "<group>"; };
 		323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VectorSearch.m"; sourceTree = "<group>"; };
 		32492DB01C293C8900035C79 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
@@ -594,6 +597,8 @@
 		F00C47881BFF854400DBABC9 /* RoomList */ = {
 			isa = PBXGroup;
 			children = (
+				3235CD8B1C34309E0084EA40 /* HomeSearchCellData.h */,
+				3235CD8C1C34309E0084EA40 /* HomeSearchCellData.m */,
 				71F7F5131C218D8900E7ED8F /* RecentCellData.h */,
 				71F7F5141C218D8900E7ED8F /* RecentCellData.m */,
 				F00C47891BFF854400DBABC9 /* RecentsDataSource.h */,
@@ -1138,6 +1143,7 @@
 				F0C34B6F1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */,
 				325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */,
+				3235CD8D1C34309E0084EA40 /* HomeSearchCellData.m in Sources */,
 				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */,

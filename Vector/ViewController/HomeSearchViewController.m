@@ -16,7 +16,10 @@
 
 #import "HomeSearchViewController.h"
 
+#import "HomeSearchCellData.h"
 #import "HomeSearchTableViewCell.h"
+
+#import "EventFormatter.h"
 
 @implementation HomeSearchViewController
 
@@ -27,6 +30,15 @@
     [self.searchTableView registerNib:HomeSearchTableViewCell.nib forCellReuseIdentifier:HomeSearchTableViewCell.defaultReuseIdentifier];
 
     self.searchTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+}
+
+- (void)displaySearch:(MXKSearchDataSource *)searchDataSource
+{
+    // Customize cell data processing for Vector
+    [searchDataSource registerCellDataClass:HomeSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
+    searchDataSource.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:searchDataSource.mxSession];
+
+    [super displaySearch:searchDataSource];
 }
 
 #pragma mark - MXKDataSourceDelegate
