@@ -23,7 +23,7 @@
 #import "DirectoryViewController.h"
 
 #import "MXKSearchDataSource.h"
-#import "MXKSearchViewController.h"
+#import "HomeSearchViewController.h"
 
 @interface HomeViewController ()
 {
@@ -56,7 +56,7 @@
     [viewControllers addObject:recentsViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"Messages", @"Vector", nil)];
-    searchViewController = [MXKSearchViewController searchViewController];
+    searchViewController = [HomeSearchViewController searchViewController];
     [viewControllers addObject:searchViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"People", @"Vector", nil)];
