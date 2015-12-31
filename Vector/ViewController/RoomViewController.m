@@ -782,8 +782,7 @@
 
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
 
-        MXKSearchDataSource *roomSearchDataSource = [[MXKSearchDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
-
+        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource andMatrixSession:self.mainSession];
         [roomSearchViewController displaySearch:roomSearchDataSource];
     }
 
