@@ -31,6 +31,7 @@
 
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
+#import "RoomSearchViewController.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
 #import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
@@ -774,7 +775,18 @@
             [segmentedViewController addMatrixSession:session];
         }
     }
-    
+    else if ([[segue identifier] isEqualToString:@"showRoomSearch"])
+    {
+        // Dismiss keyboard
+        [self dismissKeyboard];
+
+        RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
+
+        MXKSearchDataSource *roomSearchDataSource = [[MXKSearchDataSource alloc] initWithRoomId:self.roomDataSource.roomId andMatrixSession:self.mainSession];
+
+        [roomSearchViewController displaySearch:roomSearchDataSource];
+    }
+
     // Hide back button title
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
@@ -792,7 +804,7 @@
 {
     if (sender == self.navigationItem.rightBarButtonItem)
     {
-        // FIXME Launch messages search session
+        [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
     }
 }
 
