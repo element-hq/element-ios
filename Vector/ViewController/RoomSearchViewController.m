@@ -16,6 +16,33 @@
 
 #import "RoomSearchViewController.h"
 
+#import "UIViewController+VectorSearch.h"
+
 @implementation RoomSearchViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // Enable the search field at the opening
+    [self showSearch:animated];
+}
+
+#pragma mark - Override UIViewController+VectorSearch
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
+{
+    [super searchBarSearchButtonClicked:searchBar2];
+
+    // Make the search
+    [self.dataSource searchMessageText:searchBar2.text];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
+{
+    // Leave the screen
+    [super searchBarCancelButtonClicked:searchBar2];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end
