@@ -16,28 +16,11 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-/**
- The `VectorSearch` category adds the management of the search bar in Vector screens.
- */
-
-@interface MXKViewController (VectorSearch) <UISearchBarDelegate>
+#import "MXKSearchCellDataStoring.h"
 
 /**
- The search bar.
+ `HomeSearchCellData` modelised the data a la Vector for a `HomeSearchCell` cell.
  */
-@property (nonatomic, readonly) UISearchBar *searchBar;
-
-/**
- The search bar state.
- */
-@property (nonatomic, readonly) BOOL searchBarHidden;
-
-/**
- Show/Hide the search bar.
-
- @param animated or not.
- */
-- (void)showSearch:(BOOL)animated;
-- (void)hideSearch:(BOOL)animated;
+@interface HomeSearchCellData : MXKCellData <MXKSearchCellDataStoring>
 
 @end

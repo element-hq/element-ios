@@ -22,10 +22,16 @@
 #import "RoomViewController.h"
 #import "DirectoryViewController.h"
 
+#import "MXKSearchDataSource.h"
+#import "HomeSearchViewController.h"
+
 @interface HomeViewController ()
 {
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
+
+    MXKSearchViewController *searchViewController;
+    MXKSearchDataSource *searchDataSource;
 
     // Display a gradient view above the screen
     CAGradientLayer* tableViewMaskLayer;
@@ -50,8 +56,8 @@
     [viewControllers addObject:recentsViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"Messages", @"Vector", nil)];
-    MXKViewController *tempMessagesVC = [[MXKViewController alloc] init];
-    [viewControllers addObject:tempMessagesVC];
+    searchViewController = [HomeSearchViewController searchViewController];
+    [viewControllers addObject:searchViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"People", @"Vector", nil)];
     MXKViewController *tempPeopleVC = [[MXKViewController alloc] init];
@@ -221,6 +227,10 @@
     recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mxSession];
     [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
 
+    // Init the search for messages
+    searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mxSession];
+    [searchViewController displaySearch:searchDataSource];
+    
     // Do not go to search mode when first opening the home
     [self hideSearch:NO];
 }
@@ -299,6 +309,18 @@
     [self.searchBar resignFirstResponder];
     
     [self performSegueWithIdentifier:@"showDirectory" sender:self];
+}
+
+#pragma mark - Override SegmentedViewController
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    [super setSelectedIndex:selectedIndex];
+
+    if (!self.searchBarHidden)
+    {
+        [self updateSearch];
+    }
 }
 
 #pragma mark - Internal methods
@@ -389,12 +411,18 @@
     // Reset searches
     [recentsDataSource searchWithPatterns:nil];
 
+    createNewRoomImageView.hidden = YES;
+    tableViewMaskLayer.hidden = YES;
+
     [self updateSearch];
 }
 
 - (void)hideSearch:(BOOL)animated
 {
     [super hideSearch:animated];
+
+    createNewRoomImageView.hidden = NO;
+    tableViewMaskLayer.hidden = NO;
 
     [recentsDataSource searchWithPatterns:nil];
 
@@ -413,26 +441,33 @@
     {
         self.selectedViewController.view.hidden = NO;
 
-        // Do a AND search on words separated by a space
-        NSArray *patterns = [self.searchBar.text componentsSeparatedByString:@" "];
-
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
         {
+            // Do a AND search on words separated by a space
+            NSArray *patterns = [self.searchBar.text componentsSeparatedByString:@" "];
+
             [recentsDataSource searchWithPatterns:patterns];
             recentsViewController.shouldScrollToTopOnRefresh = YES;
+        }
+        else if (self.selectedViewController == searchViewController)
+        {
+            // Launch the search only if the keyboard is no more visible
+            if (!self.searchBar.isFirstResponder)
+            {
+                // Do it asynchronously to give time to searchViewController to be set up
+                // so that it can display its loading wheel
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [searchDataSource searchMessageText:self.searchBar.text];
+                    searchViewController.shouldScrollToBottomOnRefresh = YES;
+                });
+            }
         }
     }
     else
     {
         // Nothing to search = Show nothing
         self.selectedViewController.view.hidden = YES;
-
-        if (self.selectedViewController == recentsViewController)
-        {
-            [recentsDataSource searchWithPatterns:nil];
-            recentsViewController.shouldScrollToTopOnRefresh = YES;
-        }
     }
 }
 
@@ -442,7 +477,18 @@
 {
     if (self.selectedViewController == recentsViewController)
     {
-        // As the search is local, it can be updated on each text change
+        // As the public room search is local, it can be updated on each text change
+        [self updateSearch];
+    }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    
+    if (self.selectedViewController == searchViewController)
+    {
+        // As the messages search is done homeserver-side, launch it only on the "Search" button
         [self updateSearch];
     }
 }

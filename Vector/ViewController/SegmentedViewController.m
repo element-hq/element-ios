@@ -475,7 +475,7 @@
     if ((pos != NSNotFound) && (_selectedIndex != pos))
     {
         // update the selected index
-        _selectedIndex = pos;
+        self.selectedIndex = pos;
         
         [self displaySelectedViewController];
     }

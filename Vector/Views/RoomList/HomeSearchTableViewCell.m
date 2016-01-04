@@ -14,30 +14,14 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "HomeSearchTableViewCell.h"
 
-/**
- The `VectorSearch` category adds the management of the search bar in Vector screens.
- */
+@implementation HomeSearchTableViewCell
 
-@interface MXKViewController (VectorSearch) <UISearchBarDelegate>
-
-/**
- The search bar.
- */
-@property (nonatomic, readonly) UISearchBar *searchBar;
-
-/**
- The search bar state.
- */
-@property (nonatomic, readonly) BOOL searchBarHidden;
-
-/**
- Show/Hide the search bar.
-
- @param animated or not.
- */
-- (void)showSearch:(BOOL)animated;
-- (void)hideSearch:(BOOL)animated;
++ (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    // The height is fixed
+    return 74;
+}
 
 @end

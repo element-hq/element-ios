@@ -16,7 +16,9 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomViewController : MXKRoomViewController
+#import "UIViewController+VectorSearch.h"
+
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate>
 
 @end
 

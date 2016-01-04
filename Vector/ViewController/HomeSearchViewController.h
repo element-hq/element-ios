@@ -14,30 +14,12 @@
  limitations under the License.
  */
 
+
 #import <MatrixKit/MatrixKit.h>
 
 /**
- The `VectorSearch` category adds the management of the search bar in Vector screens.
+ `HomeSearchViewController` displays messages search in user's rooms under a `HomeViewController` segment.
  */
-
-@interface MXKViewController (VectorSearch) <UISearchBarDelegate>
-
-/**
- The search bar.
- */
-@property (nonatomic, readonly) UISearchBar *searchBar;
-
-/**
- The search bar state.
- */
-@property (nonatomic, readonly) BOOL searchBarHidden;
-
-/**
- Show/Hide the search bar.
-
- @param animated or not.
- */
-- (void)showSearch:(BOOL)animated;
-- (void)hideSearch:(BOOL)animated;
+@interface HomeSearchViewController : MXKSearchViewController
 
 @end
