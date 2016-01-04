@@ -20,6 +20,8 @@
 		325F6A471C21D4C100C12F51 /* chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A441C21D4C100C12F51 /* chevron.png */; };
 		325F6A481C21D4C100C12F51 /* chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A451C21D4C100C12F51 /* chevron@2x.png */; };
 		325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A461C21D4C100C12F51 /* chevron@3x.png */; };
+		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
+		32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */; };
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
 		32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200811C15C56A00A4E396 /* search_bg@2x.png */; };
 		32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200821C15C56A00A4E396 /* search_bg@3x.png */; };
@@ -202,6 +204,10 @@
 		325F6A441C21D4C100C12F51 /* chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chevron.png; sourceTree = "<group>"; };
 		325F6A451C21D4C100C12F51 /* chevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@2x.png"; sourceTree = "<group>"; };
 		325F6A461C21D4C100C12F51 /* chevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@3x.png"; sourceTree = "<group>"; };
+		32AAC3E41C3525DE007A3B5B /* RoomSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchViewController.h; sourceTree = "<group>"; };
+		32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
+		32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
+		32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
 		32D200801C15C56A00A4E396 /* search_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bg.png; sourceTree = "<group>"; };
 		32D200811C15C56A00A4E396 /* search_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@2x.png"; sourceTree = "<group>"; };
 		32D200821C15C56A00A4E396 /* search_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@3x.png"; sourceTree = "<group>"; };
@@ -638,6 +644,8 @@
 				F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */,
 				F08BE0A01B87064000C480FB /* RoomDataSource.h */,
 				F08BE0A11B87064000C480FB /* RoomDataSource.m */,
+				32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */,
+				32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -774,6 +782,8 @@
 				F0DD7D811B7B363300C4BE02 /* RoomCreationStep1ViewController.m */,
 				F0DD7D861B7B507100C4BE02 /* RoomCreationStep2ViewController.h */,
 				F0DD7D871B7B507100C4BE02 /* RoomCreationStep2ViewController.m */,
+				32AAC3E41C3525DE007A3B5B /* RoomSearchViewController.h */,
+				32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */,
 				F094AA261B78E42600B1FBBF /* RoomViewController.h */,
 				F094AA271B78E42600B1FBBF /* RoomViewController.m */,
 				71C5F2931C074ACC004C094B /* RoomSettingsViewController.h */,
@@ -1128,6 +1138,7 @@
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */,
 				F0C34B651C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				F0C34B711C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F094AA051B78E3D400B1FBBF /* empty.mm in Sources */,
@@ -1148,6 +1159,7 @@
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
+				32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */,
 				32F2E61B1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,
 				3235CD851C341FAA0084EA40 /* HomeSearchViewController.m in Sources */,
