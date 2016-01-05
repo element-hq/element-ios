@@ -321,6 +321,34 @@
     [super setKeyboardHeight:keyboardHeight];
 }
 
+#pragma mark - Override UIViewController+VectorSearch
+
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    if (keyboardHeight > 0)
+    {
+        [self checkAndShowBackgroundImage];
+    }
+}
+
+// Check if there is enough room for displaying the background
+// before displaying it
+- (void)checkAndShowBackgroundImage
+{
+    // In landscape with the iPhone 5 & 6 screen size, the backgroundImageView overlaps the tabs header,
+    // So, hide backgroundImageView
+    if (self.backgroundImageView.superview.frame.size.height > 375)
+    {
+        self.backgroundImageView.hidden = NO;
+    }
+    else
+    {
+        self.backgroundImageView.hidden = YES;
+    }
+}
+
 #pragma mark - Override SegmentedViewController
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -480,7 +508,7 @@
     {
         // Nothing to search = Show nothing
         self.selectedViewController.view.hidden = YES;
-        self.backgroundImageView.hidden = NO;
+        [self checkAndShowBackgroundImage];
     }
 }
 
