@@ -34,6 +34,10 @@
 @property (nonatomic) UIBarButtonItem *backupLeftBarButtonItem;
 @property (nonatomic) UIBarButtonItem *backupRightBarButtonItem;
 
+// The Vector empty search background image (champagne bubbles)
+@property (nonatomic) UIImageView *backgroundImageView;
+@property (nonatomic) NSLayoutConstraint *backgroundImageViewBottomConstraint;
+
 @end
 
 @implementation UIViewController_VectorSearch
@@ -60,6 +64,11 @@
 - (BOOL)searchBarHidden
 {
     return self.searchInternals.searchBarHidden;
+}
+
+- (UIImageView*)backgroundImageView
+{
+    return self.searchInternals.backgroundImageView;
 }
 
 - (void)showSearch:(BOOL)animated
@@ -95,6 +104,59 @@
     }
 
     self.searchInternals.searchBarHidden = YES;
+}
+
+- (void)addBackgroundImageViewToView:(UIView*)view
+{
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search_bg"]];
+    backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [view addSubview:backgroundImageView];
+
+    // Keep it at left
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:view
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:backgroundImageView
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                     multiplier:1.0
+                                                                     constant:0];
+    // Same width as parent
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:view
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:backgroundImageView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                      multiplier:1.0f
+                                                                        constant:0.0f];
+
+    // Keep the image aspect ratio
+    NSLayoutConstraint *aspectRatioConstraint = [NSLayoutConstraint
+                                                  constraintWithItem:backgroundImageView
+                                                  attribute:NSLayoutAttributeHeight
+                                                  relatedBy:NSLayoutRelationEqual
+                                                  toItem:backgroundImageView
+                                                  attribute:NSLayoutAttributeWidth
+                                                  multiplier:(backgroundImageView.frame.size.height / backgroundImageView.frame.size.width)
+                                                  constant:0];
+
+    // Set its position according to its bottom
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:view
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:backgroundImageView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:216];
+
+    [NSLayoutConstraint activateConstraints:@[leftConstraint,
+                                              widthConstraint,
+                                              aspectRatioConstraint,
+                                              bottomConstraint
+                                              ]];
+
+    self.searchInternals.backgroundImageView = backgroundImageView;
+    self.searchInternals.backgroundImageViewBottomConstraint = bottomConstraint;
 }
 
 #pragma mark - UISearchBarDelegate

@@ -25,12 +25,6 @@
 
 @implementation RoomSearchViewController
 
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass([RoomSearchViewController class])
-                          bundle:[NSBundle bundleForClass:[RoomSearchViewController class]]];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,6 +35,9 @@
     // Reuse cells from the RoomViewController to display results
     [self.searchTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
     [self.searchTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
+
+    // Add the Vector background image when search bar is empty
+    [self addBackgroundImageViewToView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -55,7 +52,7 @@
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
-    self.backgroundImageViewBottomConstraint.constant = keyboardHeight;
+    //self.backgroundImageViewBottomConstraint.constant = keyboardHeight;
     [super setKeyboardHeight:keyboardHeight];
 }
 
@@ -67,7 +64,7 @@
 
     if (searchBar2.text.length)
     {
-        _backgroundImageView.hidden = YES;
+        self.backgroundImageView.hidden = YES;
     }
 }
 
