@@ -29,9 +29,15 @@
 {
     [super viewDidLoad];
 
+    // Hide line separators of empty cells
+    self.searchTableView.tableFooterView = [[UIView alloc] init];
+
     // Reuse cells from the RoomViewController to display results
     [self.searchTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
     [self.searchTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
+
+    // Add the Vector background image when search bar is empty
+    [self addBackgroundImageViewToView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -42,14 +48,25 @@
     [self showSearch:animated];
 }
 
+#pragma mark - Override MXKViewController
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    [super setKeyboardHeight:keyboardHeight];
+}
+
 #pragma mark - Override UIViewController+VectorSearch
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
 {
     [super searchBarSearchButtonClicked:searchBar2];
 
-    // Make the search
-    [self.dataSource searchMessageText:searchBar2.text];
+    if (searchBar2.text.length)
+    {
+        self.backgroundImageView.hidden = YES;
+    }
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
@@ -95,6 +112,7 @@
 
     return nil;
 }
+
 
 #pragma mark - Override UITableView delegate
 

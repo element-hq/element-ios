@@ -75,6 +75,9 @@
     [self.recentsTableView addGestureRecognizer:longPress];
 
     self.recentsTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+
+    // Hide line separators of empty cells
+    self.recentsTableView.tableFooterView = [[UIView alloc] init];
 }
 
 - (void)destroy

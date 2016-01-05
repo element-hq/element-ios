@@ -30,6 +30,9 @@
     [self.searchTableView registerNib:HomeSearchTableViewCell.nib forCellReuseIdentifier:HomeSearchTableViewCell.defaultReuseIdentifier];
 
     self.searchTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+
+    // Hide line separators of empty cells
+    self.searchTableView.tableFooterView = [[UIView alloc] init];
 }
 
 - (void)displaySearch:(MXKSearchDataSource *)searchDataSource

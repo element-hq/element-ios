@@ -68,8 +68,9 @@
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
-    
-    self.backgroundImageView.image = [UIImage imageNamed:@"search_bg"];
+
+    // Add the Vector background image when search bar is empty
+    [self addBackgroundImageViewToView:self.view];
 }
 
 - (void)dealloc
@@ -311,6 +312,43 @@
     [self performSegueWithIdentifier:@"showDirectory" sender:self];
 }
 
+#pragma mark - Override MXKViewController
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    [super setKeyboardHeight:keyboardHeight];
+}
+
+#pragma mark - Override UIViewController+VectorSearch
+
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    if (keyboardHeight > 0)
+    {
+        [self checkAndShowBackgroundImage];
+    }
+}
+
+// Check if there is enough room for displaying the background
+// before displaying it
+- (void)checkAndShowBackgroundImage
+{
+    // In landscape with the iPhone 5 & 6 screen size, the backgroundImageView overlaps the tabs header,
+    // So, hide backgroundImageView
+    if (self.backgroundImageView.superview.frame.size.height > 375)
+    {
+        self.backgroundImageView.hidden = NO;
+    }
+    else
+    {
+        self.backgroundImageView.hidden = YES;
+    }
+}
+
 #pragma mark - Override SegmentedViewController
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -423,6 +461,7 @@
 
     createNewRoomImageView.hidden = NO;
     tableViewMaskLayer.hidden = NO;
+    self.backgroundImageView.hidden = YES;
 
     [recentsDataSource searchWithPatterns:nil];
 
@@ -440,6 +479,7 @@
     if (self.searchBar.text.length)
     {
         self.selectedViewController.view.hidden = NO;
+        self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
@@ -468,6 +508,7 @@
     {
         // Nothing to search = Show nothing
         self.selectedViewController.view.hidden = YES;
+        [self checkAndShowBackgroundImage];
     }
 }
 
