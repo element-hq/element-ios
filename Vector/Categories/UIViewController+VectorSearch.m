@@ -19,11 +19,11 @@
 #import <objc/runtime.h>
 
 /**
- `UIViewController_VectorSearch` is the internal single point storage for the search feature.
+ `UIViewControllerVectorSearchInternals` is the internal single point storage for the search feature.
  
  It hosts all required data so that only one associated object can be used in the category.
  */
-@interface UIViewController_VectorSearch : NSObject
+@interface UIViewControllerVectorSearchInternals : NSObject
 
 // The search bar
 @property (nonatomic) UISearchBar *searchBar;
@@ -40,7 +40,7 @@
 
 @end
 
-@implementation UIViewController_VectorSearch
+@implementation UIViewControllerVectorSearchInternals
 @end
 
 
@@ -50,7 +50,7 @@
 @interface UIViewController ()
 
 // The single associated object hosting all data.
-@property(nonatomic) UIViewController_VectorSearch *searchInternals;
+@property(nonatomic) UIViewControllerVectorSearchInternals *searchInternals;
 
 @end
 
@@ -202,18 +202,18 @@
 
 #pragma mark - Internal associated object
 
-- (void)setSearchInternals:(UIViewController_VectorSearch *)searchInternals
+- (void)setSearchInternals:(UIViewControllerVectorSearchInternals *)searchInternals
 {
     objc_setAssociatedObject(self, @selector(searchInternals), searchInternals, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIViewController_VectorSearch *)searchInternals
+- (UIViewControllerVectorSearchInternals *)searchInternals
 {
-    UIViewController_VectorSearch *searchInternals = objc_getAssociatedObject(self, @selector(searchInternals));
+    UIViewControllerVectorSearchInternals *searchInternals = objc_getAssociatedObject(self, @selector(searchInternals));
     if (!searchInternals)
     {
         // Initialise internal data at the first call
-        searchInternals = [[UIViewController_VectorSearch alloc] init];
+        searchInternals = [[UIViewControllerVectorSearchInternals alloc] init];
 
         UISearchBar *searchBar = [[UISearchBar alloc] init];
         searchBar.showsCancelButton = YES;
