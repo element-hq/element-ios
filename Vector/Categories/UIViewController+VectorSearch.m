@@ -157,15 +157,25 @@
 
     self.searchInternals.backgroundImageView = backgroundImageView;
     self.searchInternals.backgroundImageViewBottomConstraint = bottomConstraint;
+
+    // It will be showed once the keyboard appears
+    backgroundImageView.hidden = YES;
 }
 
 - (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
 {
-    // keyboardHeight = 0 means no keyboard, so filter it out
+    // keyboardHeight = 0 means no keyboard
     if (keyboardHeight > 0)
     {
+        self.searchInternals.backgroundImageView.hidden = NO;
+
         // 60 = 18 + 42 from the Vector design
         self.searchInternals.backgroundImageViewBottomConstraint.constant = keyboardHeight - 60;
+    }
+    else
+    {
+        // Hide the search
+        self.searchInternals.backgroundImageView.hidden = YES;
     }
 }
 

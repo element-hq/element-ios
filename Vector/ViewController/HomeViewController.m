@@ -68,8 +68,9 @@
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
-    
-    self.backgroundImageView.image = [UIImage imageNamed:@"search_bg"];
+
+    // Add the Vector background image when search bar is empty
+    [self addBackgroundImageViewToView:self.view];
 }
 
 - (void)dealloc
@@ -311,6 +312,15 @@
     [self performSegueWithIdentifier:@"showDirectory" sender:self];
 }
 
+#pragma mark - Override MXKViewController
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    [super setKeyboardHeight:keyboardHeight];
+}
+
 #pragma mark - Override SegmentedViewController
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -423,6 +433,7 @@
 
     createNewRoomImageView.hidden = NO;
     tableViewMaskLayer.hidden = NO;
+    self.backgroundImageView.hidden = YES;
 
     [recentsDataSource searchWithPatterns:nil];
 
@@ -440,6 +451,7 @@
     if (self.searchBar.text.length)
     {
         self.selectedViewController.view.hidden = NO;
+        self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
@@ -468,6 +480,7 @@
     {
         // Nothing to search = Show nothing
         self.selectedViewController.view.hidden = YES;
+        self.backgroundImageView.hidden = NO;
     }
 }
 

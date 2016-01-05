@@ -30,7 +30,6 @@ limitations under the License.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIView *viewControllerContainer;
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 /**
  The index of the view controller that currently has the focus.
