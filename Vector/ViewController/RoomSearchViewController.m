@@ -25,9 +25,18 @@
 
 @implementation RoomSearchViewController
 
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([RoomSearchViewController class])
+                          bundle:[NSBundle bundleForClass:[RoomSearchViewController class]]];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    // Hide line separators of empty cells
+    self.searchTableView.tableFooterView = [[UIView alloc] init];
 
     // Reuse cells from the RoomViewController to display results
     [self.searchTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
@@ -42,14 +51,24 @@
     [self showSearch:animated];
 }
 
+#pragma mark - Override MXKViewController
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    self.backgroundImageViewBottomConstraint.constant = keyboardHeight;
+    [super setKeyboardHeight:keyboardHeight];
+}
+
 #pragma mark - Override UIViewController+VectorSearch
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
 {
     [super searchBarSearchButtonClicked:searchBar2];
 
-    // Make the search
-    [self.dataSource searchMessageText:searchBar2.text];
+    if (searchBar2.text.length)
+    {
+        _backgroundImageView.hidden = YES;
+    }
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
@@ -95,6 +114,7 @@
 
     return nil;
 }
+
 
 #pragma mark - Override UITableView delegate
 

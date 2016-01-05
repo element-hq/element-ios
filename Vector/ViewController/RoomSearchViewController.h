@@ -20,4 +20,7 @@
 
 @interface RoomSearchViewController : MXKSearchViewController
 
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageViewBottomConstraint;
+
 @end

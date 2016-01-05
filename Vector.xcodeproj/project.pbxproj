@@ -14,6 +14,7 @@
 		323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */; };
 		32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */; };
 		32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */; };
+		3258E1E71C3BC2660042DFFD /* RoomSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3258E1E61C3BC2660042DFFD /* RoomSearchViewController.xib */; };
 		325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F6A381C21810E00C12F51 /* DirectoryViewController.m */; };
 		325F6A421C21D20F00C12F51 /* DirectoryRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 325F6A401C21D20F00C12F51 /* DirectoryRecentTableViewCell.m */; };
 		325F6A431C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A411C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib */; };
@@ -196,6 +197,7 @@
 		32492DB01C293C8900035C79 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
 		32492DB11C293C8900035C79 /* PublicRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableViewCell.m; sourceTree = "<group>"; };
 		32492DB31C293CCB00035C79 /* PublicRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomTableViewCell.xib; sourceTree = "<group>"; };
+		3258E1E61C3BC2660042DFFD /* RoomSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomSearchViewController.xib; sourceTree = "<group>"; };
 		325F6A371C21810E00C12F51 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
 		325F6A381C21810E00C12F51 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
 		325F6A3F1C21D20F00C12F51 /* DirectoryRecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryRecentTableViewCell.h; sourceTree = "<group>"; };
@@ -784,6 +786,7 @@
 				F0DD7D871B7B507100C4BE02 /* RoomCreationStep2ViewController.m */,
 				32AAC3E41C3525DE007A3B5B /* RoomSearchViewController.h */,
 				32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */,
+				3258E1E61C3BC2660042DFFD /* RoomSearchViewController.xib */,
 				F094AA261B78E42600B1FBBF /* RoomViewController.h */,
 				F094AA271B78E42600B1FBBF /* RoomViewController.m */,
 				71C5F2931C074ACC004C094B /* RoomSettingsViewController.h */,
@@ -1018,6 +1021,7 @@
 				F02528EC1C11B6FC00E1FE1B /* mute_icon.png in Resources */,
 				F02528E91C11B6FC00E1FE1B /* low_priority_icon.png in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
+				3258E1E71C3BC2660042DFFD /* RoomSearchViewController.xib in Resources */,
 				F084DAAF1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib in Resources */,
 				F02528DA1C11B6FC00E1FE1B /* camera_record.png in Resources */,
 				F025290C1C11B6FC00E1FE1B /* voice_call_icon.png in Resources */,
