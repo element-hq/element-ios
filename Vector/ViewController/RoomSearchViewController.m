@@ -52,7 +52,8 @@
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
-    //self.backgroundImageViewBottomConstraint.constant = keyboardHeight;
+    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
+
     [super setKeyboardHeight:keyboardHeight];
 }
 

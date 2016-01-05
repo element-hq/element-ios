@@ -20,7 +20,7 @@
  The `VectorSearch` category adds the management of the search bar in Vector screens.
  */
 
-@interface MXKViewController (VectorSearch) <UISearchBarDelegate>
+@interface UIViewController (VectorSearch) <UISearchBarDelegate>
 
 /**
  The search bar.
@@ -53,5 +53,12 @@
  @param view the view to add `backgroundImageView` to.
  */
 - (void)addBackgroundImageViewToView:(UIView*)view;
+
+/**
+ Provide the new height of the keyboard to align `backgroundImageView`
+ 
+ @param keyboardHeight the keyboard height.
+ */
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight;
 
 @end

@@ -159,6 +159,16 @@
     self.searchInternals.backgroundImageViewBottomConstraint = bottomConstraint;
 }
 
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
+{
+    // keyboardHeight = 0 means no keyboard, so filter it out
+    if (keyboardHeight > 0)
+    {
+        // 60 = 18 + 42 from the Vector design
+        self.searchInternals.backgroundImageViewBottomConstraint.constant = keyboardHeight - 60;
+    }
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
