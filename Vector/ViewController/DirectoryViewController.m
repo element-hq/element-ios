@@ -36,6 +36,9 @@
     self.title = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
 
     self.tableView.delegate = self;
+
+    // Hide line separators of empty cells
+    self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
 
