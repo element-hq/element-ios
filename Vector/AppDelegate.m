@@ -561,10 +561,10 @@
             {
                 _completionHandler = completionHandler;
 
-                NSLog(@"[AppDelegate] : starts a catchup");
+                NSLog(@"[AppDelegate] : starts a background sync");
                 
-                [dedicatedAccount catchup:20000 success:^{
-                    NSLog(@"[AppDelegate] : the catchup succeeds");
+                [dedicatedAccount backgroundSync:20000 success:^{
+                    NSLog(@"[AppDelegate] : the background sync succeeds");
                     
                     if (_completionHandler)
                     {
@@ -572,7 +572,7 @@
                         _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
-                    NSLog(@"[AppDelegate] : the catchup fails");
+                    NSLog(@"[AppDelegate] : the background sync fails");
                     
                     if (_completionHandler)
                     {
