@@ -410,13 +410,6 @@
     }
 }
 
-#pragma mark - Actions
-
-- (IBAction)search:(id)sender
-{
-    [self performSegueWithIdentifier:@"presentSearch" sender:self];
-}
-
 #pragma mark - recents drag & drop management
 
 - (void)onRecentsDragEnd
