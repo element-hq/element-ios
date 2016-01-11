@@ -339,7 +339,7 @@
 {
     // In landscape with the iPhone 5 & 6 screen size, the backgroundImageView overlaps the tabs header,
     // So, hide backgroundImageView
-    if (self.backgroundImageView.superview.frame.size.height > 375)
+    if (self.backgroundImageView.superview.frame.size.height > 375 && (self.searchBar.text.length == 0))
     {
         self.backgroundImageView.hidden = NO;
     }
