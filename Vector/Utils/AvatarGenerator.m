@@ -108,8 +108,14 @@ static UILabel* backgroundLabel = nil;
     {
         aText = [aText substringFromIndex:1];
     }
+
+    // default firstchar
+    NSString* firstChar = @" ";
     
-    NSString* firstChar = [[aText substringToIndex:1] uppercaseString];
+    if (aText.length > 0)
+    {
+        firstChar = [[aText substringToIndex:1] uppercaseString];
+    }
     
     // the images are cached to avoid create them several times
     // the key is <first upper character><index in the colors array>
