@@ -63,7 +63,7 @@
 // Room recents
 "room_recents_directory" = "DIRECTORY";
 "room_recents_favourites" = "FAVORITES";
-"room_recents_conversations" = "CONVERSATIONS";
+"room_recents_conversations" = "ROOMS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
 
