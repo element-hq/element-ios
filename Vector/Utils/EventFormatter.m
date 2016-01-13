@@ -100,14 +100,32 @@
     NSTimeInterval localZoneOffset = [localTimeZone secondsFromGMT];
     
     NSTimeInterval interval = -[date timeIntervalSinceDate:today] - localZoneOffset;
-    if (interval > 60*60*24*6)
+    
+    if (interval > 60*60*24*364)
     {
-        [dateFormatter setDateFormat:@"EEE MMM dd yyyy"];
-        return [super dateStringFromDate:date withTime:time];
+        [dateFormatter setDateFormat:@"MMM dd yyyy"];
+        
+        // Ignore time information here
+        return [super dateStringFromDate:date withTime:NO];
+    }
+    else if (interval > 60*60*24*6)
+    {
+        [dateFormatter setDateFormat:@"MMM dd"];
+        
+        // Ignore time information here
+        return [super dateStringFromDate:date withTime:NO];
     }
     else if (interval > 60*60*24)
     {
-        [dateFormatter setDateFormat:@"EEEE"];
+        if (time)
+        {
+            [dateFormatter setDateFormat:@"EEE"];
+        }
+        else
+        {
+            [dateFormatter setDateFormat:@"EEEE"];
+        }
+        
         return [super dateStringFromDate:date withTime:time];
     }
     else if (interval > 0)
@@ -115,9 +133,9 @@
         if (time)
         {
             [dateFormatter setDateFormat:nil];
-            return [NSString stringWithFormat:@"yesterday %@", [super dateStringFromDate:date withTime:YES]];
+            return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"yesterday", @"Vector", nil), [super dateStringFromDate:date withTime:YES]];
         }
-        return @"yesterday";
+        return NSLocalizedStringFromTable(@"yesterday", @"Vector", nil);
     }
     else if (interval > - 60*60*24)
     {
@@ -126,7 +144,7 @@
             [dateFormatter setDateFormat:nil];
             return [NSString stringWithFormat:@"%@", [super dateStringFromDate:date withTime:YES]];
         }
-        return @"today";
+        return NSLocalizedStringFromTable(@"today", @"Vector", nil);
     }
     else
     {
