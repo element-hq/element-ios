@@ -22,30 +22,27 @@
 
 @implementation RoomTitleViewWithTopic
 
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([RoomTitleViewWithTopic class])
+                          bundle:[NSBundle bundleForClass:[RoomTitleViewWithTopic class]]];
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.displayNameTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
+}
+
 - (void)refreshDisplay
 {
     [super refreshDisplay];
     
     if (self.mxRoom)
     {
-        NSString* roomName = self.mxRoom.vectorDisplayname;
-        
-        if (roomName)
-        {
-            NSMutableAttributedString * string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ >", roomName]];
-            
-            [string addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, roomName.length)];
-            [string addAttribute:NSForegroundColorAttributeName value:VECTOR_GREEN_COLOR range:NSMakeRange(roomName.length + 1,1)];
-            
-            self.displayNameTextField.attributedText = string;
-        }
+        self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
     }
-}
-
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass([RoomTitleViewWithTopic class])
-                          bundle:[NSBundle bundleForClass:[RoomTitleViewWithTopic class]]];
 }
 
 @end
