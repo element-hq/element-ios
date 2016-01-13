@@ -259,7 +259,8 @@
         }
     }
     
-    if (alias)
+    // check if there is non empty alias.
+    if ([alias length] > 0)
     {
         return alias;
     }
