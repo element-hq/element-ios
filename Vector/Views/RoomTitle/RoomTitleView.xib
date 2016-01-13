@@ -7,12 +7,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="BkF-x3-7fX" customClass="RoomTitleViewWithTopic">
+        <view contentMode="scaleToFill" id="BkF-x3-7fX" customClass="RoomTitleView">
             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
-                    <rect key="frame" x="242" y="0.0" width="103" height="22"/>
+                    <rect key="frame" x="242" y="5" width="103" height="22"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -20,17 +20,8 @@
                         <outlet property="delegate" destination="BkF-x3-7fX" id="xX7-jB-9va"/>
                     </connections>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Topic" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cb9-hb-6f0">
-                    <rect key="frame" x="282" y="24" width="37" height="16"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                    <connections>
-                        <outlet property="delegate" destination="BkF-x3-7fX" id="8qe-OH-aKS"/>
-                    </connections>
-                </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="details_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
-                    <rect key="frame" x="352" y="5" width="6" height="12"/>
+                    <rect key="frame" x="352" y="10" width="6" height="12"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="6" id="XTx-6p-2wB"/>
                         <constraint firstAttribute="height" constant="12" id="tXh-eB-ave"/>
@@ -39,13 +30,10 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Cb9-hb-6f0" secondAttribute="bottom" constant="4" id="1N3-4y-mDx"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" constant="-7" id="3uN-6W-rVZ"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S3Y-wJ-HOe" secondAttribute="trailing" id="3z3-Ye-wh3"/>
                 <constraint firstItem="S3Y-wJ-HOe" firstAttribute="centerY" secondItem="6uH-I3-RQg" secondAttribute="centerY" id="Jjq-ss-0kj"/>
-                <constraint firstItem="Cb9-hb-6f0" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="MYF-px-YbI"/>
-                <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="Piq-rp-Pae"/>
-                <constraint firstItem="Cb9-hb-6f0" firstAttribute="width" relation="lessThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="width" id="hvn-Fh-o17"/>
+                <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="5" id="Piq-rp-Pae"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="width" relation="lessThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="width" id="qUM-Zw-2QD"/>
                 <constraint firstItem="S3Y-wJ-HOe" firstAttribute="leading" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="7" id="qbS-km-tTO"/>
             </constraints>
@@ -53,7 +41,6 @@
             <connections>
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
                 <outlet property="displayNameTextFieldTopConstraint" destination="Piq-rp-Pae" id="jnL-Hz-TWn"/>
-                <outlet property="topicTextField" destination="Cb9-hb-6f0" id="uRc-er-1Fq"/>
             </connections>
         </view>
     </objects>

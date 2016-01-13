@@ -25,7 +25,7 @@
 
 #import "RoomActivitiesView.h"
 
-#import "RoomTitleViewWithTopic.h"
+#import "RoomTitleView.h"
 
 #import "RoomParticipantsViewController.h"
 
@@ -92,7 +92,16 @@
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     // Set room title view
-    [self setRoomTitleViewClass:RoomTitleViewWithTopic.class];
+    [self setRoomTitleViewClass:RoomTitleView.class];
+    // Listen to title view tap
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomTitleViewTap:)];
+    [tapGesture setNumberOfTouchesRequired:1];
+    [tapGesture setNumberOfTapsRequired:1];
+    [tapGesture setDelegate:self];
+    [self.titleView addGestureRecognizer:tapGesture];
+    self.titleView.userInteractionEnabled = YES;
+    // Disable interaction with room name text field
+    self.titleView.displayNameTextField.userInteractionEnabled = NO;
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -838,6 +847,12 @@
     }
 }
 
+- (IBAction)onRoomTitleViewTap:(UITapGestureRecognizer*)sender
+{
+    // Open room details
+    [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+}
+
 #pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -845,17 +860,11 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-#pragma mark - RoomDetailsViewController management
+#pragma mark - MXKRoomTitleViewDelegate
 
 - (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
 {
-    // Instead of editing room title, we open room details view here
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
-        
-    });
-    
+    // Disable room name edition
     return NO;
 }
 

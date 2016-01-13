@@ -14,18 +14,18 @@
  limitations under the License.
  */
 
-#import "RoomTitleViewWithTopic.h"
+#import "RoomTitleView.h"
 
 #import "VectorDesignValues.h"
 
 #import "MXRoom+Vector.h"
 
-@implementation RoomTitleViewWithTopic
+@implementation RoomTitleView
 
 + (UINib *)nib
 {
-    return [UINib nibWithNibName:NSStringFromClass([RoomTitleViewWithTopic class])
-                          bundle:[NSBundle bundleForClass:[RoomTitleViewWithTopic class]]];
+    return [UINib nibWithNibName:NSStringFromClass([RoomTitleView class])
+                          bundle:[NSBundle bundleForClass:[RoomTitleView class]]];
 }
 
 - (void)awakeFromNib

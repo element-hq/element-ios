@@ -18,7 +18,7 @@
 
 #import "UIViewController+VectorSearch.h"
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate>
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate>
 
 @end
 

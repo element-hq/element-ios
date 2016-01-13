@@ -14,9 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixSDK/MatrixSDK.h>
+#import <MatrixKit/MatrixKit.h>
 
-#import "MXKRoomTitleViewWithTopic.h"
-
-@interface RoomTitleViewWithTopic : MXKRoomTitleViewWithTopic
+@interface RoomTitleView : MXKRoomTitleView
 @end
