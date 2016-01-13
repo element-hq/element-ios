@@ -797,6 +797,37 @@
     [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
 }
 
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
+{
+    if (self.roomInputToolbarContainerHeightConstraint.constant != height)
+    {
+        // Hide temporarily the placeholder to prevent its distorsion during height animation
+        if (!savedInputToolbarPlaceholder)
+        {
+            savedInputToolbarPlaceholder = toolbarView.placeholder.length ? toolbarView.placeholder : @"";
+        }
+        toolbarView.placeholder = nil;
+        
+        [super roomInputToolbarView:toolbarView heightDidChanged:height completion:^(BOOL finished) {
+            
+            if (completion)
+            {
+                completion (finished);
+            }
+
+            // Here the placeholder may have been defined temporarily to display IRC command usage.
+            // The original placeholder (savedInputToolbarPlaceholder) will be restored during the handling of the next typing notification 
+            if (!toolbarView.placeholder)
+            {
+                // Restore the placeholder if any
+                toolbarView.placeholder =  savedInputToolbarPlaceholder.length ? savedInputToolbarPlaceholder : nil;
+                savedInputToolbarPlaceholder = nil;
+            }
+
+        }];
+    }
+}
+
 #pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender
