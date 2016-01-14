@@ -142,7 +142,7 @@
                     if (roomMembers.count)
                     {
                         // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                        MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 12, 150, 12) andRestClient:self.mxSession.matrixRestClient];
+                        MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andRestClient:self.mxSession.matrixRestClient];
                         
                         // Custom avatar display
                         avatarsContainer.maxDisplayedAvatars = 5;
@@ -186,7 +186,7 @@
                                                                                             toItem:bubbleCell.bubbleOverlayContainer
                                                                                          attribute:NSLayoutAttributeTop
                                                                                         multiplier:1.0
-                                                                                          constant:bottomPositionY - 12];
+                                                                                          constant:bottomPositionY - 13];
                         
                         // Available on iOS 8 and later
                         [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
