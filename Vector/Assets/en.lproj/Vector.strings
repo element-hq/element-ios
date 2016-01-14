@@ -15,9 +15,7 @@
  */
 
 // Titles
-"recents" = "Messages";
-"accounts" = "Accounts";
-"account" = "Account";
+"title_recents" = "Messages";
 
 // Actions
 "view" = "View";
@@ -66,6 +64,11 @@
 "room_recents_conversations" = "ROOMS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
+
+// Search
+"search_rooms" = "Rooms";
+"search_messages" = "Messages";
+"search_people" = "People";
 
 // Directory
 "directory_search_results_title" = "Browse directory results";
@@ -160,7 +163,7 @@
 "room_details_photo" = "Room Photo";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
-"room_details_people" = "People";
+"room_details_people" = "Members";
 "room_details_settings" = "Settings";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";

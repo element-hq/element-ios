@@ -50,16 +50,16 @@
     NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
     NSMutableArray* titles = [[NSMutableArray alloc] init];
 
-    [titles addObject: NSLocalizedStringFromTable(@"Rooms", @"Vector", nil)];
+    [titles addObject: NSLocalizedStringFromTable(@"search_rooms", @"Vector", nil)];
     recentsViewController = [RecentsViewController recentListViewController];
     recentsViewController.delegate = self;
     [viewControllers addObject:recentsViewController];
 
-    [titles addObject: NSLocalizedStringFromTable(@"Messages", @"Vector", nil)];
+    [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
     searchViewController = [HomeSearchViewController searchViewController];
     [viewControllers addObject:searchViewController];
 
-    [titles addObject: NSLocalizedStringFromTable(@"People", @"Vector", nil)];
+    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
     MXKViewController *tempPeopleVC = [[MXKViewController alloc] init];
     [viewControllers addObject:tempPeopleVC];
 
@@ -67,7 +67,7 @@
 
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
+    self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];

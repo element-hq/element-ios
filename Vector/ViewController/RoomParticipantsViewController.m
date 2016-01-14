@@ -358,8 +358,10 @@
         contact.mxMember = mxMember;
         [mxkContactsById setObject:contact forKey:mxMember.userId];
         
-        // Add this participant (admin is in first position, the other are sorted in alphabetical order).
+        // Add this participant (admin is in first position, the other are sorted in alphabetical order by trimming special character ('@', '_'...).
         NSUInteger index = 0;
+        NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_!~`@#$%^&*-+();:={}[],.<>?\\/\"\'"];
+        NSString *trimmedDisplayName = [displayName stringByTrimmingCharactersInSet:specialCharacterSet];
         if (isAdmin)
         {
             // Check whether there is other admin
@@ -369,11 +371,20 @@
                 {
                     contact = [mxkContactsById objectForKey:userId];
                     
-                    // Sort admin in alphabetical order
-                    if ([displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    // Sort admin in alphabetical order (skip symbols before comparing)
+                    NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+                    if (!trimmedContactName.length)
+                    {
+                        if (trimmedDisplayName.length || [displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                        {
+                            break;
+                        }
+                    }
+                    else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
                     {
                         break;
                     }
+                    
                     index++;
                 }
             }
@@ -391,11 +402,20 @@
                 {
                     contact = [mxkContactsById objectForKey:userId];
                     
-                    // Sort in alphabetical order
-                    if ([displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    // Sort in alphabetical order (skip symbols before comparing)
+                    NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+                    if (!trimmedContactName.length)
+                    {
+                        if (trimmedDisplayName.length || [displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                        {
+                            break;
+                        }
+                    }
+                    else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
                     {
                         break;
                     }
+                    
                     index++;
                 }
             }
@@ -501,7 +521,16 @@
             
             if (!contact)
             {
-                contact = [[Contact alloc] initMatrixContactWithDisplayName:NSLocalizedStringFromTable(@"you", @"Vector", nil) andMatrixID:userMatrixId];
+                // Check whether user is admin
+                BOOL isAdmin = ([self.mxRoom.state memberNormalizedPowerLevel:userMatrixId] == 1);
+                
+                NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
+                if (isAdmin)
+                {
+                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
+                }
+                
+                contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userMatrixId];
                 contact.mxMember = [self.mxRoom.state memberWithUserId:userMatrixId];
                 [mxkContactsById setObject:contact forKey:userMatrixId];
             }
