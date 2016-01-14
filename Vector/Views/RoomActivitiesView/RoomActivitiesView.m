@@ -35,7 +35,7 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = VECTOR_GREEN_COLOR;
+    self.separatorView.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
     self.messageLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
     
 //    self.typingImageView.backgroundColor = VECTOR_GREEN_COLOR;
