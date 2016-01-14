@@ -35,10 +35,27 @@
 {
     [super render:cellData];
     
+    if (self.userNameLabel.isHidden)
+    {
+        // Adjust the top constraint of the message text view (This constraint is restored at the end of cell use see [didEndDisplay]).
+        self.msgTextViewTopConstraint.constant -= self.userNameLabel.frame.size.height;
+    }
+    
     if (self.bubbleData)
     {
         self.paginationLabel.text = [[self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO] uppercaseString];
     }
+}
+
+- (void)didEndDisplay
+{
+    // Restore the top constraint of the message text view if it has been modified during rendering
+    if (self.userNameLabel.isHidden)
+    {
+        self.msgTextViewTopConstraint.constant += self.userNameLabel.frame.size.height;
+    }
+    
+    [super didEndDisplay];
 }
 
 @end
