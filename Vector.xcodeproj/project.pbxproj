@@ -160,6 +160,10 @@
 		F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34CAF1C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m */; };
 		F0C34CB41C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34CB01C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib */; };
 		F0C34CB81C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */; };
+		F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CC4DBE1C4E26FA003BBE45 /* MediaAlbumTableCell.m */; };
+		F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0CC4DBF1C4E26FA003BBE45 /* MediaAlbumTableCell.xib */; };
+		F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CC4DC81C4E594C003BBE45 /* MediaAlbumContentViewController.m */; };
+		F0CC4DCB1C4E594C003BBE45 /* MediaAlbumContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0CC4DC91C4E594C003BBE45 /* MediaAlbumContentViewController.xib */; };
 		F0D2D9831C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D9781C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.m */; };
 		F0D2D9841C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D2D9791C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib */; };
 		F0D2D9851C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D97B1C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m */; };
@@ -398,6 +402,12 @@
 		F0C34CB01C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		F0C34CB61C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXKRoomBubbleTableViewCell+Vector.h"; sourceTree = "<group>"; };
 		F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Vector.m"; sourceTree = "<group>"; };
+		F0CC4DBD1C4E26FA003BBE45 /* MediaAlbumTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumTableCell.h; sourceTree = "<group>"; };
+		F0CC4DBE1C4E26FA003BBE45 /* MediaAlbumTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumTableCell.m; sourceTree = "<group>"; };
+		F0CC4DBF1C4E26FA003BBE45 /* MediaAlbumTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAlbumTableCell.xib; sourceTree = "<group>"; };
+		F0CC4DC71C4E594C003BBE45 /* MediaAlbumContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumContentViewController.h; sourceTree = "<group>"; };
+		F0CC4DC81C4E594C003BBE45 /* MediaAlbumContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumContentViewController.m; sourceTree = "<group>"; };
+		F0CC4DC91C4E594C003BBE45 /* MediaAlbumContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAlbumContentViewController.xib; sourceTree = "<group>"; };
 		F0D2D9771C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingAttachmentBubbleCell.h; sourceTree = "<group>"; };
 		F0D2D9781C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIncomingAttachmentBubbleCell.m; sourceTree = "<group>"; };
 		F0D2D9791C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIncomingAttachmentBubbleCell.xib; sourceTree = "<group>"; };
@@ -519,6 +529,7 @@
 		F001D7521B8207C000A162C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F0CC4DBC1C4E26FA003BBE45 /* MediaAlbum */,
 				71F7F5191C23079100E7ED8F /* Contact */,
 				71046D581C0C631100DCA984 /* RoomTitle */,
 				71EBE6691C04C4BE00E7D953 /* RoomActivitiesView */,
@@ -779,6 +790,9 @@
 				32D200871C16C2B100A4E396 /* HomeViewController.m */,
 				F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */,
 				F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */,
+				F0CC4DC71C4E594C003BBE45 /* MediaAlbumContentViewController.h */,
+				F0CC4DC81C4E594C003BBE45 /* MediaAlbumContentViewController.m */,
+				F0CC4DC91C4E594C003BBE45 /* MediaAlbumContentViewController.xib */,
 				F001D76A1B821E4F00A162C3 /* MediaPickerViewController.h */,
 				F001D76B1B821E4F00A162C3 /* MediaPickerViewController.m */,
 				F001D76D1B83156000A162C3 /* MediaPickerViewController.xib */,
@@ -814,6 +828,16 @@
 				323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		F0CC4DBC1C4E26FA003BBE45 /* MediaAlbum */ = {
+			isa = PBXGroup;
+			children = (
+				F0CC4DBD1C4E26FA003BBE45 /* MediaAlbumTableCell.h */,
+				F0CC4DBE1C4E26FA003BBE45 /* MediaAlbumTableCell.m */,
+				F0CC4DBF1C4E26FA003BBE45 /* MediaAlbumTableCell.xib */,
+			);
+			path = MediaAlbum;
 			sourceTree = "<group>";
 		};
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
@@ -1069,6 +1093,7 @@
 				716FDC8B1C186A3A001034CB /* InviteRecentTableViewCell.xib in Resources */,
 				F02528E51C11B6FC00E1FE1B /* favorite_icon@3x.png in Resources */,
 				F02529051C11B6FC00E1FE1B /* typing@3x.png in Resources */,
+				F0CC4DCB1C4E594C003BBE45 /* MediaAlbumContentViewController.xib in Resources */,
 				F02528E71C11B6FC00E1FE1B /* logo.png in Resources */,
 				32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */,
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
@@ -1077,6 +1102,7 @@
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
 				F02528D41C11B6FC00E1FE1B /* add@2x.png in Resources */,
 				F02528FD1C11B6FC00E1FE1B /* selection_untick.png in Resources */,
+				F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */,
 				F02528DD1C11B6FC00E1FE1B /* camera_switch@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1149,6 +1175,7 @@
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
+				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */,
 				F0C34B651C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
@@ -1171,6 +1198,7 @@
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
+				F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */,
 				32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */,
 				32F2E61B1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */,

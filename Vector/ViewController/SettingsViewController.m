@@ -763,8 +763,6 @@
             {
                 mediaPicker = [MediaPickerViewController mediaPickerViewController];
                 mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-                mediaPicker.multipleSelections = NO;
-                mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
                 mediaPicker.delegate = self;
                 UINavigationController *navigationController = [UINavigationController new];
                 [navigationController pushViewController:mediaPicker animated:NO];
@@ -996,34 +994,9 @@
     [self.tableView reloadData];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
 {
     // this method should not be called
-    [self dismissMediaPicker];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
-{
-    if (assets.count > 0)
-    {
-        PHAsset* asset = [assets objectAtIndex:0];
-        PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
-        
-        [asset requestContentEditingInputWithOptions:editOptions
-                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                       
-                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
-                                       {
-                                           // Here the fullSizeImageURL is related to a local file path
-                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                           UIImage *image = [UIImage imageWithData:data];
-                                           
-                                           newAvatarImage = image;
-                                           [self.tableView reloadData];
-                                       }
-                                   }];
-    }
-    
     [self dismissMediaPicker];
 }
 

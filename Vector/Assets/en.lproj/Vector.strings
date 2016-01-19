@@ -32,6 +32,7 @@
 "save" = "Save";
 "join" = "Join";
 "reject" = "Reject";
+"camera" = "Camera";
 
 // Authentication
 "auth_sign_in" = "Sign in";
@@ -174,14 +175,6 @@
 "notification_settings_global_notification_settings" = "Global Notification Settings";
 
 // Media picker
-"media_picker_picture_capture_title" = "Take a picture";
-"media_picker_video_capture_title" = "Record a video";
-"media_picker_both_capture_title" = "Take a picture or a video";
-"media_picker_retake" = "Retake";
-"media_picker_choose" = "Choose";
-"media_picker_attach" = "Attach";
-
-"media_picker_choose_from_library" = "Choose from library";
 "media_picker_library" = "Library";
 
 // Directory

@@ -143,8 +143,6 @@
             {
                 mediaPicker = [MediaPickerViewController mediaPickerViewController];
                 mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                mediaPicker.multipleSelections = YES;
-                mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
                 mediaPicker.delegate = self;
                 UINavigationController *navigationController = [UINavigationController new];
                 [navigationController pushViewController:mediaPicker animated:NO];
@@ -191,49 +189,11 @@
     [self sendSelectedImage:image withCompressionMode:MXKRoomInputToolbarCompressionModePrompt andLocalURL:imageURL];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
 {
     [self dismissMediaPicker];
     
-    [self sendSelectedVideo:videoURL isCameraRecording:isCameraRecording];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
-{
-    [self dismissMediaPicker];
-    
-    // We don't prompt user about image compression if several items have been selected
-    MXKRoomInputToolbarCompressionMode imageCompressionMode = (assets.count > 1) ? MXKRoomInputToolbarCompressionModeMedium : MXKRoomInputToolbarCompressionModePrompt;
-    
-    PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
-    for (NSUInteger index = 0; index < assets.count; index++)
-    {
-        PHAsset *asset = assets[index];
-        [asset requestContentEditingInputWithOptions:editOptions
-                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                       
-                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
-                                       {
-                                           // Here the fullSizeImageURL is related to a local file path
-                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                           UIImage *image = [UIImage imageWithData:data];
-                                           
-                                           [self sendSelectedImage:image withCompressionMode:imageCompressionMode andLocalURL:contentEditingInput.fullSizeImageURL];
-                                       }
-                                       else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
-                                       {
-                                           if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
-                                           {
-                                               AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
-                                               [self sendSelectedVideo:[avURLAsset URL] isCameraRecording:NO];
-                                           }
-                                           else
-                                           {
-                                               NSLog(@"[RoomInputToolbarView] Selected video asset is not initialized from an URL!");
-                                           }
-                                       }
-                                   }];
-    }
+    [self sendSelectedVideo:videoURL isCameraRecording:NO];
 }
 
 #pragma mark - Media picker handling

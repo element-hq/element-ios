@@ -20,13 +20,20 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "MediaAlbumContentViewController.h"
+
+#import "MediaAlbumTableCell.h"
+
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
 
-NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellId";
-
 @interface MediaPickerViewController ()
 {
+    /**
+     Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
+     */
+    id UIApplicationWillEnterForegroundNotificationObserver;
+    
     BOOL isVideoCaptureMode;
     
     AVCaptureSession *captureSession;
@@ -40,25 +47,19 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     AVCaptureVideoPreviewLayer *cameraPreviewLayer;
     Boolean canToggleCamera;
     
-    NSURL *outputVideoFileURL;
-    MPMoviePlayerController *videoPlayer;
-    
     dispatch_queue_t cameraQueue;
     
     BOOL lockInterfaceRotation;
     
     MXKAlert *alert;
     
-    PHFetchResult *assetsFetchResult;
+    PHFetchResult *recentCaptures;
     
-    NSInteger currentSelectedAsset;
-    NSMutableArray *selectedAssets;
+    NSMutableArray *userAlbums;
     
-    UIImagePickerController *fullLibraryPicker;
     MXKImageView* imageValidationView;
 }
 
-@property (nonatomic) AVCaptureVideoOrientation previewOrientation;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
 
 @end
@@ -87,48 +88,44 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"camera", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
     
-    currentSelectedAsset = -1;
-    
     // Register collection view cell class
-    [self.recentPicturesCollectionView registerClass:MXKMediaCollectionViewCell.class forCellWithReuseIdentifier:recentItemCollectionViewCellId];
+    [self.recentCapturesCollectionView registerClass:MXKMediaCollectionViewCell.class forCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier]];
     
-    // Adjust layout according to screen size
-    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    CGFloat maxSize = (screenSize.height > screenSize.width) ? screenSize.height : screenSize.width;
-    self.captureViewContainerHeightConstraint.constant = maxSize / 2;
-    [self.view layoutIfNeeded];
+    // Register album table view cell class
+    [self.userAlbumsTableView registerClass:MediaAlbumTableCell.class forCellReuseIdentifier:[MediaAlbumTableCell defaultReuseIdentifier]];
     
     // Adjust camera preview ratio
-    self.previewOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
+    [self handleScreenOrientation];
     
-    // Set default media type
-    self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
+    if (!_mediaTypes)
+    {
+        // Set default media type
+        self.mediaTypes = @[(NSString *)kUTTypeImage];
+    }
     
     // Check camera access before set up AV capture
     [self checkDeviceAuthorizationStatus];
     [self setupAVCapture];
-    
-    // Set button status
-    self.cameraRetakeButton.enabled = NO;
-    self.cameraChooseButton.enabled = NO;
-    self.libraryChooseButton.enabled = NO;
     
     // Set camera preview background
     self.cameraPreviewContainerView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
-    // Set label and button text
-    self.libraryLabel.text = NSLocalizedStringFromTable(@"media_picker_choose_from_library", @"Vector", nil);
-    [self.cameraRetakeButton setTitle:NSLocalizedStringFromTable(@"media_picker_retake", @"Vector", nil) forState:UIControlStateNormal];
-    [self.cameraRetakeButton setTitle:NSLocalizedStringFromTable(@"media_picker_retake", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.libraryOpenButton setTitle:NSLocalizedStringFromTable(@"media_picker_library", @"Vector", nil) forState:UIControlStateNormal];
-    [self.libraryOpenButton setTitle:NSLocalizedStringFromTable(@"media_picker_library", @"Vector", nil) forState:UIControlStateHighlighted];
-    self.selectionButtonCustomLabel = _selectionButtonCustomLabel ? _selectionButtonCustomLabel : NSLocalizedStringFromTable(@"media_picker_choose", @"Vector", nil);
+    userAlbums = [NSMutableArray array];
+    
+    // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
+    UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self reloadRecentCapturesCollection];
+        [self reloadUserLibraryAlbums];
+        
+    }];
 }
 
 - (void)dealloc
@@ -145,6 +142,13 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self reloadRecentCapturesCollection];
+    [self reloadUserLibraryAlbums];
+    
+    // Update visibility of the navigation bar according to the current scrolling offset
+    CGPoint targetOffset = CGPointMake(0, _mainScrollView.contentOffset.y);
+    [self scrollViewWillEndDragging:_mainScrollView withVelocity:CGPointMake(0, 0) targetContentOffset:&targetOffset];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -178,7 +182,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        self.previewOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
+        [self handleScreenOrientation];
         
         // Show camera preview with delay to hide awful animation
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -216,7 +220,62 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                 [alert showInViewController:self];
             });
         }
+        else
+        {
+            // Load recent captures if this is not already done
+            if (!recentCaptures.count)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self reloadRecentCapturesCollection];
+                    [self reloadUserLibraryAlbums];
+                    
+                });
+            }
+        }
     }];
+}
+
+#pragma mark - Navigation bar handling
+
+- (void)scrollToCameraPreview
+{
+    CGPoint targetOffset = CGPointMake(0, -1);
+    [self scrollViewWillEndDragging:_mainScrollView withVelocity:CGPointMake(0, 0) targetContentOffset:&targetOffset];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    // Handle here visibility of the navigation bar
+    if (scrollView == _mainScrollView)
+    {
+        if (targetContentOffset->y <= 0)
+        {
+            // Hide navigation bar
+            self.navigationController.navigationBarHidden = YES;
+            targetContentOffset->y = 0;
+            scrollView.contentOffset = *targetContentOffset;
+        }
+        else
+        {
+            self.navigationController.navigationBarHidden = NO;
+        }
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    // Handle here visibility of the navigation bar
+    if (scrollView == _mainScrollView)
+    {
+        if (self.navigationController.navigationBarHidden)
+        {
+            if (scrollView.contentOffset.y < 0)
+            {
+                scrollView.contentOffset = CGPointMake(0, 0);
+            }
+        }
+    }
 }
 
 #pragma mark -
@@ -225,132 +284,237 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 {
     _mediaTypes = mediaTypes;
     
-    // Retrieve recents snapshot for the selected media types
-    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumRecentlyAdded options:nil];
-    
-    // Set up fetch options.
-    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    if ([mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
+    if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
     {
-        if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
         {
-            options.predicate = [NSPredicate predicateWithFormat:@"(mediaType = %d) || (mediaType = %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
             self.cameraModeButton.hidden = NO;
             isVideoCaptureMode = NO;
-            
-            self.captureLabel.text = NSLocalizedStringFromTable(@"media_picker_both_capture_title", @"Vector", nil);
         }
         else
         {
-            options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
             self.cameraModeButton.hidden = YES;
             isVideoCaptureMode = NO;
-            
-            self.captureLabel.text = NSLocalizedStringFromTable(@"media_picker_picture_capture_title", @"Vector", nil);
         }
     }
-    else if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+    else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
     {
-        options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeVideo];
         self.cameraModeButton.hidden = YES;
         isVideoCaptureMode = YES;
-        
-        self.captureLabel.text = NSLocalizedStringFromTable(@"media_picker_video_capture_title", @"Vector", nil);
     }
+    
+    [self reloadRecentCapturesCollection];
+    [self reloadUserLibraryAlbums];
+}
+
+#pragma mark -
+
+- (void)reloadRecentCapturesCollection
+{
+    // Retrieve recents snapshot for the selected media types
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
     
     // Only one album is expected
     if (smartAlbums.count)
     {
-        PHAssetCollection *assetCollection = smartAlbums[0];
-        assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
-        
-        NSLog(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", assetsFetchResult.count);
-    }
-    
-    if (assetsFetchResult.count)
-    {
-        self.recentPicturesCollectionView.hidden = NO;
-        self.recentPictureCollectionViewHeightConstraint.constant = 130;
-        self.libraryChooseButton.hidden = NO;
-        
-        selectedAssets = [NSMutableArray arrayWithCapacity:assetsFetchResult.count];
-        for (NSUInteger index = 0; index < assetsFetchResult.count; index++)
+        // Set up fetch options.
+        PHFetchOptions *options = [[PHFetchOptions alloc] init];
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
         {
-            [selectedAssets addObject:@NO];
+            if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+            }
+            else
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
+            }
+        }
+        else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
         }
         
-        [self.recentPicturesCollectionView reloadData];
+        // fetchLimit is available for iOS 9.0 and later
+        if ([options respondsToSelector:@selector(fetchLimit)])
+        {
+            options.fetchLimit = 12;
+        }
+        
+        PHAssetCollection *assetCollection = smartAlbums[0];
+        recentCaptures = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+        
+        NSLog(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", recentCaptures.count);
     }
     else
     {
-        self.recentPicturesCollectionView.hidden = YES;
-        self.recentPictureCollectionViewHeightConstraint.constant = 0;
-        self.libraryChooseButton.hidden = YES;
-        selectedAssets = nil;
+        recentCaptures = nil;
     }
-    currentSelectedAsset = -1;
+    
+    if (recentCaptures.count)
+    {
+        self.recentCapturesCollectionView.hidden = NO;
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        [self.recentCapturesCollectionContainerView needsUpdateConstraints];
+        
+        [self.recentCapturesCollectionView reloadData];
+    }
+    else
+    {
+        self.recentCapturesCollectionView.hidden = YES;
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = 0;
+    }
 }
 
-- (void)setMultipleSelections:(BOOL)multipleSelections
+- (void)reloadUserLibraryAlbums
 {
-    _multipleSelections = multipleSelections;
+    // List user albums which are not empty
+    PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
     
-    if (multipleSelections == NO)
+    [userAlbums removeAllObjects];
+    
+    // Set up fetch options.
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
     {
-        // Flush current selection if any
-        currentSelectedAsset = -1;
-        
-        for (NSUInteger index = 0; index < selectedAssets.count; index++)
+        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
         {
-            selectedAssets[index] = @NO;
+            options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+        }
+        else
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
         }
     }
-}
-
-- (void)setSelectionButtonCustomLabel:(NSString *)selectionButtonCustomLabel
-{
-    _selectionButtonCustomLabel = selectionButtonCustomLabel;
+    else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+    {
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
+    }
     
-    [self.cameraChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateNormal];
-    [self.cameraChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateHighlighted];
-    [self.libraryChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateNormal];
-    [self.libraryChooseButton setTitle:selectionButtonCustomLabel forState:UIControlStateHighlighted];
+    [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+        
+        PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+        NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+        
+        if (assets.count)
+        {
+            [userAlbums addObject:collection];
+        }
+        
+    }];
+
+    if (userAlbums.count)
+    {
+        self.userAlbumsTableView.hidden = NO;
+        self.libraryViewContainerViewHeightConstraint.constant = (userAlbums.count * 74);
+        [self.libraryViewContainer needsUpdateConstraints];
+        
+        [self.userAlbumsTableView reloadData];
+    }
+    else
+    {
+        self.userAlbumsTableView.hidden = YES;
+        self.libraryViewContainerViewHeightConstraint.constant = 0;
+    }
 }
 
 - (void)reset
 {
+    if (UIApplicationWillEnterForegroundNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillEnterForegroundNotificationObserver];
+        UIApplicationWillEnterForegroundNotificationObserver = nil;
+    }
+    
     [self.cameraActivityIndicator stopAnimating];
-    
-    if (videoPlayer)
-    {
-        [videoPlayer stop];
-        
-        [videoPlayer.view removeFromSuperview];
-        videoPlayer = nil;
-    }
-
-    if (outputVideoFileURL)
-    {
-        [[NSFileManager defaultManager] removeItemAtURL:outputVideoFileURL error:nil];
-        outputVideoFileURL = nil;
-    }
-    
-    self.cameraCaptureImageView.image = nil;
-    
-    self.cameraCaptureContainerView.hidden = YES;
     
     self.cameraModeButton.enabled = YES;
     self.cameraSwitchButton.enabled = YES;
-    
-    self.cameraChooseButton.enabled = NO;
-    self.cameraRetakeButton.enabled = NO;
     
     if (isVideoCaptureMode)
     {
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
     }
     self.cameraCaptureButton.enabled = YES;
+}
+
+- (void)didSelectAsset:(PHAsset *)asset
+{
+    PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
+    
+    [asset requestContentEditingInputWithOptions:editOptions
+                               completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                                   
+                                   if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
+                                   {
+                                       [self validateSelectedImage:contentEditingInput.displaySizeImage responseHandler:^(BOOL isValidated) {
+                                           if (isValidated)
+                                           {
+                                               // Here the fullSizeImageURL is related to a local file path
+                                               NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                               UIImage *image = [UIImage imageWithData:data];
+                                               
+                                               // Send the original image by considering its asset url
+                                               [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
+                                           }
+                                       }];
+                                   }
+                                   else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
+                                   {
+                                       if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
+                                       {
+                                           AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
+                                           [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
+                                       }
+                                       else
+                                       {
+                                           NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                                       }
+                                   }
+                               }];
+}
+
+- (void)validateSelectedImage:(UIImage*)selectedImage responseHandler:(void (^)(BOOL isValidated))handler
+{
+    // Add a preview to let the user validates his selection
+    __weak typeof(self) weakSelf = self;
+    
+    imageValidationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
+    imageValidationView.stretchable = YES;
+    
+    // the user validates the image
+    [imageValidationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        // Dismiss the image view
+        [strongSelf dismissImageValidationView];
+        
+        handler (YES);
+    }];
+    
+    // the user wants to use an other image
+    [imageValidationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        // dismiss the image view
+        [strongSelf dismissImageValidationView];
+        
+        handler (NO);
+    }];
+    
+    imageValidationView.image = selectedImage;
+    [imageValidationView showFullScreen];
+}
+
+- (void)dismissImageValidationView
+{
+    if (imageValidationView)
+    {
+        [imageValidationView dismissSelection];
+        [imageValidationView removeFromSuperview];
+        imageValidationView = nil;
+    }
 }
 
 #pragma mark - Override MXKViewController
@@ -362,7 +526,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     [self reset];
     
     [self dismissImageValidationView];
-    [self dismissMediaPicker];
     
     cameraQueue = nil;
     
@@ -373,10 +536,14 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == self.navigationItem.leftBarButtonItem)
+    if (sender == self.closeButton || sender == self.navigationItem.leftBarButtonItem)
     {
-        // Cancel has been pressed
+        // Close/Cancel has been pressed
         [self withdrawViewControllerAnimated:YES completion:nil];
+    }
+    else if (sender == self.navigationItem.rightBarButtonItem)
+    {
+        [self scrollToCameraPreview];
     }
     else if (sender == self.cameraModeButton)
     {
@@ -390,149 +557,42 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     {
         if (isVideoCaptureMode)
         {
-            if (outputVideoFileURL)
-            {
-                // Play/Stop captured video
-                [self controlVideoPlayer];
-            }
-            else
-            {
-                // Record a new video
-                [self toggleMovieRecording];
-            }
+            // Record a new video
+            [self toggleMovieRecording];
         }
         else
         {
             [self snapStillImage];
         }
     }
-    else if (sender == self.cameraRetakeButton)
-    {
-        [self reset];
-    }
-    else if (sender == self.cameraChooseButton)
-    {
-        self.cameraChooseButton.enabled = NO;
-        [self.cameraActivityIndicator startAnimating];
-        
-        if (outputVideoFileURL)
-        {
-            // Reset here output video url attribute to not remove the temporary file while the delegate uses it.
-            // We let the delegate remove the temporary file after use...
-            NSURL *selectedVideoURL = outputVideoFileURL;
-            outputVideoFileURL = nil;
-            [self.delegate mediaPickerController:self didSelectVideo:selectedVideoURL isCameraRecording:YES];
-        }
-        else if (self.cameraCaptureImageView.image)
-        {
-            // Send the original image
-            [self.delegate mediaPickerController:self didSelectImage:self.cameraCaptureImageView.image withURL:nil];
-        }
-        else
-        {
-            NSLog(@"[MediaPickerVC] Selection is empty");
-            self.cameraChooseButton.enabled = YES;
-            [self.cameraActivityIndicator stopAnimating];
-        }
-    }
-    else if (sender == self.libraryOpenButton)
-    {
-        // Open media gallery
-        fullLibraryPicker = [[UIImagePickerController alloc] init];
-        fullLibraryPicker.delegate = self;
-        fullLibraryPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        fullLibraryPicker.allowsEditing = NO;
-        fullLibraryPicker.mediaTypes = self.mediaTypes;
-        [self presentViewController:fullLibraryPicker animated:YES completion:nil];
-    }
-    else if (sender == self.libraryChooseButton && selectedAssets)
-    {
-        self.libraryChooseButton.enabled = NO;
-        
-        if ([self.delegate respondsToSelector:@selector(mediaPickerController:didSelectAssets:)])
-        {
-            NSMutableArray *array = [NSMutableArray array];
-            for (NSUInteger index = 0; index < selectedAssets.count; index++)
-            {
-                if ([selectedAssets[index] boolValue])
-                {
-                    PHAsset *asset = assetsFetchResult[index];
-                    [array addObject:asset];
-                    
-                    // Reset selection
-                    selectedAssets[index] = @NO;
-                }
-            }
-            
-            [self.delegate mediaPickerController:self didSelectAssets:array];
-        }
-        else
-        {
-            PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
-            for (NSUInteger index = 0; index < selectedAssets.count; index++)
-            {
-                if ([selectedAssets[index] boolValue])
-                {
-                    PHAsset *asset = assetsFetchResult[index];
-                    [asset requestContentEditingInputWithOptions:editOptions
-                                               completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                                   
-                                                   if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
-                                                   {
-                                                       // Here the fullSizeImageURL is related to a local file path
-                                                       NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                                       UIImage *image = [UIImage imageWithData:data];
-                                                       
-                                                       [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
-                                                   }
-                                                   else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
-                                                   {
-                                                       if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
-                                                       {
-                                                           AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
-                                                           [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL] isCameraRecording:NO];
-                                                       }
-                                                       else
-                                                       {
-                                                           NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
-                                                       }
-                                                   }
-                                               }];
-                    
-                    // Reset selection
-                    selectedAssets[index] = @NO;
-                }
-            }
-        }
-        
-        // reset
-        currentSelectedAsset = -1;
-    }
 }
 
 #pragma mark - Capture handling methods
 
-- (void)setPreviewOrientation:(AVCaptureVideoOrientation)previewOrientation
+- (void)handleScreenOrientation
 {
+    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
     // Check whether the preview ratio must be inverted
     CGFloat ratio = 0.0;
-    switch (previewOrientation)
+    switch (screenOrientation)
     {
-        case AVCaptureVideoOrientationPortrait:
-        case AVCaptureVideoOrientationPortraitUpsideDown:
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
         {
             if (self.cameraPreviewContainerAspectRatio.multiplier > 1)
             {
-                ratio = (1 / self.cameraPreviewContainerAspectRatio.multiplier);
+                ratio = 15.0 / 22.0;
             }
             break;
         }
-        case AVCaptureVideoOrientationLandscapeRight:
-        case AVCaptureVideoOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+        case UIInterfaceOrientationLandscapeLeft:
         {
             if (self.cameraPreviewContainerAspectRatio.multiplier < 1)
             {
-                ratio = (1 / self.cameraPreviewContainerAspectRatio.multiplier);
+                CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+                ratio = screenSize.width / screenSize.height;
             }
             break;
         }
@@ -543,14 +603,7 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     if (ratio)
     {
         // Replace the current ratio constraint by a new one
-        if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)])
-        {
-            [NSLayoutConstraint deactivateConstraints:@[self.cameraPreviewContainerAspectRatio]];
-        }
-        else
-        {
-            [self.view removeConstraint:self.cameraPreviewContainerAspectRatio];
-        }
+        [NSLayoutConstraint deactivateConstraints:@[self.cameraPreviewContainerAspectRatio]];
         
         self.cameraPreviewContainerAspectRatio = [NSLayoutConstraint constraintWithItem:self.cameraPreviewContainerView
                                                                               attribute:NSLayoutAttributeWidth
@@ -560,27 +613,33 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
                                                                              multiplier:ratio
                                                                                constant:0.0f];
         
-        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-        {
-            [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
-        }
-        else
-        {
-            [self.view addConstraint:self.cameraPreviewContainerAspectRatio];
-        }
+        [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
         
         // Force layout refresh
         [self.view layoutIfNeeded];
+        
+        if (self.navigationController.navigationBarHidden)
+        {
+            // Force the main scroller at the top
+            _mainScrollView.contentOffset = CGPointMake(0, 0);
+        }
     }
     
     // Refresh camera preview layer
     if (cameraPreviewLayer)
     {
-        [[cameraPreviewLayer connection] setVideoOrientation:previewOrientation];
+        [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)screenOrientation];
         cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
     }
     
-    _previewOrientation = previewOrientation;
+    // Update Captures collection display
+    if (recentCaptures.count)
+    {
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        [self.recentCapturesCollectionContainerView needsUpdateConstraints];
+        
+        [self.recentCapturesCollectionView reloadData];
+    }
 }
 
 - (void)setupAVCapture
@@ -690,13 +749,13 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
             
             cameraPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
             cameraPreviewLayer.masksToBounds = NO;
-            cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+            cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;//AVLayerVideoGravityResizeAspect;
             cameraPreviewLayer.backgroundColor = [[UIColor blackColor] CGColor];
-            cameraPreviewLayer.borderWidth = 2;
+//            cameraPreviewLayer.borderWidth = 2;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                [[cameraPreviewLayer connection] setVideoOrientation:self.previewOrientation];
+                [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
                 cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
                 cameraPreviewLayer.hidden = YES;
                 
@@ -923,38 +982,6 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     });
 }
 
-- (void)controlVideoPlayer
-{
-    // Check whether the video player is already playing
-    if (videoPlayer.view.superview)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-        
-        [videoPlayer stop];
-        [videoPlayer.view removeFromSuperview];
-        
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerPlaybackDidFinishNotification:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:nil];
-        
-        CGRect frame = self.cameraCaptureImageView.frame;
-        frame.origin = CGPointZero;
-        videoPlayer.view.frame = frame;
-        videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [self.cameraCaptureImageView addSubview:videoPlayer.view];
-        
-        [videoPlayer play];
-        
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
-    }
-}
-
 - (void)snapStillImage
 {
     dispatch_async(cameraQueue, ^{
@@ -970,15 +997,27 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
             if (imageDataSampleBuffer)
             {
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                UIImage *image = [[UIImage alloc] initWithData:imageData];
                 
-                self.cameraCaptureImageView.image = [[UIImage alloc] initWithData:imageData];
-                
-                self.cameraCaptureContainerView.hidden = NO;
-                
-                self.cameraRetakeButton.enabled = YES;
-                self.cameraChooseButton.enabled = YES;
-                
-                self.cameraCaptureButton.enabled = NO;
+                // Save the image in user's photos library
+                [MXKMediaManager saveImageToPhotosLibrary:image success:^(NSURL *imageURL) {
+                    
+                    // Open image validation view
+                    [self validateSelectedImage:image responseHandler:^(BOOL isValidated) {
+                        if (isValidated)
+                        {
+                            // Send the original image by considering its asset url
+                            [self.delegate mediaPickerController:self didSelectImage:image withURL:imageURL];
+                        }
+                    }];
+                    
+                    // Relaunch preview
+                    [self reset];
+                    
+                    // Reload recent pictures collection
+                    [self reloadRecentCapturesCollection];
+                    
+                } failure:nil];
             }
         }];
     });
@@ -1063,22 +1102,19 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     
     lockInterfaceRotation = NO;
     
-    outputVideoFileURL = outputFileURL;
-    
-    // Display first video frame
-    videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:outputVideoFileURL];
-    if (videoPlayer)
-    {
-        [videoPlayer setShouldAutoplay:NO];
-        videoPlayer.scalingMode = MPMovieScalingModeAspectFit;
-        videoPlayer.controlStyle = MPMovieControlStyleNone;
+    [MXKMediaManager saveMediaToPhotosLibrary:outputFileURL isImage:NO success:^(NSURL *assetURL) {
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
-                                                     name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
-                                                   object:nil];
-        [videoPlayer requestThumbnailImagesAtTimes:@[@0.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
-    }
+        // Remove the temporary file
+        [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
+        
+        // Relaunch preview
+        [self reset];
+        
+        // Reload recent pictures collection
+        [self reloadRecentCapturesCollection];
+        
+    } failure:nil];
+    
     
     UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
     if (backgroundRecordingID != UIBackgroundTaskInvalid)
@@ -1089,54 +1125,41 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
     }
 }
 
-#pragma mark - Movie player observer
-
-- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
-{
-    self.cameraCaptureImageView.image = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
-    self.cameraCaptureContainerView.hidden = NO;
-    self.cameraRetakeButton.enabled = YES;
-    self.cameraChooseButton.enabled = YES;
-    
-    self.cameraCaptureButton.enabled = YES;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
-}
-
-- (void)moviePlayerPlaybackDidFinishNotification:(NSNotification *)notification
-{
-    // Remove player view from superview
-    [self controlVideoPlayer];
-}
-
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return assetsFetchResult.count;
+    // Collection is limited to the first 12 assets
+    return (recentCaptures.count > 12) ? 12 : recentCaptures.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MXKMediaCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:recentItemCollectionViewCellId forIndexPath:indexPath];
+    MXKMediaCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier] forIndexPath:indexPath];
     
-    if (indexPath.row < assetsFetchResult.count)
+    // Sanity check: cancel pending asynchronous request (if any)
+    if (cell.tag)
     {
-        PHAsset *asset = assetsFetchResult[indexPath.row];
+        [[PHImageManager defaultManager] cancelImageRequest:(PHImageRequestID)cell.tag];
+        cell.tag = 0;
+    }
+    
+    if (indexPath.item < recentCaptures.count)
+    {
+        PHAsset *asset = recentCaptures[indexPath.item];
         
-        // Assets are display in full height in collection view
-        CGFloat collectionCellHeight = self.recentPictureCollectionViewHeightConstraint.constant;
-        // Request an image with the collection cell height by keeping ratio
-        CGSize cellSize = CGSizeMake((asset.pixelWidth * collectionCellHeight) / asset.pixelHeight, collectionCellHeight);
+        CGFloat collectionViewSquareSize = ((collectionView.frame.size.width - 6) / 4); // Here 6 = 3 * cell margin (= 2).
+        CGSize cellSize = CGSizeMake(collectionViewSquareSize, collectionViewSquareSize);
         
         PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
-        option.synchronous = YES;
-        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFit options:option resultHandler:^(UIImage *result, NSDictionary *info) {
+        option.synchronous = NO;
+        cell.tag = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFill options:option resultHandler:^(UIImage *result, NSDictionary *info) {
+            
+            cell.mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
             cell.mxkImageView.image = result;
+            cell.tag = 0;
+            
         }];
-        
-        cell.bottomLeftIcon.image = [UIImage imageNamed:@"selection_tick"];
-        cell.bottomLeftIcon.hidden = ![selectedAssets[indexPath.row] boolValue];
         
         cell.topRightIcon.image = [UIImage imageNamed:@"icon_video"];
         cell.topRightIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
@@ -1152,46 +1175,19 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < assetsFetchResult.count)
+    if (indexPath.item < recentCaptures.count)
     {
-        if ([selectedAssets[indexPath.row] boolValue])
-        {
-            selectedAssets[indexPath.row] = @NO;
-            currentSelectedAsset = -1;
-            
-            // Update attach button status by checking selected assets array
-            self.libraryChooseButton.enabled = NO;
-            for (NSNumber *number in selectedAssets)
-            {
-                if (number.boolValue)
-                {
-                    self.libraryChooseButton.enabled = YES;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            selectedAssets[indexPath.row] = @YES;
-            if (!self.isMultipleSelections)
-            {
-                // Only one item can be selected at once
-                if (currentSelectedAsset != -1 && currentSelectedAsset < selectedAssets.count)
-                {
-                    selectedAssets[currentSelectedAsset] = @NO;
-                    // Refresh locally the table
-                    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:currentSelectedAsset inSection:0]]];
-                }
-                currentSelectedAsset = indexPath.row;
-            }
-            
-            self.libraryChooseButton.enabled = YES;
-        }
-        
-        [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-        
-        // Refresh locally the table
-        [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+        [self didSelectAsset: recentCaptures[indexPath.item]];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    // Check whether a asynchronous request is pending
+    if (cell.tag)
+    {
+        [[PHImageManager defaultManager] cancelImageRequest:(PHImageRequestID)cell.tag];
+        cell.tag = 0;
     }
 }
 
@@ -1199,103 +1195,118 @@ NSString* const recentItemCollectionViewCellId = @"recentItemCollectionViewCellI
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < assetsFetchResult.count)
+    if (indexPath.item < recentCaptures.count)
     {
-        PHAsset *asset = assetsFetchResult[indexPath.row];
-        
-        // Assets are display in full height in collection view
-        CGFloat collectionCellHeight = self.recentPictureCollectionViewHeightConstraint.constant;
-        CGSize cellSize = CGSizeMake((asset.pixelWidth * collectionCellHeight) / asset.pixelHeight, collectionCellHeight);
+        CGFloat collectionViewSquareSize = ((collectionView.frame.size.width - 6) / 4); // Here 6 = 3 * cell margin (= 2).
+        CGSize cellSize = CGSizeMake(collectionViewSquareSize, collectionViewSquareSize);
         
         return cellSize;
     }
     return CGSizeZero;
 }
 
-#pragma mark - UIImagePickerControllerDelegate
+#pragma mark - UITableViewDataSource
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [self dismissMediaPicker];
+    return userAlbums.count;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    MediaAlbumTableCell *cell = [tableView dequeueReusableCellWithIdentifier:[MediaAlbumTableCell defaultReuseIdentifier] forIndexPath:indexPath];
     
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
+    // Sanity check: cancel pending asynchronous request (if any)
+    if (cell.tag)
     {
-        UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        if (selectedImage)
+        [[PHImageManager defaultManager] cancelImageRequest:(PHImageRequestID)cell.tag];
+        cell.tag = 0;
+    }
+    
+    if (indexPath.row < userAlbums.count)
+    {
+        PHAssetCollection *collection = userAlbums[indexPath.row];
+        
+        // Report album title
+        cell.albumDisplayNameLabel.text = collection.localizedTitle;
+        
+        // Report album count
+        PHFetchOptions *options = [[PHFetchOptions alloc] init];
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
         {
-            // media picker does not offer a preview
-            // so add a preview to let the user validates his selection
-            __weak typeof(self) weakSelf = self;
+            if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+            }
+            else
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
+            }
+        }
+        else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
+        }
+        
+        PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+        cell.albumCountLabel.text = [NSString stringWithFormat:@"%tu", assets.count];
+        
+        // Report first asset thumbnail
+        if (assets.count)
+        {
+            PHAsset *asset = assets[0];
             
-            imageValidationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
-            imageValidationView.stretchable = YES;
+            CGSize cellSize = CGSizeMake(73, 73);
             
-            // the user validates the image
-            [imageValidationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+            PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+            option.synchronous = NO;
+            cell.tag = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFill options:option resultHandler:^(UIImage *result, NSDictionary *info) {
                 
-                // Dismiss the image view
-                [strongSelf dismissImageValidationView];
+                cell.albumThumbnail.contentMode = UIViewContentModeScaleAspectFill;
+                cell.albumThumbnail.image = result;
+                cell.tag = 0;
                 
-                // Send the original image by considering its asset url
-                NSURL *assetURL = [info valueForKey:UIImagePickerControllerReferenceURL];
-                [strongSelf.delegate mediaPickerController:strongSelf didSelectImage:selectedImage withURL:assetURL];
             }];
-            
-            // the user wants to use an other image
-            [imageValidationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                
-                // dismiss the image view
-                [strongSelf dismissImageValidationView];
-                
-                // Open again media gallery
-                strongSelf->fullLibraryPicker = [[UIImagePickerController alloc] init];
-                strongSelf->fullLibraryPicker.delegate = strongSelf;
-                strongSelf->fullLibraryPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                strongSelf->fullLibraryPicker.allowsEditing = NO;
-                strongSelf->fullLibraryPicker.mediaTypes = picker.mediaTypes;
-                
-                [strongSelf presentViewController:strongSelf->fullLibraryPicker animated:YES completion:nil];
-            }];
-            
-            imageValidationView.image = selectedImage;
-            [imageValidationView showFullScreen];
         }
     }
-    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
-    {
-        NSURL* selectedVideo = [info objectForKey:UIImagePickerControllerMediaURL];
-        [self.delegate mediaPickerController:self didSelectVideo:selectedVideo isCameraRecording:NO];
-    }
+    
+    return cell;
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissMediaPicker];
-}
+#pragma mark - UITableViewDelegate
 
-- (void)dismissMediaPicker
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (fullLibraryPicker)
+    if (indexPath.row < userAlbums.count)
     {
-        fullLibraryPicker.delegate = nil;
+        MediaAlbumContentViewController *albumContentViewController = [MediaAlbumContentViewController mediaAlbumContentViewController];
+        albumContentViewController.mediaTypes = self.mediaTypes;
+        albumContentViewController.assetsCollection = userAlbums[indexPath.item];
+        albumContentViewController.delegate = self;
         
-        [self dismissViewControllerAnimated:YES completion:^{
-            fullLibraryPicker = nil;
-        }];
+        // Hide back button title
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        [self.navigationController pushViewController:albumContentViewController animated:YES];
     }
 }
 
-- (void)dismissImageValidationView
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (imageValidationView)
+    // Check whether a asynchronous request is pending
+    if (cell.tag)
     {
-        [imageValidationView dismissSelection];
-        [imageValidationView removeFromSuperview];
-        imageValidationView = nil;
+        [[PHImageManager defaultManager] cancelImageRequest:(PHImageRequestID)cell.tag];
+        cell.tag = 0;
     }
+}
+
+#pragma mark - MediaAlbumContentViewControllerDelegate
+
+- (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAsset:(PHAsset*)asset
+{
+    [self didSelectAsset:asset];
 }
 
 @end
