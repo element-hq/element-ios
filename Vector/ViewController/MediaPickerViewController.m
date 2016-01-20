@@ -322,6 +322,79 @@ static void *RecordingContext = &RecordingContext;
 
 #pragma mark - UI Refresh/Update
 
+- (void)handleScreenOrientation
+{
+    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    // Check whether the preview ratio must be inverted
+    CGFloat ratio = 0.0;
+    switch (screenOrientation)
+    {
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
+        {
+            if (self.cameraPreviewContainerAspectRatio.multiplier > 1)
+            {
+                ratio = 15.0 / 22.0;
+            }
+            break;
+        }
+        case UIInterfaceOrientationLandscapeRight:
+        case UIInterfaceOrientationLandscapeLeft:
+        {
+            if (self.cameraPreviewContainerAspectRatio.multiplier < 1)
+            {
+                CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+                ratio = screenSize.width / screenSize.height;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    
+    if (ratio)
+    {
+        // Replace the current ratio constraint by a new one
+        [NSLayoutConstraint deactivateConstraints:@[self.cameraPreviewContainerAspectRatio]];
+        
+        self.cameraPreviewContainerAspectRatio = [NSLayoutConstraint constraintWithItem:self.cameraPreviewContainerView
+                                                                              attribute:NSLayoutAttributeWidth
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self.cameraPreviewContainerView
+                                                                              attribute:NSLayoutAttributeHeight
+                                                                             multiplier:ratio
+                                                                               constant:0.0f];
+        
+        [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
+        
+        // Force layout refresh
+        [self.view layoutIfNeeded];
+        
+        if (self.navigationController.navigationBarHidden)
+        {
+            // Force the main scroller at the top
+            _mainScrollView.contentOffset = CGPointMake(0, 0);
+        }
+    }
+    
+    // Refresh camera preview layer
+    if (cameraPreviewLayer)
+    {
+        [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)screenOrientation];
+        cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
+    }
+    
+    // Update Captures collection display
+    if (recentCaptures.count)
+    {
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        [self.recentCapturesCollectionContainerView needsUpdateConstraints];
+        
+        [self.recentCapturesCollectionView reloadData];
+    }
+}
+
 - (void)reloadRecentCapturesCollection
 {
     // Retrieve recents snapshot for the selected media types
@@ -704,79 +777,6 @@ static void *RecordingContext = &RecordingContext;
 }
 
 #pragma mark - Capture handling methods
-
-- (void)handleScreenOrientation
-{
-    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    // Check whether the preview ratio must be inverted
-    CGFloat ratio = 0.0;
-    switch (screenOrientation)
-    {
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-        {
-            if (self.cameraPreviewContainerAspectRatio.multiplier > 1)
-            {
-                ratio = 15.0 / 22.0;
-            }
-            break;
-        }
-        case UIInterfaceOrientationLandscapeRight:
-        case UIInterfaceOrientationLandscapeLeft:
-        {
-            if (self.cameraPreviewContainerAspectRatio.multiplier < 1)
-            {
-                CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-                ratio = screenSize.width / screenSize.height;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-    
-    if (ratio)
-    {
-        // Replace the current ratio constraint by a new one
-        [NSLayoutConstraint deactivateConstraints:@[self.cameraPreviewContainerAspectRatio]];
-        
-        self.cameraPreviewContainerAspectRatio = [NSLayoutConstraint constraintWithItem:self.cameraPreviewContainerView
-                                                                              attribute:NSLayoutAttributeWidth
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self.cameraPreviewContainerView
-                                                                              attribute:NSLayoutAttributeHeight
-                                                                             multiplier:ratio
-                                                                               constant:0.0f];
-        
-        [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
-        
-        // Force layout refresh
-        [self.view layoutIfNeeded];
-        
-        if (self.navigationController.navigationBarHidden)
-        {
-            // Force the main scroller at the top
-            _mainScrollView.contentOffset = CGPointMake(0, 0);
-        }
-    }
-    
-    // Refresh camera preview layer
-    if (cameraPreviewLayer)
-    {
-        [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)screenOrientation];
-        cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
-    }
-    
-    // Update Captures collection display
-    if (recentCaptures.count)
-    {
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
-        [self.recentCapturesCollectionContainerView needsUpdateConstraints];
-        
-        [self.recentCapturesCollectionView reloadData];
-    }
-}
 
 - (void)setupAVCapture
 {
