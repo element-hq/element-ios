@@ -11,17 +11,9 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="73.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-zL-9bw" userLabel="Bing indicator">
-                        <rect key="frame" x="0.0" y="0.0" width="5" height="74"/>
-                        <color key="backgroundColor" red="0.028153735484073149" green="0.82494870580808077" blue="0.051896891282274656" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="74" id="C2z-3m-zJG"/>
-                            <constraint firstAttribute="width" constant="5" id="TWc-jq-awv"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
                         <rect key="frame" x="13" y="15" width="42" height="42"/>
                         <color key="backgroundColor" white="0.89720269880000003" alpha="1" colorSpace="calibratedWhite"/>
@@ -59,9 +51,7 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
-                    <constraint firstItem="e7r-zL-9bw" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" id="VHj-kc-U2A"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="16" id="XyO-tl-6SX"/>
                     <constraint firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" constant="10" id="YqC-WC-Wqe"/>
