@@ -58,6 +58,7 @@
     {
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
+        self.eventFormatter.isForSubtitle = YES;
         
         favoriteCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
