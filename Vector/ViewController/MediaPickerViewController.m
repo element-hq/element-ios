@@ -57,7 +57,10 @@ static void *RecordingContext = &RecordingContext;
     
     NSMutableArray *userAlbums;
     
-    MXKImageView* imageValidationView;
+    MXKImageView* validationView;
+    
+    MPMoviePlayerController *videoPlayer;
+    UIButton *videoPlayerControl;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -102,11 +105,8 @@ static void *RecordingContext = &RecordingContext;
     // Adjust camera preview ratio
     [self handleScreenOrientation];
     
-    if (!_mediaTypes)
-    {
-        // Set default media type
-        self.mediaTypes = @[(NSString *)kUTTypeImage];
-    }
+    // Force UI refresh according to selected  media types - Set default media type if none.
+    self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
     
     // Check camera access before set up AV capture
     [self checkDeviceAuthorizationStatus];
@@ -236,6 +236,48 @@ static void *RecordingContext = &RecordingContext;
     }];
 }
 
+#pragma mark -
+
+- (void)setMediaTypes:(NSArray *)mediaTypes
+{
+    if ([mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
+    {
+        if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        {
+            self.cameraModeButton.hidden = NO;
+            isVideoCaptureMode = NO;
+        }
+        else
+        {
+            self.cameraModeButton.hidden = YES;
+            isVideoCaptureMode = NO;
+        }
+        
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateHighlighted];
+    }
+    else if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+    {
+        self.cameraModeButton.hidden = YES;
+        isVideoCaptureMode = YES;
+        
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateHighlighted];
+    }
+    
+    if (_mediaTypes != mediaTypes)
+    {
+        _mediaTypes = mediaTypes;
+        
+        [self reloadRecentCapturesCollection];
+        [self reloadUserLibraryAlbums];
+    }
+}
+
 #pragma mark - Navigation bar handling
 
 - (void)scrollToCameraPreview
@@ -278,36 +320,7 @@ static void *RecordingContext = &RecordingContext;
     }
 }
 
-#pragma mark -
-
-- (void)setMediaTypes:(NSArray *)mediaTypes
-{
-    _mediaTypes = mediaTypes;
-    
-    if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
-    {
-        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-        {
-            self.cameraModeButton.hidden = NO;
-            isVideoCaptureMode = NO;
-        }
-        else
-        {
-            self.cameraModeButton.hidden = YES;
-            isVideoCaptureMode = NO;
-        }
-    }
-    else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-    {
-        self.cameraModeButton.hidden = YES;
-        isVideoCaptureMode = YES;
-    }
-    
-    [self reloadRecentCapturesCollection];
-    [self reloadUserLibraryAlbums];
-}
-
-#pragma mark -
+#pragma mark - UI Refresh/Update
 
 - (void)reloadRecentCapturesCollection
 {
@@ -435,9 +448,12 @@ static void *RecordingContext = &RecordingContext;
     if (isVideoCaptureMode)
     {
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
     }
     self.cameraCaptureButton.enabled = YES;
 }
+
+#pragma mark - Validation step
 
 - (void)didSelectAsset:(PHAsset *)asset
 {
@@ -448,24 +464,44 @@ static void *RecordingContext = &RecordingContext;
                                    
                                    if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
                                    {
-                                       [self validateSelectedImage:contentEditingInput.displaySizeImage responseHandler:^(BOOL isValidated) {
-                                           if (isValidated)
-                                           {
-                                               // Here the fullSizeImageURL is related to a local file path
-                                               NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                               UIImage *image = [UIImage imageWithData:data];
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           
+                                           // Use displaySizeImage to validate the selection
+                                           [self validateSelectedImage:contentEditingInput.displaySizeImage responseHandler:^(BOOL isValidated) {
                                                
-                                               // Send the original image by considering its asset url
-                                               [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
-                                           }
-                                       }];
+                                               if (isValidated)
+                                               {
+                                                   // Retrieve the fullSizeImage thanks to its local file path
+                                                   NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                                   UIImage *image = [UIImage imageWithData:data];
+                                                   
+                                                   // Send the original image
+                                                   [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
+                                               }
+                                               
+                                           }];
+                                           
+                                       });
                                    }
                                    else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
                                    {
                                        if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
                                        {
                                            AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
-                                           [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
+                                           
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               
+                                               // Validate first the selected video
+                                               [self validateSelectedVideo:[avURLAsset URL] responseHandler:^(BOOL isValidated) {
+                                                   
+                                                   if (isValidated)
+                                                   {
+                                                       [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
+                                                   }
+                                                   
+                                               }];
+                                               
+                                           });
                                        }
                                        else
                                        {
@@ -480,11 +516,11 @@ static void *RecordingContext = &RecordingContext;
     // Add a preview to let the user validates his selection
     __weak typeof(self) weakSelf = self;
     
-    imageValidationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
-    imageValidationView.stretchable = YES;
+    validationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
+    validationView.stretchable = YES;
     
     // the user validates the image
-    [imageValidationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
@@ -494,7 +530,7 @@ static void *RecordingContext = &RecordingContext;
     }];
     
     // the user wants to use an other image
-    [imageValidationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view
@@ -503,17 +539,117 @@ static void *RecordingContext = &RecordingContext;
         handler (NO);
     }];
     
-    imageValidationView.image = selectedImage;
-    [imageValidationView showFullScreen];
+    validationView.image = selectedImage;
+    [validationView showFullScreen];
+}
+
+- (void)validateSelectedVideo:(NSURL*)selectedVideoURL responseHandler:(void (^)(BOOL isValidated))handler
+{
+    // Add a preview to let the user validates his selection
+    __weak typeof(self) weakSelf = self;
+    
+    validationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
+    validationView.stretchable = NO;
+    
+    // the user validates the image
+    [validationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        // Dismiss the image view
+        [strongSelf dismissImageValidationView];
+        
+        handler (YES);
+    }];
+    
+    // the user wants to use an other image
+    [validationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        // dismiss the image view
+        [strongSelf dismissImageValidationView];
+        
+        handler (NO);
+    }];
+    
+    // Display first video frame
+    videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideoURL];
+    if (videoPlayer)
+    {
+        [videoPlayer setShouldAutoplay:NO];
+        videoPlayer.scalingMode = MPMovieScalingModeAspectFit;
+        videoPlayer.controlStyle = MPMovieControlStyleNone;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
+                                                     name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
+                                                   object:nil];
+        [videoPlayer requestThumbnailImagesAtTimes:@[@0.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
+    }
+    
+    videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
+    [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
+    videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
+    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
+    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+    [validationView addSubview:videoPlayerControl];
+    videoPlayerControl.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    [validationView showFullScreen];
+    videoPlayerControl.center = validationView.center;
 }
 
 - (void)dismissImageValidationView
 {
-    if (imageValidationView)
+    if (validationView)
     {
-        [imageValidationView dismissSelection];
-        [imageValidationView removeFromSuperview];
-        imageValidationView = nil;
+        if (videoPlayer)
+        {
+            [videoPlayer stop];
+            
+            [videoPlayer.view removeFromSuperview];
+            videoPlayer = nil;
+            
+            [videoPlayerControl removeFromSuperview];
+            videoPlayerControl = nil;
+        }
+        
+        [validationView dismissSelection];
+        [validationView removeFromSuperview];
+        validationView = nil;
+    }
+}
+
+- (void)controlVideoPlayer
+{
+    // Check whether the video player is already playing
+    if (videoPlayer.view.superview)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+        
+        [videoPlayer stop];
+        [videoPlayer.view removeFromSuperview];
+        
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerPlaybackDidFinishNotification:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:nil];
+        
+        CGRect frame = validationView.imageView.frame;
+        frame.origin = CGPointZero;
+        videoPlayer.view.frame = frame;
+        videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [validationView.imageView addSubview:videoPlayer.view];
+        
+        [videoPlayer play];
+        
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateHighlighted];
+        [validationView bringSubviewToFront:videoPlayerControl];
     }
 }
 
@@ -884,13 +1020,17 @@ static void *RecordingContext = &RecordingContext;
     if (isVideoCaptureMode)
     {
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateHighlighted];
         isVideoCaptureMode = NO;
     }
     else
     {
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
+        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateHighlighted];
         isVideoCaptureMode = YES;
     }
 }
@@ -1016,6 +1156,8 @@ static void *RecordingContext = &RecordingContext;
                     
                     // Reload recent pictures collection
                     [self reloadRecentCapturesCollection];
+                    // Reload user albums display
+                    [self reloadUserLibraryAlbums];
                     
                 } failure:nil];
             }
@@ -1074,11 +1216,13 @@ static void *RecordingContext = &RecordingContext;
                 self.cameraModeButton.enabled = NO;
                 self.cameraSwitchButton.enabled = NO;
                 [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
+                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateHighlighted];
                 self.cameraCaptureButton.enabled = YES;
             }
             else
             {
-                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
+                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
+                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
                 self.cameraCaptureButton.enabled = YES;
             }
         });
@@ -1102,16 +1246,29 @@ static void *RecordingContext = &RecordingContext;
     
     lockInterfaceRotation = NO;
     
-    [MXKMediaManager saveMediaToPhotosLibrary:outputFileURL isImage:NO success:^(NSURL *assetURL) {
+    [MXKMediaManager saveMediaToPhotosLibrary:outputFileURL isImage:NO success:^(NSURL *videoURL) {
         
         // Remove the temporary file
         [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
+        
+        // Validate the new captured video
+        [self validateSelectedVideo:videoURL responseHandler:^(BOOL isValidated) {
+            
+            if (isValidated)
+            {
+                // Send the original image by considering its asset url
+                [self.delegate mediaPickerController:self didSelectVideo:videoURL];
+            }
+            
+        }];
         
         // Relaunch preview
         [self reset];
         
         // Reload recent pictures collection
         [self reloadRecentCapturesCollection];
+        // Reload user albums display
+        [self reloadUserLibraryAlbums];
         
     } failure:nil];
     
@@ -1307,6 +1464,25 @@ static void *RecordingContext = &RecordingContext;
 - (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAsset:(PHAsset*)asset
 {
     [self didSelectAsset:asset];
+}
+
+#pragma mark - Movie player observer
+
+- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
+{
+    if (validationView)
+    {
+        validationView.image = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
+        [validationView bringSubviewToFront:videoPlayerControl];
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
+}
+
+- (void)moviePlayerPlaybackDidFinishNotification:(NSNotification *)notification
+{
+    // Remove player view from superview
+    [self controlVideoPlayer];
 }
 
 @end
