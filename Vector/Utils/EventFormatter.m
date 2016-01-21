@@ -51,6 +51,17 @@
         self.sendingTextColor = VECTOR_LIGHT_GRAY_COLOR;
         self.errorTextColor = [UIColor redColor];
         
+        self.defaultTextFont = [UIFont systemFontOfSize:15];
+        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+        {
+            self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+        }
+        else
+        {
+            self.bingTextFont = [UIFont systemFontOfSize:15];
+        }
+        self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
+        self.callInviteTextFont = [UIFont italicSystemFontOfSize:15];
     }
     return self;
 }
