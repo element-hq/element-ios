@@ -19,7 +19,7 @@
                         <rect key="frame" x="51" y="0.0" width="102" height="39"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="29" id="SHB-dF-A5J"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="39" id="SHB-dF-A5J"/>
                             <constraint firstAttribute="width" constant="102" id="aQ3-Pg-LVD"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>

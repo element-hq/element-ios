@@ -17,7 +17,7 @@
 #import "MXKRoomOutgoingTextMsgBubbleCell.h"
 
 /**
- `RoomOutgoingTextMsgBubbleCell` displays outgoing message bubbles with user's picture.
+ `RoomOutgoingTextMsgBubbleCell` displays outgoing message bubbles with user's picture and name.
  */
 @interface RoomOutgoingTextMsgBubbleCell : MXKRoomOutgoingTextMsgBubbleCell
 

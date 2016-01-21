@@ -14,17 +14,10 @@
  limitations under the License.
  */
 
-#import "RoomIncomingTextMsgBubbleCell.h"
+#import "RoomIncomingTextMsgWithoutSenderNameBubbleCell.h"
 
 #import "VectorDesignValues.h"
 
-@implementation RoomIncomingTextMsgBubbleCell
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
-}
+@implementation RoomIncomingTextMsgWithoutSenderNameBubbleCell
 
 @end
