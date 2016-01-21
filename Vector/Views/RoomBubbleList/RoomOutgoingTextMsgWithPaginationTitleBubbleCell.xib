@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -27,16 +27,20 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xji-my-vrb" userLabel="Pagination Separator View">
-                                <rect key="frame" x="0.0" y="23" width="524" height="1"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xji-my-vrb" userLabel="Pagination Separator View">
+                                <rect key="frame" x="0.0" y="23" width="534" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="xji-my-vrb" secondAttribute="bottom" id="16A-gS-XOv"/>
                             <constraint firstItem="V3J-FP-ho1" firstAttribute="leading" secondItem="vWC-jH-xa5" secondAttribute="leading" id="OMh-WV-B3S"/>
+                            <constraint firstItem="xji-my-vrb" firstAttribute="leading" secondItem="vWC-jH-xa5" secondAttribute="leading" id="Qyc-2J-gnx"/>
                             <constraint firstAttribute="height" constant="24" id="eDH-EH-31i"/>
                             <constraint firstAttribute="trailing" secondItem="V3J-FP-ho1" secondAttribute="trailing" constant="10" id="fEa-Mu-9Po"/>
+                            <constraint firstItem="xji-my-vrb" firstAttribute="top" secondItem="V3J-FP-ho1" secondAttribute="bottom" constant="5" id="hmM-1c-Gda"/>
+                            <constraint firstAttribute="trailing" secondItem="xji-my-vrb" secondAttribute="trailing" id="pnl-Cq-Jxu"/>
                             <constraint firstItem="V3J-FP-ho1" firstAttribute="top" secondItem="vWC-jH-xa5" secondAttribute="top" id="tyU-7j-qmX"/>
                         </constraints>
                     </view>
@@ -59,7 +63,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU">
-                        <rect key="frame" x="56" y="65" width="102" height="39"/>
+                        <rect key="frame" x="51" y="65" width="102" height="39"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="ZZt-rc-tVJ"/>
@@ -101,7 +105,7 @@
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="65" id="mkw-3s-H8B"/>
                     <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="13" id="tuw-aU-ncu"/>
-                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="56" id="uig-Xh-7m6"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="51" id="uig-Xh-7m6"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
