@@ -45,11 +45,11 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         dateTimeLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
-             dateTimeLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+             dateTimeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
         }
         else
         {
-             dateTimeLabel.font = [UIFont systemFontOfSize:15];
+             dateTimeLabel.font = [UIFont systemFontOfSize:12];
         }
         dateTimeLabel.adjustsFontSizeToFitWidth = YES;
 
@@ -292,7 +292,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateSelected];
     [editButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
     [editButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateSelected];
-    editButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    editButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     
     editButton.backgroundColor = [UIColor clearColor];
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
