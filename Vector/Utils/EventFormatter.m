@@ -47,11 +47,13 @@
         
         self.defaultTextColor = VECTOR_TEXT_BLACK_COLOR;
         self.subTitleTextColor = VECTOR_TEXT_GRAY_COLOR;
+        self.prefixTextColor = VECTOR_TEXT_GRAY_COLOR;
         self.bingTextColor = VECTOR_GREEN_COLOR;
         self.sendingTextColor = VECTOR_LIGHT_GRAY_COLOR;
         self.errorTextColor = [UIColor redColor];
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
+        self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
             self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
