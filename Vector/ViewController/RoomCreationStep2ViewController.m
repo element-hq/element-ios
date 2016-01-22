@@ -198,6 +198,34 @@
                                               
                                               roomCreationRequest = nil;
                                               
+                                              // Check wheter an image has been selected
+                                              if (_roomCreationInputs.roomPicture)
+                                              {
+                                                  // Make sure its orientation is up
+                                                  UIImage *updatedPicture = [MXKTools forceImageOrientationUp:_roomCreationInputs.roomPicture];
+                                                  
+                                                  // Upload picture
+                                                  MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:_roomCreationInputs.mxSession initialRange:0 andRange:1.0];
+                                                  
+                                                  [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
+                                                      
+                                                      [room setAvatar:url success:nil failure:^(NSError *error) {
+                                                          
+                                                          NSLog(@"[RoomCreation] Failed to update the room avatar %@", error);
+                                                          // Alert user
+                                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                          
+                                                      }];
+                                                      
+                                                  } failure:^(NSError *error) {
+                                                      
+                                                      NSLog(@"[RoomCreation] Failed to upload image: %@", error);
+                                                      // Alert user
+                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                      
+                                                  }];
+                                              }
+                                              
                                               // Check whether some users must be invited
                                               NSArray *invitedUsers = _roomCreationInputs.roomParticipants;
                                               for (NSString *userId in invitedUsers)

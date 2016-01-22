@@ -40,6 +40,9 @@
     NSInteger privacySection;
     UIButton *switchPrivacyButton;
     MXKAlert *privacyAlert;
+    
+    // picker
+    MediaPickerViewController* mediaPicker;
 }
 
 @end
@@ -113,6 +116,13 @@
     
     // Refresh display
     isAccountListShrinked = YES;
+    
+    // Remove potential attachments viewer
+    if (mediaPicker)
+    {
+        [mediaPicker destroy];
+        mediaPicker = nil;
+    }
     
     [self.tableView reloadData];
 }
@@ -209,9 +219,20 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = 0;
-//    accountSection = appearanceSection = privacySection = -1;
+    accountSection = appearanceSection = privacySection = -1;
     
-    accountSection = count++;
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    if (mxAccounts.count == 1)
+    {
+        MXKAccount *account = [mxAccounts firstObject];
+        inputs.mxSession = account.mxSession;
+        self.navigationItem.rightBarButtonItem.enabled = (inputs.roomName.length || roomNameTextField.text.length);
+    }
+    else if (mxAccounts.count > 1)
+    {
+        accountSection = count++;
+    }
+    
     appearanceSection = count++;
     privacySection = count++;
     
@@ -224,25 +245,13 @@
     if (section == accountSection)
     {
         NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-        MXKAccount *account;
-        if (mxAccounts.count == 1)
+        if (isAccountListShrinked)
         {
-            account = [mxAccounts firstObject];
-            inputs.mxSession = account.mxSession;
-            self.navigationItem.rightBarButtonItem.enabled = (inputs.roomName.length || roomNameTextField.text.length);
-            
             count = 1;
         }
         else
         {
-            if (isAccountListShrinked)
-            {
-                count = 1;
-            }
-            else
-            {
-                count = mxAccounts.count + 1;
-            }
+            count = mxAccounts.count + 1;
         }
     }
     else if (section == appearanceSection)
@@ -367,7 +376,9 @@
             }
             
             roomPictureCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_creation_appearance_picture", @"Vector", nil);
-            roomPictureCell.mxkImageView.image = [UIImage imageNamed:@"placeholder"];
+            roomPictureCell.mxkImageView.image = inputs.roomPicture ? inputs.roomPicture : [UIImage imageNamed:@"placeholder"];
+            roomPictureCell.mxkImageView.layer.cornerRadius = roomPictureCell.mxkImageView.frame.size.width / 2;
+            roomPictureCell.mxkImageView.clipsToBounds = YES;
             
             cell = roomPictureCell;
         }
@@ -449,7 +460,6 @@
         }
         else if (!isAccountListShrinked)
         {
-            
             NSInteger index = indexPath.row - 1;
             if (index < mxAccounts.count)
             {
@@ -463,6 +473,18 @@
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange (accountSection, 1)];
         [tableView reloadSections:indexSet withRowAnimation:rowAnimation];
     }
+    else if (indexPath.section == appearanceSection)
+    {
+        if (indexPath.row == 1)
+        {
+            mediaPicker = [MediaPickerViewController mediaPickerViewController];
+            mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
+            mediaPicker.delegate = self;
+            
+            [self.navigationController pushViewController:mediaPicker animated:YES];
+        }
+    }
+        
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -491,5 +513,36 @@
     [textField resignFirstResponder];
     return YES;
 }
+
+#pragma mark - MediaPickerViewController Delegate
+
+- (void)dismissMediaPicker
+{
+    if (mediaPicker)
+    {
+        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
+        [mediaPicker destroy];
+        mediaPicker = nil;
+    }
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(UIImage*)image withURL:(NSURL *)imageURL
+{
+    [self dismissMediaPicker];
+    
+    if (image)
+    {
+        inputs.roomPicture = image;
+        
+        [self.tableView reloadData];
+    }
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
+{
+    // this method should not be called
+    [self dismissMediaPicker];
+}
+
 
 @end
