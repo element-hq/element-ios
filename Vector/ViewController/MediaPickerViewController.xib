@@ -63,7 +63,7 @@
                                     <state key="normal" image="remove_icon.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <state key="highlighted" image="camera_video.png"/>
+                                    <state key="highlighted" image="remove_icon.png"/>
                                     <connections>
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="nvH-aw-ZJK"/>
                                     </connections>
@@ -180,7 +180,6 @@
     <resources>
         <image name="camera_capture.png" width="83" height="83"/>
         <image name="camera_switch.png" width="32" height="24"/>
-        <image name="camera_video.png" width="31" height="31"/>
         <image name="remove_icon.png" width="25" height="24"/>
     </resources>
 </document>
