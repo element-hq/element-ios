@@ -38,6 +38,7 @@
         // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
         self.useCustomReceipts = YES;
+        self.useCustomUnsentButton = YES;
         
         // TODO custom here self.eventsFilterForMessages according to Vector requirements
         
