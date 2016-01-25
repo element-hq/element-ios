@@ -15,34 +15,32 @@
  */
 
 #import "RecentsViewController.h"
-#import "RoomViewController.h"
-
-#import "AppDelegate.h"
+#import "RecentsDataSource.h"
+#import "RecentTableViewCell.h"
 
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
 
-#import "RecentListDataSource.h"
+#import "HomeViewController.h"
+#import "RoomViewController.h"
+
+#import "VectorDesignValues.h"
+
+#import "InviteRecentTableViewCell.h"
+#import "DirectoryRecentTableViewCell.h"
 
 @interface RecentsViewController ()
 {
-    // Recents refresh handling
-    BOOL shouldScrollToTopOnRefresh;
+    // The "parent" segmented view controller
+    HomeViewController *homeViewController;
     
-    // Selected room description
-    NSString  *selectedRoomId;
-    MXSession *selectedRoomSession;
+    // recents drag and drop management
+    UIImageView *cellSnapshot;
+    NSIndexPath* movingCellPath;
+    MXRoom* movingRoom;
     
-    // Keep reference on the current room view controller to release it correctly
-    RoomViewController *currentRoomViewController;
-    
-    // Keep the selected cell index to handle correctly split view controller display in landscape mode
-    NSIndexPath *currentSelectedCellIndexPath;
-    
-    // "Mark all as read" option
-    UITapGestureRecognizer *navigationBarTapGesture;
-    MXKAlert *markAllAsReadAlert;
+    NSIndexPath* lastPotentialCellPath;
 }
 
 @end
@@ -52,54 +50,38 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
     {
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
+    
+    self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    
-    // Prepare tap gesture on title bar
-    navigationBarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNavigationBarTap:)];
-    [navigationBarTapGesture setNumberOfTouchesRequired:1];
-    [navigationBarTapGesture setNumberOfTapsRequired:1];
-    [navigationBarTapGesture setDelegate:self];
-    
-    // Initialisation
-    currentSelectedCellIndexPath = nil;
     
     // Setup `MXKRecentListViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // The view controller handles itself the selected recent
-    self.delegate = self;
-}
+    // Register here the customized cell view class used to render recents
+    [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
+    [self.recentsTableView addGestureRecognizer:longPress];
 
-- (void)dealloc
-{
-    [self closeSelectedRoom];
+    self.recentsTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+
+    // Hide line separators of empty cells
+    self.recentsTableView.tableFooterView = [[UIView alloc] init];
 }
 
 - (void)destroy
 {
-    if (markAllAsReadAlert)
-        
-    {
-        [markAllAsReadAlert dismiss:NO];
-        markAllAsReadAlert = nil;
-    }
-    
-    if (navigationBarTapGesture)
-    {
-        [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
-        navigationBarTapGesture = nil;
-    }
-    
     [super destroy];
 }
 
@@ -119,20 +101,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Restore the tabbar hidden manually on iOS 8 and later (see viewWillDisappear)
-    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
-    {
-        // Check whether the recents list is actually visible before showing the tabbar
-        if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden)
-        {
-            self.tabBarController.tabBar.hidden = NO;
-            [self.splitViewController.view setNeedsLayout];
-        }
-    }
-    
-    [self updateNavigationBarTitle];
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
@@ -140,17 +108,6 @@
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
-    
-    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
-    if (recentListDataSource)
-    {
-        [self startActivityIndicator];
-        [recentListDataSource refreshPublicRooms:nil onComplete:^{
-            [self stopActivityIndicator];
-        }];
-    }
-    
-    [self.navigationController.navigationBar addGestureRecognizer:navigationBarTapGesture];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -159,27 +116,6 @@
     
     // Leave potential editing mode
     [self setEditing:NO];
-    
-    selectedRoomId = nil;
-    selectedRoomSession = nil;
-    
-    if (markAllAsReadAlert)
-    {
-        [markAllAsReadAlert dismiss:NO];
-        markAllAsReadAlert = nil;
-    }
-    
-    [self.navigationController.navigationBar removeGestureRecognizer:navigationBarTapGesture];
-    
-    // Chat screen should be displayed without tabbar, but hidesBottomBarWhenPushed flag has no effect in case of splitviewcontroller use.
-    // Trick: on iOS 8 and later the tabbar is hidden manually for the secondary view controllers of the splitviewcontroller
-    // when the primary view controller is hidden.
-    // Note:'displayMode' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && [self.splitViewController respondsToSelector:@selector(displayMode)])
-    {
-        self.tabBarController.tabBar.hidden = YES;
-        [self.splitViewController.view setNeedsLayout];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -187,11 +123,10 @@
     [super viewDidAppear:animated];
     
     // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (!self.splitViewController || ([self.splitViewController respondsToSelector:@selector(isCollapsed)] && self.splitViewController.isCollapsed))
+    if (!self.splitViewController || self.splitViewController.isCollapsed)
     {
         // Release the current selected room (if any).
-        [self closeSelectedRoom];
+        [homeViewController closeSelectedRoom];
     }
     else
     {
@@ -204,158 +139,38 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-    // Restore the tabbar by defaut when the user leaves the recents tab
-    if ([AppDelegate theDelegate].masterTabBarController.selectedIndex != TABBAR_RECENTS_INDEX)
-    {
-        self.tabBarController.tabBar.hidden = NO;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 35;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Check whether the selected row is a public room or not
-    RecentListDataSource *recentListDataSource = (RecentListDataSource*)self.dataSource;
-    if (recentListDataSource && recentListDataSource.publicRoomsFirstSection != -1 && indexPath.section >= recentListDataSource.publicRoomsFirstSection)
-    {
-        MXPublicRoom *publicRoom = [recentListDataSource publicRoomAtIndexPath:indexPath];
-        if (publicRoom)
-        {
-            // Handle multi-sessions here
-            [[AppDelegate theDelegate] selectMatrixAccount:^(MXKAccount *selectedAccount) {
-                // Check whether the user has already joined the selected public room
-                if ([selectedAccount.mxSession roomWithRoomId:publicRoom.roomId])
-                {
-                    // Open selected room
-                    [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
-                }
-                else
-                {
-                    // Join the selected room
-                    UIActivityIndicatorView *loadingWheel = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-                    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-                    if (selectedCell)
-                    {
-                        CGPoint center = CGPointMake(selectedCell.frame.size.width / 2, selectedCell.frame.size.height / 2);
-                        loadingWheel.center = center;
-                        [selectedCell addSubview:loadingWheel];
-                    }
-                    [loadingWheel startAnimating];
-                    [selectedAccount.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room)
-                     {
-                         // Show joined room
-                         [loadingWheel stopAnimating];
-                         [loadingWheel removeFromSuperview];
-                         [[AppDelegate theDelegate].masterTabBarController showRoom:publicRoom.roomId withMatrixSession:selectedAccount.mxSession];
-                     } failure:^(NSError *error)
-                     {
-                         NSLog(@"[HomeVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
-                         //Alert user
-                         [loadingWheel stopAnimating];
-                         [loadingWheel removeFromSuperview];
-                         [[AppDelegate theDelegate] showErrorAsAlert:error];
-                     }];
-                }
-                
-            }];
-        }
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
-    else
-    {
-        // Let super handle the selected row
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    }
 }
 
 #pragma mark -
 
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController2
 {
-    if (selectedRoomId && [selectedRoomId isEqualToString:roomId]
-        && selectedRoomSession && selectedRoomSession == matrixSession)
-    {
-        // Nothing to do
-        return;
-    }
-    
-    selectedRoomId = roomId;
-    selectedRoomSession = matrixSession;
-    
-    if (roomId && matrixSession)
-    {
-        [self performSegueWithIdentifier:@"showDetails" sender:self];
-    }
-    else
-    {
-        [self closeSelectedRoom];
-    }
-}
-
-- (void)closeSelectedRoom
-{
-    selectedRoomId = nil;
-    selectedRoomSession = nil;
-    
-    if (currentRoomViewController)
-    {
-        if (currentRoomViewController.roomDataSource)
-        {
-            // Let the manager release this room data source
-            MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-            [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
-        }
-
-        [currentRoomViewController destroy];
-        currentRoomViewController = nil;
-    }
+    [super displayList:listDataSource];
+    homeViewController = homeViewController2;
 }
 
 #pragma mark - Internal methods
 
-- (void)updateNavigationBarTitle
-{
-    NSString *title = NSLocalizedStringFromTable(@"recents", @"Vector", nil);
-    
-    if (self.dataSource.unreadCount)
-    {
-        title = [NSString stringWithFormat:@"%@ (%tu)", title, self.dataSource.unreadCount];
-    }
-    self.navigationItem.title = title;
-}
-
 - (void)scrollToTop
 {
-    // stop any scrolling effect
+    // Stop any scrolling effect before scrolling to the tableview top
     [UIView setAnimationsEnabled:NO];
-    // before scrolling to the tableview top
+
     self.recentsTableView.contentOffset = CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top);
+    
     [UIView setAnimationsEnabled:YES];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    currentSelectedCellIndexPath = nil;
-    if (currentRoomViewController)
+    NSIndexPath *currentSelectedCellIndexPath = nil;
+    if (homeViewController.currentRoomViewController)
     {
-        // Restore the current selected room id, it is erased when view controller disappeared (see viewWillDisappear).
-        if (!selectedRoomId)
-        {
-            selectedRoomId = currentRoomViewController.roomDataSource.roomId;
-            selectedRoomSession = currentRoomViewController.mainSession;
-        }
-        
         // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:selectedRoomId andMatrixSession:selectedRoomSession];
+        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:homeViewController.selectedRoomId andMatrixSession:homeViewController.selectedRoomSession];
     }
-    
+
     if (currentSelectedCellIndexPath)
     {
         // Select the right row
@@ -379,114 +194,71 @@
     }
 }
 
-#pragma mark -
-
-- (void)onNavigationBarTap:(id)sender
-{
-    if (self.dataSource.unreadCount)
-        
-    {
-        __weak typeof(self) weakSelf = self;
-        
-        markAllAsReadAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"mark_all_as_read_prompt", @"Vector", nil) message:nil style:MXKAlertStyleAlert];
-        
-        markAllAsReadAlert.cancelButtonIndex = [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-                                                {
-                                                    typeof(self) strongSelf = weakSelf;
-                                                    strongSelf->markAllAsReadAlert = nil;
-                                                }];
-        
-        [markAllAsReadAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-         {
-             typeof(self) strongSelf = weakSelf;
-             
-             strongSelf->markAllAsReadAlert = nil;
-             
-             [strongSelf.dataSource markAllAsRead];
-             [strongSelf updateNavigationBarTitle];
-         }];
-        
-        [markAllAsReadAlert showInViewController:self];
-    }
-}
-
-#pragma mark - Segues
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Keep ref on destinationViewController
-    [super prepareForSegue:segue sender:sender];
-    
-    if ([[segue identifier] isEqualToString:@"showDetails"])
-    {
-        UIViewController *controller;
-        if ([[segue destinationViewController] isKindOfClass:[UINavigationController class]])
-        {
-            controller = [[segue destinationViewController] topViewController];
-        }
-        else
-        {
-            controller = [segue destinationViewController];
-        }
-        
-        if ([controller isKindOfClass:[RoomViewController class]])
-        {
-            // Release existing Room view controller (if any)
-            if (currentRoomViewController)
-            {
-                if (currentRoomViewController.roomDataSource)
-                {
-                    // Let the manager release this room data source
-                    MXSession *mxSession = currentRoomViewController.roomDataSource.mxSession;
-                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-                    [roomDataSourceManager closeRoomDataSource:currentRoomViewController.roomDataSource forceClose:NO];
-                }
-                
-                [currentRoomViewController destroy];
-                currentRoomViewController = nil;
-            }
-            
-            currentRoomViewController = (RoomViewController *)controller;
-            
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:selectedRoomSession];
-            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:selectedRoomId create:YES];
-            [currentRoomViewController displayRoom:roomDataSource];
-        }
-        
-        [self updateNavigationBarTitle];
-        
-        if (self.splitViewController)
-        {
-            // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-            [self refreshCurrentSelectedCell:NO];
-            
-            // IOS >= 8
-            if ([self.splitViewController respondsToSelector:@selector(displayModeButtonItem)])
-            {
-                controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-            }
-            
-            //
-            controller.navigationItem.leftItemsSupplementBackButton = YES;
-        }
-        
-        // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"back", @"Vector", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
-}
-
 #pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+{
+    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    
+    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomDataSource.room])
+    {
+        return RecentTableViewCell.class;
+    }
+    else
+    {
+        return InviteRecentTableViewCell.class;
+    }
+}
+
+- (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
+{
+    id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
+    
+    if (NSNotFound == [cellDataStoring.recentsDataSource.mxSession.invitedRooms indexOfObject:cellDataStoring.roomDataSource.room])
+    {
+        return RecentTableViewCell.defaultReuseIdentifier;
+    }
+    else
+    {
+        return InviteRecentTableViewCell.defaultReuseIdentifier;
+    }
+}
+
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    // Update the unreadCount in the title
-    [self updateNavigationBarTitle];
+    // do not refresh if there is a pending recent drag and drop
+    if (movingCellPath)
+    {
+        return;
+    }
+    
+    if ([dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        RecentsDataSource* recentsDataSource = (RecentsDataSource*)dataSource;
+    
+        recentsDataSource.onRoomInvitationReject = ^(MXRoom* room) {
+            
+            [self.recentsTableView setEditing:NO];
+            
+            [room leave:^{
+                [self.recentsTableView reloadData];
+            } failure:^(NSError *error) {
+                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed: %@", room.state.roomId, error);
+            }];
+
+        };
+        
+        recentsDataSource.onRoomInvitationAccept = ^(MXRoom* room) {
+            [self.delegate recentListViewController:self didSelectRoom:room.state.roomId inMatrixSession:room.mxSession];
+        };
+    }
     
     [self.recentsTableView reloadData];
     
-    if (shouldScrollToTopOnRefresh)
+    if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop];
-        shouldScrollToTopOnRefresh = NO;
+        _shouldScrollToTopOnRefresh = NO;
     }
     
     // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
@@ -498,29 +270,357 @@
     }
 }
 
-#pragma mark - MXKRecentListViewControllerDelegate
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
-{
-    // Open the room
-    [self selectRoomWithId:roomId inMatrixSession:matrixSession];
-}
+#pragma mark - swipe actions
 
-#pragma mark - Override UISearchBarDelegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+// for IOS >= 8 devices
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Prepare table refresh on new search session
-    shouldScrollToTopOnRefresh = YES;
+    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
     
-    [super searchBar:searchBar textDidChange:searchText];
+    if (room)
+    {
+        NSArray* invitedRooms = room.mxSession.invitedRooms;
+        
+        // display no action for the invited room
+        if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
+        {
+            return actions;
+        }
+        
+        NSString* title = @"      ";
+        
+        // pushes settings
+        BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+        
+        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
+            [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
+            
+        }];
+        
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"unmute_icon" : @"mute_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        [actions insertObject:muteAction atIndex:0];
+        
+        // favorites management
+        NSDictionary* tagsDict = [[NSDictionary alloc] init];
+        
+        // sanity cg
+        if (room.accountData.tags)
+        {
+            tagsDict = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
+        }
+    
+        // get the room tag
+        // use only the first one
+        NSArray<MXRoomTag*>* tags = tagsDict.allValues;
+        MXRoomTag* currentTag = nil;
+        
+        if (tags.count)
+        {
+            currentTag = [tags objectAtIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagFavourite isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
+            }];
+            
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favorite_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (currentTag && ([kMXRoomTagFavourite isEqualToString:currentTag.name] || [kMXRoomTagLowPriority isEqualToString:currentTag.name]))
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Std" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:nil];
+            }];
+            
+            action.backgroundColor = [MXKTools convertImageToPatternColor:nil backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        if (!currentTag || ![kMXRoomTagLowPriority isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
+            }];
+            
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"low_priority_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            [actions insertObject:action atIndex:0];
+        }
+        
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            [self leaveRecentsAtIndexPath:indexPath];
+        }];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        
+        [actions insertObject:leaveAction atIndex:0];
+    }
+    
+    return actions;
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void)leaveRecentsAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Prepare table refresh on end of search
-    shouldScrollToTopOnRefresh = YES;
-    
-    [super searchBarCancelButtonClicked: searchBar];
+    [self.dataSource leaveRoomAtIndexPath:indexPath];
+    [self.recentsTableView setEditing:NO];
 }
+
+- (void)updateRoomTagAtIndexPath:(NSIndexPath *)indexPath to:(NSString*)tag
+{
+    [self.dataSource updateRoomTagAtIndexPath:indexPath to:tag];
+    [self.recentsTableView setEditing:NO];
+}
+
+- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath*)path
+{
+    [self.dataSource muteRoomNotifications:mute atIndexPath:path];
+    [self.recentsTableView setEditing:NO];
+}
+
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [(RecentsDataSource*)self.dataSource heightForHeaderInSection:section];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
+    {
+        // hide the selection
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
+    {
+        // Show the directory screen
+        [homeViewController showPublicRoomsDirectory];
+    }
+    else
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
+#pragma mark - recents drag & drop management
+
+- (void)onRecentsDragEnd
+{
+    [cellSnapshot removeFromSuperview];
+    cellSnapshot = nil;
+    movingCellPath = nil;
+    movingRoom = nil;
+    
+    lastPotentialCellPath = nil;
+    ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
+    ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
+    
+    [self.activityIndicator stopAnimating];
+}
+
+- (IBAction) onRecentsLongPress:(id)sender
+{
+    RecentsDataSource* recentsDataSource = nil;
+    
+    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+         recentsDataSource = (RecentsDataSource*)self.dataSource;
+    }
+    
+    // only support RecentsDataSource
+    if (!recentsDataSource)
+    {
+        return;
+    }
+    
+    UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
+    UIGestureRecognizerState state = longPress.state;
+    
+    // check if there is a moving cell during the long press managemnt
+    if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
+    {
+        return;
+    }
+    
+    CGPoint location = [longPress locationInView:self.recentsTableView];
+    
+    switch (state)
+    {
+        // step 1 : display the selected cell
+        case UIGestureRecognizerStateBegan:
+        {
+            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+            
+            // check if the cell can be moved
+            if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
+            {
+                UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+                
+                // snapshot the cell
+                UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
+                [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
+                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                
+                cellSnapshot = [[UIImageView alloc] initWithImage:image];
+                recentsDataSource.droppingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
+                
+                // display the selected cell over the tableview
+                CGPoint center = cell.center;
+                center.y = location.y;
+                cellSnapshot.center = center;
+                cellSnapshot.alpha = 0.5f;
+                [self.recentsTableView addSubview:cellSnapshot];
+                
+                cell = [[UITableViewCell alloc] init];
+                cell.frame = CGRectMake(0, 0, 100, 80);
+                cell.backgroundColor = [UIColor redColor];
+                
+                lastPotentialCellPath = indexPath;
+                recentsDataSource.droppingCellIndexPath = indexPath;
+                
+                movingCellPath = indexPath;
+                recentsDataSource.hiddenCellIndexPath = movingCellPath;
+                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
+            }
+            break;
+        }
+        
+        // step 2 : the cell must follow the finger
+        case UIGestureRecognizerStateChanged:
+        {
+            CGPoint center = cellSnapshot.center;
+            CGFloat halfHeight = cellSnapshot.frame.size.height / 2.0f;
+            CGFloat cellTop = location.y - halfHeight;
+            CGFloat cellBottom = location.y + halfHeight;
+            
+            CGPoint contentOffset =  self.recentsTableView.contentOffset;
+            CGFloat height = MIN(self.recentsTableView.frame.size.height, self.recentsTableView.contentSize.height);
+            CGFloat bottomOffset = contentOffset.y + height;
+            
+            // check if the moving cell is trying to move under the tableview
+            if (cellBottom > self.recentsTableView.contentSize.height)
+            {
+                // force the cell to stay at the tableview bottom
+                location.y = self.recentsTableView.contentSize.height - halfHeight;
+            }
+            // check if the cell is moving over the displayed tableview bottom
+            else if (cellBottom > bottomOffset)
+            {
+                CGFloat diff = cellBottom - bottomOffset;
+                
+                // moving down the cell
+                location.y -= diff;
+                // scroll up the tableview
+                contentOffset.y += diff;
+            }
+            // the moving is tryin to move over the tableview topmost
+            else if (cellTop < 0)
+            {
+                // force to stay in the topmost
+                contentOffset.y  = 0;
+                location.y = contentOffset.y + halfHeight;
+            }
+            // the moving cell is displayed over the current scroll top
+            else if (cellTop < contentOffset.y)
+            {
+                CGFloat diff = contentOffset.y - cellTop;
+             
+                // move up the cell and the table up
+                location.y -= diff;
+                contentOffset.y -= diff;
+            }
+            
+            // move the cell to follow the user finger
+            center.y = location.y;
+            cellSnapshot.center = center;
+            
+            // scroll the tableview if it is required
+            if (contentOffset.y != self.recentsTableView.contentOffset.y)
+            {
+                [self.recentsTableView setContentOffset:contentOffset animated:NO];
+            }
+            
+            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+            
+            if (![indexPath isEqual:lastPotentialCellPath])
+            {
+                if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
+                {
+                    [self.recentsTableView beginUpdates];
+                    if (recentsDataSource.droppingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
+                    {
+                        [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
+                    }
+                    else if (indexPath)
+                    {
+                        [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        [self.recentsTableView deleteRowsAtIndexPaths:@[movingCellPath] withRowAnimation:UITableViewRowAnimationNone];
+                    }
+                    recentsDataSource.hiddenCellIndexPath = movingCellPath;
+                    recentsDataSource.droppingCellIndexPath = indexPath;
+                    [self.recentsTableView endUpdates];
+                }
+                // the cell cannot be moved
+                else if (recentsDataSource.droppingCellIndexPath)
+                {
+                    NSIndexPath* pathToDelete = recentsDataSource.droppingCellIndexPath;
+                    NSIndexPath* pathToAdd = recentsDataSource.hiddenCellIndexPath;
+                    
+                    // remove it
+                    [self.recentsTableView beginUpdates];
+                    [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
+                    [self.recentsTableView insertRowsAtIndexPaths:@[pathToAdd] withRowAnimation:UITableViewRowAnimationNone];
+                    recentsDataSource.droppingCellIndexPath = nil;
+                    recentsDataSource.hiddenCellIndexPath = nil;
+                    [self.recentsTableView endUpdates];
+                }
+                
+                lastPotentialCellPath = indexPath;
+            }
+            
+            break;
+        }
+
+        // step 3 : remove the view
+        // and insert when it is possible.
+        case UIGestureRecognizerStateEnded:
+        {
+            [cellSnapshot removeFromSuperview];
+            cellSnapshot = nil;
+            
+            [self.activityIndicator startAnimating];
+                        
+            [recentsDataSource moveRoomCell:movingRoom from:movingCellPath to:lastPotentialCellPath success:^{
+                
+                [self onRecentsDragEnd];
+            
+            } failure:^(NSError *error) {
+                
+                [self onRecentsDragEnd];
+                
+            }];
+        
+            break;
+        }
+            
+        // default behaviour
+        // remove the cell and cancel the insertion
+        default:
+        {
+            [self onRecentsDragEnd];
+            break;
+        }
+    }
+}
+
 
 @end

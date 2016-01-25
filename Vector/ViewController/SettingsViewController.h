@@ -16,7 +16,10 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface SettingsViewController : MXKTableViewController
+#import "MediaPickerViewController.h"
+
+@interface SettingsViewController : MXKTableViewController<MediaPickerViewControllerDelegate>
+
 
 @end
 

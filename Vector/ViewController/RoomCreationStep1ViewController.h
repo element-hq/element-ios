@@ -16,7 +16,9 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomCreationStep1ViewController : MXKTableViewController <UITextFieldDelegate>
+#import "MediaPickerViewController.h"
+
+@interface RoomCreationStep1ViewController : MXKTableViewController <UITextFieldDelegate, MediaPickerViewControllerDelegate>
 
 @end
 

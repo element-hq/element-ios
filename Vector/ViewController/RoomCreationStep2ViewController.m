@@ -18,6 +18,10 @@
 
 #import "AppDelegate.h"
 
+#import "ContactTableViewCell.h"
+
+#import "VectorDesignValues.h"
+
 @interface RoomCreationStep2ViewController ()
 {
     UIBarButtonItem *createBarButtonItem;
@@ -102,7 +106,77 @@
     super.isAddParticipantSearchBarEditing = isAddParticipantSearchBarEditing;
 }
 
+#pragma mark - UITableView delegate
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [[NSMutableArray alloc] init];
+}
+
+- (void)customizeContactCell:(ContactTableViewCell*)contactTableViewCell atIndexPath:(NSIndexPath *)indexPath
+{    
+    if (indexPath.section == participantsSection)
+    {
+        if (!userMatrixId || (indexPath.row != 0))
+        {
+            if (!contactTableViewCell.showCustomAccessoryView)
+            {
+                contactTableViewCell.showCustomAccessoryView = YES;
+            }
+            
+            if (contactTableViewCell.customAccessoryView.subviews.count == 0)
+            {
+                UIImageView* accessView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
+                accessView.image = [UIImage imageNamed:@"remove_icon"];
+                accessView.tag = indexPath.row;
+                accessView.userInteractionEnabled = YES;
+                
+                UITapGestureRecognizer * accessViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDeleteTap:)];
+                [accessViewTapGesture setNumberOfTouchesRequired:1];
+                [accessViewTapGesture setNumberOfTapsRequired:1];
+                [accessView addGestureRecognizer:accessViewTapGesture];
+                
+                // add the cross image once.
+                [contactTableViewCell.customAccessoryView addSubview:accessView];
+            }
+            else
+            {
+                // update the tag because it provides the row to delete
+                UIImageView* accessView = [contactTableViewCell.customAccessoryView.subviews objectAtIndex:0];
+                accessView.tag = indexPath.row;
+            }
+        }
+        else
+        {
+            contactTableViewCell.showCustomAccessoryView = NO;
+        }
+        
+        contactTableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    else
+    {
+        contactTableViewCell.showCustomAccessoryView = NO;
+        contactTableViewCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+}
+
 #pragma mark - Actions
+
+- (void)onDeleteTap:(UIGestureRecognizer*)gestureRecognizer
+{
+    NSInteger row = gestureRecognizer.view.tag;
+    
+    if (userMatrixId)
+    {
+        row --;
+    }
+    
+    if (row < mutableParticipants.count)
+    {
+        [mutableParticipants removeObjectAtIndex:row];
+        [self.tableView reloadData];
+    }
+}
 
 - (IBAction)onButtonPressed:(id)sender
 {
@@ -123,6 +197,34 @@
                                           success:^(MXRoom *room) {
                                               
                                               roomCreationRequest = nil;
+                                              
+                                              // Check wheter an image has been selected
+                                              if (_roomCreationInputs.roomPicture)
+                                              {
+                                                  // Make sure its orientation is up
+                                                  UIImage *updatedPicture = [MXKTools forceImageOrientationUp:_roomCreationInputs.roomPicture];
+                                                  
+                                                  // Upload picture
+                                                  MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:_roomCreationInputs.mxSession initialRange:0 andRange:1.0];
+                                                  
+                                                  [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
+                                                      
+                                                      [room setAvatar:url success:nil failure:^(NSError *error) {
+                                                          
+                                                          NSLog(@"[RoomCreation] Failed to update the room avatar %@", error);
+                                                          // Alert user
+                                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                          
+                                                      }];
+                                                      
+                                                  } failure:^(NSError *error) {
+                                                      
+                                                      NSLog(@"[RoomCreation] Failed to upload image: %@", error);
+                                                      // Alert user
+                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                      
+                                                  }];
+                                              }
                                               
                                               // Check whether some users must be invited
                                               NSArray *invitedUsers = _roomCreationInputs.roomParticipants;
@@ -145,7 +247,7 @@
                                               [self stopActivityIndicator];
                                               
                                               [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                                                  [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:_roomCreationInputs.mxSession];
+                                                  [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:_roomCreationInputs.mxSession];
                                               }];
                                               
                                           } failure:^(NSError *error) {

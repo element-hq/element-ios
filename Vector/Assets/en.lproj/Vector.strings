@@ -15,8 +15,7 @@
  */
 
 // Titles
-"recents" = "Recents";
-"accounts" = "Accounts";
+"title_recents" = "Messages";
 
 // Actions
 "view" = "View";
@@ -26,6 +25,14 @@
 "create" = "Create";
 "leave" = "Leave";
 "remove" = "Remove";
+"retry" = "Retry";
+"on" = "On";
+"off" = "Off";
+"cancel" = "Cancel";
+"save" = "Save";
+"join" = "Join";
+"reject" = "Reject";
+"camera" = "Camera";
 
 // Authentication
 "auth_sign_in" = "Sign in";
@@ -52,6 +59,24 @@
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
 
+// Room recents
+"room_recents_directory" = "DIRECTORY";
+"room_recents_favourites" = "FAVORITES";
+"room_recents_conversations" = "ROOMS";
+"room_recents_low_priority" = "LOW PRIORITY";
+"room_recents_invites" = "INVITES";
+
+// Search
+"search_rooms" = "Rooms";
+"search_messages" = "Messages";
+"search_people" = "People";
+
+// Directory
+"directory_search_results_title" = "Browse directory results";
+"directory_search_results" = "%tu results found for %@";
+"directory_searching_title" = "Searching directory...";
+"directory_search_fail" = "Failed to fetch data";
+
 // Chat participants
 "room_participants_title" = "Participants";
 "room_participants_add_participant" = "Add participant";
@@ -62,17 +87,30 @@
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_admin_name" = "%@ (admin)";
+"room_participants_invite_another_user" = "Invite another user";
+
+"room_participants_active" = "Active";
+"room_participants_invite" = "Invite";
+"room_participants_leave" = "Left";
+"room_participants_ban" = "Banned";
+"room_participants_active_less_1_hour" = "Active less 1 hour ago";
+"room_participants_active_less_x_hours" = "Active less %lu hours ago";
+"room_participants_active_less_x_days" = "Active less %lu days ago";
 
 // Chat
-"room_menu_search" = "Search";
-"room_menu_participants" = "Participants";
-"room_menu_favourite" = "Favourite";
-"room_menu_unfavourite" = "Unfavourite";
-"room_menu_settings" = "Settings";
-"room_option_start_group_voice" = "Start group audio chat";
-"room_option_start_group_video" = "Start group video chat";
-"room_option_share_location" = "Share location";
-"room_option_share_contact" = "Share contact";
+"room_one_user_is_typing" = "%@ is typing...";
+"room_two_users_are_typing" = "%@ & %@ are typing...";
+"room_many_users_are_typing" = "%@, %@ & others are typing...";
+"room_message_placeholder" = "Type a message...";
+"room_event_action_edit" = "Edit";
+"room_event_action_copy" = "Copy";
+"room_event_action_share" = "Share";
+"room_event_action_redact" = "Redact";
+"room_event_action_save" = "Save";
+"room_event_action_resend" = "Resend";
+"room_event_action_delete" = "Delete";
+"room_event_action_cancel_upload" = "Cancel Upload";
+"room_event_action_cancel_download" = "Cancel Download";
 
 // Settings
 "account_logout_all" = "Logout all accounts";
@@ -85,22 +123,75 @@
 "settings_title_config" = "Configuration";
 "settings_clear_cache" = "Clear cache";
 
+"settings_user_settings" = "USER SETTINGS";
+"settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_other" = "OTHER";
+
+"settings_sign_out" = "Sign Out";
+"settings_profile_picture" = "Profile Picture";
+"settings_display_name" = "Display Name";
+"settings_first_name" = "First Name";
+"settings_surname" = "Surname";
+"settings_email_address" = "Email Address";
+"settings_change_password" = "Change password";
+"settings_phone_number" = "Phone Number";
+"settings_night_mode" = "Night Mode";
+
+"settings_enable_all_notif" = "Enable all notifications";
+"settings_general_messages" = "General messages";
+"settings_messages_my_display_name" = "Msg containing my display name";
+"settings_messages_my_user_name" = "Msg containing my user name";
+"settings_messages_sent_to_me" = "Messages sent to me";
+"settings_invited_to_room" = "When i'm invited to a room";
+"settings_join_leave_rooms" = "When people join or leave rooms";
+"settings_call_invitations" = "Call invitations";
+
+"settings_version" = "Version %@";
+"settings_term_conditions" = "Terms & conditions";
+"settings_privacy_policy" = "Privacy Policy";
+"settings_clear_cache" = "Clear cache";
+
+"settings_change_password" = "Change password";
+"settings_old_password" = "old password";
+"settings_new_password" = "new password";
+"settings_confirm_password" = "confirm password";
+"settings_fail_to_update_password" = "Fail to update password";
+"settings_password_updated" = "Your password has been updated";
+
+// Room Details
+"room_details_title" = "Room Details";
+"room_details_mute_notifs" = "Mute notifications";
+"room_details_photo" = "Room Photo";
+"room_details_room_name" = "Room Name";
+"room_details_topic" = "Topic";
+"room_details_people" = "Members";
+"room_details_settings" = "Settings";
+"room_details_fail_to_update_topic" = "Fail to update the topic";
+"room_details_fail_to_update_room_name" = "Fail to update the room name";
+"room_details_with_updates" = "The updates will be lost : are you sure to leave ?";
+"room_details_room_is_public" = "This room is public";
+"room_details_room_is_private" = "This room is private";
+
 "notification_settings_global_notification_settings" = "Global Notification Settings";
 
 // Media picker
-"media_picker_picture_capture_title" = "Take a picture";
-"media_picker_video_capture_title" = "Record a video";
-"media_picker_both_capture_title" = "Take a picture or a video";
-"media_picker_retake" = "Retake";
-"media_picker_choose" = "Choose";
-"media_picker_attach" = "Attach";
-
-"media_picker_choose_from_library" = "Choose from library";
 "media_picker_library" = "Library";
+
+// Directory
+"directory_title" = "Directory";
 
 // Others
 "you" = "You";
+"today" = "Today";
+"yesterday" = "Yesterday";
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "camera_access_not_granted" = "Vector doesn't have permission to use Camera, please change privacy settings";
+
+// room display name
+"room_displayname_invite_from" = "Invite from %@";
+"room_displayname_room_invite" = "Room Invite";
+"room_displayname_two_members" = "%@ and %@";
+"room_displayname_more_than_two_members" = "%@ and %u others";
+

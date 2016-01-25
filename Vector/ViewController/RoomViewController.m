@@ -16,20 +16,58 @@
 
 #import "RoomViewController.h"
 
+#import "RoomDataSource.h"
+
 #import "AppDelegate.h"
 #import "RageShakeManager.h"
 
 #import "RoomInputToolbarView.h"
 
+#import "RoomActivitiesView.h"
+
+#import "RoomTitleView.h"
+
 #import "RoomParticipantsViewController.h"
+
+#import "SegmentedViewController.h"
+#import "RoomSettingsViewController.h"
+#import "RoomSearchViewController.h"
+
+#import "RoomIncomingTextMsgBubbleCell.h"
+#import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
+#import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
+#import "RoomIncomingTextMsgWithoutSenderNameBubbleCell.h"
+#import "RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
+#import "RoomIncomingAttachmentBubbleCell.h"
+#import "RoomIncomingAttachmentWithoutSenderInfoBubbleCell.h"
+#import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
+
+#import "RoomOutgoingTextMsgBubbleCell.h"
+#import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
+#import "RoomOutgoingTextMsgWithoutSenderNameBubbleCell.h"
+#import "RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
+#import "RoomOutgoingAttachmentBubbleCell.h"
+#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
+
+#import "MXKRoomBubbleTableViewCell+Vector.h"
+
+#import "AvatarGenerator.h"
 
 @interface RoomViewController ()
 {
-    // The constraint used to animate menu list display
-    NSLayoutConstraint *menuListTopConstraint;
+    // The customized room data source for Vector
+    RoomDataSource *customizedRoomDataSource;
     
     // the user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
+
+    // List of members who are typing in the room.
+    NSArray *currentTypingUsers;
+    
+    // Typing notifications listener.
+    id typingNotifListener;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -42,12 +80,61 @@
 {
     [super viewDidLoad];
     
+    // Register first customized cell view classes used to render bubbles
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
+    
     // Set room title view
-    [self setRoomTitleViewClass:MXKRoomTitleViewWithTopic.class];
+    [self setRoomTitleViewClass:RoomTitleView.class];
+    // Listen to title view tap
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomTitleViewTap:)];
+    [tapGesture setNumberOfTouchesRequired:1];
+    [tapGesture setNumberOfTapsRequired:1];
+    [tapGesture setDelegate:self];
+    [self.titleView addGestureRecognizer:tapGesture];
+    self.titleView.userInteractionEnabled = YES;
+    // Disable interaction with room name text field
+    self.titleView.displayNameTextField.userInteractionEnabled = NO;
     
     // Replace the default input toolbar view.
+    // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant completion:nil];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+    
+    // Set user picture in input toolbar
+    MXKImageView *userPictureView = ((RoomInputToolbarView*)self.inputToolbarView).pictureView;
+    if (userPictureView)
+    {
+        UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
+        NSString *avatarThumbURL = nil;
+        if (self.mainSession.myUser.avatarUrl)
+        {
+            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+        }
+        userPictureView.enableInMemoryCache = YES;
+        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
+        [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
+        userPictureView.clipsToBounds = YES;
+    }
+    
+    // set extra area
+    [self setRoomActivitiesViewClass:RoomActivitiesView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -56,65 +143,13 @@
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    // Localize strings
-    self.searchMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_search", @"Vector", nil);
-    self.participantsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_participants", @"Vector", nil);
-    self.favouriteMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_favourite", @"Vector", nil);
-    self.settingsMenuLabel.text = NSLocalizedStringFromTable(@"room_menu_settings", @"Vector", nil);
+    // Localize strings here
     
-   // Add the menu list view outside the main view
-    CGRect frame = self.menuListView.frame;
-    frame.origin.y = self.topLayoutGuide.length - frame.size.height;
-    self.menuListView.frame = frame;
-    [self.view addSubview:self.menuListView];
-    
-    // Define menu list view constraints
-    self.menuListView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                      relatedBy:0
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                     multiplier:1.0
-                                                                       constant:0];
-    
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                       relatedBy:0
-                                                                          toItem:self.view
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                      multiplier:1.0
-                                                                        constant:0];
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0
-                                                                         constant:self.menuListView.frame.size.height];
-    
-    menuListTopConstraint = [NSLayoutConstraint constraintWithItem:self.menuListView
-                                                                   attribute:NSLayoutAttributeBottom
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:self.topLayoutGuide
-                                                                   attribute:NSLayoutAttributeBottom
-                                                                  multiplier:1.0f
-                                                                    constant:0.0f];
-    
-    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
+    if (self.roomDataSource)
     {
-        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, heightConstraint, menuListTopConstraint]];
+       // this room view controller has its own typing management.
+       self.roomDataSource.showTypingNotifications = NO;
     }
-    else
-    {
-        [self.view addConstraint:leftConstraint];
-        [self.view addConstraint:rightConstraint];
-        [self.view addConstraint:menuListTopConstraint];
-        [self.menuListView addConstraint:heightConstraint];
-    }
-    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,6 +161,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self listenTypingNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,8 +176,13 @@
         self.currentAlert = nil;
     }
     
-    // Hide menu list view
-    menuListTopConstraint.constant = 0;
+    [self removeTypingNotificationsListener];
+    
+    if (customizedRoomDataSource)
+    {
+        // Remove select event id
+        customizedRoomDataSource.selectedEventId = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -165,7 +207,7 @@
     if (self.roomDataSource)
     {
         // Set visible room id
-        [AppDelegate theDelegate].masterTabBarController.visibleRoomId = self.roomDataSource.roomId;
+        [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
     }
 }
 
@@ -174,7 +216,7 @@
     [super viewDidDisappear:animated];
     
     // Reset visible room id
-    [AppDelegate theDelegate].masterTabBarController.visibleRoomId = nil;
+    [AppDelegate theDelegate].visibleRoomId = nil;
 }
 
 - (void)viewDidLayoutSubviews
@@ -191,6 +233,12 @@
     [super displayRoom:dataSource];
     
     self.navigationItem.rightBarButtonItem.enabled = (dataSource != nil);
+    
+    // Store ref on customized room data source
+    if ([dataSource isKindOfClass:RoomDataSource.class])
+    {
+        customizedRoomDataSource = (RoomDataSource*)dataSource;
+    }
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -217,10 +265,10 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room)
              {
                  // Show the room
-                 [[AppDelegate theDelegate].masterTabBarController showRoom:room.state.roomId withMatrixSession:self.mainSession];
+                 [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
-                 NSLog(@"[Console RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
+                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
                  //Alert user
                  [[AppDelegate theDelegate] showErrorAsAlert:error];
              }];
@@ -245,40 +293,482 @@
         self.currentAlert = nil;
     }
     
+    if (customizedRoomDataSource)
+    {
+        customizedRoomDataSource.selectedEventId = nil;
+        customizedRoomDataSource = nil;
+    }
+    
     [super destroy];
 }
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+#pragma mark - MXKDataSourceDelegate
+
+- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    // Hide the menu list view when keyboard if displayed
-    if (keyboardHeight && menuListTopConstraint.constant != 0)
+    Class cellViewClass = nil;
+    
+    // Sanity check
+    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
     {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
+        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+        
+        // Select the suitable table view cell class
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isAttachmentWithThumbnail)
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomIncomingAttachmentBubbleCell.class;
+                }
+            }
+            else
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    if (bubbleData.shouldHideSenderName)
+                    {
+                        cellViewClass = RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
+                    }
+                    else
+                    {
+                        cellViewClass = RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
+                    }
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderName)
+                {
+                    cellViewClass = RoomIncomingTextMsgWithoutSenderNameBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomIncomingTextMsgBubbleCell.class;
+                }
+            }
+        }
+        else
+        {
+            // Handle here outgoing bubbles
+            if (bubbleData.isAttachmentWithThumbnail)
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    cellViewClass = RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomOutgoingAttachmentBubbleCell.class;
+                }
+            }
+            else
+            {
+                if (bubbleData.isPaginationFirstBubble)
+                {
+                    if (bubbleData.shouldHideSenderName)
+                    {
+                        cellViewClass = RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
+                    }
+                    else
+                    {
+                        cellViewClass = RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
+                    }
+                }
+                else if (bubbleData.shouldHideSenderInformation)
+                {
+                    cellViewClass = RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
+                }
+                else if (bubbleData.shouldHideSenderName)
+                {
+                    cellViewClass = RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class;
+                }
+                else
+                {
+                    cellViewClass = RoomOutgoingTextMsgBubbleCell.class;
+                }
+            }
+        }
     }
     
-    super.keyboardHeight = keyboardHeight;
+    return cellViewClass;
 }
 
 #pragma mark - MXKDataSource delegate
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    // Remove sub menu if user tap on table view
-    if (menuListTopConstraint.constant != 0)
+    // Handle here user actions on bubbles for Vector app
+    if (customizedRoomDataSource)
     {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
-    if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView])
-    {
-        self.roomDataSource.showBubblesDateTime = !self.roomDataSource.showBubblesDateTime;
-        NSLog(@"    -> Turn %@ cells date", self.roomDataSource.showBubblesDateTime ? @"ON" : @"OFF");
+        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
+        {
+            // Retrieve the tapped event
+            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            
+            // Check whether a selection already exist or not
+            if (customizedRoomDataSource.selectedEventId)
+            {
+                [self cancelEventSelection];
+            }
+            else if (tappedEvent)
+            {
+                // Highlight this event in displayed message
+
+                // Update display of the visible table cell view
+                NSArray* cellArray = self.bubblesTableView.visibleCells;
+                
+                // Blur all table cells, except the tapped one
+                for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+                {
+                    tableViewCell.blurred = YES;
+                }
+                MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+                roomBubbleTableViewCell.blurred = NO;
+                
+                // Compute the component index if tapped event is provided
+                for (NSUInteger componentIndex = 0; componentIndex < roomBubbleTableViewCell.bubbleData.bubbleComponents.count; componentIndex++)
+                {
+                    MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents[componentIndex];
+                    if ([component.event.eventId isEqualToString:tappedEvent.eventId])
+                    {
+                        // Report the selected event id in data source to keep this event selected in case of table reload.
+                        if (customizedRoomDataSource)
+                        {
+                            customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
+                        }
+                        
+                        [roomBubbleTableViewCell selectComponent:componentIndex];
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnOverlayContainer])
+        {
+            // Cancel the current event selection
+            [self cancelEventSelection];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellVectorEditButtonPressed])
+        {
+            [self dismissKeyboard];
+            
+            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+            MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+            
+            if (selectedEvent)
+            {
+                if (self.currentAlert)
+                {
+                    [self.currentAlert dismiss:NO];
+                    self.currentAlert = nil;
+                }
+                
+                __weak __typeof(self) weakSelf = self;
+                self.currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+                
+                // Add actions for a failed event
+                if (selectedEvent.mxkState == MXKEventStateSendingFailed)
+                {
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_resend", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        // Let the datasource resend. It will manage local echo, etc.
+                        [strongSelf.roomDataSource resendEventWithEventId:selectedEvent.eventId success:nil failure:nil];
+                        
+                    }];
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_delete", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [strongSelf.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+                    }];
+                }
+                
+                // Add actions for text message
+                if (!attachment)
+                {
+                    // Retrieved data related to the selected event
+                    NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+                    MXKRoomBubbleComponent *selectedComponent;
+                    for (selectedComponent in components)
+                    {
+                        if ([selectedComponent.event.eventId isEqualToString:selectedEvent.eventId])
+                        {
+                            break;
+                        }
+                        selectedComponent = nil;
+                    }
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [[UIPasteboard generalPasteboard] setString:selectedComponent.textMessage];
+                        
+                    }];
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        NSArray *activityItems = [NSArray arrayWithObjects:selectedComponent.textMessage, nil];
+                        
+                        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                        activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                        
+                        if (activityViewController)
+                        {
+                            [strongSelf presentViewController:activityViewController animated:YES completion:nil];
+                        }
+                        
+                    }];
+                }
+                else // Add action for attachment
+                {
+                    if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+                    {
+                        [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf cancelEventSelection];
+                            
+                            [strongSelf startActivityIndicator];
+                            
+                            [attachment save:^{
+                                
+                                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                [strongSelf stopActivityIndicator];
+                                
+                            } failure:^(NSError *error) {
+                                
+                                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                [strongSelf stopActivityIndicator];
+                                
+                                //Alert user
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                
+                            }];
+                            
+                            // Start animation in case of download during attachment preparing
+                            [roomBubbleTableViewCell startProgressUI];
+                            
+                        }];
+                    }
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_copy", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [strongSelf startActivityIndicator];
+                        
+                        [attachment copy:^{
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }];
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [attachment prepareShare:^(NSURL *fileURL) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            strongSelf->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+                            [strongSelf->documentInteractionController setDelegate:strongSelf];
+                            strongSelf->currentSharedAttachment = attachment;
+                            
+                            if (![strongSelf->documentInteractionController presentOptionsMenuFromRect:strongSelf.view.frame inView:strongSelf.view animated:YES])
+                            {
+                                strongSelf->documentInteractionController = nil;
+                                [attachment onShareEnded];
+                                strongSelf->currentSharedAttachment = nil;
+                            }
+                            
+                        } failure:^(NSError *error) {
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }];
+                }
+                
+                // Check status of the selected event
+                if (selectedEvent.mxkState == MXKEventStateUploading)
+                {
+                    // Upload id is stored in attachment url (nasty trick)
+                    NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
+                    if ([MXKMediaManager existingUploaderWithId:uploadId])
+                    {
+                        [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_upload", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf cancelEventSelection];
+                            
+                            // Get again the loader
+                            MXKMediaLoader *loader = [MXKMediaManager existingUploaderWithId:uploadId];
+                            if (loader)
+                            {
+                                [loader cancel];
+                            }
+                            // Hide the progress animation
+                            roomBubbleTableViewCell.progressView.hidden = YES;
+                            
+                        }];
+                    }
+                }
+                else if (selectedEvent.mxkState != MXKEventStateSending && selectedEvent.mxkState != MXKEventStateSendingFailed)
+                {
+                    // Check whether download is in progress
+                    if (selectedEvent.isMediaAttachment)
+                    {
+                        NSString *cacheFilePath = roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath;
+                        if ([MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
+                        {
+                            [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_download", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                [strongSelf cancelEventSelection];
+                                
+                                // Get again the loader
+                                MXKMediaLoader *loader = [MXKMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
+                                if (loader)
+                                {
+                                    [loader cancel];
+                                }
+                                // Hide the progress animation
+                                roomBubbleTableViewCell.progressView.hidden = YES;
+                                
+                            }];
+                        }
+                    }
+                    
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_redact", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+                        
+                        [strongSelf startActivityIndicator];
+                        
+                        [strongSelf.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                            [strongSelf stopActivityIndicator];
+                            
+                            NSLog(@"[Vector RoomVC] Redact event (%@) failed: %@", selectedEvent.eventId, error);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                    }];
+                }
+                
+                self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    [strongSelf cancelEventSelection];
+                    
+                }];
+                
+                // Do not display empty action sheet
+                if (self.currentAlert.cancelButtonIndex)
+                {
+                    self.currentAlert.sourceView = roomBubbleTableViewCell;
+                    [self.currentAlert showInViewController:self];
+                }
+                else
+                {
+                    self.currentAlert = nil;
+                }
+            }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
+        {
+            // Disable default behavior
+        }
+        else
+        {
+            // Keep default implementation for other actions
+            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        }
     }
     else
     {
         // Keep default implementation for other actions
         [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
     }
+}
+
+- (void)cancelEventSelection
+{
+    if (self.currentAlert)
+    {
+        [self.currentAlert dismiss:NO];
+        self.currentAlert = nil;
+    }
+    
+    // Cancel the current selection
+    NSArray* cellArray = self.bubblesTableView.visibleCells;
+    for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
+    {
+        if (tableViewCell.blurred)
+        {
+            tableViewCell.blurred = NO;
+        }
+        else
+        {
+            [tableViewCell unselectComponent];
+        }
+    }
+    
+    customizedRoomDataSource.selectedEventId = nil;
 }
 
 #pragma mark - Segues
@@ -290,35 +780,91 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showRoomParticipants"])
+    if ([[segue identifier] isEqualToString:@"showRoomDetails"])
     {
-        if ([pushedViewController isKindOfClass:[RoomParticipantsViewController class]])
+        if ([pushedViewController isKindOfClass:[SegmentedViewController class]])
         {
             // Dismiss keyboard
             [self dismissKeyboard];
             
-            RoomParticipantsViewController* participantsViewController = (RoomParticipantsViewController*)pushedViewController;
-            participantsViewController.mxRoom = self.roomDataSource.room;
+            SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
+            
+            MXSession* session = self.roomDataSource.mxSession;
+            NSString* roomid = self.roomDataSource.roomId;
+            NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
+            NSMutableArray* titles = [[NSMutableArray alloc] init];
+            
+            // members screens
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
+            
+            RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
+            participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            [viewControllers addObject:participantsViewController];
+            
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
+            RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
+            [settingsViewController initWithSession:session andRoomId:roomid];
+            [viewControllers addObject:settingsViewController];
+            
+            
+            segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
+            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+            
+            // to display a red navbar when the home server cannot be reached.
+            [segmentedViewController addMatrixSession:session];
         }
     }
+    else if ([[segue identifier] isEqualToString:@"showRoomSearch"])
+    {
+        // Dismiss keyboard
+        [self dismissKeyboard];
+
+        RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
+
+        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource andMatrixSession:self.mainSession];
+        [roomSearchViewController displaySearch:roomSearchDataSource];
+    }
+
+    // Hide back button title
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
 
-- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
-{
-    // Remove sub menu if user starts typing
-    if (typing && menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
-    [super roomInputToolbarView:toolbarView isTyping:typing];
-}
-
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
     [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
+{
+    if (self.roomInputToolbarContainerHeightConstraint.constant != height)
+    {
+        // Hide temporarily the placeholder to prevent its distorsion during height animation
+        if (!savedInputToolbarPlaceholder)
+        {
+            savedInputToolbarPlaceholder = toolbarView.placeholder.length ? toolbarView.placeholder : @"";
+        }
+        toolbarView.placeholder = nil;
+        
+        [super roomInputToolbarView:toolbarView heightDidChanged:height completion:^(BOOL finished) {
+            
+            if (completion)
+            {
+                completion (finished);
+            }
+
+            // Here the placeholder may have been defined temporarily to display IRC command usage.
+            // The original placeholder (savedInputToolbarPlaceholder) will be restored during the handling of the next typing notification 
+            if (!toolbarView.placeholder)
+            {
+                // Restore the placeholder if any
+                toolbarView.placeholder =  savedInputToolbarPlaceholder.length ? savedInputToolbarPlaceholder : nil;
+                savedInputToolbarPlaceholder = nil;
+            }
+
+        }];
+    }
 }
 
 #pragma mark - Action
@@ -327,65 +873,128 @@
 {
     if (sender == self.navigationItem.rightBarButtonItem)
     {
-        // Hide/show the menu list by updating its top constraint
-        if (menuListTopConstraint.constant)
-        {
-            // Hide the menu
-            menuListTopConstraint.constant = 0;
-        }
-        else
-        {
-            [self dismissKeyboard];
-            
-            // Show the menu
-            menuListTopConstraint.constant = self.menuListView.frame.size.height;
-        }
-        
-        // Refresh layout with animation
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             [self.view layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished){
-                         }];
+        [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
     }
-    else
-    {
-        // Hide menu without animation
-        menuListTopConstraint.constant = 0;
-        
-        if (sender == self.searchMenuButton)
-        {
-            // TODO
-        }
-        else if (sender == self.participantsMenuButton)
-        {
-            [self performSegueWithIdentifier:@"showRoomParticipants" sender:self];
-        }
-        else if (sender == self.favouriteMenuButton)
-        {
-            // TODO
-        }
-        else if (sender == self.settingsMenuButton)
-        {
-            // TODO
-        }
-    }
+}
+
+- (IBAction)onRoomTitleViewTap:(UITapGestureRecognizer*)sender
+{
+    // Open room details
+    [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
 }
 
 #pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Remove sub menu if user tap on table view
-    if (menuListTopConstraint.constant != 0)
-    {
-        [self onButtonPressed:self.navigationItem.rightBarButtonItem];
-    }
-    
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-@end
+#pragma mark - MXKRoomTitleViewDelegate
 
+- (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
+{
+    // Disable room name edition
+    return NO;
+}
+
+#pragma mark - typing management
+
+- (void)removeTypingNotificationsListener
+{
+    if (self.roomDataSource)
+    {
+        // Remove the previous live listener
+        if (typingNotifListener)
+        {
+            [self.roomDataSource.room removeListener:typingNotifListener];
+            currentTypingUsers = nil;
+        }
+    }
+}
+
+- (void)listenTypingNotifications
+{
+    if (self.roomDataSource)
+    {
+        // Add typing notification listener
+        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+            
+            // Handle only live events
+            if (direction == MXEventDirectionForwards)
+            {
+                // Retrieve typing users list
+                NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
+                // Remove typing info for the current user
+                NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
+                if (index != NSNotFound)
+                {
+                    [typingUsers removeObjectAtIndex:index];
+                }
+                // Ignore this notification if both arrays are empty
+                if (currentTypingUsers.count || typingUsers.count)
+                {
+                    currentTypingUsers = typingUsers;
+                    [self refreshTypingView];
+                }
+            }
+            
+        }];
+        
+        currentTypingUsers = self.roomDataSource.room.typingUsers;
+        [self refreshTypingView];
+    }
+}
+
+- (void)refreshTypingView
+{
+    NSString* text = nil;
+    NSUInteger count = currentTypingUsers.count;
+    
+    // get the room member names
+    NSMutableArray *names = [[NSMutableArray alloc] init];
+    
+    // keeps the only the first two users
+    for(int i = 0; i < MIN(count, 2); i++)
+    {
+        NSString* name = [currentTypingUsers objectAtIndex:i];
+        
+        MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+        
+        if (member && member.displayname.length)
+        {
+            name = member.displayname;
+        }
+        
+        // sanity check
+        if (name)
+        {
+            [names addObject:name];
+        }
+    }
+    
+    if (0 == names.count)
+    {
+        // something to do ?
+    }
+    else if (1 == names.count)
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+    }
+    else if (2 == names.count)
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+    }
+    else
+    {
+        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+    }
+    
+    if (self.activitiesView)
+    {
+        [((RoomActivitiesView*) self.activitiesView) updateTypingMessage:text];
+    }
+}
+
+@end
 

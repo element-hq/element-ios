@@ -25,21 +25,16 @@
 @interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText <MediaPickerViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
+
+@property (weak, nonatomic) IBOutlet UIView *separatorView;
+@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
 
-@property (weak, nonatomic) IBOutlet UIView *optionMenuView;
-@property (weak, nonatomic) IBOutlet UIButton *startVoiceCallButton;
-@property (weak, nonatomic) IBOutlet UILabel *startVoiceCallLabel;
-@property (weak, nonatomic) IBOutlet UIButton *startVideoCallButton;
-@property (weak, nonatomic) IBOutlet UILabel *startVideoCallLabel;
-@property (weak, nonatomic) IBOutlet UIButton *shareLocationButton;
-@property (weak, nonatomic) IBOutlet UILabel *shareLocationLabel;
-@property (weak, nonatomic) IBOutlet UIButton *shareContactButton;
-@property (weak, nonatomic) IBOutlet UILabel *shareContactLabel;
-
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
-@property (weak, nonatomic) IBOutlet UIButton *optionMenuButton;
+@property (weak, nonatomic) IBOutlet UIButton *voiceCallButton;
 
 @end

@@ -16,20 +16,32 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate, UIGestureRecognizerDelegate>
+@class HomeViewController;
+
+@interface RecentsViewController : MXKRecentListViewController
 
 /**
- Open the room with the provided identifier in a specific matrix session.
- 
- @param roomId the room identifier.
- @param mxSession the matrix session in which the room should be available.
+ If YES, the table view will scroll at the top on the next data source refresh.
+ It comes back to NO after each refresh.
  */
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession;
+@property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
- Close the current selected room (if any)
+ Display the recents described in the provided data source.
+
+ @param listDataSource the data source providing the recents list.
+ @param homeViewController the segmentedViewController in which the RecentsViewController is displayed.
  */
-- (void)closeSelectedRoom;
+- (void)displayList:(MXKRecentsDataSource*)listDataSource fromHomeViewController:(HomeViewController*)homeViewController;
+
+/**
+ Refresh the cell selection in the table.
+
+ This must be done accordingly to the currently selected room in the parent HomeViewController.
+
+ @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
+ */
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
 @end
 

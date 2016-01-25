@@ -16,6 +16,8 @@
 
 #import "RoomInputToolbarView.h"
 
+#import "VectorDesignValues.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 #import <Photos/Photos.h>
@@ -52,31 +54,34 @@
     [super awakeFromNib];
     
     // Remove default toolbar background color
-    self.backgroundColor = [UIColor whiteColor];
-    
-    self.startVoiceCallLabel.text = NSLocalizedStringFromTable(@"room_option_start_group_voice", @"Vector", nil);
-    self.startVoiceCallLabel.numberOfLines = 0;
-    self.startVideoCallLabel.text = NSLocalizedStringFromTable(@"room_option_start_group_video", @"Vector", nil);
-    self.startVideoCallLabel.numberOfLines = 0;
-    self.shareLocationLabel.text = NSLocalizedStringFromTable(@"room_option_share_location", @"Vector", nil);
-    self.shareLocationLabel.numberOfLines = 0;
-    self.shareContactLabel.text = NSLocalizedStringFromTable(@"room_option_share_contact", @"Vector", nil);
-    self.shareContactLabel.numberOfLines = 0;
+    self.backgroundColor = [UIColor clearColor];
     
     self.rightInputToolbarButton.hidden = YES;
+    
+    self.separatorView.backgroundColor = VECTOR_SILVER_COLOR;
+    
+    // Custom the growingTextView display
+    growingTextView.layer.cornerRadius = 0;
+    growingTextView.layer.borderWidth = 0;
+    growingTextView.backgroundColor = [UIColor clearColor];
+    
+    growingTextView.font = [UIFont systemFontOfSize:15];
+    growingTextView.textColor = VECTOR_TEXT_BLACK_COLOR;
+    
+    self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
 }
 
 #pragma mark - HPGrowingTextView delegate
 
-- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
-{
-    // The return sends the message rather than giving a carriage return.
-    [self onTouchUpInside:self.rightInputToolbarButton];
-    
-    return NO;
-}
+//- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)hpGrowingTextView
+//{
+//    // The return sends the message rather than giving a carriage return.
+//    [self onTouchUpInside:self.rightInputToolbarButton];
+//    
+//    return NO;
+//}
 
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
+- (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {
     // Clean the carriage return added on return press
     if ([self.textMessage isEqualToString:@"\n"])
@@ -84,19 +89,13 @@
         self.textMessage = nil;
     }
     
-    [super growingTextViewDidChange:growingTextView];
+    [super growingTextViewDidChange:hpGrowingTextView];
     
     if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
     {
         self.rightInputToolbarButton.hidden = NO;
         self.attachMediaButton.hidden = YES;
-        self.optionMenuButton.hidden = YES;
-        
-        if (self.optionMenuView.isHidden == NO)
-        {
-            // Hide option menu
-            [self onTouchUpInside:self.optionMenuButton];
-        }
+        self.voiceCallButton.hidden = YES;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
     }
@@ -104,23 +103,23 @@
     {
         self.rightInputToolbarButton.hidden = YES;
         self.attachMediaButton.hidden = NO;
-        self.optionMenuButton.hidden = NO;
+        self.voiceCallButton.hidden = NO;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
     }
 }
 
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+- (void)growingTextView:(HPGrowingTextView *)hpGrowingTextView willChangeHeight:(float)height
 {
     // Update height of the main toolbar (message composer)
-    self.mainToolbarHeightConstraint.constant = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
     
-    // Compute height of the whole toolbar (including potential option menu)
-    CGFloat updatedHeight = self.mainToolbarHeightConstraint.constant;
-    if (self.optionMenuView.isHidden == NO)
+    if (updatedHeight < self.mainToolbarMinHeightConstraint.constant)
     {
-        updatedHeight += self.optionMenuView.frame.size.height;
+        updatedHeight = self.mainToolbarMinHeightConstraint.constant;
     }
+    
+    self.mainToolbarHeightConstraint.constant = updatedHeight;
     
     // Update toolbar superview
     if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
@@ -144,8 +143,6 @@
             {
                 mediaPicker = [MediaPickerViewController mediaPickerViewController];
                 mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-                mediaPicker.multipleSelections = YES;
-                mediaPicker.selectionButtonCustomLabel = NSLocalizedStringFromTable(@"media_picker_attach", @"Vector", nil);
                 mediaPicker.delegate = self;
                 UINavigationController *navigationController = [UINavigationController new];
                 [navigationController pushViewController:mediaPicker animated:NO];
@@ -164,66 +161,12 @@
             NSLog(@"[RoomInputToolbarView] Attach media is not supported");
         }
     }
-    else if (button == self.optionMenuButton)
-    {
-        // Compute the height of the whole toolbar (message composer + option menu (if any))
-        CGFloat updatedHeight = self.mainToolbarHeightConstraint.constant;
-        BOOL hideOptionMenuView = !self.optionMenuView.isHidden;
-        
-        if (self.optionMenuView.isHidden)
-        {
-            // The option menu will appear
-            updatedHeight += self.optionMenuView.frame.size.height;
-            self.optionMenuView.hidden = NO;
-        }
-        
-        // Update toolbar superview
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
-        {
-            [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:^(BOOL finished) {
-                if (hideOptionMenuView)
-                {
-                    self.optionMenuView.hidden = YES;
-                }
-            }];
-        }
-        
-        // Refresh max height of the growning text
-        self.maxHeight = self.maxHeight;
-    }
-    else if (button == self.startVoiceCallButton)
+    else if (button == self.voiceCallButton)
     {
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
         {
             [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
         }
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
-    }
-    else if (button == self.startVideoCallButton)
-    {
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
-        {
-            [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
-        }
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
-    }
-    else if (button == self.shareLocationButton)
-    {
-        // TODO
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
-    }
-    else if (button == self.shareContactButton)
-    {
-        // TODO
-        
-        // Hide option menu
-        [self onTouchUpInside:self.optionMenuButton];
     }
     
     [super onTouchUpInside:button];
@@ -246,49 +189,11 @@
     [self sendSelectedImage:image withCompressionMode:MXKRoomInputToolbarCompressionModePrompt andLocalURL:imageURL];
 }
 
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL isCameraRecording:(BOOL)isCameraRecording
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
 {
     [self dismissMediaPicker];
     
-    [self sendSelectedVideo:videoURL isCameraRecording:isCameraRecording];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray *)assets
-{
-    [self dismissMediaPicker];
-    
-    // We don't prompt user about image compression if several items have been selected
-    MXKRoomInputToolbarCompressionMode imageCompressionMode = (assets.count > 1) ? MXKRoomInputToolbarCompressionModeMedium : MXKRoomInputToolbarCompressionModePrompt;
-    
-    PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
-    for (NSUInteger index = 0; index < assets.count; index++)
-    {
-        PHAsset *asset = assets[index];
-        [asset requestContentEditingInputWithOptions:editOptions
-                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                       
-                                       if (contentEditingInput.mediaType == PHAssetMediaTypeImage)
-                                       {
-                                           // Here the fullSizeImageURL is related to a local file path
-                                           NSData *data = [NSData dataWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                           UIImage *image = [UIImage imageWithData:data];
-                                           
-                                           [self sendSelectedImage:image withCompressionMode:imageCompressionMode andLocalURL:contentEditingInput.fullSizeImageURL];
-                                       }
-                                       else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
-                                       {
-                                           if ([contentEditingInput.avAsset isKindOfClass:[AVURLAsset class]])
-                                           {
-                                               AVURLAsset *avURLAsset = (AVURLAsset*)contentEditingInput.avAsset;
-                                               [self sendSelectedVideo:[avURLAsset URL] isCameraRecording:NO];
-                                           }
-                                           else
-                                           {
-                                               NSLog(@"[RoomInputToolbarView] Selected video asset is not initialized from an URL!");
-                                           }
-                                       }
-                                   }];
-    }
+    [self sendSelectedVideo:videoURL isCameraRecording:NO];
 }
 
 #pragma mark - Media picker handling

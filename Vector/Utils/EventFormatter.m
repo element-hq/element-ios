@@ -16,6 +16,8 @@
 
 #import "EventFormatter.h"
 
+#import "VectorDesignValues.h"
+
 @interface EventFormatter ()
 {
     /**
@@ -42,6 +44,26 @@
         calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
 
         localTimeZone = [NSTimeZone localTimeZone];
+        
+        self.defaultTextColor = VECTOR_TEXT_BLACK_COLOR;
+        self.subTitleTextColor = VECTOR_TEXT_GRAY_COLOR;
+        self.prefixTextColor = VECTOR_TEXT_GRAY_COLOR;
+        self.bingTextColor = VECTOR_GREEN_COLOR;
+        self.sendingTextColor = VECTOR_LIGHT_GRAY_COLOR;
+        self.errorTextColor = [UIColor redColor];
+        
+        self.defaultTextFont = [UIFont systemFontOfSize:15];
+        self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
+        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+        {
+            self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+        }
+        else
+        {
+            self.bingTextFont = [UIFont systemFontOfSize:15];
+        }
+        self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
+        self.callInviteTextFont = [UIFont italicSystemFontOfSize:15];
     }
     return self;
 }
@@ -52,6 +74,31 @@
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
              NSFontAttributeName: [UIFont systemFontOfSize:10]
              };
+}
+
+#pragma mark event sender info
+
+- (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
+{
+    // Override this method to ignore the identicons defined by default in matrix kit.
+    
+    // Consider first the avatar url defined in provided room state (Note: this room state is supposed to not take the new event into account)
+    NSString *senderAvatarUrl = [roomState memberWithUserId:event.sender].avatarUrl;
+    
+    // Check whether this avatar url is updated by the current event (This happens in case of new joined member)
+    if ([event.content[@"avatar_url"] length])
+    {
+        // Use the actual avatar
+        senderAvatarUrl = event.content[@"avatar_url"];
+    }
+    
+    // We ignore non mxc avatar url (The identicons are removed here).
+    if (senderAvatarUrl && [senderAvatarUrl hasPrefix:kMXContentUriScheme] == NO)
+    {
+        senderAvatarUrl = nil;
+    }
+    
+    return senderAvatarUrl;
 }
 
 
@@ -66,14 +113,32 @@
     NSTimeInterval localZoneOffset = [localTimeZone secondsFromGMT];
     
     NSTimeInterval interval = -[date timeIntervalSinceDate:today] - localZoneOffset;
-    if (interval > 60*60*24*6)
+    
+    if (interval > 60*60*24*364)
     {
-        [dateFormatter setDateFormat:@"EEE MMM dd yyyy"];
-        return [super dateStringFromDate:date withTime:time];
+        [dateFormatter setDateFormat:@"MMM dd yyyy"];
+        
+        // Ignore time information here
+        return [super dateStringFromDate:date withTime:NO];
+    }
+    else if (interval > 60*60*24*6)
+    {
+        [dateFormatter setDateFormat:@"MMM dd"];
+        
+        // Ignore time information here
+        return [super dateStringFromDate:date withTime:NO];
     }
     else if (interval > 60*60*24)
     {
-        [dateFormatter setDateFormat:@"EEEE"];
+        if (time)
+        {
+            [dateFormatter setDateFormat:@"EEE"];
+        }
+        else
+        {
+            [dateFormatter setDateFormat:@"EEEE"];
+        }
+        
         return [super dateStringFromDate:date withTime:time];
     }
     else if (interval > 0)
@@ -81,18 +146,18 @@
         if (time)
         {
             [dateFormatter setDateFormat:nil];
-            return [NSString stringWithFormat:@"yesterday %@", [super dateStringFromDate:date withTime:YES]];
+            return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"yesterday", @"Vector", nil), [super dateStringFromDate:date withTime:YES]];
         }
-        return @"yesterday";
+        return NSLocalizedStringFromTable(@"yesterday", @"Vector", nil);
     }
     else if (interval > - 60*60*24)
     {
         if (time)
         {
             [dateFormatter setDateFormat:nil];
-            return [NSString stringWithFormat:@"today %@", [super dateStringFromDate:date withTime:YES]];
+            return [NSString stringWithFormat:@"%@", [super dateStringFromDate:date withTime:YES]];
         }
-        return @"today";
+        return NSLocalizedStringFromTable(@"today", @"Vector", nil);
     }
     else
     {
