@@ -28,34 +28,17 @@ PODS:
   - Mantle (2.0.6):
     - Mantle/extobjc (= 2.0.6)
   - Mantle/extobjc (2.0.6)
-  - MatrixKit (0.2.8):
+  - MatrixKit (0.3.0):
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.7)
-    - MatrixSDK (~> 0.5.7)
-  - MatrixSDK (0.5.7):
+    - MatrixSDK (~> 0.6.0)
+  - MatrixSDK (0.6.0):
     - AFNetworking (~> 2.6.0)
     - Mantle (~> 2.0.5)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 3.4.0)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-
-EXTERNAL SOURCES:
-  MatrixKit:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-
-CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: b0e5f3a8928521fac7d0f0ea469c6fd9438e7c39
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :commit: 53ff6df2b0c6f0477afc01fda57d1744301d0f52
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  - MatrixKit (~> 0.3.0)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -64,7 +47,7 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: 7bfd00f843fdcd82b5182b463e8eb3b27579f41d
   Mantle: 299966b00759634931699f69cb6a30b9239b944d
-  MatrixKit: 6e29026871d4125ce238917f02cc1daacb2b72bf
-  MatrixSDK: e4a596b9adf09c3d49d8d214754014cb1f3f2e94
+  MatrixKit: a33b291ddff0fea662190295365ce081f6c93a56
+  MatrixSDK: 053f51ed82e818cce2aa4df1e10763c16d9221f0
 
 COCOAPODS: 0.39.0
