@@ -42,6 +42,8 @@
 "auth_user_name_placeholder" = "Your name";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
+"auth_forgot_password" = "Forgot password?";
+"auth_use_server_options" = "Use custom server options (advanced)";
 
 // Chat creation
 "room_creation_title" = "New Chat";

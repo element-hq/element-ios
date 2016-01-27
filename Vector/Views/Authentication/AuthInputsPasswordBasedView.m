@@ -18,6 +18,8 @@
 
 #import "NSBundle+MatrixKit.h"
 
+#import "VectorDesignValues.h"
+
 @implementation AuthInputsPasswordBasedView
 
 + (UINib *)nib
@@ -31,10 +33,16 @@
     [super awakeFromNib];
     
     _repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
+    _repeatPasswordTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
     
     self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
+    self.userLoginTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
+    
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
+    self.passWordTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
+    
     self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
+    self.emailTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
 }
 
 - (CGFloat)actualHeight
