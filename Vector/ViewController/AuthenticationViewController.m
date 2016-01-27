@@ -16,11 +16,25 @@
 
 #import "AuthenticationViewController.h"
 
-#import "AuthInputsEmailIdentityBasedView.h"
+#import "AuthInputsPasswordBasedView.h"
 
 #import "RageShakeManager.h"
 
+#import "VectorDesignValues.h"
+
 @implementation AuthenticationViewController
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass(self)
+                          bundle:[NSBundle bundleForClass:self]];
+}
+
++ (instancetype)authenticationViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass(self)
+                                          bundle:[NSBundle bundleForClass:self]];
+}
 
 - (void)viewDidLoad
 {
@@ -32,40 +46,35 @@
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
     
-    // Load welcome image from MatrixKit asset bundle
     self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
     
-    self.subTitleLabel.hidden = NO;
+    [self.submitButton.layer setCornerRadius:5];
+    self.submitButton.clipsToBounds = YES;
+    self.submitButton.backgroundColor = VECTOR_GREEN_COLOR;
+    [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
+    [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     
     // The view controller dismiss itself on successful login.
     self.delegate = self;
     
     // Custom used authInputsView
-    [self registerAuthInputsViewClass:AuthInputsEmailIdentityBasedView.class forFlowType:kMXLoginFlowTypeEmailIdentity andAuthType:MXKAuthenticationTypeRegister];
+    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypePassword andAuthType:MXKAuthenticationTypeLogin];
+    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypeEmailIdentity andAuthType:MXKAuthenticationTypeRegister];
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
 {
     super.authType = authType;
-    self.subTitleLabel.hidden = NO;
     
     if (authType == MXKAuthenticationTypeLogin)
     {
-        self.subTitleLabel.text = NSLocalizedStringFromTable(@"auth_sign_in", @"Vector", nil);
-        
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
-        [self.authSwitchButton setTitle:NSLocalizedStringFromTable(@"auth_create_account", @"Vector", nil) forState:UIControlStateNormal];
-        [self.authSwitchButton setTitle:NSLocalizedStringFromTable(@"auth_create_account", @"Vector", nil) forState:UIControlStateHighlighted];
     }
     else
     {
-        self.subTitleLabel.text = NSLocalizedStringFromTable(@"auth_create_account_title", @"Vector", nil);
-        
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
-        [self.authSwitchButton setTitle:NSLocalizedStringFromTable(@"auth_back_to_login", @"Vector", nil) forState:UIControlStateNormal];
-        [self.authSwitchButton setTitle:NSLocalizedStringFromTable(@"auth_back_to_login", @"Vector", nil) forState:UIControlStateHighlighted];
     }
     
     // Update supported authentication flow
@@ -74,26 +83,30 @@
 
 #pragma mark - MXKAuthenticationViewControllerDelegate
 
-- (void)authenticationViewController:(MXKAuthenticationViewController *)authenticationViewController didLogWithUserId:(NSString *)userId {
-    
+- (void)authenticationViewController:(MXKAuthenticationViewController *)authenticationViewController didLogWithUserId:(NSString *)userId
+{
     // Report server url typed by the user as default url.
-    if (self.homeServerTextField.text.length) {
+    if (self.homeServerTextField.text.length)
+    {
         [[NSUserDefaults standardUserDefaults] setObject:self.homeServerTextField.text forKey:@"homeserverurl"];
     }
-    if (self.identityServerTextField.text.length) {
+    if (self.identityServerTextField.text.length)
+    {
         [[NSUserDefaults standardUserDefaults] setObject:self.identityServerTextField.text forKey:@"identityserverurl"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Remove auth view controller on successful login
-    if (self.navigationController) {
+    if (self.navigationController)
+    {
         // Pop the view controller
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
+    }
+    else
+    {
         // Dismiss on successful login
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
 }
 
 @end

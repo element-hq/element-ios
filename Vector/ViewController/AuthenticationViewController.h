@@ -18,5 +18,16 @@
 
 @interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
 
+
+@property (weak, nonatomic) IBOutlet UIView *serverOptionsTick;
+@property (weak, nonatomic) IBOutlet UILabel *serverOptionsLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *serverOptionsContainer;
+@property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
+@property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
+
+@property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
+@property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
+
 @end
 
