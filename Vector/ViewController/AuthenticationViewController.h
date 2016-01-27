@@ -18,6 +18,7 @@
 
 @interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
 
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;

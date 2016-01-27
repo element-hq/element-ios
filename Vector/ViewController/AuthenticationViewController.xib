@@ -27,6 +27,7 @@
                 <outlet property="identityServerLabel" destination="5CT-Ht-Z3v" id="9h4-6J-n3X"/>
                 <outlet property="identityServerSeparator" destination="t08-ua-0mJ" id="Sbf-ps-zeK"/>
                 <outlet property="identityServerTextField" destination="PZC-Hd-Q6a" id="vKg-sd-dzJ"/>
+                <outlet property="mainNavigationItem" destination="rj9-wP-8QS" id="yNN-Dg-4Yw"/>
                 <outlet property="noFlowLabel" destination="54b-4O-ip9" id="f18-H1-cQm"/>
                 <outlet property="retryButton" destination="wIH-Kd-r7q" id="42j-Ad-zVS"/>
                 <outlet property="rightBarButtonItem" destination="Kwt-KN-aVL" id="Y3F-wA-tf8"/>

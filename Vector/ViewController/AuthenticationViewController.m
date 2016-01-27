@@ -43,6 +43,7 @@
     // Setup `MXKAuthenticationViewController` properties
     self.rageShakeManager = [RageShakeManager sharedManager];
     
+    self.mainNavigationItem.title = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
