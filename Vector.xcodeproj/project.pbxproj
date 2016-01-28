@@ -185,6 +185,9 @@
 		F0DA3FCA1C4691CD0055438B /* details_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DA3FC71C4691CD0055438B /* details_icon@3x.png */; };
 		F0DD7D821B7B363300C4BE02 /* RoomCreationStep1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD7D811B7B363300C4BE02 /* RoomCreationStep1ViewController.m */; };
 		F0DD7D881B7B507100C4BE02 /* RoomCreationStep2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD7D871B7B507100C4BE02 /* RoomCreationStep2ViewController.m */; };
+		F0DDDBB71C5A5F55000C6C46 /* Icon-170.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DDDBB41C5A5F55000C6C46 /* Icon-170.png */; };
+		F0DDDBB81C5A5F55000C6C46 /* Icon-170@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DDDBB51C5A5F55000C6C46 /* Icon-170@2x.png */; };
+		F0DDDBB91C5A5F55000C6C46 /* Icon-170@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DDDBB61C5A5F55000C6C46 /* Icon-170@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -447,6 +450,9 @@
 		F0DD7D811B7B363300C4BE02 /* RoomCreationStep1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomCreationStep1ViewController.m; sourceTree = "<group>"; };
 		F0DD7D861B7B507100C4BE02 /* RoomCreationStep2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomCreationStep2ViewController.h; sourceTree = "<group>"; };
 		F0DD7D871B7B507100C4BE02 /* RoomCreationStep2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomCreationStep2ViewController.m; sourceTree = "<group>"; };
+		F0DDDBB41C5A5F55000C6C46 /* Icon-170.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-170.png"; sourceTree = "<group>"; };
+		F0DDDBB51C5A5F55000C6C46 /* Icon-170@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-170@2x.png"; sourceTree = "<group>"; };
+		F0DDDBB61C5A5F55000C6C46 /* Icon-170@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-170@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -875,6 +881,9 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0DDDBB41C5A5F55000C6C46 /* Icon-170.png */,
+				F0DDDBB51C5A5F55000C6C46 /* Icon-170@2x.png */,
+				F0DDDBB61C5A5F55000C6C46 /* Icon-170@3x.png */,
 				F0DA3FC51C4691CD0055438B /* details_icon.png */,
 				F0DA3FC61C4691CD0055438B /* details_icon@2x.png */,
 				F0DA3FC71C4691CD0055438B /* details_icon@3x.png */,
@@ -1040,6 +1049,7 @@
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
 				F02528E31C11B6FC00E1FE1B /* favorite_icon.png in Resources */,
 				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				F0DDDBB81C5A5F55000C6C46 /* Icon-170@2x.png in Resources */,
 				F02528F11C11B6FC00E1FE1B /* placeholder@3x.png in Resources */,
 				F02528FB1C11B6FC00E1FE1B /* selection_tick@2x.png in Resources */,
 				F02529081C11B6FC00E1FE1B /* unmute_icon@3x.png in Resources */,
@@ -1061,6 +1071,7 @@
 				F02529011C11B6FC00E1FE1B /* settings_icon@2x.png in Resources */,
 				F02528F91C11B6FC00E1FE1B /* search_icon@3x.png in Resources */,
 				F02528D31C11B6FC00E1FE1B /* add.png in Resources */,
+				F0DDDBB71C5A5F55000C6C46 /* Icon-170.png in Resources */,
 				F0DA3FCA1C4691CD0055438B /* details_icon@3x.png in Resources */,
 				32D200831C15C56A00A4E396 /* search_bg.png in Resources */,
 				F02529061C11B6FC00E1FE1B /* unmute_icon.png in Resources */,
@@ -1116,6 +1127,7 @@
 				F09EE0091C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				F02528E61C11B6FC00E1FE1B /* icon_video.png in Resources */,
 				325F6A431C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib in Resources */,
+				F0DDDBB91C5A5F55000C6C46 /* Icon-170@3x.png in Resources */,
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
