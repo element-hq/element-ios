@@ -47,12 +47,12 @@
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
-    self.homeServerTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
-    self.homeServerLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.homeServerTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.homeServerLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
     
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
-    self.identityServerTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
-    self.identityServerLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.identityServerTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.identityServerLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
     
