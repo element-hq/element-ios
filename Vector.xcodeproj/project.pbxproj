@@ -119,9 +119,10 @@
 		F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */; };
 		F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
+		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
+		F047DBB91C576F6600952DA2 /* AuthInputsPasswordBasedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */; };
+		F047DBBA1C576F6600952DA2 /* AuthInputsPasswordBasedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
-		F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F084DAAC1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m */; };
-		F084DAAF1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F084DAAD1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -346,11 +347,12 @@
 		F02528D01C11B6FC00E1FE1B /* voice_call_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice_call_icon.png; sourceTree = "<group>"; };
 		F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@2x.png"; sourceTree = "<group>"; };
 		F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
+		F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
+		F047DBB61C576F6600952DA2 /* AuthInputsPasswordBasedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsPasswordBasedView.h; sourceTree = "<group>"; };
+		F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsPasswordBasedView.m; sourceTree = "<group>"; };
+		F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsPasswordBasedView.xib; sourceTree = "<group>"; };
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
-		F084DAAB1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsEmailIdentityBasedView.h; sourceTree = "<group>"; };
-		F084DAAC1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsEmailIdentityBasedView.m; sourceTree = "<group>"; };
-		F084DAAD1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsEmailIdentityBasedView.xib; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -673,9 +675,9 @@
 		F084DAAA1BB57BD100B4C530 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				F084DAAB1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.h */,
-				F084DAAC1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m */,
-				F084DAAD1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib */,
+				F047DBB61C576F6600952DA2 /* AuthInputsPasswordBasedView.h */,
+				F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */,
+				F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -818,6 +820,7 @@
 				F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */,
 				F094AA181B78E42600B1FBBF /* AuthenticationViewController.h */,
 				F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */,
+				F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */,
 				325F6A371C21810E00C12F51 /* DirectoryViewController.h */,
 				325F6A381C21810E00C12F51 /* DirectoryViewController.m */,
 				F094AA1C1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.h */,
@@ -1041,6 +1044,7 @@
 			files = (
 				F02528D91C11B6FC00E1FE1B /* camera_play.png in Resources */,
 				F0D2D9881C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
+				F047DBBA1C576F6600952DA2 /* AuthInputsPasswordBasedView.xib in Resources */,
 				F02529001C11B6FC00E1FE1B /* settings_icon.png in Resources */,
 				32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */,
 				71B2A3BC1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib in Resources */,
@@ -1099,7 +1103,6 @@
 				F02528EC1C11B6FC00E1FE1B /* mute_icon.png in Resources */,
 				F02528E91C11B6FC00E1FE1B /* low_priority_icon.png in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
-				F084DAAF1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.xib in Resources */,
 				F02528DA1C11B6FC00E1FE1B /* camera_record.png in Resources */,
 				F025290C1C11B6FC00E1FE1B /* voice_call_icon.png in Resources */,
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
@@ -1132,6 +1135,7 @@
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,
+				F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F0C34B621C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
@@ -1220,6 +1224,7 @@
 				F0DD7D821B7B363300C4BE02 /* RoomCreationStep1ViewController.m in Sources */,
 				3235CD881C3423070084EA40 /* HomeSearchTableViewCell.m in Sources */,
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
+				F047DBB91C576F6600952DA2 /* AuthInputsPasswordBasedView.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
@@ -1234,7 +1239,6 @@
 				F09EE0021C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */,
-				F084DAAE1BB57BD100B4C530 /* AuthInputsEmailIdentityBasedView.m in Sources */,
 				71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */,
 				71F7F51D1C23079F00E7ED8F /* ContactTableViewCell.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
