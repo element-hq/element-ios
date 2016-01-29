@@ -8,7 +8,7 @@ target "Vector" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Console has been built
-#pod 'MatrixKit', '~> 0.3.0'
+#pod 'MatrixKit', '~> 0.3.1'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'

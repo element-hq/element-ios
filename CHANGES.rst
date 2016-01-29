@@ -1,7 +1,7 @@
-Changes in Vector iOS in 0.1.0 (2016-01-22)
+Changes in Vector iOS in 0.1.0 (2016-01-29)
 ===============================================
 
- * Upgrade MatrixKit version (v0.3.0).
+ * Upgrade MatrixKit version (v0.3.1).
  * Implement Visual Design v1.3 (80% done).
 
 Changes in Vector iOS in 0.0.1 (2015-11-16)

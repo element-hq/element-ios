@@ -35,14 +35,15 @@
 "camera" = "Camera";
 
 // Authentication
-"auth_sign_in" = "Sign in";
 "auth_login" = "Log in";
-"auth_create_account" = "Create a new account";
-"auth_create_account_title" = "Create an account";
 "auth_register" = "Register";
-"auth_back_to_login" = "I already have an account";
-"auth_email_placeholder" = "Email address";
+"auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
+"auth_user_name_placeholder" = "Your name";
+"auth_email_placeholder" = "Email address";
+"auth_repeat_password_placeholder" = "Repeat password";
+"auth_forgot_password" = "Forgot password?";
+"auth_use_server_options" = "Use custom server options (advanced)";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -137,14 +138,15 @@
 "settings_phone_number" = "Phone Number";
 "settings_night_mode" = "Night Mode";
 
-"settings_enable_all_notif" = "Enable all notifications";
-"settings_general_messages" = "General messages";
-"settings_messages_my_display_name" = "Msg containing my display name";
-"settings_messages_my_user_name" = "Msg containing my user name";
-"settings_messages_sent_to_me" = "Messages sent to me";
-"settings_invited_to_room" = "When i'm invited to a room";
-"settings_join_leave_rooms" = "When people join or leave rooms";
-"settings_call_invitations" = "Call invitations";
+"settings_enable_push_notif" = "Enable notifications on your device";
+"settings_global_settings_info" = "Global notification settings are available on your Vector web client";
+//"settings_enable_all_notif" = "Enable all notifications";
+//"settings_messages_my_display_name" = "Msg containing my display name";
+//"settings_messages_my_user_name" = "Msg containing my user name";
+//"settings_messages_sent_to_me" = "Messages sent to me";
+//"settings_invited_to_room" = "When i'm invited to a room";
+//"settings_join_leave_rooms" = "When people join or leave rooms";
+//"settings_call_invitations" = "Call invitations";
 
 "settings_version" = "Version %@";
 "settings_term_conditions" = "Terms & conditions";
