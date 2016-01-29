@@ -67,8 +67,8 @@
     [self.forgotPasswordButton setTitleColor:VECTOR_TEXT_GRAY_COLOR forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitleColor:VECTOR_TEXT_GRAY_COLOR forState:UIControlStateHighlighted];
     
-    [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"untick"] forState:UIControlStateNormal];
-    [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"untick"] forState:UIControlStateHighlighted];
+    [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
+    [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
     NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : VECTOR_TEXT_GRAY_COLOR, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.serverOptionsTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
@@ -85,6 +85,9 @@
     
     // Initialize the auth inputs display
     self.selectedFlow = [MXLoginFlow modelFromJSON:@{@"type": kMXLoginFlowTypePassword}];
+    
+    // FIXME handle "Forgot password"
+    self.forgotPasswordButton.hidden = YES;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -153,7 +156,7 @@
         [self.homeServerTextField resignFirstResponder];
         [self.identityServerTextField resignFirstResponder];
         
-        [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"untick"] forState:UIControlStateNormal];
+        [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
         self.serverOptionsContainer.hidden = YES;
         
         // Refresh content view height
@@ -161,7 +164,7 @@
     }
     else
     {
-        [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"tick"] forState:UIControlStateNormal];
+        [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_tick"] forState:UIControlStateNormal];
         self.serverOptionsContainer.hidden = NO;
         
         // Refresh content view height
