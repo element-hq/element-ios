@@ -59,14 +59,15 @@
 #define USER_SETTINGS_SURNAME_INDEX             -1
 #define USER_SETTINGS_EMAIL_ADDRESS_INDEX       -1
 
-#define NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX                  0
-#define NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX     1
-#define NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX  2
-#define NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX                  3
-#define NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX             4
-#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX           5
-#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
-#define NOTIFICATION_SETTINGS_COUNT                             7
+#define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
+#define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
+//#define NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX     1
+//#define NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX  2
+//#define NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX                  3
+//#define NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX             4
+//#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX           5
+//#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
+#define NOTIFICATION_SETTINGS_COUNT                             2
 
 #define OTHER_VERSION_INDEX         0
 #define OTHER_TERM_CONDITIONS_INDEX 1
@@ -552,73 +553,87 @@
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
         
-        MXPushRule *rule;
+//        MXPushRule *rule;
         
-        if (row == NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX)
+        if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView];
     
-            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_all_notif", @"Vector", nil);
+            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             enableAllCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
+            [enableAllCell.mxkSwitch  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [enableAllCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = enableAllCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
+        else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
+            MXKTableViewCell *globalInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!globalInfoCell)
+            {
+                globalInfoCell = [[MXKTableViewCell alloc] init];
+            }
             
-            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_user_name", @"Vector", nil);
-            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
-            cell = myNameCell;
+            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil);
+            globalInfoCell.textLabel.numberOfLines = 0;
+            cell = globalInfoCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
-            
-            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_display_name", @"Vector", nil);
-            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
-            cell = myNameCell;
-        }
-        else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* sentToMeCell = [self getLabelAndSwitchCell:tableView];
-            sentToMeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_sent_to_me", @"Vector", nil);
-            rule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
-            cell = sentToMeCell;
-        }
-        else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* invitedToARoom = [self getLabelAndSwitchCell:tableView];
-            invitedToARoom.mxkLabel.text = NSLocalizedStringFromTable(@"settings_invited_to_room", @"Vector", nil);
-            rule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
-            cell = invitedToARoom;
-        }
-        else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* peopleJoinLeaveCell = [self getLabelAndSwitchCell:tableView];
-            peopleJoinLeaveCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_join_leave_rooms", @"Vector", nil);
-            rule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
-            cell = peopleJoinLeaveCell;
-        }
-        else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* callInvitationCell = [self getLabelAndSwitchCell:tableView];
-            callInvitationCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_call_invitations", @"Vector", nil);
-            rule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
-            cell = callInvitationCell;
-        }
+//        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
+//            
+//            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_user_name", @"Vector", nil);
+//            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
+//            cell = myNameCell;
+//        }
+//        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
+//            
+//            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_display_name", @"Vector", nil);
+//            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
+//            cell = myNameCell;
+//        }
+//        else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* sentToMeCell = [self getLabelAndSwitchCell:tableView];
+//            sentToMeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_sent_to_me", @"Vector", nil);
+//            rule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
+//            cell = sentToMeCell;
+//        }
+//        else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* invitedToARoom = [self getLabelAndSwitchCell:tableView];
+//            invitedToARoom.mxkLabel.text = NSLocalizedStringFromTable(@"settings_invited_to_room", @"Vector", nil);
+//            rule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
+//            cell = invitedToARoom;
+//        }
+//        else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* peopleJoinLeaveCell = [self getLabelAndSwitchCell:tableView];
+//            peopleJoinLeaveCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_join_leave_rooms", @"Vector", nil);
+//            rule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
+//            cell = peopleJoinLeaveCell;
+//        }
+//        else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* callInvitationCell = [self getLabelAndSwitchCell:tableView];
+//            callInvitationCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_call_invitations", @"Vector", nil);
+//            rule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
+//            cell = callInvitationCell;
+//        }
         
-        // common management
-        MXKTableViewCellWithLabelAndSwitch* switchCell = (MXKTableViewCellWithLabelAndSwitch*)cell;
-        switchCell.mxkSwitch.tag = row;
-        
-        if (rule)
-        {
-            switchCell.mxkSwitch.on = rule.enabled;
-        }
-        
-        [switchCell.mxkSwitch  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-        [switchCell.mxkSwitch addTarget:self action:@selector(onRuleUpdate:) forControlEvents:UIControlEventTouchUpInside];
+//        // common management
+//        MXKTableViewCellWithLabelAndSwitch* switchCell = (MXKTableViewCellWithLabelAndSwitch*)cell;
+//        switchCell.mxkSwitch.tag = row;
+//        
+//        if (rule)
+//        {
+//            switchCell.mxkSwitch.on = rule.enabled;
+//        }
+//        
+//        [switchCell.mxkSwitch  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+//        [switchCell.mxkSwitch addTarget:self action:@selector(onRuleUpdate:) forControlEvents:UIControlEventTouchUpInside];
     
     }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
@@ -792,63 +807,63 @@
    [[MXKAccountManager sharedManager] logout];
 }
 
+- (void)togglePushNotifications:(id)sender
+{
+    // sanity check
+    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    {
+        [self startActivityIndicator];
+        
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        // toggle the pushes
+        [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+    }
+}
+
 - (void)onClearCache:(id)sender
 {
     [[AppDelegate theDelegate] reloadMatrixSessions:YES];
 }
 
-- (void)onRuleUpdate:(id)sender
-{
-    // sanity check
-    if ([MXKAccountManager sharedManager].activeAccounts.count == 0)
-    {
-        return;
-    }
-    
-    MXPushRule* pushRule = nil;
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    
-    NSInteger row = ((UIView*)sender).tag;
-    
-    if (row == NOTIFICATION_SETTINGS_ENABLE_ALL_INDEX)
-    {
-        [self startActivityIndicator];
-        
-        // toggle the pushes
-        [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
-    }
-    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
-    {
-        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
-    }
-    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
-    {
-        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
-    }
-    else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
-    {
-        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
-    }
-    else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
-    {
-        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
-    }
-    else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
-    {
-        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
-    }
-    else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
-    {
-        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
-    }
-    
-    if (pushRule)
-    {
-        // toggle the rule
-        [session.notificationCenter enableRule:pushRule isEnabled:!pushRule.enabled];
-    }
-}
+//- (void)onRuleUpdate:(id)sender
+//{
+//    MXPushRule* pushRule = nil;
+//    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+//    
+//    NSInteger row = ((UIView*)sender).tag;
+//    
+//    if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
+//    {
+//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
+//    }
+//    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
+//    {
+//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
+//    }
+//    else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
+//    {
+//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
+//    }
+//    else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
+//    {
+//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
+//    }
+//    else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
+//    {
+//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
+//    }
+//    else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
+//    {
+//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
+//    }
+//    
+//    if (pushRule)
+//    {
+//        // toggle the rule
+//        [session.notificationCenter enableRule:pushRule isEnabled:!pushRule.enabled];
+//    }
+//}
 
 //
 - (void)onSave:(id)sender
