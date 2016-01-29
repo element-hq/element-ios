@@ -49,7 +49,7 @@
         self.subTitleTextColor = VECTOR_TEXT_GRAY_COLOR;
         self.prefixTextColor = VECTOR_TEXT_GRAY_COLOR;
         self.bingTextColor = VECTOR_GREEN_COLOR;
-        self.sendingTextColor = VECTOR_LIGHT_GRAY_COLOR;
+        self.sendingTextColor = VECTOR_TEXT_GRAY_COLOR;
         self.errorTextColor = [UIColor redColor];
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
