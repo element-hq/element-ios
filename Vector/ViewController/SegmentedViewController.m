@@ -149,8 +149,40 @@
 
     if (_selectedViewController)
     {
-        // Make iOS invoke child viewWillAppear and viewDidAppear
+        // Make iOS invoke child viewWillAppear
         [_selectedViewController beginAppearanceTransition:YES animated:animated];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewWillDisappear
+        [_selectedViewController beginAppearanceTransition:NO animated:animated];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewDidAppear
+        [_selectedViewController endAppearanceTransition];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewDidDisappear
         [_selectedViewController endAppearanceTransition];
     }
 }
