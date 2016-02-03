@@ -363,72 +363,8 @@
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
         [mxkContactsById setObject:contact forKey:mxMember.userId];
-        
-        // Add this participant (admin is in first position, the other are sorted in alphabetical order by trimming special character ('@', '_'...).
-        NSUInteger index = 0;
-        NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_!~`@#$%^&*-+();:={}[],.<>?\\/\"\'"];
-        NSString *trimmedDisplayName = [displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-        if (isAdmin)
-        {
-            // Check whether there is other admin
-            for (NSString *userId in mutableParticipants)
-            {
-                if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
-                {
-                    contact = [mxkContactsById objectForKey:userId];
-                    
-                    // Sort admin in alphabetical order (skip symbols before comparing)
-                    NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-                    if (!trimmedContactName.length)
-                    {
-                        if (trimmedDisplayName.length || [displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                        {
-                            break;
-                        }
-                    }
-                    else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                    {
-                        break;
-                    }
-                    
-                    index++;
-                }
-            }
-        }
-        else
-        {
-            for (NSString *userId in mutableParticipants)
-            {
-                // Pass admin(s)
-                if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
-                {
-                    index++;
-                }
-                else
-                {
-                    contact = [mxkContactsById objectForKey:userId];
-                    
-                    // Sort in alphabetical order (skip symbols before comparing)
-                    NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-                    if (!trimmedContactName.length)
-                    {
-                        if (trimmedDisplayName.length || [displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                        {
-                            break;
-                        }
-                    }
-                    else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                    {
-                        break;
-                    }
-                    
-                    index++;
-                }
-            }
-        }
-        
-        // Add this participant
-        [mutableParticipants insertObject:mxMember.userId atIndex:index];
+
+        [self addContactToParticipants:contact withKey:mxMember.userId isAdmin:isAdmin];
     }
 }
 
@@ -437,7 +373,76 @@
     Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
     mxkContactsById[roomThirdPartyInvite.token] = contact;
 
-    [mutableParticipants addObject:roomThirdPartyInvite.token];
+    [self addContactToParticipants:contact withKey:roomThirdPartyInvite.token isAdmin:NO];
+}
+
+- (void)addContactToParticipants:(Contact*)theContact withKey:(NSString*)key isAdmin:(BOOL)isAdmin
+{
+    // Add this participant (admin is in first position, the other are sorted in alphabetical order by trimming special character ('@', '_'...).
+    NSUInteger index = 0;
+    NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_!~`@#$%^&*-+();:={}[],.<>?\\/\"\'"];
+    NSString *trimmedDisplayName = [theContact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+    if (isAdmin)
+    {
+        // Check whether there is other admin
+        for (NSString *userId in mutableParticipants)
+        {
+            if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
+            {
+                Contact *contact = [mxkContactsById objectForKey:userId];
+
+                // Sort admin in alphabetical order (skip symbols before comparing)
+                NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+                if (!trimmedContactName.length)
+                {
+                    if (trimmedDisplayName.length || [theContact.displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    {
+                        break;
+                    }
+                }
+                else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                {
+                    break;
+                }
+
+                index++;
+            }
+        }
+    }
+    else
+    {
+        for (NSString *userId in mutableParticipants)
+        {
+            // Pass admin(s)
+            if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
+            {
+                index++;
+            }
+            else
+            {
+                Contact *contact = [mxkContactsById objectForKey:userId];
+
+                // Sort in alphabetical order (skip symbols before comparing)
+                NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+                if (!trimmedContactName.length)
+                {
+                    if (trimmedDisplayName.length || [theContact.displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    {
+                        break;
+                    }
+                }
+                else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                {
+                    break;
+                }
+
+                index++;
+            }
+        }
+    }
+
+    // Add this participant
+    [mutableParticipants insertObject:key atIndex:index];
 }
 
 - (void)addPendingActionMask
