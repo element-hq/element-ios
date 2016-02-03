@@ -184,6 +184,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
+    
     // Override point for customization after application launch.
     
     // define the navigation bar text color
@@ -281,6 +283,8 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationWillResignActive");
+    
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
@@ -306,6 +310,8 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationDidEnterBackground");
+    
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
@@ -342,6 +348,8 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationWillEnterForeground");
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     // clear the notifications counter
     [self clearNotifications];
@@ -351,6 +359,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationDidBecomeActive");
 
     // Check if the app crashed last time
     if ([MXLogger crashLog])
@@ -402,6 +411,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -600,6 +610,8 @@
 
 - (void)clearNotifications
 {
+    NSLog(@"[AppDelegate] clearNotifications");
+    
     // force to clear the notification center
     // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
     // so resetting it does not clear the notifications center.
