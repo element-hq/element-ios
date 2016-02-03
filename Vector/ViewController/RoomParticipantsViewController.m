@@ -294,6 +294,7 @@
     {
         NSArray *members = self.mxRoom.state.members;
         NSString *userId = self.mxRoom.mxSession.myUser.userId;
+        NSArray *roomThirdPartyInvites = self.mxRoom.state.thirdPartyInvites;
         
         for (MXRoomMember *mxMember in members)
         {
@@ -310,6 +311,11 @@
             {
                 [self addRoomMemberToParticipants:mxMember];
             }
+        }
+
+        for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
+        {
+            [self addRoomRoomThirdPartyInviteToParticipants:roomThirdPartyInvite];
         }
     }
 }
@@ -424,6 +430,14 @@
         // Add this participant
         [mutableParticipants insertObject:mxMember.userId atIndex:index];
     }
+}
+
+- (void)addRoomRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite
+{
+    Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
+    mxkContactsById[roomThirdPartyInvite.token] = contact;
+
+    [mutableParticipants addObject:roomThirdPartyInvite.token];
 }
 
 - (void)addPendingActionMask

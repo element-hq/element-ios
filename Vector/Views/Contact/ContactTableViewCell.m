@@ -196,12 +196,12 @@
     NSString* matrixId = [self getFirstMatrixId];
     MXRoomMember* member = nil;
     
-    if (self.mxRoom)
+    if (self.mxRoom && matrixId)
     {
         member = [self.mxRoom.state memberWithUserId:matrixId];
     }
 
-    if (!member || (member.membership != MXMembershipJoin))
+    if (member && (member.membership != MXMembershipJoin))
     {
         if (member.membership == MXMembershipInvite)
         {
@@ -216,7 +216,7 @@
             presenceText =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
         }
     }
-    else
+    else if (matrixId)
     {
         MXUser *user = nil;
         
@@ -261,6 +261,10 @@
                 }
             }
         }
+    }
+    else
+    {
+        presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
     }
 
     self.lastPresenceLabel.text = presenceText;
