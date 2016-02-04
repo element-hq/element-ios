@@ -214,7 +214,7 @@
         }];
         
         // Register a listener for events that concern room members
-        NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomPowerLevels];
+        NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
         membersListener = [self.mxRoom listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
             
             // Consider only live event
@@ -246,6 +246,15 @@
                         
                         break;
                     }
+                    case MXEventTypeRoomThirdPartyInvite:
+                    {
+                        MXRoomThirdPartyInvite *thirdPartyInvite = [self.mxRoom.state thirdPartyInviteWithToken:event.stateKey];
+                        if (thirdPartyInvite)
+                        {
+                            [self addRoomRoomThirdPartyInviteToParticipants:thirdPartyInvite];
+                        }
+                        break;
+                    }
                     case MXEventTypeRoomPowerLevels:
                     {
                         [self refreshParticipantsFromRoomMembers];
@@ -253,7 +262,6 @@
                     }
                     default:
                         break;
-                        
                 }
                 
                 // Refresh participants display (if visible)
