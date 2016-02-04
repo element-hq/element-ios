@@ -323,14 +323,12 @@
 - (void)addRoomMemberToParticipants:(MXRoomMember*)mxMember
 {
     // Remove previous occurrence of this member (if any)
-    if (mutableParticipants.count)
+    [self removeParticipantByKey:mxMember.userId];
+
+    // If any, remove 3pid invite corresponding to this room member
+    if (mxMember.thirdPartyInviteToken)
     {
-        NSUInteger index = [mutableParticipants indexOfObject:mxMember.userId];
-        if (index != NSNotFound)
-        {
-            [mxkContactsById removeObjectForKey:mxMember.userId];
-            [mutableParticipants removeObjectAtIndex:index];
-        }
+        [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
     }
     
     // Add this member after checking his status
@@ -370,10 +368,14 @@
 
 - (void)addRoomRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite
 {
-    Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
-    mxkContactsById[roomThirdPartyInvite.token] = contact;
+    // If the homeserver has converted the 3pid invite into a room member, do no show it
+    if (![self.mxRoom.state memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
+    {
+        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
+        mxkContactsById[roomThirdPartyInvite.token] = contact;
 
-    [self addContactToParticipants:contact withKey:roomThirdPartyInvite.token isAdmin:NO];
+        [self addContactToParticipants:contact withKey:roomThirdPartyInvite.token isAdmin:NO];
+    }
 }
 
 - (void)addContactToParticipants:(Contact*)theContact withKey:(NSString*)key isAdmin:(BOOL)isAdmin
@@ -443,6 +445,20 @@
 
     // Add this participant
     [mutableParticipants insertObject:key atIndex:index];
+}
+
+// key is a room member user id or a room 3pid invite token
+- (void)removeParticipantByKey:(NSString*)key
+{
+    if (mutableParticipants.count)
+    {
+        NSUInteger index = [mutableParticipants indexOfObject:key];
+        if (index != NSNotFound)
+        {
+            [mxkContactsById removeObjectForKey:key];
+            [mutableParticipants removeObjectAtIndex:index];
+        }
+    }
 }
 
 - (void)addPendingActionMask
