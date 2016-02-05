@@ -17,8 +17,10 @@
 #import "VectorDesignValues.h"
 
 UIColor *kVectorColorGreen;
+UIColor *kVectorColorLightGreen;
 UIColor *kVectorColorLightGrey;
 UIColor *kVectorColorSiver;
+UIColor *kVectorColorOrange;
 
 UIColor *kVectorTextColorBlack;
 UIColor *kVectorTextColorGray;
@@ -30,12 +32,18 @@ UIColor *kVectorTextColorGray;
     [super load];
 
     // Load colors at the app load time for the life of the app
-    kVectorColorGreen = [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0];
-    kVectorColorLightGrey = [UIColor colorWithRed:(242.0 / 256.0) green:(242.0 / 256.0) blue:(242.0 / 256.0) alpha:1.0];
-    kVectorColorSiver = [UIColor colorWithRed:(199.0 / 256.0) green:(199.0 / 256.0) blue:(204.0 / 256.0) alpha:1.0];
 
-    kVectorTextColorBlack = [UIColor colorWithRed:(60.0 / 256.0) green:(60.0 / 256.0) blue:(60.0 / 256.0) alpha:1.0];
-    kVectorTextColorGray = [UIColor colorWithRed:(157.0 / 256.0) green:(157.0 / 256.0) blue:(157.0 / 256.0) alpha:1.0];
+    // Colors as defined by the design
+    kVectorColorGreen = [UIColor colorWithRed:(98.0/255.0) green:(206.0/255.0) blue:(156.0/255.0) alpha:1.0];
+    kVectorColorLightGrey = [UIColor colorWithRed:(242.0 / 255.0) green:(242.0 / 255.0) blue:(242.0 / 255.0) alpha:1.0];
+    kVectorColorSiver = [UIColor colorWithRed:(199.0 / 255.0) green:(199.0 / 255.0) blue:(204.0 / 255.0) alpha:1.0];
+
+    kVectorTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
+    kVectorTextColorGray = [UIColor colorWithRed:(157.0 / 255.0) green:(157.0 / 255.0) blue:(157.0 / 255.0) alpha:1.0];
+
+    // Colors copied from Vector web
+    kVectorColorLightGreen = UIColorFromRGB(0x50e2c2);
+    kVectorColorOrange = UIColorFromRGB(0xf4c371);
 }
 
 @end
