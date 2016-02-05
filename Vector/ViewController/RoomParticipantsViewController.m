@@ -21,6 +21,7 @@
 #import "AppDelegate.h"
 
 #import "VectorDesignValues.h"
+#import "AvatarGenerator.h"
 
 #import "Contact.h"
 
@@ -379,7 +380,8 @@
     // If the homeserver has converted the 3pid invite into a room member, do no show it
     if (![self.mxRoom.state memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
     {
-        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
+        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname];
+        contact.isThirdPartyInvite = YES;
         mxkContactsById[roomThirdPartyInvite.token] = contact;
 
         [self addContactToParticipants:contact withKey:roomThirdPartyInvite.token isAdmin:NO];
@@ -998,7 +1000,16 @@
     filteredParticipants = [NSMutableArray array];
     NSMutableArray *indexArray = [NSMutableArray array];
     NSInteger index = 0;
-    
+
+    // Show what the user is typing in a cell
+    // So that he can click on it
+    if (searchText.length)
+    {
+        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText];
+        [filteredParticipants addObject:contact];
+        [indexArray addObject:[NSIndexPath indexPathForRow:index++ inSection:0]];
+    }
+
     for (MXKContact* contact in constacts)
     {
         if ([contact matchedWithPatterns:@[addParticipantsSearchText]])

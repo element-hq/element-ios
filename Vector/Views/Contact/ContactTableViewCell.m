@@ -176,9 +176,13 @@
         {
             image = [AvatarGenerator generateRoomMemberAvatar:matrixId displayName:contact.displayName];
         }
-        else
+        else if (contact.isThirdPartyInvite)
         {
             image = [AvatarGenerator generateAvatarForText:contact.displayName];
+        }
+        else
+        {
+            image = [AvatarGenerator imageFromText:@"@" withBackgroundColor:kVectorColorGreen];
         }
     }
     
@@ -262,7 +266,7 @@
             }
         }
     }
-    else
+    else if (contact.isThirdPartyInvite)
     {
         presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
     }
