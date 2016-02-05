@@ -285,14 +285,19 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     MXKRoomBubbleComponent *component  = self.bubbleData.bubbleComponents[componentIndex];
     
     // Define 'Edit' button frame by overlapping slightly the time label
-    // (vertical pos = (component.position.y + 9) instead of (component.position.y + 18))
-    UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(0, component.position.y + 9, self.bubbleInfoContainer.frame.size.width , 33)];
+    // (vertical pos = (component.position.y + 4) instead of (component.position.y + 18))
+    UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(0, component.position.y + 4, self.bubbleInfoContainer.frame.size.width + 15 , 44)];
     
     [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateNormal];
     [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateSelected];
     [editButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateNormal];
     [editButton setTitleColor:VECTOR_GREEN_COLOR forState:UIControlStateSelected];
+    
+    // Align button label on the right border of the bubbleInfoContainer
     editButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    UIEdgeInsets edgeInset = editButton.titleEdgeInsets;
+    edgeInset.right = 15;
+    editButton.titleEdgeInsets = edgeInset;
     
     editButton.backgroundColor = [UIColor clearColor];
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
@@ -326,21 +331,21 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
                                                                           toItem:self.bubbleInfoContainer
                                                                        attribute:NSLayoutAttributeTrailing
                                                                       multiplier:1.0
-                                                                        constant:0];
+                                                                        constant:15];
     NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:editButton
                                                                      attribute:NSLayoutAttributeTop
                                                                      relatedBy:NSLayoutRelationEqual
                                                                         toItem:self.bubbleInfoContainer
                                                                      attribute:NSLayoutAttributeTop
                                                                     multiplier:1.0
-                                                                      constant:component.position.y + 9];
+                                                                      constant:component.position.y + 4];
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:editButton
                                                                         attribute:NSLayoutAttributeHeight
                                                                         relatedBy:NSLayoutRelationEqual
                                                                            toItem:nil
                                                                         attribute:NSLayoutAttributeNotAnAttribute
                                                                        multiplier:1.0
-                                                                         constant:33];
+                                                                         constant:44];
     // Available on iOS 8 and later
     [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
     
