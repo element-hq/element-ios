@@ -47,9 +47,9 @@
     self.thumbnailView.clipsToBounds = YES;
     
     // apply the vector colours
-    self.bottomLineSeparator.backgroundColor = VECTOR_SILVER_COLOR;
-    self.topLineSeparator.backgroundColor = VECTOR_SILVER_COLOR;
-    self.lastPresenceLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+    self.bottomLineSeparator.backgroundColor = kVectorColorSiver;
+    self.topLineSeparator.backgroundColor = kVectorColorSiver;
+    self.lastPresenceLabel.textColor = kVectorTextColorGray;
 }
 
 - (void)setShowCustomAccessoryView:(BOOL)show

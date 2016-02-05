@@ -32,7 +32,7 @@
 {
     [super awakeFromNib];
     
-    self.displayNameTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.displayNameTextField.textColor = kVectorTextColorBlack;
 }
 
 - (void)refreshDisplay

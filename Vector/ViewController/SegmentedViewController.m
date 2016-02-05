@@ -201,7 +201,7 @@
         label.text = [sectionTitles objectAtIndex:index];
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = VECTOR_GREEN_COLOR;
+        label.textColor = kVectorColorGreen;
         label.backgroundColor = [UIColor clearColor];
         
         // the constraint defines the label frame
@@ -293,7 +293,7 @@
 {
     // create the selected marker view
     selectedMarkerView = [[UIView alloc] init];
-    selectedMarkerView.backgroundColor = VECTOR_GREEN_COLOR;
+    selectedMarkerView.backgroundColor = kVectorColorGreen;
     [selectedMarkerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.selectionContainer addSubview:selectedMarkerView];
     

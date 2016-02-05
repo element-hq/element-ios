@@ -25,7 +25,7 @@
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
     
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.userNameLabel.textColor = kVectorTextColorBlack;
 }
 
 @end

@@ -734,7 +734,7 @@
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
@@ -876,17 +876,17 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // caret color
-    searchBar.barTintColor = searchBar.tintColor = VECTOR_GREEN_COLOR;
-    searchBar.tintColor = VECTOR_GREEN_COLOR;
+    searchBar.barTintColor = searchBar.tintColor = kVectorColorGreen;
+    searchBar.tintColor = kVectorColorGreen;
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
+    searchBarTextField.textColor = kVectorTextColorGray;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = VECTOR_GREEN_COLOR;
+    leftImageView.tintColor = kVectorColorGreen;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -898,7 +898,7 @@
     if (!searchBarSeparator)
     {
         searchBarSeparator = [[UIView alloc] init];
-        searchBarSeparator.backgroundColor = VECTOR_GREEN_COLOR;
+        searchBarSeparator.backgroundColor = kVectorColorGreen;
         
         [searchBarTextField addSubview:searchBarSeparator];
         
@@ -942,7 +942,7 @@
     
     
     // place holder
-    [searchBarTextField setValue:VECTOR_TEXT_GRAY_COLOR forKeyPath:@"_placeholderLabel.textColor"];
+    [searchBarTextField setValue:kVectorTextColorGray forKeyPath:@"_placeholderLabel.textColor"];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

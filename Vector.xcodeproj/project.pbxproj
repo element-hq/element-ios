@@ -20,6 +20,7 @@
 		325F6A471C21D4C100C12F51 /* chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A441C21D4C100C12F51 /* chevron.png */; };
 		325F6A481C21D4C100C12F51 /* chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A451C21D4C100C12F51 /* chevron@2x.png */; };
 		325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A461C21D4C100C12F51 /* chevron@3x.png */; };
+		327F8DB51C64DB9D00581CA3 /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */; };
 		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
 		32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */; };
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
@@ -223,6 +224,7 @@
 		325F6A441C21D4C100C12F51 /* chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chevron.png; sourceTree = "<group>"; };
 		325F6A451C21D4C100C12F51 /* chevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@2x.png"; sourceTree = "<group>"; };
 		325F6A461C21D4C100C12F51 /* chevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@3x.png"; sourceTree = "<group>"; };
+		327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
 		32AAC3E41C3525DE007A3B5B /* RoomSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchViewController.h; sourceTree = "<group>"; };
 		32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
 		32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
@@ -688,6 +690,7 @@
 				71352D571C10569F001D50B0 /* AvatarGenerator.h */,
 				71352D581C10569F001D50B0 /* AvatarGenerator.m */,
 				71C5F2991C077007004C094B /* VectorDesignValues.h */,
+				327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */,
 				F08BE09C1B87025B00C480FB /* EventFormatter.h */,
 				F08BE09D1B87025B00C480FB /* EventFormatter.m */,
 			);
@@ -1281,6 +1284,7 @@
 				F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F09EE0061C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F09EE0081C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				327F8DB51C64DB9D00581CA3 /* VectorDesignValues.m in Sources */,
 				F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */,
 				F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */,
 				717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */,
