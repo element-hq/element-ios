@@ -675,7 +675,84 @@
     
     if (indexPath.section == searchResultSection)
     {
-        if (row < filteredParticipants.count)
+        if (row == 0)
+        {
+            // This is the text entered by the user
+            // Try to invite what he typed
+            MXKContact *contact = filteredParticipants[row];
+
+            // Invite this user if a room is defined
+            if (self.mxRoom)
+            {
+                NSString *participantId = contact.displayName;
+
+                // Is it an email or a Matrix user ID?
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\S+@\\S+\\.\\S+$" options:NSRegularExpressionCaseInsensitive error:nil];
+                BOOL isEmailAddress = (nil != [regex firstMatchInString:participantId options:0 range:NSMakeRange(0, participantId.length)]);
+
+                // Sanity check the input
+                if (!isEmailAddress &&
+                    ([participantId characterAtIndex:0] != '@' || [participantId containsString:@":"] == NO))
+                {
+                    __weak typeof(self) weakSelf = self;
+                    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_malformed_id_title", @"Vector", nil)
+                                                           message:NSLocalizedStringFromTable(@"room_participants_invite_malformed_id", @"Vector", nil)
+                                                             style:MXKAlertStyleAlert];
+
+                    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                                style:MXKAlertActionStyleCancel
+                                                                              handler:^(MXKAlert *alert) {
+
+                                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                                  strongSelf->currentAlert = nil;
+
+                                                                              }];
+                    [currentAlert showInViewController:self];
+                }
+                else
+                {
+                    if (isEmailAddress)
+                    {
+                        [self addPendingActionMask];
+                        [self.mxRoom inviteUserByEmail:participantId success:^{
+
+                            [self removePendingActionMask];
+
+                            // Refresh display by leaving search session
+                            [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+
+                        } failure:^(NSError *error) {
+
+                            [self removePendingActionMask];
+
+                            NSLog(@"[RoomParticipantsVC] Invite be email %@ failed: %@", participantId, error);
+                            // Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                    else
+                    {
+                        [self addPendingActionMask];
+                        [self.mxRoom inviteUser:participantId success:^{
+
+                            [self removePendingActionMask];
+
+                            // Refresh display by leaving search session
+                            [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+
+                        } failure:^(NSError *error) {
+
+                            [self removePendingActionMask];
+                            
+                            NSLog(@"[RoomParticipantsVC] Invite %@ failed: %@", participantId, error);
+                            // Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                }
+            }
+        }
+        else if (row < filteredParticipants.count)
         {
             MXKContact *contact = filteredParticipants[row];
             
