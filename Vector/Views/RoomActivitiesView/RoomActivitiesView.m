@@ -35,10 +35,10 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
-    self.messageLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+    self.separatorView.backgroundColor = kVectorColorLightGrey;
+    self.messageLabel.textColor = kVectorTextColorGray;
     
-//    self.typingImageView.backgroundColor = VECTOR_GREEN_COLOR;
+//    self.typingImageView.backgroundColor = kVectorColorGreen;
 //    self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2;
     
 }

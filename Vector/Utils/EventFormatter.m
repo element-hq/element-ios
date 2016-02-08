@@ -45,11 +45,11 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
-        self.defaultTextColor = VECTOR_TEXT_BLACK_COLOR;
-        self.subTitleTextColor = VECTOR_TEXT_GRAY_COLOR;
-        self.prefixTextColor = VECTOR_TEXT_GRAY_COLOR;
-        self.bingTextColor = VECTOR_GREEN_COLOR;
-        self.sendingTextColor = VECTOR_TEXT_GRAY_COLOR;
+        self.defaultTextColor = kVectorTextColorBlack;
+        self.subTitleTextColor = kVectorTextColorGray;
+        self.prefixTextColor = kVectorTextColorGray;
+        self.bingTextColor = kVectorColorGreen;
+        self.sendingTextColor = kVectorTextColorGray;
         self.errorTextColor = [UIColor redColor];
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];

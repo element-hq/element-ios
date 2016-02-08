@@ -24,8 +24,8 @@
 {
     [super awakeFromNib];
     
-    self.albumDisplayNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
-    self.albumCountLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+    self.albumDisplayNameLabel.textColor = kVectorTextColorBlack;
+    self.albumCountLabel.textColor = kVectorTextColorGray;
 }
 
 @end

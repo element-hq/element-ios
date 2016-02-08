@@ -553,7 +553,7 @@
             {
                 roomNotifCell = [[TableViewCellWithLabelAndSwitch alloc] init];
                 [roomNotifCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-                roomNotifCell.mxkSwitch.onTintColor = VECTOR_GREEN_COLOR;
+                roomNotifCell.mxkSwitch.onTintColor = kVectorColorGreen;
             }
             
             roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
@@ -627,12 +627,12 @@
                 roomTopicCell.mxkTextView.text = mxRoomState.topic;
             }
                         
-            roomTopicCell.mxkTextView.tintColor = VECTOR_GREEN_COLOR;
+            roomTopicCell.mxkTextView.tintColor = kVectorColorGreen;
             roomTopicCell.mxkTextView.delegate = self;
             
             // disable the edition if the user cannoy update it
             roomTopicCell.mxkTextView.editable = mxRoom.isModerator;
-            roomTopicCell.mxkTextView.textColor = VECTOR_TEXT_GRAY_COLOR;
+            roomTopicCell.mxkTextView.textColor = kVectorTextColorGray;
             
             cell = roomTopicCell;
         }
@@ -647,7 +647,7 @@
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
             roomNameCell.mxkTextField.userInteractionEnabled = YES;
-            roomNameCell.mxkTextField.tintColor = VECTOR_GREEN_COLOR;
+            roomNameCell.mxkTextField.tintColor = kVectorColorGreen;
             
             if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
             {
@@ -664,7 +664,7 @@
             
             // disable the edition if the user cannoy update it
             roomNameCell.editable = mxRoom.isModerator;
-            roomNameCell.mxkTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
+            roomNameCell.mxkTextField.textColor = kVectorTextColorGray;
             
             
             // Add a "textFieldDidChange" notification method to the text field control.

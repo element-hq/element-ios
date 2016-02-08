@@ -300,7 +300,7 @@
     
         label.text = [NSString stringWithFormat:@"   %@", text];
         label.font = [UIFont boldSystemFontOfSize:15.0];
-        label.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+        label.backgroundColor = kVectorColorLightGrey;
         
         return label;
     }

@@ -17,24 +17,29 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ Convert a RGB hexadecimal value into a UIColor.
+ */
+#define UIColorFromRGB(rgbValue) \
+    [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+                    green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
+                     blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
+                    alpha:1.0]
+
+#pragma mark - Vector Colors
+extern UIColor *kVectorColorGreen;
+extern UIColor *kVectorColorLightGreen;
+extern UIColor *kVectorColorLightGrey;
+extern UIColor *kVectorColorSiver;
+extern UIColor *kVectorColorOrange;
+
+#pragma mark - Vector Text Colors
+extern UIColor *kVectorTextColorBlack;
+extern UIColor *kVectorTextColorGray;
+
+/**
  `VectorDesignValues` class manages the Vector design parameters
  */
 @interface VectorDesignValues : NSObject
-
-#pragma mark - Vector Colors
-
-#define VECTOR_GREEN_COLOR [UIColor colorWithRed:(98.0/256.0) green:(206.0/256.0) blue:(156.0/256.0) alpha:1.0]
-
-#define VECTOR_LIGHT_GRAY_COLOR [UIColor colorWithRed:(242.0 / 256.0) green:(242.0 / 256.0) blue:(242.0 / 256.0) alpha:1.0]
-
-#define VECTOR_SILVER_COLOR [UIColor colorWithRed:(199.0 / 256.0) green:(199.0 / 256.0) blue:(204.0 / 256.0) alpha:1.0]
-
-
-#pragma mark - Vector Text Colors
-
-#define VECTOR_TEXT_BLACK_COLOR [UIColor colorWithRed:(60.0 / 256.0) green:(60.0 / 256.0) blue:(60.0 / 256.0) alpha:1.0]
-
-#define VECTOR_TEXT_GRAY_COLOR [UIColor colorWithRed:(157.0 / 256.0) green:(157.0 / 256.0) blue:(157.0 / 256.0) alpha:1.0]
 
 // to update the navigation bar buttons color
 // [[AppDelegate theDelegate] recentsNavigationController].navigationBar.tintColor = [UIColor greenColor];

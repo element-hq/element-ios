@@ -189,7 +189,7 @@
     // Override point for customization after application launch.
     
     // define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:VECTOR_GREEN_COLOR];
+    [[UINavigationBar appearance] setTintColor:kVectorColorGreen];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
