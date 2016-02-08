@@ -381,7 +381,7 @@
     // If the homeserver has converted the 3pid invite into a room member, do no show it
     if (![self.mxRoom.state memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
     {
-        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname];
+        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
         contact.isThirdPartyInvite = YES;
         mxkContactsById[roomThirdPartyInvite.token] = contact;
 
@@ -1083,7 +1083,7 @@
     // So that he can click on it
     if (searchText.length)
     {
-        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText];
+        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
         [filteredParticipants addObject:contact];
         [indexArray addObject:[NSIndexPath indexPathForRow:index++ inSection:0]];
     }
