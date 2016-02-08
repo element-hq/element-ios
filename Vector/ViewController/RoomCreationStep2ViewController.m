@@ -108,11 +108,6 @@
 
 #pragma mark - UITableView delegate
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [[NSMutableArray alloc] init];
-}
-
 - (void)customizeContactCell:(ContactTableViewCell*)contactTableViewCell atIndexPath:(NSIndexPath *)indexPath
 {    
     if (indexPath.section == participantsSection)
