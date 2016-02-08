@@ -254,7 +254,7 @@
                         MXRoomThirdPartyInvite *thirdPartyInvite = [self.mxRoom.state thirdPartyInviteWithToken:event.stateKey];
                         if (thirdPartyInvite)
                         {
-                            [self addRoomRoomThirdPartyInviteToParticipants:thirdPartyInvite];
+                            [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite];
                         }
                         break;
                     }
@@ -326,7 +326,7 @@
 
         for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
         {
-            [self addRoomRoomThirdPartyInviteToParticipants:roomThirdPartyInvite];
+            [self addRoomThirdPartyInviteToParticipants:roomThirdPartyInvite];
         }
     }
 }
@@ -377,7 +377,7 @@
     }
 }
 
-- (void)addRoomRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite
+- (void)addRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite
 {
     // If the homeserver has converted the 3pid invite into a room member, do no show it
     if (![self.mxRoom.state memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
