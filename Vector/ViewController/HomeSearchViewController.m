@@ -21,11 +21,20 @@
 
 #import "EventFormatter.h"
 
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
+
 @implementation HomeSearchViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 
     [self.searchTableView registerNib:HomeSearchTableViewCell.nib forCellReuseIdentifier:HomeSearchTableViewCell.defaultReuseIdentifier];
 

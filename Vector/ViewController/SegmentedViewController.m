@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "RageShakeManager.h"
+
 @interface SegmentedViewController ()
 {
     // list of displayed UIViewControllers
@@ -117,6 +119,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 
     // Check whether the view controller has been pushed via storyboard
     if (!self.viewControllerContainer)

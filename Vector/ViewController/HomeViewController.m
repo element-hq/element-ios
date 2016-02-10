@@ -66,6 +66,8 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
     [super viewDidLoad];
+    
+    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController)
 
     self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 

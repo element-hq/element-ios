@@ -25,6 +25,8 @@ UIColor *kVectorColorOrange;
 UIColor *kVectorTextColorBlack;
 UIColor *kVectorTextColorGray;
 
+UIColor *kVectorNavBarTintColor;
+
 @implementation VectorDesignValues
 
 + (void)load
@@ -40,6 +42,8 @@ UIColor *kVectorTextColorGray;
 
     kVectorTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
     kVectorTextColorGray = [UIColor colorWithRed:(157.0 / 255.0) green:(157.0 / 255.0) blue:(157.0 / 255.0) alpha:1.0];
+    
+    kVectorNavBarTintColor = kVectorColorLightGrey;
 
     // Colors copied from Vector web
     kVectorColorLightGreen = UIColorFromRGB(0x50e2c2);

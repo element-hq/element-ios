@@ -97,15 +97,17 @@
 {
     [super viewDidLoad];
     
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+    
     // TODO use a color panel
     // not an hard coded one.
     CGFloat item = (242.0f / 255.0);
     
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
     self.tableView.separatorColor = [UIColor clearColor];
-    
-    // Setup `RoomSettingsViewController` properties
-    self.rageShakeManager = [RageShakeManager sharedManager];
     
     [self setNavBarButtons];
 }

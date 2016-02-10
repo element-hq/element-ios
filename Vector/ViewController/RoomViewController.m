@@ -19,6 +19,9 @@
 #import "RoomDataSource.h"
 
 #import "AppDelegate.h"
+
+#import "VectorDesignValues.h"
+
 #import "RageShakeManager.h"
 
 #import "RoomInputToolbarView.h"
@@ -79,6 +82,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];

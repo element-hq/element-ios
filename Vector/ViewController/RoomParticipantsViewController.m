@@ -16,11 +16,12 @@
 
 #import "RoomParticipantsViewController.h"
 
+#import "VectorDesignValues.h"
+
 #import "RageShakeManager.h"
 
 #import "AppDelegate.h"
 
-#import "VectorDesignValues.h"
 #import "AvatarGenerator.h"
 
 #import "Contact.h"
@@ -69,6 +70,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
