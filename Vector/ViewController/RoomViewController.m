@@ -288,6 +288,14 @@
     self.bubblesTableView.contentInset = contentInset;
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    // Hide expanded header on device rotation
+    [self hideExpandedHeader:YES];
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+}
+
 #pragma mark - Override MXKRoomViewController
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
@@ -372,28 +380,15 @@
 
 - (void)hideExpandedHeader:(BOOL)isHidden
 {
-    if (self.expandedHeaderContainer.isHidden != isHidden)
+    if (self.expandedHeaderContainer.isHidden != isHidden && isSizeTransitionInProgress == NO)
     {
         self.expandedHeaderContainer.hidden = isHidden;
         
-        // Retrieve the main navigation controller if the current view controller is embedded inside a split view controller.
-        UINavigationController *mainNavigationController = nil;
-        if (self.splitViewController)
+        // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+        UINavigationController *mainNavigationController = self.navigationController;
+        if (self.splitViewController && self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
         {
-            mainNavigationController = self.navigationController;
-            UIViewController *parentViewController = self.parentViewController;
-            while (parentViewController)
-            {
-                if (parentViewController.navigationController)
-                {
-                    mainNavigationController = parentViewController.navigationController;
-                    parentViewController = parentViewController.parentViewController;
-                }
-                else
-                {
-                    break;
-                }
-            }
+            mainNavigationController = self.splitViewController.viewControllers.firstObject;
         }
         
         // When the expanded header is displayed, we hide the bottom border of the navigation bar (the shadow image).
@@ -408,13 +403,11 @@
         {
             [self setRoomTitleViewClass:RoomTitleView.class];
             ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-            self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
         }
         else
         {
             [self setRoomTitleViewClass:RoomAvatarTitleView.class];
             // Note the avatar title view does not define tap gesture.
-            self.navigationController.navigationBar.barTintColor = kVectorColorLightGrey;
             
             roomAvatarView = ((RoomAvatarTitleView*)self.titleView).roomAvatar;
             roomAvatarView.alpha = 0.0;
@@ -423,15 +416,8 @@
         }
         
         // Report shadow image
-        [self.navigationController.navigationBar setShadowImage:shadowImage];
-        [self.navigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
-        if (mainNavigationController)
-        {
-            mainNavigationController.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
-            
-            [mainNavigationController.navigationBar setShadowImage:shadowImage];
-            [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
-        }
+        [mainNavigationController.navigationBar setShadowImage:shadowImage];
+        [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
