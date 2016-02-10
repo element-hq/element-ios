@@ -16,9 +16,22 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "RoomTitleView.h"
+
 #import "UIViewController+VectorSearch.h"
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate>
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
+
+// The expanded header
+@property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
+
+/**
+ Hide/Show the expanded header.
+ By default this header is hidden on new instantiated RoomViewController object.
+ */
+- (void)hideExpandedHeader:(BOOL)isHidden;
 
 @end
 

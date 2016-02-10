@@ -25,7 +25,8 @@
 
 #import "RoomActivitiesView.h"
 
-#import "RoomTitleView.h"
+#import "RoomAvatarTitleView.h"
+#import "ExpandedRoomTitleView.h"
 
 #import "RoomParticipantsViewController.h"
 
@@ -55,8 +56,13 @@
 
 #import "AvatarGenerator.h"
 
+#import "VectorDesignValues.h"
+
 @interface RoomViewController ()
 {
+    // The expanded header
+    ExpandedRoomTitleView *expandedHeader;
+    
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
@@ -75,6 +81,22 @@
 @end
 
 @implementation RoomViewController
+
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass(self.class)
+                          bundle:[NSBundle bundleForClass:self.class]];
+}
+
++ (instancetype)roomViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+                                          bundle:[NSBundle bundleForClass:self.class]];
+}
+
+#pragma mark -
 
 - (void)viewDidLoad
 {
@@ -101,15 +123,49 @@
     
     // Set room title view
     [self setRoomTitleViewClass:RoomTitleView.class];
-    // Listen to title view tap
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomTitleViewTap:)];
-    [tapGesture setNumberOfTouchesRequired:1];
-    [tapGesture setNumberOfTapsRequired:1];
-    [tapGesture setDelegate:self];
-    [self.titleView addGestureRecognizer:tapGesture];
-    self.titleView.userInteractionEnabled = YES;
-    // Disable interaction with room name text field
-    self.titleView.displayNameTextField.userInteractionEnabled = NO;
+    ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+    
+    // Prepare expanded header
+    self.expandedHeaderContainer.backgroundColor = kVectorColorLightGrey;
+    self.expandedHeaderContainerHeightConstraint.constant = 237;
+    
+    expandedHeader = [ExpandedRoomTitleView roomTitleView];
+    expandedHeader.delegate = self;
+    expandedHeader.tapGestureDelegate = self;
+    expandedHeader.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.expandedHeaderContainer addSubview:expandedHeader];
+    // Force expanded header in full width
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.expandedHeaderContainer
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                     multiplier:1.0
+                                                                       constant:0];
+    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.expandedHeaderContainer
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                      multiplier:1.0
+                                                                        constant:0];
+    // Vertical constraints are required for iOS > 8
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.expandedHeaderContainer
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0
+                                                                      constant:0];
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.expandedHeaderContainer
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0
+                                                                         constant:0];
+    
+    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -183,6 +239,9 @@
         // Remove select event id
         customizedRoomDataSource.selectedEventId = nil;
     }
+    
+    // Hide expanded header to restore navigation bar settings
+    [self hideExpandedHeader:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -246,6 +305,10 @@
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
     self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
+    
+    self.titleView.editable = NO;
+    
+    expandedHeader.mxRoom = self.roomDataSource.room;
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
@@ -300,6 +363,94 @@
     }
     
     [super destroy];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{ 
+    // Hide the expanded header in case of scrolling
+    [self hideExpandedHeader:YES];
+}
+
+#pragma mark - Hide/Show expanded header
+
+- (void)hideExpandedHeader:(BOOL)isHidden
+{
+    if (self.expandedHeaderContainer.isHidden != isHidden)
+    {
+        self.expandedHeaderContainer.hidden = isHidden;
+        
+        // Retrieve the main navigation controller if the current view controller is embedded inside a split view controller.
+        UINavigationController *mainNavigationController = nil;
+        if (self.splitViewController)
+        {
+            mainNavigationController = self.navigationController;
+            UIViewController *parentViewController = self.parentViewController;
+            while (parentViewController)
+            {
+                if (parentViewController.navigationController)
+                {
+                    mainNavigationController = parentViewController.navigationController;
+                    parentViewController = parentViewController.parentViewController;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        
+        // When the expanded header is displayed, we hide the bottom border of the navigation bar (the shadow image).
+        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
+        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
+        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
+        // image will be used regardless of the value of this property.
+        UIImage *shadowImage = nil;
+        MXKImageView *roomAvatarView = nil;
+        
+        if (isHidden)
+        {
+            [self setRoomTitleViewClass:RoomTitleView.class];
+            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+            self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+        }
+        else
+        {
+            [self setRoomTitleViewClass:RoomAvatarTitleView.class];
+            // Note the avatar title view does not define tap gesture.
+            self.navigationController.navigationBar.barTintColor = kVectorColorLightGrey;
+            
+            roomAvatarView = ((RoomAvatarTitleView*)self.titleView).roomAvatar;
+            roomAvatarView.alpha = 0.0;
+            
+            shadowImage = [[UIImage alloc] init];
+        }
+        
+        // Report shadow image
+        [self.navigationController.navigationBar setShadowImage:shadowImage];
+        [self.navigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
+        if (mainNavigationController)
+        {
+            mainNavigationController.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
+            
+            [mainNavigationController.navigationBar setShadowImage:shadowImage];
+            [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
+        }
+        
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             self.bubblesTableViewTopConstraint.constant = (isHidden ? 0 : self.expandedHeaderContainerHeightConstraint.constant);
+                             
+                             if (roomAvatarView)
+                             {
+                                 roomAvatarView.alpha = 1;
+                             }
+                             
+                             // Force to render the view
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+    }
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -877,12 +1028,6 @@
     }
 }
 
-- (IBAction)onRoomTitleViewTap:(UITapGestureRecognizer*)sender
-{
-    // Open room details
-    [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
-}
-
 #pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -896,6 +1041,24 @@
 {
     // Disable room name edition
     return NO;
+}
+
+#pragma mark - RoomTitleViewTapGestureDelegate
+
+- (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+{
+    UIView *view = tapGestureRecognizer.view;
+    
+    if (view == titleView.titleMask)
+    {
+        // Expand/shrink the header
+        [self hideExpandedHeader:!self.expandedHeaderContainer.isHidden];
+    }
+    else if (view == titleView.roomDetailsMask)
+    {
+        // Open room details
+        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+    }
 }
 
 #pragma mark - typing management

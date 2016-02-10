@@ -23,6 +23,7 @@ UIColor *kVectorColorSiver;
 UIColor *kVectorColorOrange;
 
 UIColor *kVectorTextColorBlack;
+UIColor *kVectorTextColorDarkGray;
 UIColor *kVectorTextColorGray;
 
 @implementation VectorDesignValues
@@ -39,6 +40,7 @@ UIColor *kVectorTextColorGray;
     kVectorColorSiver = [UIColor colorWithRed:(199.0 / 255.0) green:(199.0 / 255.0) blue:(204.0 / 255.0) alpha:1.0];
 
     kVectorTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
+    kVectorTextColorDarkGray = [UIColor colorWithRed:(74.0 / 255.0) green:(74.0 / 255.0) blue:(74.0 / 255.0) alpha:1.0];
     kVectorTextColorGray = [UIColor colorWithRed:(157.0 / 255.0) green:(157.0 / 255.0) blue:(157.0 / 255.0) alpha:1.0];
 
     // Colors copied from Vector web
