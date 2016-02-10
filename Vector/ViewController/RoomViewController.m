@@ -438,7 +438,7 @@
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
-                             self.bubblesTableViewTopConstraint.constant = (isHidden ? 0 : self.expandedHeaderContainerHeightConstraint.constant);
+                             self.bubblesTableViewTopConstraint.constant = (isHidden ? 0 : self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top);
                              
                              if (roomAvatarView)
                              {
