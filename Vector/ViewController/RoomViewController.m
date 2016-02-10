@@ -63,6 +63,9 @@
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
     
+    // The content offset at the beginning of scrolling
+    CGFloat storedContentOffset;
+    
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
@@ -363,12 +366,6 @@
     }
     
     [super destroy];
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{ 
-    // Hide the expanded header in case of scrolling
-    [self hideExpandedHeader:YES];
 }
 
 #pragma mark - Hide/Show expanded header
@@ -1033,6 +1030,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    // Store the current offset to detect scroll down
+    storedContentOffset = scrollView.contentOffset.y;
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+    
+    // Hide expanded header on scroll down
+    if (storedContentOffset < scrollView.contentOffset.y)
+    {
+        [self hideExpandedHeader:YES];
+    }
 }
 
 #pragma mark - MXKRoomTitleViewDelegate
