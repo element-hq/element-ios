@@ -193,6 +193,7 @@
 "you" = "You";
 "today" = "Today";
 "yesterday" = "Yesterday";
+"network_offline_prompt" = "The Internet connection appears to be offline.";
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
