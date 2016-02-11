@@ -115,6 +115,11 @@
 "room_event_action_cancel_upload" = "Cancel Upload";
 "room_event_action_cancel_download" = "Cancel Download";
 
+// Room Title
+"room_title_new_room" = "New room";
+"room_title_multiple_active_members" = "%d/%d active members";
+"room_title_one_active_member" = "%d/%d active member";
+
 // Settings
 "account_logout_all" = "Logout all accounts";
 
