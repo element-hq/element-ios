@@ -73,6 +73,12 @@
 
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
+    
+    if (self.mainSession)
+    {
+        // Report the session into each created tab.
+        [self displayWithSession:self.mainSession];
+    }
 }
 
 - (void)dealloc
