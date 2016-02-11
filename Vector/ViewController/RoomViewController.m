@@ -869,10 +869,6 @@
                 }
             }
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
-        {
-            // Disable default behavior
-        }
         else
         {
             // Keep default implementation for other actions
