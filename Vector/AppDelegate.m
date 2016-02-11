@@ -183,7 +183,7 @@
     
     // Override point for customization after application launch.
     
-    // define the navigation bar text color
+    // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:kVectorColorGreen];
     
     // Customize the localized string table
@@ -654,6 +654,9 @@
 {
     // Disable identicon use
     [MXSDKOptions sharedInstance].disableIdenticonUseForUserAvatar = YES;
+    
+    // Disable long press on event in bubble cells
+    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
     
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
