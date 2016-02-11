@@ -148,6 +148,33 @@
     return _build;
 }
 
+- (void)setIsOffline:(BOOL)isOffline
+{
+    if (!reachabilityObserver)
+    {
+        // Define reachability observer when isOffline property is set for the first time
+        reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+            if (statusItem)
+            {
+                AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
+                if (reachabilityStatus == AFNetworkReachabilityStatusNotReachable)
+                {
+                    [AppDelegate theDelegate].isOffline = YES;
+                }
+                else
+                {
+                    [AppDelegate theDelegate].isOffline = NO;
+                }
+            }
+            
+        }];
+    }
+    
+    _isOffline = isOffline;
+}
+
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -289,6 +316,7 @@
         [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
         reachabilityObserver = nil;
     }
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     self.isOffline = NO;
     
@@ -351,21 +379,22 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
-    reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         
-        NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
-        if (statusItem)
+        // Check whether monitoring is ready
+        if (status != AFNetworkReachabilityStatusUnknown)
         {
-            AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
-            if (reachabilityStatus == AFNetworkReachabilityStatusNotReachable)
+            if (status == AFNetworkReachabilityStatusNotReachable)
             {
-                // Alert user
+                // Prompt user
                 [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)}]];
             }
             else
             {
                 self.isOffline = NO;
             }
+            
+            [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
         }
         
     }];
