@@ -37,6 +37,9 @@ extern UIColor *kVectorTextColorBlack;
 extern UIColor *kVectorTextColorDarkGray;
 extern UIColor *kVectorTextColorGray;
 
+#pragma mark - Vector Navigation Bar Tint Color
+extern UIColor *kVectorNavBarTintColor;
+
 /**
  `VectorDesignValues` class manages the Vector design parameters
  */

@@ -22,12 +22,20 @@
 #import "RoomIncomingAttachmentBubbleCell.h"
 #import "RoomIncomingTextMsgBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
 
 @implementation RoomSearchViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 
     // Hide line separators of empty cells
     self.searchTableView.tableFooterView = [[UIView alloc] init];

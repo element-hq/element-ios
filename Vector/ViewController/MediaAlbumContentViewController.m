@@ -16,6 +16,9 @@
 
 #import "MediaAlbumContentViewController.h"
 
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
 
 @interface MediaAlbumContentViewController ()
 {
@@ -54,6 +57,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Register collection view cell class
     [self.assetsCollectionView registerClass:MXKMediaCollectionViewCell.class forCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier]];

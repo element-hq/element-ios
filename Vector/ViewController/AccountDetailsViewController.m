@@ -16,6 +16,8 @@
 
 #import "AccountDetailsViewController.h"
 
+#import "VectorDesignValues.h"
+
 #import "RageShakeManager.h"
 
 @interface AccountDetailsViewController()
@@ -34,7 +36,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Setup `MXKRoomMemberListViewController` properties
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
 }
 
