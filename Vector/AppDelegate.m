@@ -380,6 +380,13 @@
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
+    // Check the network connectivity
+    AFNetworkReachabilityManager *networkReachabilityManager = [AFNetworkReachabilityManager sharedManager];
+    if (networkReachabilityManager.isReachable == NO)
+    {
+        [self showErrorAsAlert:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)}]];
+    }
+    
     // Observe matrixKit error to alert user on error
     matrixKitErrorObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKErrorNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         
@@ -460,15 +467,22 @@
     }
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     if (!title)
     {
-        title = [NSBundle mxk_localizedStringForKey:@"error"];
+        if (msg)
+        {
+            title = msg;
+            msg = nil;
+        }
+        else
+        {
+            title = [NSBundle mxk_localizedStringForKey:@"error"];
+        }
     }
-    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-                                                {
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                                                     [AppDelegate theDelegate].errorNotification = nil;
                                                 }];
     
