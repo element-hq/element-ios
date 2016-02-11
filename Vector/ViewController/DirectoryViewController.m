@@ -112,7 +112,7 @@
 
             [self stopActivityIndicator];
 
-            NSLog(@"[DirectoryVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+            NSLog(@"[DirectoryVC] Failed to join public room (%@)", publicRoom.displayname);
 
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];

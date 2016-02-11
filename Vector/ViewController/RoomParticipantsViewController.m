@@ -735,7 +735,7 @@
 
                             [self removePendingActionMask];
 
-                            NSLog(@"[RoomParticipantsVC] Invite be email %@ failed: %@", participantId, error);
+                            NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
                             // Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                         }];
@@ -754,7 +754,7 @@
 
                             [self removePendingActionMask];
                             
-                            NSLog(@"[RoomParticipantsVC] Invite %@ failed: %@", participantId, error);
+                            NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
                             // Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                         }];
@@ -789,7 +789,7 @@
                         
                         [self removePendingActionMask];
                         
-                        NSLog(@"[RoomParticipantsVC] Invite %@ failed: %@", participantId, error);
+                        NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
                         // Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                     }];
@@ -887,7 +887,7 @@
                                          } failure:^(NSError *error) {
                                              
                                              [strongSelf removePendingActionMask];
-                                             NSLog(@"[RoomParticipantsVC] Leave room %@ failed: %@", strongSelf.mxRoom.state.roomId, error);
+                                             NSLog(@"[RoomParticipantsVC] Leave room %@ failed", strongSelf.mxRoom.state.roomId);
                                              // Alert user
                                              [[AppDelegate theDelegate] showErrorAsAlert:error];
                                              
@@ -947,7 +947,7 @@
                                                                  } failure:^(NSError *error) {
                                                                      
                                                                      [strongSelf removePendingActionMask];
-                                                                     NSLog(@"[RoomParticipantsVC] Kick %@ failed: %@", memberUserId, error);
+                                                                     NSLog(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
                                                                      // Alert user
                                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                      

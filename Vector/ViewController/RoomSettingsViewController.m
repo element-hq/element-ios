@@ -354,7 +354,7 @@
                  [self onSave:nil];
              } failure:^(NSError *error)
              {
-                 NSLog(@"[Vector RoomSettingsViewController] Failed to upload image: %@", error);
+                 NSLog(@"[RoomSettingsViewController] Failed to upload image");
                  [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO"];
                  [self onSave:nil];
              }];
@@ -376,7 +376,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[Vector RoomSettingsViewController] Failed to update the room avatar %@", error);
+                NSLog(@"[RoomSettingsViewController] Failed to update the room avatar");
                 
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO_URL"];
@@ -414,7 +414,7 @@
                         
                     });
                     
-                    NSLog(@"[onDone] Rename room failed: %@", error);
+                    NSLog(@"[onDone] Rename room failed");
                 }];
                 
                 return;
@@ -448,7 +448,7 @@
                         
                     });
                     
-                    NSLog(@"[onDone] Rename topic failed: %@", error);
+                    NSLog(@"[onDone] Rename topic failed");
                 }];
                 
                 return;

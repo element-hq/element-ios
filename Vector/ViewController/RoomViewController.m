@@ -348,7 +348,7 @@
                  [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
-                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
+                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed", roomAlias);
                  //Alert user
                  [[AppDelegate theDelegate] showErrorAsAlert:error];
              }];
@@ -842,7 +842,7 @@
                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                             [strongSelf stopActivityIndicator];
                             
-                            NSLog(@"[Vector RoomVC] Redact event (%@) failed: %@", selectedEvent.eventId, error);
+                            NSLog(@"[Vector RoomVC] Redact event (%@) failed", selectedEvent.eventId);
                             //Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                             

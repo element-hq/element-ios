@@ -208,7 +208,7 @@
                                                       
                                                       [room setAvatar:url success:nil failure:^(NSError *error) {
                                                           
-                                                          NSLog(@"[RoomCreation] Failed to update the room avatar %@", error);
+                                                          NSLog(@"[RoomCreation] Failed to update the room avatar");
                                                           // Alert user
                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                           
@@ -216,7 +216,7 @@
                                                       
                                                   } failure:^(NSError *error) {
                                                       
-                                                      NSLog(@"[RoomCreation] Failed to upload image: %@", error);
+                                                      NSLog(@"[RoomCreation] Failed to upload image");
                                                       // Alert user
                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                       
@@ -233,7 +233,7 @@
                                                       
                                                   } failure:^(NSError *error) {
                                                       
-                                                      NSLog(@"[RoomCreation] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                                                      NSLog(@"[RoomCreation] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
                                                       
                                                       // Alert user
                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -254,7 +254,7 @@
                                               roomCreationRequest = nil;
                                               [self stopActivityIndicator];
                                               
-                                              NSLog(@"[RoomCreation] Create room (%@ %@) failed: %@", _roomCreationInputs.roomName, _roomCreationInputs.roomAlias, error);
+                                              NSLog(@"[RoomCreation] Create room (%@ %@) failed", _roomCreationInputs.roomName, _roomCreationInputs.roomAlias);
                                               
                                               // Alert user
                                               [[AppDelegate theDelegate] showErrorAsAlert:error];

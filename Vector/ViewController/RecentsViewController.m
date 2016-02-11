@@ -245,7 +245,7 @@
             [room leave:^{
                 [self.recentsTableView reloadData];
             } failure:^(NSError *error) {
-                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed: %@", room.state.roomId, error);
+                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed", room.state.roomId);
             }];
 
         };

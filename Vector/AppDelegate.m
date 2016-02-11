@@ -1076,30 +1076,35 @@
                             visibility:kMXRoomVisibilityPrivate
                              roomAlias:nil
                                  topic:nil
-                               success:^(MXRoom *room)
-                  {
-                      // invite the other user only if it is defined and not onself
-                      if (userId && ![mxSession.myUser.userId isEqualToString:userId])
-                      {
-                          // add the user
-                          [room inviteUser:userId success:^{
-                          } failure:^(NSError *error)
-                           {
-                               NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                               //Alert user
-                               [self showErrorAsAlert:error];
-                           }];
-                      }
-                      
-                      // Open created room
-                      [self showRoom:room.state.roomId withMatrixSession:mxSession];
-                      
-                  } failure:^(NSError *error)
-                  {
-                      NSLog(@"[AppDelegate] Create room failed: %@", error);
-                      //Alert user
-                      [self showErrorAsAlert:error];
-                  }];
+                               success:^(MXRoom *room) {
+                                   
+                                   // invite the other user only if it is defined and not onself
+                                   if (userId && ![mxSession.myUser.userId isEqualToString:userId])
+                                   {
+                                       // add the user
+                                       [room inviteUser:userId
+                                                success:^{
+                                                }
+                                                failure:^(NSError *error) {
+                                                    
+                                                    NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
+                                                    //Alert user
+                                                    [self showErrorAsAlert:error];
+                                                    
+                                                }];
+                                   }
+                                   
+                                   // Open created room
+                                   [self showRoom:room.state.roomId withMatrixSession:mxSession];
+                                   
+                               }
+                               failure:^(NSError *error) {
+                                   
+                                   NSLog(@"[AppDelegate] Create room failed");
+                                   //Alert user
+                                   [self showErrorAsAlert:error];
+                                   
+                               }];
              }
          }
      }];

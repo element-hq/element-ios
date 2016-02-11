@@ -896,7 +896,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[Vector Settings View Controller] Failed to set displayName: %@", error);
+            NSLog(@"[Vector Settings View Controller] Failed to set displayName");
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             
             // Alert user
@@ -943,7 +943,7 @@
              [self onSave:nil];
          } failure:^(NSError *error)
          {
-             NSLog(@"[Vector SettingsViewController] Failed to upload image: %@", error);
+             NSLog(@"[Vector SettingsViewController] Failed to upload image");
              uploadedAvatarURL = nil;
              newAvatarImage = nil;
          }];
@@ -959,7 +959,7 @@
                                  [strongSelf onSave:nil];
                              }
                              failure:^(NSError *error) {
-                                 NSLog(@"[Vector SettingsViewController] Failed to set avatar url: %@", error);
+                                 NSLog(@"[Vector SettingsViewController] Failed to set avatar url");
                                 
                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
                                  strongSelf->uploadedAvatarURL = nil;
