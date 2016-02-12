@@ -49,6 +49,23 @@
     self.roomDetailsMask.userInteractionEnabled = YES;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.superview)
+    {
+        // Center horizontally the display name according to the actual screen center
+        CGRect frame = self.superview.frame;
+        CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+        
+        CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
+        
+        // Center the display name
+        self.displayNameCenterXConstraint.constant = (screenSize.width / 2) - superviewCenterX;
+    }
+}
+
 - (void)refreshDisplay
 {
     [super refreshDisplay];

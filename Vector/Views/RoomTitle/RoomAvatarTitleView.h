@@ -19,5 +19,6 @@
 @interface RoomAvatarTitleView : MXKRoomTitleView
 
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomAvatarCenterXConstraint;
 
 @end
