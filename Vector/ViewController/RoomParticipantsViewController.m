@@ -232,15 +232,6 @@
                     {
                         // Take into account updated member
                         // Ignore here change related to the current user (this change is handled by leaveRoomNotificationObserver)
-                        if ([event.userId isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
-                        {
-                            MXRoomMember *mxMember = [self.mxRoom.state memberWithUserId:event.userId];
-                            if (mxMember)
-                            {
-                                [self addRoomMemberToParticipants:mxMember];
-                            }
-                        }
-                        
                         if ([event.stateKey isEqualToString:self.mxRoom.mxSession.myUser.userId] == NO)
                         {
                             MXRoomMember *mxMember = [self.mxRoom.state memberWithUserId:event.stateKey];
