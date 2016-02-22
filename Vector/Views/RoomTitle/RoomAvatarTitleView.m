@@ -39,13 +39,28 @@
     
     if (self.superview)
     {
-        // Center horizontally the avatar according to the actual screen center
+        // Center horizontally the avatar into the navigation bar
         CGRect frame = self.superview.frame;
-        CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+        UINavigationBar *navigationBar;
+        UIView *superView = self;
+        while (superView.superview)
+        {
+            if ([superView.superview isKindOfClass:[UINavigationBar class]])
+            {
+                navigationBar = (UINavigationBar*)superView.superview;
+                break;
+            }
+            
+            superView = superView.superview;
+        }
         
-        CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
-        
-        self.roomAvatarCenterXConstraint.constant = (screenSize.width / 2) - superviewCenterX;
+        if (navigationBar)
+        {
+            CGSize navBarSize = navigationBar.frame.size;
+            CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
+            
+            self.roomAvatarCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+        }
     }
 }
 
