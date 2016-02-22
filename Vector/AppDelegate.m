@@ -450,10 +450,17 @@
     if (_homeViewController)
     {
         [_homeNavigationController popToViewController:_homeViewController animated:animated];
+        
         // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
         // when a ViewController has hidden it (see MXKAttachmentsViewController).
         // Patch: restore navigation bar by default here.
         _homeNavigationController.navigationBarHidden = NO;
+        
+        // For unknown reason, the default settings of the navigation bar are not restored correctly by [popToViewController:animated:]
+        // when a ViewController has changed them (see RoomViewController, RoomMemberDetailsViewController).
+        // Patch: restore default settings here.
+        [_homeNavigationController.navigationBar setShadowImage:nil];
+        [_homeNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
         
         // Release the current selected room
         [_homeViewController closeSelectedRoom];
