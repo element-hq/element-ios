@@ -386,7 +386,9 @@
 
 - (void)hideExpandedHeader:(BOOL)isHidden
 {
-    if (self.expandedHeaderContainer.isHidden != isHidden && isSizeTransitionInProgress == NO)
+    // Check conditions before applying change on room header
+    // This operation is ignored when a screen rotation is in progress, or when the room data source has been removed.
+    if (self.expandedHeaderContainer.isHidden != isHidden && isSizeTransitionInProgress == NO && self.roomDataSource)
     {
         self.expandedHeaderContainer.hidden = isHidden;
         
