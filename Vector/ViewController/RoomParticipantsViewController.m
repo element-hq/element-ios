@@ -134,7 +134,7 @@
     
     if (membersListener)
     {
-        [self.mxRoom removeListener:membersListener];
+        [self.mxRoom.liveTimeLine removeListener:membersListener];
         membersListener = nil;
     }
     
@@ -194,7 +194,7 @@
     }
     if (membersListener)
     {
-        [self.mxRoom removeListener:membersListener];
+        [self.mxRoom.liveTimeLine removeListener:membersListener];
     }
     
     _mxRoom = mxRoom;
@@ -221,7 +221,7 @@
         
         // Register a listener for events that concern room members
         NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
-        membersListener = [self.mxRoom listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+        membersListener = [self.mxRoom.liveTimeLine listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
             
             // Consider only live event
             if (direction == MXEventDirectionForwards)
