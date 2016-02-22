@@ -837,6 +837,7 @@ static void *RecordingContext = &RecordingContext;
                 {
                     [thisCamera setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
                 }
+                thisCamera.videoZoomFactor = 1.0;
                 
                 [thisCamera unlockForConfiguration];
             }
