@@ -1074,7 +1074,7 @@
         // Remove the previous live listener
         if (typingNotifListener)
         {
-            [self.roomDataSource.room removeListener:typingNotifListener];
+            [self.roomDataSource.room.liveTimeline removeListener:typingNotifListener];
             currentTypingUsers = nil;
         }
     }
@@ -1085,7 +1085,7 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
             
             // Handle only live events
             if (direction == MXEventDirectionForwards)
