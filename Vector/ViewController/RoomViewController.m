@@ -367,6 +367,22 @@
     return [super isIRCStyleCommand:string];
 }
 
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeight:keyboardHeight];
+    
+    if (keyboardHeight)
+    {
+        // Hide the potential expanded header when keyboard appears.
+        // Dispatch this operation to prevent flickering in navigation bar.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self hideExpandedHeader:YES];
+            
+        });
+    }
+}
+
 - (void)destroy
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -425,6 +441,9 @@
             roomAvatarView.alpha = 0.0;
             
             shadowImage = [[UIImage alloc] init];
+            
+            // Dismiss the keyboard when header is expanded.
+            [self.inputToolbarView dismissKeyboard];
         }
         
         // Report shadow image
