@@ -16,6 +16,8 @@
 
 #import "RoomParticipantsViewController.h"
 
+#import "RoomMemberDetailsViewController.h"
+
 #import "VectorDesignValues.h"
 
 #import "RageShakeManager.h"
@@ -47,6 +49,8 @@
     
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
+    
+    RoomMemberDetailsViewController *detailsViewController;
 }
 
 @end
@@ -160,6 +164,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (detailsViewController)
+    {
+        [detailsViewController destroy];
+        detailsViewController = nil;
+    }
     
     // Refresh display
     [self.tableView reloadData];
@@ -792,6 +802,53 @@
                     // Refresh display by leaving search session
                     [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
                 }
+            }
+        }
+    }
+    else if (indexPath.section == participantsSection)
+    {
+        Contact *contact;
+        
+        // oneself dedicated cell
+        if (userMatrixId && indexPath.row == 0)
+        {
+            contact = [mxkContactsById objectForKey:userMatrixId];
+        }
+        else
+        {
+            NSInteger index = indexPath.row;
+            
+            if (userMatrixId)
+            {
+                index --;
+            }
+            
+            if (index < mutableParticipants.count)
+            {
+                NSString *userId = mutableParticipants[index];
+                contact = [mxkContactsById objectForKey:userId];
+            }
+        }
+        
+        if (contact)
+        {
+            detailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            [detailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
+            
+            // Check whether the view controller is displayed inside a segmented one.
+            if (self.segmentedViewController)
+            {
+                // Hide back button title
+                self.segmentedViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+                
+                [self.segmentedViewController.navigationController pushViewController:detailsViewController animated:YES];
+            }
+            else
+            {
+                // Hide back button title
+                self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+                
+                [self.navigationController pushViewController:detailsViewController animated:YES];
             }
         }
     }

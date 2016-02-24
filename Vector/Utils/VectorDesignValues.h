@@ -34,11 +34,16 @@ extern UIColor *kVectorColorOrange;
 
 #pragma mark - Vector Text Colors
 extern UIColor *kVectorTextColorBlack;
+extern UIColor *kVectorTextColorRed;
 extern UIColor *kVectorTextColorDarkGray;
 extern UIColor *kVectorTextColorGray;
 
 #pragma mark - Vector Navigation Bar Tint Color
 extern UIColor *kVectorNavBarTintColor;
+
+#pragma mark - Vector Standard Room Member Power Level
+extern NSUInteger const kVectorRoomModeratorLevel;
+extern NSUInteger const kVectorRoomAdminLevel;
 
 /**
  `VectorDesignValues` class manages the Vector design parameters
