@@ -937,6 +937,7 @@
             
             RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
             participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            participantsViewController.segmentedViewController = segmentedViewController;
             [viewControllers addObject:participantsViewController];
             
             [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];

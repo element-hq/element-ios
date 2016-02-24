@@ -23,10 +23,14 @@ UIColor *kVectorColorSiver;
 UIColor *kVectorColorOrange;
 
 UIColor *kVectorTextColorBlack;
+UIColor *kVectorTextColorRed;
 UIColor *kVectorTextColorDarkGray;
 UIColor *kVectorTextColorGray;
 
 UIColor *kVectorNavBarTintColor;
+
+NSUInteger const kVectorRoomModeratorLevel = 50;
+NSUInteger const kVectorRoomAdminLevel = 100;
 
 @implementation VectorDesignValues
 
@@ -42,6 +46,7 @@ UIColor *kVectorNavBarTintColor;
     kVectorColorSiver = [UIColor colorWithRed:(199.0 / 255.0) green:(199.0 / 255.0) blue:(204.0 / 255.0) alpha:1.0];
 
     kVectorTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
+    kVectorTextColorRed = [UIColor colorWithRed:(255.0 / 255.0) green:(0.0 / 255.0) blue:(100.0 / 255.0) alpha:1.0];
     kVectorTextColorDarkGray = [UIColor colorWithRed:(74.0 / 255.0) green:(74.0 / 255.0) blue:(74.0 / 255.0) alpha:1.0];
     kVectorTextColorGray = [UIColor colorWithRed:(157.0 / 255.0) green:(157.0 / 255.0) blue:(157.0 / 255.0) alpha:1.0];
     

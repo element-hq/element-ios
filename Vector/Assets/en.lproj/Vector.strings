@@ -92,13 +92,26 @@
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
-"room_participants_active" = "Active";
+"room_participants_active" = "Online";
 "room_participants_invite" = "Invite";
 "room_participants_leave" = "Left";
 "room_participants_ban" = "Banned";
-"room_participants_active_less_1_hour" = "Active less 1 hour ago";
-"room_participants_active_less_x_hours" = "Active less %lu hours ago";
-"room_participants_active_less_x_days" = "Active less %lu days ago";
+"room_participants_active_less_1_hour" = "Offline";
+"room_participants_active_less_x_hours" = "Offline %luh ago";
+"room_participants_active_less_x_days" = "Offline %lu days ago";
+
+"room_participants_action_invite" = "Invite";
+"room_participants_action_leave" = "Leave from this room";
+"room_participants_action_remove" = "Remove from this room";
+"room_participants_action_ban" = "Block";
+"room_participants_action_unban" = "Unblock";
+"room_participants_action_set_default_power_level" = "Reset power level";
+"room_participants_action_set_moderator" = "Make moderator";
+"room_participants_action_set_admin" = "Make admin";
+"room_participants_action_set_custom_power_level" = "Set custom power level";
+"room_participants_action_start_chat" = "Start chat";
+"room_participants_action_start_voice_call" = "Start voice call";
+"room_participants_action_start_video_call" = "Start video call";
 
 // Chat
 "room_one_user_is_typing" = "%@ is typing...";

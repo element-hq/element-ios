@@ -1,0 +1,515 @@
+/*
+ Copyright 2016 OpenMarket Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+#import "RoomMemberDetailsViewController.h"
+
+#import "AppDelegate.h"
+
+#import "RoomMemberTitleView.h"
+
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
+
+#import "AvatarGenerator.h"
+
+#import "TableViewCellWithButton.h"
+
+@interface RoomMemberDetailsViewController ()
+{
+    RoomMemberTitleView* memberTitleView;
+    
+    /**
+     Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
+     */
+    id UIApplicationWillChangeStatusBarOrientationNotificationObserver;
+}
+@end
+
+@implementation RoomMemberDetailsViewController
+
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass(self.class)
+                          bundle:[NSBundle bundleForClass:self.class]];
+}
+
++ (instancetype)roomMemberDetailsViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+                                          bundle:[NSBundle bundleForClass:self.class]];
+}
+
+#pragma mark -
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    // Set delegate to handle start chat option
+    self.delegate = [AppDelegate theDelegate];
+    
+    self.memberHeaderView.backgroundColor = kVectorColorLightGrey;
+    self.roomMemberNameLabel.textColor = kVectorTextColorBlack;
+    self.roomMemberStatusLabel.textColor = kVectorColorGreen;
+    
+    self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
+    
+    memberTitleView = [RoomMemberTitleView roomMemberTitleView];
+    self.memberThumbnail = memberTitleView.memberAvatar;
+    
+    // Add the title view and define edge constraints
+    memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.navigationItem.titleView addSubview:memberTitleView];
+    
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                        attribute:NSLayoutAttributeTop
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.navigationItem.titleView
+                                                                        attribute:NSLayoutAttributeTop
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.navigationItem.titleView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                     attribute:NSLayoutAttributeLeading
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.navigationItem.titleView
+                                                                     attribute:NSLayoutAttributeLeading
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
+                                                                        attribute:NSLayoutAttributeTrailing
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.navigationItem.titleView
+                                                                        attribute:NSLayoutAttributeTrailing
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
+    
+    // Hide line separators of empty cells
+    self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    // Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
+    UIApplicationWillChangeStatusBarOrientationNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        NSNumber *orientation = (NSNumber*)(notif.userInfo[UIApplicationStatusBarOrientationUserInfoKey]);
+        self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
+    }];
+    
+    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    self.bottomImageView.hidden = (screenOrientation == UIInterfaceOrientationLandscapeLeft || screenOrientation == UIInterfaceOrientationLandscapeRight);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Hide the bottom border of the navigation bar to display the expander header
+    [self hideNavigationBarBorder:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Restore navigation bar display
+    [self hideNavigationBarBorder:NO];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    // Restore navigation bar display
+    [self hideNavigationBarBorder:NO];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        // Hide the bottom border of the navigation bar
+        [self hideNavigationBarBorder:YES];
+        
+    });
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (UIApplicationWillChangeStatusBarOrientationNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillChangeStatusBarOrientationNotificationObserver];
+        UIApplicationWillChangeStatusBarOrientationNotificationObserver = nil;
+    }
+    
+    [memberTitleView removeFromSuperview];
+    memberTitleView = nil;
+}
+
+- (UIImage*)picturePlaceholder
+{
+    if (self.mxRoomMember)
+    {
+        // Use the vector style placeholder
+        return [AvatarGenerator generateRoomMemberAvatar:self.mxRoomMember.userId displayName:self.mxRoomMember.displayname];
+    }
+    
+    return [UIImage imageNamed:@"placeholder"];
+}
+
+- (void)updateMemberInfo
+{
+    [super updateMemberInfo];
+    
+    if (self.mxRoomMember)
+    {
+        self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
+        
+        NSString* presenceText = nil;
+        
+        if (self.mxRoomMember.membership != MXMembershipJoin)
+        {
+            if (self.mxRoomMember.membership == MXMembershipInvite)
+            {
+                presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
+            }
+            else if (self.mxRoomMember.membership == MXMembershipLeave)
+            {
+                presenceText =  NSLocalizedStringFromTable(@"room_participants_leave", @"Vector", nil);
+            }
+            else if (self.mxRoomMember.membership == MXMembershipBan)
+            {
+                presenceText =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
+            }
+        }
+        else if (self.mxRoomMember.userId)
+        {
+            MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
+            if (user)
+            {
+                if (user.presence == MXPresenceOnline)
+                {
+                    presenceText  = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
+                }
+                else
+                {
+                    NSUInteger lastActiveMs = user.lastActiveAgo;
+                    
+                    if (-1 != lastActiveMs)
+                    {
+                        NSUInteger lastActivehour = lastActiveMs / 1000 / 60 / 60;
+                        NSUInteger lastActiveDays = lastActivehour / 24;
+                        
+                        if (lastActivehour < 1)
+                        {
+                            presenceText = NSLocalizedStringFromTable(@"room_participants_active_less_1_hour", @"Vector", nil);
+                        }
+                        else if (lastActivehour < 24)
+                        {
+                            presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_hours", @"Vector", nil), lastActivehour];
+                        }
+                        else
+                        {
+                            presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_days", @"Vector", nil), lastActiveDays];
+                        }
+                    }
+                }
+            }
+        }
+        
+        self.roomMemberStatusLabel.text = presenceText;
+    }
+}
+
+#pragma mark - Hide/Show navigation bar border
+
+- (void)hideNavigationBarBorder:(BOOL)isHidden
+{
+    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+    UINavigationController *mainNavigationController = self.navigationController;
+    if (self.splitViewController && self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+    {
+        mainNavigationController = self.splitViewController.viewControllers.firstObject;
+    }
+    
+    if (isHidden)
+    {
+        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
+        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
+        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
+        // image will be used regardless of the value of this property.
+        [mainNavigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+        [mainNavigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    }
+    else
+    {
+        // Restore default navigationbar settings
+        [mainNavigationController.navigationBar setShadowImage:nil];
+        [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    }
+}
+
+#pragma mark - TableView data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Check user's power level before allowing an action (kick, ban, ...)
+    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+    NSUInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+    NSUInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+    
+    [actionsArray removeAllObjects];
+    
+    // Consider the case of the user himself
+    if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
+    {
+        [actionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
+        
+        if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
+        {
+            // Check whether the user is admin (in this case he may reduce his power level to become moderator).
+            if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
+            {
+                [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
+            }
+            
+            [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+            [actionsArray addObject:@(MXKRoomMemberDetailsActionSetCustomPowerLevel)];
+        }
+    }
+    else if (self.mxRoomMember)
+    {
+        // offer to start a new chat only if the room is not a 1:1 room with this user
+        // it does not make sense : it would open the same room
+        MXRoom* room = [self.mainSession privateOneToOneRoomWithUserId:self.mxRoomMember.userId];
+        if (!room || (![room.state.roomId isEqualToString:self.mxRoom.state.roomId]))
+        {
+            [actionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];
+        }
+        
+        if (self.enableVoipCall)
+        {
+            // Offer voip call options
+            [actionsArray addObject:@(MXKRoomMemberDetailsActionStartVoiceCall)];
+            [actionsArray addObject:@(MXKRoomMemberDetailsActionStartVideoCall)];
+        }
+        
+        // Consider membership of the selected member
+        switch (self.mxRoomMember.membership)
+        {
+            case MXMembershipInvite:
+            case MXMembershipJoin:
+            {
+                // update power level
+                if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels] && oneSelfPowerLevel > memberPowerLevel)
+                {
+                    // Check whether user is admin
+                    if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
+                    }
+                    
+                    // Check whether the member may become moderator
+                    if (oneSelfPowerLevel >= kVectorRoomModeratorLevel && memberPowerLevel < kVectorRoomModeratorLevel)
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
+                    }
+                    
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetCustomPowerLevel)];
+                }
+                
+                // Check conditions to be able to kick someone
+                if (oneSelfPowerLevel >= [powerLevels kick] && oneSelfPowerLevel > memberPowerLevel)
+                {
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionKick)];
+                }
+                // Check conditions to be able to ban someone
+                if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel > memberPowerLevel)
+                {
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
+                }
+                break;
+            }  
+            case MXMembershipLeave:
+            {
+                // Check conditions to be able to invite someone
+                if (oneSelfPowerLevel >= [powerLevels invite])
+                {
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionInvite)];
+                }
+                // Check conditions to be able to ban someone
+                if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel > memberPowerLevel)
+                {
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
+                }
+                break;
+            }
+            case MXMembershipBan:
+            {
+                // Check conditions to be able to unban someone
+                if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel > memberPowerLevel)
+                {
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionUnban)];
+                }
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+    
+    return actionsArray.count;
+}
+
+- (NSString*)actionButtonTitle:(MXKRoomMemberDetailsAction)action
+{
+    NSString *title;
+    
+    switch (action)
+    {
+        case MXKRoomMemberDetailsActionInvite:
+            title = NSLocalizedStringFromTable(@"room_participants_action_invite", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionLeave:
+            title = NSLocalizedStringFromTable(@"room_participants_action_leave", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionKick:
+            title = NSLocalizedStringFromTable(@"room_participants_action_remove", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionBan:
+            title = NSLocalizedStringFromTable(@"room_participants_action_ban", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionUnban:
+            title = NSLocalizedStringFromTable(@"room_participants_action_unban", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
+            title = NSLocalizedStringFromTable(@"room_participants_action_set_default_power_level", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionSetModerator:
+            title = NSLocalizedStringFromTable(@"room_participants_action_set_moderator", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionSetAdmin:
+            title = NSLocalizedStringFromTable(@"room_participants_action_set_admin", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionSetCustomPowerLevel:
+            title = NSLocalizedStringFromTable(@"room_participants_action_set_custom_power_level", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionStartChat:
+            title = NSLocalizedStringFromTable(@"room_participants_action_start_chat", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionStartVoiceCall:
+            title = NSLocalizedStringFromTable(@"room_participants_action_start_voice_call", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionStartVideoCall:
+            title = NSLocalizedStringFromTable(@"room_participants_action_start_video_call", @"Vector", nil);
+            break;
+        default:
+            break;
+    }
+    
+    return title;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row = indexPath.row;
+    
+    TableViewCellWithButton *cell  = [[TableViewCellWithButton alloc] init];
+    
+    if (row < actionsArray.count)
+    {
+        NSNumber *actionNumber = [actionsArray objectAtIndex:row];
+        
+        NSString *title = [self actionButtonTitle:actionNumber.unsignedIntegerValue];
+        
+        [cell.mxkButton setTitle:title forState:UIControlStateNormal];
+        [cell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+        
+        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
+        {
+            [cell.mxkButton setTitleColor:kVectorTextColorRed forState:UIControlStateNormal];
+            [cell.mxkButton setTitleColor:kVectorTextColorRed forState:UIControlStateHighlighted];
+        }
+        else
+        {
+            [cell.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
+            [cell.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+        }
+        
+        [cell.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        cell.mxkButton.tag = actionNumber.unsignedIntegerValue;
+    }
+    
+    return cell;
+}
+
+#pragma mark -
+
+- (void)onActionButtonPressed:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]])
+    {
+        // already a pending action
+        if ([self hasPendingAction])
+        {
+            return;
+        }
+        
+        UIButton *button = (UIButton*)sender;
+        
+        switch (button.tag)
+        {
+            case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
+            {
+                [self setPowerLevel:self.mxRoom.state.powerLevels.usersDefault];
+                break;
+            }
+            case MXKRoomMemberDetailsActionSetModerator:
+            {
+                [self setPowerLevel:kVectorRoomModeratorLevel];
+                break;
+            }
+            case MXKRoomMemberDetailsActionSetAdmin:
+            {
+                [self setPowerLevel:kVectorRoomAdminLevel];
+                break;
+            }
+            default:
+            {
+                [super onActionButtonPressed:sender];
+            }
+        }
+    }
+}
+
+@end
