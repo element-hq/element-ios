@@ -47,9 +47,9 @@
                 <constraint firstAttribute="bottom" secondItem="pFg-XE-6DB" secondAttribute="bottom" id="HEU-GL-4yt"/>
                 <constraint firstAttribute="trailing" secondItem="pFg-XE-6DB" secondAttribute="trailing" id="HPm-vM-32l"/>
                 <constraint firstItem="S3Y-wJ-HOe" firstAttribute="centerY" secondItem="6uH-I3-RQg" secondAttribute="centerY" id="Jjq-ss-0kj"/>
-                <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="KW6-05-QLM"/>
+                <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="8" id="KW6-05-QLM"/>
                 <constraint firstItem="pFg-XE-6DB" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="M4X-tH-OCM"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="31" id="PUM-di-dAZ"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="8" id="PUM-di-dAZ"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="9" id="Piq-rp-Pae"/>
                 <constraint firstItem="sD9-l7-azQ" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="YrR-1c-h56"/>
                 <constraint firstItem="S3Y-wJ-HOe" firstAttribute="leading" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="7" id="qbS-km-tTO"/>
