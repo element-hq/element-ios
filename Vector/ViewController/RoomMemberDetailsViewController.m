@@ -122,9 +122,6 @@
         NSNumber *orientation = (NSNumber*)(notif.userInfo[UIApplicationStatusBarOrientationUserInfoKey]);
         self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
     }];
-    
-    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    self.bottomImageView.hidden = (screenOrientation == UIInterfaceOrientationLandscapeLeft || screenOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -133,6 +130,10 @@
     
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];
+    
+    // Handle here the bottom image visibility
+    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    self.bottomImageView.hidden = (screenOrientation == UIInterfaceOrientationLandscapeLeft || screenOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -141,6 +142,8 @@
     
     // Restore navigation bar display
     [self hideNavigationBarBorder:NO];
+    
+    self.bottomImageView.hidden = YES;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
