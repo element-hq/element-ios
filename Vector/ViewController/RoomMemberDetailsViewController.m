@@ -293,9 +293,8 @@
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
-            // Check whether the user may reduce his power level to become moderator
-            float normalizedOneSelfPowerLevel = [self.mxRoom.state memberNormalizedPowerLevel:self.mainSession.myUser.userId];
-            if (normalizedOneSelfPowerLevel > 0.5)
+            // Check whether the user is admin (in this case he may reduce his power level to become moderator).
+            if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
             {
                 [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
             }
@@ -331,15 +330,13 @@
                 if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels] && oneSelfPowerLevel > memberPowerLevel)
                 {
                     // Check whether user is admin
-                    float normalizedOneSelfPowerLevel = [self.mxRoom.state memberNormalizedPowerLevel:self.mainSession.myUser.userId];
-                    if (normalizedOneSelfPowerLevel == 1)
+                    if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
                     {
                         [actionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
                     }
                     
                     // Check whether the member may become moderator
-                    float normalizedMemberPowerLevel = [self.mxRoom.state memberNormalizedPowerLevel:self.mxRoomMember.userId];
-                    if (normalizedOneSelfPowerLevel >= 0.5 && normalizedMemberPowerLevel < 0.5)
+                    if (oneSelfPowerLevel >= kVectorRoomModeratorLevel && memberPowerLevel < kVectorRoomModeratorLevel)
                     {
                         [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
                     }
