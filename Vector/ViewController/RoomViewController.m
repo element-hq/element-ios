@@ -179,8 +179,12 @@
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
     
+    // Disable animation during the update of the inputToolBar height.
+    [UIView setAnimationsEnabled:NO];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+    [UIView setAnimationsEnabled:YES];
+
     // Set user picture in input toolbar
     MXKImageView *userPictureView = ((RoomInputToolbarView*)self.inputToolbarView).pictureView;
     if (userPictureView)
