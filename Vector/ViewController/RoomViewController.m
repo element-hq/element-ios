@@ -581,6 +581,13 @@
 
 #pragma mark - MXKDataSource delegate
 
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    [super dataSource:dataSource didCellChange:changes];
+    
+    [self refreshActivitiesViewDisplay];
+}
+
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
     // Handle here user actions on bubbles for Vector app
