@@ -232,11 +232,17 @@
     [super viewWillAppear:animated];
     
     [self listenTypingNotifications];
+    
+    // Observe network reachability
+    [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
+    [self refreshActivitiesViewDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
     
     // hide action
     if (self.currentAlert)
@@ -1089,7 +1095,7 @@
     }
 }
 
-#pragma mark - typing management
+#pragma mark - Typing management
 
 - (void)removeTypingNotificationsListener
 {
@@ -1122,69 +1128,177 @@
                 {
                     [typingUsers removeObjectAtIndex:index];
                 }
+                
                 // Ignore this notification if both arrays are empty
                 if (currentTypingUsers.count || typingUsers.count)
                 {
                     currentTypingUsers = typingUsers;
-                    [self refreshTypingView];
+                    [self refreshActivitiesViewDisplay];
                 }
             }
             
         }];
         
         currentTypingUsers = self.roomDataSource.room.typingUsers;
-        [self refreshTypingView];
+        [self refreshActivitiesViewDisplay];
     }
 }
 
-- (void)refreshTypingView
+- (void)refreshTypingNotification
 {
-    NSString* text = nil;
-    NSUInteger count = currentTypingUsers.count;
-    
-    // get the room member names
-    NSMutableArray *names = [[NSMutableArray alloc] init];
-    
-    // keeps the only the first two users
-    for(int i = 0; i < MIN(count, 2); i++)
+    if (self.activitiesView)
     {
-        NSString* name = [currentTypingUsers objectAtIndex:i];
+        // Prepare here typing notification
+        NSString* text = nil;
+        NSUInteger count = currentTypingUsers.count;
         
-        MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+        // get the room member names
+        NSMutableArray *names = [[NSMutableArray alloc] init];
         
-        if (member && member.displayname.length)
+        // keeps the only the first two users
+        for(int i = 0; i < MIN(count, 2); i++)
         {
-            name = member.displayname;
+            NSString* name = [currentTypingUsers objectAtIndex:i];
+            
+            MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+            
+            if (member && member.displayname.length)
+            {
+                name = member.displayname;
+            }
+            
+            // sanity check
+            if (name)
+            {
+                [names addObject:name];
+            }
         }
         
-        // sanity check
-        if (name)
+        if (0 == names.count)
         {
-            [names addObject:name];
+            // something to do ?
+        }
+        else if (1 == names.count)
+        {
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+        }
+        else if (2 == names.count)
+        {
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+        }
+        else
+        {
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+        }
+        
+        [((RoomActivitiesView*) self.activitiesView) displayTypingNotification:text];
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"isOffline" isEqualToString:keyPath])
+    {
+        [self refreshActivitiesViewDisplay];
+    }
+}
+
+#pragma mark - Unreachable Network Handling
+
+- (void)refreshActivitiesViewDisplay
+{
+    if (self.activitiesView)
+    {
+        if ([AppDelegate theDelegate].isOffline)
+        {
+            [((RoomActivitiesView*) self.activitiesView) displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+        }
+        else if ([self checkUnsentMessages] == NO)
+        {
+            [self refreshTypingNotification];
         }
     }
-    
-    if (0 == names.count)
-    {
-        // something to do ?
-    }
-    else if (1 == names.count)
-    {
-        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
-    }
-    else if (2 == names.count)
-    {
-        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
-    }
-    else
-    {
-        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
-    }
+}
+
+
+#pragma mark - Unsent Messages Handling
+
+-(BOOL)checkUnsentMessages
+{
+    BOOL hasUnsent = NO;
     
     if (self.activitiesView)
     {
-        [((RoomActivitiesView*) self.activitiesView) updateTypingMessage:text];
+        NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+        
+        for (MXEvent *event in outgoingMsgs)
+        {
+            if (event.mxkState == MXKEventStateSendingFailed)
+            {
+                hasUnsent = YES;
+                break;
+            }
+        }
+        
+        if (hasUnsent)
+        {
+            NSString *firstComponent = NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
+            NSString *secondComponent = NSLocalizedStringFromTable(@"room_prompt_resent", @"Vector", nil);
+            
+            NSMutableAttributedString *notification = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", firstComponent, secondComponent]];
+            
+            NSRange range = NSMakeRange(firstComponent.length + 1, secondComponent.length);
+            [notification addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
+            
+            [((RoomActivitiesView*) self.activitiesView) displayUnsentMessagesNotification:notification onLabelTapGesture:^{
+                
+                // List unsent event ids
+                NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+                NSMutableArray *failedEventIds = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
+                
+                for (MXEvent *event in outgoingMsgs)
+                {
+                    if (event.mxkState == MXKEventStateSendingFailed)
+                    {
+                        [failedEventIds addObject:event.eventId];
+                    }
+                }
+                
+                // Launch iterative operation
+                [self resendFailedEvent:0 inArray:failedEventIds];
+            
+            }];
+        }
     }
+    
+    return hasUnsent;
+}
+
+- (void)resendFailedEvent:(NSUInteger)index inArray:(NSArray*)failedEventIds
+{
+    if (index < failedEventIds.count)
+    {
+        NSString *failedEventId = failedEventIds[index];
+        NSUInteger nextIndex = index + 1;
+        
+        // Let the datasource resend. It will manage local echo, etc.
+        [self.roomDataSource resendEventWithEventId:failedEventId success:^(NSString *eventId) {
+            
+            [self resendFailedEvent:nextIndex inArray:failedEventIds];
+            
+        } failure:^(NSError *error) {
+            
+            [self resendFailedEvent:nextIndex inArray:failedEventIds];
+            
+        }];
+        
+        return;
+    }
+    
+    // Refresh activities view
+    [self refreshActivitiesViewDisplay];
 }
 
 @end

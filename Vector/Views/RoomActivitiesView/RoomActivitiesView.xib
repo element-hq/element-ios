@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -63,10 +63,10 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="iconImageView" destination="d6j-oN-9uA" id="Qhw-fw-uGc"/>
                 <outlet property="mainHeightConstraint" destination="xPK-Yw-hQ9" id="dJ5-pI-KyT"/>
                 <outlet property="messageLabel" destination="7bS-1u-GUX" id="5c1-hT-y49"/>
                 <outlet property="separatorView" destination="1Mq-77-vvo" id="8fc-AO-8hF"/>
-                <outlet property="typingImageView" destination="d6j-oN-9uA" id="kvp-J3-bVj"/>
             </connections>
         </view>
     </objects>
