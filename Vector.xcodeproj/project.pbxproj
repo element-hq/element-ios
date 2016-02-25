@@ -136,6 +136,9 @@
 		F056418C1C7CBEBD002276ED /* group.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641891C7CBEBD002276ED /* group.png */; };
 		F056418D1C7CBEBD002276ED /* group@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F056418A1C7CBEBD002276ED /* group@2x.png */; };
 		F056418E1C7CBEBD002276ED /* group@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F056418B1C7CBEBD002276ED /* group@3x.png */; };
+		F05641921C7DF9DE002276ED /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = F056418F1C7DF9DE002276ED /* error.png */; };
+		F05641931C7DF9DE002276ED /* error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641901C7DF9DE002276ED /* error@2x.png */; };
+		F05641941C7DF9DE002276ED /* error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641911C7DF9DE002276ED /* error@3x.png */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
@@ -386,6 +389,9 @@
 		F05641891C7CBEBD002276ED /* group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group.png; sourceTree = "<group>"; };
 		F056418A1C7CBEBD002276ED /* group@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group@2x.png"; sourceTree = "<group>"; };
 		F056418B1C7CBEBD002276ED /* group@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group@3x.png"; sourceTree = "<group>"; };
+		F056418F1C7DF9DE002276ED /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error.png; sourceTree = "<group>"; };
+		F05641901C7DF9DE002276ED /* error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error@2x.png"; sourceTree = "<group>"; };
+		F05641911C7DF9DE002276ED /* error@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error@3x.png"; sourceTree = "<group>"; };
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
@@ -950,6 +956,9 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F056418F1C7DF9DE002276ED /* error.png */,
+				F05641901C7DF9DE002276ED /* error@2x.png */,
+				F05641911C7DF9DE002276ED /* error@3x.png */,
 				F05641891C7CBEBD002276ED /* group.png */,
 				F056418A1C7CBEBD002276ED /* group@2x.png */,
 				F056418B1C7CBEBD002276ED /* group@3x.png */,
@@ -1133,6 +1142,7 @@
 				F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */,
 				F02528DE1C11B6FC00E1FE1B /* camera_switch@3x.png in Resources */,
 				F02529091C11B6FC00E1FE1B /* upload_icon.png in Resources */,
+				F05641931C7DF9DE002276ED /* error@2x.png in Resources */,
 				F0D2D9861C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F02528F21C11B6FC00E1FE1B /* remove_icon.png in Resources */,
 				F02528F51C11B6FC00E1FE1B /* remove.png in Resources */,
@@ -1176,6 +1186,7 @@
 				F09EE0031C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F02528E81C11B6FC00E1FE1B /* logo@2x.png in Resources */,
 				F0D2D98A1C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				F05641941C7DF9DE002276ED /* error@3x.png in Resources */,
 				F02528E21C11B6FC00E1FE1B /* create_room@3x.png in Resources */,
 				F02528E11C11B6FC00E1FE1B /* create_room@2x.png in Resources */,
 				F02528EC1C11B6FC00E1FE1B /* mute_icon.png in Resources */,
@@ -1214,6 +1225,7 @@
 				F0DDDBB91C5A5F55000C6C46 /* Icon-170@3x.png in Resources */,
 				F003AA7C1C68A1F6008B430C /* ExpandedRoomTitleView.xib in Resources */,
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
+				F05641921C7DF9DE002276ED /* error.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,

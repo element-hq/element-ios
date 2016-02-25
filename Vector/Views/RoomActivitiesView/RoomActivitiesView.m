@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import <objc/runtime.h>
+
 @implementation RoomActivitiesView
 
 + (UINib *)nib
@@ -37,27 +39,89 @@
     
     self.separatorView.backgroundColor = kVectorColorLightGrey;
     self.messageLabel.textColor = kVectorTextColorGray;
-    
-//    self.typingImageView.backgroundColor = kVectorColorGreen;
-//    self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2;
-    
 }
 
-// update the displayed typing message.
-// nil message hides the typing icon too.
-- (void)updateTypingMessage:(NSString*)message
+- (void)displayUnsentMessagesNotification:(NSAttributedString*)labelText onLabelTapGesture:(void (^)(void))onLabelTapGesture
 {
-    if (message)
+    [self reset];
+    
+    if (labelText.length)
     {
-        self.typingImageView.hidden = false;
-        self.messageLabel.hidden = false;
-        self.messageLabel.text = message;
+        self.iconImageView.image = [UIImage imageNamed:@"error"];
+        self.messageLabel.attributedText = labelText;
+        self.messageLabel.textColor = kVectorTextColorRed;
+        
+        self.iconImageView.hidden = NO;
+        self.messageLabel.hidden = NO;
+        
+        if (onLabelTapGesture)
+        {
+            objc_setAssociatedObject(self.messageLabel, "onLabelTapGesture", [onLabelTapGesture copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            
+            // Listen to label tap
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onLabelTap:)];
+            [tapGesture setNumberOfTouchesRequired:1];
+            [tapGesture setNumberOfTapsRequired:1];
+            [tapGesture setDelegate:self];
+            [self.messageLabel addGestureRecognizer:tapGesture];
+            self.messageLabel.userInteractionEnabled = YES;
+        }
     }
-    else
+}
+
+- (void)onLabelTap:(UITapGestureRecognizer*)sender
+{
+    void (^onLabelTapGesture)(void) = objc_getAssociatedObject(self.messageLabel, "onLabelTapGesture");
+    if (onLabelTapGesture)
     {
-        self.typingImageView.hidden = true;
-        self.messageLabel.hidden = true;
+        onLabelTapGesture ();
     }
+}
+
+- (void)displayNetworkErrorNotification:(NSString*)labelText
+{
+    [self reset];
+    
+    if (labelText.length)
+    {
+        self.iconImageView.image = [UIImage imageNamed:@"error"];
+        self.messageLabel.text = labelText;
+        self.messageLabel.textColor = kVectorTextColorRed;
+        
+        self.iconImageView.hidden = NO;
+        self.messageLabel.hidden = NO;
+    }
+}
+
+- (void)displayTypingNotification:(NSString*)labelText
+{
+    [self reset];
+    
+    if (labelText.length)
+    {
+        self.iconImageView.image = [UIImage imageNamed:@"typing"];
+        self.messageLabel.text = labelText;
+        
+        self.iconImageView.hidden = NO;
+        self.messageLabel.hidden = NO;
+    }
+}
+
+- (void)reset
+{
+    self.iconImageView.hidden = YES;
+    self.messageLabel.hidden = YES;
+    
+    self.messageLabel.textColor = kVectorTextColorGray;
+    
+    // Remove all gesture recognizer
+    while (self.messageLabel.gestureRecognizers.count)
+    {
+        [self.messageLabel removeGestureRecognizer:self.messageLabel.gestureRecognizers[0]];
+    }
+    self.messageLabel.userInteractionEnabled = NO;
+    
+    objc_removeAssociatedObjects(self.messageLabel);
 }
 
 @end

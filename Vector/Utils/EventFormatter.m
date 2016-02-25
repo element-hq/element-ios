@@ -50,7 +50,7 @@
         self.prefixTextColor = kVectorTextColorGray;
         self.bingTextColor = kVectorColorGreen;
         self.sendingTextColor = kVectorTextColorGray;
-        self.errorTextColor = [UIColor redColor];
+        self.errorTextColor = kVectorTextColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];

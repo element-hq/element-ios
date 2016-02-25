@@ -118,6 +118,9 @@
 "room_two_users_are_typing" = "%@ & %@ are typing...";
 "room_many_users_are_typing" = "%@, %@ & others are typing...";
 "room_message_placeholder" = "Type a message...";
+"room_offline_notification" = "Connectivity to the server has been lost.";
+"room_unsent_messages_notification" = "Messages not sent.";
+"room_prompt_resent" = "Resend now?";
 "room_event_action_edit" = "Edit";
 "room_event_action_copy" = "Copy";
 "room_event_action_share" = "Share";
