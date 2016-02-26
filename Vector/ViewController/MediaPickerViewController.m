@@ -59,7 +59,11 @@ static void *RecordingContext = &RecordingContext;
     
     PHFetchResult *recentCaptures;
     
-    NSMutableArray *userAlbums;
+    /**
+     User's albums
+     */
+    dispatch_queue_t userAlbumsQueue;
+    NSArray *userAlbums;
     
     MXKImageView* validationView;
     
@@ -128,7 +132,7 @@ static void *RecordingContext = &RecordingContext;
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
-    userAlbums = [NSMutableArray array];
+    userAlbumsQueue = dispatch_queue_create("media.picker.user.albums", DISPATCH_QUEUE_SERIAL);
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -142,6 +146,8 @@ static void *RecordingContext = &RecordingContext;
 - (void)dealloc
 {
     cameraQueue = nil;
+    userAlbumsQueue = nil;
+    userAlbums = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -468,54 +474,63 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)reloadUserLibraryAlbums
 {
-    // List user albums which are not empty
-    PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-    
-    [userAlbums removeAllObjects];
-    
-    // Set up fetch options.
-    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
-    {
-        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-        {
-            options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
-        }
-        else
-        {
-            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
-        }
-    }
-    else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-    {
-        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
-    }
-    
-    [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+    dispatch_async(userAlbumsQueue, ^{
         
-        PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
-        NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+        // List user albums which are not empty
+        PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
         
-        if (assets.count)
+        NSMutableArray *updatedUserAlbums = [NSMutableArray array];
+        
+        // Set up fetch options.
+        PHFetchOptions *options = [[PHFetchOptions alloc] init];
+        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
         {
-            [userAlbums addObject:collection];
+            if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+            }
+            else
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
+            }
+        }
+        else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
         }
         
-    }];
-
-    if (userAlbums.count)
-    {
-        self.userAlbumsTableView.hidden = NO;
-        self.libraryViewContainerViewHeightConstraint.constant = (userAlbums.count * 74);
-        [self.libraryViewContainer needsUpdateConstraints];
+        [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+            
+            PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+            NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+            
+            if (assets.count)
+            {
+                [updatedUserAlbums addObject:collection];
+            }
+            
+        }];
         
-        [self.userAlbumsTableView reloadData];
-    }
-    else
-    {
-        self.userAlbumsTableView.hidden = YES;
-        self.libraryViewContainerViewHeightConstraint.constant = 0;
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            userAlbums = updatedUserAlbums;
+            if (userAlbums.count)
+            {
+                self.userAlbumsTableView.hidden = NO;
+                self.libraryViewContainerViewHeightConstraint.constant = (userAlbums.count * 74);
+                [self.libraryViewContainer needsUpdateConstraints];
+                
+                [self.userAlbumsTableView reloadData];
+            }
+            else
+            {
+                self.userAlbumsTableView.hidden = YES;
+                self.libraryViewContainerViewHeightConstraint.constant = 0;
+            }
+            
+        });
+        
+    });
 }
 
 - (void)reset
