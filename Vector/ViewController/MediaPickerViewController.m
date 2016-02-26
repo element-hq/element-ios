@@ -105,9 +105,6 @@ static void *RecordingContext = &RecordingContext;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"camera", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
-    
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
     
@@ -163,9 +160,9 @@ static void *RecordingContext = &RecordingContext;
     [self reloadRecentCapturesCollection];
     [self reloadUserLibraryAlbums];
     
-    // Update visibility of the navigation bar according to the current scrolling offset
-    CGPoint targetOffset = CGPointMake(0, _mainScrollView.contentOffset.y);
-    [self scrollViewWillEndDragging:_mainScrollView withVelocity:CGPointMake(0, 0) targetContentOffset:&targetOffset];
+    // Hide the navigation bar, and force the preview camera to be at the top (behing the status bar)
+    self.navigationController.navigationBarHidden = YES;
+    [self scrollViewDidScroll:_mainScrollView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -297,44 +294,16 @@ static void *RecordingContext = &RecordingContext;
     }
 }
 
-#pragma mark - Navigation bar handling
-
-- (void)scrollToCameraPreview
-{
-    CGPoint targetOffset = CGPointMake(0, -1);
-    [self scrollViewWillEndDragging:_mainScrollView withVelocity:CGPointMake(0, 0) targetContentOffset:&targetOffset];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    // Handle here visibility of the navigation bar
-    if (scrollView == _mainScrollView)
-    {
-        if (targetContentOffset->y <= 0)
-        {
-            // Hide navigation bar
-            self.navigationController.navigationBarHidden = YES;
-            targetContentOffset->y = 0;
-            scrollView.contentOffset = *targetContentOffset;
-        }
-        else
-        {
-            self.navigationController.navigationBarHidden = NO;
-        }
-    }
-}
+#pragma mark - Camera preview layout
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // Handle here visibility of the navigation bar
     if (scrollView == _mainScrollView)
     {
-        if (self.navigationController.navigationBarHidden)
+        // Force camera preview at the top (behind the status bar)
+        if (scrollView.contentOffset.y < 0)
         {
-            if (scrollView.contentOffset.y < 0)
-            {
-                scrollView.contentOffset = CGPointMake(0, 0);
-            }
+            scrollView.contentOffset = CGPointMake(0, 0);
         }
     }
 }
@@ -790,14 +759,10 @@ static void *RecordingContext = &RecordingContext;
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == self.closeButton || sender == self.navigationItem.leftBarButtonItem)
+    if (sender == self.closeButton)
     {
-        // Close/Cancel has been pressed
+        // Close has been pressed
         [self withdrawViewControllerAnimated:YES completion:nil];
-    }
-    else if (sender == self.navigationItem.rightBarButtonItem)
-    {
-        [self scrollToCameraPreview];
     }
     else if (sender == self.cameraModeButton)
     {
