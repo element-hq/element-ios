@@ -65,6 +65,8 @@ static void *RecordingContext = &RecordingContext;
     
     MPMoviePlayerController *videoPlayer;
     UIButton *videoPlayerControl;
+    
+    BOOL isValidationInProgress;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -541,6 +543,13 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)didSelectAsset:(PHAsset *)asset
 {
+    // Check whether a selection is already in progress
+    if (isValidationInProgress)
+    {
+        return;
+    }
+    
+    isValidationInProgress = YES;
     PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
     
     [asset requestContentEditingInputWithOptions:editOptions
@@ -563,9 +572,13 @@ static void *RecordingContext = &RecordingContext;
                                                    [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
                                                }
                                                
+                                               isValidationInProgress = NO;
+                                               
                                            }];
                                            
                                        });
+                                       
+                                       return;
                                    }
                                    else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
                                    {
@@ -583,15 +596,21 @@ static void *RecordingContext = &RecordingContext;
                                                        [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
                                                    }
                                                    
+                                                   isValidationInProgress = NO;
+                                                   
                                                }];
                                                
                                            });
+                                           
+                                           return;
                                        }
                                        else
                                        {
                                            NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
                                        }
                                    }
+                                   
+                                   isValidationInProgress = NO;
                                }];
 }
 
@@ -904,6 +923,7 @@ static void *RecordingContext = &RecordingContext;
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
+                [cameraPreviewLayer connection].videoScaleAndCropFactor = 1.0;
                 cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
                 cameraPreviewLayer.hidden = YES;
                 
@@ -1136,6 +1156,8 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)snapStillImage
 {
+    self.cameraCaptureButton.enabled = NO;
+    
     dispatch_async(cameraQueue, ^{
         // Update the orientation on the still image output video connection before capturing.
         [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[cameraPreviewLayer connection] videoOrientation]];
@@ -1421,8 +1443,8 @@ static void *RecordingContext = &RecordingContext;
         PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
         cell.albumCountLabel.text = [NSString stringWithFormat:@"%tu", assets.count];
         
-        // Report first asset thumbnail
-        if (assets.count)
+        // Report first asset thumbnail (except for 'Recently Deleted' album)
+        if (assets.count && collection.assetCollectionSubtype != 1000000201)
         {
             PHAsset *asset = assets[0];
             
@@ -1437,6 +1459,11 @@ static void *RecordingContext = &RecordingContext;
                 cell.tag = 0;
                 
             }];
+        }
+        else
+        {
+            cell.albumThumbnail.image = nil;
+            cell.albumThumbnail.backgroundColor = [UIColor lightGrayColor];
         }
     }
     
