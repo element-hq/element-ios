@@ -1122,10 +1122,10 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
             
             // Handle only live events
-            if (direction == MXEventDirectionForwards)
+            if (direction == MXTimelineDirectionForwards)
             {
                 // Retrieve typing users list
                 NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];

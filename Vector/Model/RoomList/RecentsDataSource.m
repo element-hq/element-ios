@@ -130,10 +130,10 @@
         {
             // Register the room tags updates to refresh the favorites order
             id roomTagsListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
-                                                                onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                                                                onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
                                                                     // Consider only live event
-                                                                    if (direction == MXEventDirectionForwards)
+                                                                    if (direction == MXTimelineDirectionForwards)
                                                                     {
                                                                         dispatch_async(dispatch_get_main_queue(), ^{
 
