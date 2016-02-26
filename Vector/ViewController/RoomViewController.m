@@ -1210,6 +1210,10 @@
     {
         [self refreshActivitiesViewDisplay];
     }
+    else
+    {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark - Unreachable Network Handling
