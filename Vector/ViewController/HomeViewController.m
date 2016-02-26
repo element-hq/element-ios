@@ -375,7 +375,7 @@
 - (void)refreshCurrentSelectedCellInChild:(BOOL)forceVisible
 {
     // TODO: Manage other children than recents
-    [recentsViewController refreshCurrentSelectedCell:YES];
+    [recentsViewController refreshCurrentSelectedCell:forceVisible];
 }
 
 #pragma mark - Navigation
