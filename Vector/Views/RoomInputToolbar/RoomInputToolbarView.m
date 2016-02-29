@@ -193,7 +193,7 @@
 {
     [self dismissMediaPicker];
     
-    [self sendSelectedVideo:videoURL isCameraRecording:NO];
+    [self sendSelectedVideo:videoURL isPhotoLibraryAsset:YES];
 }
 
 #pragma mark - Media picker handling

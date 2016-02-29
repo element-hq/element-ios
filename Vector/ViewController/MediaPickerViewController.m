@@ -1153,27 +1153,19 @@ static void *RecordingContext = &RecordingContext;
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 UIImage *image = [[UIImage alloc] initWithData:imageData];
                 
-                // Save the image in user's photos library
-                [MXKMediaManager saveImageToPhotosLibrary:image success:^(NSURL *imageURL) {
+                // Open image validation view
+                [self validateSelectedImage:image responseHandler:^(BOOL isValidated) {
                     
-                    // Open image validation view
-                    [self validateSelectedImage:image responseHandler:^(BOOL isValidated) {
-                        if (isValidated)
-                        {
-                            // Send the original image by considering its asset url
-                            [self.delegate mediaPickerController:self didSelectImage:image withURL:imageURL];
-                        }
-                    }];
+                    if (isValidated)
+                    {
+                        // Send the original image by considering its asset url
+                        [self.delegate mediaPickerController:self didSelectImage:image withURL:nil];
+                    }
                     
-                    // Relaunch preview
-                    [self reset];
-                    
-                    // Reload recent pictures collection
-                    [self reloadRecentCapturesCollection];
-                    // Reload user albums display
-                    [self reloadUserLibraryAlbums];
-                    
-                } failure:nil];
+                }];
+                
+                // Relaunch preview
+                [self reset];
             }
         }];
     });
@@ -1260,32 +1252,22 @@ static void *RecordingContext = &RecordingContext;
     
     lockInterfaceRotation = NO;
     
-    [MXKMediaManager saveMediaToPhotosLibrary:outputFileURL isImage:NO success:^(NSURL *videoURL) {
+    // Validate the new captured video
+    [self validateSelectedVideo:outputFileURL responseHandler:^(BOOL isValidated) {
+        
+        if (isValidated)
+        {
+            // Send the captured video
+            [self.delegate mediaPickerController:self didSelectVideo:outputFileURL];
+        }
         
         // Remove the temporary file
         [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
         
-        // Validate the new captured video
-        [self validateSelectedVideo:videoURL responseHandler:^(BOOL isValidated) {
-            
-            if (isValidated)
-            {
-                // Send the original image by considering its asset url
-                [self.delegate mediaPickerController:self didSelectVideo:videoURL];
-            }
-            
-        }];
-        
-        // Relaunch preview
-        [self reset];
-        
-        // Reload recent pictures collection
-        [self reloadRecentCapturesCollection];
-        // Reload user albums display
-        [self reloadUserLibraryAlbums];
-        
-    } failure:nil];
+    }];
     
+    // Relaunch preview
+    [self reset];
     
     UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
     if (backgroundRecordingID != UIBackgroundTaskInvalid)

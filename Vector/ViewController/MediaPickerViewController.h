@@ -27,7 +27,6 @@
 
 /**
  Tells the delegate that the user select an image.
- Note: Captured image are automatically saved in user's library.
  
  @param mediaPickerController the `MediaPickerViewController` instance.
  @param image the UIImage hosting the image data to send.
@@ -37,7 +36,6 @@
 
 /**
  Tells the delegate that the user select a video.
- Note: Captured video are automatically saved in user's library.
  
  @param mediaPickerController the `MediaPickerViewController` instance.
  @param videoURL the local url of the video to send.
