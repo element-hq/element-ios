@@ -302,8 +302,11 @@
                 [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
             }
             
-            [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
-            [actionsArray addObject:@(MXKRoomMemberDetailsActionSetCustomPowerLevel)];
+            // Check whether the user is moderator (in this case he may reduce his power level to become normal user).
+            if (oneSelfPowerLevel >= kVectorRoomModeratorLevel)
+            {
+                [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+            }
         }
     }
     else if (self.mxRoomMember)
@@ -344,8 +347,10 @@
                         [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
                     }
                     
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetCustomPowerLevel)];
+                    if (memberPowerLevel >= kVectorRoomModeratorLevel)
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+                    }
                 }
                 
                 // Check conditions to be able to kick someone
@@ -422,9 +427,6 @@
             break;
         case MXKRoomMemberDetailsActionSetAdmin:
             title = NSLocalizedStringFromTable(@"room_participants_action_set_admin", @"Vector", nil);
-            break;
-        case MXKRoomMemberDetailsActionSetCustomPowerLevel:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_custom_power_level", @"Vector", nil);
             break;
         case MXKRoomMemberDetailsActionStartChat:
             title = NSLocalizedStringFromTable(@"room_participants_action_start_chat", @"Vector", nil);

@@ -105,10 +105,9 @@
 "room_participants_action_remove" = "Remove from this room";
 "room_participants_action_ban" = "Block";
 "room_participants_action_unban" = "Unblock";
-"room_participants_action_set_default_power_level" = "Reset power level";
+"room_participants_action_set_default_power_level" = "Reset to normal user";
 "room_participants_action_set_moderator" = "Make moderator";
 "room_participants_action_set_admin" = "Make admin";
-"room_participants_action_set_custom_power_level" = "Set custom power level";
 "room_participants_action_start_chat" = "Start chat";
 "room_participants_action_start_voice_call" = "Start voice call";
 "room_participants_action_start_video_call" = "Start video call";
