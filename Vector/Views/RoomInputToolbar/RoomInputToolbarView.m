@@ -193,7 +193,8 @@
 {
     [self dismissMediaPicker];
     
-    [self sendSelectedVideo:videoURL isPhotoLibraryAsset:YES];
+    BOOL isPhotoLibraryAsset = ![videoURL.path hasPrefix:NSTemporaryDirectory()];
+    [self sendSelectedVideo:videoURL isPhotoLibraryAsset:isPhotoLibraryAsset];
 }
 
 #pragma mark - Media picker handling
