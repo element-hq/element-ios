@@ -65,7 +65,10 @@
     [super viewWillAppear:animated];
 
     // Enable the search field at the screen opening
-    [self showSearch:animated];
+    if (self.searchBar.text.length == 0)
+    {
+        [self showSearch:animated];
+    }
 }
 
 #pragma mark - Override MXKViewController
@@ -78,6 +81,18 @@
 }
 
 #pragma mark - Override UIViewController+VectorSearch
+
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    // Do not show the bubbles image if there are results already displayed
+    if (self.dataSource.serverCount)
+    {
+        self.backgroundImageView.hidden = YES;
+    }
+}
+
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
 {
@@ -149,6 +164,9 @@
     // Data in the cells are actually Vector RoomBubbleCellData
     RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self.dataSource cellDataAtIndex:indexPath.row];
     selectedEvent = cellData.bubbleComponents[0].event;
+
+    [self.searchBar resignFirstResponder];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     // Open the RoomViewController
     [self performSegueWithIdentifier:@"showTimeline" sender:self];
