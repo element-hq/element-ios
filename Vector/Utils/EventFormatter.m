@@ -106,6 +106,12 @@
 
 - (NSString*)dateStringFromDate:(NSDate *)date withTime:(BOOL)time
 {
+    // Check the provided date
+    if (!date)
+    {
+        return nil;
+    }
+    
     // Retrieve today date at midnight
     NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
     NSDate *today = [calendar dateFromComponents:components];

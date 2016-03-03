@@ -160,9 +160,19 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     if ([self.bubbleData isKindOfClass:RoomBubbleCellData.class])
     {
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)self.bubbleData;
-        if (cellData.isLastBubble && cellData.bubbleComponents.count)
+        if (cellData.containsLastMessage)
         {
-            [self addTimestampLabelForComponent:cellData.bubbleComponents.count - 1];
+            NSArray *components = cellData.bubbleComponents;
+            NSInteger index = components.count;
+            while (index--)
+            {
+                MXKRoomBubbleComponent *component = components[index];
+                if (component.date)
+                {
+                    [self addTimestampLabelForComponent:index];
+                    break;
+                }
+            }
         }
     }
     
