@@ -59,10 +59,10 @@
         }
         
         // Notify unreads and bing
-        if (roomCellData.unreadCount)
+        if (roomCellData.hasUnread)
         {
             self.bingIndicator.hidden = NO;
-            if (0 < roomCellData.unreadBingCount)
+            if (0 < roomCellData.highlightCount)
             {
                 self.bingIndicator.backgroundColor = roomCellData.recentsDataSource.eventFormatter.bingTextColor;
                 self.lastEventDate.textColor = self.bingIndicator.backgroundColor;
