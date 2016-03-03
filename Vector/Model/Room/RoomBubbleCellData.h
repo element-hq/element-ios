@@ -22,12 +22,12 @@
 @interface RoomBubbleCellData : MXKRoomBubbleCellDataWithAppendingMode
 
 /**
- A Boolean value that determines whether this bubble is the current last one.
+ A Boolean value that determines whether this bubble contains the current last message.
  Used to keep displaying the timestamp of the last message.
 
  CAUTION: This property is presently set during bubble rendering in order to be used during bubble cell life.
  */
-@property(nonatomic) BOOL isLastBubble;
+@property(nonatomic) BOOL containsLastMessage;
 
 /**
  A Boolean value that determines whether some read receipts are currently displayed in this bubble.
