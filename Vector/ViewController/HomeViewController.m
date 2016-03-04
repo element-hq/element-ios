@@ -416,7 +416,7 @@
 
             // Live timeline or timeline from a search result?
             MXKRoomDataSource *roomDataSource;
-            if (searchViewController.selectedEvent)
+            if (!searchViewController.selectedEvent)
             {
                 // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
                 MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
