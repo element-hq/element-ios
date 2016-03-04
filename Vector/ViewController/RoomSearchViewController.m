@@ -183,7 +183,7 @@
     {
         RoomViewController *roomViewController = segue.destinationViewController;
 
-        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedEvent.roomId andInitialEventId:selectedEvent.eventId andMatrixSession:self.dataSource.mxSession];
+        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedEvent.roomId initialEventId:selectedEvent.eventId andMatrixSession:self.dataSource.mxSession];
         [roomDataSource finalizeInitialization];
 
         [roomViewController displayRoom:roomDataSource];
