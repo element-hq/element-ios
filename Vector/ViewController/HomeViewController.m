@@ -300,9 +300,9 @@
 
     if (_currentRoomViewController)
     {
-        if (_currentRoomViewController.roomDataSource)
+        if (_currentRoomViewController.roomDataSource && _currentRoomViewController.roomDataSource.isLive)
         {
-            // Let the manager release this room data source
+            // Let the manager release this live room data source
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
             [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
@@ -414,8 +414,21 @@
 
             _currentRoomViewController = (RoomViewController *)controller;
 
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+            // Live timeline or timeline from a search result?
+            MXKRoomDataSource *roomDataSource;
+            if (searchViewController.selectedEvent)
+            {
+                // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
+                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
+                roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+            }
+            else
+            {
+                // Search result: Create a temp timeline from the selected event
+                roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+                [roomDataSource finalizeInitialization];
+            }
+
             [_currentRoomViewController displayRoom:roomDataSource];
         }
 
@@ -443,15 +456,6 @@
         {
             DirectoryViewController *directoryViewController = segue.destinationViewController;
             [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
-        }
-        else if ([[segue identifier] isEqualToString:@"showTimeline"])
-        {
-            RoomViewController *roomViewController = segue.destinationViewController;
-
-            RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
-            [roomDataSource finalizeInitialization];
-
-            [roomViewController displayRoom:roomDataSource];
         }
     }
 

@@ -80,7 +80,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     // Make the HomeViewController (that contains this VC) open the RoomViewController
-    [self.parentViewController performSegueWithIdentifier:@"showTimeline" sender:self];
+    [self.parentViewController performSegueWithIdentifier:@"showDetails" sender:self];
+
+    // Reset the selected event. HomeViewController got it when here
+    _selectedEvent = nil;
 }
 
 @end

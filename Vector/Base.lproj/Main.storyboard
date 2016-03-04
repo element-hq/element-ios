@@ -62,7 +62,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjg-uP-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3338" y="-1807"/>
+            <point key="canvasLocation" x="3362" y="-1299"/>
         </scene>
         <!--Room Search View Controller-->
         <scene sceneID="rUg-1s-vHX">
@@ -244,7 +244,6 @@
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="agy-3r-khl"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vfC-8C-AsT"/>
                         <segue destination="dP6-5F-5s0" kind="showDetail" identifier="showDirectory" action="showViewController:sender:" id="hvq-zV-OB7"/>
-                        <segue destination="Too-LV-OLW" kind="show" identifier="showTimeline" id="x3X-Yg-tTP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -304,7 +303,6 @@
         <image name="settings_icon.png" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="x3X-Yg-tTP"/>
         <segue reference="agy-3r-khl"/>
     </inferredMetricsTieBreakers>
 </document>
