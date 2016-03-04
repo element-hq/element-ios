@@ -65,4 +65,17 @@
     return HomeSearchTableViewCell.defaultReuseIdentifier;
 }
 
+#pragma mark - Override UITableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id<MXKSearchCellDataStoring> cellData = [self.dataSource cellDataAtIndex:indexPath.row];
+    _selectedEvent = cellData.searchResult.result;
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    // Make the HomeViewController (that contains this VC) open the RoomViewController
+    [self.parentViewController performSegueWithIdentifier:@"showTimeline" sender:self];
+}
+
 @end

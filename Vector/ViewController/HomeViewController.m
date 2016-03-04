@@ -19,6 +19,7 @@
 #import "RecentsDataSource.h"
 #import "RecentsViewController.h"
 
+#import "RoomDataSource.h"
 #import "RoomViewController.h"
 #import "DirectoryViewController.h"
 
@@ -30,7 +31,7 @@
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
 
-    MXKSearchViewController *searchViewController;
+    HomeSearchViewController *searchViewController;
     MXKSearchDataSource *searchDataSource;
 
     // Display a gradient view above the screen
@@ -437,6 +438,15 @@
     {
         DirectoryViewController *directoryViewController = segue.destinationViewController;
         [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+    }
+    else if ([[segue identifier] isEqualToString:@"showTimeline"])
+    {
+        RoomViewController *roomViewController = segue.destinationViewController;
+
+        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId andInitialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+        [roomDataSource finalizeInitialization];
+
+        [roomViewController displayRoom:roomDataSource];
     }
     else
     {
