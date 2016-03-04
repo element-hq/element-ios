@@ -434,24 +434,25 @@
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
-    else if ([[segue identifier] isEqualToString:@"showDirectory"])
-    {
-        DirectoryViewController *directoryViewController = segue.destinationViewController;
-        [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
-    }
-    else if ([[segue identifier] isEqualToString:@"showTimeline"])
-    {
-        RoomViewController *roomViewController = segue.destinationViewController;
-
-        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId andInitialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
-        [roomDataSource finalizeInitialization];
-
-        [roomViewController displayRoom:roomDataSource];
-    }
     else
     {
         // Keep ref on destinationViewController
         [super prepareForSegue:segue sender:sender];
+
+        if ([[segue identifier] isEqualToString:@"showDirectory"])
+        {
+            DirectoryViewController *directoryViewController = segue.destinationViewController;
+            [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+        }
+        else if ([[segue identifier] isEqualToString:@"showTimeline"])
+        {
+            RoomViewController *roomViewController = segue.destinationViewController;
+
+            RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId andInitialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+            [roomDataSource finalizeInitialization];
+
+            [roomViewController displayRoom:roomDataSource];
+        }
     }
 
     // Hide back button title
