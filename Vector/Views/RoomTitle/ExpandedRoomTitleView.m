@@ -65,10 +65,6 @@
                     activeCount ++;
                 }
             }
-            else if (mxMember.membership == MXMembershipJoin)
-            {
-                memberCount ++;
-            }
         }
         
         if (memberCount)
