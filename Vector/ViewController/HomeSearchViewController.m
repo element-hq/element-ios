@@ -16,6 +16,8 @@
 
 #import "HomeSearchViewController.h"
 
+#import "HomeViewController.h"
+
 #import "HomeSearchCellData.h"
 #import "HomeSearchTableViewCell.h"
 
@@ -72,6 +74,9 @@
     id<MXKSearchCellDataStoring> cellData = [self.dataSource cellDataAtIndex:indexPath.row];
     _selectedEvent = cellData.searchResult.result;
 
+    // Hide the keyboard handled by the search text input which belongs to HomeViewController
+    [((HomeViewController*)self.parentViewController).searchBar resignFirstResponder];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     // Make the HomeViewController (that contains this VC) open the RoomViewController

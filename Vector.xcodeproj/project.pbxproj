@@ -21,6 +21,8 @@
 		325F6A481C21D4C100C12F51 /* chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A451C21D4C100C12F51 /* chevron@2x.png */; };
 		325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A461C21D4C100C12F51 /* chevron@3x.png */; };
 		327F8DB51C64DB9D00581CA3 /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */; };
+		32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */; };
+		32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */; };
 		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
 		32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */; };
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
@@ -245,6 +247,9 @@
 		325F6A451C21D4C100C12F51 /* chevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@2x.png"; sourceTree = "<group>"; };
 		325F6A461C21D4C100C12F51 /* chevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@3x.png"; sourceTree = "<group>"; };
 		327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
+		32A8871E1C89B9580037DC17 /* SimpleRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleRoomTitleView.h; path = RoomTitle/SimpleRoomTitleView.h; sourceTree = "<group>"; };
+		32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleRoomTitleView.m; path = RoomTitle/SimpleRoomTitleView.m; sourceTree = "<group>"; };
+		32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SimpleRoomTitleView.xib; path = RoomTitle/SimpleRoomTitleView.xib; sourceTree = "<group>"; };
 		32AAC3E41C3525DE007A3B5B /* RoomSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchViewController.h; sourceTree = "<group>"; };
 		32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
 		32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
@@ -534,6 +539,9 @@
 		71046D581C0C631100DCA984 /* RoomTitle */ = {
 			isa = PBXGroup;
 			children = (
+				32A8871E1C89B9580037DC17 /* SimpleRoomTitleView.h */,
+				32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */,
+				32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */,
 				F003AA7D1C690628008B430C /* RoomAvatarTitleView.h */,
 				F003AA7E1C690628008B430C /* RoomAvatarTitleView.m */,
 				F003AA7F1C690628008B430C /* RoomAvatarTitleView.xib */,
@@ -1249,6 +1257,7 @@
 				F0D2D9841C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
 				F02528D41C11B6FC00E1FE1B /* add@2x.png in Resources */,
+				32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */,
 				F02528FD1C11B6FC00E1FE1B /* selection_untick.png in Resources */,
 				F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */,
 				F02528DD1C11B6FC00E1FE1B /* camera_switch@2x.png in Resources */,
@@ -1323,6 +1332,7 @@
 				F047DBB91C576F6600952DA2 /* AuthInputsPasswordBasedView.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
+				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
