@@ -26,6 +26,8 @@
     self = [super init];
     if (self)
     {
+        searchResult = searchResult2;
+
         // We are displaying a search over all user's rooms
         // As title, display the room name of this search result
         MXRoom *room = [searchDataSource.mxSession roomWithRoomId:searchResult2.result.roomId];

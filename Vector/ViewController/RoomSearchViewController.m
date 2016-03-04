@@ -19,12 +19,24 @@
 #import "UIViewController+VectorSearch.h"
 
 // Use RoomViewController cells to display results
+#import "RoomBubbleCellData.h"
 #import "RoomIncomingAttachmentBubbleCell.h"
 #import "RoomIncomingTextMsgBubbleCell.h"
+
+#import "RoomViewController.h"
+#import "RoomDataSource.h"
 
 #import "VectorDesignValues.h"
 
 #import "RageShakeManager.h"
+
+@interface RoomSearchViewController ()
+{
+    // The event selected in the search results
+    MXEvent *selectedEvent;
+}
+
+@end
 
 @implementation RoomSearchViewController
 
@@ -53,7 +65,10 @@
     [super viewWillAppear:animated];
 
     // Enable the search field at the screen opening
-    [self showSearch:animated];
+    if (self.searchBar.text.length == 0)
+    {
+        [self showSearch:animated];
+    }
 }
 
 #pragma mark - Override MXKViewController
@@ -66,6 +81,18 @@
 }
 
 #pragma mark - Override UIViewController+VectorSearch
+
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
+
+    // Do not show the bubbles image if there are results already displayed
+    if (self.dataSource.serverCount)
+    {
+        self.backgroundImageView.hidden = YES;
+    }
+}
+
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
 {
@@ -130,6 +157,37 @@
     // do not have line separators.
     // The +1 here is for the line separator which is displayed by `RoomSearchViewController`.
     return [super tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Data in the cells are actually Vector RoomBubbleCellData
+    RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self.dataSource cellDataAtIndex:indexPath.row];
+    selectedEvent = cellData.bubbleComponents[0].event;
+
+    [self.searchBar resignFirstResponder];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    // Open the RoomViewController
+    [self performSegueWithIdentifier:@"showTimeline" sender:self];
+}
+
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+
+    if ([[segue identifier] isEqualToString:@"showTimeline"])
+    {
+        RoomViewController *roomViewController = segue.destinationViewController;
+
+        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedEvent.roomId initialEventId:selectedEvent.eventId andMatrixSession:self.dataSource.mxSession];
+        [roomDataSource finalizeInitialization];
+
+        [roomViewController displayRoom:roomDataSource];
+    }
 }
 
 @end

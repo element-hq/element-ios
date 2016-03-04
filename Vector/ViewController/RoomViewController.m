@@ -30,6 +30,7 @@
 
 #import "RoomAvatarTitleView.h"
 #import "ExpandedRoomTitleView.h"
+#import "SimpleRoomTitleView.h"
 
 #import "RoomParticipantsViewController.h"
 
@@ -131,9 +132,17 @@
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     
     // Set room title view
-    [self setRoomTitleViewClass:RoomTitleView.class];
-    ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-    
+    if (self.roomDataSource.isLive)
+    {
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+    }
+    else
+    {
+        [self setRoomTitleViewClass:SimpleRoomTitleView.class];
+        self.titleView.editable = NO;
+    }
+
     // Prepare expanded header
     self.expandedHeaderContainer.backgroundColor = kVectorColorLightGrey;
     self.expandedHeaderContainerHeightConstraint.constant = 237;
@@ -207,11 +216,19 @@
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    self.navigationItem.rightBarButtonItem.target = self;
-    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    
+
+    if (self.roomDataSource.isLive)
+    {
+        self.navigationItem.rightBarButtonItem.target = self;
+        self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    else
+    {
+        // Hide the search button
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+
     // Localize strings here
     
     if (self.roomDataSource)
