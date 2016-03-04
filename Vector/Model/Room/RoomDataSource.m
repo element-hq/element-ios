@@ -22,6 +22,15 @@
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 #import "AvatarGenerator.h"
 
+@interface RoomDataSource ()
+{
+    /**
+     Store here the cell index of the last message (Updated at each table refresh).
+     */
+    NSInteger lastMessageCellIndex;
+}
+@end
+
 @implementation RoomDataSource
 
 - (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
@@ -76,6 +85,30 @@
     [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger count = [super tableView:tableView numberOfRowsInSection:section];
+    
+    if (count)
+    {
+        // Refresh the cell index of the last message
+        lastMessageCellIndex = 0;
+        
+        MXEvent *lastMessage = self.lastMessage;
+        if (lastMessage.eventId)
+        {
+            lastMessageCellIndex = [self indexOfCellDataWithEventId:lastMessage.eventId];
+            // Sanity check
+            if (lastMessageCellIndex == NSNotFound)
+            {
+                lastMessageCellIndex = 0;
+            }
+        }
+    }
+    
+    return count;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -87,14 +120,21 @@
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         
         // Check whether this bubble is the last one
-        cellData.isLastBubble = (indexPath.row == [tableView numberOfRowsInSection:0] - 1);
+        cellData.containsLastMessage = (indexPath.row == lastMessageCellIndex);
         
-        // Display timestamp for the last message.
-        if (cellData.isLastBubble)
+        // Display timestamp for the last message
+        if (cellData.containsLastMessage)
         {
-            if (cellData.bubbleComponents.count)
+            NSArray *components = cellData.bubbleComponents;
+            NSInteger index = components.count;
+            while (index--)
             {
-                [bubbleCell addTimestampLabelForComponent:cellData.bubbleComponents.count - 1];
+                MXKRoomBubbleComponent *component = components[index];
+                if (component.date)
+                {
+                    [bubbleCell addTimestampLabelForComponent:index];
+                    break;
+                }
             }
         }
         

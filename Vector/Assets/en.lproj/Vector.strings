@@ -101,7 +101,7 @@
 "room_participants_active_less_x_days" = "Offline %lu days ago";
 
 "room_participants_action_invite" = "Invite";
-"room_participants_action_leave" = "Leave from this room";
+"room_participants_action_leave" = "Leave this room";
 "room_participants_action_remove" = "Remove from this room";
 "room_participants_action_ban" = "Block";
 "room_participants_action_unban" = "Unblock";
