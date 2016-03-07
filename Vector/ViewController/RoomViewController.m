@@ -1272,36 +1272,82 @@
         
         if (hasUnsent)
         {
-            NSString *firstComponent = NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
-            NSString *secondComponent = NSLocalizedStringFromTable(@"room_prompt_resent", @"Vector", nil);
-            
-            NSMutableAttributedString *notification = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", firstComponent, secondComponent]];
-            
-            NSRange range = NSMakeRange(firstComponent.length + 1, secondComponent.length);
-            [notification addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
-            
-            [((RoomActivitiesView*) self.activitiesView) displayUnsentMessagesNotification:notification onLabelTapGesture:^{
+            RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
+            [roomActivitiesView displayUnsentMessagesNotificationWithResendLink:^{
                 
-                // List unsent event ids
-                NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
-                NSMutableArray *failedEventIds = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
+                [self resendAllUnsentMessages];
                 
-                for (MXEvent *event in outgoingMsgs)
+            } andIconTapGesture:^{
+                
+                if (self.currentAlert)
                 {
-                    if (event.mxkState == MXKEventStateSendingFailed)
-                    {
-                        [failedEventIds addObject:event.eventId];
-                    }
+                    [self.currentAlert dismiss:NO];
                 }
                 
-                // Launch iterative operation
-                [self resendFailedEvent:0 inArray:failedEventIds];
-            
+                __weak __typeof(self) weakSelf = self;
+                self.currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+                
+                [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_resend_unsent_messages", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    [strongSelf resendAllUnsentMessages];
+                    strongSelf.currentAlert = nil;
+                    
+                }];
+                
+                [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_delete_unsent_messages", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    // Remove unsent event ids
+                    for (NSUInteger index = 0; index < strongSelf.roomDataSource.room.outgoingMessages.count;)
+                    {
+                        MXEvent *event = strongSelf.roomDataSource.room.outgoingMessages[index];
+                        if (event.mxkState == MXKEventStateSendingFailed)
+                        {
+                            [strongSelf.roomDataSource removeEventWithEventId:event.eventId];
+                        }
+                        else
+                        {
+                            index ++;
+                        }
+                    }
+                    strongSelf.currentAlert = nil;
+                }];
+                
+                self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf.currentAlert = nil;
+                    
+                }];
+                
+                self.currentAlert.sourceView = roomActivitiesView;
+                [self.currentAlert showInViewController:self];
+                
             }];
         }
     }
     
     return hasUnsent;
+}
+
+- (void)resendAllUnsentMessages
+{
+    // List unsent event ids
+    NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+    NSMutableArray *failedEventIds = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
+    
+    for (MXEvent *event in outgoingMsgs)
+    {
+        if (event.mxkState == MXKEventStateSendingFailed)
+        {
+            [failedEventIds addObject:event.eventId];
+        }
+    }
+    
+    // Launch iterative operation
+    [self resendFailedEvent:0 inArray:failedEventIds];
 }
 
 - (void)resendFailedEvent:(NSUInteger)index inArray:(NSArray*)failedEventIds

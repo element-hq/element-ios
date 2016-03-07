@@ -119,7 +119,9 @@
 "room_message_placeholder" = "Type a message...";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages not sent.";
-"room_prompt_resent" = "Resend now?";
+"room_prompt_resend" = "Resend now?";
+"room_resend_unsent_messages" = "Resend unsent messages";
+"room_delete_unsent_messages" = "Delete unsent messages";
 "room_event_action_edit" = "Edit";
 "room_event_action_copy" = "Copy";
 "room_event_action_share" = "Share";
