@@ -38,6 +38,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // The navigation bar tint color and the rageShake Manager are handled by super (see RoomParticipantsViewController)
+    
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_creation_title", @"Vector", nil);
     
     createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"create", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
@@ -107,11 +109,6 @@
 }
 
 #pragma mark - UITableView delegate
-
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [[NSMutableArray alloc] init];
-}
 
 - (void)customizeContactCell:(ContactTableViewCell*)contactTableViewCell atIndexPath:(NSIndexPath *)indexPath
 {    
@@ -211,7 +208,7 @@
                                                       
                                                       [room setAvatar:url success:nil failure:^(NSError *error) {
                                                           
-                                                          NSLog(@"[RoomCreation] Failed to update the room avatar %@", error);
+                                                          NSLog(@"[RoomCreation] Failed to update the room avatar");
                                                           // Alert user
                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                           
@@ -219,7 +216,7 @@
                                                       
                                                   } failure:^(NSError *error) {
                                                       
-                                                      NSLog(@"[RoomCreation] Failed to upload image: %@", error);
+                                                      NSLog(@"[RoomCreation] Failed to upload image");
                                                       // Alert user
                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                       
@@ -236,7 +233,7 @@
                                                       
                                                   } failure:^(NSError *error) {
                                                       
-                                                      NSLog(@"[RoomCreation] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
+                                                      NSLog(@"[RoomCreation] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
                                                       
                                                       // Alert user
                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -257,7 +254,7 @@
                                               roomCreationRequest = nil;
                                               [self stopActivityIndicator];
                                               
-                                              NSLog(@"[RoomCreation] Create room (%@ %@) failed: %@", _roomCreationInputs.roomName, _roomCreationInputs.roomAlias, error);
+                                              NSLog(@"[RoomCreation] Create room (%@ %@) failed", _roomCreationInputs.roomName, _roomCreationInputs.roomAlias);
                                               
                                               // Alert user
                                               [[AppDelegate theDelegate] showErrorAsAlert:error];

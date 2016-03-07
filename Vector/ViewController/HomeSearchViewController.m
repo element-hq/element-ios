@@ -16,16 +16,27 @@
 
 #import "HomeSearchViewController.h"
 
+#import "HomeViewController.h"
+
 #import "HomeSearchCellData.h"
 #import "HomeSearchTableViewCell.h"
 
 #import "EventFormatter.h"
+
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
 
 @implementation HomeSearchViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 
     [self.searchTableView registerNib:HomeSearchTableViewCell.nib forCellReuseIdentifier:HomeSearchTableViewCell.defaultReuseIdentifier];
 
@@ -54,6 +65,25 @@
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
     return HomeSearchTableViewCell.defaultReuseIdentifier;
+}
+
+#pragma mark - Override UITableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id<MXKSearchCellDataStoring> cellData = [self.dataSource cellDataAtIndex:indexPath.row];
+    _selectedEvent = cellData.searchResult.result;
+
+    // Hide the keyboard handled by the search text input which belongs to HomeViewController
+    [((HomeViewController*)self.parentViewController).searchBar resignFirstResponder];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    // Make the HomeViewController (that contains this VC) open the RoomViewController
+    [self.parentViewController performSegueWithIdentifier:@"showDetails" sender:self];
+
+    // Reset the selected event. HomeViewController got it when here
+    _selectedEvent = nil;
 }
 
 @end

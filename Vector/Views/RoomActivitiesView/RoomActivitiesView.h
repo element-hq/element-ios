@@ -20,16 +20,43 @@
 /**
  `RoomExtraInfosInfoView` instance is a view used to display extra information
  */
-@interface RoomActivitiesView : MXKRoomActivitiesView
+@interface RoomActivitiesView : MXKRoomActivitiesView <UITextViewDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *separatorView;
-@property (weak, nonatomic) IBOutlet UIImageView *typingImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainHeightConstraint;
 
+/**
+ Notify that some messages are not sent.
+ Replace the current notification if any.
+ 
+ @param onResendLinkPressed block called when user selects the resend link.
+ @param onIconTapGesture block called when user taps on notification icon.
+ */
+- (void)displayUnsentMessagesNotificationWithResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
 
-// update the displayed typing message.
-// nil message hides the typing icon too.
-- (void)updateTypingMessage:(NSString*)message;
+/**
+ Display network error.
+ Replace the current notification if any.
+ 
+ @param labelText the notification message
+ */
+- (void)displayNetworkErrorNotification:(NSString*)labelText;
+
+/**
+ Display a typing notification.
+ Replace the current notification if any.
+ 
+ @param labelText the current typing message.
+ */
+- (void)displayTypingNotification:(NSString*)labelText;
+
+/**
+ Remove any displayed information.
+ */
+- (void)reset;
+
 @end

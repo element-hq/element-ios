@@ -18,6 +18,8 @@
 
 #import "PublicRoomTableViewCell.h"
 
+#import "AppDelegate.h"
+
 #pragma mark - Constants definitions
 
 // Time in seconds from which public rooms data is considered as obsolete
@@ -126,12 +128,15 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             [self setState:MXKDataSourceStateReady];
 
         } failure:^(NSError *error) {
-            NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms. Error: %@", error);
+            NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
             
             [self setState:MXKDataSourceStateFailed];
 
             // Reset the refresh date so that the user can retry the request by changing the search text input content
             lastRefreshDate = nil;
+            
+            // Alert user
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
     }
 }

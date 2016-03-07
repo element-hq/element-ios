@@ -16,5 +16,29 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomTitleView : MXKRoomTitleView
+// We add here a protocol to handle tap gesture in title view.
+@class RoomTitleView;
+@protocol RoomTitleViewTapGestureDelegate <NSObject>
+
+/**
+ Tells the delegate that a tap gesture has been recognized.
+ 
+ @param titleView the room title view.
+ @param tapGestureRecognizer the recognized gesture.
+ */
+- (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer;
+
+@end
+
+@interface RoomTitleView : MXKRoomTitleView <UIGestureRecognizerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *titleMask;
+@property (weak, nonatomic) IBOutlet UIView *roomDetailsMask;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterXConstraint;
+
+/**
+ The tap gesture delegate.
+ */
+@property (nonatomic) id<RoomTitleViewTapGestureDelegate> tapGestureDelegate;
+
 @end

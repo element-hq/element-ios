@@ -24,6 +24,10 @@
 
 #import "MediaAlbumTableCell.h"
 
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
+
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;
 
@@ -55,12 +59,18 @@ static void *RecordingContext = &RecordingContext;
     
     PHFetchResult *recentCaptures;
     
-    NSMutableArray *userAlbums;
+    /**
+     User's albums
+     */
+    dispatch_queue_t userAlbumsQueue;
+    NSArray *userAlbums;
     
     MXKImageView* validationView;
     
     MPMoviePlayerController *videoPlayer;
     UIButton *videoPlayerControl;
+    
+    BOOL isValidationInProgress;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -90,8 +100,10 @@ static void *RecordingContext = &RecordingContext;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"camera", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
     
     cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
     canToggleCamera = YES;
@@ -117,7 +129,7 @@ static void *RecordingContext = &RecordingContext;
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
-    userAlbums = [NSMutableArray array];
+    userAlbumsQueue = dispatch_queue_create("media.picker.user.albums", DISPATCH_QUEUE_SERIAL);
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -131,6 +143,8 @@ static void *RecordingContext = &RecordingContext;
 - (void)dealloc
 {
     cameraQueue = nil;
+    userAlbumsQueue = nil;
+    userAlbums = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,9 +160,9 @@ static void *RecordingContext = &RecordingContext;
     [self reloadRecentCapturesCollection];
     [self reloadUserLibraryAlbums];
     
-    // Update visibility of the navigation bar according to the current scrolling offset
-    CGPoint targetOffset = CGPointMake(0, _mainScrollView.contentOffset.y);
-    [self scrollViewWillEndDragging:_mainScrollView withVelocity:CGPointMake(0, 0) targetContentOffset:&targetOffset];
+    // Hide the navigation bar, and force the preview camera to be at the top (behing the status bar)
+    self.navigationController.navigationBarHidden = YES;
+    [self scrollViewDidScroll:_mainScrollView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -280,44 +294,16 @@ static void *RecordingContext = &RecordingContext;
     }
 }
 
-#pragma mark - Navigation bar handling
-
-- (void)scrollToCameraPreview
-{
-    CGPoint targetOffset = CGPointMake(0, -1);
-    [self scrollViewWillEndDragging:_mainScrollView withVelocity:CGPointMake(0, 0) targetContentOffset:&targetOffset];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    // Handle here visibility of the navigation bar
-    if (scrollView == _mainScrollView)
-    {
-        if (targetContentOffset->y <= 0)
-        {
-            // Hide navigation bar
-            self.navigationController.navigationBarHidden = YES;
-            targetContentOffset->y = 0;
-            scrollView.contentOffset = *targetContentOffset;
-        }
-        else
-        {
-            self.navigationController.navigationBarHidden = NO;
-        }
-    }
-}
+#pragma mark - Camera preview layout
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // Handle here visibility of the navigation bar
     if (scrollView == _mainScrollView)
     {
-        if (self.navigationController.navigationBarHidden)
+        // Force camera preview at the top (behind the status bar)
+        if (scrollView.contentOffset.y < 0)
         {
-            if (scrollView.contentOffset.y < 0)
-            {
-                scrollView.contentOffset = CGPointMake(0, 0);
-            }
+            scrollView.contentOffset = CGPointMake(0, 0);
         }
     }
 }
@@ -457,54 +443,63 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)reloadUserLibraryAlbums
 {
-    // List user albums which are not empty
-    PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
-    
-    [userAlbums removeAllObjects];
-    
-    // Set up fetch options.
-    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
-    {
-        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-        {
-            options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
-        }
-        else
-        {
-            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
-        }
-    }
-    else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-    {
-        options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
-    }
-    
-    [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+    dispatch_async(userAlbumsQueue, ^{
         
-        PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
-        NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+        // List user albums which are not empty
+        PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
         
-        if (assets.count)
+        NSMutableArray *updatedUserAlbums = [NSMutableArray array];
+        
+        // Set up fetch options.
+        PHFetchOptions *options = [[PHFetchOptions alloc] init];
+        if ([_mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
         {
-            [userAlbums addObject:collection];
+            if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"(mediaType == %d) || (mediaType == %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+            }
+            else
+            {
+                options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeImage];
+            }
+        }
+        else if ([_mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
+        {
+            options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d",PHAssetMediaTypeVideo];
         }
         
-    }];
-
-    if (userAlbums.count)
-    {
-        self.userAlbumsTableView.hidden = NO;
-        self.libraryViewContainerViewHeightConstraint.constant = (userAlbums.count * 74);
-        [self.libraryViewContainer needsUpdateConstraints];
+        [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
+            
+            PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+            NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+            
+            if (assets.count)
+            {
+                [updatedUserAlbums addObject:collection];
+            }
+            
+        }];
         
-        [self.userAlbumsTableView reloadData];
-    }
-    else
-    {
-        self.userAlbumsTableView.hidden = YES;
-        self.libraryViewContainerViewHeightConstraint.constant = 0;
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            userAlbums = updatedUserAlbums;
+            if (userAlbums.count)
+            {
+                self.userAlbumsTableView.hidden = NO;
+                self.libraryViewContainerViewHeightConstraint.constant = (userAlbums.count * 74);
+                [self.libraryViewContainer needsUpdateConstraints];
+                
+                [self.userAlbumsTableView reloadData];
+            }
+            else
+            {
+                self.userAlbumsTableView.hidden = YES;
+                self.libraryViewContainerViewHeightConstraint.constant = 0;
+            }
+            
+        });
+        
+    });
 }
 
 - (void)reset
@@ -532,6 +527,13 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)didSelectAsset:(PHAsset *)asset
 {
+    // Check whether a selection is already in progress
+    if (isValidationInProgress)
+    {
+        return;
+    }
+    
+    isValidationInProgress = YES;
     PHContentEditingInputRequestOptions *editOptions = [[PHContentEditingInputRequestOptions alloc] init];
     
     [asset requestContentEditingInputWithOptions:editOptions
@@ -554,9 +556,13 @@ static void *RecordingContext = &RecordingContext;
                                                    [self.delegate mediaPickerController:self didSelectImage:image withURL:contentEditingInput.fullSizeImageURL];
                                                }
                                                
+                                               isValidationInProgress = NO;
+                                               
                                            }];
                                            
                                        });
+                                       
+                                       return;
                                    }
                                    else if (contentEditingInput.mediaType == PHAssetMediaTypeVideo)
                                    {
@@ -574,15 +580,21 @@ static void *RecordingContext = &RecordingContext;
                                                        [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
                                                    }
                                                    
+                                                   isValidationInProgress = NO;
+                                                   
                                                }];
                                                
                                            });
+                                           
+                                           return;
                                        }
                                        else
                                        {
                                            NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
                                        }
                                    }
+                                   
+                                   isValidationInProgress = NO;
                                }];
 }
 
@@ -747,14 +759,10 @@ static void *RecordingContext = &RecordingContext;
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    if (sender == self.closeButton || sender == self.navigationItem.leftBarButtonItem)
+    if (sender == self.closeButton)
     {
-        // Close/Cancel has been pressed
+        // Close has been pressed
         [self withdrawViewControllerAnimated:YES completion:nil];
-    }
-    else if (sender == self.navigationItem.rightBarButtonItem)
-    {
-        [self scrollToCameraPreview];
     }
     else if (sender == self.cameraModeButton)
     {
@@ -828,6 +836,7 @@ static void *RecordingContext = &RecordingContext;
                 {
                     [thisCamera setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
                 }
+                thisCamera.videoZoomFactor = 1.0;
                 
                 [thisCamera unlockForConfiguration];
             }
@@ -883,7 +892,14 @@ static void *RecordingContext = &RecordingContext;
             // Create the AVCapture Session
             captureSession = [[AVCaptureSession alloc] init];
             
-            [captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+            if (isVideoCaptureMode)
+            {
+                [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+            }
+            else
+            {
+                [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+            }
             
             cameraPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
             cameraPreviewLayer.masksToBounds = NO;
@@ -894,6 +910,7 @@ static void *RecordingContext = &RecordingContext;
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
+                [cameraPreviewLayer connection].videoScaleAndCropFactor = 1.0;
                 cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
                 cameraPreviewLayer.hidden = YES;
                 
@@ -1025,6 +1042,12 @@ static void *RecordingContext = &RecordingContext;
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateHighlighted];
+        
+        if (captureSession)
+        {
+            [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+        }
+        
         isVideoCaptureMode = NO;
     }
     else
@@ -1033,6 +1056,12 @@ static void *RecordingContext = &RecordingContext;
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateHighlighted];
+        
+        if (captureSession)
+        {
+            [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+        }
+        
         isVideoCaptureMode = YES;
     }
 }
@@ -1126,6 +1155,8 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)snapStillImage
 {
+    self.cameraCaptureButton.enabled = NO;
+    
     dispatch_async(cameraQueue, ^{
         // Update the orientation on the still image output video connection before capturing.
         [[stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[cameraPreviewLayer connection] videoOrientation]];
@@ -1141,27 +1172,19 @@ static void *RecordingContext = &RecordingContext;
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 UIImage *image = [[UIImage alloc] initWithData:imageData];
                 
-                // Save the image in user's photos library
-                [MXKMediaManager saveImageToPhotosLibrary:image success:^(NSURL *imageURL) {
+                // Open image validation view
+                [self validateSelectedImage:image responseHandler:^(BOOL isValidated) {
                     
-                    // Open image validation view
-                    [self validateSelectedImage:image responseHandler:^(BOOL isValidated) {
-                        if (isValidated)
-                        {
-                            // Send the original image by considering its asset url
-                            [self.delegate mediaPickerController:self didSelectImage:image withURL:imageURL];
-                        }
-                    }];
+                    if (isValidated)
+                    {
+                        // Send the original image by considering its asset url
+                        [self.delegate mediaPickerController:self didSelectImage:image withURL:nil];
+                    }
                     
-                    // Relaunch preview
-                    [self reset];
-                    
-                    // Reload recent pictures collection
-                    [self reloadRecentCapturesCollection];
-                    // Reload user albums display
-                    [self reloadUserLibraryAlbums];
-                    
-                } failure:nil];
+                }];
+                
+                // Relaunch preview
+                [self reset];
             }
         }];
     });
@@ -1248,32 +1271,22 @@ static void *RecordingContext = &RecordingContext;
     
     lockInterfaceRotation = NO;
     
-    [MXKMediaManager saveMediaToPhotosLibrary:outputFileURL isImage:NO success:^(NSURL *videoURL) {
+    // Validate the new captured video
+    [self validateSelectedVideo:outputFileURL responseHandler:^(BOOL isValidated) {
+        
+        if (isValidated)
+        {
+            // Send the captured video
+            [self.delegate mediaPickerController:self didSelectVideo:outputFileURL];
+        }
         
         // Remove the temporary file
         [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
         
-        // Validate the new captured video
-        [self validateSelectedVideo:videoURL responseHandler:^(BOOL isValidated) {
-            
-            if (isValidated)
-            {
-                // Send the original image by considering its asset url
-                [self.delegate mediaPickerController:self didSelectVideo:videoURL];
-            }
-            
-        }];
-        
-        // Relaunch preview
-        [self reset];
-        
-        // Reload recent pictures collection
-        [self reloadRecentCapturesCollection];
-        // Reload user albums display
-        [self reloadUserLibraryAlbums];
-        
-    } failure:nil];
+    }];
     
+    // Relaunch preview
+    [self reset];
     
     UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
     if (backgroundRecordingID != UIBackgroundTaskInvalid)
@@ -1411,8 +1424,8 @@ static void *RecordingContext = &RecordingContext;
         PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
         cell.albumCountLabel.text = [NSString stringWithFormat:@"%tu", assets.count];
         
-        // Report first asset thumbnail
-        if (assets.count)
+        // Report first asset thumbnail (except for 'Recently Deleted' album)
+        if (assets.count && collection.assetCollectionSubtype != 1000000201)
         {
             PHAsset *asset = assets[0];
             
@@ -1427,6 +1440,11 @@ static void *RecordingContext = &RecordingContext;
                 cell.tag = 0;
                 
             }];
+        }
+        else
+        {
+            cell.albumThumbnail.image = nil;
+            cell.albumThumbnail.backgroundColor = [UIColor lightGrayColor];
         }
     }
     

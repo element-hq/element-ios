@@ -25,10 +25,10 @@
     [super awakeFromNib];
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
     
-    self.userNameLabel.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.userNameLabel.textColor = kVectorTextColorBlack;
     
-    self.paginationLabel.textColor = VECTOR_GREEN_COLOR;
-    self.paginationSeparatorView.backgroundColor = VECTOR_GREEN_COLOR;
+    self.paginationLabel.textColor = kVectorColorGreen;
+    self.paginationSeparatorView.backgroundColor = kVectorColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData

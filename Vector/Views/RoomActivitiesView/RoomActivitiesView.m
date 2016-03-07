@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import <objc/runtime.h>
+
 @implementation RoomActivitiesView
 
 + (UINib *)nib
@@ -35,28 +37,142 @@
 {
     [super awakeFromNib];
     
-    self.separatorView.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
-    self.messageLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+    self.separatorView.backgroundColor = kVectorColorLightGrey;
+    self.messageLabel.textColor = kVectorTextColorGray;
     
-//    self.typingImageView.backgroundColor = VECTOR_GREEN_COLOR;
-//    self.typingImageView.layer.cornerRadius = self.typingImageView.frame.size.height / 2;
-    
+    // Adjust text view
+    // Remove the container inset: this operation impacts only the vertical margin.
+    // Reset textContainer.lineFragmentPadding to remove horizontal margin.
+    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainer.lineFragmentPadding = 0;
 }
 
-// update the displayed typing message.
-// nil message hides the typing icon too.
-- (void)updateTypingMessage:(NSString*)message
+- (void)displayUnsentMessagesNotificationWithResendLink:(void (^)(void))onResendLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
-    if (message)
+    [self reset];
+    
+    NSString *notification = NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
+    
+    if (onResendLinkPressed)
     {
-        self.typingImageView.hidden = false;
-        self.messageLabel.hidden = false;
-        self.messageLabel.text = message;
+        NSString *resendLink = NSLocalizedStringFromTable(@"room_prompt_resend", @"Vector", nil);
+        
+        NSMutableAttributedString *tappableNotif = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", notification, resendLink]];
+        
+        objc_setAssociatedObject(self.messageTextView, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        
+        NSRange range = NSMakeRange(notification.length + 1, resendLink.length);
+        [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
+        [tappableNotif addAttribute:NSLinkAttributeName value:@"onResendLink" range:range];
+        
+        NSRange wholeString = NSMakeRange(0, tappableNotif.length);
+        [tappableNotif addAttribute:NSForegroundColorAttributeName value:kVectorTextColorRed range:wholeString];
+        [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
+        
+        self.messageTextView.attributedText = tappableNotif;
+        self.messageTextView.tintColor = kVectorTextColorRed;
+        self.messageTextView.hidden = NO;
     }
     else
     {
-        self.typingImageView.hidden = true;
-        self.messageLabel.hidden = true;
+        self.messageLabel.text = notification;
+        self.messageLabel.textColor = kVectorTextColorRed;
+        self.messageLabel.hidden = NO;
+    }
+    
+    self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.hidden = NO;
+    
+    if (onIconTapGesture)
+    {
+        objc_setAssociatedObject(self.iconImageView, "onIconTapGesture", [onIconTapGesture copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        
+        // Listen to icon tap
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onIconTap:)];
+        [tapGesture setNumberOfTouchesRequired:1];
+        [tapGesture setNumberOfTapsRequired:1];
+        [tapGesture setDelegate:self];
+        [self.iconImageView addGestureRecognizer:tapGesture];
+        self.iconImageView.userInteractionEnabled = YES;
+    }
+
+}
+
+- (void)displayNetworkErrorNotification:(NSString*)labelText
+{
+    [self reset];
+    
+    if (labelText.length)
+    {
+        self.iconImageView.image = [UIImage imageNamed:@"error"];
+        self.messageLabel.text = labelText;
+        self.messageLabel.textColor = kVectorTextColorRed;
+        
+        self.iconImageView.hidden = NO;
+        self.messageLabel.hidden = NO;
+    }
+}
+
+- (void)displayTypingNotification:(NSString*)labelText
+{
+    [self reset];
+    
+    if (labelText.length)
+    {
+        self.iconImageView.image = [UIImage imageNamed:@"typing"];
+        self.messageLabel.text = labelText;
+        
+        self.iconImageView.hidden = NO;
+        self.messageLabel.hidden = NO;
+    }
+}
+
+- (void)reset
+{
+    self.iconImageView.hidden = YES;
+    self.messageLabel.hidden = YES;
+    
+    [self.messageTextView resignFirstResponder];
+    self.messageTextView.hidden = YES;
+    
+    self.messageLabel.textColor = kVectorTextColorGray;
+    
+    // Remove all gesture recognizers
+    while (self.iconImageView.gestureRecognizers.count)
+    {
+        [self.iconImageView removeGestureRecognizer:self.iconImageView.gestureRecognizers[0]];
+    }
+    self.iconImageView.userInteractionEnabled = NO;
+    
+    objc_removeAssociatedObjects(self.iconImageView);
+    objc_removeAssociatedObjects(self.messageTextView);
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    if ([[URL absoluteString] isEqualToString:@"onResendLink"])
+    {
+        void (^onResendLinkPressed)(void) = objc_getAssociatedObject(self.messageTextView, "onResendLinkPressed");
+        if (onResendLinkPressed)
+        {
+            onResendLinkPressed ();
+        }
+        
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (void)onIconTap:(UITapGestureRecognizer*)sender
+{
+    void (^onIconTapGesture)(void) = objc_getAssociatedObject(self.iconImageView, "onIconTapGesture");
+    if (onIconTapGesture)
+    {
+        onIconTapGesture ();
     }
 }
 

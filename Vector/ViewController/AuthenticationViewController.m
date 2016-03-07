@@ -40,37 +40,39 @@
 {
     [super viewDidLoad];
     
-    // Setup `MXKAuthenticationViewController` properties
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     self.mainNavigationItem.title = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
-    self.homeServerTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
-    self.homeServerLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+    self.homeServerTextField.textColor = kVectorTextColorBlack;
+    self.homeServerLabel.textColor = kVectorTextColorGray;
     
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
-    self.identityServerTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
-    self.identityServerLabel.textColor = VECTOR_TEXT_GRAY_COLOR;
+    self.identityServerTextField.textColor = kVectorTextColorBlack;
+    self.identityServerLabel.textColor = kVectorTextColorGray;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
-    self.submitButton.backgroundColor = VECTOR_GREEN_COLOR;
+    self.submitButton.backgroundColor = kVectorColorGreen;
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setTitleColor:VECTOR_TEXT_GRAY_COLOR forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:VECTOR_TEXT_GRAY_COLOR forState:UIControlStateHighlighted];
+    [self.forgotPasswordButton setTitleColor:kVectorTextColorGray forState:UIControlStateNormal];
+    [self.forgotPasswordButton setTitleColor:kVectorTextColorGray forState:UIControlStateHighlighted];
     
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : VECTOR_TEXT_GRAY_COLOR, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : kVectorTextColorGray, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.serverOptionsTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.serverOptionsTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     

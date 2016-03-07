@@ -20,6 +20,10 @@
 
 #import "AppDelegate.h"
 
+#import "VectorDesignValues.h"
+
+#import "RageShakeManager.h"
+
 @interface DirectoryViewController ()
 {
     PublicRoomsDirectoryDataSource *dataSource;
@@ -32,6 +36,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 
     self.title = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
 
@@ -103,7 +112,7 @@
 
             [self stopActivityIndicator];
 
-            NSLog(@"[DirectoryVC] Failed to join public room (%@): %@", publicRoom.displayname, error);
+            NSLog(@"[DirectoryVC] Failed to join public room (%@)", publicRoom.displayname);
 
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];

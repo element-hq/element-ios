@@ -58,7 +58,7 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    self.separatorView.backgroundColor = VECTOR_SILVER_COLOR;
+    self.separatorView.backgroundColor = kVectorColorSiver;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -66,7 +66,7 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = VECTOR_TEXT_BLACK_COLOR;
+    growingTextView.textColor = kVectorTextColorBlack;
     
     self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
 }
@@ -193,7 +193,8 @@
 {
     [self dismissMediaPicker];
     
-    [self sendSelectedVideo:videoURL isCameraRecording:NO];
+    BOOL isPhotoLibraryAsset = ![videoURL.path hasPrefix:NSTemporaryDirectory()];
+    [self sendSelectedVideo:videoURL isPhotoLibraryAsset:isPhotoLibraryAsset];
 }
 
 #pragma mark - Media picker handling

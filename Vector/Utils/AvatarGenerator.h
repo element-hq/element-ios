@@ -22,6 +22,14 @@
 @interface AvatarGenerator : NSObject
 
 /**
+ Create an UIImage with the text and the background color.
+ @param text the text.
+ @param color the background color.
+ @return the avatar image.
+ */
++ (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color;
+
+/**
  Generate an avatar for a room.
  @param roomId the id of the room.
  @param displayName the display name of the room.

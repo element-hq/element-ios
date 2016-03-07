@@ -64,7 +64,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Setup `MXKRecentListViewController` properties
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Register here the customized cell view class used to render recents
@@ -243,7 +245,7 @@
             [room leave:^{
                 [self.recentsTableView reloadData];
             } failure:^(NSError *error) {
-                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed: %@", room.state.roomId, error);
+                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed", room.state.roomId);
             }];
 
         };
@@ -299,7 +301,7 @@
             
         }];
         
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"unmute_icon" : @"mute_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"unmute_icon" : @"mute_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
         [actions insertObject:muteAction atIndex:0];
         
         // favorites management
@@ -328,7 +330,7 @@
                 [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
             }];
             
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favorite_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favorite_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
             [actions insertObject:action atIndex:0];
         }
         
@@ -339,7 +341,7 @@
                 [self updateRoomTagAtIndexPath:indexPath to:nil];
             }];
             
-            action.backgroundColor = [MXKTools convertImageToPatternColor:nil backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:nil backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
             [actions insertObject:action atIndex:0];
         }
         
@@ -350,14 +352,14 @@
                 [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
             }];
             
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"low_priority_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"low_priority_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
             [actions insertObject:action atIndex:0];
         }
         
         UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             [self leaveRecentsAtIndexPath:indexPath];
         }];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:VECTOR_LIGHT_GRAY_COLOR patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
         
         [actions insertObject:leaveAction atIndex:0];
     }

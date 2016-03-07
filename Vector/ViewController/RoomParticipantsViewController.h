@@ -18,6 +18,8 @@
 
 #import "ContactTableViewCell.h"
 
+#import "SegmentedViewController.h"
+
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  
@@ -57,6 +59,11 @@
  Tell whether a search session is in progress
  */
 @property (nonatomic) BOOL isAddParticipantSearchBarEditing;
+
+/**
+ The potential segmented view controller in which the view controller is displayed.
+ */
+@property (nonatomic) SegmentedViewController *segmentedViewController;
 
 
 /**

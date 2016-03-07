@@ -36,7 +36,7 @@
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
     
-    self.roomTitle.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.roomTitle.textColor = kVectorTextColorBlack;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -59,24 +59,24 @@
         }
         
         // Notify unreads and bing
-        if (roomCellData.unreadCount)
+        if (roomCellData.hasUnread)
         {
             self.bingIndicator.hidden = NO;
-            if (0 < roomCellData.unreadBingCount)
+            if (0 < roomCellData.highlightCount)
             {
                 self.bingIndicator.backgroundColor = roomCellData.recentsDataSource.eventFormatter.bingTextColor;
                 self.lastEventDate.textColor = self.bingIndicator.backgroundColor;
             }
             else
             {
-                self.bingIndicator.backgroundColor = VECTOR_SILVER_COLOR;
-                self.lastEventDate.textColor = VECTOR_TEXT_GRAY_COLOR;
+                self.bingIndicator.backgroundColor = kVectorColorSiver;
+                self.lastEventDate.textColor = kVectorTextColorGray;
             }
         }
         else
         {
             self.bingIndicator.hidden = YES;
-            self.lastEventDate.textColor = VECTOR_TEXT_GRAY_COLOR;
+            self.lastEventDate.textColor = kVectorTextColorGray;
         }
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];

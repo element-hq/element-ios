@@ -150,31 +150,26 @@
 
 - (void)setIsOffline:(BOOL)isOffline
 {
-    if (isOffline)
+    if (!reachabilityObserver)
     {
-        // Add observer to leave this state automatically.
+        // Define reachability observer when isOffline property is set for the first time
         reachabilityObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AFNetworkingReachabilityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
             
             NSNumber *statusItem = note.userInfo[AFNetworkingReachabilityNotificationStatusItem];
             if (statusItem)
             {
                 AFNetworkReachabilityStatus reachabilityStatus = statusItem.integerValue;
-                if (reachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi || reachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN)
+                if (reachabilityStatus == AFNetworkReachabilityStatusNotReachable)
                 {
-                    self.isOffline = NO;
+                    [AppDelegate theDelegate].isOffline = YES;
+                }
+                else
+                {
+                    [AppDelegate theDelegate].isOffline = NO;
                 }
             }
             
         }];
-    }
-    else
-    {
-        // Release potential observer
-        if (reachabilityObserver)
-        {
-            [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
-            reachabilityObserver = nil;
-        }
     }
     
     _isOffline = isOffline;
@@ -184,10 +179,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
+    
     // Override point for customization after application launch.
     
-    // define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:VECTOR_GREEN_COLOR];
+    // Define the navigation bar text color
+    [[UINavigationBar appearance] setTintColor:kVectorColorGreen];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -268,19 +265,14 @@
 
         NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: the application is launched in background");
     }
-    else
-    {
-        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: clear the notifications");
-
-        // clear the notifications counter
-        [self clearNotifications];
-    }
     
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationWillResignActive");
+    
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
@@ -306,12 +298,20 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationDidEnterBackground");
+    
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // Stop reachability monitoring
-    self.isOffline = NO;
+    if (reachabilityObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
+        reachabilityObserver = nil;
+    }
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
+    self.isOffline = NO;
     
     // check if some media must be released to reduce the cache size
     [MXKMediaManager reduceCacheSizeToInsert:0];
@@ -330,27 +330,28 @@
         [account pauseInBackgroundTask];
     }
     
-    // clear the notifications counter
-    [self clearNotifications];
-    
-    // cancel any background sync before resuming
-    // i.e. warn IOS that there is no new data with any received push.
-    [self cancelBackgroundSync];
+    // Refresh the notifications counter
+    [self refreshApplicationIconBadgeNumber];
     
     _isAppForeground = NO;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationWillEnterForeground");
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    // clear the notifications counter
-    [self clearNotifications];
+    
+    // cancel any background sync before resuming
+    // i.e. warn IOS that there is no new data with any received push.
+    [self cancelBackgroundSync];
     
     _isAppForeground = YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationDidBecomeActive");
 
     // Check if the app crashed last time
     if ([MXLogger crashLog])
@@ -369,6 +370,25 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        
+        // Check whether monitoring is ready
+        if (status != AFNetworkReachabilityStatusUnknown)
+        {
+            if (status == AFNetworkReachabilityStatusNotReachable)
+            {
+                // Prompt user
+                [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)}]];
+            }
+            else
+            {
+                self.isOffline = NO;
+            }
+            
+            [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
+        }
+        
+    }];
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Observe matrixKit error to alert user on error
@@ -402,6 +422,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -420,10 +441,17 @@
     if (_homeViewController)
     {
         [_homeNavigationController popToViewController:_homeViewController animated:animated];
+        
         // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
         // when a ViewController has hidden it (see MXKAttachmentsViewController).
         // Patch: restore navigation bar by default here.
         _homeNavigationController.navigationBarHidden = NO;
+        
+        // For unknown reason, the default settings of the navigation bar are not restored correctly by [popToViewController:animated:]
+        // when a ViewController has changed them (see RoomViewController, RoomMemberDetailsViewController).
+        // Patch: restore default settings here.
+        [_homeNavigationController.navigationBar setShadowImage:nil];
+        [_homeNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
         
         // Release the current selected room
         [_homeViewController closeSelectedRoom];
@@ -450,15 +478,22 @@
     }
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     if (!title)
     {
-        title = [NSBundle mxk_localizedStringForKey:@"error"];
+        if (msg)
+        {
+            title = msg;
+            msg = nil;
+        }
+        else
+        {
+            title = [NSBundle mxk_localizedStringForKey:@"error"];
+        }
     }
-    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     
     self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-                                                {
+    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                                                     [AppDelegate theDelegate].errorNotification = nil;
                                                 }];
     
@@ -598,15 +633,11 @@
     completionHandler(UIBackgroundFetchResultNoData);
 }
 
-- (void)clearNotifications
+- (void)refreshApplicationIconBadgeNumber
 {
-    // force to clear the notification center
-    // switching from 0 -> 1 -> 0 seems forcing the notifications center to refresh
-    // so resetting it does not clear the notifications center.
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber");
     
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = [MXKRoomDataSourceManager notificationCount];
 }
 
 #pragma mark - Matrix sessions handling
@@ -615,6 +646,9 @@
 {
     // Disable identicon use
     [MXSDKOptions sharedInstance].disableIdenticonUseForUserAvatar = YES;
+    
+    // Disable long press on event in bubble cells
+    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:YES];
     
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
@@ -1064,30 +1098,35 @@
                             visibility:kMXRoomVisibilityPrivate
                              roomAlias:nil
                                  topic:nil
-                               success:^(MXRoom *room)
-                  {
-                      // invite the other user only if it is defined and not onself
-                      if (userId && ![mxSession.myUser.userId isEqualToString:userId])
-                      {
-                          // add the user
-                          [room inviteUser:userId success:^{
-                          } failure:^(NSError *error)
-                           {
-                               NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@): %@", userId, room.state.roomId, error);
-                               //Alert user
-                               [self showErrorAsAlert:error];
-                           }];
-                      }
-                      
-                      // Open created room
-                      [self showRoom:room.state.roomId withMatrixSession:mxSession];
-                      
-                  } failure:^(NSError *error)
-                  {
-                      NSLog(@"[AppDelegate] Create room failed: %@", error);
-                      //Alert user
-                      [self showErrorAsAlert:error];
-                  }];
+                               success:^(MXRoom *room) {
+                                   
+                                   // invite the other user only if it is defined and not onself
+                                   if (userId && ![mxSession.myUser.userId isEqualToString:userId])
+                                   {
+                                       // add the user
+                                       [room inviteUser:userId
+                                                success:^{
+                                                }
+                                                failure:^(NSError *error) {
+                                                    
+                                                    NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
+                                                    //Alert user
+                                                    [self showErrorAsAlert:error];
+                                                    
+                                                }];
+                                   }
+                                   
+                                   // Open created room
+                                   [self showRoom:room.state.roomId withMatrixSession:mxSession];
+                                   
+                               }
+                               failure:^(NSError *error) {
+                                   
+                                   NSLog(@"[AppDelegate] Create room failed");
+                                   //Alert user
+                                   [self showErrorAsAlert:error];
+                                   
+                               }];
              }
          }
      }];

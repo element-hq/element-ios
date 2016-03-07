@@ -45,12 +45,12 @@
 
         localTimeZone = [NSTimeZone localTimeZone];
         
-        self.defaultTextColor = VECTOR_TEXT_BLACK_COLOR;
-        self.subTitleTextColor = VECTOR_TEXT_GRAY_COLOR;
-        self.prefixTextColor = VECTOR_TEXT_GRAY_COLOR;
-        self.bingTextColor = VECTOR_GREEN_COLOR;
-        self.sendingTextColor = VECTOR_TEXT_GRAY_COLOR;
-        self.errorTextColor = [UIColor redColor];
+        self.defaultTextColor = kVectorTextColorBlack;
+        self.subTitleTextColor = kVectorTextColorGray;
+        self.prefixTextColor = kVectorTextColorGray;
+        self.bingTextColor = kVectorColorGreen;
+        self.sendingTextColor = kVectorTextColorGray;
+        self.errorTextColor = kVectorTextColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
@@ -106,6 +106,12 @@
 
 - (NSString*)dateStringFromDate:(NSDate *)date withTime:(BOOL)time
 {
+    // Check the provided date
+    if (!date)
+    {
+        return nil;
+    }
+    
     // Retrieve today date at midnight
     NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:[NSDate date]];
     NSDate *today = [calendar dateFromComponents:components];

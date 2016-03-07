@@ -32,7 +32,53 @@
 {
     [super awakeFromNib];
     
-    self.displayNameTextField.textColor = VECTOR_TEXT_BLACK_COLOR;
+    self.displayNameTextField.textColor = kVectorTextColorBlack;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.titleMask addGestureRecognizer:tap];
+    self.titleMask.userInteractionEnabled = YES;
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.roomDetailsMask addGestureRecognizer:tap];
+    self.roomDetailsMask.userInteractionEnabled = YES;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.superview)
+    {
+        // Center horizontally the display name into the navigation bar
+        CGRect frame = self.superview.frame;
+        UINavigationBar *navigationBar;
+        UIView *superView = self;
+        while (superView.superview)
+        {
+            if ([superView.superview isKindOfClass:[UINavigationBar class]])
+            {
+                navigationBar = (UINavigationBar*)superView.superview;
+                break;
+            }
+            
+            superView = superView.superview;
+        }
+        
+        if (navigationBar)
+        {
+            CGSize navBarSize = navigationBar.frame.size;
+            CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
+            
+            // Center the display name
+            self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+        }        
+    }
 }
 
 - (void)refreshDisplay
@@ -42,6 +88,14 @@
     if (self.mxRoom)
     {
         self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
+    }
+}
+
+- (void)reportTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+{
+    if (self.tapGestureDelegate)
+    {
+        [self.tapGestureDelegate roomTitleView:self recognizeTapGesture:tapGestureRecognizer];
     }
 }
 

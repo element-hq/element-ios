@@ -185,10 +185,10 @@ static RageShakeManager* sharedInstance = nil;
         mailComposer = [[MFMailComposeViewController alloc] init];
 
         if ([MXLogger crashLog]) {
-            [mailComposer setSubject:@"Matrix crash report"];
+            [mailComposer setSubject:@"Vector crash report"];
         }
         else {
-            [mailComposer setSubject:@"Matrix bug report"];
+            [mailComposer setSubject:@"Vector bug report"];
         }
 
         [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@vector.im"]];
@@ -198,7 +198,7 @@ static RageShakeManager* sharedInstance = nil;
         
         NSMutableString* message = [[NSMutableString alloc] init];
         
-        [message appendFormat:@"Something went wrong on my Matrix client: \n\n\n"];
+        [message appendFormat:@"Something went wrong on my Vector client: \n\n\n"];
         
         [message appendFormat:@"-----> my comments <-----\n\n\n"];
         

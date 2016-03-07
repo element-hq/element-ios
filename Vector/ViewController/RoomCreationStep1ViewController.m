@@ -17,6 +17,8 @@
 #import "RoomCreationStep1ViewController.h"
 #import "RoomCreationStep2ViewController.h"
 
+#import "VectorDesignValues.h"
+
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
@@ -55,6 +57,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     inputs = [[MXKRoomCreationInputs alloc] init];

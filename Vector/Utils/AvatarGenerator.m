@@ -16,18 +16,13 @@
 
 #import "AvatarGenerator.h"
 
+#import "VectorDesignValues.h"
+
 @implementation AvatarGenerator
 
 static NSMutableDictionary *imageByKeyDict = nil;
 static NSMutableArray* colorsList = nil;
 static UILabel* backgroundLabel = nil;
-
-#define UIColorFromRGB(rgbValue) \
-        [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-        green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
-        blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
-        alpha:1.0]
-
 
 /**
  Init the generated avatar colors.
@@ -38,9 +33,9 @@ static UILabel* backgroundLabel = nil;
     if (!colorsList)
     {
         colorsList = [[NSMutableArray alloc] init];
-        [colorsList addObject:UIColorFromRGB(0x76cfa6)];
-        [colorsList addObject:UIColorFromRGB(0x50e2c2)];
-        [colorsList addObject:UIColorFromRGB(0xf4c371)];
+        [colorsList addObject:kVectorColorGreen];
+        [colorsList addObject:kVectorColorLightGreen];
+        [colorsList addObject:kVectorColorOrange];
     }
 }
 

@@ -118,10 +118,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Setup `MXKRoomMemberListViewController` properties
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.tableView.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+    self.tableView.backgroundColor = kVectorColorLightGrey;
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -421,7 +423,7 @@
         
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        [signOutCell.mxkButton setTintColor:VECTOR_GREEN_COLOR];
+        [signOutCell.mxkButton setTintColor:kVectorColorGreen];
         signOutCell.mxkButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -535,7 +537,7 @@
         else if (row == USER_SETTINGS_NIGHT_MODE_SEP_INDEX)
         {
             UITableViewCell *sepCell = [[UITableViewCell alloc] init];
-            sepCell.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+            sepCell.backgroundColor = kVectorColorLightGrey;
             
             cell = sepCell;
         }
@@ -713,7 +715,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+    sectionHeader.backgroundColor = kVectorColorLightGrey;
     
     if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
     {
@@ -894,7 +896,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[Vector Settings View Controller] Failed to set displayName: %@", error);
+            NSLog(@"[Vector Settings View Controller] Failed to set displayName");
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             
             // Alert user
@@ -941,7 +943,7 @@
              [self onSave:nil];
          } failure:^(NSError *error)
          {
-             NSLog(@"[Vector SettingsViewController] Failed to upload image: %@", error);
+             NSLog(@"[Vector SettingsViewController] Failed to upload image");
              uploadedAvatarURL = nil;
              newAvatarImage = nil;
          }];
@@ -957,7 +959,7 @@
                                  [strongSelf onSave:nil];
                              }
                              failure:^(NSError *error) {
-                                 NSLog(@"[Vector SettingsViewController] Failed to set avatar url: %@", error);
+                                 NSLog(@"[Vector SettingsViewController] Failed to set avatar url");
                                 
                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
                                  strongSelf->uploadedAvatarURL = nil;

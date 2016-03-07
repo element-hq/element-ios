@@ -19,6 +19,7 @@
 #import "RecentsDataSource.h"
 #import "RecentsViewController.h"
 
+#import "RoomDataSource.h"
 #import "RoomViewController.h"
 #import "DirectoryViewController.h"
 
@@ -30,7 +31,7 @@
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
 
-    MXKSearchViewController *searchViewController;
+    HomeSearchViewController *searchViewController;
     MXKSearchDataSource *searchDataSource;
 
     // Display a gradient view above the screen
@@ -66,11 +67,19 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
     [super viewDidLoad];
+    
+    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController)
 
     self.navigationItem.title = NSLocalizedStringFromTable(@"title_recents", @"Vector", nil);
 
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
+    
+    if (self.mainSession)
+    {
+        // Report the session into each created tab.
+        [self displayWithSession:self.mainSession];
+    }
 }
 
 - (void)dealloc
@@ -291,9 +300,9 @@
 
     if (_currentRoomViewController)
     {
-        if (_currentRoomViewController.roomDataSource)
+        if (_currentRoomViewController.roomDataSource && _currentRoomViewController.roomDataSource.isLive)
         {
-            // Let the manager release this room data source
+            // Let the manager release this live room data source
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
             [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
@@ -367,7 +376,7 @@
 - (void)refreshCurrentSelectedCellInChild:(BOOL)forceVisible
 {
     // TODO: Manage other children than recents
-    [recentsViewController refreshCurrentSelectedCell:YES];
+    [recentsViewController refreshCurrentSelectedCell:forceVisible];
 }
 
 #pragma mark - Navigation
@@ -405,8 +414,21 @@
 
             _currentRoomViewController = (RoomViewController *)controller;
 
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-            MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+            // Live timeline or timeline from a search result?
+            MXKRoomDataSource *roomDataSource;
+            if (!searchViewController.selectedEvent)
+            {
+                // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
+                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
+                roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+            }
+            else
+            {
+                // Search result: Create a temp timeline from the selected event
+                roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+                [roomDataSource finalizeInitialization];
+            }
+
             [_currentRoomViewController displayRoom:roomDataSource];
         }
 
@@ -425,15 +447,16 @@
             controller.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
-    else if ([[segue identifier] isEqualToString:@"showDirectory"])
-    {
-        DirectoryViewController *directoryViewController = segue.destinationViewController;
-        [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
-    }
     else
     {
         // Keep ref on destinationViewController
         [super prepareForSegue:segue sender:sender];
+
+        if ([[segue identifier] isEqualToString:@"showDirectory"])
+        {
+            DirectoryViewController *directoryViewController = segue.destinationViewController;
+            [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+        }
     }
 
     // Hide back button title

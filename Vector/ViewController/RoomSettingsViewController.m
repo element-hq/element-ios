@@ -97,15 +97,17 @@
 {
     [super viewDidLoad];
     
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+    
     // TODO use a color panel
     // not an hard coded one.
     CGFloat item = (242.0f / 255.0);
     
     self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
     self.tableView.separatorColor = [UIColor clearColor];
-    
-    // Setup `RoomSettingsViewController` properties
-    self.rageShakeManager = [RageShakeManager sharedManager];
     
     [self setNavBarButtons];
 }
@@ -352,7 +354,7 @@
                  [self onSave:nil];
              } failure:^(NSError *error)
              {
-                 NSLog(@"[Vector RoomSettingsViewController] Failed to upload image: %@", error);
+                 NSLog(@"[RoomSettingsViewController] Failed to upload image");
                  [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO"];
                  [self onSave:nil];
              }];
@@ -374,7 +376,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[Vector RoomSettingsViewController] Failed to update the room avatar %@", error);
+                NSLog(@"[RoomSettingsViewController] Failed to update the room avatar");
                 
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO_URL"];
@@ -412,7 +414,7 @@
                         
                     });
                     
-                    NSLog(@"[onDone] Rename room failed: %@", error);
+                    NSLog(@"[onDone] Rename room failed");
                 }];
                 
                 return;
@@ -446,7 +448,7 @@
                         
                     });
                     
-                    NSLog(@"[onDone] Rename topic failed: %@", error);
+                    NSLog(@"[onDone] Rename topic failed");
                 }];
                 
                 return;
@@ -553,7 +555,7 @@
             {
                 roomNotifCell = [[TableViewCellWithLabelAndSwitch alloc] init];
                 [roomNotifCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-                roomNotifCell.mxkSwitch.onTintColor = VECTOR_GREEN_COLOR;
+                roomNotifCell.mxkSwitch.onTintColor = kVectorColorGreen;
             }
             
             roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
@@ -627,12 +629,12 @@
                 roomTopicCell.mxkTextView.text = mxRoomState.topic;
             }
                         
-            roomTopicCell.mxkTextView.tintColor = VECTOR_GREEN_COLOR;
+            roomTopicCell.mxkTextView.tintColor = kVectorColorGreen;
             roomTopicCell.mxkTextView.delegate = self;
             
             // disable the edition if the user cannoy update it
             roomTopicCell.mxkTextView.editable = mxRoom.isModerator;
-            roomTopicCell.mxkTextView.textColor = VECTOR_TEXT_GRAY_COLOR;
+            roomTopicCell.mxkTextView.textColor = kVectorTextColorGray;
             
             cell = roomTopicCell;
         }
@@ -647,7 +649,7 @@
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
             roomNameCell.mxkTextField.userInteractionEnabled = YES;
-            roomNameCell.mxkTextField.tintColor = VECTOR_GREEN_COLOR;
+            roomNameCell.mxkTextField.tintColor = kVectorColorGreen;
             
             if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
             {
@@ -664,7 +666,7 @@
             
             // disable the edition if the user cannoy update it
             roomNameCell.editable = mxRoom.isModerator;
-            roomNameCell.mxkTextField.textColor = VECTOR_TEXT_GRAY_COLOR;
+            roomNameCell.mxkTextField.textColor = kVectorTextColorGray;
             
             
             // Add a "textFieldDidChange" notification method to the text field control.

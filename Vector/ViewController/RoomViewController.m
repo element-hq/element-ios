@@ -19,13 +19,18 @@
 #import "RoomDataSource.h"
 
 #import "AppDelegate.h"
+
+#import "VectorDesignValues.h"
+
 #import "RageShakeManager.h"
 
 #import "RoomInputToolbarView.h"
 
 #import "RoomActivitiesView.h"
 
-#import "RoomTitleView.h"
+#import "RoomAvatarTitleView.h"
+#import "ExpandedRoomTitleView.h"
+#import "SimpleRoomTitleView.h"
 
 #import "RoomParticipantsViewController.h"
 
@@ -55,8 +60,16 @@
 
 #import "AvatarGenerator.h"
 
+#import "VectorDesignValues.h"
+
 @interface RoomViewController ()
 {
+    // The expanded header
+    ExpandedRoomTitleView *expandedHeader;
+    
+    // The content offset at the beginning of scrolling
+    CGFloat storedContentOffset;
+    
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
@@ -76,9 +89,28 @@
 
 @implementation RoomViewController
 
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass(self.class)
+                          bundle:[NSBundle bundleForClass:self.class]];
+}
+
++ (instancetype)roomViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+                                          bundle:[NSBundle bundleForClass:self.class]];
+}
+
+#pragma mark -
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
@@ -100,22 +132,68 @@
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     
     // Set room title view
-    [self setRoomTitleViewClass:RoomTitleView.class];
-    // Listen to title view tap
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomTitleViewTap:)];
-    [tapGesture setNumberOfTouchesRequired:1];
-    [tapGesture setNumberOfTapsRequired:1];
-    [tapGesture setDelegate:self];
-    [self.titleView addGestureRecognizer:tapGesture];
-    self.titleView.userInteractionEnabled = YES;
-    // Disable interaction with room name text field
-    self.titleView.displayNameTextField.userInteractionEnabled = NO;
+    if (self.roomDataSource.isLive)
+    {
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+    }
+    else
+    {
+        [self setRoomTitleViewClass:SimpleRoomTitleView.class];
+        self.titleView.editable = NO;
+    }
+
+    // Prepare expanded header
+    self.expandedHeaderContainer.backgroundColor = kVectorColorLightGrey;
+    self.expandedHeaderContainerHeightConstraint.constant = 237;
+    
+    expandedHeader = [ExpandedRoomTitleView roomTitleView];
+    expandedHeader.delegate = self;
+    expandedHeader.tapGestureDelegate = self;
+    expandedHeader.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.expandedHeaderContainer addSubview:expandedHeader];
+    // Force expanded header in full width
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.expandedHeaderContainer
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                     multiplier:1.0
+                                                                       constant:0];
+    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.expandedHeaderContainer
+                                                                       attribute:NSLayoutAttributeTrailing
+                                                                      multiplier:1.0
+                                                                        constant:0];
+    // Vertical constraints are required for iOS > 8
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.expandedHeaderContainer
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0
+                                                                      constant:0];
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.expandedHeaderContainer
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0
+                                                                         constant:0];
+    
+    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
     
+    // Disable animation during the update of the inputToolBar height.
+    [UIView setAnimationsEnabled:NO];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+    [UIView setAnimationsEnabled:YES];
+
     // Set user picture in input toolbar
     MXKImageView *userPictureView = ((RoomInputToolbarView*)self.inputToolbarView).pictureView;
     if (userPictureView)
@@ -138,11 +216,19 @@
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    self.navigationItem.rightBarButtonItem.target = self;
-    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    
+
+    if (self.roomDataSource.isLive)
+    {
+        self.navigationItem.rightBarButtonItem.target = self;
+        self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    else
+    {
+        // Hide the search button
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+
     // Localize strings here
     
     if (self.roomDataSource)
@@ -163,11 +249,17 @@
     [super viewWillAppear:animated];
     
     [self listenTypingNotifications];
+    
+    // Observe network reachability
+    [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
+    [self refreshActivitiesViewDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
     
     // hide action
     if (self.currentAlert)
@@ -183,6 +275,9 @@
         // Remove select event id
         customizedRoomDataSource.selectedEventId = nil;
     }
+    
+    // Hide expanded header to restore navigation bar settings
+    [self hideExpandedHeader:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -226,6 +321,14 @@
     self.bubblesTableView.contentInset = contentInset;
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    // Hide expanded header on device rotation
+    [self hideExpandedHeader:YES];
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+}
+
 #pragma mark - Override MXKRoomViewController
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource
@@ -246,6 +349,10 @@
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
     self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
+    
+    self.titleView.editable = NO;
+    
+    expandedHeader.mxRoom = self.roomDataSource.room;
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
@@ -268,7 +375,7 @@
                  [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
-                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed: %@", roomAlias, error);
+                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed", roomAlias);
                  //Alert user
                  [[AppDelegate theDelegate] showErrorAsAlert:error];
              }];
@@ -281,6 +388,22 @@
         return YES;
     }
     return [super isIRCStyleCommand:string];
+}
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeight:keyboardHeight];
+    
+    if (keyboardHeight)
+    {
+        // Hide the potential expanded header when keyboard appears.
+        // Dispatch this operation to prevent flickering in navigation bar.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self hideExpandedHeader:YES];
+            
+        });
+    }
 }
 
 - (void)destroy
@@ -300,6 +423,71 @@
     }
     
     [super destroy];
+}
+
+#pragma mark - Hide/Show expanded header
+
+- (void)hideExpandedHeader:(BOOL)isHidden
+{
+    // Check conditions before applying change on room header
+    // This operation is ignored when a screen rotation is in progress, or when the room data source has been removed.
+    if (self.expandedHeaderContainer.isHidden != isHidden && isSizeTransitionInProgress == NO && self.roomDataSource)
+    {
+        self.expandedHeaderContainer.hidden = isHidden;
+        
+        // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+        UINavigationController *mainNavigationController = self.navigationController;
+        if (self.splitViewController && self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+        {
+            mainNavigationController = self.splitViewController.viewControllers.firstObject;
+        }
+        
+        // When the expanded header is displayed, we hide the bottom border of the navigation bar (the shadow image).
+        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
+        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
+        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
+        // image will be used regardless of the value of this property.
+        UIImage *shadowImage = nil;
+        MXKImageView *roomAvatarView = nil;
+        
+        if (isHidden)
+        {
+            [self setRoomTitleViewClass:RoomTitleView.class];
+            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+        }
+        else
+        {
+            [self setRoomTitleViewClass:RoomAvatarTitleView.class];
+            // Note the avatar title view does not define tap gesture.
+            
+            roomAvatarView = ((RoomAvatarTitleView*)self.titleView).roomAvatar;
+            roomAvatarView.alpha = 0.0;
+            
+            shadowImage = [[UIImage alloc] init];
+            
+            // Dismiss the keyboard when header is expanded.
+            [self.inputToolbarView dismissKeyboard];
+        }
+        
+        // Report shadow image
+        [mainNavigationController.navigationBar setShadowImage:shadowImage];
+        [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
+        
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             self.bubblesTableViewTopConstraint.constant = (isHidden ? 0 : self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top);
+                             
+                             if (roomAvatarView)
+                             {
+                                 roomAvatarView.alpha = 1;
+                             }
+                             
+                             // Force to render the view
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+    }
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -409,6 +597,13 @@
 }
 
 #pragma mark - MXKDataSource delegate
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    [super dataSource:dataSource didCellChange:changes];
+    
+    [self refreshActivitiesViewDisplay];
+}
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
@@ -702,7 +897,7 @@
                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                             [strongSelf stopActivityIndicator];
                             
-                            NSLog(@"[Vector RoomVC] Redact event (%@) failed: %@", selectedEvent.eventId, error);
+                            NSLog(@"[Vector RoomVC] Redact event (%@) failed", selectedEvent.eventId);
                             //Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                             
@@ -728,10 +923,6 @@
                     self.currentAlert = nil;
                 }
             }
-        }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent])
-        {
-            // Disable default behavior
         }
         else
         {
@@ -799,6 +990,7 @@
             
             RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
             participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            participantsViewController.segmentedViewController = segmentedViewController;
             [viewControllers addObject:participantsViewController];
             
             [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
@@ -877,17 +1069,28 @@
     }
 }
 
-- (IBAction)onRoomTitleViewTap:(UITapGestureRecognizer*)sender
-{
-    // Open room details
-    [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
-}
-
 #pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    // Store the current offset to detect scroll down
+    storedContentOffset = scrollView.contentOffset.y;
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+    
+    // Hide expanded header on scroll down
+    if (storedContentOffset < scrollView.contentOffset.y)
+    {
+        [self hideExpandedHeader:YES];
+    }
 }
 
 #pragma mark - MXKRoomTitleViewDelegate
@@ -898,7 +1101,25 @@
     return NO;
 }
 
-#pragma mark - typing management
+#pragma mark - RoomTitleViewTapGestureDelegate
+
+- (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+{
+    UIView *view = tapGestureRecognizer.view;
+    
+    if (view == titleView.titleMask)
+    {
+        // Expand/shrink the header
+        [self hideExpandedHeader:!self.expandedHeaderContainer.isHidden];
+    }
+    else if (view == titleView.roomDetailsMask)
+    {
+        // Open room details
+        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+    }
+}
+
+#pragma mark - Typing management
 
 - (void)removeTypingNotificationsListener
 {
@@ -907,7 +1128,7 @@
         // Remove the previous live listener
         if (typingNotifListener)
         {
-            [self.roomDataSource.room removeListener:typingNotifListener];
+            [self.roomDataSource.room.liveTimeline removeListener:typingNotifListener];
             currentTypingUsers = nil;
         }
     }
@@ -918,10 +1139,10 @@
     if (self.roomDataSource)
     {
         // Add typing notification listener
-        typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXEventDirection direction, MXRoomState *roomState) {
+        typingNotifListener = [self.roomDataSource.room.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
             
             // Handle only live events
-            if (direction == MXEventDirectionForwards)
+            if (direction == MXTimelineDirectionForwards)
             {
                 // Retrieve typing users list
                 NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
@@ -931,69 +1152,227 @@
                 {
                     [typingUsers removeObjectAtIndex:index];
                 }
+                
                 // Ignore this notification if both arrays are empty
                 if (currentTypingUsers.count || typingUsers.count)
                 {
                     currentTypingUsers = typingUsers;
-                    [self refreshTypingView];
+                    [self refreshActivitiesViewDisplay];
                 }
             }
             
         }];
         
         currentTypingUsers = self.roomDataSource.room.typingUsers;
-        [self refreshTypingView];
+        [self refreshActivitiesViewDisplay];
     }
 }
 
-- (void)refreshTypingView
+- (void)refreshTypingNotification
 {
-    NSString* text = nil;
-    NSUInteger count = currentTypingUsers.count;
-    
-    // get the room member names
-    NSMutableArray *names = [[NSMutableArray alloc] init];
-    
-    // keeps the only the first two users
-    for(int i = 0; i < MIN(count, 2); i++)
+    if (self.activitiesView)
     {
-        NSString* name = [currentTypingUsers objectAtIndex:i];
+        // Prepare here typing notification
+        NSString* text = nil;
+        NSUInteger count = currentTypingUsers.count;
         
-        MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+        // get the room member names
+        NSMutableArray *names = [[NSMutableArray alloc] init];
         
-        if (member && member.displayname.length)
+        // keeps the only the first two users
+        for(int i = 0; i < MIN(count, 2); i++)
         {
-            name = member.displayname;
+            NSString* name = [currentTypingUsers objectAtIndex:i];
+            
+            MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:name];
+            
+            if (member && member.displayname.length)
+            {
+                name = member.displayname;
+            }
+            
+            // sanity check
+            if (name)
+            {
+                [names addObject:name];
+            }
         }
         
-        // sanity check
-        if (name)
+        if (0 == names.count)
         {
-            [names addObject:name];
+            // something to do ?
         }
+        else if (1 == names.count)
+        {
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
+        }
+        else if (2 == names.count)
+        {
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+        }
+        else
+        {
+            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+        }
+        
+        [((RoomActivitiesView*) self.activitiesView) displayTypingNotification:text];
     }
-    
-    if (0 == names.count)
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"isOffline" isEqualToString:keyPath])
     {
-        // something to do ?
-    }
-    else if (1 == names.count)
-    {
-        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), [names objectAtIndex:0]];
-    }
-    else if (2 == names.count)
-    {
-        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+        [self refreshActivitiesViewDisplay];
     }
     else
     {
-        text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), [names objectAtIndex:0], [names objectAtIndex:1]];
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+#pragma mark - Unreachable Network Handling
+
+- (void)refreshActivitiesViewDisplay
+{
+    if (self.activitiesView)
+    {
+        if ([AppDelegate theDelegate].isOffline)
+        {
+            [((RoomActivitiesView*) self.activitiesView) displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+        }
+        else if ([self checkUnsentMessages] == NO)
+        {
+            [self refreshTypingNotification];
+        }
+    }
+}
+
+
+#pragma mark - Unsent Messages Handling
+
+-(BOOL)checkUnsentMessages
+{
+    BOOL hasUnsent = NO;
     
     if (self.activitiesView)
     {
-        [((RoomActivitiesView*) self.activitiesView) updateTypingMessage:text];
+        NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+        
+        for (MXEvent *event in outgoingMsgs)
+        {
+            if (event.mxkState == MXKEventStateSendingFailed)
+            {
+                hasUnsent = YES;
+                break;
+            }
+        }
+        
+        if (hasUnsent)
+        {
+            RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
+            [roomActivitiesView displayUnsentMessagesNotificationWithResendLink:^{
+                
+                [self resendAllUnsentMessages];
+                
+            } andIconTapGesture:^{
+                
+                if (self.currentAlert)
+                {
+                    [self.currentAlert dismiss:NO];
+                }
+                
+                __weak __typeof(self) weakSelf = self;
+                self.currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+                
+                [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_resend_unsent_messages", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    [strongSelf resendAllUnsentMessages];
+                    strongSelf.currentAlert = nil;
+                    
+                }];
+                
+                [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_delete_unsent_messages", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    // Remove unsent event ids
+                    for (NSUInteger index = 0; index < strongSelf.roomDataSource.room.outgoingMessages.count;)
+                    {
+                        MXEvent *event = strongSelf.roomDataSource.room.outgoingMessages[index];
+                        if (event.mxkState == MXKEventStateSendingFailed)
+                        {
+                            [strongSelf.roomDataSource removeEventWithEventId:event.eventId];
+                        }
+                        else
+                        {
+                            index ++;
+                        }
+                    }
+                    strongSelf.currentAlert = nil;
+                }];
+                
+                self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf.currentAlert = nil;
+                    
+                }];
+                
+                self.currentAlert.sourceView = roomActivitiesView;
+                [self.currentAlert showInViewController:self];
+                
+            }];
+        }
     }
+    
+    return hasUnsent;
+}
+
+- (void)resendAllUnsentMessages
+{
+    // List unsent event ids
+    NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
+    NSMutableArray *failedEventIds = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
+    
+    for (MXEvent *event in outgoingMsgs)
+    {
+        if (event.mxkState == MXKEventStateSendingFailed)
+        {
+            [failedEventIds addObject:event.eventId];
+        }
+    }
+    
+    // Launch iterative operation
+    [self resendFailedEvent:0 inArray:failedEventIds];
+}
+
+- (void)resendFailedEvent:(NSUInteger)index inArray:(NSArray*)failedEventIds
+{
+    if (index < failedEventIds.count)
+    {
+        NSString *failedEventId = failedEventIds[index];
+        NSUInteger nextIndex = index + 1;
+        
+        // Let the datasource resend. It will manage local echo, etc.
+        [self.roomDataSource resendEventWithEventId:failedEventId success:^(NSString *eventId) {
+            
+            [self resendFailedEvent:nextIndex inArray:failedEventIds];
+            
+        } failure:^(NSError *error) {
+            
+            [self resendFailedEvent:nextIndex inArray:failedEventIds];
+            
+        }];
+        
+        return;
+    }
+    
+    // Refresh activities view
+    [self refreshActivitiesViewDisplay];
 }
 
 @end

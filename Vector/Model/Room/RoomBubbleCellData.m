@@ -20,8 +20,6 @@
 
 #import "AvatarGenerator.h"
 
-#define VECTOR_ROOM_BUBBLE_CELL_DATA_TEXTVIEW_MARGIN 10
-
 static NSAttributedString *readReceiptVerticalWhitespace = nil;
 
 @implementation RoomBubbleCellData
@@ -116,7 +114,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 // Set position of the first component
                 MXKRoomBubbleComponent *firstComponent = [bubbleComponents firstObject];
                 
-                CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile) ? VECTOR_ROOM_BUBBLE_CELL_DATA_TEXTVIEW_MARGIN : 0;
+                CGFloat positionY = (self.attachment == nil || self.attachment.type == MXKAttachmentTypeFile) ? MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET : 0;
                 firstComponent.position = CGPointMake(0, positionY);
                 
                 _hasReadReceipts = ([roomDataSource.room getEventReceipts:firstComponent.event.eventId sorted:NO] != nil);
@@ -124,7 +122,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                 // Check whether the position of other components need to be refreshed
                 if (!self.attachment && bubbleComponents.count > 1)
                 {
-                    // Compute height of the first text component
+                    // Init attributed string with the first text component
                     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:firstComponent.attributedTextMessage];
                     
                     // Vertical whitescape is added in case of read receipts
@@ -133,24 +131,21 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                         [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
                     }
                     
-                    
-                    CGFloat componentHeight = [self rawTextHeight:attributedString];
-                    
-                    // Set position for each other component
-                    CGFloat positionY = firstComponent.position.y;
-                    CGFloat cumulatedHeight = 0;
+                    [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                     
                     for (NSUInteger index = 1; index < bubbleComponents.count; index++)
                     {
-                        cumulatedHeight += componentHeight;
-                        positionY += componentHeight;
-                        
+                        // Append the next text component
                         MXKRoomBubbleComponent *component = [bubbleComponents objectAtIndex:index];
-                        component.position = CGPointMake(0, positionY);
-                        
-                        // Compute height of the current component
-                        [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                         [attributedString appendAttributedString:component.attributedTextMessage];
+                        
+                        // Compute the height of the resulting string
+                        CGFloat cumulatedHeight = [self rawTextHeight:attributedString];
+                        
+                        // Deduce the position of the beginning of this component
+                        CGFloat positionY = MXKROOMBUBBLECELLDATA_TEXTVIEW_DEFAULT_VERTICAL_INSET + (cumulatedHeight - [self rawTextHeight:component.attributedTextMessage]);
+                        
+                        component.position = CGPointMake(0, positionY);
                         
                         // Add vertical whitespace in case of read receipts
                         if ([roomDataSource.room getEventReceipts:component.event.eventId sorted:NO])
@@ -159,7 +154,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
                             [attributedString appendAttributedString:[RoomBubbleCellData readReceiptVerticalWhitespace]];
                         }
                         
-                        componentHeight = [self rawTextHeight:attributedString] - cumulatedHeight;
+                        [attributedString appendAttributedString:[MXKRoomBubbleCellDataWithAppendingMode messageSeparator]];
                     }
                 }
             }

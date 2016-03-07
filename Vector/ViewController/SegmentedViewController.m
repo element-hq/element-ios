@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "RageShakeManager.h"
+
 @interface SegmentedViewController ()
 {
     // list of displayed UIViewControllers
@@ -117,6 +119,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.defaultBarTintColor = kVectorNavBarTintColor;
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
 
     // Check whether the view controller has been pushed via storyboard
     if (!self.viewControllerContainer)
@@ -149,8 +156,40 @@
 
     if (_selectedViewController)
     {
-        // Make iOS invoke child viewWillAppear and viewDidAppear
+        // Make iOS invoke child viewWillAppear
         [_selectedViewController beginAppearanceTransition:YES animated:animated];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewWillDisappear
+        [_selectedViewController beginAppearanceTransition:NO animated:animated];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewDidAppear
+        [_selectedViewController endAppearanceTransition];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (_selectedViewController)
+    {
+        // Make iOS invoke child viewDidDisappear
         [_selectedViewController endAppearanceTransition];
     }
 }
@@ -169,7 +208,7 @@
         label.text = [sectionTitles objectAtIndex:index];
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = VECTOR_GREEN_COLOR;
+        label.textColor = kVectorColorGreen;
         label.backgroundColor = [UIColor clearColor];
         
         // the constraint defines the label frame
@@ -261,7 +300,7 @@
 {
     // create the selected marker view
     selectedMarkerView = [[UIView alloc] init];
-    selectedMarkerView.backgroundColor = VECTOR_GREEN_COLOR;
+    selectedMarkerView.backgroundColor = kVectorColorGreen;
     [selectedMarkerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.selectionContainer addSubview:selectedMarkerView];
     

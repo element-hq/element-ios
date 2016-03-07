@@ -130,10 +130,10 @@
         {
             // Register the room tags updates to refresh the favorites order
             id roomTagsListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
-                                                                onEvent:^(MXEvent *event, MXEventDirection direction, id customObject) {
+                                                                onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
                                                                     // Consider only live event
-                                                                    if (direction == MXEventDirectionForwards)
+                                                                    if (direction == MXTimelineDirectionForwards)
                                                                     {
                                                                         dispatch_async(dispatch_get_main_queue(), ^{
 
@@ -300,7 +300,7 @@
     
         label.text = [NSString stringWithFormat:@"   %@", text];
         label.font = [UIFont boldSystemFontOfSize:15.0];
-        label.backgroundColor = VECTOR_LIGHT_GRAY_COLOR;
+        label.backgroundColor = kVectorColorLightGrey;
         
         return label;
     }
@@ -754,7 +754,7 @@
                      
                  } failure:^(NSError *error) {
                      
-                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed: %@", dstRoomTag, room.state.roomId, error);
+                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed", dstRoomTag, room.state.roomId);
                      
                      if (moveFailure)
                      {
