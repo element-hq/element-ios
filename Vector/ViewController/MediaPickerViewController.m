@@ -892,7 +892,14 @@ static void *RecordingContext = &RecordingContext;
             // Create the AVCapture Session
             captureSession = [[AVCaptureSession alloc] init];
             
-            [captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+            if (isVideoCaptureMode)
+            {
+                [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+            }
+            else
+            {
+                [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+            }
             
             cameraPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
             cameraPreviewLayer.masksToBounds = NO;
@@ -1035,6 +1042,12 @@ static void *RecordingContext = &RecordingContext;
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateHighlighted];
+        
+        if (captureSession)
+        {
+            [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+        }
+        
         isVideoCaptureMode = NO;
     }
     else
@@ -1043,6 +1056,12 @@ static void *RecordingContext = &RecordingContext;
         [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
         [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateHighlighted];
+        
+        if (captureSession)
+        {
+            [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+        }
+        
         isVideoCaptureMode = YES;
     }
 }
