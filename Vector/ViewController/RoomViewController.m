@@ -987,6 +987,17 @@
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
 
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
+{
+    [super roomInputToolbarView:toolbarView isTyping:typing];
+    
+    // Cancel potential selected event (to leave edition mode)
+    if (typing && customizedRoomDataSource.selectedEventId)
+    {
+        [self cancelEventSelection];
+    }
+}
+
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
     [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
