@@ -623,36 +623,11 @@
             else if (tappedEvent)
             {
                 // Highlight this event in displayed message
-
-                // Update display of the visible table cell view
-                NSArray* cellArray = self.bubblesTableView.visibleCells;
-                
-                // Blur all table cells, except the tapped one
-                for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
-                {
-                    tableViewCell.blurred = YES;
-                }
-                MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-                roomBubbleTableViewCell.blurred = NO;
-                
-                // Compute the component index if tapped event is provided
-                for (NSUInteger componentIndex = 0; componentIndex < roomBubbleTableViewCell.bubbleData.bubbleComponents.count; componentIndex++)
-                {
-                    MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents[componentIndex];
-                    if ([component.event.eventId isEqualToString:tappedEvent.eventId])
-                    {
-                        // Report the selected event id in data source to keep this event selected in case of table reload.
-                        if (customizedRoomDataSource)
-                        {
-                            customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
-                        }
-                        
-                        [roomBubbleTableViewCell selectComponent:componentIndex];
-                        
-                        break;
-                    }
-                }
+                customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
             }
+            
+            // Force table refresh
+            [self dataSource:self.roomDataSource didCellChange:nil];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnOverlayContainer])
         {
@@ -945,21 +920,10 @@
         self.currentAlert = nil;
     }
     
-    // Cancel the current selection
-    NSArray* cellArray = self.bubblesTableView.visibleCells;
-    for (MXKRoomBubbleTableViewCell *tableViewCell in cellArray)
-    {
-        if (tableViewCell.blurred)
-        {
-            tableViewCell.blurred = NO;
-        }
-        else
-        {
-            [tableViewCell unselectComponent];
-        }
-    }
-    
     customizedRoomDataSource.selectedEventId = nil;
+    
+    // Force table refresh
+    [self dataSource:self.roomDataSource didCellChange:nil];
 }
 
 #pragma mark - Segues

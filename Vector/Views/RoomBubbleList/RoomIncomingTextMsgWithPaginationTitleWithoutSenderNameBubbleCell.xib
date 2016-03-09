@@ -64,10 +64,10 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW" userLabel="bubbleInfoContainer">
-                        <rect key="frame" x="546" y="47" width="39" height="57"/>
+                        <rect key="frame" x="515" y="47" width="70" height="57"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="39" id="tLr-6k-ArA"/>
+                            <constraint firstAttribute="width" constant="70" id="tLr-6k-ArA"/>
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJu-zj-Vro">
@@ -83,7 +83,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="gJu-zj-Vro" secondAttribute="trailing" constant="-8" id="Dja-ge-KXl"/>
                     <constraint firstAttribute="bottomMargin" secondItem="gJu-zj-Vro" secondAttribute="bottom" constant="-8" id="H7m-2I-p8c"/>
                     <constraint firstItem="gJu-zj-Vro" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="LAr-tM-asT"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="54" id="Shz-6S-kGd"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="47" id="XSL-TG-m62"/>
                     <constraint firstAttribute="trailing" secondItem="vWC-jH-xa5" secondAttribute="trailing" constant="10" id="bFO-Fe-amS"/>

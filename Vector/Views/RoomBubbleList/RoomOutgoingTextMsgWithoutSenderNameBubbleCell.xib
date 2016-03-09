@@ -35,10 +35,10 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW" userLabel="bubbleInfoContainer">
-                        <rect key="frame" x="546" y="3" width="39" height="57"/>
+                        <rect key="frame" x="515" y="3" width="70" height="57"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="39" id="1E4-Lu-3sr"/>
+                            <constraint firstAttribute="width" constant="70" id="1E4-Lu-3sr"/>
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stw-MD-khQ">
@@ -53,7 +53,7 @@
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="4Ac-p5-610"/>
                     <constraint firstAttribute="bottomMargin" secondItem="stw-MD-khQ" secondAttribute="bottom" constant="-8" id="8Lj-ay-d6E"/>
                     <constraint firstItem="stw-MD-khQ" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="JXb-n4-O4S"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="54" id="Shz-6S-kGd"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="f24-Fr-D4j"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="mkw-3s-H8B"/>
                     <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>

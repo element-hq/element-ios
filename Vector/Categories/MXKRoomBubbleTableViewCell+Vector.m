@@ -22,6 +22,8 @@
 
 #import <objc/runtime.h>
 
+#define VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH 39
+
 NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCellVectorEditButtonPressed";
 
 @implementation MXKRoomBubbleTableViewCell (Vector)
@@ -38,49 +40,51 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     
     if (component && component.date)
     {
-        UILabel *dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, component.position.y, self.bubbleInfoContainer.frame.size.width , 18)];
+        CGFloat timeLabelPosX = self.bubbleInfoContainer.frame.size.width - VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH;
+        CGFloat timeLabelPosY = componentIndex ? component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant: 0;
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabelPosX, timeLabelPosY, VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH , 18)];
         
-        dateTimeLabel.text = [self.bubbleData.eventFormatter timeStringFromDate:component.date];
-        dateTimeLabel.textAlignment = NSTextAlignmentRight;
-        dateTimeLabel.textColor = kVectorTextColorGray;
+        timeLabel.text = [self.bubbleData.eventFormatter timeStringFromDate:component.date];
+        timeLabel.textAlignment = NSTextAlignmentRight;
+        timeLabel.textColor = kVectorTextColorGray;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
         {
-             dateTimeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
+             timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
         }
         else
         {
-             dateTimeLabel.font = [UIFont systemFontOfSize:12];
+             timeLabel.font = [UIFont systemFontOfSize:12];
         }
-        dateTimeLabel.adjustsFontSizeToFitWidth = YES;
+        timeLabel.adjustsFontSizeToFitWidth = YES;
 
-        dateTimeLabel.tag = componentIndex;
+        timeLabel.tag = componentIndex;
         
-        [dateTimeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.bubbleInfoContainer addSubview:dateTimeLabel];
+        [timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.bubbleInfoContainer addSubview:timeLabel];
         
-        // Force dateTimeLabel in full width (to handle auto-layout in case of screen rotation)
-        NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
-                                                                          attribute:NSLayoutAttributeLeading
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.bubbleInfoContainer
-                                                                          attribute:NSLayoutAttributeLeading
-                                                                         multiplier:1.0
-                                                                           constant:0];
-        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
+        // Define timeLabel constraints (to handle auto-layout in case of screen rotation)
+        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
                                                                            attribute:NSLayoutAttributeTrailing
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:self.bubbleInfoContainer
                                                                            attribute:NSLayoutAttributeTrailing
                                                                           multiplier:1.0
                                                                             constant:0];
-        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
                                                                          attribute:NSLayoutAttributeTop
                                                                          relatedBy:NSLayoutRelationEqual
                                                                             toItem:self.bubbleInfoContainer
                                                                          attribute:NSLayoutAttributeTop
                                                                         multiplier:1.0
-                                                                          constant:component.position.y];
-        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:dateTimeLabel
+                                                                          constant:timeLabelPosY];
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1.0
+                                                                            constant:VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH];
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:nil
@@ -89,34 +93,16 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
                                                                              constant:18];
         
         // Available on iOS 8 and later
-        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
+        [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
     }
-}
-
-- (void)removeTimestampLabels
-{
-    // In Vector, only time labels are displayed in bubbleInfoContainer
-    // So we may remove all bubbleInfoContainer subviews here.
-    NSArray* views = [self.bubbleInfoContainer subviews];
-    for (UIView* view in views)
-    {
-        [view removeFromSuperview];
-    }
-    
-    self.bubbleInfoContainer.hidden = YES;
 }
 
 - (void)selectComponent:(NSUInteger)componentIndex
 {
-    MXKRoomBubbleComponent *component;
     if (componentIndex < self.bubbleData.bubbleComponents.count)
     {
         // Add time label
         [self addTimestampLabelForComponent:componentIndex];
-        
-        // Hightlight selection by blurring other components
-        component  = self.bubbleData.bubbleComponents[componentIndex];
-        [self highlightTextMessageForEvent:component.event.eventId];
         
         // Blur timestamp labels which are not related to the selected component (if any)
         for (UIView* view in self.bubbleInfoContainer.subviews)
@@ -137,52 +123,10 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
             {
                 view.alpha = 0.2;
             }
-            else if ([view isKindOfClass:MXKReceiptSendersContainer.class])
-            {
-                self.selectedReadReceiptsContainer = (MXKReceiptSendersContainer*)view;
-            }
         }
         
-        // Add the edit button (shift left the receipts container if any).
+        // Add the edit button
         [self addEditButtonForComponent:componentIndex completion:nil];
-    }
-}
-
-- (void)unselectComponent
-{
-    // Remove edit button (Restore receipts container position if any)
-    [self removeEditButton:nil];
-
-    // Remove all timestamps by default
-    [self removeTimestampLabels];
-    
-    // Restore timestamp for the last message if the current bubble is the last one
-    if ([self.bubbleData isKindOfClass:RoomBubbleCellData.class])
-    {
-        RoomBubbleCellData *cellData = (RoomBubbleCellData*)self.bubbleData;
-        if (cellData.containsLastMessage)
-        {
-            NSArray *components = cellData.bubbleComponents;
-            NSInteger index = components.count;
-            while (index--)
-            {
-                MXKRoomBubbleComponent *component = components[index];
-                if (component.date)
-                {
-                    [self addTimestampLabelForComponent:index];
-                    break;
-                }
-            }
-        }
-    }
-    
-    // Restore original string
-    [self highlightTextMessageForEvent:nil];
-    
-    // Restore read receipts display
-    for (UIView* view in self.bubbleOverlayContainer.subviews)
-    {
-        view.alpha = 1;
     }
 }
 
@@ -245,26 +189,6 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     return objc_getAssociatedObject(self, @selector(editButton));
 }
 
-- (void)setSelectedReadReceiptsContainer:(MXKReceiptSendersContainer *)readReceiptsContainer
-{
-    objc_setAssociatedObject(self, @selector(selectedReadReceiptsContainer), readReceiptsContainer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UIButton*)selectedReadReceiptsContainer
-{
-    return objc_getAssociatedObject(self, @selector(selectedReadReceiptsContainer));
-}
-
-- (void)setSelectedReadReceiptsContainerTrailingConstraint:(NSLayoutConstraint *)readReceiptsContainerTrailingConstraint
-{
-    objc_setAssociatedObject(self, @selector(selectedReadReceiptsContainerTrailingConstraint), readReceiptsContainerTrailingConstraint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UIButton*)selectedReadReceiptsContainerTrailingConstraint
-{
-    return objc_getAssociatedObject(self, @selector(selectedReadReceiptsContainerTrailingConstraint));
-}
-
 #pragma mark - User actions
 
 - (IBAction)onEditButtonPressed:(id)sender
@@ -294,32 +218,15 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
 {
     MXKRoomBubbleComponent *component  = self.bubbleData.bubbleComponents[componentIndex];
     
-    // Define 'Edit' button frame by overlapping slightly the time label
-    // (vertical pos = (component.position.y + 4) instead of (component.position.y + 18))
-    UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(0, component.position.y + 4, self.bubbleInfoContainer.frame.size.width + 15 , 44)];
+    // Define 'Edit' button frame
+    UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];
+    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH - 22 - editIcon.size.width / 2;
+    CGFloat editBtnPosY = componentIndex ? component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13 : -13;
+    UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];
     
-    [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateNormal];
-    [editButton setTitle:NSLocalizedStringFromTable(@"room_event_action_edit", @"Vector", nil) forState:UIControlStateSelected];
-    [editButton setTitleColor:kVectorColorGreen forState:UIControlStateNormal];
-    [editButton setTitleColor:kVectorColorGreen forState:UIControlStateSelected];
+    [editButton setImage:editIcon forState:UIControlStateNormal];
+    [editButton setImage:editIcon forState:UIControlStateSelected];
     
-    // Align button label on the right border of the bubbleInfoContainer
-    editButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    UIEdgeInsets edgeInset = editButton.titleEdgeInsets;
-    edgeInset.right = 15;
-    editButton.titleEdgeInsets = edgeInset;
-    
-    editButton.backgroundColor = [UIColor clearColor];
-    if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-    {
-        editButton.titleLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
-    }
-    else
-    {
-        editButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    }
-    
-    editButton.hidden = YES;
     editButton.tag = componentIndex;
     [editButton addTarget:self action:@selector(onEditButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -327,28 +234,28 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     [self.bubbleInfoContainer addSubview:editButton];
     self.bubbleInfoContainer.userInteractionEnabled = YES;
     
-    // Force edit button in full width (to handle auto-layout in case of screen rotation)
+    // Define edit button constraints
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:editButton
                                                                       attribute:NSLayoutAttributeLeading
                                                                       relatedBy:NSLayoutRelationEqual
                                                                          toItem:self.bubbleInfoContainer
                                                                       attribute:NSLayoutAttributeLeading
                                                                      multiplier:1.0
-                                                                       constant:0];
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:editButton
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.bubbleInfoContainer
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                      multiplier:1.0
-                                                                        constant:15];
+                                                                       constant:editBtnPosX];
     NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:editButton
                                                                      attribute:NSLayoutAttributeTop
                                                                      relatedBy:NSLayoutRelationEqual
                                                                         toItem:self.bubbleInfoContainer
                                                                      attribute:NSLayoutAttributeTop
                                                                     multiplier:1.0
-                                                                      constant:component.position.y + 4];
+                                                                      constant:editBtnPosY];
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:editButton
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0
+                                                                         constant:44];
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:editButton
                                                                         attribute:NSLayoutAttributeHeight
                                                                         relatedBy:NSLayoutRelationEqual
@@ -357,106 +264,10 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
                                                                        multiplier:1.0
                                                                          constant:44];
     // Available on iOS 8 and later
-    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
+    [NSLayoutConstraint activateConstraints:@[leftConstraint, topConstraint, widthConstraint, heightConstraint]];
     
     // Store the created button
     self.editButton = editButton;
-    
-    // Check whether this edit button overlaps a potential receipts container displayed for this component
-    if (self.selectedReadReceiptsContainer)
-    {
-        // Adjust edit button frame to be able to compare it to bubble overlay container (superview of receipts container).
-        CGRect frame = CGRectOffset (editButton.frame, self.bubbleInfoContainer.frame.origin.x, self.bubbleInfoContainer.frame.origin.y);
-        if (CGRectIntersectsRect(frame, self.selectedReadReceiptsContainer.frame))
-        {
-            // Retrieve the trailing constraint of the receipts container
-            NSArray *constraints = self.bubbleOverlayContainer.constraints;
-            for (NSLayoutConstraint *constraint in constraints)
-            {
-                if (constraint.firstAttribute == NSLayoutAttributeTrailing && constraint.firstItem == self.selectedReadReceiptsContainer)
-                {
-                    self.selectedReadReceiptsContainerTrailingConstraint = constraint;
-                    break;
-                }
-            }
-        }
-    }
-    
-    if (self.selectedReadReceiptsContainerTrailingConstraint)
-    {
-        // Update layout with animation
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             
-                             // Shift the container to left
-                             self.selectedReadReceiptsContainerTrailingConstraint.constant -= (self.bubbleInfoContainer.frame.size.width + 6);
-                             
-                             // Force to render the view
-                             [self layoutIfNeeded];
-                             
-                             editButton.hidden = NO;
-                             
-                         }
-                         completion:^(BOOL finished){
-                             
-                             if (completion)
-                             {
-                                 completion(finished);
-                             }
-                             
-                         }];
-    }
-    else
-    {
-        editButton.hidden = NO;
-        
-        if (completion)
-        {
-            completion(YES);
-        }
-    }
-}
-
-- (void)removeEditButton:(void (^ __nullable)(BOOL finished))completion
-{
-    if (self.selectedReadReceiptsContainerTrailingConstraint)
-    {
-        // Update layout with animation
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             
-                             [self.editButton removeFromSuperview];
-                             
-                             self.selectedReadReceiptsContainerTrailingConstraint.constant = -6;
-                             
-                             // Force to render the view
-                             [self layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished){
-                             
-                             self.editButton = nil;
-                             self.selectedReadReceiptsContainer = nil;
-                             self.selectedReadReceiptsContainerTrailingConstraint = nil;
-                             
-                             if (completion)
-                             {
-                                 completion(finished);
-                             }
-                             
-                         }];
-    }
-    else
-    {
-        [self.editButton removeFromSuperview];
-        self.editButton = nil;
-        self.selectedReadReceiptsContainer = nil;
-        self.selectedReadReceiptsContainerTrailingConstraint = nil;
-        
-        if (completion)
-        {
-            completion(YES);
-        }
-    }
 }
 
 @end

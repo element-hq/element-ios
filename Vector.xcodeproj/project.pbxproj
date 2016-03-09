@@ -127,6 +127,7 @@
 		F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */; };
 		F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
+		F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0418BE31C9067B40030356E /* edit_icon@2x.png */; };
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
 		F047DBB91C576F6600952DA2 /* AuthInputsPasswordBasedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */; };
 		F047DBBA1C576F6600952DA2 /* AuthInputsPasswordBasedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */; };
@@ -381,6 +382,7 @@
 		F02528D01C11B6FC00E1FE1B /* voice_call_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice_call_icon.png; sourceTree = "<group>"; };
 		F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@2x.png"; sourceTree = "<group>"; };
 		F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
+		F0418BE31C9067B40030356E /* edit_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit_icon@2x.png"; sourceTree = "<group>"; };
 		F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
 		F047DBB61C576F6600952DA2 /* AuthInputsPasswordBasedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsPasswordBasedView.h; sourceTree = "<group>"; };
 		F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsPasswordBasedView.m; sourceTree = "<group>"; };
@@ -964,6 +966,7 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0418BE31C9067B40030356E /* edit_icon@2x.png */,
 				F056418F1C7DF9DE002276ED /* error.png */,
 				F05641901C7DF9DE002276ED /* error@2x.png */,
 				F05641911C7DF9DE002276ED /* error@3x.png */,
@@ -1253,6 +1256,7 @@
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */,
 				F09EE0071C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */,
 				F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				F0D2D9841C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,

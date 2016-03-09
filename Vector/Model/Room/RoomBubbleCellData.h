@@ -24,8 +24,6 @@
 /**
  A Boolean value that determines whether this bubble contains the current last message.
  Used to keep displaying the timestamp of the last message.
-
- CAUTION: This property is presently set during bubble rendering in order to be used during bubble cell life.
  */
 @property(nonatomic) BOOL containsLastMessage;
 
@@ -33,5 +31,20 @@
  A Boolean value that determines whether some read receipts are currently displayed in this bubble.
  */
 @property(nonatomic) BOOL hasReadReceipts;
+
+/**
+ The event id of the current selected event inside the bubble. Default is nil.
+ */
+@property(nonatomic) NSString *selectedEventId;
+
+/**
+ The index of the most recent component (component with timestamp). NSNotFound by default.
+ */
+@property(nonatomic, readonly) NSInteger mostRecentComponentIndex;
+
+/**
+ The index of the current selected component. NSNotFound by default.
+ */
+@property(nonatomic, readonly) NSInteger selectedComponentIndex;
 
 @end
