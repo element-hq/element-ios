@@ -233,8 +233,11 @@
     
     if (self.roomDataSource)
     {
-       // this room view controller has its own typing management.
-       self.roomDataSource.showTypingNotifications = NO;
+        // this room view controller has its own typing management.
+        self.roomDataSource.showTypingNotifications = NO;
+        
+        // Check whether call option is supported
+        ((RoomInputToolbarView*)self.inputToolbarView).supportCallOption = (self.roomDataSource.mxSession.callManager != nil);
     }
 }
 
@@ -341,6 +344,12 @@
     if ([dataSource isKindOfClass:RoomDataSource.class])
     {
         customizedRoomDataSource = (RoomDataSource*)dataSource;
+    }
+    
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    {
+        // Update call option support
+        ((RoomInputToolbarView*)self.inputToolbarView).supportCallOption = (dataSource.mxSession.callManager != nil);
     }
 }
 
