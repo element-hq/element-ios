@@ -1147,7 +1147,15 @@
             
         }];
         
-        currentTypingUsers = self.roomDataSource.room.typingUsers;
+        // Retrieve the current typing users list
+        NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
+        // Remove typing info for the current user
+        NSUInteger index = [typingUsers indexOfObject:self.mainSession.myUser.userId];
+        if (index != NSNotFound)
+        {
+            [typingUsers removeObjectAtIndex:index];
+        }
+        currentTypingUsers = typingUsers;
         [self refreshActivitiesViewDisplay];
     }
 }
