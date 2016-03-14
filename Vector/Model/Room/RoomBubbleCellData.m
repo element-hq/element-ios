@@ -36,6 +36,9 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // Use the vector style placeholder
         self.senderAvatarPlaceholder = [AvatarGenerator generateRoomMemberAvatar:self.senderId displayName:self.senderDisplayName];
         
+        // Increase maximum number of components
+        self.maxComponentCount = 20;
+        
         // Check whether some read receipts are linked to this event
         _hasReadReceipts = NO;
         if ([roomDataSource.room getEventReceipts:event.eventId sorted:NO])
