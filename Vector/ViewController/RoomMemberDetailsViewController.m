@@ -296,14 +296,27 @@
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
-            // Check whether the user is admin (in this case he may reduce his power level to become moderator).
+            // Check whether the user is admin (in this case he may reduce his power level to become moderator or less, EXCEPT if he is the only admin).
             if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
             {
-                [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
+                NSArray *levelValues = powerLevels.users.allValues;
+                NSUInteger adminCount = 0;
+                for (NSNumber *valueNumber in levelValues)
+                {
+                    if ([valueNumber unsignedIntegerValue] >= kVectorRoomAdminLevel)
+                    {
+                        adminCount ++;
+                    }
+                }
+                
+                if (adminCount > 1)
+                {
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
+                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+                }
             }
-            
             // Check whether the user is moderator (in this case he may reduce his power level to become normal user).
-            if (oneSelfPowerLevel >= kVectorRoomModeratorLevel)
+            else if (oneSelfPowerLevel >= kVectorRoomModeratorLevel)
             {
                 [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
             }
