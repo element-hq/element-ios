@@ -127,13 +127,15 @@
         {
             self.authType = MXKAuthenticationTypeRegister;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
-            self.forgotPasswordButton.hidden = YES;
+            // FIXME handle "Forgot password"
+//            self.forgotPasswordButton.hidden = YES;
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
-            self.forgotPasswordButton.hidden = NO;
+            // FIXME handle "Forgot password"
+//            self.forgotPasswordButton.hidden = NO;
         }
         
         [self hideServerOptionsContainer:YES];
