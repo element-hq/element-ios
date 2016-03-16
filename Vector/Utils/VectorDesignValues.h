@@ -42,8 +42,8 @@ extern UIColor *kVectorTextColorGray;
 extern UIColor *kVectorNavBarTintColor;
 
 #pragma mark - Vector Standard Room Member Power Level
-extern NSUInteger const kVectorRoomModeratorLevel;
-extern NSUInteger const kVectorRoomAdminLevel;
+extern NSInteger const kVectorRoomModeratorLevel;
+extern NSInteger const kVectorRoomAdminLevel;
 
 /**
  `VectorDesignValues` class manages the Vector design parameters

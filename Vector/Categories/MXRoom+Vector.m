@@ -71,7 +71,7 @@
     // Check whether the user has enough power to rename the room or update the avatar
     MXRoomPowerLevels *powerLevels = [self.state powerLevels];
     
-    NSUInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
+    NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
     
     return (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
 }
