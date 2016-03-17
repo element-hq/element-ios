@@ -23,7 +23,7 @@
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  
- When this property is nil, the view controller is able to handle a list of participants without room reference (see inherited class 'RoomCreationStep2ViewController').
+ When this property is nil, the view controller is able to handle a list of participants without room reference.
  */
 @interface RoomParticipantsViewController : MXKTableViewController <UISearchBarDelegate>
 {

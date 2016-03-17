@@ -335,10 +335,6 @@
                     displayName = NSLocalizedStringFromTable(@"room_displayname_room_invite", @"Vector", nil);
                 }
             }
-            else
-            {
-                displayName = myUserId;
-            }
         }
     }
     else if (othersActiveMembers.count == 1)
