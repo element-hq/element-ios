@@ -1,3 +1,27 @@
+Changes in Vector iOS in 0.1.2 (2016-03-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.4).
+ * Chat screen: Update timestamp and message edition display.
+ * Chat screen: Leave message edition mode when user is typing.
+ * Media Picker: Enlarge touch area of the X and switch-camera.
+ * Media Picker: Remove red placeholder images on videos #157.
+ * Room Creation: handle new created room as an empty room.
+
+Bug fixes:
+ * Outgoing calls in the timeline are shown as Incoming calls in recents #102.
+ * T&Cs and Privacy Policy buttons need that text #143.
+ * Call button is still visible in production builds #142.
+ * I get sometimes typing notifications for myself #123.
+ * Room member details: "reset to normal user" option #149.
+ * Messages: Unread room handling #159.
+ * White screen on first launch #114.
+ * Chat: All messages are displayed twice #139.
+ * Updating favourites on the web is not reflected on mobile #136.
+ * Chat: scrolling to bottom when opening new rooms seems unreliable #148.
+ * Chat: persistent unsent messages #164.
+
 Changes in Vector iOS in 0.1.1 (2016-03-07)
 ===============================================
 
