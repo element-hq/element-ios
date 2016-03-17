@@ -35,6 +35,12 @@
     // The "parent" segmented view controller
     HomeViewController *homeViewController;
     
+    // The room identifier related to the cell which is in editing mode (if any).
+    NSString *swipedCellRoomId;
+    
+    // Tell whether a recents refresh is pending (suspended during editing mode).
+    BOOL isRefreshPending;
+    
     // recents drag and drop management
     UIImageView *cellSnapshot;
     NSIndexPath* movingCellPath;
@@ -153,6 +159,43 @@
 
 #pragma mark - Internal methods
 
+- (void)refreshRecentsTable
+{
+    if (swipedCellRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:swipedCellRoomId];
+        if (room)
+        {
+            isRefreshPending = YES;
+            return;
+        }
+        else
+        {
+            // Cancel the editing mode
+            swipedCellRoomId = nil;
+        }
+    }
+    
+    isRefreshPending = NO;
+    
+    [self.recentsTableView reloadData];
+    
+    if (_shouldScrollToTopOnRefresh)
+    {
+        [self scrollToTop];
+        _shouldScrollToTopOnRefresh = NO;
+    }
+    
+    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
+    // the selected room (if any) is updated and kept visible.
+    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
+    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
+    {
+        [self refreshCurrentSelectedCell:YES];
+    }    
+}
+
 - (void)scrollToTop
 {
     // Stop any scrolling effect before scrolling to the tableview top
@@ -255,26 +298,28 @@
         };
     }
     
-    [self.recentsTableView reloadData];
-    
-    if (_shouldScrollToTopOnRefresh)
-    {
-        [self scrollToTop];
-        _shouldScrollToTopOnRefresh = NO;
-    }
-    
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
-    // the selected room (if any) is updated and kept visible.
-    // Note: 'isCollapsed' property is available in UISplitViewController for iOS 8 and later.
-    if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
-    {
-        [self refreshCurrentSelectedCell:YES];
-    }
+    [self refreshRecentsTable];
 }
 
 #pragma mark - swipe actions
 
-// for IOS >= 8 devices
+- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Report the room identifier of the edited cell.
+    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+    swipedCellRoomId = cellData.roomDataSource.roomId;
+}
+
+- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    swipedCellRoomId = nil;
+    
+    if (isRefreshPending)
+    {
+        [self refreshRecentsTable];
+    }
+}
+
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray* actions = [[NSMutableArray alloc] init];
