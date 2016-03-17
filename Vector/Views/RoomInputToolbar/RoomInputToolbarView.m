@@ -56,6 +56,8 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
+    _supportCallOption = YES;
+    
     self.rightInputToolbarButton.hidden = YES;
     
     self.separatorView.backgroundColor = kVectorColorSiver;
@@ -69,6 +71,25 @@
     growingTextView.textColor = kVectorTextColorBlack;
     
     self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+}
+
+- (void)setSupportCallOption:(BOOL)supportCallOption
+{
+    if (_supportCallOption != supportCallOption)
+    {
+        _supportCallOption = supportCallOption;
+        
+        if (supportCallOption)
+        {
+            self.voiceCallButtonWidthConstraint.constant = 46;
+        }
+        else
+        {
+            self.voiceCallButtonWidthConstraint.constant = 0;
+        }
+        
+        [self setNeedsUpdateConstraints];
+    }
 }
 
 #pragma mark - HPGrowingTextView delegate

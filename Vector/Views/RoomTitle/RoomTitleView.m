@@ -88,6 +88,15 @@
     if (self.mxRoom)
     {
         self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
+        if (!self.displayNameTextField.text.length)
+        {
+            self.displayNameTextField.text = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+            self.displayNameTextField.textColor = kVectorTextColorGray;
+        }
+        else
+        {
+            self.displayNameTextField.textColor = kVectorTextColorBlack;
+        }
     }
 }
 

@@ -22,15 +22,6 @@
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 #import "AvatarGenerator.h"
 
-@interface RoomDataSource ()
-{
-    /**
-     Store here the cell index of the last message (Updated at each table refresh).
-     */
-    NSInteger lastMessageCellIndex;
-}
-@end
-
 @implementation RoomDataSource
 
 - (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
@@ -64,20 +55,15 @@
     {
         for (RoomBubbleCellData *cellData in bubbles)
         {
-            if (cellData.hasReadReceipts)
-            {
-                // Recompute the text message layout
-                cellData.attributedTextMessage = nil;
-            }
+            cellData.hasReadReceipts = NO;
         }
     }
     
     NSArray *readEventIds = receiptEvent.readReceiptEventIds;
     for (NSString* eventId in readEventIds)
     {
-        id<MXKRoomBubbleCellDataStoring> bubbleData = [self cellDataOfEventWithEventId:eventId];
-        // Recompute the text message layout
-        bubbleData.attributedTextMessage = nil;
+        RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
+        cellData.hasReadReceipts = YES;
     }
     
     
@@ -85,24 +71,31 @@
     [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
 }
 
+#pragma  mark -
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = [super tableView:tableView numberOfRowsInSection:section];
     
     if (count)
     {
-        // Refresh the cell index of the last message
-        lastMessageCellIndex = 0;
+        // Look for the cell data which contains the last message.
         
+        // Reset first the flag in each cell data
+        @synchronized(bubbles)
+        {
+            for (RoomBubbleCellData *cellData in bubbles)
+            {
+                cellData.containsLastMessage = NO;
+            }
+        }
+        
+        // Set the flag in the right cell data
         MXEvent *lastMessage = self.lastMessage;
         if (lastMessage.eventId)
         {
-            lastMessageCellIndex = [self indexOfCellDataWithEventId:lastMessage.eventId];
-            // Sanity check
-            if (lastMessageCellIndex == NSNotFound)
-            {
-                lastMessageCellIndex = 0;
-            }
+            RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:lastMessage.eventId];
+            cellData.containsLastMessage = YES;
         }
     }
     
@@ -119,23 +112,10 @@
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         
-        // Check whether this bubble is the last one
-        cellData.containsLastMessage = (indexPath.row == lastMessageCellIndex);
-        
-        // Display timestamp for the last message
+        // Display timestamp of the last message
         if (cellData.containsLastMessage)
         {
-            NSArray *components = cellData.bubbleComponents;
-            NSInteger index = components.count;
-            while (index--)
-            {
-                MXKRoomBubbleComponent *component = components[index];
-                if (component.date)
-                {
-                    [bubbleCell addTimestampLabelForComponent:index];
-                    break;
-                }
-            }
+            [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
         // Handle read receipts display.
@@ -242,30 +222,40 @@
         // Check whether an event is currently selected: the other messages are then blurred
         if (_selectedEventId)
         {
-            NSInteger index = [self indexOfCellDataWithEventId:_selectedEventId];
-            
-            if (indexPath.row != index)
+            // Check whether the selected event belongs to this bubble
+            NSInteger selectedComponentIndex = cellData.selectedComponentIndex;
+            if (selectedComponentIndex != NSNotFound)
             {
-                // The cell should be displayed in blur mode
-                bubbleCell.blurred = YES;
+                [bubbleCell selectComponent:cellData.selectedComponentIndex];
             }
             else
             {
-                // Highlight the selected event in the displayed message
-                for (NSUInteger index = 0; index < cellData.bubbleComponents.count; index ++)
-                {
-                    MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
-                    if ([component.event.eventId isEqualToString:_selectedEventId])
-                    {
-                        [bubbleCell selectComponent:index];
-                        break;
-                    }
-                }
+                bubbleCell.blurred = YES;
             }
         }
     }
     
     return cell;
+}
+
+#pragma mark -
+
+- (void)setSelectedEventId:(NSString *)selectedEventId
+{
+    // Cancel the current selection (if any)
+    if (_selectedEventId)
+    {
+        RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:_selectedEventId];
+        cellData.selectedEventId = nil;
+    }
+    
+    if (selectedEventId.length)
+    {
+        RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
+        cellData.selectedEventId = selectedEventId;
+    }
+    
+    _selectedEventId = selectedEventId;
 }
 
 @end

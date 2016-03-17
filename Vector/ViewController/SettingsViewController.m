@@ -757,21 +757,13 @@
         {
            if (row == OTHER_TERM_CONDITIONS_INDEX)
            {
-               MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil) style:MXKAlertStyleAlert];
-               
-               alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-               }];
-               
-               [alert showInViewController:self];
-            }
+               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/tac.html"];
+               [self.navigationController pushViewController:webViewViewController animated:YES];
+           }
            else if (row == OTHER_PRIVACY_INDEX)
            {
-               MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil) style:MXKAlertStyleAlert];
-               
-               alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-               }];
-               
-               [alert showInViewController:self];
+               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/privacy.html"];
+               [self.navigationController pushViewController:webViewViewController animated:YES];
            }
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)

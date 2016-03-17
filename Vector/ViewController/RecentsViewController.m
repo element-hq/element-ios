@@ -301,7 +301,8 @@
             
         }];
         
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"unmute_icon" : @"mute_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        UIImage *actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
         // favorites management
@@ -323,43 +324,58 @@
             currentTag = [tags objectAtIndex:0];
         }
         
-        if (!currentTag || ![kMXRoomTagFavourite isEqualToString:currentTag.name])
+        if (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name])
+        {
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+                
+                [self updateRoomTagAtIndexPath:indexPath to:nil];
+            }];
+            
+            actionIcon = [UIImage imageNamed:@"favouriteOff"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            [actions insertObject:action atIndex:0];
+        }
+        else
         {
             UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
                 [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
             }];
             
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favorite_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            actionIcon = [UIImage imageNamed:@"favourite"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
-        if (currentTag && ([kMXRoomTagFavourite isEqualToString:currentTag.name] || [kMXRoomTagLowPriority isEqualToString:currentTag.name]))
+        if (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name])
         {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Std" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
                 [self updateRoomTagAtIndexPath:indexPath to:nil];
             }];
             
-            action.backgroundColor = [MXKTools convertImageToPatternColor:nil backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            actionIcon = [UIImage imageNamed:@"priorityHigh"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
-        
-        if (!currentTag || ![kMXRoomTagLowPriority isEqualToString:currentTag.name])
+        else
         {
             UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
                 [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
             }];
             
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"low_priority_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+            actionIcon = [UIImage imageNamed:@"priorityLow"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
         UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             [self leaveRecentsAtIndexPath:indexPath];
         }];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        
+        actionIcon = [UIImage imageNamed:@"leave"];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         
         [actions insertObject:leaveAction atIndex:0];
     }

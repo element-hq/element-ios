@@ -56,10 +56,6 @@
     self = [super init];
     if (self)
     {
-        // Replace event formatter
-        self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
-        self.eventFormatter.isForSubtitle = YES;
-        
         favoriteCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
@@ -80,9 +76,16 @@
 }
 
 
-- (void)addMatrixSession:(MXSession *)mxSession
+- (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession
 {
-    [super addMatrixSession:mxSession];
+    MXKSessionRecentsDataSource *recentsDataSource = [super addMatrixSession:mxSession];
+    
+    if (recentsDataSource)
+    {
+        // Replace default event formatter
+        recentsDataSource.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:mxSession];
+        recentsDataSource.eventFormatter.isForSubtitle = YES;
+    }
 
     // Initialise the public room directory data source
     // Note that it is single matrix session only for now
@@ -91,6 +94,8 @@
         _publicRoomsDirectoryDataSource = [[PublicRoomsDirectoryDataSource alloc] initWithMatrixSession:mxSession];
         _publicRoomsDirectoryDataSource.delegate = self;
     }
+    
+    return recentsDataSource;
 }
 
 - (void)removeMatrixSession:(MXSession*)matrixSession
@@ -104,7 +109,7 @@
         
         if (roomTagListener)
         {
-            [self.mxSession removeListener:roomTagListener];
+            [matrixSession removeListener:roomTagListener];
             [roomTagsListenerByUserId removeObjectForKey:matrixSession.myUser.userId];
         }
 
@@ -126,10 +131,10 @@
     {
         [super dataSource:dataSource didStateChange:aState];
 
-        if ((aState == MXKDataSourceStateReady) && self.mxSession && self.mxSession.myUser && self.mxSession.myUser.userId)
+        if ((aState == MXKDataSourceStateReady) && dataSource.mxSession.myUser.userId)
         {
             // Register the room tags updates to refresh the favorites order
-            id roomTagsListener = [self.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
+            id roomTagsListener = [dataSource.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
                                                                 onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
 
                                                                     // Consider only live event
@@ -144,7 +149,7 @@
 
                                                                 }];
 
-            [roomTagsListenerByUserId setObject:roomTagsListener forKey:self.mxSession.myUser.userId];
+            [roomTagsListenerByUserId setObject:roomTagsListener forKey:dataSource.mxSession.myUser.userId];
         }
     }
 }
@@ -187,7 +192,7 @@
 - (void)didMXSessionInviteRoomUpdate:(NSNotification *)notif
 {
     MXSession *mxSession = notif.object;
-    if (mxSession == self.mxSession)
+    if ([self.mxSessions indexOfObject:mxSession] != NSNotFound)
     {
         [self refreshRoomsSectionsAndReload];
     }

@@ -41,10 +41,10 @@
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXk-ZD-TYS" userLabel="Camera Switch Button">
-                                    <rect key="frame" x="543" y="30" width="39" height="32"/>
+                                    <rect key="frame" x="537" y="24" width="51" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="5IK-zA-C0Z"/>
-                                        <constraint firstAttribute="width" constant="39" id="JWE-xq-eRq"/>
+                                        <constraint firstAttribute="height" constant="44" id="5IK-zA-C0Z"/>
+                                        <constraint firstAttribute="width" constant="51" id="JWE-xq-eRq"/>
                                     </constraints>
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -61,10 +61,10 @@
                                     </constraints>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sO8-Ds-mXZ" userLabel="Close Button">
-                                    <rect key="frame" x="18" y="30" width="32" height="32"/>
+                                    <rect key="frame" x="12" y="24" width="44" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="32" id="Rrv-zB-kX4"/>
-                                        <constraint firstAttribute="height" constant="32" id="nXZ-ee-z3I"/>
+                                        <constraint firstAttribute="width" constant="44" id="Rrv-zB-kX4"/>
+                                        <constraint firstAttribute="height" constant="44" id="nXZ-ee-z3I"/>
                                     </constraints>
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -100,7 +100,7 @@
                             </subviews>
                             <constraints>
                                 <constraint firstItem="etc-h5-0u2" firstAttribute="centerX" secondItem="PXk-ZD-TYS" secondAttribute="centerX" id="1Kl-Hi-rvU"/>
-                                <constraint firstItem="PXk-ZD-TYS" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="30" id="3bv-hT-POE"/>
+                                <constraint firstItem="PXk-ZD-TYS" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="24" id="3bv-hT-POE"/>
                                 <constraint firstAttribute="trailing" secondItem="w7z-f3-kdT" secondAttribute="trailing" id="5lY-ez-A5W"/>
                                 <constraint firstAttribute="bottom" secondItem="uRG-b0-CjY" secondAttribute="bottom" constant="30" id="F15-CU-duW"/>
                                 <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerY" secondItem="sO8-Ds-mXZ" secondAttribute="centerY" id="Fze-aW-Jg3"/>
@@ -111,10 +111,10 @@
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" id="eH4-0j-WXi"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" id="kXk-s5-NTi"/>
                                 <constraint firstItem="dxP-iB-dWk" firstAttribute="centerY" secondItem="cE0-0g-Su5" secondAttribute="centerY" id="lut-Up-d2d"/>
-                                <constraint firstAttribute="trailing" secondItem="PXk-ZD-TYS" secondAttribute="trailing" constant="18" id="nlx-eq-jfm"/>
-                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="30" id="oLB-32-Cmq"/>
+                                <constraint firstAttribute="trailing" secondItem="PXk-ZD-TYS" secondAttribute="trailing" constant="12" id="nlx-eq-jfm"/>
+                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" constant="24" id="oLB-32-Cmq"/>
                                 <constraint firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" id="sca-zF-zuj"/>
-                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" constant="18" id="tCv-ru-PZS"/>
+                                <constraint firstItem="sO8-Ds-mXZ" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" constant="12" id="tCv-ru-PZS"/>
                                 <constraint firstItem="dxP-iB-dWk" firstAttribute="centerX" secondItem="cE0-0g-Su5" secondAttribute="centerX" id="xNd-lI-T6h"/>
                             </constraints>
                         </view>

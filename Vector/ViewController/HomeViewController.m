@@ -26,6 +26,8 @@
 #import "MXKSearchDataSource.h"
 #import "HomeSearchViewController.h"
 
+#import "AppDelegate.h"
+
 @interface HomeViewController ()
 {
     RecentsViewController *recentsViewController;
@@ -39,6 +41,8 @@
 
     // Display a button to a new room
     UIImageView* createNewRoomImageView;
+    
+    MXHTTPOperation *roomCreationRequest;
 }
 
 @end
@@ -85,6 +89,17 @@
 - (void)dealloc
 {
     [self closeSelectedRoom];
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    if (roomCreationRequest)
+    {
+        [roomCreationRequest cancel];
+        roomCreationRequest = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -577,7 +592,35 @@
 
 - (void)onNewRoomPressed
 {
-    [self performSegueWithIdentifier:@"presentRoomCreationStep1" sender:self];
+    createNewRoomImageView.userInteractionEnabled = NO;
+    
+    [recentsViewController startActivityIndicator];
+    
+    // Create an empty room.
+    roomCreationRequest = [self.mainSession createRoom:nil
+                                            visibility:kMXRoomVisibilityPrivate
+                                             roomAlias:nil
+                                                 topic:nil
+                                               success:^(MXRoom *room) {
+                                                   
+                                                   roomCreationRequest = nil;
+                                                   [recentsViewController stopActivityIndicator];
+                                                   createNewRoomImageView.userInteractionEnabled = YES;
+                                                   
+                                                   [self selectRoomWithId:room.state.roomId inMatrixSession:self.mainSession];
+                                                   
+                                               } failure:^(NSError *error) {
+                                                   
+                                                   roomCreationRequest = nil;
+                                                   [recentsViewController stopActivityIndicator];
+                                                   createNewRoomImageView.userInteractionEnabled = YES;
+                                                   
+                                                   NSLog(@"[RoomCreation] Create new room failed");
+                                                   
+                                                   // Alert user
+                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                   
+                                               }];
 }
 
 @end

@@ -207,8 +207,8 @@
             
         }];
         
-        cell.topRightIcon.image = [UIImage imageNamed:@"icon_video"];
-        cell.topRightIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
+        cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+        cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
         
         // Disable user interaction in mxkImageView, in order to let collection handle user selection
         cell.mxkImageView.userInteractionEnabled = NO;

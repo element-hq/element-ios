@@ -34,6 +34,10 @@
         if (room)
         {
             title = room.vectorDisplayname;
+            if (!title.length)
+            {
+                title = NSLocalizedStringFromTable(@"room_displayname_no_title", @"Vector", nil);
+            }
         }
         else
         {

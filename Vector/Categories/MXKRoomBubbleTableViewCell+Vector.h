@@ -38,21 +38,11 @@ extern NSString *const kMXKRoomBubbleCellVectorEditButtonPressed;
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex;
 
 /**
- Remove timestamp labels
- */
-- (void)removeTimestampLabels;
-
-/**
  Highlight a component in receiver.
  
  @param componentIndex index of the component in bubble message data
  */
 - (void)selectComponent:(NSUInteger)componentIndex;
-
-/**
- Cancel the highlighting of a component in receiver.
- */
-- (void)unselectComponent;
 
 /**
  Blur the view by adding a transparent overlay. Default is NO.
@@ -63,15 +53,5 @@ extern NSString *const kMXKRoomBubbleCellVectorEditButtonPressed;
  The 'edit' button displayed in front of the selected component (if any). Default is nil.
  */
 @property(nonatomic) UIButton *editButton;
-
-/**
- The read receipts container associated to the selected component (if any). Default is nil.
- */
-@property(nonatomic) MXKReceiptSendersContainer* selectedReadReceiptsContainer;
-
-/**
- The trailing constraint of the read receipts container associated to the selected component (if any). Default is nil.
- */
-@property(nonatomic) NSLayoutConstraint* selectedReadReceiptsContainerTrailingConstraint;
 
 @end

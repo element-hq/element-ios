@@ -29,8 +29,8 @@ UIColor *kVectorTextColorGray;
 
 UIColor *kVectorNavBarTintColor;
 
-NSUInteger const kVectorRoomModeratorLevel = 50;
-NSUInteger const kVectorRoomAdminLevel = 100;
+NSInteger const kVectorRoomModeratorLevel = 50;
+NSInteger const kVectorRoomAdminLevel = 100;
 
 @implementation VectorDesignValues
 

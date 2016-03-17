@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -168,50 +168,6 @@
             </objects>
             <point key="canvasLocation" x="-740" y="-1649"/>
         </scene>
-        <!--Room Creation Step1 View Controller-->
-        <scene sceneID="3UV-ot-cd9">
-            <objects>
-                <tableViewController id="Cbg-8m-X8i" customClass="RoomCreationStep1ViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="20" sectionFooterHeight="10" id="NUY-Lz-fh7">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="Cbg-8m-X8i" id="SOv-BE-z4t"/>
-                            <outlet property="delegate" destination="Cbg-8m-X8i" id="vQ5-ME-lJj"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="KAS-Jg-1Dg">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="tim-NW-Txf"/>
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="Cub-LH-hn4">
-                            <connections>
-                                <segue destination="ora-EF-y8t" kind="show" identifier="showRoomCreationStep2" id="wiK-nM-g3w"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DVg-PQ-GNa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3165" y="-3530"/>
-        </scene>
-        <!--Room Creation Step2 View Controller-->
-        <scene sceneID="iae-jL-hCr">
-            <objects>
-                <tableViewController id="ora-EF-y8t" customClass="RoomCreationStep2ViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="zDo-5c-N7t">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="ora-EF-y8t" id="h2d-VL-Bb2"/>
-                            <outlet property="delegate" destination="ora-EF-y8t" id="r6y-Ki-LnV"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9el-54-iek" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4081" y="-3522"/>
-        </scene>
         <!--Home View Controller-->
         <scene sceneID="O3K-sK-0fA">
             <objects>
@@ -240,7 +196,6 @@
                     <connections>
                         <outlet property="searchBarButtonIem" destination="mxO-nq-rJ1" id="J1s-2g-XGk"/>
                         <outlet property="settingsBarButtonItem" destination="RwK-LB-3ML" id="T3b-ii-7fa"/>
-                        <segue destination="cLJ-Zo-cIe" kind="presentation" identifier="presentRoomCreationStep1" id="EwV-tH-4jl"/>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="agy-3r-khl"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vfC-8C-AsT"/>
                         <segue destination="dP6-5F-5s0" kind="showDetail" identifier="showDirectory" action="showViewController:sender:" id="hvq-zV-OB7"/>
@@ -278,24 +233,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SLD-UC-DBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="414" y="-1081"/>
-        </scene>
-        <!--Room Creation Nav Controller-->
-        <scene sceneID="afM-B0-GRp">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cLJ-Zo-cIe" userLabel="Room Creation Nav Controller" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lWd-xy-Xa1">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Cbg-8m-X8i" kind="relationship" relationship="rootViewController" id="FCF-4W-EeB"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="use-eB-x6a" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2297" y="-3530"/>
         </scene>
     </scenes>
     <resources>
