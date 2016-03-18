@@ -204,9 +204,54 @@
     return displayName;
 }
 
+#pragma mark - Room tags
+
+- (void)setRoomTag:(NSString*)tag completion:(void (^)())completion
+{
+    NSString* oldTag = nil;
+    
+    if (self.accountData.tags && self.accountData.tags.count)
+    {
+        oldTag = [self.accountData.tags.allKeys objectAtIndex:0];
+    }
+    
+    // support only kMXRoomTagFavourite or kMXRoomTagLowPriority tags by now
+    if (![tag isEqualToString:kMXRoomTagFavourite] && ![tag isEqualToString:kMXRoomTagLowPriority])
+    {
+        tag = nil;
+    }
+    
+    NSString* tagOrder = [self.mxSession tagOrderToBeAtIndex:0 from:NSNotFound withTag:tag];
+    
+    NSLog(@"[MXRoom+Vector] Update the room %@ tag from %@ to %@ with tag order %@", self.state.roomId, oldTag, tag, tagOrder);
+    
+    [self replaceTag:oldTag
+               byTag:tag
+           withOrder:tagOrder
+             success: ^{
+                 
+                 if (completion)
+                 {
+                     completion();
+                 }
+                 
+             } failure:^(NSError *error) {
+                 
+                 NSLog(@"[MXRoom+Vector] Failed to update the tag %@ of room (%@) failed: %@", tag, self.state.roomId, error);
+                 
+                 // Notify user
+                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                 
+                 if (completion)
+                 {
+                     completion();
+                 }
+             }];
+}
+
 #pragma mark - Room notification mode
 
-- (BOOL)areRoomNotificationsMuted
+- (BOOL)isMute
 {
     MXPushRule* rule = [self getRoomPushRule];
     
@@ -224,39 +269,47 @@
     return NO;
 }
 
-- (void)toggleRoomNotifications:(BOOL)mute
+- (void)setMute:(BOOL)mute completion:(void (^)())completion
 {
-    BOOL isNotified = ![self areRoomNotificationsMuted];
-    
-    // check if the state is already in the right state
-    if (isNotified == !mute)
+    // Check the current notification mode
+    if (self.isMute == mute)
     {
+        if (completion)
+        {
+            completion();
+        }
         return;
     }
     
-    MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     MXPushRule* rule = [self getRoomPushRule];
     
     if (!mute)
     {
         // let the other notification rules manage the pushes.
-        [notificationCenter removeRule:rule];
+        [self removePushRule:rule completion:completion];
     }
     else
     {
-        // user does not want to have push
+        // User does not want to have push
         
-        // if there is no rule
+        // Check if no rule is already defined.
         if (!rule)
         {
-            // add one
-            [notificationCenter addRoomRule:self.state.roomId
-                                     notify:NO
-                                      sound:NO
-                                  highlight:NO];
+            // Add a new one
+            [self addPushRuleToDisableNotification:completion];
         }
         else
         {
+            // Check whether there is no pending update for this room
+            if (self.notificationCenterDidUpdateObserver)
+            {
+                NSLog(@"[MXRoom+Vector] Request in progress: ignore push rule update");
+                if (completion)
+                {
+                    completion();
+                }
+                return;
+            }
             
             // check if the user did not define one
             BOOL hasDontNotifyRule = NO;
@@ -273,68 +326,17 @@
             // if the user defined one, use it
             if (hasDontNotifyRule)
             {
-                [notificationCenter enableRule:rule isEnabled:YES];
+                [self enablePushRule:rule completion:completion];
             }
             else
             {
-                __weak typeof(self) weakSelf = self;
-                
-                // if the user defined a room rule
-                // the rule is deleted before adding new one
-                
-                id localNotificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+                // If the user has defined a room rule, the rule is deleted before adding new one.
+                [self removePushRule:rule completion:^{
                     
-                    MXPushRule* rule = [self getRoomPushRule];
+                    // Add new rule to disable notification
+                    [self addPushRuleToDisableNotification:completion];
                     
-                    // check if the rule has been deleted
-                    // there is no way to know if the notif is really for this rule..
-                    if (!rule)
-                    {
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        
-                        if (strongSelf.notificationCenterDidUpdateObserver)
-                        {
-                            [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
-                            strongSelf.notificationCenterDidUpdateObserver = nil;
-                        }
-                        
-                        if (strongSelf.notificationCenterDidFailObserver)
-                        {
-                            [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
-                            strongSelf.notificationCenterDidUpdateObserver = nil;
-                        }
-                        
-                        // add one dedicated rule
-                        [notificationCenter addRoomRule:self.state.roomId
-                                                 notify:NO
-                                                  sound:NO
-                                              highlight:NO];
-                    }
                 }];
-                
-                id localNotificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-                    
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    
-                    if (strongSelf.notificationCenterDidUpdateObserver)
-                    {
-                        [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
-                        strongSelf.notificationCenterDidUpdateObserver = nil;
-                    }
-                    
-                    if (strongSelf.notificationCenterDidFailObserver)
-                    {
-                        [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
-                        strongSelf.notificationCenterDidUpdateObserver = nil;
-                    }
-                }];
-                
-                self.notificationCenterDidUpdateObserver = localNotificationCenterDidUpdateObserver;
-                self.notificationCenterDidFailObserver = localNotificationCenterDidFailObserver;
-                
-                // remove the rule notification
-                // the notifications are used to tell
-                [notificationCenter removeRule:rule];
             }
         }
     }
@@ -361,6 +363,174 @@
     }
     
     return nil;
+}
+
+- (void)addPushRuleToDisableNotification:(void (^)())completion
+{
+    MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
+    
+    // Define notificationCenter observers if a completion block is defined.
+    if (completion)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        self.notificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            // Check whether the rule has been added
+            BOOL isAdded = ([self getRoomPushRule] != nil);
+            if (isAdded)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                if (strongSelf.notificationCenterDidUpdateObserver)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                    strongSelf.notificationCenterDidUpdateObserver = nil;
+                }
+                
+                if (strongSelf.notificationCenterDidFailObserver)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                    strongSelf.notificationCenterDidFailObserver = nil;
+                }
+                
+                completion();
+            }
+        }];
+        
+        self.notificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            if (strongSelf.notificationCenterDidUpdateObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                strongSelf.notificationCenterDidUpdateObserver = nil;
+            }
+            
+            if (strongSelf.notificationCenterDidFailObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                strongSelf.notificationCenterDidFailObserver = nil;
+            }
+            
+            completion();
+        }];
+    }
+    
+    [notificationCenter addRoomRule:self.state.roomId
+                             notify:NO
+                              sound:NO
+                          highlight:NO];
+}
+
+- (void)removePushRule:(MXPushRule *)rule completion:(void (^)())completion
+{
+    MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
+    
+    // Define notificationCenter observers if a completion block is defined.
+    if (completion)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        self.notificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            // Check whether the rule has been removed
+            BOOL isRemoved = ([notificationCenter ruleById:rule.ruleId] == nil);
+            if (isRemoved)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                if (strongSelf.notificationCenterDidUpdateObserver)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                    strongSelf.notificationCenterDidUpdateObserver = nil;
+                }
+                
+                if (strongSelf.notificationCenterDidFailObserver)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                    strongSelf.notificationCenterDidFailObserver = nil;
+                }
+                
+                completion();
+            }
+        }];
+        
+        self.notificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            if (strongSelf.notificationCenterDidUpdateObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                strongSelf.notificationCenterDidUpdateObserver = nil;
+            }
+            
+            if (strongSelf.notificationCenterDidFailObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                strongSelf.notificationCenterDidFailObserver = nil;
+            }
+            
+            completion();
+        }];
+    }
+    
+    [notificationCenter removeRule:rule];
+}
+
+- (void)enablePushRule:(MXPushRule *)rule completion:(void (^)())completion
+{
+    MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
+    
+    // Define notificationCenter observers if a completion block is defined.
+    if (completion)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        self.notificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            // No way to check whether this notification concerns the push rule. Consider the change is applied.
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            if (strongSelf.notificationCenterDidUpdateObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                strongSelf.notificationCenterDidUpdateObserver = nil;
+            }
+            
+            if (strongSelf.notificationCenterDidFailObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                strongSelf.notificationCenterDidFailObserver = nil;
+            }
+            
+            completion();
+        }];
+        
+        self.notificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            if (strongSelf.notificationCenterDidUpdateObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                strongSelf.notificationCenterDidUpdateObserver = nil;
+            }
+            
+            if (strongSelf.notificationCenterDidFailObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                strongSelf.notificationCenterDidFailObserver = nil;
+            }
+            
+            completion();
+        }];
+    }
+    
+    [notificationCenter enableRule:rule isEnabled:YES];
 }
 
 - (void)setNotificationCenterDidFailObserver:(id)anObserver

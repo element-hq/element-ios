@@ -34,7 +34,7 @@
 /**
  Tell whether the notifications are disabled for the room.
  */
-@property(nonatomic, readonly) BOOL areRoomNotificationsMuted;
+@property(nonatomic, readonly, getter=isMute) BOOL mute;
 
 /*
  Observer when a rules deletion fails.
@@ -58,11 +58,21 @@
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView;
 
 /**
- Toggle a room rule notifications.
+ Update the room tag.
+ 
+ @param tag the new tag value
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ You may specify nil for this parameter.
+ */
+- (void)setRoomTag:(NSString*)tag completion:(void (^)())completion;
+
+/**
+ Enable/disable room notifications.
  
  @param mute YES to disable room notification
- @return the dedicated push rule
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ You may specify nil for this parameter.
  */
-- (void)toggleRoomNotifications:(BOOL)mute;
+- (void)setMute:(BOOL)mute completion:(void (^)())completion;
 
 @end

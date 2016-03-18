@@ -20,6 +20,8 @@
 
 #import "RageShakeManager.h"
 
+#import "MXRoom+Vector.h"
+
 #import "NSBundle+MatrixKit.h"
 
 #import "HomeViewController.h"
@@ -36,7 +38,7 @@
     HomeViewController *homeViewController;
     
     // The room identifier related to the cell which is in editing mode (if any).
-    NSString *swipedCellRoomId;
+    NSString *editedRoomId;
     
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -47,6 +49,9 @@
     MXRoom* movingRoom;
     
     NSIndexPath* lastPotentialCellPath;
+    
+    // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
+    id UIApplicationDidEnterBackgroundNotificationObserver;
 }
 
 @end
@@ -86,11 +91,25 @@
 
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
+    
+    // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
+    UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // Leave potential editing mode
+        [self setEditing:NO];
+        
+    }];
 }
 
 - (void)destroy
 {
     [super destroy];
+    
+    if (UIApplicationDidEnterBackgroundNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationDidEnterBackgroundNotificationObserver];
+        UIApplicationDidEnterBackgroundNotificationObserver = nil;
+    }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -161,10 +180,10 @@
 
 - (void)refreshRecentsTable
 {
-    if (swipedCellRoomId)
+    if (editedRoomId)
     {
         // Check whether the user didn't leave the room
-        MXRoom *room = [self.mainSession roomWithRoomId:swipedCellRoomId];
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
         if (room)
         {
             isRefreshPending = YES;
@@ -173,7 +192,7 @@
         else
         {
             // Cancel the editing mode
-            swipedCellRoomId = nil;
+            editedRoomId = nil;
         }
     }
     
@@ -283,7 +302,7 @@
     
         recentsDataSource.onRoomInvitationReject = ^(MXRoom* room) {
             
-            [self.recentsTableView setEditing:NO];
+            [self setEditing:NO];
             
             [room leave:^{
                 [self.recentsTableView reloadData];
@@ -303,23 +322,6 @@
 
 #pragma mark - swipe actions
 
-- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Report the room identifier of the edited cell.
-    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
-    swipedCellRoomId = cellData.roomDataSource.roomId;
-}
-
-- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    swipedCellRoomId = nil;
-    
-    if (isRefreshPending)
-    {
-        [self refreshRecentsTable];
-    }
-}
-
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray* actions = [[NSMutableArray alloc] init];
@@ -329,20 +331,23 @@
     {
         NSArray* invitedRooms = room.mxSession.invitedRooms;
         
-        // display no action for the invited room
+        // Display no action for the invited room
         if (invitedRooms && ([invitedRooms indexOfObject:room] != NSNotFound))
         {
             return actions;
         }
         
+        // Store the identifier of the room related to the edited cell.
+        editedRoomId = room.state.roomId;
+        
         NSString* title = @"      ";
         
-        // pushes settings
-        BOOL isMuted = ![self.dataSource isRoomNotifiedAtIndexPath:indexPath];
+        // Notification toggle
+        BOOL isMuted = room.isMute;
         
         UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             
-            [self muteRoomNotifications:!isMuted atIndexPath:indexPath];
+            [self muteEditedRoomNotifications:!isMuted];
             
         }];
         
@@ -350,30 +355,26 @@
         muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
-        // favorites management
-        NSDictionary* tagsDict = [[NSDictionary alloc] init];
         
-        // sanity cg
-        if (room.accountData.tags)
-        {
-            tagsDict = [NSDictionary dictionaryWithDictionary:room.accountData.tags];
-        }
-    
-        // get the room tag
-        // use only the first one
-        NSArray<MXRoomTag*>* tags = tagsDict.allValues;
+        // Favorites management
         MXRoomTag* currentTag = nil;
         
-        if (tags.count)
+        // Get the room tag (use only the first one).
+        if (room.accountData.tags)
         {
-            currentTag = [tags objectAtIndex:0];
+            NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
+            if (tags.count)
+            {
+                currentTag = [tags objectAtIndex:0];
+            }
         }
         
         if (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name])
         {
             UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
-                [self updateRoomTagAtIndexPath:indexPath to:nil];
+                [self updateEditedRoomTag:nil];
+                
             }];
             
             actionIcon = [UIImage imageNamed:@"favouriteOff"];
@@ -384,7 +385,8 @@
         {
             UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
-                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagFavourite];
+                [self updateEditedRoomTag:kMXRoomTagFavourite];
+                
             }];
             
             actionIcon = [UIImage imageNamed:@"favourite"];
@@ -396,7 +398,8 @@
         {
             UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
-                [self updateRoomTagAtIndexPath:indexPath to:nil];
+                [self updateEditedRoomTag:nil];
+                
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityHigh"];
@@ -407,7 +410,8 @@
         {
             UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
                 
-                [self updateRoomTagAtIndexPath:indexPath to:kMXRoomTagLowPriority];
+                [self updateEditedRoomTag:kMXRoomTagLowPriority];
+                
             }];
             
             actionIcon = [UIImage imageNamed:@"priorityLow"];
@@ -416,7 +420,9 @@
         }
         
         UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            [self leaveRecentsAtIndexPath:indexPath];
+            
+            [self leaveEditedRoom];
+            
         }];
         
         actionIcon = [UIImage imageNamed:@"leave"];
@@ -428,22 +434,116 @@
     return actions;
 }
 
-- (void)leaveRecentsAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.dataSource leaveRoomAtIndexPath:indexPath];
-    [self.recentsTableView setEditing:NO];
+    editedRoomId = nil;
+    
+    if (isRefreshPending)
+    {
+        [self refreshRecentsTable];
+    }
 }
 
-- (void)updateRoomTagAtIndexPath:(NSIndexPath *)indexPath to:(NSString*)tag
+- (void)leaveEditedRoom
 {
-    [self.dataSource updateRoomTagAtIndexPath:indexPath to:tag];
-    [self.recentsTableView setEditing:NO];
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room yet
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [self startActivityIndicator];
+            
+            // cancel pending uploads/downloads
+            // they are useless by now
+            [MXKMediaManager cancelDownloadsInCacheFolder:room.state.roomId];
+            
+            // TODO GFO cancel pending uploads related to this room
+            
+            NSLog(@"[RecentsViewController] Leave room (%@)", room.state.roomId);
+            
+            [room leave:^{
+                
+                [self stopActivityIndicator];
+                
+                // Force table refresh
+                editedRoomId = nil;
+                [self refreshRecentsTable];
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[RecentsViewController] Failed to leave room (%@) failed: %@", room.state.roomId, error);
+                
+                // Notify MatrixKit user
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                
+                [self stopActivityIndicator];
+                
+                // Leave editing mode
+                [self setEditing:NO];
+            }];
+        }
+        else
+        {
+            // Leave editing mode
+            [self setEditing:NO];
+        }
+    }
 }
 
-- (void)muteRoomNotifications:(BOOL)mute atIndexPath:(NSIndexPath*)path
+- (void)updateEditedRoomTag:(NSString*)tag
 {
-    [self.dataSource muteRoomNotifications:mute atIndexPath:path];
-    [self.recentsTableView setEditing:NO];
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [self startActivityIndicator];
+            
+            [room setRoomTag:tag completion:^{
+                
+                [self stopActivityIndicator];
+                
+                // Force table refresh
+                editedRoomId = nil;
+                [self refreshRecentsTable];
+                
+            }];
+        }
+        else
+        {
+            // Leave editing mode
+            [self setEditing:NO];
+        }
+    }
+}
+
+- (void)muteEditedRoomNotifications:(BOOL)mute
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [self startActivityIndicator];
+            
+            [room setMute:mute completion:^{
+                
+                [self stopActivityIndicator];
+                
+                // Leave editing mode
+                [self setEditing:NO];
+                
+            }];
+        }
+        else
+        {
+            // Leave editing mode
+            [self setEditing:NO];
+        }
+    }
 }
 
 #pragma mark - UITableView delegate

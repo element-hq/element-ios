@@ -458,7 +458,7 @@
     
     if ([updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"])
     {
-        [mxRoom toggleRoomNotifications:roomNotifSwitch.on];
+        [mxRoom setMute:roomNotifSwitch.on completion:nil];
         [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
         [self onSave:nil];
     }
@@ -567,7 +567,7 @@
             }
             else
             {
-                roomNotifSwitch.on = mxRoom.areRoomNotificationsMuted;
+                roomNotifSwitch.on = mxRoom.isMute;
             }
             
             cell = roomNotifCell;
@@ -770,9 +770,9 @@
     {
         NSMutableDictionary* dict = [self getUpdatedItemsDict];
         
-        if (roomNotifSwitch.on == mxRoom.areRoomNotificationsMuted)
+        if (roomNotifSwitch.on == mxRoom.isMute)
         {
-           [dict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+            [dict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
         }
         else
         {
