@@ -22,31 +22,189 @@
 
 @implementation MXRoom (Vector)
 
-/**
- Returns the room rule notifition.
- 
- @return the dedicated push rule
- */
-- (MXPushRule*)getRoomPushRule
+#pragma mark - User power level
+
+- (BOOL)isModerator
 {
-    NSArray* rules = self.mxSession.notificationCenter.rules.global.room;
+    // Check whether the user has enough power to rename the room or update the avatar
+    MXRoomPowerLevels *powerLevels = [self.state powerLevels];
     
-    // sanity checks
-    if (rules)
+    NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
+    
+    return (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
+}
+
+#pragma mark - Room avatar
+
+- (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
+{
+    NSString* roomAvatarUrl = self.state.avatar;
+    
+    // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
+    if (!roomAvatarUrl)
     {
-        for(MXPushRule* rule in rules)
+        NSString* myUserId = self.mxSession.myUser.userId;
+        
+        NSArray* members = self.state.members;
+        
+        if (members.count < 3)
         {
-            // the rule id is the room Id
-            // it is the server trick to avoid duplicated rule on the same room.
-            if ([rule.ruleId isEqualToString:self.state.roomId])
+            // use the member avatar only it is an active member
+            for (MXRoomMember *roomMember in members)
             {
-                return rule;
+                if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
+                {
+                    roomAvatarUrl = roomMember.avatarUrl;
+                    break;
+                }
             }
         }
     }
     
-    return nil;
+    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:self.state.roomId andDisplayName:self.vectorDisplayname];
+    
+    if (roomAvatarUrl)
+    {
+        mxkImageView.enableInMemoryCache = YES;
+        
+        [mxkImageView setImageURL:[self.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+    }
+    else
+    {
+        mxkImageView.image = avatarImage;
+    }
+    
+    mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
+
+#pragma mark - Room display name
+
+- (NSString *)vectorDisplayname
+{
+    // this algo is the one defined in
+    // https://github.com/matrix-org/matrix-js-sdk/blob/develop/lib/models/room.js#L617
+    // calculateRoomName(room, userId)
+    
+    MXRoomState* roomState = self.state;
+    
+    if (roomState.name.length > 0)
+    {
+        return roomState.name;
+    }
+    
+    NSString *alias = roomState.canonicalAlias;
+    
+    if (!alias)
+    {
+        // For rooms where canonical alias is not defined, we use the 1st alias as a workaround
+        NSArray *aliases = roomState.aliases;
+        
+        if (aliases.count)
+        {
+            alias = [aliases[0] copy];
+        }
+    }
+    
+    // check if there is non empty alias.
+    if ([alias length] > 0)
+    {
+        return alias;
+    }
+    
+    NSString* myUserId = self.mxSession.myUser.userId;
+    
+    NSArray* members = roomState.members;
+    NSMutableArray* othersActiveMembers = [[NSMutableArray alloc] init];
+    NSMutableArray* activeMembers = [[NSMutableArray alloc] init];
+    
+    for(MXRoomMember* member in members)
+    {
+        if (member.membership != MXMembershipLeave)
+        {
+            if (![member.userId isEqualToString:myUserId])
+            {
+                [othersActiveMembers addObject:member];
+            }
+            
+            [activeMembers addObject:member];
+        }
+    }
+    
+    // sort the members by their creation (oldest first)
+    othersActiveMembers = [[othersActiveMembers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        
+        uint64_t originServerTs1 = 0;
+        uint64_t originServerTs2 = 0;
+        
+        MXRoomMember* member1 = (MXRoomMember*)obj1;
+        MXRoomMember* member2 = (MXRoomMember*)obj2;
+        
+        if (member1.originalEvent)
+        {
+            originServerTs1 = member1.originalEvent.originServerTs;
+        }
+        
+        if (member2.originalEvent)
+        {
+            originServerTs2 = member2.originalEvent.originServerTs;
+        }
+        
+        if (originServerTs1 == originServerTs2)
+        {
+            return NSOrderedSame;
+        }
+        else
+        {
+            return originServerTs1 > originServerTs2 ? NSOrderedDescending : NSOrderedAscending;
+        }
+    }] mutableCopy];
+    
+    
+    NSString* displayName = @"";
+    
+    if (othersActiveMembers.count == 0)
+    {
+        if (activeMembers.count == 1)
+        {
+            MXRoomMember* member = [activeMembers objectAtIndex:0];
+            
+            if (member.membership == MXMembershipInvite)
+            {
+                if (member.originalEvent.sender)
+                {
+                    // extract who invited us to the room
+                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState memberName:member.originalEvent.sender]];
+                }
+                else
+                {
+                    displayName = NSLocalizedStringFromTable(@"room_displayname_room_invite", @"Vector", nil);
+                }
+            }
+        }
+    }
+    else if (othersActiveMembers.count == 1)
+    {
+        MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
+        
+        displayName = [roomState memberName:member.userId];
+    }
+    else if (othersActiveMembers.count == 2)
+    {
+        MXRoomMember* member1 = [othersActiveMembers objectAtIndex:0];
+        MXRoomMember* member2 = [othersActiveMembers objectAtIndex:1];
+        
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState memberName:member1.userId], [roomState memberName:member2.userId]];
+    }
+    else
+    {
+        MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
+        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState memberName:member.userId], othersActiveMembers.count - 1];
+    }
+    
+    return displayName;
+}
+
+#pragma mark - Room notification mode
 
 - (BOOL)areRoomNotificationsMuted
 {
@@ -64,16 +222,6 @@
     }
     
     return NO;
-}
-
-- (BOOL)isModerator
-{
-    // Check whether the user has enough power to rename the room or update the avatar
-    MXRoomPowerLevels *powerLevels = [self.state powerLevels];
-    
-    NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
-    
-    return (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
 }
 
 - (void)toggleRoomNotifications:(BOOL)mute
@@ -192,174 +340,28 @@
     }
 }
 
-- (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
-{
-    NSString* roomAvatarUrl = self.state.avatar;
-    
-    // detect if it is a room with no more than 2 members (i.e. an alone or a 1:1 chat)
-    if (!roomAvatarUrl)
-    {
-        NSString* myUserId = self.mxSession.myUser.userId;
-        
-        NSArray* members = self.state.members;
-        
-        if (members.count < 3)
-        {
-            // use the member avatar only it is an active member
-            for (MXRoomMember *roomMember in members)
-            {
-                if ((MXMembershipJoin == roomMember.membership) && ((members.count == 1) || ![roomMember.userId isEqualToString:myUserId]))
-                {
-                    roomAvatarUrl = roomMember.avatarUrl;
-                    break;
-                }
-            }
-        }
-    }
-    
-    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:self.state.roomId andDisplayName:self.vectorDisplayname];
-    
-    if (roomAvatarUrl)
-    {
-        mxkImageView.enableInMemoryCache = YES;
-        
-        [mxkImageView setImageURL:[self.mxSession.matrixRestClient urlOfContentThumbnail:roomAvatarUrl toFitViewSize:mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
-    }
-    else
-    {
-        mxkImageView.image = avatarImage;
-    }
-    
-    mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
-}
+#pragma mark -
 
-- (NSString *)vectorDisplayname
+- (MXPushRule*)getRoomPushRule
 {
-    // this algo is the one defined in
-    // https://github.com/matrix-org/matrix-js-sdk/blob/develop/lib/models/room.js#L617
-    // calculateRoomName(room, userId)
+    NSArray* rules = self.mxSession.notificationCenter.rules.global.room;
     
-    MXRoomState* roomState = self.state;
-    
-    if (roomState.name.length > 0)
+    // sanity checks
+    if (rules)
     {
-        return roomState.name;
-    }
-    
-    NSString *alias = roomState.canonicalAlias;
-    
-    if (!alias)
-    {
-        // For rooms where canonical alias is not defined, we use the 1st alias as a workaround
-        NSArray *aliases = roomState.aliases;
-        
-        if (aliases.count)
+        for(MXPushRule* rule in rules)
         {
-            alias = [aliases[0] copy];
-        }
-    }
-    
-    // check if there is non empty alias.
-    if ([alias length] > 0)
-    {
-        return alias;
-    }
-    
-    NSString* myUserId = self.mxSession.myUser.userId;
-    
-    NSArray* members = roomState.members;
-    NSMutableArray* othersActiveMembers = [[NSMutableArray alloc] init];
-    NSMutableArray* activeMembers = [[NSMutableArray alloc] init];
-    
-    for(MXRoomMember* member in members)
-    {
-        if (member.membership != MXMembershipLeave)
-        {
-            if (![member.userId isEqualToString:myUserId])
+            // the rule id is the room Id
+            // it is the server trick to avoid duplicated rule on the same room.
+            if ([rule.ruleId isEqualToString:self.state.roomId])
             {
-                [othersActiveMembers addObject:member];
-            }
-            
-            [activeMembers addObject:member];
-        }
-    }
-    
-    // sort the members by their creation (oldest first)
-    othersActiveMembers = [[othersActiveMembers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        
-        uint64_t originServerTs1 = 0;
-        uint64_t originServerTs2 = 0;
-        
-        MXRoomMember* member1 = (MXRoomMember*)obj1;
-        MXRoomMember* member2 = (MXRoomMember*)obj2;
-        
-        if (member1.originalEvent)
-        {
-            originServerTs1 = member1.originalEvent.originServerTs;
-        }
-        
-        if (member2.originalEvent)
-        {
-            originServerTs2 = member2.originalEvent.originServerTs;
-        }
-        
-        if (originServerTs1 == originServerTs2)
-        {
-            return NSOrderedSame;
-        }
-        else
-        {
-            return originServerTs1 > originServerTs2 ? NSOrderedDescending : NSOrderedAscending;
-        }
-    }] mutableCopy];
-    
-    
-    NSString* displayName = @"";
-    
-    // TODO: Localisation
-    if (othersActiveMembers.count == 0)
-    {
-        if (activeMembers.count == 1)
-        {
-            MXRoomMember* member = [activeMembers objectAtIndex:0];
-            
-            if (member.membership == MXMembershipInvite)
-            {
-                if (member.originalEvent.sender)
-                {
-                    // extract who invited us to the room
-                    displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_invite_from", @"Vector", nil), [roomState memberName:member.originalEvent.sender]];
-                }
-                else
-                {
-                    displayName = NSLocalizedStringFromTable(@"room_displayname_room_invite", @"Vector", nil);
-                }
+                return rule;
             }
         }
     }
-    else if (othersActiveMembers.count == 1)
-    {
-        MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
-        
-        displayName = [roomState memberName:member.userId];
-    }
-    else if (othersActiveMembers.count == 2)
-    {
-        MXRoomMember* member1 = [othersActiveMembers objectAtIndex:0];
-        MXRoomMember* member2 = [othersActiveMembers objectAtIndex:1];
-        
-        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_two_members", @"Vector", nil), [roomState memberName:member1.userId], [roomState memberName:member2.userId]];
-    }
-    else
-    {
-        MXRoomMember* member = [othersActiveMembers objectAtIndex:0];
-        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_displayname_more_than_two_members", @"Vector", nil), [roomState memberName:member.userId], othersActiveMembers.count - 1];
-    }
     
-    return displayName;
+    return nil;
 }
-
-#pragma mark - observer properties management
 
 - (void)setNotificationCenterDidFailObserver:(id)anObserver
 {
