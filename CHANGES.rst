@@ -10,6 +10,8 @@ Improvements:
  * Room Creation: handle new created room as an empty room.
 
 Bug fixes:
+ * Sliding animation on recents entries can be quite stuttery #162.
+ * People search is shown in UI but not yet implemented #165.
  * Outgoing calls in the timeline are shown as Incoming calls in recents #102.
  * T&Cs and Privacy Policy buttons need that text #143.
  * Call button is still visible in production builds #142.
