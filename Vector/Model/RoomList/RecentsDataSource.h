@@ -37,13 +37,13 @@
  There is a pending drag and drop cell.
  It defines its path of the source cell.
  */
-@property (nonatomic, copy) NSIndexPath* hiddenCellIndexPath;
+@property (nonatomic) NSIndexPath* hiddenCellIndexPath;
 
 /**
  There is a pending drag and drop cell.
  It defines its path of the destination cell.
  */
-@property (nonatomic, copy) NSIndexPath* droppingCellIndexPath;
+@property (nonatomic) NSIndexPath* droppingCellIndexPath;
 
 /**
  The movingCellBackgroundImage.
