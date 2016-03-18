@@ -64,9 +64,10 @@
     searchViewController = [HomeSearchViewController searchViewController];
     [viewControllers addObject:searchViewController];
 
-    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-    MXKViewController *tempPeopleVC = [[MXKViewController alloc] init];
-    [viewControllers addObject:tempPeopleVC];
+    // FIXME Add search People tab
+//    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
+//    MXKViewController *tempPeopleVC = [[MXKViewController alloc] init];
+//    [viewControllers addObject:tempPeopleVC];
 
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
