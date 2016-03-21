@@ -85,8 +85,8 @@
 
 - (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
 
-//Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId;
+// Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
 @end
 

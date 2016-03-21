@@ -1026,8 +1026,8 @@
         __weak typeof(self) weakSelf = self;
         for(MXKAccount *account in mxAccounts)
         {
-            [accountPicker addActionWithTitle:account.mxCredentials.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-            {
+            [accountPicker addActionWithTitle:account.mxCredentials.userId style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 strongSelf->accountPicker = nil;
                 
@@ -1038,10 +1038,15 @@
             }];
         }
         
-        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-        {
+        accountPicker.cancelButtonIndex = [accountPicker addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             strongSelf->accountPicker = nil;
+            
+            if (onSelection)
+            {
+                onSelection(nil);
+            }
         }];
         
         accountPicker.sourceView = self.window.rootViewController.view;
@@ -1074,62 +1079,82 @@
     _visibleRoomId = roomId;
 }
 
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId
+- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion
 {
     // Handle here potential multiple accounts
-    [self selectMatrixAccount:^(MXKAccount *selectedAccount)
-     {
-         MXSession *mxSession = selectedAccount.mxSession;
-         
-         if (mxSession)
-         {
-             MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
-             
-             // if the room exists
-             if (mxRoom)
-             {
-                 // open it
-                 [self showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
-             }
-             else
-             {
-                 // create a new room
-                 [mxSession createRoom:nil
-                            visibility:kMXRoomVisibilityPrivate
-                             roomAlias:nil
-                                 topic:nil
-                               success:^(MXRoom *room) {
-                                   
-                                   // invite the other user only if it is defined and not onself
-                                   if (userId && ![mxSession.myUser.userId isEqualToString:userId])
-                                   {
-                                       // add the user
-                                       [room inviteUser:userId
-                                                success:^{
-                                                }
-                                                failure:^(NSError *error) {
-                                                    
-                                                    NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
-                                                    //Alert user
-                                                    [self showErrorAsAlert:error];
-                                                    
-                                                }];
-                                   }
-                                   
-                                   // Open created room
-                                   [self showRoom:room.state.roomId withMatrixSession:mxSession];
-                                   
-                               }
-                               failure:^(NSError *error) {
-                                   
-                                   NSLog(@"[AppDelegate] Create room failed");
-                                   //Alert user
-                                   [self showErrorAsAlert:error];
-                                   
-                               }];
-             }
-         }
-     }];
+    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
+        
+        MXSession *mxSession = selectedAccount.mxSession;
+        
+        if (mxSession)
+        {
+            MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
+            
+            // if the room exists
+            if (mxRoom)
+            {
+                // open it
+                [self showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
+                
+                if (completion)
+                {
+                    completion();
+                }
+            }
+            else
+            {
+                // create a new room
+                [mxSession createRoom:nil
+                           visibility:kMXRoomVisibilityPrivate
+                            roomAlias:nil
+                                topic:nil
+                              success:^(MXRoom *room) {
+                                  
+                                  // Invite the other user only if it is defined and not onself
+                                  if (userId && ![mxSession.myUser.userId isEqualToString:userId])
+                                  {
+                                      // Add the user
+                                      [room inviteUser:userId
+                                               success:^{
+                                               }
+                                               failure:^(NSError *error) {
+                                                   
+                                                   NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
+                                                   //Alert user
+                                                   [self showErrorAsAlert:error];
+                                                   
+                                               }];
+                                  }
+                                  
+                                  // Open created room
+                                  [self showRoom:room.state.roomId withMatrixSession:mxSession];
+                                  
+                                  if (completion)
+                                  {
+                                      completion();
+                                  }
+                                  
+                              }
+                              failure:^(NSError *error) {
+                                  
+                                  NSLog(@"[AppDelegate] Create room failed");
+                                  //Alert user
+                                  [self showErrorAsAlert:error];
+                                  
+                                  if (completion)
+                                  {
+                                      completion();
+                                  }
+                                  
+                              }];
+            }
+        }
+        else if (completion)
+        {
+            completion();
+        }
+        
+    }];
 }
 
 #pragma mark - MXKCallViewControllerDelegate
@@ -1178,16 +1203,16 @@
 
 #pragma mark - MXKContactDetailsViewControllerDelegate
 
-- (void)contactDetailsViewController:(MXKContactDetailsViewController *)contactDetailsViewController startChatWithMatrixId:(NSString *)matrixId
+- (void)contactDetailsViewController:(MXKContactDetailsViewController *)contactDetailsViewController startChatWithMatrixId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [self startPrivateOneToOneRoomWithUserId:matrixId];
+    [self startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
-- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [self startPrivateOneToOneRoomWithUserId:matrixId];
+    [self startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
 }
 
 #pragma mark - Call status handling
