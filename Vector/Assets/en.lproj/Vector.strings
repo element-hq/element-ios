@@ -139,10 +139,6 @@
 // Settings
 "account_logout_all" = "Logout all accounts";
 
-"settings_config_ios_console_version" = "Console version: %@";
-"settings_config_ios_kit_version" = "MatrixKit version: %@";
-"settings_config_ios_sdk_version" = "MatrixSDK version: %@";
-"settings_config_build_number" = "Build: %@";
 "settings_config_no_build_info" = "(no build info)";
 "settings_title_config" = "Configuration";
 "settings_clear_cache" = "Clear cache";
