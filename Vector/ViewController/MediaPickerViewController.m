@@ -443,6 +443,12 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)reloadUserLibraryAlbums
 {
+    // Sanity check
+    if (!userAlbumsQueue)
+    {
+        return;
+    }
+        
     dispatch_async(userAlbumsQueue, ^{
         
         // List user albums which are not empty
