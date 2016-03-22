@@ -91,7 +91,6 @@
     addParticipantsSearchBarCell.contentView.backgroundColor = [UIColor whiteColor];
     addParticipantsSearchBarCell.mxkSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
-    addParticipantsSearchBarCell.mxkSearchBar.keyboardType = UIKeyboardTypeEmailAddress;
     addParticipantsSearchBarCell.mxkSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
     addParticipantsSearchBarCell.mxkSearchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
