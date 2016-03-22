@@ -147,9 +147,10 @@
         [self.view addSubview:createNewRoomImageView];
 
         createNewRoomImageView.backgroundColor = [UIColor clearColor];
+        createNewRoomImageView.contentMode = UIViewContentModeCenter;
         createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
 
-        CGFloat side = 58.0f;
+        CGFloat side = 78.0f;
         NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
                                                                            attribute:NSLayoutAttributeWidth
                                                                            relatedBy:NSLayoutRelationEqual
@@ -180,24 +181,14 @@
                                                                                toItem:createNewRoomImageView
                                                                             attribute:NSLayoutAttributeBottom
                                                                            multiplier:1
-                                                                             constant:19];
+                                                                             constant:9];
 
-        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-        {
-            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
-        }
-        else
-        {
-            [createNewRoomImageView addConstraint:widthConstraint];
-            [createNewRoomImageView addConstraint:heightConstraint];
-
-            [self.view addConstraint:bottomConstraint];
-            [self.view addConstraint:centerXConstraint];
-        }
-
+        // Available on iOS 8 and later
+        [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+        
         createNewRoomImageView.userInteractionEnabled = YES;
 
-        // tap -> switch to text edition
+        // Handle tap gesture
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
         [tap setNumberOfTouchesRequired:1];
         [tap setNumberOfTapsRequired:1];
@@ -593,35 +584,39 @@
 
 - (void)onNewRoomPressed
 {
-    createNewRoomImageView.userInteractionEnabled = NO;
-    
-    [recentsViewController startActivityIndicator];
-    
-    // Create an empty room.
-    roomCreationRequest = [self.mainSession createRoom:nil
-                                            visibility:kMXRoomVisibilityPrivate
-                                             roomAlias:nil
-                                                 topic:nil
-                                               success:^(MXRoom *room) {
-                                                   
-                                                   roomCreationRequest = nil;
-                                                   [recentsViewController stopActivityIndicator];
-                                                   createNewRoomImageView.userInteractionEnabled = YES;
-                                                   
-                                                   [self selectRoomWithId:room.state.roomId inMatrixSession:self.mainSession];
-                                                   
-                                               } failure:^(NSError *error) {
-                                                   
-                                                   roomCreationRequest = nil;
-                                                   [recentsViewController stopActivityIndicator];
-                                                   createNewRoomImageView.userInteractionEnabled = YES;
-                                                   
-                                                   NSLog(@"[RoomCreation] Create new room failed");
-                                                   
-                                                   // Alert user
-                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                   
-                                               }];
+    // Sanity check
+    if (self.mainSession)
+    {
+        createNewRoomImageView.userInteractionEnabled = NO;
+        
+        [recentsViewController startActivityIndicator];
+        
+        // Create an empty room.
+        roomCreationRequest = [self.mainSession createRoom:nil
+                                                visibility:kMXRoomVisibilityPrivate
+                                                 roomAlias:nil
+                                                     topic:nil
+                                                   success:^(MXRoom *room) {
+                                                       
+                                                       roomCreationRequest = nil;
+                                                       [recentsViewController stopActivityIndicator];
+                                                       createNewRoomImageView.userInteractionEnabled = YES;
+                                                       
+                                                       [self selectRoomWithId:room.state.roomId inMatrixSession:self.mainSession];
+                                                       
+                                                   } failure:^(NSError *error) {
+                                                       
+                                                       roomCreationRequest = nil;
+                                                       [recentsViewController stopActivityIndicator];
+                                                       createNewRoomImageView.userInteractionEnabled = YES;
+                                                       
+                                                       NSLog(@"[RoomCreation] Create new room failed");
+                                                       
+                                                       // Alert user
+                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                       
+                                                   }];
+    }
 }
 
 @end
