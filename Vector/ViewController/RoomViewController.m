@@ -193,51 +193,35 @@
     [UIView setAnimationsEnabled:NO];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
     [UIView setAnimationsEnabled:YES];
-
-    // Set user picture in input toolbar
-    MXKImageView *userPictureView = ((RoomInputToolbarView*)self.inputToolbarView).pictureView;
-    if (userPictureView)
-    {
-        UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
-        NSString *avatarThumbURL = nil;
-        if (self.mainSession.myUser.avatarUrl)
-        {
-            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
-        }
-        userPictureView.enableInMemoryCache = YES;
-        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
-        [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
-        userPictureView.clipsToBounds = YES;
-    }
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
-
-    if (self.roomDataSource.isLive)
+    
+    // Update navigation bar items
+    self.navigationItem.rightBarButtonItem.target = self;
+    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
+    
+    // Handle potential data source
+    if (self.roomDataSource)
     {
-        self.navigationItem.rightBarButtonItem.target = self;
-        self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        if (self.roomDataSource.isLive)
+        {
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        else
+        {
+            // Hide the search button
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        
+        [self refreshRoomInputToolbar];
     }
     else
     {
-        // Hide the search button
-        self.navigationItem.rightBarButtonItem = nil;
-    }
-
-    // Localize strings here
-    
-    if (self.roomDataSource)
-    {
-        // this room view controller has its own typing management.
-        self.roomDataSource.showTypingNotifications = NO;
-        
-        // Check whether call option is supported
-        ((RoomInputToolbarView*)self.inputToolbarView).supportCallOption = (self.roomDataSource.mxSession.callManager != nil);
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
 }
 
@@ -338,19 +322,35 @@
 {
     [super displayRoom:dataSource];
     
-    self.navigationItem.rightBarButtonItem.enabled = (dataSource != nil);
+    customizedRoomDataSource = nil;
     
-    // Store ref on customized room data source
-    if ([dataSource isKindOfClass:RoomDataSource.class])
+    if (self.roomDataSource)
     {
-        customizedRoomDataSource = (RoomDataSource*)dataSource;
+        // This room view controller has its own typing management.
+        self.roomDataSource.showTypingNotifications = NO;
+        
+        if (self.roomDataSource.isLive)
+        {
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        else
+        {
+            // Hide the search button
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        
+        // Store ref on customized room data source
+        if ([dataSource isKindOfClass:RoomDataSource.class])
+        {
+            customizedRoomDataSource = (RoomDataSource*)dataSource;
+        }
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
-    {
-        // Update call option support
-        ((RoomInputToolbarView*)self.inputToolbarView).supportCallOption = (dataSource.mxSession.callManager != nil);
-    }
+    [self refreshRoomInputToolbar];
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -432,6 +432,37 @@
     }
     
     [super destroy];
+}
+
+#pragma mark - Internals
+
+- (void)refreshRoomInputToolbar
+{
+    // Check whether the input toolbar is ready before updating it.
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        
+        // Check whether the call option is supported
+        roomInputToolbarView.supportCallOption = (self.roomDataSource.mxSession.callManager != nil);
+        
+        // Set user picture in input toolbar
+        MXKImageView *userPictureView = roomInputToolbarView.pictureView;
+        if (userPictureView)
+        {
+            UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
+            NSString *avatarThumbURL = nil;
+            if (self.mainSession.myUser.avatarUrl)
+            {
+                // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+                avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+            }
+            userPictureView.enableInMemoryCache = YES;
+            [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
+            [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
+            userPictureView.clipsToBounds = YES;
+        }
+    }
 }
 
 #pragma mark - Hide/Show expanded header
