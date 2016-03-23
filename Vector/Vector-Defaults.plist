@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>pushGatewayURL</key>
+	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pusherAppIdDev</key>
 	<string>im.vector.app.ios.dev</string>
 	<key>pusherAppIdProd</key>
