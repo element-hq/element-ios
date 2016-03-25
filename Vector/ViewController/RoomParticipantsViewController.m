@@ -556,10 +556,12 @@
         if (!participantCell)
         {
             participantCell = [[ContactTableViewCell alloc] init];
-            // do not show the custom accessory view
-            participantCell.showCustomAccessoryView = NO;
         }
-    
+
+        // Reset the custom accessory view
+        participantCell.showCustomAccessoryView = NO;
+        [participantCell.customAccessoryView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+
         participantCell.mxRoom = self.mxRoom;
         
         Contact *contact = nil;
@@ -1187,9 +1189,8 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    // "Done" key has been pressed
-    self.isAddParticipantSearchBarEditing = NO;
-    [searchBar resignFirstResponder];
+    // "Done" key has been pressed. Cancel the invitation process
+    [self searchBarCancelButtonClicked:searchBar];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
