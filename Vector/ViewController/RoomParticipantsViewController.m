@@ -650,7 +650,15 @@
         
         [self customizeContactCell:participantCell atIndexPath:indexPath];
         [participantCell render:contact];
-    
+
+        // The search displays contacts to invite. Add a plus icon to the cell
+        // in order to make it more understandable for the end user
+        if (indexPath.section == searchResultSection)
+        {
+            [participantCell.customAccessoryView  addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]]];
+            participantCell.showCustomAccessoryView = YES;
+        }
+
         cell = participantCell;
     }
     
