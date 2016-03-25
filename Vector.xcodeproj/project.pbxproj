@@ -25,6 +25,9 @@
 		32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */; };
 		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
 		32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */; };
+		32D0A4BC1CA44509008F3451 /* plus_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4B91CA44509008F3451 /* plus_icon.png */; };
+		32D0A4BD1CA44509008F3451 /* plus_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */; };
+		32D0A4BE1CA44509008F3451 /* plus_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */; };
 		32D200831C15C56A00A4E396 /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200801C15C56A00A4E396 /* search_bg.png */; };
 		32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200811C15C56A00A4E396 /* search_bg@2x.png */; };
 		32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D200821C15C56A00A4E396 /* search_bg@3x.png */; };
@@ -260,6 +263,9 @@
 		32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
 		32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
 		32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
+		32D0A4B91CA44509008F3451 /* plus_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_icon.png; sourceTree = "<group>"; };
+		32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon@2x.png"; sourceTree = "<group>"; };
+		32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon@3x.png"; sourceTree = "<group>"; };
 		32D200801C15C56A00A4E396 /* search_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_bg.png; sourceTree = "<group>"; };
 		32D200811C15C56A00A4E396 /* search_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@2x.png"; sourceTree = "<group>"; };
 		32D200821C15C56A00A4E396 /* search_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@3x.png"; sourceTree = "<group>"; };
@@ -1035,6 +1041,9 @@
 				F02528B31C11B6FC00E1FE1B /* placeholder.png */,
 				F02528B41C11B6FC00E1FE1B /* placeholder@2x.png */,
 				F02528B51C11B6FC00E1FE1B /* placeholder@3x.png */,
+				32D0A4B91CA44509008F3451 /* plus_icon.png */,
+				32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */,
+				32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */,
 				F02528B61C11B6FC00E1FE1B /* remove_icon.png */,
 				F02528B71C11B6FC00E1FE1B /* remove_icon@2x.png */,
 				F02528B81C11B6FC00E1FE1B /* remove_icon@3x.png */,
@@ -1190,6 +1199,7 @@
 				F0DA3FC81C4691CD0055438B /* details_icon.png in Resources */,
 				F05641831C7CBB58002276ED /* bubbles_bg_landscape.png in Resources */,
 				F02528D61C11B6FC00E1FE1B /* camera_capture@2x.png in Resources */,
+				32D0A4BE1CA44509008F3451 /* plus_icon@3x.png in Resources */,
 				71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */,
 				F0026B5A1C916E68001D2C04 /* notifications@3x.png in Resources */,
 				71B2A3C11C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib in Resources */,
@@ -1250,6 +1260,7 @@
 				F003AA7C1C68A1F6008B430C /* ExpandedRoomTitleView.xib in Resources */,
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
 				F05641921C7DF9DE002276ED /* error.png in Resources */,
+				32D0A4BD1CA44509008F3451 /* plus_icon@2x.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,
@@ -1269,6 +1280,7 @@
 				32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */,
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */,
+				32D0A4BC1CA44509008F3451 /* plus_icon.png in Resources */,
 				F09EE0071C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */,
 				F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,

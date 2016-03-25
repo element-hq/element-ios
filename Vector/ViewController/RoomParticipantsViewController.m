@@ -556,10 +556,11 @@
         if (!participantCell)
         {
             participantCell = [[ContactTableViewCell alloc] init];
-            // do not show the custom accessory view
-            participantCell.showCustomAccessoryView = NO;
         }
-    
+
+        // Reset the accessory view
+        participantCell.accessoryView = nil;
+
         participantCell.mxRoom = self.mxRoom;
         
         Contact *contact = nil;
@@ -650,7 +651,14 @@
         
         [self customizeContactCell:participantCell atIndexPath:indexPath];
         [participantCell render:contact];
-    
+
+        // The search displays contacts to invite. Add a plus icon to the cell
+        // in order to make it more understandable for the end user
+        if (indexPath.section == searchResultSection)
+        {
+            participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+        }
+
         cell = participantCell;
     }
     
@@ -1179,9 +1187,8 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    // "Done" key has been pressed
-    self.isAddParticipantSearchBarEditing = NO;
-    [searchBar resignFirstResponder];
+    // "Done" key has been pressed. Cancel the invitation process
+    [self searchBarCancelButtonClicked:searchBar];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
