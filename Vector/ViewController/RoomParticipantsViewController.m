@@ -558,9 +558,8 @@
             participantCell = [[ContactTableViewCell alloc] init];
         }
 
-        // Reset the custom accessory view
-        participantCell.showCustomAccessoryView = NO;
-        [participantCell.customAccessoryView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        // Reset the accessory view
+        participantCell.accessoryView = nil;
 
         participantCell.mxRoom = self.mxRoom;
         
@@ -657,8 +656,7 @@
         // in order to make it more understandable for the end user
         if (indexPath.section == searchResultSection)
         {
-            [participantCell.customAccessoryView  addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]]];
-            participantCell.showCustomAccessoryView = YES;
+            participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
         }
 
         cell = participantCell;
