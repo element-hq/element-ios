@@ -705,8 +705,7 @@
                 NSString *participantId = contact.displayName;
 
                 // Is it an email or a Matrix user ID?
-                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\S+@\\S+\\.\\S+$" options:NSRegularExpressionCaseInsensitive error:nil];
-                BOOL isEmailAddress = (nil != [regex firstMatchInString:participantId options:0 range:NSMakeRange(0, participantId.length)]);
+                BOOL isEmailAddress = [MXTools isEmailAddress:participantId];
 
                 // Sanity check the input
                 if (!isEmailAddress &&
