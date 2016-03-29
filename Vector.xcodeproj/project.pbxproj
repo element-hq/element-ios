@@ -136,8 +136,8 @@
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
 		F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0418BE31C9067B40030356E /* edit_icon@2x.png */; };
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
-		F047DBB91C576F6600952DA2 /* AuthInputsPasswordBasedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */; };
-		F047DBBA1C576F6600952DA2 /* AuthInputsPasswordBasedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */; };
+		F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsView.m */; };
+		F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB81C576F6600952DA2 /* AuthInputsView.xib */; };
 		F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */; };
 		F056417C1C7C9FD7002276ED /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */; };
 		F05641831C7CBB58002276ED /* bubbles_bg_landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F056417D1C7CBB58002276ED /* bubbles_bg_landscape.png */; };
@@ -399,9 +399,9 @@
 		F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
 		F0418BE31C9067B40030356E /* edit_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit_icon@2x.png"; sourceTree = "<group>"; };
 		F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
-		F047DBB61C576F6600952DA2 /* AuthInputsPasswordBasedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsPasswordBasedView.h; sourceTree = "<group>"; };
-		F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsPasswordBasedView.m; sourceTree = "<group>"; };
-		F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsPasswordBasedView.xib; sourceTree = "<group>"; };
+		F047DBB61C576F6600952DA2 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
+		F047DBB71C576F6600952DA2 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
+		F047DBB81C576F6600952DA2 /* AuthInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsView.xib; sourceTree = "<group>"; };
 		F05641781C7C9FD7002276ED /* TableViewCellWithButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithButton.h; path = TableViewCell/TableViewCellWithButton.h; sourceTree = "<group>"; };
 		F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithButton.m; path = TableViewCell/TableViewCellWithButton.m; sourceTree = "<group>"; };
 		F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithButton.xib; path = TableViewCell/TableViewCellWithButton.xib; sourceTree = "<group>"; };
@@ -756,9 +756,9 @@
 		F084DAAA1BB57BD100B4C530 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				F047DBB61C576F6600952DA2 /* AuthInputsPasswordBasedView.h */,
-				F047DBB71C576F6600952DA2 /* AuthInputsPasswordBasedView.m */,
-				F047DBB81C576F6600952DA2 /* AuthInputsPasswordBasedView.xib */,
+				F047DBB61C576F6600952DA2 /* AuthInputsView.h */,
+				F047DBB71C576F6600952DA2 /* AuthInputsView.m */,
+				F047DBB81C576F6600952DA2 /* AuthInputsView.xib */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -1157,7 +1157,7 @@
 				F02528D91C11B6FC00E1FE1B /* camera_play.png in Resources */,
 				F0F83FC31C93089500E7D322 /* video_icon@3x.png in Resources */,
 				F0D2D9881C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
-				F047DBBA1C576F6600952DA2 /* AuthInputsPasswordBasedView.xib in Resources */,
+				F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */,
 				F02529001C11B6FC00E1FE1B /* settings_icon.png in Resources */,
 				32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */,
 				F0F83FC21C93089500E7D322 /* video_icon@2x.png in Resources */,
@@ -1362,7 +1362,7 @@
 			files = (
 				3235CD881C3423070084EA40 /* HomeSearchTableViewCell.m in Sources */,
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
-				F047DBB91C576F6600952DA2 /* AuthInputsPasswordBasedView.m in Sources */,
+				F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,

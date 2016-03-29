@@ -16,7 +16,7 @@
 
 #import "AuthenticationViewController.h"
 
-#import "AuthInputsPasswordBasedView.h"
+#import "AuthInputsView.h"
 
 #import "RageShakeManager.h"
 
@@ -82,11 +82,14 @@
     self.delegate = self;
     
     // Custom used authInputsView
-    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypePassword andAuthType:MXKAuthenticationTypeLogin];
-    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypeEmailIdentity andAuthType:MXKAuthenticationTypeRegister];
+    [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
+    [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeRegister];
     
     // Initialize the auth inputs display
-    self.selectedFlow = [MXLoginFlow modelFromJSON:@{@"type": kMXLoginFlowTypePassword}];
+    AuthInputsView *authInputsView = [AuthInputsView authInputsView];
+    MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
+    [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
+    self.authInputsView = authInputsView;
     
     // FIXME handle "Forgot password"
     self.forgotPasswordButton.hidden = YES;
@@ -106,9 +109,6 @@
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
     }
-    
-    // Update supported authentication flow
-    [self refreshSupportedAuthFlow];
 }
 
 - (IBAction)onButtonPressed:(id)sender

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x74-04-ezp" customClass="AuthInputsPasswordBasedView">
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x74-04-ezp" customClass="AuthInputsView">
             <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xOW-lo-QGC">
@@ -77,7 +77,7 @@
                     </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXz-VI-5FS">
-                    <rect key="frame" x="0.0" y="50" width="600" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="odF-W1-Vdr">
                             <rect key="frame" x="18" y="18" width="564" height="21"/>
@@ -156,7 +156,7 @@
                 <constraint firstItem="xOW-lo-QGC" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" id="WmX-gO-hPJ"/>
                 <constraint firstItem="rb1-L5-udI" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="XAJ-ST-sWV"/>
                 <constraint firstAttribute="trailing" secondItem="rb1-L5-udI" secondAttribute="trailing" id="c49-Cf-H9a"/>
-                <constraint firstItem="bXz-VI-5FS" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" constant="50" id="enV-j0-cgR"/>
+                <constraint firstItem="bXz-VI-5FS" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" id="enV-j0-cgR"/>
                 <constraint firstAttribute="height" constant="200" id="qBF-0J-3VM"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -175,6 +175,7 @@
                 <outlet property="repeatPasswordSeparator" destination="ddx-5u-PbG" id="MtA-Rf-dhU"/>
                 <outlet property="repeatPasswordTextField" destination="BQM-LP-8Eq" id="mgM-dU-mJo"/>
                 <outlet property="userLoginContainer" destination="xOW-lo-QGC" id="K4T-Jo-AQz"/>
+                <outlet property="userLoginContainerTopConstraint" destination="WmX-gO-hPJ" id="dSa-mL-YBL"/>
                 <outlet property="userLoginSeparator" destination="Kqj-Ol-DR6" id="ZjO-Gx-bXl"/>
                 <outlet property="userLoginTextField" destination="i51-ym-i9T" id="XKi-6m-tFv"/>
                 <outlet property="viewHeightConstraint" destination="qBF-0J-3VM" id="GLh-gg-bh5"/>
