@@ -236,17 +236,11 @@
     [super viewWillAppear:animated];
     
     [self listenTypingNotifications];
-    
-    // Observe network reachability
-    [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
-    [self refreshActivitiesViewDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
     
     // hide action
     if (self.currentAlert)
@@ -286,6 +280,10 @@
     
     [super viewDidAppear:animated];
     
+    // Observe network reachability
+    [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
+    [self refreshActivitiesViewDisplay];
+    
     if (self.roomDataSource)
     {
         // Set visible room id
@@ -296,6 +294,8 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
     
     // Reset visible room id
     [AppDelegate theDelegate].visibleRoomId = nil;
