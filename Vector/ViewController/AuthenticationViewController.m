@@ -16,7 +16,7 @@
 
 #import "AuthenticationViewController.h"
 
-#import "AuthInputsPasswordBasedView.h"
+#import "AuthInputsView.h"
 
 #import "RageShakeManager.h"
 
@@ -63,6 +63,7 @@
     self.submitButton.backgroundColor = kVectorColorGreen;
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.submitButton.enabled = YES;
     
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateHighlighted];
@@ -82,11 +83,14 @@
     self.delegate = self;
     
     // Custom used authInputsView
-    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypePassword andAuthType:MXKAuthenticationTypeLogin];
-    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypeEmailIdentity andAuthType:MXKAuthenticationTypeRegister];
+    [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
+    [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeRegister];
     
     // Initialize the auth inputs display
-    self.selectedFlow = [MXLoginFlow modelFromJSON:@{@"type": kMXLoginFlowTypePassword}];
+    AuthInputsView *authInputsView = [AuthInputsView authInputsView];
+    MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
+    [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
+    self.authInputsView = authInputsView;
     
     // FIXME handle "Forgot password"
     self.forgotPasswordButton.hidden = YES;
@@ -106,9 +110,14 @@
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
     }
+}
+
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
+{
+    super.userInteractionEnabled = userInteractionEnabled;
     
-    // Update supported authentication flow
-    [self refreshSupportedAuthFlow];
+    // Show/Hide server options
+    _optionsContainer.hidden = !userInteractionEnabled;
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -139,6 +148,40 @@
         }
         
         [self hideServerOptionsContainer:YES];
+    }
+    else if (sender == self.submitButton)
+    {
+        // Check whether the user should set the email
+        if (self.authInputsView.shouldPromptUserForEmailAddress)
+        {
+            [self dismissKeyboard];
+            
+            if (alert)
+            {
+                [alert dismiss:NO];
+            }
+            
+             __weak typeof(self) weakSelf = self;
+            
+            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_missing_optional_email", @"Vector", nil) style:MXKAlertStyleAlert];
+            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->alert = nil;
+                
+                [super onButtonPressed:sender];
+            }];
+            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->alert = nil;
+            }];
+            [alert showInViewController:self];
+        }
+        else
+        {
+            [super onButtonPressed:sender];
+        }
     }
     else
     {

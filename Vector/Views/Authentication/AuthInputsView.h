@@ -14,11 +14,14 @@
  limitations under the License.
  */
 
-#import "MXKAuthInputsPasswordBasedView.h"
+#import <MatrixKit/MatrixKit.h>
 
-@interface AuthInputsPasswordBasedView : MXKAuthInputsPasswordBasedView
+@interface AuthInputsView : MXKAuthInputsView
 
+@property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passWordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *repeatPasswordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 
 @property (weak, nonatomic) IBOutlet UIView *userLoginContainer;
 @property (weak, nonatomic) IBOutlet UIView *emailContainer;
@@ -30,7 +33,11 @@
 @property (weak, nonatomic) IBOutlet UIView *passwordSeparator;
 @property (weak, nonatomic) IBOutlet UIView *repeatPasswordSeparator;
 
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *userLoginContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *passwordContainerTopConstraint;
+
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+
+@property (weak, nonatomic) IBOutlet MXKAuthenticationRecaptchaWebView *recaptchaWebView;
 
 @end
