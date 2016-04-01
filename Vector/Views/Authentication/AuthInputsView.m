@@ -510,7 +510,7 @@
     
     for (MXLoginFlow* flow in authSession.flows)
     {
-        // Check whether flow type is defined (this type has been deprecated since C-S API v2)
+        // Check whether flow type is defined
         if (flow.type)
         {
             if ([self isSupportedFlowType:flow.type])
