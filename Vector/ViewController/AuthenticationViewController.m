@@ -63,6 +63,7 @@
     self.submitButton.backgroundColor = kVectorColorGreen;
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.submitButton.enabled = YES;
     
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateHighlighted];
@@ -111,6 +112,14 @@
     }
 }
 
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
+{
+    super.userInteractionEnabled = userInteractionEnabled;
+    
+    // Show/Hide server options
+    _optionsContainer.hidden = !userInteractionEnabled;
+}
+
 - (IBAction)onButtonPressed:(id)sender
 {
     if (sender == self.serverOptionsTickButton)
@@ -139,6 +148,40 @@
         }
         
         [self hideServerOptionsContainer:YES];
+    }
+    else if (sender == self.submitButton)
+    {
+        // Check whether the user should set the email
+        if (self.authInputsView.shouldPromptUserForEmailAddress)
+        {
+            [self dismissKeyboard];
+            
+            if (alert)
+            {
+                [alert dismiss:NO];
+            }
+            
+             __weak typeof(self) weakSelf = self;
+            
+            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_missing_optional_email", @"Vector", nil) style:MXKAlertStyleAlert];
+            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->alert = nil;
+                
+                [super onButtonPressed:sender];
+            }];
+            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->alert = nil;
+            }];
+            [alert showInViewController:self];
+        }
+        else
+        {
+            [super onButtonPressed:sender];
+        }
     }
     else
     {

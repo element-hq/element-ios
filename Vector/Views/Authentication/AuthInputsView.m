@@ -18,6 +18,13 @@
 
 #import "VectorDesignValues.h"
 
+@interface AuthInputsView ()
+{
+    MXK3PID  *submittedEmail;
+}
+
+@end
+
 @implementation AuthInputsView
 
 + (UINib *)nib
@@ -39,8 +46,16 @@
     self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
     self.passWordTextField.textColor = kVectorTextColorBlack;
     
-    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
     self.emailTextField.textColor = kVectorTextColorBlack;
+    
+    self.messageLabel.numberOfLines = 0;
+}
+
+- (void)destroy
+{
+    [super destroy];
+    
+    submittedEmail = nil;
 }
 
 #pragma mark -
@@ -49,6 +64,9 @@
 {
     // Validate first the provided session
     MXAuthenticationSession *validSession = [self validateAuthenticationSession:authSession];
+    
+    // Reset UI by hidding all items
+    [self hideInputsContainer];
     
     if ([super setAuthSession:validSession withAuthType:authType])
     {
@@ -61,6 +79,8 @@
             self.userLoginContainerTopConstraint.constant = 0;
             self.passwordContainerTopConstraint.constant = 50;
             
+            self.userLoginContainer.hidden = NO;
+            self.passwordContainer.hidden = NO;
             self.emailContainer.hidden = YES;
             self.repeatPasswordContainer.hidden = YES;
         }
@@ -70,12 +90,37 @@
             
             self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
             
-            self.userLoginContainerTopConstraint.constant = 50;
-            self.passwordContainerTopConstraint.constant = 100;
+            if (self.isEmailIdentityFlowSupported)
+            {
+                if (self.isEmailIdentityFlowRequired)
+                {
+                    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
+                }
+                else
+                {
+                    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
+                }
+                
+                self.userLoginContainerTopConstraint.constant = 50;
+                self.passwordContainerTopConstraint.constant = 100;
+                
+                self.emailContainer.hidden = NO;
+            }
+            else
+            {
+                self.userLoginContainerTopConstraint.constant = 0;
+                self.passwordContainerTopConstraint.constant = 50;
+                
+                self.emailContainer.hidden = YES;
+            }
             
-            self.emailContainer.hidden = NO;
+            self.userLoginContainer.hidden = NO;
+            self.passwordContainer.hidden = NO;
             self.repeatPasswordContainer.hidden = NO;
         }
+        
+        CGRect frame = self.repeatPasswordContainer.frame;
+        self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         return YES;
     }
@@ -83,26 +128,252 @@
     return NO;
 }
 
-- (CGFloat)actualHeight
+- (void)prepareParameters:(void (^)(NSDictionary *parameters))callback;
 {
-    return self.viewHeightConstraint.constant;
+    if (callback)
+    {
+        // Prepare here parameters dict by checking each required fields.
+        NSDictionary *parameters = nil;
+        
+        // Remove whitespace in user login text field
+        NSString *userLogin = self.userLoginTextField.text;
+        self.userLoginTextField.text = [userLogin stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        // Handle here the supported login flow
+        if (type == MXKAuthenticationTypeLogin)
+        {
+            if (self.isPasswordBasedFlowSupported)
+            {
+                // Check required fields
+                if (self.userLoginTextField.text.length && self.passWordTextField.text.length)
+                {
+                    //Check whether user login is an email or a username.
+                    NSString *user = self.userLoginTextField.text;
+                    
+                    if ([MXTools isEmailAddress:user])
+                    {
+                        parameters = @{
+                                       @"type": kMXLoginFlowTypePassword,
+                                       @"medium": @"email",
+                                       @"address": user,
+                                       @"password": self.passWordTextField.text
+                                       };
+                    }
+                    else
+                    {
+                        parameters = @{
+                                       @"type": kMXLoginFlowTypePassword,
+                                       @"user": user,
+                                       @"password": self.passWordTextField.text
+                                       };
+                    }
+                }
+                else
+                {
+                    if (inputsAlert)
+                    {
+                        [inputsAlert dismiss:NO];
+                    }
+                    
+                    inputsAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil) message:nil style:MXKAlertStyleAlert];
+                    inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                        inputsAlert = nil;
+                    }];
+                    
+                    [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
+                }
+            }
+        }
+        else
+        {
+            // Check the validity of the parameters
+            NSString *alertTitle = nil;
+            
+            if (!self.userLoginTextField.text.length)
+            {
+                // FIXME check validity of the non empty user name
+                NSLog(@"[AuthInputsView] Invalid user name");
+                alertTitle = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+            }
+            else if (!self.passWordTextField.text.length)
+            {
+                NSLog(@"[AuthInputsView] Missing Passwords");
+                alertTitle = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
+            }
+            else if (self.passWordTextField.text.length < 6)
+            {
+                NSLog(@"[AuthInputsView] Invalid Passwords");
+                alertTitle = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
+            }
+            else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
+            {
+                NSLog(@"[AuthInputsView] Passwords don't match");
+                alertTitle = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
+            }
+            else if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
+            {
+                NSLog(@"[AuthInputsView] Missing email");
+                alertTitle = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+            }
+            
+            if (alertTitle)
+            {
+                if (inputsAlert)
+                {
+                    [inputsAlert dismiss:NO];
+                }
+                
+                inputsAlert = [[MXKAlert alloc] initWithTitle:alertTitle message:nil style:MXKAlertStyleAlert];
+                inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                    inputsAlert = nil;
+                }];
+                
+                [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
+            }
+            else
+            {
+                // Check whether an email has been set, and if it is not handled yet
+                if (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted)
+                {
+                    // Retrieve the REST client from delegate
+                    MXRestClient *restClient;
+                    
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+                    {
+                        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+                    }
+                    
+                    if (restClient)
+                    {
+                        // Launch email validation
+                        submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
+                        [submittedEmail requestValidationTokenWithMatrixRestClient:restClient
+                                                                           success:^{
+                                                                               
+                                                                               NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                                                                               NSDictionary *parameters;
+                                                                               parameters = @{
+                                                                                              @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                                                                              @"username": self.userLoginTextField.text,
+                                                                                              @"password": self.passWordTextField.text,
+                                                                                              @"bind_email": @(YES)
+                                                                                              };
+                                                                               
+                                                                               [self hideInputsContainer];
+                                                                               
+                                                                               self.messageLabel.text = NSLocalizedStringFromTable(@"auth_email_validation_message", @"Vector", nil);
+                                                                               self.messageLabel.hidden = NO;
+                                                                               
+                                                                               callback(parameters);
+                                                                               
+                                                                           } failure:^(NSError *error) {
+                                                                               
+                                                                               NSLog(@"[AuthInputsView] Failed to request email token: %@", error);
+                                                                               
+                                                                               callback(nil);
+                                                                               
+                                                                           }];
+                        
+                        // Async response
+                        return;
+                    }
+                    else if (self.isEmailIdentityFlowRequired)
+                    {
+                        NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
+                    }
+                }
+                else if (self.isRecaptchaFlowRequired)
+                {
+                    [self displayRecaptchaForm:^(NSString *response) {
+                        
+                        if (response.length)
+                        {
+                            NSDictionary *parameters = @{
+                                           @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                           @"username": self.userLoginTextField.text,
+                                           @"password": self.passWordTextField.text,
+                                           @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
+                                           };
+                            
+                            callback(parameters);
+                        }
+                        else
+                        {
+                            NSLog(@"[AuthInputsView] reCaptcha stage failed");
+                            callback(nil);
+                        }
+                        
+                    }];
+                    
+                    // Async response
+                    return;
+                }
+                else if (self.isPasswordBasedFlowSupported)
+                {
+                    parameters = @{
+                                   @"username": self.userLoginTextField.text,
+                                   @"password": self.passWordTextField.text,
+                                   @"bind_email": @(NO)
+                                   };
+                }
+            }
+        }
+        
+        callback(parameters);
+    }
+}
+
+- (void)updateAuthSessionWithCompletedStages:(NSArray *)completedStages didUpdateParameters:(void (^)(NSDictionary *parameters))callback
+{
+    if (callback)
+    {
+        if (currentSession)
+        {
+            currentSession.completed = completedStages;
+            
+            // Check the supported use case
+            if ([completedStages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound && self.isRecaptchaFlowRequired)
+            {
+                [self displayRecaptchaForm:^(NSString *response) {
+                    
+                    if (response.length)
+                    {
+                        // Update the parameters dict
+                        NSDictionary *parameters = @{
+                                                     @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                                     @"username": self.userLoginTextField.text,
+                                                     @"password": self.passWordTextField.text,
+                                                     @"bind_email": @(YES)
+                                                     };
+                        
+                        callback (parameters);
+                    }
+                    else
+                    {
+                        NSLog(@"[AuthInputsView] reCaptcha stage failed");
+                        callback (nil);
+                    }
+                    
+                }];
+                
+                return;
+            }
+        }
+        
+        NSLog(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
+        callback (nil);
+    }
 }
 
 - (BOOL)areAllRequiredFieldsFilled
 {
-    if (self.isPasswordBasedFlowSupported)
-    {
-        if (type == MXKAuthenticationTypeLogin)
-        {
-            return (self.userLoginTextField.text.length && self.passWordTextField.text.length);
-        }
-        else
-        {
-            return (self.userLoginTextField.text.length && self.passWordTextField.text.length && self.repeatPasswordTextField.text.length);
-        }
-    }
-    
-    return (self.userLoginTextField.text.length && (!self.isEmailIdentityFlowRequired || self.emailTextField.text.length) && self.passWordTextField.text.length && self.repeatPasswordTextField.text.length);
+    // Input fields are checked during parameters preparation
+    return YES;
+}
+
+- (BOOL)shouldPromptUserForEmailAddress
+{
+    return (self.isEmailIdentityFlowSupported && !self.emailTextField.text.length);
 }
 
 - (void)dismissKeyboard
@@ -124,11 +395,8 @@
         // "Done" key has been pressed
         [textField resignFirstResponder];
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsDoneKeyHasBeenPressed:)])
-        {
-            // Launch authentication now
-            [self.delegate authInputsDoneKeyHasBeenPressed:self];
-        }
+        // Launch authentication now
+        [self.delegate authInputsViewDidPressDoneKey:self];
     }
     else
     {
@@ -151,6 +419,59 @@
 }
 
 #pragma mark -
+
+- (void)hideInputsContainer
+{
+    // Hide all inputs container
+    self.userLoginContainer.hidden = YES;
+    self.passwordContainer.hidden = YES;
+    self.emailContainer.hidden = YES;
+    self.repeatPasswordContainer.hidden = YES;
+    
+    // Hide other items
+    self.messageLabel.hidden = YES;
+    self.recaptchaWebView.hidden = YES;
+}
+
+- (BOOL)displayRecaptchaForm:(void (^)(NSString *response))callback
+{
+    // Retrieve the site key
+    NSString *siteKey;
+    
+    id recaptchaParams = [currentSession.params objectForKey:kMXLoginFlowTypeRecaptcha];
+    if (recaptchaParams && [recaptchaParams isKindOfClass:NSDictionary.class])
+    {
+        NSDictionary *recaptchaParamsDict = (NSDictionary*)recaptchaParams;
+        siteKey = [recaptchaParamsDict objectForKey:@"public_key"];
+    }
+    
+    // Retrieve the REST client from delegate
+    MXRestClient *restClient;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+    {
+        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+    }
+    
+    // Sanity check
+    if (siteKey.length && restClient && callback)
+    {
+        [self hideInputsContainer];
+        
+        self.messageLabel.hidden = NO;
+        self.messageLabel.text = NSLocalizedStringFromTable(@"auth_recaptcha_message", @"Vector", nil);
+        
+        self.recaptchaWebView.hidden = NO;
+        CGRect frame = self.recaptchaWebView.frame;
+        self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
+        
+        [self.recaptchaWebView openRecaptchaWidgetWithSiteKey:siteKey fromHomeServer:restClient.homeserver callback:callback];
+        
+        return YES;
+    }
+    
+    return NO;
+}
 
 // Tell whether a flow type is supported or not by this view.
 - (BOOL)isSupportedFlowType:(MXLoginFlowType)flowType
@@ -258,9 +579,9 @@
 
 - (BOOL)isPasswordBasedFlowSupported
 {
-    if (session)
+    if (currentSession)
     {
-        for (MXLoginFlow *loginFlow in session.flows)
+        for (MXLoginFlow *loginFlow in currentSession.flows)
         {
             if ([loginFlow.type isEqualToString:kMXLoginFlowTypePassword] || [loginFlow.stages indexOfObject:kMXLoginFlowTypePassword] != NSNotFound)
             {
@@ -274,9 +595,9 @@
 
 - (BOOL)isEmailIdentityFlowSupported
 {
-    if (session)
+    if (currentSession)
     {
-        for (MXLoginFlow *loginFlow in session.flows)
+        for (MXLoginFlow *loginFlow in currentSession.flows)
         {
             if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound || [loginFlow.type isEqualToString:kMXLoginFlowTypeEmailIdentity])
             {
@@ -290,11 +611,42 @@
 
 - (BOOL)isEmailIdentityFlowRequired
 {
-    if (session && session.flows)
+    if (currentSession && currentSession.flows)
     {
-        for (MXLoginFlow *loginFlow in session.flows)
+        for (MXLoginFlow *loginFlow in currentSession.flows)
         {
             if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeEmailIdentity] == NSNotFound && ![loginFlow.type isEqualToString:kMXLoginFlowTypeEmailIdentity])
+            {
+                return NO;
+            }
+        }
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isEmailIdentityFlowCompleted
+{
+    if (currentSession && currentSession.completed)
+    {
+        if ([currentSession.completed indexOfObject:kMXLoginFlowTypeEmailIdentity] != NSNotFound)
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL)isRecaptchaFlowRequired
+{
+    if (currentSession && currentSession.flows)
+    {
+        for (MXLoginFlow *loginFlow in currentSession.flows)
+        {
+            if ([loginFlow.stages indexOfObject:kMXLoginFlowTypeRecaptcha] == NSNotFound && ![loginFlow.type isEqualToString:kMXLoginFlowTypeRecaptcha])
             {
                 return NO;
             }

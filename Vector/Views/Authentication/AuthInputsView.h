@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MXKAuthInputsView.h"
+#import <MatrixKit/MatrixKit.h>
 
 @interface AuthInputsView : MXKAuthInputsView
 
@@ -35,5 +35,9 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userLoginContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *passwordContainerTopConstraint;
+
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+
+@property (weak, nonatomic) IBOutlet MXKAuthenticationRecaptchaWebView *recaptchaWebView;
 
 @end

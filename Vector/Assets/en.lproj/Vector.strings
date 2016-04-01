@@ -16,12 +16,14 @@
 
 // Titles
 "title_recents" = "Messages";
+"warning" = "Warning";
 
 // Actions
 "view" = "View";
 "mark_all_as_read_prompt" = "Mark all as read?";
 "next" = "Next";
 "back" = "Back";
+"continue" = "Continue";
 "create" = "Create";
 "leave" = "Leave";
 "remove" = "Remove";
@@ -40,10 +42,21 @@
 "auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
 "auth_user_name_placeholder" = "Your name";
+"auth_optional_email_placeholder" = "Email address (optional)";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
+"auth_invalid_login_param" = "Incorrect username and/or password";
+"auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
+"auth_invalid_password" = "Password too short (min 6)";
+"auth_missing_password" = "Missing password";
+"auth_missing_optional_email" = "If you don't specify an email address, you won't be able to reset your password. Are you sure?";
+"auth_missing_email" = "Missing email address";
+"auth_password_dont_match" = "Passwords don't match";
 "auth_forgot_password" = "Forgot password?";
 "auth_use_server_options" = "Use custom server options (advanced)";
+"auth_email_validation_message" = "Please check your email to continue registration";
+"auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
+"auth_username_in_use" = "Username in use";
 
 // Chat creation
 "room_creation_title" = "New Chat";
