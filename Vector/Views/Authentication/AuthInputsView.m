@@ -175,7 +175,7 @@
                         [inputsAlert dismiss:NO];
                     }
                     
-                    inputsAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil) message:nil style:MXKAlertStyleAlert];
+                    inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil) style:MXKAlertStyleAlert];
                     inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         inputsAlert = nil;
                     }];
@@ -187,43 +187,54 @@
         else
         {
             // Check the validity of the parameters
-            NSString *alertTitle = nil;
+            NSString *alertMsg = nil;
             
             if (!self.userLoginTextField.text.length)
             {
-                // FIXME check validity of the non empty user name
                 NSLog(@"[AuthInputsView] Invalid user name");
-                alertTitle = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+                alertMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
             }
             else if (!self.passWordTextField.text.length)
             {
                 NSLog(@"[AuthInputsView] Missing Passwords");
-                alertTitle = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
+                alertMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
             }
             else if (self.passWordTextField.text.length < 6)
             {
                 NSLog(@"[AuthInputsView] Invalid Passwords");
-                alertTitle = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
+                alertMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
             }
             else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
             {
                 NSLog(@"[AuthInputsView] Passwords don't match");
-                alertTitle = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
+                alertMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
             }
             else if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
             {
                 NSLog(@"[AuthInputsView] Missing email");
-                alertTitle = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+                alertMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+            }
+            else
+            {
+                // Check validity of the non empty user name
+                NSString *user = self.userLoginTextField.text;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[a-z0-9.\\-_]+$" options:NSRegularExpressionCaseInsensitive error:nil];
+                
+                if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
+                {
+                    NSLog(@"[AuthInputsView] Invalid user name");
+                    alertMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+                }
             }
             
-            if (alertTitle)
+            if (alertMsg)
             {
                 if (inputsAlert)
                 {
                     [inputsAlert dismiss:NO];
                 }
                 
-                inputsAlert = [[MXKAlert alloc] initWithTitle:alertTitle message:nil style:MXKAlertStyleAlert];
+                inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:alertMsg style:MXKAlertStyleAlert];
                 inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     inputsAlert = nil;
                 }];
