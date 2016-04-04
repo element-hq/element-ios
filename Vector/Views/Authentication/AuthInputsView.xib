@@ -85,7 +85,7 @@
                                 <constraint firstAttribute="height" constant="21" id="Kvu-hz-22A"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
                             <connections>
                                 <outlet property="delegate" destination="x74-04-ezp" id="ViI-x8-eWu"/>
                             </connections>
@@ -118,7 +118,7 @@
                                 <constraint firstAttribute="height" constant="21" id="87Q-0f-X45"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" secureTextEntry="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
                             <connections>
                                 <outlet property="delegate" destination="x74-04-ezp" id="28g-3U-BBM"/>
                             </connections>

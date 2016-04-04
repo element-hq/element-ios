@@ -128,6 +128,75 @@
     return NO;
 }
 
+- (NSString*)validateParameters
+{
+    // Check the validity of the parameters
+    NSString *errorMsg = nil;
+    
+    // Remove whitespace in user login text field
+    NSString *userLogin = self.userLoginTextField.text;
+    self.userLoginTextField.text = [userLogin stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (type == MXKAuthenticationTypeLogin)
+    {
+        if (self.isPasswordBasedFlowSupported)
+        {
+            // Check required fields
+            if (!self.userLoginTextField.text.length || !self.passWordTextField.text.length)
+            {
+                NSLog(@"[AuthInputsView] Invalid user/password");
+                errorMsg = NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil);
+            }
+        }
+        else
+        {
+            errorMsg = [NSBundle mxk_localizedStringForKey:@"not_supported_yet"];
+        }
+    }
+    else
+    {
+        if (!self.userLoginTextField.text.length)
+        {
+            NSLog(@"[AuthInputsView] Invalid user name");
+            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+        }
+        else if (!self.passWordTextField.text.length)
+        {
+            NSLog(@"[AuthInputsView] Missing Passwords");
+            errorMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
+        }
+        else if (self.passWordTextField.text.length < 6)
+        {
+            NSLog(@"[AuthInputsView] Invalid Passwords");
+            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
+        }
+        else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
+        {
+            NSLog(@"[AuthInputsView] Passwords don't match");
+            errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
+        }
+        else if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
+        {
+            NSLog(@"[AuthInputsView] Missing email");
+            errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+        }
+        else
+        {
+            // Check validity of the non empty user name
+            NSString *user = self.userLoginTextField.text;
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[a-z0-9.\\-_]+$" options:NSRegularExpressionCaseInsensitive error:nil];
+            
+            if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
+            {
+                NSLog(@"[AuthInputsView] Invalid user name");
+                errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+            }
+        }
+    }
+    
+    return errorMsg;
+}
+
 - (void)prepareParameters:(void (^)(NSDictionary *parameters))callback;
 {
     if (callback)
@@ -135,17 +204,28 @@
         // Prepare here parameters dict by checking each required fields.
         NSDictionary *parameters = nil;
         
-        // Remove whitespace in user login text field
-        NSString *userLogin = self.userLoginTextField.text;
-        self.userLoginTextField.text = [userLogin stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        
-        // Handle here the supported login flow
-        if (type == MXKAuthenticationTypeLogin)
+        // Check the validity of the parameters
+        NSString *errorMsg = [self validateParameters];
+        if (errorMsg)
         {
-            if (self.isPasswordBasedFlowSupported)
+            if (inputsAlert)
             {
-                // Check required fields
-                if (self.userLoginTextField.text.length && self.passWordTextField.text.length)
+                [inputsAlert dismiss:NO];
+            }
+            
+            inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg style:MXKAlertStyleAlert];
+            inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                inputsAlert = nil;
+            }];
+            
+            [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
+        }
+        else
+        {
+            // Handle here the supported login flow
+            if (type == MXKAuthenticationTypeLogin)
+            {
+                if (self.isPasswordBasedFlowSupported)
                 {
                     //Check whether user login is an email or a username.
                     NSString *user = self.userLoginTextField.text;
@@ -168,78 +248,6 @@
                                        };
                     }
                 }
-                else
-                {
-                    if (inputsAlert)
-                    {
-                        [inputsAlert dismiss:NO];
-                    }
-                    
-                    inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil) style:MXKAlertStyleAlert];
-                    inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                        inputsAlert = nil;
-                    }];
-                    
-                    [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
-                }
-            }
-        }
-        else
-        {
-            // Check the validity of the parameters
-            NSString *alertMsg = nil;
-            
-            if (!self.userLoginTextField.text.length)
-            {
-                NSLog(@"[AuthInputsView] Invalid user name");
-                alertMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
-            }
-            else if (!self.passWordTextField.text.length)
-            {
-                NSLog(@"[AuthInputsView] Missing Passwords");
-                alertMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
-            }
-            else if (self.passWordTextField.text.length < 6)
-            {
-                NSLog(@"[AuthInputsView] Invalid Passwords");
-                alertMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
-            }
-            else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
-            {
-                NSLog(@"[AuthInputsView] Passwords don't match");
-                alertMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
-            }
-            else if (self.isEmailIdentityFlowRequired && !self.emailTextField.text.length)
-            {
-                NSLog(@"[AuthInputsView] Missing email");
-                alertMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
-            }
-            else
-            {
-                // Check validity of the non empty user name
-                NSString *user = self.userLoginTextField.text;
-                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[a-z0-9.\\-_]+$" options:NSRegularExpressionCaseInsensitive error:nil];
-                
-                if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
-                {
-                    NSLog(@"[AuthInputsView] Invalid user name");
-                    alertMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
-                }
-            }
-            
-            if (alertMsg)
-            {
-                if (inputsAlert)
-                {
-                    [inputsAlert dismiss:NO];
-                }
-                
-                inputsAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:alertMsg style:MXKAlertStyleAlert];
-                inputsAlert.cancelButtonIndex = [inputsAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    inputsAlert = nil;
-                }];
-                
-                [self.delegate authInputsView:self presentMXKAlert:inputsAlert];
             }
             else
             {
@@ -300,11 +308,11 @@
                         if (response.length)
                         {
                             NSDictionary *parameters = @{
-                                           @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
-                                           @"username": self.userLoginTextField.text,
-                                           @"password": self.passWordTextField.text,
-                                           @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
-                                           };
+                                                         @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                                         @"username": self.userLoginTextField.text,
+                                                         @"password": self.passWordTextField.text,
+                                                         @"bind_email": [NSNumber numberWithBool:self.isEmailIdentityFlowCompleted]
+                                                         };
                             
                             callback(parameters);
                         }
@@ -376,15 +384,27 @@
     }
 }
 
-- (BOOL)areAllRequiredFieldsFilled
+- (BOOL)areAllRequiredFieldsSet
 {
-    // Input fields are checked during parameters preparation
+//    BOOL ret = [super areAllRequiredFieldsSet];
+//    
+//    // Check required fields
+//    ret = (ret && self.userLoginTextField.text.length && self.passWordTextField.text.length && (!self.isEmailIdentityFlowRequired || self.emailTextField.text.length) && (self.authType == MXKAuthenticationTypeLogin || self.repeatPasswordTextField.text.length));
+//    
+//    return ret;
+    
+    // Keep enable the submit button.
     return YES;
 }
 
 - (BOOL)shouldPromptUserForEmailAddress
 {
-    return (self.isEmailIdentityFlowSupported && !self.emailTextField.text.length);
+    BOOL shouldPrompt = (self.isEmailIdentityFlowSupported && !self.emailTextField.text.length);
+    
+    // Do not prompt if at least the username or a password is missing.
+    shouldPrompt = (shouldPrompt && self.userLoginTextField.text.length && self.passWordTextField.text.length && self.repeatPasswordTextField.text.length);
+    
+    return shouldPrompt;
 }
 
 - (void)dismissKeyboard
@@ -397,7 +417,12 @@
     [super dismissKeyboard];
 }
 
-#pragma mark UITextField delegate
+- (NSString*)userId
+{
+    return self.userLoginTextField.text;
+}
+
+#pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
@@ -418,7 +443,7 @@
         }
         else if (textField == self.userLoginTextField)
         {
-            [self.passwordContainer becomeFirstResponder];
+            [self.passWordTextField becomeFirstResponder];
         }
         else if (textField == self.passWordTextField)
         {
