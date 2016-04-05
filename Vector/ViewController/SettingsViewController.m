@@ -87,8 +87,8 @@
     NSInteger userSettingsDisplayNameIndex;
     NSInteger userSettingsFirstNameIndex;
     NSInteger userSettingsSurnameIndex;
-    NSInteger userSettingsEmailStartIndex;
-    NSInteger userSettingsNewEmailIndex;
+    NSInteger userSettingsEmailStartIndex;  // The user can have several linked emails. Hence, the dynamic section items count
+    NSInteger userSettingsNewEmailIndex;    // This index also marks the end of the emails list
     NSInteger userSettingsChangePasswordIndex;
     NSInteger userSettingsPhoneNumberIndex;
     NSInteger userSettingsNightModeSepIndex;
@@ -231,9 +231,14 @@
         }];
     }
     
-    
     // Refresh display
     [self.tableView reloadData];
+
+    // Refresh linked emails in parallel
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    [account load3PIDs:^{
+        [self.tableView reloadData];
+    } failure:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -330,20 +335,22 @@
     }
     else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+
         userSettingsProfilePictureIndex = 0;
         userSettingsDisplayNameIndex = 1;
         userSettingsChangePasswordIndex = 2;
+        userSettingsEmailStartIndex = 3;
+        userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
 
         // Hide some unsupported account settings
         userSettingsFirstNameIndex = -1;
         userSettingsSurnameIndex = -1;
-        userSettingsEmailStartIndex = -1;
-        userSettingsNewEmailIndex = -1;
         userSettingsPhoneNumberIndex = -1;
         userSettingsNightModeSepIndex = -1;
         userSettingsNightModeIndex = -1;
-        count = 3;
 
+        count = userSettingsNewEmailIndex;
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -505,11 +512,12 @@
             
             cell = surnameCell;
         }
-        else if (row == userSettingsEmailStartIndex)
+        else if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
         {
             MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView];
             
             emailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_email_address", @"Vector", nil);
+            emailCell.mxkTextField.text = account.linkedEmails[row - userSettingsEmailStartIndex];
             emailCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = emailCell;
