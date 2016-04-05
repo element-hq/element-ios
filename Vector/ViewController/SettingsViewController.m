@@ -64,9 +64,6 @@
     // picker
     MediaPickerViewController* mediaPicker;
     
-    // the first responder
-    UIView* firstResponder;
-    
     // profile updates
     // avatar
     UIImage* newAvatarImage;
@@ -301,20 +298,6 @@
     // FIXME add night mode
 }
 
-#pragma mark - UIScrollView delegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView == self.tableView)
-    {
-        if ([firstResponder isFirstResponder])
-        {
-            [firstResponder resignFirstResponder];
-            firstResponder = nil;
-        }
-    }
-}
-
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -488,9 +471,6 @@
             displaynameCell.mxkTextField.tag = row;
             [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-            
-            [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
-            [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
             
             cell = displaynameCell;
         }
@@ -790,12 +770,6 @@
                 [self displayPasswordAlert];
             }
         }
-
-        if ([firstResponder isFirstResponder])
-        {
-            [firstResponder resignFirstResponder];
-            firstResponder = nil;
-        }
         
         [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -1027,11 +1001,6 @@
         newDisplayName = textField.text;
         [self updateSaveButtonStatus];
     }
-}
-
-- (IBAction)textFieldDidBegin:(id)sender
-{
-    firstResponder = (UIView*)sender;
 }
 
 #pragma password update management
