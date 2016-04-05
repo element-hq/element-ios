@@ -18,7 +18,7 @@
 
 #import "MediaPickerViewController.h"
 
-@interface SettingsViewController : MXKTableViewController<MediaPickerViewControllerDelegate>
+@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate>
 
 
 @end

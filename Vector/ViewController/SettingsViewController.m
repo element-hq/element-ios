@@ -79,6 +79,9 @@
     UITextField* newPasswordTextField2;
     UIAlertAction* savePasswordAction;
 
+    // New email address to bind
+    NSString* newEmail;
+
     // Dynamic rows in the user settings section
     NSInteger userSettingsProfilePictureIndex;
     NSInteger userSettingsDisplayNameIndex;
@@ -91,6 +94,11 @@
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
 }
+
+/**
+ Flag indicating whether the user is typing an email to bind.
+ */
+@property (nonatomic) BOOL newEmailEditingEnabled;
 
 @end
 
@@ -232,10 +240,7 @@
     [self.tableView reloadData];
 
     // Refresh linked emails in parallel
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    [account load3PIDs:^{
-        [self.tableView reloadData];
-    } failure:nil];
+    [self loadLinkedEmails];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -288,6 +293,91 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+-(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
+{
+    if (newEmailEditingEnabled != _newEmailEditingEnabled)
+    {
+        // Update the flag
+        _newEmailEditingEnabled = newEmailEditingEnabled;
+
+        // Update the top-rigth corner button
+        if (!_newEmailEditingEnabled)
+        {
+            newEmail = nil;
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onAddNewEmail:)];
+        }
+
+        // And refresh the corresponding table view cell with animation
+        [self.tableView reloadRowsAtIndexPaths:@[
+                                                 [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
+                                                 ]
+                              withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)showValidationEmailDialogWithMessage:(NSString*)message for3PID:(MXK3PID*)threePID
+{
+    MXKAlert *alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"]
+                                              message:message
+                                                style:MXKAlertStyleAlert];
+
+    alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+         // Reset new email adding
+         self.newEmailEditingEnabled = NO;
+    }];
+
+    __strong __typeof(threePID)strongThreePID = threePID;
+
+    [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+        // We always bind emails when registering, so let's do the same here
+        [threePID add3PIDToUser:YES success:^{
+
+            // Reset new email adding
+            self.newEmailEditingEnabled = NO;
+
+            // Update linked emails
+            [self loadLinkedEmails];
+
+        } failure:^(NSError *error) {
+
+            NSLog(@"[SettingsViewController] Failed to bind email: %@", error);
+
+            // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
+            {
+                [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
+            }
+            else
+            {
+                // Notify MatrixKit user
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+            }
+        }];
+    }];
+
+    [alert showInViewController:self];
+}
+
+- (void)loadLinkedEmails
+{
+    // Refresh the account 3PIDs list
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    [account load3PIDs:^{
+
+        [self.tableView reloadData];
+
+    } failure:^(NSError *error) {
+        // Display the data that has been loaded last time
+        [self.tableView reloadData];
+    }];
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -333,7 +423,7 @@
         userSettingsNightModeSepIndex = -1;
         userSettingsNightModeIndex = -1;
 
-        count = userSettingsNewEmailIndex;
+        count = userSettingsNewEmailIndex + 1;
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -362,6 +452,7 @@
     cell.mxkTextField.textColor = [UIColor lightGrayColor];
     
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = nil;
     
     cell.alpha = 1.0f;
     cell.userInteractionEnabled = YES;
@@ -501,6 +592,45 @@
             emailCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = emailCell;
+        }
+        else if (row == userSettingsNewEmailIndex)
+        {
+            MXKTableViewCellWithLabelAndTextField *newEmailCell = [self getLabelAndTextFieldCell:tableView];
+
+            // Render the cell according to the `newEmailEditingEnabled` property
+            if (!_newEmailEditingEnabled)
+            {
+                newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
+                newEmailCell.mxkTextField.text = nil;
+                newEmailCell.mxkTextField.userInteractionEnabled = NO;
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            }
+            else
+            {
+                newEmailCell.mxkLabel.text = nil;
+                newEmailCell.mxkTextField.text = newEmail;
+                newEmailCell.mxkTextField.userInteractionEnabled = YES;
+                newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
+                newEmailCell.mxkTextField.delegate = self;
+
+                [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+                [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+
+                [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+                [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
+
+                // Display the keyboard if this is the first time we render this cell
+                if (!newEmail)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [newEmailCell.mxkTextField becomeFirstResponder];
+                    });
+                }
+            }
+
+            newEmailCell.mxkTextField.tag = row;
+
+            cell = newEmailCell;
         }
         else if (row == userSettingsChangePasswordIndex)
         {
@@ -769,6 +899,11 @@
             {
                 [self displayPasswordAlert];
             }
+            else if (row == userSettingsNewEmailIndex)
+            {
+                // Enable the new email text field
+                self.newEmailEditingEnabled = YES;
+            }
         }
         
         [aTableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -944,21 +1079,63 @@
     [self.tableView reloadData];
 }
 
+- (IBAction)onAddNewEmail:(id)sender
+{
+    // Email check
+    if (![MXTools isEmailAddress:newEmail])
+    {
+        MXKAlert *alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] style:MXKAlertStyleAlert];
+
+        alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        }];
+        [alert showInViewController:self];
+
+        return;
+    }
+
+    if ([sender isKindOfClass:UITextField.class])
+    {
+        [sender resignFirstResponder];
+    }
+
+    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmail];
+    [new3PID requestValidationTokenWithMatrixRestClient:self.mainSession.matrixRestClient success:^{
+
+        [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
+
+    } failure:^(NSError *error) {
+
+        NSLog(@"[SettingsViewController] Failed to request email token: %@", error);
+
+        // Notify MatrixKit user
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+
+    }];
+}
+
 - (void)updateSaveButtonStatus
 {
     if ([AppDelegate theDelegate].mxSessions.count > 0)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        MXMyUser* myUser = session.myUser;
-            
-        BOOL saveButtonEnabled = (nil != newAvatarImage);
-        
-        if (!saveButtonEnabled)
+        BOOL saveButtonEnabled;
+        if (!_newEmailEditingEnabled)
         {
-            if (newDisplayName)
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXMyUser* myUser = session.myUser;
+
+            saveButtonEnabled = (nil != newAvatarImage);
+
+            if (!saveButtonEnabled)
             {
-                saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
+                if (newDisplayName)
+                {
+                    saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
+                }
             }
+        }
+        else
+        {
+            saveButtonEnabled = (0 != newEmail.length);
         }
         
         self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
@@ -1001,6 +1178,29 @@
         newDisplayName = textField.text;
         [self updateSaveButtonStatus];
     }
+    else if (textField.tag == userSettingsNewEmailIndex)
+    {
+        newEmail = textField.text;
+        [self updateSaveButtonStatus];
+    }
+}
+
+- (IBAction)textFieldDidEnd:(id)sender
+{
+    UITextField* textField = (UITextField*)sender;
+
+    // Disable the new email edition if the user leaves the text field empty
+    if (textField.tag == userSettingsNewEmailIndex && textField.text.length == 0)
+    {
+        self.newEmailEditingEnabled = NO;
+    }
+}
+
+#pragma mark - UITextField delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self onAddNewEmail:textField];
+    return YES;
 }
 
 #pragma password update management
