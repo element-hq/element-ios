@@ -326,6 +326,9 @@
                                                 style:MXKAlertStyleAlert];
 
     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+
+        [self stopActivityIndicator];
+
          // Reset new email adding
          self.newEmailEditingEnabled = NO;
     }];
@@ -336,6 +339,8 @@
 
         // We always bind emails when registering, so let's do the same here
         [threePID add3PIDToUser:YES success:^{
+
+            [self stopActivityIndicator];
 
             // Reset new email adding
             self.newEmailEditingEnabled = NO;
@@ -355,6 +360,8 @@
             }
             else
             {
+                [self stopActivityIndicator];
+
                 // Notify MatrixKit user
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
             }
@@ -370,11 +377,13 @@
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     [account load3PIDs:^{
 
-        [self.tableView reloadData];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
 
     } failure:^(NSError *error) {
         // Display the data that has been loaded last time
-        [self.tableView reloadData];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
     }];
 }
 
@@ -1091,6 +1100,8 @@
         return;
     }
 
+    [self startActivityIndicator];
+
     // Dismiss the keyboard
     [newEmailTextField resignFirstResponder];
 
@@ -1100,6 +1111,8 @@
         [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
 
     } failure:^(NSError *error) {
+
+        [self stopActivityIndicator];
 
         NSLog(@"[SettingsViewController] Failed to request email token: %@", error);
 
