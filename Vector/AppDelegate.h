@@ -54,9 +54,7 @@
 
 #pragma mark - Application layout handling
 
-- (void)showAuthenticationScreen;
-
-- (void)popRoomViewControllerAnimated:(BOOL)animated;
+- (void)restoreInitialDisplay:(void (^)())completion;
 
 - (MXKAlert*)showErrorAsAlert:(NSError*)error;
 

@@ -195,6 +195,12 @@
         [tap setDelegate:self];
         [createNewRoomImageView addGestureRecognizer:tap];
     }
+    
+    // Check whether we're not logged in
+    if (![MXKAccountManager sharedManager].accounts.count)
+    {
+        [self showAuthenticationScreen];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -215,7 +221,7 @@
     }
 }
 
-- (void) viewDidLayoutSubviews
+- (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
 
@@ -235,6 +241,15 @@
 }
 
 #pragma mark -
+
+- (void)showAuthenticationScreen
+{
+    [[AppDelegate theDelegate] restoreInitialDisplay:^{
+        
+        [self performSegueWithIdentifier:@"showAuth" sender:self];
+        
+    }];
+}
 
 - (void)displayWithSession:(MXSession *)mxSession
 {

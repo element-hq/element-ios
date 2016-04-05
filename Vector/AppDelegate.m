@@ -396,26 +396,18 @@
         
     }];
     
-    // Check whether we're not logged in
-    if (![MXKAccountManager sharedManager].accounts.count)
+    // Resume all existing matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    for (MXKAccount *account in mxAccounts)
     {
-        [self showAuthenticationScreen];
+        [account resume];
     }
-    else
-    {
-        // Resume all existing matrix sessions
-        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account resume];
-        }
-        
-        // refresh the contacts list
-        [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-        [[MXKContactManager sharedManager] loadLocalContacts];
-        
-        _isAppForeground = YES;
-    }
+    
+    // refresh the contacts list
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+    [[MXKContactManager sharedManager] loadLocalContacts];
+    
+    _isAppForeground = YES;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -426,33 +418,31 @@
 
 #pragma mark - Application layout handling
 
-- (void)showAuthenticationScreen
+- (void)restoreInitialDisplay:(void (^)())completion
 {
-    [self restoreInitialDisplay:^{
-        [_homeViewController performSegueWithIdentifier:@"showAuth" sender:self];
-    }];
-}
-
-- (void)popRoomViewControllerAnimated:(BOOL)animated
-{
-    // Force back to the main screen
-    if (_homeViewController)
+    // Dismiss potential media picker
+    if (self.window.rootViewController.presentedViewController)
     {
-        [_homeNavigationController popToViewController:_homeViewController animated:animated];
+        // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
+            
+            [self popToHomeViewControllerAnimated:NO];
+            
+            // Dispatch the completion in order to let navigation stack refresh itself.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion();
+            });
+            
+        }];
+    }
+    else
+    {
+        [self popToHomeViewControllerAnimated:NO];
         
-        // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
-        // when a ViewController has hidden it (see MXKAttachmentsViewController).
-        // Patch: restore navigation bar by default here.
-        _homeNavigationController.navigationBarHidden = NO;
-        
-        // For unknown reason, the default settings of the navigation bar are not restored correctly by [popToViewController:animated:]
-        // when a ViewController has changed them (see RoomViewController, RoomMemberDetailsViewController).
-        // Patch: restore default settings here.
-        [_homeNavigationController.navigationBar setShadowImage:nil];
-        [_homeNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        
-        // Release the current selected room
-        [_homeViewController closeSelectedRoom];
+        // Dispatch the completion in order to let navigation stack refresh itself.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
     }
 }
 
@@ -504,6 +494,31 @@
     }
     
     return self.errorNotification;
+}
+
+#pragma mark
+
+- (void)popToHomeViewControllerAnimated:(BOOL)animated
+{
+    // Force back to the main screen
+    if (_homeViewController)
+    {
+        [_homeNavigationController popToViewController:_homeViewController animated:animated];
+        
+        // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
+        // when a ViewController has hidden it (see MXKAttachmentsViewController).
+        // Patch: restore navigation bar by default here.
+        _homeNavigationController.navigationBarHidden = NO;
+        
+        // For unknown reason, the default settings of the navigation bar are not restored correctly by [popToViewController:animated:]
+        // when a ViewController has changed them (see RoomViewController, RoomMemberDetailsViewController).
+        // Patch: restore default settings here.
+        [_homeNavigationController.navigationBar setShadowImage:nil];
+        [_homeNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        
+        // Release the current selected room
+        [_homeViewController closeSelectedRoom];
+    }
 }
 
 #pragma mark - APNS methods
@@ -861,7 +876,7 @@
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-    [self popRoomViewControllerAnimated:NO];
+    [self popToHomeViewControllerAnimated:NO];
     
     if (clearCache)
     {
@@ -893,7 +908,7 @@
     [[MXKAccountManager sharedManager] logout];
     
     // Return to authentication screen
-    [self showAuthenticationScreen];
+    [_homeViewController showAuthenticationScreen];
     
     // Reset App settings
     [[MXKAppSettings standardAppSettings] reset];
@@ -1320,36 +1335,6 @@
     }
     rootController.view.frame = frame;
     [rootController.view setNeedsLayout];
-}
-
-#pragma mark -
-
-- (void)restoreInitialDisplay:(void (^)())completion
-{
-    // Dismiss potential media picker
-    if (self.window.rootViewController.presentedViewController)
-    {
-        // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
-        [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
-            
-            [self popRoomViewControllerAnimated:NO];
-            
-            // Dispatch the completion in order to let navigation stack refresh itself.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion();
-            });
-            
-        }];
-    }
-    else
-    {
-        [self popRoomViewControllerAnimated:NO];
-        
-        // Dispatch the completion in order to let navigation stack refresh itself.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion();
-        });
-    }
 }
 
 #pragma mark - SplitViewController delegate

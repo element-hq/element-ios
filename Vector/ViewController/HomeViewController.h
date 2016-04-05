@@ -33,6 +33,12 @@
 @property (nonatomic, readonly) NSString  *selectedRoomId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
 
+
+/**
+ Display the authentication screen.
+ */
+- (void)showAuthenticationScreen;
+
 /**
  Start displaying the screen with a user Matrix session.
  
