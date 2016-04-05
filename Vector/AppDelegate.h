@@ -56,8 +56,6 @@
 
 - (void)restoreInitialDisplay:(void (^)())completion;
 
-- (void)popRoomViewControllerAnimated:(BOOL)animated;
-
 - (MXKAlert*)showErrorAsAlert:(NSError*)error;
 
 #pragma mark - Matrix Sessions handling
