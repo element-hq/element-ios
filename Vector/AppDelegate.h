@@ -54,7 +54,7 @@
 
 #pragma mark - Application layout handling
 
-- (void)showAuthenticationScreen;
+- (void)restoreInitialDisplay:(void (^)())completion;
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated;
 

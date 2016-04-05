@@ -396,26 +396,18 @@
         
     }];
     
-    // Check whether we're not logged in
-    if (![MXKAccountManager sharedManager].accounts.count)
+    // Resume all existing matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    for (MXKAccount *account in mxAccounts)
     {
-        [self showAuthenticationScreen];
+        [account resume];
     }
-    else
-    {
-        // Resume all existing matrix sessions
-        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account resume];
-        }
-        
-        // refresh the contacts list
-        [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-        [[MXKContactManager sharedManager] loadLocalContacts];
-        
-        _isAppForeground = YES;
-    }
+    
+    // refresh the contacts list
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+    [[MXKContactManager sharedManager] loadLocalContacts];
+    
+    _isAppForeground = YES;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -425,13 +417,6 @@
 }
 
 #pragma mark - Application layout handling
-
-- (void)showAuthenticationScreen
-{
-    [self restoreInitialDisplay:^{
-        [_homeViewController performSegueWithIdentifier:@"showAuth" sender:self];
-    }];
-}
 
 - (void)popRoomViewControllerAnimated:(BOOL)animated
 {
@@ -893,7 +878,7 @@
     [[MXKAccountManager sharedManager] logout];
     
     // Return to authentication screen
-    [self showAuthenticationScreen];
+    [_homeViewController showAuthenticationScreen];
     
     // Reset App settings
     [[MXKAppSettings standardAppSettings] reset];
