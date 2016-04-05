@@ -33,32 +33,6 @@
 #define SETTINGS_SECTION_OTHER_INDEX                    3
 #define SETTINGS_SECTION_COUNT                          4
 
-/*
-#define USER_SETTINGS_PROFILE_PICTURE_INDEX     0
-#define USER_SETTINGS_DISPLAY_NAME_INDEX        1
-#define USER_SETTINGS_FIRST_NAME_INDEX          2
-#define USER_SETTINGS_SURNAME_INDEX             3
-#define USER_SETTINGS_EMAIL_ADDRESS_INDEX       4
-#define USER_SETTINGS_CHANGE_PASSWORD_INDEX     5
-#define USER_SETTINGS_PHONE_NUMBER_INDEX        6
-#define USER_SETTINGS_NIGHT_MODE_SEP_INDEX      7
-#define USER_SETTINGS_NIGHT_MODE_INDEX          8
-#define USER_SETTINGS_COUNT                     9
- */
-
-#define USER_SETTINGS_PROFILE_PICTURE_INDEX     0
-#define USER_SETTINGS_DISPLAY_NAME_INDEX        1
-#define USER_SETTINGS_CHANGE_PASSWORD_INDEX     2
-#define USER_SETTINGS_COUNT                     3
-
-// hide some unsupported account settings.
-#define USER_SETTINGS_PHONE_NUMBER_INDEX        -1
-#define USER_SETTINGS_NIGHT_MODE_SEP_INDEX      -1
-#define USER_SETTINGS_NIGHT_MODE_INDEX          -1
-#define USER_SETTINGS_FIRST_NAME_INDEX          -1
-#define USER_SETTINGS_SURNAME_INDEX             -1
-#define USER_SETTINGS_EMAIL_ADDRESS_INDEX       -1
-
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
 //#define NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX     1
@@ -107,6 +81,18 @@
     UITextField* newPasswordTextField1;
     UITextField* newPasswordTextField2;
     UIAlertAction* savePasswordAction;
+
+    // Dynamic rows in the user settings section
+    NSInteger userSettingsProfilePictureIndex;
+    NSInteger userSettingsDisplayNameIndex;
+    NSInteger userSettingsFirstNameIndex;
+    NSInteger userSettingsSurnameIndex;
+    NSInteger userSettingsEmailStartIndex;
+    NSInteger userSettingsNewEmailIndex;
+    NSInteger userSettingsChangePasswordIndex;
+    NSInteger userSettingsPhoneNumberIndex;
+    NSInteger userSettingsNightModeSepIndex;
+    NSInteger userSettingsNightModeIndex;
 }
 
 @end
@@ -344,7 +330,20 @@
     }
     else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
-        count = USER_SETTINGS_COUNT;
+        userSettingsProfilePictureIndex = 0;
+        userSettingsDisplayNameIndex = 1;
+        userSettingsChangePasswordIndex = 2;
+
+        // Hide some unsupported account settings
+        userSettingsFirstNameIndex = -1;
+        userSettingsSurnameIndex = -1;
+        userSettingsEmailStartIndex = -1;
+        userSettingsNewEmailIndex = -1;
+        userSettingsPhoneNumberIndex = -1;
+        userSettingsNightModeSepIndex = -1;
+        userSettingsNightModeIndex = -1;
+        count = 3;
+
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -435,7 +434,7 @@
     {
         MXMyUser* myUser = session.myUser;
         
-        if (row == USER_SETTINGS_PROFILE_PICTURE_INDEX)
+        if (row == userSettingsProfilePictureIndex)
         {
             MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
             
@@ -472,7 +471,7 @@
             
             cell = profileCell;
         }
-        else if (row == USER_SETTINGS_DISPLAY_NAME_INDEX)
+        else if (row == userSettingsDisplayNameIndex)
         {
             MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView];
             
@@ -488,7 +487,7 @@
             
             cell = displaynameCell;
         }
-        else if (row == USER_SETTINGS_FIRST_NAME_INDEX)
+        else if (row == userSettingsFirstNameIndex)
         {
             MXKTableViewCellWithLabelAndTextField *firstCell = [self getLabelAndTextFieldCell:tableView];
         
@@ -497,7 +496,7 @@
             
             cell = firstCell;
         }
-        else if (row == USER_SETTINGS_SURNAME_INDEX)
+        else if (row == userSettingsSurnameIndex)
         {
             MXKTableViewCellWithLabelAndTextField *surnameCell = [self getLabelAndTextFieldCell:tableView];
             
@@ -506,7 +505,7 @@
             
             cell = surnameCell;
         }
-        else if (row == USER_SETTINGS_EMAIL_ADDRESS_INDEX)
+        else if (row == userSettingsEmailStartIndex)
         {
             MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView];
             
@@ -515,7 +514,7 @@
             
             cell = emailCell;
         }
-        else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
+        else if (row == userSettingsChangePasswordIndex)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView];
             
@@ -525,7 +524,7 @@
             
             cell = passwordCell;
         }
-        else if (row == USER_SETTINGS_PHONE_NUMBER_INDEX)
+        else if (row == userSettingsPhoneNumberIndex)
         {
             MXKTableViewCellWithLabelAndTextField *phonenumberCell = [self getLabelAndTextFieldCell:tableView];
             
@@ -534,14 +533,14 @@
             
             cell = phonenumberCell;
         }
-        else if (row == USER_SETTINGS_NIGHT_MODE_SEP_INDEX)
+        else if (row == userSettingsNightModeSepIndex)
         {
             UITableViewCell *sepCell = [[UITableViewCell alloc] init];
             sepCell.backgroundColor = kVectorColorLightGrey;
             
             cell = sepCell;
         }
-        else if (row == USER_SETTINGS_NIGHT_MODE_INDEX)
+        else if (row == userSettingsNightModeIndex)
         {
             MXKTableViewCellWithLabelAndTextField *nightModeCell = [self getLabelAndTextFieldCell:tableView];
                                                                     
@@ -768,7 +767,7 @@
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
         {
-            if (row == USER_SETTINGS_PROFILE_PICTURE_INDEX)
+            if (row == userSettingsProfilePictureIndex)
             {
                 mediaPicker = [MediaPickerViewController mediaPickerViewController];
                 mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
@@ -778,7 +777,7 @@
                 
                 [self presentViewController:navigationController animated:YES completion:nil];
             }
-            else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
+            else if (row == userSettingsChangePasswordIndex)
             {
                 [self displayPasswordAlert];
             }
@@ -1015,7 +1014,7 @@
 {
     UITextField* textField = (UITextField*)sender;
     
-    if (textField.tag == USER_SETTINGS_DISPLAY_NAME_INDEX)
+    if (textField.tag == userSettingsDisplayNameIndex)
     {
         newDisplayName = textField.text;
         [self updateSaveButtonStatus];
