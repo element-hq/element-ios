@@ -80,7 +80,7 @@
     UIAlertAction* savePasswordAction;
 
     // New email address to bind
-    NSString* newEmail;
+    UITextField* newEmailTextField;
 
     // Dynamic rows in the user settings section
     NSInteger userSettingsProfilePictureIndex;
@@ -303,7 +303,7 @@
         // Update the top-rigth corner button
         if (!_newEmailEditingEnabled)
         {
-            newEmail = nil;
+            newEmailTextField = nil;
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
         }
         else
@@ -608,7 +608,8 @@
             else
             {
                 newEmailCell.mxkLabel.text = nil;
-                newEmailCell.mxkTextField.text = newEmail;
+                newEmailCell.mxkTextField.text = newEmailTextField.text;
+                newEmailTextField = newEmailCell.mxkTextField;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
                 newEmailCell.mxkTextField.delegate = self;
@@ -619,13 +620,10 @@
                 [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
                 [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
 
-                // Display the keyboard if this is the first time we render this cell
-                if (!newEmail)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [newEmailCell.mxkTextField becomeFirstResponder];
-                    });
-                }
+                // Display the keyboard right now
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [newEmailCell.mxkTextField becomeFirstResponder];
+                });
             }
 
             newEmailCell.mxkTextField.tag = row;
@@ -1082,7 +1080,7 @@
 - (IBAction)onAddNewEmail:(id)sender
 {
     // Email check
-    if (![MXTools isEmailAddress:newEmail])
+    if (![MXTools isEmailAddress:newEmailTextField.text])
     {
         MXKAlert *alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] style:MXKAlertStyleAlert];
 
@@ -1093,12 +1091,10 @@
         return;
     }
 
-    if ([sender isKindOfClass:UITextField.class])
-    {
-        [sender resignFirstResponder];
-    }
+    // Dismiss the keyboard
+    [newEmailTextField resignFirstResponder];
 
-    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmail];
+    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
     [new3PID requestValidationTokenWithMatrixRestClient:self.mainSession.matrixRestClient success:^{
 
         [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
@@ -1135,7 +1131,7 @@
         }
         else
         {
-            saveButtonEnabled = (0 != newEmail.length);
+            saveButtonEnabled = (0 != newEmailTextField.text.length);
         }
         
         self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
@@ -1180,7 +1176,6 @@
     }
     else if (textField.tag == userSettingsNewEmailIndex)
     {
-        newEmail = textField.text;
         [self updateSaveButtonStatus];
     }
 }
