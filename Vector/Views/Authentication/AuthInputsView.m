@@ -197,7 +197,7 @@
     return errorMsg;
 }
 
-- (void)prepareParameters:(void (^)(NSDictionary *parameters))callback;
+- (void)prepareParameters:(void (^)(NSDictionary *parameters))callback
 {
     if (callback)
     {

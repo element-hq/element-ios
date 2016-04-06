@@ -146,8 +146,6 @@
             // FIXME handle "Forgot password"
 //            self.forgotPasswordButton.hidden = NO;
         }
-        
-        [self hideServerOptionsContainer:YES];
     }
     else if (sender == self.submitButton)
     {
@@ -203,6 +201,33 @@
         [self.homeServerTextField resignFirstResponder];
         [self.identityServerTextField resignFirstResponder];
         
+        // Report server url typed by the user as custom url.
+        NSString *homeServerURL = self.homeServerTextField.text;
+        if (homeServerURL.length && ![homeServerURL isEqualToString:self.defaultHomeServerUrl])
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:homeServerURL forKey:@"customHomeServerURL"];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customHomeServerURL"];
+        }
+        
+        NSString *identityServerURL = self.identityServerTextField.text;
+        if (identityServerURL.length && ![identityServerURL isEqualToString:self.defaultIdentityServerUrl])
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:identityServerURL forKey:@"customIdentityServerURL"];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
+        }
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // Restore default configuration
+        [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
+        [self setIdentityServerTextFieldText:self.defaultIdentityServerUrl];
+        
         [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
         self.serverOptionsContainer.hidden = YES;
         
@@ -211,6 +236,18 @@
     }
     else
     {
+        // Load custom configuration
+        NSString *customHomeServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customHomeServerURL"];
+        if (customHomeServerURL.length)
+        {
+            [self setHomeServerTextFieldText:customHomeServerURL];
+        }
+        NSString *customIdentityServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customIdentityServerURL"];
+        if (customIdentityServerURL.length)
+        {
+            [self setIdentityServerTextFieldText:customIdentityServerURL];
+        }
+        
         [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_tick"] forState:UIControlStateNormal];
         self.serverOptionsContainer.hidden = NO;
         
@@ -228,16 +265,8 @@
 
 - (void)authenticationViewController:(MXKAuthenticationViewController *)authenticationViewController didLogWithUserId:(NSString *)userId
 {
-    // Report server url typed by the user as default url.
-    if (self.homeServerTextField.text.length)
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:self.homeServerTextField.text forKey:@"homeserverurl"];
-    }
-    if (self.identityServerTextField.text.length)
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:self.identityServerTextField.text forKey:@"identityserverurl"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    // Hide server options in order to save customized inputs
+    [self hideServerOptionsContainer:YES];
     
     // Remove auth view controller on successful login
     if (self.navigationController)
