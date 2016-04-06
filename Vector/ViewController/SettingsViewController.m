@@ -52,6 +52,9 @@
 
 @interface SettingsViewController ()
 {
+    // Current alert (if any).
+    MXKAlert *currentAlert;
+
     // listener
     id removedAccountObserver;
     id accountUserInfoObserver;
@@ -246,7 +249,13 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+
     if (notificationCenterWillUpdateObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterWillUpdateObserver];
@@ -321,34 +330,45 @@
 
 - (void)showValidationEmailDialogWithMessage:(NSString*)message for3PID:(MXK3PID*)threePID
 {
-    MXKAlert *alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"]
+    __weak typeof(self) weakSelf = self;
+
+    currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"]
                                               message:message
                                                 style:MXKAlertStyleAlert];
 
-    alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
 
-        [self stopActivityIndicator];
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+
+        [strongSelf stopActivityIndicator];
 
          // Reset new email adding
-         self.newEmailEditingEnabled = NO;
+         strongSelf.newEmailEditingEnabled = NO;
     }];
 
     __strong __typeof(threePID)strongThreePID = threePID;
 
-    [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
         // We always bind emails when registering, so let's do the same here
         [threePID add3PIDToUser:YES success:^{
 
-            [self stopActivityIndicator];
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+
+            [strongSelf stopActivityIndicator];
 
             // Reset new email adding
-            self.newEmailEditingEnabled = NO;
+            strongSelf.newEmailEditingEnabled = NO;
 
             // Update linked emails
-            [self loadLinkedEmails];
+            [strongSelf loadLinkedEmails];
 
         } failure:^(NSError *error) {
+
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
 
             NSLog(@"[SettingsViewController] Failed to bind email: %@", error);
 
@@ -356,11 +376,11 @@
             MXError *mxError = [[MXError alloc] initWithNSError:error];
             if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
             {
-                [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
+                [strongSelf showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
             }
             else
             {
-                [self stopActivityIndicator];
+                [strongSelf stopActivityIndicator];
 
                 // Notify MatrixKit user
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -368,7 +388,7 @@
         }];
     }];
 
-    [alert showInViewController:self];
+    [currentAlert showInViewController:self];
 }
 
 - (void)loadLinkedEmails
@@ -618,7 +638,6 @@
             {
                 newEmailCell.mxkLabel.text = nil;
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
-                newEmailTextField = newEmailCell.mxkTextField;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
                 newEmailCell.mxkTextField.delegate = self;
@@ -629,10 +648,14 @@
                 [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
                 [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
 
-                // Display the keyboard right now
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [newEmailCell.mxkTextField becomeFirstResponder];
-                });
+                // When displaying the textfield the 1st time, open the keyboard
+                if (!newEmailTextField)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [newEmailCell.mxkTextField becomeFirstResponder];
+                    });
+                }
+                newEmailTextField = newEmailCell.mxkTextField;
             }
 
             newEmailCell.mxkTextField.tag = row;
@@ -1105,8 +1128,10 @@
     // Dismiss the keyboard
     [newEmailTextField resignFirstResponder];
 
+    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
     MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
-    [new3PID requestValidationTokenWithMatrixRestClient:self.mainSession.matrixRestClient success:^{
+    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient success:^{
 
         [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
 
