@@ -95,6 +95,11 @@
      Array of `MXSession` instances.
      */
     NSMutableArray *mxSessionArray;
+    
+    /**
+     The room id of the current handled remote notification (if any)
+     */
+    NSString *remoteNotificationRoomId;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -350,6 +355,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
+    
+    remoteNotificationRoomId = nil;
 
     // Check if the app crashed last time
     if ([MXLogger crashLog])
@@ -608,9 +615,19 @@
             // Jump to the concerned room only if the app is transitioning from the background
             if (state == UIApplicationStateInactive)
             {
-                NSLog(@"[AppDelegate] didReceiveRemoteNotification : open the roomViewController %@", roomId);
-                
-                [self showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+                // Check whether another remote notification is not already processed
+                if (!remoteNotificationRoomId)
+                {
+                    remoteNotificationRoomId = roomId;
+                    
+                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: open the roomViewController %@", roomId);
+                    
+                    [self showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+                }
+                else
+                {
+                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: busy");
+                }
             }
             else if (!_completionHandler && (state == UIApplicationStateBackground))
             {
@@ -619,7 +636,7 @@
                 NSLog(@"[AppDelegate] : starts a background sync");
                 
                 [dedicatedAccount backgroundSync:20000 success:^{
-                    NSLog(@"[AppDelegate] : the background sync succeeds");
+                    NSLog(@"[AppDelegate]: the background sync succeeds");
                     
                     if (_completionHandler)
                     {
@@ -627,7 +644,7 @@
                         _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
-                    NSLog(@"[AppDelegate] : the background sync fails");
+                    NSLog(@"[AppDelegate]: the background sync fails");
                     
                     if (_completionHandler)
                     {
@@ -642,7 +659,7 @@
         }
         else
         {
-            NSLog(@"[AppDelegate] : didReceiveRemoteNotification : no linked session / account has been found.");
+            NSLog(@"[AppDelegate]: didReceiveRemoteNotification : no linked session / account has been found.");
         }
     }
     completionHandler(UIBackgroundFetchResultNoData);
