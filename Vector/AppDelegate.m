@@ -423,6 +423,16 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
+    {
+        NSURL *webURL = userActivity.webpageURL;
+        NSLog(@"%@", webURL.absoluteString);
+    }
+    return YES;
+}
+
 #pragma mark - Application layout handling
 
 - (void)restoreInitialDisplay:(void (^)())completion
