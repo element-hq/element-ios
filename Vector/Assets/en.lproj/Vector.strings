@@ -48,6 +48,7 @@
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_password" = "Password too short (min 6)";
+"auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_missing_password" = "Missing password";
 "auth_missing_optional_email" = "If you don't specify an email address, you won't be able to reset your password. Are you sure?";
 "auth_missing_email" = "Missing email address";

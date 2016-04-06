@@ -191,6 +191,15 @@
                 NSLog(@"[AuthInputsView] Invalid user name");
                 errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
             }
+            else if (self.emailTextField.text.length)
+            {
+                // Check validity of the non empty email
+                if ([MXTools isEmailAddress:self.emailTextField.text] == NO)
+                {
+                    NSLog(@"[AuthInputsView] Invalid email");
+                    errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+                }
+            }
         }
     }
     
