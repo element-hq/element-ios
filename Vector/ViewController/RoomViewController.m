@@ -81,6 +81,10 @@
     
     // Typing notifications listener.
     id typingNotifListener;
+    
+    // The first tab is selected by default in room details screen in of case 'showRoomDetails' segue.
+    // Use this flag to select a specific tab (0: people, 1: settings).
+    NSUInteger selectedRoomDetailsIndex;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -253,8 +257,11 @@
     
     if (customizedRoomDataSource)
     {
-        // Remove select event id
-        customizedRoomDataSource.selectedEventId = nil;
+        // Cancel potential selected event (to leave edition mode)
+        if (customizedRoomDataSource.selectedEventId)
+        {
+            [self cancelEventSelection];
+        }
     }
     
     // Hide expanded header to restore navigation bar settings
@@ -1005,9 +1012,14 @@
             [settingsViewController initWithSession:session andRoomId:roomid];
             [viewControllers addObject:settingsViewController];
             
+            // Sanity check
+            if (selectedRoomDetailsIndex > 1)
+            {
+                selectedRoomDetailsIndex = 0;
+            }
             
             segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
             
             // to display a red navbar when the home server cannot be reached.
             [segmentedViewController addMatrixSession:session];
@@ -1127,12 +1139,22 @@
     
     if (view == titleView.titleMask)
     {
-        // Expand/shrink the header
-        [self hideExpandedHeader:!self.expandedHeaderContainer.isHidden];
+        if (self.expandedHeaderContainer.isHidden)
+        {
+            // Expand the header
+            [self hideExpandedHeader:NO];
+        }
+        else
+        {
+            // Open room settings
+            selectedRoomDetailsIndex = 1;
+            [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        }
     }
     else if (view == titleView.roomDetailsMask)
     {
-        // Open room details
+        // Open room details by selecting member list
+        selectedRoomDetailsIndex = 0;
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
 }
