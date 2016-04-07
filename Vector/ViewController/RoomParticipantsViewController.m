@@ -286,13 +286,10 @@
 
 - (void)setIsAddParticipantSearchBarEditing:(BOOL)isAddParticipantsSearchBarEditing
 {
-    if (_isAddParticipantSearchBarEditing != isAddParticipantsSearchBarEditing)
-    {
-        _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
-        
-        // Switch the display between search result and participants list
-        [self.tableView reloadData];
-    }
+    _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
+    
+    // Switch the display between search result and participants list
+    [self.tableView reloadData];
 }
 
 #pragma mark - Internals
