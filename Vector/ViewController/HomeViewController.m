@@ -290,12 +290,13 @@
     }
 }
 
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
 {
     // Force hiding the keyboard
     [self.searchBar resignFirstResponder];
 
     if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
+        && _selectedEventId && [_selectedEventId isEqualToString:eventId]
         && _selectedRoomSession && _selectedRoomSession == matrixSession)
     {
         // Nothing to do
@@ -303,6 +304,7 @@
     }
 
     _selectedRoomId = roomId;
+    _selectedEventId = eventId;
     _selectedRoomSession = matrixSession;
 
     if (roomId && matrixSession)
@@ -318,6 +320,7 @@
 - (void)closeSelectedRoom
 {
     _selectedRoomId = nil;
+    _selectedEventId = nil;
     _selectedRoomSession = nil;
 
     if (_currentRoomViewController)
@@ -440,9 +443,18 @@
             MXKRoomDataSource *roomDataSource;
             if (!searchViewController.selectedEvent)
             {
-                // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
-                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-                roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+                if (!_selectedEventId)
+                {
+                    // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
+                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
+                    roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+                }
+                else
+                {
+                    // Open the room on the requested event
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
+                    [roomDataSource finalizeInitialization];
+                }
             }
             else
             {
@@ -584,7 +596,7 @@
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
     // Open the room
-    [self selectRoomWithId:roomId inMatrixSession:matrixSession];
+    [self selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
 #pragma mark - Actions
@@ -617,7 +629,7 @@
                                                        [recentsViewController stopActivityIndicator];
                                                        createNewRoomImageView.userInteractionEnabled = YES;
                                                        
-                                                       [self selectRoomWithId:room.state.roomId inMatrixSession:self.mainSession];
+                                                       [self selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
                                                        
                                                    } failure:^(NSError *error) {
                                                        
