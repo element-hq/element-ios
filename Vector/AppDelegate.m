@@ -425,12 +425,69 @@
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
+    BOOL continueUserActivity;
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
     {
         NSURL *webURL = userActivity.webpageURL;
-        NSLog(@"%@", webURL.absoluteString);
+        NSLog(@"[AppDelegate] continueUserActivity. Universal link: %@", webURL.absoluteString);
+
+        // Extract the params of the link from the URL fragment part (after '#')
+        NSArray<NSString*> *args = [[webURL.fragment stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"];
+
+        // Remove the first empty param string
+        args = [args filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+        if ([args[0] isEqualToString:@"room"] && args.count >= 2)
+        {
+            // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
+            NSString *roomIdOrAlias = args[1];
+
+            // Is it a link to an event of a room?
+            NSString *eventId = (args.count >= 3) ? args[2] : nil;
+
+            // Check there is an account that knows this room
+            MXKAccount *account = [MXKAccountManager.sharedManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
+            if (account && account.mxSession)
+            {
+                NSString *roomId = roomIdOrAlias;
+
+                // Translate the alias into the room id
+                if ([roomIdOrAlias hasPrefix:@"#"])
+                {
+                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
+                    if (room)
+                    {
+                        roomId = room.roomId;
+                    }
+                }
+
+                if (!eventId)
+                {
+                    // Open the room page
+                    [self showRoom:roomId andEventId:nil withMatrixSession:account.mxSession];
+                }
+                else
+                {
+                    // Open the room page in read only focusing on the passed event
+                    [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+                }
+                
+                continueUserActivity = YES;
+            }
+            else
+            {
+                // TODO
+                NSLog(@"[AppDelegate] Universal link. TODO: The room (%@) is not known by any account", roomIdOrAlias);
+            }
+        }
+        else
+        {
+            // TODO
+            NSLog(@"[AppDelegate] Universal link. TODO: Do not know what to do with the link arguments: %@", args);
+        }
     }
-    return YES;
+
+    return continueUserActivity;
 }
 
 #pragma mark - Application layout handling
@@ -632,7 +689,7 @@
                     
                     NSLog(@"[AppDelegate] didReceiveRemoteNotification: open the roomViewController %@", roomId);
                     
-                    [self showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+                    [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
                 }
                 else
                 {
@@ -1046,7 +1103,7 @@
                          {
                              weakSelf.mxInAppNotification = nil;
                              // Show the room
-                             [weakSelf showRoom:event.roomId withMatrixSession:account.mxSession];
+                             [weakSelf showRoom:event.roomId andEventId:nil withMatrixSession:account.mxSession];
                          }];
                         
                         [self.mxInAppNotification showInViewController:self.window.rootViewController];
@@ -1120,12 +1177,12 @@
 
 #pragma mark - Matrix Rooms handling
 
-- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
     [self restoreInitialDisplay:^{
         
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
+        [_homeViewController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
         
     }];
 }
@@ -1160,7 +1217,7 @@
             if (mxRoom)
             {
                 // open it
-                [self showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
+                [self showRoom:mxRoom.state.roomId andEventId:nil withMatrixSession:mxSession];
                 
                 if (completion)
                 {
@@ -1193,7 +1250,7 @@
                                   }
                                   
                                   // Open created room
-                                  [self showRoom:room.state.roomId withMatrixSession:mxSession];
+                                  [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];
                                   
                                   if (completion)
                                   {
