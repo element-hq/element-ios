@@ -867,7 +867,7 @@
             }
         }
         
-        if (contact)
+        if (contact.mxMember)
         {
             detailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
             [detailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
