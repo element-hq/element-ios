@@ -118,6 +118,25 @@
     
     // Show/Hide server options
     _optionsContainer.hidden = !userInteractionEnabled;
+    
+    // Update the label of the right bar button according to its actual action.
+    if (!userInteractionEnabled)
+    {
+        // The right bar button is used to cancel the running request.
+        self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
+    }
+    else
+    {
+        // The right bar button is used to switch the authentication type.
+        if (self.authType == MXKAuthenticationTypeLogin)
+        {
+            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+        }
+        else
+        {
+            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+        }
+    }
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -132,7 +151,13 @@
     }
     else if (sender == self.rightBarButtonItem)
     {
-        if (self.authType == MXKAuthenticationTypeLogin)
+        // Check whether a request is in progress
+        if (!self.userInteractionEnabled)
+        {
+            // Cancel the current operation, and reset the UI by forcing the authType property.
+            self.authType = self.authType;
+        }
+        else if (self.authType == MXKAuthenticationTypeLogin)
         {
             self.authType = MXKAuthenticationTypeRegister;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
@@ -149,7 +174,7 @@
     }
     else if (sender == self.submitButton)
     {
-        // Check whether the user should set the email
+        // Check whether the user should set an email
         if (self.authInputsView.shouldPromptUserForEmailAddress)
         {
             [self dismissKeyboard];
