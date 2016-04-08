@@ -35,6 +35,8 @@
 "join" = "Join";
 "reject" = "Reject";
 "camera" = "Camera";
+"voice" = "Voice";
+"video" = "Video";
 
 // Authentication
 "auth_login" = "Log in";
