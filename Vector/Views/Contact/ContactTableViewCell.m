@@ -47,8 +47,6 @@
     self.thumbnailView.clipsToBounds = YES;
     
     // apply the vector colours
-    self.bottomLineSeparator.backgroundColor = kVectorColorSiver;
-    self.topLineSeparator.backgroundColor = kVectorColorSiver;
     self.lastPresenceLabel.textColor = kVectorTextColorGray;
 }
 
@@ -198,29 +196,8 @@
 {
     NSString* presenceText = nil;
     NSString* matrixId = [self getFirstMatrixId];
-    MXRoomMember* member = nil;
     
-    if (self.mxRoom && matrixId)
-    {
-        member = [self.mxRoom.state memberWithUserId:matrixId];
-    }
-
-    if (member && (member.membership != MXMembershipJoin))
-    {
-        if (member.membership == MXMembershipInvite)
-        {
-            presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
-        }
-        else if (member.membership == MXMembershipLeave)
-        {
-            presenceText =  NSLocalizedStringFromTable(@"room_participants_leave", @"Vector", nil);
-        }
-        else if (member.membership == MXMembershipBan)
-        {
-            presenceText =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
-        }
-    }
-    else if (matrixId)
+    if (matrixId)
     {
         MXUser *user = nil;
         
@@ -268,7 +245,7 @@
     }
     else if (contact.isThirdPartyInvite)
     {
-        presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
+        presenceText =  NSLocalizedStringFromTable(@"room_participants_offline", @"Vector", nil);
     }
 
     self.lastPresenceLabel.text = presenceText;

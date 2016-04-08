@@ -181,6 +181,7 @@
 		F09EE0081C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F09EE0001C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m */; };
 		F09EE0091C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F09EE0011C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib */; };
 		F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */; };
+		F0A2413A1CB7E28F00E150C3 /* RoomParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A241391CB7E28F00E150C3 /* RoomParticipantsViewController.xib */; };
 		F0BE3DF01C6CE17200AC3111 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */; };
 		F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */; };
 		F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */; };
@@ -467,6 +468,7 @@
 		F09EE0011C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib; sourceTree = "<group>"; };
 		F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomParticipantsViewController.h; sourceTree = "<group>"; };
 		F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomParticipantsViewController.m; sourceTree = "<group>"; };
+		F0A241391CB7E28F00E150C3 /* RoomParticipantsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomParticipantsViewController.xib; sourceTree = "<group>"; };
 		F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberDetailsViewController.h; sourceTree = "<group>"; };
 		F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberDetailsViewController.m; sourceTree = "<group>"; };
 		F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberDetailsViewController.xib; sourceTree = "<group>"; };
@@ -916,6 +918,7 @@
 				32D200871C16C2B100A4E396 /* HomeViewController.m */,
 				F0A1CD201B9F4BBA00F9C15C /* RoomParticipantsViewController.h */,
 				F0A1CD211B9F4BBA00F9C15C /* RoomParticipantsViewController.m */,
+				F0A241391CB7E28F00E150C3 /* RoomParticipantsViewController.xib */,
 				F0CC4DC71C4E594C003BBE45 /* MediaAlbumContentViewController.h */,
 				F0CC4DC81C4E594C003BBE45 /* MediaAlbumContentViewController.m */,
 				F0CC4DC91C4E594C003BBE45 /* MediaAlbumContentViewController.xib */,
@@ -1289,6 +1292,7 @@
 				F0026B561C916E68001D2C04 /* leave@2x.png in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
 				F0F83FC11C93089500E7D322 /* video_icon.png in Resources */,
+				F0A2413A1CB7E28F00E150C3 /* RoomParticipantsViewController.xib in Resources */,
 				F0026B521C916E68001D2C04 /* favouriteOff.png in Resources */,
 				32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */,
 				F02528FD1C11B6FC00E1FE1B /* selection_untick.png in Resources */,

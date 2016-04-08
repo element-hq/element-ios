@@ -63,7 +63,7 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    self.separatorView.backgroundColor = kVectorColorSiver;
+    self.separatorView.backgroundColor = kVectorColorSilver;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
