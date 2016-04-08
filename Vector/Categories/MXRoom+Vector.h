@@ -22,27 +22,29 @@
 @interface MXRoom (Vector)
 
 /**
- Returns YES if there is an push rule to disable the notifications for this room.
- */
-@property(nonatomic, readonly) BOOL areRoomNotificationsMuted;
-
-/**
- Returns YES if the oneself user is a moderator i.e. he is allowed to update the room name or the avatar..
+ Tell whether the oneself user is a moderator of the room.
  */
 @property(nonatomic, readonly) BOOL isModerator;
 
 /**
- Returns the vector displayname.
+ The vector displayname of the room
  */
 @property(nonatomic, readonly) NSString* vectorDisplayname;
 
 /**
- Toggle a room rule notifications.
- 
- @param mute YES to disable room notification
- @return the dedicated push rule
+ Tell whether the notifications are disabled for the room.
  */
-- (void)toggleRoomNotifications:(BOOL)mute;
+@property(nonatomic, readonly, getter=isMute) BOOL mute;
+
+/*
+ Observer when a rules deletion fails.
+ */
+@property (nonatomic) id notificationCenterDidFailObserver;
+
+/*
+ Observer when a rules deletion succeeds.
+ */
+@property (nonatomic) id notificationCenterDidUpdateObserver;
 
 /**
  Set the room avatar in the dedicated MXKImageView.
@@ -55,14 +57,22 @@
  */
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView;
 
-/*
- Observer when a rules deletion fails.
+/**
+ Update the room tag.
+ 
+ @param tag the new tag value
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ You may specify nil for this parameter.
  */
-@property id notificationCenterDidFailObserver;
+- (void)setRoomTag:(NSString*)tag completion:(void (^)())completion;
 
-/*
- Observer when a rules deletion succeeds.
+/**
+ Enable/disable room notifications.
+ 
+ @param mute YES to disable room notification
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ You may specify nil for this parameter.
  */
-@property id notificationCenterDidUpdateObserver;
+- (void)setMute:(BOOL)mute completion:(void (^)())completion;
 
 @end

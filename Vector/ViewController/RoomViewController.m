@@ -81,6 +81,10 @@
     
     // Typing notifications listener.
     id typingNotifListener;
+    
+    // The first tab is selected by default in room details screen in of case 'showRoomDetails' segue.
+    // Use this flag to select a specific tab (0: people, 1: settings).
+    NSUInteger selectedRoomDetailsIndex;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -193,51 +197,35 @@
     [UIView setAnimationsEnabled:NO];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
     [UIView setAnimationsEnabled:YES];
-
-    // Set user picture in input toolbar
-    MXKImageView *userPictureView = ((RoomInputToolbarView*)self.inputToolbarView).pictureView;
-    if (userPictureView)
-    {
-        UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
-        NSString *avatarThumbURL = nil;
-        if (self.mainSession.myUser.avatarUrl)
-        {
-            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
-        }
-        userPictureView.enableInMemoryCache = YES;
-        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
-        [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
-        userPictureView.clipsToBounds = YES;
-    }
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];
-
-    if (self.roomDataSource.isLive)
+    
+    // Update navigation bar items
+    self.navigationItem.rightBarButtonItem.target = self;
+    self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
+    
+    // Handle potential data source
+    if (self.roomDataSource)
     {
-        self.navigationItem.rightBarButtonItem.target = self;
-        self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        if (self.roomDataSource.isLive)
+        {
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        else
+        {
+            // Hide the search button
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        
+        [self refreshRoomInputToolbar];
     }
     else
     {
-        // Hide the search button
-        self.navigationItem.rightBarButtonItem = nil;
-    }
-
-    // Localize strings here
-    
-    if (self.roomDataSource)
-    {
-        // this room view controller has its own typing management.
-        self.roomDataSource.showTypingNotifications = NO;
-        
-        // Check whether call option is supported
-        ((RoomInputToolbarView*)self.inputToolbarView).supportCallOption = (self.roomDataSource.mxSession.callManager != nil);
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
 }
 
@@ -252,17 +240,11 @@
     [super viewWillAppear:animated];
     
     [self listenTypingNotifications];
-    
-    // Observe network reachability
-    [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
-    [self refreshActivitiesViewDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
     
     // hide action
     if (self.currentAlert)
@@ -275,8 +257,11 @@
     
     if (customizedRoomDataSource)
     {
-        // Remove select event id
-        customizedRoomDataSource.selectedEventId = nil;
+        // Cancel potential selected event (to leave edition mode)
+        if (customizedRoomDataSource.selectedEventId)
+        {
+            [self cancelEventSelection];
+        }
     }
     
     // Hide expanded header to restore navigation bar settings
@@ -306,6 +291,10 @@
     {
         // Set visible room id
         [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
+        
+        // Observe network reachability
+        [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
+        [self refreshActivitiesViewDisplay];
     }
 }
 
@@ -314,7 +303,12 @@
     [super viewDidDisappear:animated];
     
     // Reset visible room id
-    [AppDelegate theDelegate].visibleRoomId = nil;
+    if ([AppDelegate theDelegate].visibleRoomId)
+    {
+        [AppDelegate theDelegate].visibleRoomId = nil;
+        
+        [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -338,19 +332,35 @@
 {
     [super displayRoom:dataSource];
     
-    self.navigationItem.rightBarButtonItem.enabled = (dataSource != nil);
+    customizedRoomDataSource = nil;
     
-    // Store ref on customized room data source
-    if ([dataSource isKindOfClass:RoomDataSource.class])
+    if (self.roomDataSource)
     {
-        customizedRoomDataSource = (RoomDataSource*)dataSource;
+        // This room view controller has its own typing management.
+        self.roomDataSource.showTypingNotifications = NO;
+        
+        if (self.roomDataSource.isLive)
+        {
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        else
+        {
+            // Hide the search button
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        
+        // Store ref on customized room data source
+        if ([dataSource isKindOfClass:RoomDataSource.class])
+        {
+            customizedRoomDataSource = (RoomDataSource*)dataSource;
+        }
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
-    {
-        // Update call option support
-        ((RoomInputToolbarView*)self.inputToolbarView).supportCallOption = (dataSource.mxSession.callManager != nil);
-    }
+    [self refreshRoomInputToolbar];
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -432,6 +442,37 @@
     }
     
     [super destroy];
+}
+
+#pragma mark - Internals
+
+- (void)refreshRoomInputToolbar
+{
+    // Check whether the input toolbar is ready before updating it.
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        
+        // Check whether the call option is supported
+        roomInputToolbarView.supportCallOption = (self.roomDataSource.mxSession.callManager != nil);
+        
+        // Set user picture in input toolbar
+        MXKImageView *userPictureView = roomInputToolbarView.pictureView;
+        if (userPictureView)
+        {
+            UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
+            NSString *avatarThumbURL = nil;
+            if (self.mainSession.myUser.avatarUrl)
+            {
+                // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
+                avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
+            }
+            userPictureView.enableInMemoryCache = YES;
+            [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
+            [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
+            userPictureView.clipsToBounds = YES;
+        }
+    }
 }
 
 #pragma mark - Hide/Show expanded header
@@ -971,9 +1012,14 @@
             [settingsViewController initWithSession:session andRoomId:roomid];
             [viewControllers addObject:settingsViewController];
             
+            // Sanity check
+            if (selectedRoomDetailsIndex > 1)
+            {
+                selectedRoomDetailsIndex = 0;
+            }
             
             segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
             
             // to display a red navbar when the home server cannot be reached.
             [segmentedViewController addMatrixSession:session];
@@ -1093,12 +1139,22 @@
     
     if (view == titleView.titleMask)
     {
-        // Expand/shrink the header
-        [self hideExpandedHeader:!self.expandedHeaderContainer.isHidden];
+        if (self.expandedHeaderContainer.isHidden)
+        {
+            // Expand the header
+            [self hideExpandedHeader:NO];
+        }
+        else
+        {
+            // Open room settings
+            selectedRoomDetailsIndex = 1;
+            [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        }
     }
     else if (view == titleView.roomDetailsMask)
     {
-        // Open room details
+        // Open room details by selecting member list
+        selectedRoomDetailsIndex = 0;
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
 }

@@ -220,7 +220,7 @@ static RageShakeManager* sharedInstance = nil;
         
         [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Application info\n"];
-        [message appendFormat:@"Console version: %@\n", appVersion];
+        [message appendFormat:@"Vector version: %@\n", appVersion];
         [message appendFormat:@"MatrixKit version: %@\n", MatrixKitVersion];
         [message appendFormat:@"MatrixSDK version: %@\n", MatrixSDKVersion];
         if (build.length) {

@@ -16,12 +16,14 @@
 
 // Titles
 "title_recents" = "Messages";
+"warning" = "Warning";
 
 // Actions
 "view" = "View";
 "mark_all_as_read_prompt" = "Mark all as read?";
 "next" = "Next";
 "back" = "Back";
+"continue" = "Continue";
 "create" = "Create";
 "leave" = "Leave";
 "remove" = "Remove";
@@ -40,10 +42,22 @@
 "auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
 "auth_user_name_placeholder" = "Your name";
+"auth_optional_email_placeholder" = "Email address (optional)";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
+"auth_invalid_login_param" = "Incorrect username and/or password";
+"auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
+"auth_invalid_password" = "Password too short (min 6)";
+"auth_invalid_email" = "This doesn't look like a valid email address";
+"auth_missing_password" = "Missing password";
+"auth_missing_optional_email" = "If you don't specify an email address, you won't be able to reset your password. Are you sure?";
+"auth_missing_email" = "Missing email address";
+"auth_password_dont_match" = "Passwords don't match";
 "auth_forgot_password" = "Forgot password?";
 "auth_use_server_options" = "Use custom server options (advanced)";
+"auth_email_validation_message" = "Please check your email to continue registration";
+"auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
+"auth_username_in_use" = "Username in use";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -88,7 +102,7 @@
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_admin_name" = "%@ (admin)";
-"room_participants_invite_another_user" = "Invite another user";
+"room_participants_invite_another_user" = "Invite by name, email, id";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
@@ -139,10 +153,6 @@
 // Settings
 "account_logout_all" = "Logout all accounts";
 
-"settings_config_ios_console_version" = "Console version: %@";
-"settings_config_ios_kit_version" = "MatrixKit version: %@";
-"settings_config_ios_sdk_version" = "MatrixSDK version: %@";
-"settings_config_build_number" = "Build: %@";
 "settings_config_no_build_info" = "(no build info)";
 "settings_title_config" = "Configuration";
 "settings_clear_cache" = "Clear cache";
@@ -156,7 +166,8 @@
 "settings_display_name" = "Display Name";
 "settings_first_name" = "First Name";
 "settings_surname" = "Surname";
-"settings_email_address" = "Email Address";
+"settings_email_address" = "Email";
+"settings_add_email_address" = "Add email address";
 "settings_change_password" = "Change password";
 "settings_phone_number" = "Phone Number";
 "settings_night_mode" = "Night Mode";

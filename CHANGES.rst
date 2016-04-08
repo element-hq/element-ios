@@ -1,3 +1,28 @@
+Changes in Vector iOS in 0.1.3 (2016-04-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.5).
+ * Room members: Make UI more intuitive.
+ * Registration support - Support the 2 following flows: m.login.email.identity and m.login.recaptcha.
+ * Settings: Handle user's linked emails.
+ * Room members: Include address book emails in search result #196.
+
+Bug fixes:
+ * App crashes when the user did not grant permission to access Photos.
+ * Member details: Multiple invitations on Start Chat action.
+ * Room members: Invite text box uses the email keyboard which has no colon! #146.
+ * Messages - Wait for the end of action before hiding swipe menu
+#52.
+ * Messages - Plus button (new room creation) is inactive.
+ * Chat screen: the user's avatar is missing in input toolbar.
+ * App crashes on iPhone 6S in case of rotation on login screen.
+ * Do not stop registration process when app is backgrounded.
+ * Authentication screen: Handle correctly custom server options.
+ * Tapping on room name in expanded header should let you edit it #195.
+ * Chat screen: Resume on empty room (Please select a room) #128.
+ * Room members: Keyboard is dismissed at each tap (when search result has been scrolled once).
+
 Changes in Vector iOS in 0.1.2 (2016-03-17)
 ===============================================
 

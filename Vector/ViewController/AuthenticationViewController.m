@@ -16,7 +16,7 @@
 
 #import "AuthenticationViewController.h"
 
-#import "AuthInputsPasswordBasedView.h"
+#import "AuthInputsView.h"
 
 #import "RageShakeManager.h"
 
@@ -63,6 +63,7 @@
     self.submitButton.backgroundColor = kVectorColorGreen;
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.submitButton.enabled = YES;
     
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateHighlighted];
@@ -82,11 +83,14 @@
     self.delegate = self;
     
     // Custom used authInputsView
-    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypePassword andAuthType:MXKAuthenticationTypeLogin];
-    [self registerAuthInputsViewClass:AuthInputsPasswordBasedView.class forFlowType:kMXLoginFlowTypeEmailIdentity andAuthType:MXKAuthenticationTypeRegister];
+    [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
+    [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeRegister];
     
     // Initialize the auth inputs display
-    self.selectedFlow = [MXLoginFlow modelFromJSON:@{@"type": kMXLoginFlowTypePassword}];
+    AuthInputsView *authInputsView = [AuthInputsView authInputsView];
+    MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
+    [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
+    self.authInputsView = authInputsView;
     
     // FIXME handle "Forgot password"
     self.forgotPasswordButton.hidden = YES;
@@ -106,9 +110,33 @@
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
     }
+}
+
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
+{
+    super.userInteractionEnabled = userInteractionEnabled;
     
-    // Update supported authentication flow
-    [self refreshSupportedAuthFlow];
+    // Show/Hide server options
+    _optionsContainer.hidden = !userInteractionEnabled;
+    
+    // Update the label of the right bar button according to its actual action.
+    if (!userInteractionEnabled)
+    {
+        // The right bar button is used to cancel the running request.
+        self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
+    }
+    else
+    {
+        // The right bar button is used to switch the authentication type.
+        if (self.authType == MXKAuthenticationTypeLogin)
+        {
+            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+        }
+        else
+        {
+            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+        }
+    }
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -123,7 +151,13 @@
     }
     else if (sender == self.rightBarButtonItem)
     {
-        if (self.authType == MXKAuthenticationTypeLogin)
+        // Check whether a request is in progress
+        if (!self.userInteractionEnabled)
+        {
+            // Cancel the current operation, and reset the UI by forcing the authType property.
+            self.authType = self.authType;
+        }
+        else if (self.authType == MXKAuthenticationTypeLogin)
         {
             self.authType = MXKAuthenticationTypeRegister;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
@@ -137,8 +171,40 @@
             // FIXME handle "Forgot password"
 //            self.forgotPasswordButton.hidden = NO;
         }
-        
-        [self hideServerOptionsContainer:YES];
+    }
+    else if (sender == self.submitButton)
+    {
+        // Check whether the user should set an email
+        if (self.authInputsView.shouldPromptUserForEmailAddress)
+        {
+            [self dismissKeyboard];
+            
+            if (alert)
+            {
+                [alert dismiss:NO];
+            }
+            
+             __weak typeof(self) weakSelf = self;
+            
+            alert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_missing_optional_email", @"Vector", nil) style:MXKAlertStyleAlert];
+            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->alert = nil;
+                
+                [super onButtonPressed:sender];
+            }];
+            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->alert = nil;
+            }];
+            [alert showInViewController:self];
+        }
+        else
+        {
+            [super onButtonPressed:sender];
+        }
     }
     else
     {
@@ -160,6 +226,33 @@
         [self.homeServerTextField resignFirstResponder];
         [self.identityServerTextField resignFirstResponder];
         
+        // Report server url typed by the user as custom url.
+        NSString *homeServerURL = self.homeServerTextField.text;
+        if (homeServerURL.length && ![homeServerURL isEqualToString:self.defaultHomeServerUrl])
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:homeServerURL forKey:@"customHomeServerURL"];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customHomeServerURL"];
+        }
+        
+        NSString *identityServerURL = self.identityServerTextField.text;
+        if (identityServerURL.length && ![identityServerURL isEqualToString:self.defaultIdentityServerUrl])
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:identityServerURL forKey:@"customIdentityServerURL"];
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"customIdentityServerURL"];
+        }
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        // Restore default configuration
+        [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
+        [self setIdentityServerTextFieldText:self.defaultIdentityServerUrl];
+        
         [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
         self.serverOptionsContainer.hidden = YES;
         
@@ -168,6 +261,18 @@
     }
     else
     {
+        // Load custom configuration
+        NSString *customHomeServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customHomeServerURL"];
+        if (customHomeServerURL.length)
+        {
+            [self setHomeServerTextFieldText:customHomeServerURL];
+        }
+        NSString *customIdentityServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customIdentityServerURL"];
+        if (customIdentityServerURL.length)
+        {
+            [self setIdentityServerTextFieldText:customIdentityServerURL];
+        }
+        
         [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_tick"] forState:UIControlStateNormal];
         self.serverOptionsContainer.hidden = NO;
         
@@ -185,16 +290,8 @@
 
 - (void)authenticationViewController:(MXKAuthenticationViewController *)authenticationViewController didLogWithUserId:(NSString *)userId
 {
-    // Report server url typed by the user as default url.
-    if (self.homeServerTextField.text.length)
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:self.homeServerTextField.text forKey:@"homeserverurl"];
-    }
-    if (self.identityServerTextField.text.length)
-    {
-        [[NSUserDefaults standardUserDefaults] setObject:self.identityServerTextField.text forKey:@"identityserverurl"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    // Hide server options in order to save customized inputs
+    [self hideServerOptionsContainer:YES];
     
     // Remove auth view controller on successful login
     if (self.navigationController)

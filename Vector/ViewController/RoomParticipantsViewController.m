@@ -91,7 +91,6 @@
     addParticipantsSearchBarCell.contentView.backgroundColor = [UIColor whiteColor];
     addParticipantsSearchBarCell.mxkSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     addParticipantsSearchBarCell.mxkSearchBar.returnKeyType = UIReturnKeyDone;
-    addParticipantsSearchBarCell.mxkSearchBar.keyboardType = UIKeyboardTypeEmailAddress;
     addParticipantsSearchBarCell.mxkSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     addParticipantsSearchBarCell.mxkSearchBar.delegate = self;
     addParticipantsSearchBarCell.mxkSearchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
@@ -287,13 +286,10 @@
 
 - (void)setIsAddParticipantSearchBarEditing:(BOOL)isAddParticipantsSearchBarEditing
 {
-    if (_isAddParticipantSearchBarEditing != isAddParticipantsSearchBarEditing)
-    {
-        _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
-        
-        // Switch the display between search result and participants list
-        [self.tableView reloadData];
-    }
+    _isAddParticipantSearchBarEditing = isAddParticipantsSearchBarEditing;
+    
+    // Switch the display between search result and participants list
+    [self.tableView reloadData];
 }
 
 #pragma mark - Internals
@@ -557,10 +553,15 @@
         if (!participantCell)
         {
             participantCell = [[ContactTableViewCell alloc] init];
-            // do not show the custom accessory view
-            participantCell.showCustomAccessoryView = NO;
         }
-    
+        else
+        {
+            // Restore default values
+            participantCell.accessoryView = nil;
+            participantCell.contentView.alpha = 1;
+            participantCell.userInteractionEnabled = YES;
+        }
+
         participantCell.mxRoom = self.mxRoom;
         
         Contact *contact = nil;
@@ -651,7 +652,33 @@
         
         [self customizeContactCell:participantCell atIndexPath:indexPath];
         [participantCell render:contact];
-    
+
+        // The search displays contacts to invite. Add a plus icon to the cell
+        // in order to make it more understandable for the end user
+        if (indexPath.section == searchResultSection)
+        {
+            if (indexPath.row == 0)
+            {
+                // This is the text entered by the user
+                NSString *searchText = contact.displayName;
+                
+                // Check whether this input is a valid email or a Matrix user ID before adding the plus icon.
+                if (![MXTools isEmailAddress:searchText] && ([searchText characterAtIndex:0] != '@' || [searchText containsString:@":"] == NO))
+                {
+                    participantCell.contentView.alpha = 0.5;
+                    participantCell.userInteractionEnabled = NO;
+                }
+                else
+                {
+                    participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                }
+            }
+            else
+            {
+                participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            }
+        }
+
         cell = participantCell;
     }
     
@@ -698,70 +725,46 @@
                 NSString *participantId = contact.displayName;
 
                 // Is it an email or a Matrix user ID?
-                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\S+@\\S+\\.\\S+$" options:NSRegularExpressionCaseInsensitive error:nil];
-                BOOL isEmailAddress = (nil != [regex firstMatchInString:participantId options:0 range:NSMakeRange(0, participantId.length)]);
-
-                // Sanity check the input
-                if (!isEmailAddress &&
-                    ([participantId characterAtIndex:0] != '@' || [participantId containsString:@":"] == NO))
+                if ([MXTools isEmailAddress:participantId])
                 {
-                    __weak typeof(self) weakSelf = self;
-                    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_malformed_id_title", @"Vector", nil)
-                                                           message:NSLocalizedStringFromTable(@"room_participants_invite_malformed_id", @"Vector", nil)
-                                                             style:MXKAlertStyleAlert];
-
-                    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                                style:MXKAlertActionStyleCancel
-                                                                              handler:^(MXKAlert *alert) {
-
-                                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                                  strongSelf->currentAlert = nil;
-
-                                                                              }];
-                    [currentAlert showInViewController:self];
+                    [self addPendingActionMask];
+                    [self.mxRoom inviteUserByEmail:participantId success:^{
+                        
+                        [self removePendingActionMask];
+                        
+                        // Refresh display by leaving search session
+                        [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+                        
+                    } failure:^(NSError *error) {
+                        
+                        [self removePendingActionMask];
+                        
+                        NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
+                        // Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
                 }
                 else
                 {
-                    if (isEmailAddress)
-                    {
-                        [self addPendingActionMask];
-                        [self.mxRoom inviteUserByEmail:participantId success:^{
-
-                            [self removePendingActionMask];
-
-                            // Refresh display by leaving search session
-                            [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
-
-                        } failure:^(NSError *error) {
-
-                            [self removePendingActionMask];
-
-                            NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
-                            // Alert user
-                            [[AppDelegate theDelegate] showErrorAsAlert:error];
-                        }];
-                    }
-                    else
-                    {
-                        [self addPendingActionMask];
-                        [self.mxRoom inviteUser:participantId success:^{
-
-                            [self removePendingActionMask];
-
-                            // Refresh display by leaving search session
-                            [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
-
-                        } failure:^(NSError *error) {
-
-                            [self removePendingActionMask];
-                            
-                            NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
-                            // Alert user
-                            [[AppDelegate theDelegate] showErrorAsAlert:error];
-                        }];
-                    }
+                    [self addPendingActionMask];
+                    [self.mxRoom inviteUser:participantId success:^{
+                        
+                        [self removePendingActionMask];
+                        
+                        // Refresh display by leaving search session
+                        [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+                        
+                    } failure:^(NSError *error) {
+                        
+                        [self removePendingActionMask];
+                        
+                        NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                        // Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
                 }
             }
+            // TODO handle here the case where self.mxRoom is undefined.
         }
         else if (row < filteredParticipants.count)
         {
@@ -803,6 +806,37 @@
                     [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
                 }
             }
+            else
+            {
+                // This is a local email contact
+                NSString *emailAddress = contact.displayName;
+                
+                // Invite this user if a room is defined
+                if (self.mxRoom)
+                {
+                    // Sanity check
+                    if ([MXTools isEmailAddress:emailAddress])
+                    {
+                        [self addPendingActionMask];
+                        [self.mxRoom inviteUserByEmail:emailAddress success:^{
+                            
+                            [self removePendingActionMask];
+                            
+                            // Refresh display by leaving search session
+                            [self searchBarCancelButtonClicked:addParticipantsSearchBarCell.mxkSearchBar];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            [self removePendingActionMask];
+                            
+                            NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", emailAddress);
+                            // Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                }
+                // TODO handle here the case where self.mxRoom is undefined.
+            }
         }
     }
     else if (indexPath.section == participantsSection)
@@ -830,7 +864,7 @@
             }
         }
         
-        if (contact)
+        if (contact.mxMember)
         {
             detailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
             [detailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
@@ -1012,7 +1046,7 @@
 
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
-    // caret color
+    // bar tint color
     searchBar.barTintColor = searchBar.tintColor = kVectorColorGreen;
     searchBar.tintColor = kVectorColorGreen;
     
@@ -1086,19 +1120,29 @@
 {
     NSInteger previousFilteredCount = filteredParticipants.count;
     
-    NSMutableArray *constacts;
+    NSMutableArray *contacts;
     
     if (addParticipantsSearchText.length && [searchText hasPrefix:addParticipantsSearchText])
     {
-        constacts = filteredParticipants;
+        contacts = filteredParticipants;
     }
     else
     {
         // Retrieve all known matrix users
         NSArray *matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
-        constacts = [NSMutableArray arrayWithCapacity:matrixContacts.count];
         
-        // Split contacts with several ids, and remove the current participants.
+        // Retrieve all known email addresses from local contacts
+        NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
+        
+        contacts = [NSMutableArray arrayWithCapacity:(matrixContacts.count + localEmailContacts.count)];
+        
+        // Add first email contacts
+        if (localEmailContacts.count)
+        {
+            [contacts addObjectsFromArray:localEmailContacts];
+        }
+        
+        // Matrix ids: split contacts with several ids, and remove the current participants.
         for (MXKContact* contact in matrixContacts)
         {
             NSArray *identifiers = contact.matrixIdentifiers;
@@ -1112,7 +1156,7 @@
                         {
                             Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                             splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
-                            [constacts addObject:splitContact];
+                            [contacts addObject:splitContact];
                         }
                     }
                 }
@@ -1124,7 +1168,7 @@
                 {
                     if (![userId isEqualToString:userMatrixId])
                     {
-                        [constacts addObject:contact];
+                        [contacts addObject:contact];
                     }
                 }
             }
@@ -1145,7 +1189,7 @@
         [indexArray addObject:[NSIndexPath indexPathForRow:index++ inSection:0]];
     }
 
-    for (MXKContact* contact in constacts)
+    for (MXKContact* contact in contacts)
     {
         if ([contact matchedWithPatterns:@[addParticipantsSearchText]])
         {
@@ -1166,6 +1210,12 @@
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
     
+    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+    {
+        // Allow local contacts sync in order to add address book emails in search result
+        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+    }
+    
     [self refreshSearchBarItemsColor:searchBar];
     
     return YES;
@@ -1180,9 +1230,8 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    // "Done" key has been pressed
-    self.isAddParticipantSearchBarEditing = NO;
-    [searchBar resignFirstResponder];
+    // "Done" key has been pressed. Cancel the invitation process
+    [self searchBarCancelButtonClicked:searchBar];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar

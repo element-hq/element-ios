@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
 
+@property (weak, nonatomic) IBOutlet UIView *optionsContainer;
+
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 @property (weak, nonatomic) IBOutlet UIButton *serverOptionsTickButton;
 

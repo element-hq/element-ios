@@ -28,6 +28,7 @@ int main(int argc, char * argv[]) {
         }
         // Catch and log crashes
         [MXLogger logCrashes:YES];
+        [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
 
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
