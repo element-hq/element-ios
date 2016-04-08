@@ -69,7 +69,7 @@
             }
             else
             {
-                self.bingIndicator.backgroundColor = kVectorColorSiver;
+                self.bingIndicator.backgroundColor = kVectorColorSilver;
                 self.lastEventDate.textColor = kVectorTextColorGray;
             }
         }

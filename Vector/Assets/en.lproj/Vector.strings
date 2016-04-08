@@ -108,13 +108,13 @@
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
+"room_participants_invited_section" = "INVITED";
+
 "room_participants_active" = "Online";
-"room_participants_invite" = "Invite";
-"room_participants_leave" = "Left";
-"room_participants_ban" = "Banned";
 "room_participants_active_less_1_hour" = "Offline";
 "room_participants_active_less_x_hours" = "Offline %luh ago";
 "room_participants_active_less_x_days" = "Offline %lu days ago";
+"room_participants_offline" = "Offline";
 
 "room_participants_action_invite" = "Invite";
 "room_participants_action_leave" = "Leave this room";

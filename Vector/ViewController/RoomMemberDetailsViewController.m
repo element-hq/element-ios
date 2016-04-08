@@ -196,22 +196,7 @@
         
         NSString* presenceText = nil;
         
-        if (self.mxRoomMember.membership != MXMembershipJoin)
-        {
-            if (self.mxRoomMember.membership == MXMembershipInvite)
-            {
-                presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
-            }
-            else if (self.mxRoomMember.membership == MXMembershipLeave)
-            {
-                presenceText =  NSLocalizedStringFromTable(@"room_participants_leave", @"Vector", nil);
-            }
-            else if (self.mxRoomMember.membership == MXMembershipBan)
-            {
-                presenceText =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
-            }
-        }
-        else if (self.mxRoomMember.userId)
+        if (self.mxRoomMember.userId)
         {
             MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
             if (user)
