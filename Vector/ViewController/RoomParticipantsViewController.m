@@ -350,7 +350,8 @@
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
         // Check whether this member is admin
-        BOOL isAdmin = ([self.mxRoom.state memberNormalizedPowerLevel:mxMember.userId] == 1);
+        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+        BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:mxMember.userId] >= kVectorRoomAdminLevel);
         
         // Prepare the display name of this member
         NSString *displayName = mxMember.displayname;
@@ -367,6 +368,7 @@
                 displayName = mxMember.userId;
             }
         }
+        
         if (isAdmin)
         {
             displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
@@ -402,31 +404,38 @@
     // Add this participant (admin is in first position, the other are sorted in alphabetical order by trimming special character ('@', '_'...).
     NSUInteger index = 0;
     NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_!~`@#$%^&*-+();:={}[],.<>?\\/\"\'"];
-    NSString *trimmedDisplayName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+    NSString *trimmedName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+    
+    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+    
     if (isAdmin)
     {
         // Check whether there is other admin
         for (NSString *userId in memberIds)
         {
-            if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
+            if ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel)
             {
-                Contact *contact = [mxkContactsById objectForKey:userId];
+                Contact *otherContact = [mxkContactsById objectForKey:userId];
 
                 // Sort admin in alphabetical order (skip symbols before comparing)
-                NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-                if (!trimmedContactName.length)
+                NSString *trimmedOtherName = [otherContact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+                if (!trimmedOtherName.length)
                 {
-                    if (trimmedDisplayName.length || [contact.displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    if (trimmedName.length || [contact.displayName compare:otherContact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
                     {
                         break;
                     }
                 }
-                else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                else if (trimmedName.length && [trimmedName compare:trimmedOtherName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
                 {
                     break;
                 }
 
                 index++;
+            }
+            else
+            {
+                break;
             }
         }
     }
@@ -435,24 +444,24 @@
         for (NSString *userId in memberIds)
         {
             // Pass admin(s)
-            if ([self.mxRoom.state memberNormalizedPowerLevel:userId] == 1)
+            if ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel)
             {
                 index++;
             }
             else
             {
-                Contact *contact = [mxkContactsById objectForKey:userId];
+                Contact *otherContact = [mxkContactsById objectForKey:userId];
 
                 // Sort in alphabetical order (skip symbols before comparing)
-                NSString *trimmedContactName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-                if (!trimmedContactName.length)
+                NSString *trimmedOtherName = [otherContact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
+                if (!trimmedOtherName.length)
                 {
-                    if (trimmedDisplayName.length || [contact.displayName compare:contact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                    if (trimmedName.length || [contact.displayName compare:otherContact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
                     {
                         break;
                     }
                 }
-                else if (trimmedDisplayName.length && [trimmedDisplayName compare:trimmedContactName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
+                else if (trimmedName.length && [trimmedName compare:trimmedOtherName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
                 {
                     break;
                 }
@@ -595,7 +604,8 @@
         if (!contact)
         {
             // Check whether user is admin
-            BOOL isAdmin = ([self.mxRoom.state memberNormalizedPowerLevel:userMatrixId] == 1);
+            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+            BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:userMatrixId] >= kVectorRoomAdminLevel);
             
             NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
             if (isAdmin)
@@ -639,29 +649,6 @@
         {
             NSString *userId = memberIds[index];
             contact = [mxkContactsById objectForKey:userId];
-            
-            if (!contact)
-            {
-                // Create this missing contact
-                // Look for the corresponding MXUser
-                NSArray *sessions = self.mxSessions;
-                MXUser *mxUser;
-                for (MXSession *session in sessions)
-                {
-                    mxUser = [session userWithUserId:userId];
-                    if (mxUser)
-                    {
-                        contact = [[Contact alloc] initMatrixContactWithDisplayName:((mxUser.displayname.length > 0) ? mxUser.displayname : userId) andMatrixID:userId];
-                        contact.mxMember = [self.mxRoom.state memberWithUserId:userId];
-                        break;
-                    }
-                }
-                
-                if (contact)
-                {
-                    [mxkContactsById setObject:contact forKey:userId];
-                }
-            }
         }
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -806,9 +793,6 @@
             if (identifiers.count)
             {
                 NSString *participantId = identifiers.firstObject;
-                
-                // Handle a mapping contact by userId for selected participants
-                [mxkContactsById setObject:contact forKey:participantId];
 
                 // Invite this user if a room is defined
                 [self addPendingActionMask];

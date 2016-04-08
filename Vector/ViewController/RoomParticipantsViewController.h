@@ -22,7 +22,7 @@
 
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
- When this property is nil, the view controller empty.
+ When this property is nil, the view controller is empty.
  */
 @interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 {
