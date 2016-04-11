@@ -134,6 +134,24 @@
 		F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */; };
 		F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
+		F03FBCC21CBBF521000A5770 /* admin_icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB01CBBF521000A5770 /* admin_icon_small.png */; };
+		F03FBCC31CBBF521000A5770 /* admin_icon_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB11CBBF521000A5770 /* admin_icon_small@2x.png */; };
+		F03FBCC41CBBF521000A5770 /* admin_icon_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB21CBBF521000A5770 /* admin_icon_small@3x.png */; };
+		F03FBCC51CBBF521000A5770 /* admin_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB31CBBF521000A5770 /* admin_icon.png */; };
+		F03FBCC61CBBF521000A5770 /* admin_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */; };
+		F03FBCC71CBBF521000A5770 /* admin_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */; };
+		F03FBCC81CBBF521000A5770 /* mod_icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB61CBBF521000A5770 /* mod_icon_small.png */; };
+		F03FBCC91CBBF521000A5770 /* mod_icon_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB71CBBF521000A5770 /* mod_icon_small@2x.png */; };
+		F03FBCCA1CBBF521000A5770 /* mod_icon_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB81CBBF521000A5770 /* mod_icon_small@3x.png */; };
+		F03FBCCB1CBBF521000A5770 /* mod_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB91CBBF521000A5770 /* mod_icon.png */; };
+		F03FBCCC1CBBF521000A5770 /* mod_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBA1CBBF521000A5770 /* mod_icon@2x.png */; };
+		F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBB1CBBF521000A5770 /* mod_icon@3x.png */; };
+		F03FBCCE1CBBF521000A5770 /* shrink_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBC1CBBF521000A5770 /* shrink_icon.png */; };
+		F03FBCCF1CBBF521000A5770 /* shrink_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBD1CBBF521000A5770 /* shrink_icon@2x.png */; };
+		F03FBCD01CBBF521000A5770 /* shrink_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBE1CBBF521000A5770 /* shrink_icon@3x.png */; };
+		F03FBCD11CBBF521000A5770 /* unshrink_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBF1CBBF521000A5770 /* unshrink_icon.png */; };
+		F03FBCD21CBBF521000A5770 /* unshrink_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCC01CBBF521000A5770 /* unshrink_icon@2x.png */; };
+		F03FBCD31CBBF521000A5770 /* unshrink_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCC11CBBF521000A5770 /* unshrink_icon@3x.png */; };
 		F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0418BE31C9067B40030356E /* edit_icon@2x.png */; };
 		F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */; };
 		F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F047DBB71C576F6600952DA2 /* AuthInputsView.m */; };
@@ -399,6 +417,24 @@
 		F02528D01C11B6FC00E1FE1B /* voice_call_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice_call_icon.png; sourceTree = "<group>"; };
 		F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@2x.png"; sourceTree = "<group>"; };
 		F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
+		F03FBCB01CBBF521000A5770 /* admin_icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = admin_icon_small.png; sourceTree = "<group>"; };
+		F03FBCB11CBBF521000A5770 /* admin_icon_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon_small@2x.png"; sourceTree = "<group>"; };
+		F03FBCB21CBBF521000A5770 /* admin_icon_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon_small@3x.png"; sourceTree = "<group>"; };
+		F03FBCB31CBBF521000A5770 /* admin_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = admin_icon.png; sourceTree = "<group>"; };
+		F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@2x.png"; sourceTree = "<group>"; };
+		F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@3x.png"; sourceTree = "<group>"; };
+		F03FBCB61CBBF521000A5770 /* mod_icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mod_icon_small.png; sourceTree = "<group>"; };
+		F03FBCB71CBBF521000A5770 /* mod_icon_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon_small@2x.png"; sourceTree = "<group>"; };
+		F03FBCB81CBBF521000A5770 /* mod_icon_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon_small@3x.png"; sourceTree = "<group>"; };
+		F03FBCB91CBBF521000A5770 /* mod_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mod_icon.png; sourceTree = "<group>"; };
+		F03FBCBA1CBBF521000A5770 /* mod_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon@2x.png"; sourceTree = "<group>"; };
+		F03FBCBB1CBBF521000A5770 /* mod_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon@3x.png"; sourceTree = "<group>"; };
+		F03FBCBC1CBBF521000A5770 /* shrink_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shrink_icon.png; sourceTree = "<group>"; };
+		F03FBCBD1CBBF521000A5770 /* shrink_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shrink_icon@2x.png"; sourceTree = "<group>"; };
+		F03FBCBE1CBBF521000A5770 /* shrink_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shrink_icon@3x.png"; sourceTree = "<group>"; };
+		F03FBCBF1CBBF521000A5770 /* unshrink_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unshrink_icon.png; sourceTree = "<group>"; };
+		F03FBCC01CBBF521000A5770 /* unshrink_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unshrink_icon@2x.png"; sourceTree = "<group>"; };
+		F03FBCC11CBBF521000A5770 /* unshrink_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unshrink_icon@3x.png"; sourceTree = "<group>"; };
 		F0418BE31C9067B40030356E /* edit_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit_icon@2x.png"; sourceTree = "<group>"; };
 		F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
 		F047DBB61C576F6600952DA2 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
@@ -981,6 +1017,24 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F03FBCB01CBBF521000A5770 /* admin_icon_small.png */,
+				F03FBCB11CBBF521000A5770 /* admin_icon_small@2x.png */,
+				F03FBCB21CBBF521000A5770 /* admin_icon_small@3x.png */,
+				F03FBCB31CBBF521000A5770 /* admin_icon.png */,
+				F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */,
+				F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */,
+				F03FBCB61CBBF521000A5770 /* mod_icon_small.png */,
+				F03FBCB71CBBF521000A5770 /* mod_icon_small@2x.png */,
+				F03FBCB81CBBF521000A5770 /* mod_icon_small@3x.png */,
+				F03FBCB91CBBF521000A5770 /* mod_icon.png */,
+				F03FBCBA1CBBF521000A5770 /* mod_icon@2x.png */,
+				F03FBCBB1CBBF521000A5770 /* mod_icon@3x.png */,
+				F03FBCBC1CBBF521000A5770 /* shrink_icon.png */,
+				F03FBCBD1CBBF521000A5770 /* shrink_icon@2x.png */,
+				F03FBCBE1CBBF521000A5770 /* shrink_icon@3x.png */,
+				F03FBCBF1CBBF521000A5770 /* unshrink_icon.png */,
+				F03FBCC01CBBF521000A5770 /* unshrink_icon@2x.png */,
+				F03FBCC11CBBF521000A5770 /* unshrink_icon@3x.png */,
 				F0F83FBE1C93089500E7D322 /* video_icon.png */,
 				F0F83FBF1C93089500E7D322 /* video_icon@2x.png */,
 				F0F83FC01C93089500E7D322 /* video_icon@3x.png */,
@@ -1165,8 +1219,10 @@
 				F047DBBA1C576F6600952DA2 /* AuthInputsView.xib in Resources */,
 				F02529001C11B6FC00E1FE1B /* settings_icon.png in Resources */,
 				32492DB41C293CCB00035C79 /* PublicRoomTableViewCell.xib in Resources */,
+				F03FBCCF1CBBF521000A5770 /* shrink_icon@2x.png in Resources */,
 				F0F83FC21C93089500E7D322 /* video_icon@2x.png in Resources */,
 				71B2A3BC1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib in Resources */,
+				F03FBCD01CBBF521000A5770 /* shrink_icon@3x.png in Resources */,
 				F02528D81C11B6FC00E1FE1B /* camera_picture.png in Resources */,
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
@@ -1177,10 +1233,12 @@
 				F0DDDBB81C5A5F55000C6C46 /* Icon-170@2x.png in Resources */,
 				F02528F11C11B6FC00E1FE1B /* placeholder@3x.png in Resources */,
 				F0026B5E1C916E68001D2C04 /* priorityHigh.png in Resources */,
+				F03FBCD11CBBF521000A5770 /* unshrink_icon.png in Resources */,
 				F02528FB1C11B6FC00E1FE1B /* selection_tick@2x.png in Resources */,
 				F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */,
 				F02528DE1C11B6FC00E1FE1B /* camera_switch@3x.png in Resources */,
 				F02529091C11B6FC00E1FE1B /* upload_icon.png in Resources */,
+				F03FBCC41CBBF521000A5770 /* admin_icon_small@3x.png in Resources */,
 				F05641931C7DF9DE002276ED /* error@2x.png in Resources */,
 				F0D2D9861C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F02528F21C11B6FC00E1FE1B /* remove_icon.png in Resources */,
@@ -1191,6 +1249,7 @@
 				F02528DB1C11B6FC00E1FE1B /* camera_stop.png in Resources */,
 				F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */,
 				F02528FC1C11B6FC00E1FE1B /* selection_tick@3x.png in Resources */,
+				F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */,
 				7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */,
 				F025290B1C11B6FC00E1FE1B /* upload_icon@3x.png in Resources */,
 				F02529011C11B6FC00E1FE1B /* settings_icon@2x.png in Resources */,
@@ -1198,6 +1257,7 @@
 				F02528F91C11B6FC00E1FE1B /* search_icon@3x.png in Resources */,
 				F0DDDBB71C5A5F55000C6C46 /* Icon-170.png in Resources */,
 				F0DA3FCA1C4691CD0055438B /* details_icon@3x.png in Resources */,
+				F03FBCC61CBBF521000A5770 /* admin_icon@2x.png in Resources */,
 				32D200831C15C56A00A4E396 /* search_bg.png in Resources */,
 				F02529041C11B6FC00E1FE1B /* typing@2x.png in Resources */,
 				F0C34B641C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -1211,20 +1271,25 @@
 				F02528D51C11B6FC00E1FE1B /* camera_capture.png in Resources */,
 				F05641851C7CBB58002276ED /* bubbles_bg_landscape@3x.png in Resources */,
 				F056418E1C7CBEBD002276ED /* group@3x.png in Resources */,
+				F03FBCCE1CBBF521000A5770 /* shrink_icon.png in Resources */,
 				F003AA811C690628008B430C /* RoomAvatarTitleView.xib in Resources */,
 				F0026B551C916E68001D2C04 /* leave.png in Resources */,
 				F0C34B701C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */,
 				F0026B531C916E68001D2C04 /* favouriteOff@2x.png in Resources */,
+				F03FBCCA1CBBF521000A5770 /* mod_icon_small@3x.png in Resources */,
 				F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */,
 				F0026B5D1C916E68001D2C04 /* notificationsOff@3x.png in Resources */,
 				F0C34CB21C16269D00C36F09 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				F03FBCC21CBBF521000A5770 /* admin_icon_small.png in Resources */,
+				F03FBCCC1CBBF521000A5770 /* mod_icon@2x.png in Resources */,
 				F0026B4F1C916E68001D2C04 /* favourite.png in Resources */,
 				F02528DC1C11B6FC00E1FE1B /* camera_switch.png in Resources */,
 				F0DA3FC91C4691CD0055438B /* details_icon@2x.png in Resources */,
 				F09EE0051C5134BE0078712F /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				F09EE0031C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F0026B5F1C916E68001D2C04 /* priorityHigh@2x.png in Resources */,
+				F03FBCC51CBBF521000A5770 /* admin_icon.png in Resources */,
 				F02528E81C11B6FC00E1FE1B /* logo@2x.png in Resources */,
 				F0D2D98A1C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F05641941C7DF9DE002276ED /* error@3x.png in Resources */,
@@ -1249,12 +1314,14 @@
 				F02528FF1C11B6FC00E1FE1B /* selection_untick@3x.png in Resources */,
 				717928481C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
 				F02528F01C11B6FC00E1FE1B /* placeholder@2x.png in Resources */,
+				F03FBCC91CBBF521000A5770 /* mod_icon_small@2x.png in Resources */,
 				F0C34CB41C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */,
 				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
 				F02529031C11B6FC00E1FE1B /* typing.png in Resources */,
 				32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */,
 				F056418D1C7CBEBD002276ED /* group@2x.png in Resources */,
+				F03FBCD31CBBF521000A5770 /* unshrink_icon@3x.png in Resources */,
 				F0026B501C916E68001D2C04 /* favourite@2x.png in Resources */,
 				71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */,
 				717928461C03852C00407D96 /* TableViewCellSeparator.xib in Resources */,
@@ -1266,7 +1333,9 @@
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
 				F05641921C7DF9DE002276ED /* error.png in Resources */,
 				32D0A4BD1CA44509008F3451 /* plus_icon@2x.png in Resources */,
+				F03FBCC81CBBF521000A5770 /* mod_icon_small.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
+				F03FBCC31CBBF521000A5770 /* admin_icon_small@2x.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,
 				F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */,
@@ -1278,6 +1347,7 @@
 				F00C47871BFF77C800DBABC9 /* RecentTableViewCell.xib in Resources */,
 				716FDC8B1C186A3A001034CB /* InviteRecentTableViewCell.xib in Resources */,
 				F02529051C11B6FC00E1FE1B /* typing@3x.png in Resources */,
+				F03FBCD21CBBF521000A5770 /* unshrink_icon@2x.png in Resources */,
 				F09E24EE1C6DE24900D39503 /* RoomMemberTitleView.xib in Resources */,
 				F0026B611C916E68001D2C04 /* priorityLow.png in Resources */,
 				F0CC4DCB1C4E594C003BBE45 /* MediaAlbumContentViewController.xib in Resources */,
@@ -1286,6 +1356,8 @@
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */,
 				32D0A4BC1CA44509008F3451 /* plus_icon.png in Resources */,
+				F03FBCCB1CBBF521000A5770 /* mod_icon.png in Resources */,
+				F03FBCC71CBBF521000A5770 /* admin_icon@3x.png in Resources */,
 				F09EE0071C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */,
 				F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,

@@ -40,7 +40,6 @@
     
     if (self.superview)
     {
-        
         // Center horizontally the avatar into the navigation bar
         CGRect frame = self.superview.frame;
         UINavigationBar *navigationBar;

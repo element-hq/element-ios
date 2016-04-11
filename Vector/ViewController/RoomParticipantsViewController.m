@@ -590,6 +590,8 @@
         participantCell.accessoryView = nil;
         participantCell.contentView.alpha = 1;
         participantCell.userInteractionEnabled = YES;
+        
+        participantCell.thumbnailBadgeView.hidden = YES;
     }
     
     participantCell.mxRoom = self.mxRoom;
@@ -681,6 +683,22 @@
             else
             {
                 participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            }
+        }
+        else if (contact.mxMember)
+        {
+            // Update member badge
+            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+            NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
+            if (powerLevel >= kVectorRoomAdminLevel)
+            {
+                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon_small"];
+                participantCell.thumbnailBadgeView.hidden = NO;
+            }
+            else if (powerLevel >= kVectorRoomModeratorLevel)
+            {
+                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon_small"];
+                participantCell.thumbnailBadgeView.hidden = NO;
             }
         }
     }

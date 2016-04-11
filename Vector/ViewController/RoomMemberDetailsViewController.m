@@ -194,6 +194,24 @@
     {
         self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
         
+        // Update member badge
+        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+        NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+        if (powerLevel >= kVectorRoomAdminLevel)
+        {
+            memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
+            memberTitleView.memberBadge.hidden = NO;
+        }
+        else if (powerLevel >= kVectorRoomModeratorLevel)
+        {
+            memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
+            memberTitleView.memberBadge.hidden = NO;
+        }
+        else
+        {
+            memberTitleView.memberBadge.hidden = YES;
+        }
+        
         NSString* presenceText = nil;
         
         if (self.mxRoomMember.userId)

@@ -25,10 +25,11 @@
  */
 @interface ContactTableViewCell : MXKTableViewCell <MXKCellRendering>
 
-@property (strong, nonatomic) IBOutlet MXKImageView *thumbnailView;
-@property (strong, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *lastPresenceLabel;
-@property (weak, nonatomic) IBOutlet UIView *customAccessoryView;
+@property (nonatomic) IBOutlet MXKImageView *thumbnailView;
+@property (nonatomic) IBOutlet UIImageView *thumbnailBadgeView;
+@property (nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
+@property (nonatomic) IBOutlet UILabel *lastPresenceLabel;
+@property (nonatomic) IBOutlet UIView *customAccessoryView;
 
 @property (nonatomic) BOOL showCustomAccessoryView;
 
