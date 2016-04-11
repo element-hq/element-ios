@@ -431,19 +431,53 @@
         NSURL *webURL = userActivity.webpageURL;
         NSLog(@"[AppDelegate] continueUserActivity. Universal link: %@", webURL.absoluteString);
 
-        // Extract the params of the link from the URL fragment part (after '#')
-        NSArray<NSString*> *args = [[webURL.fragment stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"];
+        // Extract params of the link from the URL fragment part (after '#')
+        // The fragment can contain a '?'. So there are two kinds of parameters: path params and query params
+        NSArray<NSString*> *pathParams;
+        NSMutableDictionary *queryParams;
 
-        // Remove the first empty param string
-        args = [args filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+        NSArray<NSString*> *fragment = [webURL.fragment componentsSeparatedByString:@"?"];
 
-        if ([args[0] isEqualToString:@"room"] && args.count >= 2)
+        // Extract path params
+        pathParams = [fragment[0] componentsSeparatedByString:@"/"];
+
+        // Remove the first empty path param string
+        pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+        // URL decode each path param
+        NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
+        for (NSInteger i = 0; i < pathParams.count; i++)
+        {
+            pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        }
+        pathParams = pathParams2;
+
+        // Extract query params if any
+        if (fragment.count == 2)
+        {
+           queryParams = [[NSMutableDictionary alloc] init];
+            for (NSString *keyValue in [fragment[1] componentsSeparatedByString:@"&"])
+            {
+                // Get the parameter name
+                NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
+
+                // Get the parameter value
+                NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
+                value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+                queryParams[key] = value;
+            }
+        }
+
+        // Check the action to do
+        if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
         {
             // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
-            NSString *roomIdOrAlias = args[1];
+            NSString *roomIdOrAlias = pathParams[1];
 
             // Is it a link to an event of a room?
-            NSString *eventId = (args.count >= 3) ? args[2] : nil;
+            NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
 
             // Check there is an account that knows this room
             MXKAccount *account = [MXKAccountManager.sharedManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
@@ -483,7 +517,7 @@
         else
         {
             // TODO
-            NSLog(@"[AppDelegate] Universal link. TODO: Do not know what to do with the link arguments: %@", args);
+            NSLog(@"[AppDelegate] Universal link. TODO: Do not know what to do with the link arguments: %@", pathParams);
         }
     }
 
