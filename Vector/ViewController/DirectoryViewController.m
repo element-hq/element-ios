@@ -125,7 +125,7 @@
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
+        [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
     });
 }
 

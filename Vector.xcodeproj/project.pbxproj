@@ -272,6 +272,7 @@
 		32D200821C15C56A00A4E396 /* search_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_bg@3x.png"; sourceTree = "<group>"; };
 		32D200861C16C2B100A4E396 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		32D200871C16C2B100A4E396 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		32F2ABFC1CB5694B00BF205F /* Vector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Vector.entitlements; sourceTree = "<group>"; };
 		32F2E6191C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		32F2E61A1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Vector.release.xcconfig"; path = "Pods/Target Support Files/Pods-Vector/Pods-Vector.release.xcconfig"; sourceTree = "<group>"; };
@@ -814,6 +815,7 @@
 		F094A9A41B78D8F000B1FBBF /* Vector */ = {
 			isa = PBXGroup;
 			children = (
+				32F2ABFC1CB5694B00BF205F /* Vector.entitlements */,
 				F094AA071B78E42600B1FBBF /* API */,
 				F094AA0A1B78E42600B1FBBF /* Assets */,
 				F0C34CB51C17145F00C36F09 /* Categories */,
@@ -1575,6 +1577,7 @@
 			baseConfigurationReference = 11865E69C29698A4179E1F3F /* Pods-Vector.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Vector/Vector.entitlements;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Vector/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1589,6 +1592,7 @@
 			baseConfigurationReference = 435C7E1A9BC3DE28D526540F /* Pods-Vector.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Vector/Vector.entitlements;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Vector/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

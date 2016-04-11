@@ -31,6 +31,7 @@
 // References on the currently selected room and its view controller
 @property (nonatomic, readonly) RoomViewController *currentRoomViewController;
 @property (nonatomic, readonly) NSString  *selectedRoomId;
+@property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
 
 
@@ -50,9 +51,10 @@
  Open the room with the provided identifier in a specific matrix session.
 
  @param roomId the room identifier.
+ @param eventId if not nil, the room will be opened on this event.
  @param mxSession the matrix session in which the room should be available.
  */
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession;
+- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)mxSession;
 
 /**
  Close the current selected room (if any)

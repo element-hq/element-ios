@@ -81,7 +81,7 @@
 
 #pragma mark - Matrix Room handling
 
-- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
 // Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion;

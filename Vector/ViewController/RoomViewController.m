@@ -391,7 +391,7 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room)
              {
                  // Show the room
-                 [[AppDelegate theDelegate] showRoom:room.state.roomId withMatrixSession:self.mainSession];
+                 [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
              } failure:^(NSError *error)
              {
                  NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed", roomAlias);
