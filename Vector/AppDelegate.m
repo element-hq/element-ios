@@ -778,17 +778,30 @@
                         [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
                     }
                 }];
+
+                // Let's say we are handling the case
+                continueUserActivity = YES;
             }
             else
             {
-                // TODO
+                // TODO: Is it an invite?
                 NSLog(@"[AppDelegate] Universal link: TODO: The room (%@) is not known by any account", roomIdOrAlias);
             }
         }
         else
         {
-            // TODO
-            NSLog(@"[AppDelegate] Universal link: TODO: No account running");
+            // There is no account. The app will display the AuthenticationVC.
+            // Wait for a successful login
+            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+
+            // Register an observer in order to handle new account
+            id loggedInAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                [self handleUniversalLinkFragment:fragment];
+
+                [[NSNotificationCenter defaultCenter] removeObserver:loggedInAccountObserver];
+            }];
         }
     }
     else
