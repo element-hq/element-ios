@@ -426,99 +426,10 @@
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
     BOOL continueUserActivity;
+
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
     {
-        NSURL *webURL = userActivity.webpageURL;
-        NSLog(@"[AppDelegate] continueUserActivity. Universal link: %@", webURL.absoluteString);
-
-        // Extract params of the link from the URL fragment part (after '#')
-        // The fragment can contain a '?'. So there are two kinds of parameters: path params and query params
-        NSArray<NSString*> *pathParams;
-        NSMutableDictionary *queryParams;
-
-        NSArray<NSString*> *fragment = [webURL.fragment componentsSeparatedByString:@"?"];
-
-        // Extract path params
-        pathParams = [fragment[0] componentsSeparatedByString:@"/"];
-
-        // Remove the first empty path param string
-        pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
-
-        // URL decode each path param
-        NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
-        for (NSInteger i = 0; i < pathParams.count; i++)
-        {
-            pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        }
-        pathParams = pathParams2;
-
-        // Extract query params if any
-        if (fragment.count == 2)
-        {
-           queryParams = [[NSMutableDictionary alloc] init];
-            for (NSString *keyValue in [fragment[1] componentsSeparatedByString:@"&"])
-            {
-                // Get the parameter name
-                NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
-
-                // Get the parameter value
-                NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
-                value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-                value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-                queryParams[key] = value;
-            }
-        }
-
-        // Check the action to do
-        if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
-        {
-            // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
-            NSString *roomIdOrAlias = pathParams[1];
-
-            // Is it a link to an event of a room?
-            NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-
-            // Check there is an account that knows this room
-            MXKAccount *account = [MXKAccountManager.sharedManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
-            if (account && account.mxSession)
-            {
-                NSString *roomId = roomIdOrAlias;
-
-                // Translate the alias into the room id
-                if ([roomIdOrAlias hasPrefix:@"#"])
-                {
-                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
-                    if (room)
-                    {
-                        roomId = room.roomId;
-                    }
-                }
-
-                if (!eventId)
-                {
-                    // Open the room page
-                    [self showRoom:roomId andEventId:nil withMatrixSession:account.mxSession];
-                }
-                else
-                {
-                    // Open the room page in read only focusing on the passed event
-                    [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
-                }
-                
-                continueUserActivity = YES;
-            }
-            else
-            {
-                // TODO
-                NSLog(@"[AppDelegate] Universal link. TODO: The room (%@) is not known by any account", roomIdOrAlias);
-            }
-        }
-        else
-        {
-            // TODO
-            NSLog(@"[AppDelegate] Universal link. TODO: Do not know what to do with the link arguments: %@", pathParams);
-        }
+        continueUserActivity = [self handleUniversalLink:userActivity];
     }
 
     return continueUserActivity;
@@ -771,6 +682,107 @@
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber");
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = [MXKRoomDataSourceManager notificationCount];
+}
+
+#pragma mark - Universal link
+
+- (BOOL)handleUniversalLink:(NSUserActivity*)userActivity
+{
+    BOOL continueUserActivity = NO;
+
+    NSURL *webURL = userActivity.webpageURL;
+    NSLog(@"[AppDelegate] handleUniversalLink: %@", webURL.absoluteString);
+
+    // Extract params of the link from the URL fragment part (after '#')
+    // The fragment can contain a '?'. So there are two kinds of parameters: path params and query params
+    NSArray<NSString*> *pathParams;
+    NSMutableDictionary *queryParams;
+
+    NSArray<NSString*> *fragment = [webURL.fragment componentsSeparatedByString:@"?"];
+
+    // Extract path params
+    pathParams = [fragment[0] componentsSeparatedByString:@"/"];
+
+    // Remove the first empty path param string
+    pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+    // URL decode each path param
+    NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
+    for (NSInteger i = 0; i < pathParams.count; i++)
+    {
+        pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    pathParams = pathParams2;
+
+    // Extract query params if any
+    if (fragment.count == 2)
+    {
+        queryParams = [[NSMutableDictionary alloc] init];
+        for (NSString *keyValue in [fragment[1] componentsSeparatedByString:@"&"])
+        {
+            // Get the parameter name
+            NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
+
+            // Get the parameter value
+            NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+            queryParams[key] = value;
+        }
+    }
+
+    // Check the action to do
+    if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
+    {
+        // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
+        NSString *roomIdOrAlias = pathParams[1];
+
+        // Is it a link to an event of a room?
+        NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+
+        // Check there is an account that knows this room
+        MXKAccount *account = [MXKAccountManager.sharedManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
+        if (account && account.mxSession)
+        {
+            NSString *roomId = roomIdOrAlias;
+
+            // Translate the alias into the room id
+            if ([roomIdOrAlias hasPrefix:@"#"])
+            {
+                MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
+                if (room)
+                {
+                    roomId = room.roomId;
+                }
+            }
+
+            if (!eventId)
+            {
+                // Open the room page
+                [self showRoom:roomId andEventId:nil withMatrixSession:account.mxSession];
+            }
+            else
+            {
+                // Open the room page in read only focusing on the passed event
+                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+            }
+
+            continueUserActivity = YES;
+        }
+        else
+        {
+            // TODO
+            NSLog(@"[AppDelegate] Universal link. TODO: The room (%@) is not known by any account", roomIdOrAlias);
+        }
+    }
+    else
+    {
+        // TODO
+        NSLog(@"[AppDelegate] Universal link. TODO: Do not know what to do with the link arguments: %@", pathParams);
+    }
+
+    return continueUserActivity;
 }
 
 #pragma mark - Matrix sessions handling
