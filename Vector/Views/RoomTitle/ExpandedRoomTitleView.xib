@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -84,8 +84,10 @@
             <connections>
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
                 <outlet property="displayNameTextFieldTopConstraint" destination="Piq-rp-Pae" id="jnL-Hz-TWn"/>
+                <outlet property="displayNameTopConstraint" destination="Piq-rp-Pae" id="l3M-JY-pqB"/>
                 <outlet property="roomDetailsMask" destination="MFb-0F-eO8" id="ajK-sr-qf7"/>
                 <outlet property="roomMembers" destination="ou0-3Z-weL" id="FCF-ki-HuP"/>
+                <outlet property="roomMembersTopConstraint" destination="DWc-Lx-6Ta" id="dBZ-im-w3p"/>
                 <outlet property="roomTopic" destination="qD3-kA-DSI" id="mOj-AU-7LM"/>
                 <outlet property="titleMask" destination="8HH-9b-1yH" id="MFh-3r-I5e"/>
             </connections>
