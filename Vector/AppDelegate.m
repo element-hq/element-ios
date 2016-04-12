@@ -693,44 +693,10 @@
     NSURL *webURL = userActivity.webpageURL;
     NSLog(@"[AppDelegate] handleUniversalLink: %@", webURL.absoluteString);
 
-    // Extract params of the link from the URL fragment part (after '#')
-    // The fragment can contain a '?'. So there are two kinds of parameters: path params and query params
+    // Extract params
     NSArray<NSString*> *pathParams;
     NSMutableDictionary *queryParams;
-
-    NSArray<NSString*> *fragment = [webURL.fragment componentsSeparatedByString:@"?"];
-
-    // Extract path params
-    pathParams = [fragment[0] componentsSeparatedByString:@"/"];
-
-    // Remove the first empty path param string
-    pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
-
-    // URL decode each path param
-    NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
-    for (NSInteger i = 0; i < pathParams.count; i++)
-    {
-        pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    }
-    pathParams = pathParams2;
-
-    // Extract query params if any
-    if (fragment.count == 2)
-    {
-        queryParams = [[NSMutableDictionary alloc] init];
-        for (NSString *keyValue in [fragment[1] componentsSeparatedByString:@"&"])
-        {
-            // Get the parameter name
-            NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
-
-            // Get the parameter value
-            NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
-            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-            queryParams[key] = value;
-        }
-    }
+    [self parseUniversalLinkFragment:webURL.fragment outPathParams:&pathParams outQueryParams:&queryParams];
 
     // Check the action to do
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -783,6 +749,61 @@
     }
 
     return continueUserActivity;
+}
+
+/**
+ Extract params from the URL fragment part (after '#') of a vector.im universal link.
+ 
+ The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
+ It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
+
+ @param fragment the fragment to parse.
+ @param outPathParams the decoded path params.
+ @param outQueryParams the decoded query params. If there is no query params, it will be nil.
+ */
+- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams
+{
+    NSParameterAssert(outPathParams && outQueryParams);
+
+    NSArray<NSString*> *pathParams;
+    NSMutableDictionary *queryParams;
+
+    NSArray<NSString*> *fragments = [fragment componentsSeparatedByString:@"?"];
+
+    // Extract path params
+    pathParams = [fragments[0] componentsSeparatedByString:@"/"];
+
+    // Remove the first empty path param string
+    pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+    // URL decode each path param
+    NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
+    for (NSInteger i = 0; i < pathParams.count; i++)
+    {
+        pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    pathParams = pathParams2;
+
+    // Extract query params if any
+    if (fragments.count == 2)
+    {
+        queryParams = [[NSMutableDictionary alloc] init];
+        for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
+        {
+            // Get the parameter name
+            NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
+
+            // Get the parameter value
+            NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
+            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+            queryParams[key] = value;
+        }
+    }
+
+    *outPathParams = pathParams;
+    *outQueryParams = queryParams;
 }
 
 #pragma mark - Matrix sessions handling
