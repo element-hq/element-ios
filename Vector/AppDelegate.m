@@ -688,15 +688,22 @@
 
 - (BOOL)handleUniversalLink:(NSUserActivity*)userActivity
 {
-    BOOL continueUserActivity = NO;
-
     NSURL *webURL = userActivity.webpageURL;
     NSLog(@"[AppDelegate] handleUniversalLink: %@", webURL.absoluteString);
+
+    return [self handleUniversalLinkFragment:webURL.fragment];
+}
+
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment
+{
+    BOOL continueUserActivity = NO;
+
+    NSLog(@"[AppDelegate] handleUniversalLinkFragment: %@", fragment);
 
     // Extract params
     NSArray<NSString*> *pathParams;
     NSMutableDictionary *queryParams;
-    [self parseUniversalLinkFragment:webURL.fragment outPathParams:&pathParams outQueryParams:&queryParams];
+    [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
 
     // Check the action to do
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -723,17 +730,29 @@
                 }
             }
 
-            if (!eventId)
-            {
-                // Open the room page
-                [self showRoom:roomId andEventId:nil withMatrixSession:account.mxSession];
-            }
-            else
-            {
-                // Open the room page in read only focusing on the passed event
-                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
-            }
+            // Open the room page
+            [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
 
+            continueUserActivity = YES;
+        }
+        else if ([roomIdOrAlias hasPrefix:@"#"] && [MXKAccountManager sharedManager].activeAccounts.count)
+        {
+            // The alias may be not part of user's rooms states
+            // Ask the HS to resolve the room alias into a room id
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+
+                // Retry opening the link but with the returned room id
+                NSString *newUniversalLinkFragment =
+                [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                                    withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                [self handleUniversalLinkFragment:newUniversalLinkFragment];
+
+            } failure:^(NSError *error) {
+                NSLog(@"[AppDelegate] Universal link. Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+            }];
+
+            // Let's say we are handling the case
             continueUserActivity = YES;
         }
         else
