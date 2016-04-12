@@ -100,6 +100,18 @@
      The room id of the current handled remote notification (if any)
      */
     NSString *remoteNotificationRoomId;
+
+    /**
+     The fragment of the universal link being processing.
+     Only one fragment is handled at a time.
+     */
+    NSString *universalLinkFragmentPending;
+
+    /**
+     An universal link may need to wait for an account to be logged in or for a
+     session to be running. Hence, this observer.
+     */
+    id universalLinkWaitingObserver;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -322,6 +334,9 @@
         [self.mxInAppNotification dismiss:NO];
         self.mxInAppNotification = nil;
     }
+
+    // Discard any process on pending universal link
+    [self resetPendingUniversalLink];
     
     // Suspend all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -699,7 +714,11 @@
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
 
-    NSLog(@"[AppDelegate] handleUniversalLinkFragment: %@", fragment);
+    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
+
+    // The app manages only one universal link at a time
+    // Discard any pending one
+    [self resetPendingUniversalLink];
 
     // Extract params
     NSArray<NSString*> *pathParams;
@@ -741,15 +760,20 @@
             else if ([roomIdOrAlias hasPrefix:@"#"])
             {
                 // The alias may be not part of user's rooms states
-                // Ask the HS to resolve the room alias into a room id
+                // Ask the HS to resolve the room alias into a room id and then retry
+                universalLinkFragmentPending = fragment;
                 MXKAccount* account = accountManager.activeAccounts.firstObject;
                 [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
 
-                    // Retry opening the link but with the returned room id
-                    NSString *newUniversalLinkFragment =
-                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                    // Check that 'fragment' has not been cancelled
+                    if ([universalLinkFragmentPending isEqualToString:fragment])
+                    {
+                        // Retry opening the link but with the returned room id
+                        NSString *newUniversalLinkFragment =
+                        [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                                            withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                        [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                    }
 
                 } failure:^(NSError *error) {
                     NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
@@ -766,16 +790,19 @@
                 MXKAccount* account = accountManager.activeAccounts.firstObject;
 
                 NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
+                universalLinkFragmentPending = fragment;
 
-                id sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+                universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
 
-                    // Check whether the concerned session is the associated one
-                    if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
+                    // Check that 'fragment' has not been cancelled
+                    if ([universalLinkFragmentPending isEqualToString:fragment])
                     {
-                        NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                        [self handleUniversalLinkFragment:fragment];
-
-                        [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
+                        // Check whether the concerned session is the associated one
+                        if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
+                        {
+                            NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
+                            [self handleUniversalLinkFragment:fragment];
+                        }
                     }
                 }];
 
@@ -793,14 +820,17 @@
             // There is no account. The app will display the AuthenticationVC.
             // Wait for a successful login
             NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+            universalLinkFragmentPending = fragment;
 
             // Register an observer in order to handle new account
-            id loggedInAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
-                NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                [self handleUniversalLinkFragment:fragment];
-
-                [[NSNotificationCenter defaultCenter] removeObserver:loggedInAccountObserver];
+                // Check that 'fragment' has not been cancelled
+                if ([universalLinkFragmentPending isEqualToString:fragment])
+                {
+                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                    [self handleUniversalLinkFragment:fragment];
+                }
             }];
         }
     }
@@ -813,9 +843,19 @@
     return continueUserActivity;
 }
 
+- (void)resetPendingUniversalLink
+{
+    universalLinkFragmentPending = nil;
+    if (universalLinkWaitingObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:universalLinkWaitingObserver];
+        universalLinkWaitingObserver = nil;
+    }
+}
+
 /**
  Extract params from the URL fragment part (after '#') of a vector.im Universal link:
- 
+
  The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
  It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
 
