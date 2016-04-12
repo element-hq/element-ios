@@ -134,15 +134,9 @@
 		F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */; };
 		F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
-		F03FBCC21CBBF521000A5770 /* admin_icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB01CBBF521000A5770 /* admin_icon_small.png */; };
-		F03FBCC31CBBF521000A5770 /* admin_icon_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB11CBBF521000A5770 /* admin_icon_small@2x.png */; };
-		F03FBCC41CBBF521000A5770 /* admin_icon_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB21CBBF521000A5770 /* admin_icon_small@3x.png */; };
 		F03FBCC51CBBF521000A5770 /* admin_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB31CBBF521000A5770 /* admin_icon.png */; };
 		F03FBCC61CBBF521000A5770 /* admin_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */; };
 		F03FBCC71CBBF521000A5770 /* admin_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */; };
-		F03FBCC81CBBF521000A5770 /* mod_icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB61CBBF521000A5770 /* mod_icon_small.png */; };
-		F03FBCC91CBBF521000A5770 /* mod_icon_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB71CBBF521000A5770 /* mod_icon_small@2x.png */; };
-		F03FBCCA1CBBF521000A5770 /* mod_icon_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB81CBBF521000A5770 /* mod_icon_small@3x.png */; };
 		F03FBCCB1CBBF521000A5770 /* mod_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB91CBBF521000A5770 /* mod_icon.png */; };
 		F03FBCCC1CBBF521000A5770 /* mod_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBA1CBBF521000A5770 /* mod_icon@2x.png */; };
 		F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCBB1CBBF521000A5770 /* mod_icon@3x.png */; };
@@ -417,15 +411,9 @@
 		F02528D01C11B6FC00E1FE1B /* voice_call_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice_call_icon.png; sourceTree = "<group>"; };
 		F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@2x.png"; sourceTree = "<group>"; };
 		F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
-		F03FBCB01CBBF521000A5770 /* admin_icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = admin_icon_small.png; sourceTree = "<group>"; };
-		F03FBCB11CBBF521000A5770 /* admin_icon_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon_small@2x.png"; sourceTree = "<group>"; };
-		F03FBCB21CBBF521000A5770 /* admin_icon_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon_small@3x.png"; sourceTree = "<group>"; };
 		F03FBCB31CBBF521000A5770 /* admin_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = admin_icon.png; sourceTree = "<group>"; };
 		F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@2x.png"; sourceTree = "<group>"; };
 		F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@3x.png"; sourceTree = "<group>"; };
-		F03FBCB61CBBF521000A5770 /* mod_icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mod_icon_small.png; sourceTree = "<group>"; };
-		F03FBCB71CBBF521000A5770 /* mod_icon_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon_small@2x.png"; sourceTree = "<group>"; };
-		F03FBCB81CBBF521000A5770 /* mod_icon_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon_small@3x.png"; sourceTree = "<group>"; };
 		F03FBCB91CBBF521000A5770 /* mod_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mod_icon.png; sourceTree = "<group>"; };
 		F03FBCBA1CBBF521000A5770 /* mod_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon@2x.png"; sourceTree = "<group>"; };
 		F03FBCBB1CBBF521000A5770 /* mod_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mod_icon@3x.png"; sourceTree = "<group>"; };
@@ -1020,15 +1008,9 @@
 				F03FBCD41CBC49B6000A5770 /* disclosure_icon.png */,
 				F03FBCD51CBC49B6000A5770 /* disclosure_icon@2x.png */,
 				F03FBCD61CBC49B6000A5770 /* disclosure_icon@3x.png */,
-				F03FBCB01CBBF521000A5770 /* admin_icon_small.png */,
-				F03FBCB11CBBF521000A5770 /* admin_icon_small@2x.png */,
-				F03FBCB21CBBF521000A5770 /* admin_icon_small@3x.png */,
 				F03FBCB31CBBF521000A5770 /* admin_icon.png */,
 				F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */,
 				F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */,
-				F03FBCB61CBBF521000A5770 /* mod_icon_small.png */,
-				F03FBCB71CBBF521000A5770 /* mod_icon_small@2x.png */,
-				F03FBCB81CBBF521000A5770 /* mod_icon_small@3x.png */,
 				F03FBCB91CBBF521000A5770 /* mod_icon.png */,
 				F03FBCBA1CBBF521000A5770 /* mod_icon@2x.png */,
 				F03FBCBB1CBBF521000A5770 /* mod_icon@3x.png */,
@@ -1239,7 +1221,6 @@
 				F02528DE1C11B6FC00E1FE1B /* camera_switch@3x.png in Resources */,
 				F02529091C11B6FC00E1FE1B /* upload_icon.png in Resources */,
 				F03FBCD91CBC49B6000A5770 /* disclosure_icon@3x.png in Resources */,
-				F03FBCC41CBBF521000A5770 /* admin_icon_small@3x.png in Resources */,
 				F05641931C7DF9DE002276ED /* error@2x.png in Resources */,
 				F0D2D9861C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				F02528F21C11B6FC00E1FE1B /* remove_icon.png in Resources */,
@@ -1278,11 +1259,9 @@
 				F0C34B701C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */,
 				F0026B531C916E68001D2C04 /* favouriteOff@2x.png in Resources */,
-				F03FBCCA1CBBF521000A5770 /* mod_icon_small@3x.png in Resources */,
 				F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */,
 				F0026B5D1C916E68001D2C04 /* notificationsOff@3x.png in Resources */,
 				F0C34CB21C16269D00C36F09 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
-				F03FBCC21CBBF521000A5770 /* admin_icon_small.png in Resources */,
 				F03FBCCC1CBBF521000A5770 /* mod_icon@2x.png in Resources */,
 				F0026B4F1C916E68001D2C04 /* favourite.png in Resources */,
 				F02528DC1C11B6FC00E1FE1B /* camera_switch.png in Resources */,
@@ -1316,7 +1295,6 @@
 				F02528FF1C11B6FC00E1FE1B /* selection_untick@3x.png in Resources */,
 				717928481C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
 				F02528F01C11B6FC00E1FE1B /* placeholder@2x.png in Resources */,
-				F03FBCC91CBBF521000A5770 /* mod_icon_small@2x.png in Resources */,
 				F0C34CB41C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */,
 				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
@@ -1334,9 +1312,7 @@
 				F02528D71C11B6FC00E1FE1B /* camera_capture@3x.png in Resources */,
 				F05641921C7DF9DE002276ED /* error.png in Resources */,
 				32D0A4BD1CA44509008F3451 /* plus_icon@2x.png in Resources */,
-				F03FBCC81CBBF521000A5770 /* mod_icon_small.png in Resources */,
 				F02528EF1C11B6FC00E1FE1B /* placeholder.png in Resources */,
-				F03FBCC31CBBF521000A5770 /* admin_icon_small@2x.png in Resources */,
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,
 				F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */,

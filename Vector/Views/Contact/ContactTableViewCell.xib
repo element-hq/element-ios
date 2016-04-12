@@ -23,10 +23,10 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-sr-Kz4">
-                        <rect key="frame" x="45" y="10" width="15" height="16"/>
+                        <rect key="frame" x="42" y="10" width="20" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="16" id="5Do-zm-vSO"/>
-                            <constraint firstAttribute="width" constant="15" id="IIL-0b-xCh"/>
+                            <constraint firstAttribute="height" constant="21" id="5Do-zm-vSO"/>
+                            <constraint firstAttribute="width" constant="20" id="IIL-0b-xCh"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Display name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn" userLabel="member display name">
@@ -57,7 +57,7 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="e2Q-sr-Kz4" firstAttribute="trailing" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="5" id="Fib-p7-t8G"/>
+                    <constraint firstItem="e2Q-sr-Kz4" firstAttribute="trailing" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="7" id="Fib-p7-t8G"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>

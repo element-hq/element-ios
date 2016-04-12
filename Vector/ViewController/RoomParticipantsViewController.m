@@ -692,12 +692,12 @@
             NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
             if (powerLevel >= kVectorRoomAdminLevel)
             {
-                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon_small"];
+                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
                 participantCell.thumbnailBadgeView.hidden = NO;
             }
             else if (powerLevel >= kVectorRoomModeratorLevel)
             {
-                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon_small"];
+                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
                 participantCell.thumbnailBadgeView.hidden = NO;
             }
         }
