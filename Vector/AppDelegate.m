@@ -697,6 +697,7 @@
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment
 {
     BOOL continueUserActivity = NO;
+    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
 
     NSLog(@"[AppDelegate] handleUniversalLinkFragment: %@", fragment);
 
@@ -708,70 +709,99 @@
     // Check the action to do
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
     {
-        // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
-        NSString *roomIdOrAlias = pathParams[1];
-
-        // Is it a link to an event of a room?
-        NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-
-        // Check there is an account that knows this room
-        MXKAccount *account = [MXKAccountManager.sharedManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
-        if (account && account.mxSession)
+        if (accountManager.activeAccounts.count)
         {
-            NSString *roomId = roomIdOrAlias;
+            // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
+            NSString *roomIdOrAlias = pathParams[1];
 
-            // Translate the alias into the room id
-            if ([roomIdOrAlias hasPrefix:@"#"])
+            // Is it a link to an event of a room?
+            NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+
+            // Check there is an account that knows this room
+            MXKAccount *account = [accountManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
+            if (account)
             {
-                MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
-                if (room)
+                NSString *roomId = roomIdOrAlias;
+
+                // Translate the alias into the room id
+                if ([roomIdOrAlias hasPrefix:@"#"])
                 {
-                    roomId = room.roomId;
+                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
+                    if (room)
+                    {
+                        roomId = room.roomId;
+                    }
                 }
+
+                // Open the room page
+                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+
+                continueUserActivity = YES;
             }
+            else if ([roomIdOrAlias hasPrefix:@"#"])
+            {
+                // The alias may be not part of user's rooms states
+                // Ask the HS to resolve the room alias into a room id
+                MXKAccount* account = accountManager.activeAccounts.firstObject;
+                [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
 
-            // Open the room page
-            [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+                    // Retry opening the link but with the returned room id
+                    NSString *newUniversalLinkFragment =
+                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
 
-            continueUserActivity = YES;
-        }
-        else if ([roomIdOrAlias hasPrefix:@"#"] && [MXKAccountManager sharedManager].activeAccounts.count)
-        {
-            // The alias may be not part of user's rooms states
-            // Ask the HS to resolve the room alias into a room id
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+                } failure:^(NSError *error) {
+                    NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+                }];
 
-                // Retry opening the link but with the returned room id
-                NSString *newUniversalLinkFragment =
-                [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                    withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                // Let's say we are handling the case
+                continueUserActivity = YES;
+            }
+            else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
+            {
+                // The user does not know the room id but this may be because their session is not yet sync'ed
+                // So, wait for the completion of the sync and then retry
+                // FIXME: Manange all user's accounts not only the first one
+                MXKAccount* account = accountManager.activeAccounts.firstObject;
 
-            } failure:^(NSError *error) {
-                NSLog(@"[AppDelegate] Universal link. Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
-            }];
+                NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
 
-            // Let's say we are handling the case
-            continueUserActivity = YES;
+                id sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+
+                    // Check whether the concerned session is the associated one
+                    if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
+                    {
+                        NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
+                        [self handleUniversalLinkFragment:fragment];
+
+                        [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
+                    }
+                }];
+            }
+            else
+            {
+                // TODO
+                NSLog(@"[AppDelegate] Universal link: TODO: The room (%@) is not known by any account", roomIdOrAlias);
+            }
         }
         else
         {
             // TODO
-            NSLog(@"[AppDelegate] Universal link. TODO: The room (%@) is not known by any account", roomIdOrAlias);
+            NSLog(@"[AppDelegate] Universal link: TODO: No account running");
         }
     }
     else
     {
         // TODO
-        NSLog(@"[AppDelegate] Universal link. TODO: Do not know what to do with the link arguments: %@", pathParams);
+        NSLog(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
     }
 
     return continueUserActivity;
 }
 
 /**
- Extract params from the URL fragment part (after '#') of a vector.im universal link.
+ Extract params from the URL fragment part (after '#') of a vector.im Universal link:
  
  The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
  It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
