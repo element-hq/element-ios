@@ -34,8 +34,10 @@
     NSString *currentSearchText;
     UIView* searchBarSeparator;
     
-    // Search result section
-    NSMutableArray *filteredParticipants;
+    // Search results
+    NSMutableArray *invitableContacts;
+    NSMutableArray *filteredActualMembers;
+    NSMutableArray *filteredInvitedMembers;
     
     MXKAlert *currentAlert;
     
@@ -133,7 +135,9 @@
     
     _mxRoom = nil;
     
-    filteredParticipants = nil;
+    invitableContacts = nil;
+    filteredActualMembers = nil;
+    filteredInvitedMembers = nil;
     mxkContactsById = nil;
     
     actualMembers = nil;
@@ -530,11 +534,21 @@
 {
     NSInteger count = 0;
     
-    searchResultSection = membersSection = invitedSection = -1;
+    invitableSection = membersSection = invitedSection = -1;
     
     if (_isAddParticipantSearchBarEditing)
     {
-        searchResultSection = count++;
+        invitableSection = count++;
+        
+        if (filteredActualMembers.count)
+        {
+            membersSection = count++;
+        }
+        
+        if (filteredInvitedMembers.count)
+        {
+            invitedSection = count++;
+        }
     }
     else
     {
@@ -556,21 +570,35 @@
 {
     NSInteger count = 0;
     
-    if (section == searchResultSection)
+    if (section == invitableSection)
     {
-        count = filteredParticipants.count;
+        count = invitableContacts.count;
     }
     else if (section == membersSection)
     {
-        count = actualMembers.count;
-        if (userMatrixId)
+        if (_isAddParticipantSearchBarEditing)
         {
-            count++;
+            count = filteredActualMembers.count;
+        }
+        else
+        {
+            count = actualMembers.count;
+            if (userMatrixId)
+            {
+                count++;
+            }
         }
     }
     else if (section == invitedSection)
     {
-        count = invitedMembers.count;
+        if (_isAddParticipantSearchBarEditing)
+        {
+            count = filteredInvitedMembers.count;
+        }
+        else
+        {
+            count = invitedMembers.count;
+        }
     }
     
     return count;
@@ -599,7 +627,7 @@
     Contact *contact = nil;
     
     // oneself dedicated cell
-    if ((indexPath.section == membersSection && userMatrixId && indexPath.row == 0))
+    if ((indexPath.section == membersSection && userMatrixId && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
     {
         contact = [mxkContactsById objectForKey:userMatrixId];
         
@@ -622,11 +650,14 @@
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    else if (indexPath.section == searchResultSection)
+    else if (indexPath.section == invitableSection)
     {
-        contact = filteredParticipants[indexPath.row];
-        
-        participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        if (indexPath.row < invitableContacts.count)
+        {
+            contact = invitableContacts[indexPath.row];
+            
+            participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
     }
     else
     {
@@ -635,16 +666,30 @@
         
         if (indexPath.section == membersSection)
         {
-            memberIds = actualMembers;
-            
-            if (userMatrixId)
+            if (_isAddParticipantSearchBarEditing)
             {
-                index --;
+                memberIds = filteredActualMembers;
+            }
+            else
+            {
+                memberIds = actualMembers;
+                
+                if (userMatrixId)
+                {
+                    index --;
+                }
             }
         }
         else
         {
-            memberIds = invitedMembers;
+            if (_isAddParticipantSearchBarEditing)
+            {
+                memberIds = filteredInvitedMembers;
+            }
+            else
+            {
+                memberIds = invitedMembers;
+            }
         }
         
         if (index < memberIds.count)
@@ -662,7 +707,7 @@
         
         // The search displays contacts to invite. Add a plus icon to the cell
         // in order to make it more understandable for the end user
-        if (indexPath.section == searchResultSection)
+        if (indexPath.section == invitableSection)
         {
             if (indexPath.row == 0)
             {
@@ -719,22 +764,40 @@
     {
         return 30.0;
     }
+    else if (section == membersSection && _isAddParticipantSearchBarEditing)
+    {
+        return 1;
+    }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIView* sectionHeader;
+    
     if (section == invitedSection)
     {
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
+        sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
+        sectionHeader.backgroundColor = kVectorColorLightGrey;
         
-        label.text = [NSString stringWithFormat:@"   %@", NSLocalizedStringFromTable(@"room_participants_invited_section", @"Vector", nil)];
-        label.font = [UIFont boldSystemFontOfSize:15.0];
-        label.backgroundColor = kVectorColorLightGrey;
-        
-        return label;
+        CGRect frame = sectionHeader.frame;
+        frame.origin.x = 20;
+        frame.origin.y = 5;
+        frame.size.width = sectionHeader.frame.size.width - 10;
+        frame.size.height -= 10;
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+        headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        headerLabel.backgroundColor = [UIColor clearColor];
+        headerLabel.text = NSLocalizedStringFromTable(@"room_participants_invited_section", @"Vector", nil);
+        [sectionHeader addSubview:headerLabel];
     }
-    return nil;
+    else if (section == membersSection && _isAddParticipantSearchBarEditing)
+    {
+        sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
+        
+        sectionHeader.backgroundColor = [UIColor blackColor];
+    }
+    return sectionHeader;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -752,13 +815,13 @@
     
     NSInteger row = indexPath.row;
     
-    if (indexPath.section == searchResultSection)
+    if (indexPath.section == invitableSection)
     {
         if (row == 0)
         {
             // This is the text entered by the user
             // Try to invite what he typed
-            MXKContact *contact = filteredParticipants[row];
+            MXKContact *contact = invitableContacts[row];
 
             // Invite this user
             NSString *participantId = contact.displayName;
@@ -803,9 +866,9 @@
                 }];
             }
         }
-        else if (row < filteredParticipants.count)
+        else if (row < invitableContacts.count)
         {
-            MXKContact *contact = filteredParticipants[row];
+            MXKContact *contact = invitableContacts[row];
             
             NSArray *identifiers = contact.matrixIdentifiers;
             if (identifiers.count)
@@ -864,7 +927,7 @@
         Contact *contact;
         
         // oneself dedicated cell
-        if (indexPath.section == membersSection && userMatrixId && indexPath.row == 0)
+        if ((indexPath.section == membersSection && userMatrixId && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
         {
             contact = [mxkContactsById objectForKey:userMatrixId];
         }
@@ -875,16 +938,30 @@
             
             if (indexPath.section == membersSection)
             {
-                memberIds = actualMembers;
-                
-                if (userMatrixId)
+                if (_isAddParticipantSearchBarEditing)
                 {
-                    index --;
+                    memberIds = filteredActualMembers;
+                }
+                else
+                {
+                    memberIds = actualMembers;
+                    
+                    if (userMatrixId)
+                    {
+                        index --;
+                    }
                 }
             }
             else
             {
-                memberIds = invitedMembers;
+                if (_isAddParticipantSearchBarEditing)
+                {
+                    memberIds = filteredInvitedMembers;
+                }
+                else
+                {
+                    memberIds = invitedMembers;
+                }
             }
             
             if (index < memberIds.count)
@@ -1159,13 +1236,16 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSInteger previousFilteredCount = filteredParticipants.count;
-    
+    // Update search results.
     NSMutableArray *contacts;
+    NSMutableArray *memberIds;
+    NSMutableArray *invitedMemberIds;
     
     if (currentSearchText.length && [searchText hasPrefix:currentSearchText])
     {
-        contacts = filteredParticipants;
+        contacts = invitableContacts;
+        memberIds = filteredActualMembers;
+        invitedMemberIds = filteredInvitedMembers;
     }
     else
     {
@@ -1205,7 +1285,7 @@
             else if (identifiers.count)
             {
                 NSString *userId = identifiers.firstObject;
-                if ([actualMembers indexOfObject:userId] == NSNotFound || [invitedMembers indexOfObject:userId] == NSNotFound)
+                if ([actualMembers indexOfObject:userId] == NSNotFound && [invitedMembers indexOfObject:userId] == NSNotFound)
                 {
                     if (![userId isEqualToString:userMatrixId])
                     {
@@ -1214,36 +1294,53 @@
                 }
             }
         }
+        
+        // Copy members and invited members
+        memberIds = [actualMembers copy];
+        invitedMemberIds = [invitedMembers copy];
     }
     currentSearchText = searchText;
     
-    filteredParticipants = [NSMutableArray array];
-    NSMutableArray *indexArray = [NSMutableArray array];
-    NSInteger index = 0;
-
-    // Show what the user is typing in a cell
-    // So that he can click on it
+    // Update invitable contacts list:
+    invitableContacts = [NSMutableArray array];
     if (searchText.length)
     {
+        // Show what the user is typing in a cell. So that he can click on it
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
-        [filteredParticipants addObject:contact];
-        [indexArray addObject:[NSIndexPath indexPathForRow:index++ inSection:0]];
+        [invitableContacts addObject:contact];
     }
-
     for (MXKContact* contact in contacts)
     {
         if ([contact matchedWithPatterns:@[currentSearchText]])
         {
-            [filteredParticipants addObject:contact];
-            [indexArray addObject:[NSIndexPath indexPathForRow:index++ inSection:0]];
+            [invitableContacts addObject:contact];
         }
     }
     
-    if ((searchResultSection != -1) && (previousFilteredCount || filteredParticipants.count))
+    // Update filtered members list
+    filteredActualMembers = [NSMutableArray array];
+    for (NSString *memberId in memberIds)
     {
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(searchResultSection, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        Contact *contact = [mxkContactsById objectForKey:memberId];
+        if (contact && [contact matchedWithPatterns:@[currentSearchText]])
+        {
+            [filteredActualMembers addObject:memberId];
+        }
     }
+    
+    // Update filtered invited members list
+    filteredInvitedMembers = [NSMutableArray array];
+    for (NSString *memberId in invitedMemberIds)
+    {
+        Contact *contact = [mxkContactsById objectForKey:memberId];
+        if (contact && [contact matchedWithPatterns:@[currentSearchText]])
+        {
+            [filteredInvitedMembers addObject:memberId];
+        }
+    }
+    
+    // Refresh display
+    [self.tableView reloadData];
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -1276,7 +1373,9 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     searchBar.text = currentSearchText = nil;
-    filteredParticipants = nil;
+    invitableContacts = nil;
+    filteredActualMembers = nil;
+    filteredInvitedMembers = nil;
     self.isAddParticipantSearchBarEditing = NO;
     
     // Leave search
