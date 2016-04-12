@@ -35,9 +35,9 @@
     /**
      Section indexes
      */
-    NSInteger searchResultSection;
     NSInteger membersSection;
     NSInteger invitedSection;
+    NSInteger invitableSection;
     
     /**
      The current list of joined members.
