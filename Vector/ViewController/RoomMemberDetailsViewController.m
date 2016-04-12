@@ -74,6 +74,13 @@
     self.roomMemberNameLabel.textColor = kVectorTextColorBlack;
     self.roomMemberStatusLabel.textColor = kVectorColorGreen;
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.roomMemberNameLabelMask addGestureRecognizer:tap];
+    self.roomMemberNameLabelMask.userInteractionEnabled = YES;
+    
     self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
     
     memberTitleView = [RoomMemberTitleView roomMemberTitleView];
@@ -494,7 +501,7 @@
     return cell;
 }
 
-#pragma mark -
+#pragma mark - Action
 
 - (void)onActionButtonPressed:(id)sender
 {
@@ -532,5 +539,25 @@
         }
     }
 }
+
+- (void)handleTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+{
+    UIView *view = tapGestureRecognizer.view;
+    
+    if (view == self.roomMemberNameLabelMask && self.mxRoomMember.displayname)
+    {
+        if ([self.roomMemberNameLabel.text isEqualToString:self.mxRoomMember.displayname])
+        {
+            // Display room member matrix id
+            self.roomMemberNameLabel.text = self.mxRoomMember.userId;
+        }
+        else
+        {
+            // Restore display name
+            self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
+        }
+    }
+}
+
 
 @end

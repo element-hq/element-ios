@@ -16,12 +16,13 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController
+@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionTableViewTopConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *memberHeaderView;
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberStatusLabel;
 

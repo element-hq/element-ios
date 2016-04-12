@@ -11,6 +11,7 @@
                 <outlet property="bottomImageView" destination="7Dc-jk-9sT" id="BVN-bt-VXI"/>
                 <outlet property="memberHeaderView" destination="YXr-As-Mqh" id="Eqb-qr-iAo"/>
                 <outlet property="roomMemberNameLabel" destination="92g-hC-6jB" id="gcP-wz-8FT"/>
+                <outlet property="roomMemberNameLabelMask" destination="wEo-Mk-SgZ" id="uEv-LU-eEI"/>
                 <outlet property="roomMemberStatusLabel" destination="5le-5e-Vml" id="ODo-tG-ewy"/>
                 <outlet property="tableView" destination="R6u-PR-DcU" id="Cm1-1y-meQ"/>
                 <outlet property="view" destination="gX8-mM-6Ig" id="R3w-s7-1CY"/>
@@ -42,11 +43,21 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEo-Mk-SgZ">
+                            <rect key="frame" x="0.0" y="119" width="600" height="33"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="33" id="qhK-10-7AW"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerY" secondItem="92g-hC-6jB" secondAttribute="centerY" id="3Zt-MD-sZK"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="7Is-d0-FZp"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="92g-hC-6jB" secondAttribute="trailing" constant="32" id="Eyx-UF-fYc"/>
+                        <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerX" secondItem="92g-hC-6jB" secondAttribute="centerX" id="K1f-RX-kpp"/>
+                        <constraint firstItem="wEo-Mk-SgZ" firstAttribute="width" secondItem="YXr-As-Mqh" secondAttribute="width" id="P5e-q6-OIS"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YXr-As-Mqh" secondAttribute="leading" constant="32" id="QZB-ue-Sih"/>
                         <constraint firstAttribute="height" constant="192" id="at7-Bz-a4i"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="bmA-Fq-uxO"/>
