@@ -857,10 +857,17 @@
             }];
         }
     }
+    else if ([pathParams[0] isEqualToString:@"register"])
+    {
+        // This is the nextLink in the registration process
+        // The app should already display the auth VC. So, do nothing at the UI level
+    }
     else
     {
-        // TODO
+        // Unknown command: Do nothing except coming back to the main screen
         NSLog(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
+
+        [self popToHomeViewControllerAnimated:NO completion:nil];
     }
 
     return continueUserActivity;
