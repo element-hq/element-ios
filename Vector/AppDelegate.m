@@ -555,7 +555,11 @@
     }
     else
     {
-        completion();
+        // Dispatch the completion in order to let navigation stack refresh itself
+        // It is required to display the auth VC at startup
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
     }
 }
 
