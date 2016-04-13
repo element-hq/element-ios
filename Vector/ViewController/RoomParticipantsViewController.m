@@ -30,14 +30,23 @@
 
 @interface RoomParticipantsViewController ()
 {
+    // Array used to sort participants and invited members
+    NSMutableArray *sortedParticipantsAdmin;
+    NSMutableArray *sortedParticipants;
+    NSMutableArray *sortedInvitedParticipantsAdmin;
+    NSMutableArray *sortedInvitedParticipants;
+    
     // Search session
     NSString *currentSearchText;
     UIView* searchBarSeparator;
     
     // Search results
     NSMutableArray *invitableContacts;
-    NSMutableArray *filteredActualMembers;
-    NSMutableArray *filteredInvitedMembers;
+    NSMutableArray *filteredActualParticipants;
+    NSMutableArray *filteredInvitedParticipants;
+    
+    // Contact instances by matrix user id, or room 3pid invite token.
+    NSMutableDictionary *contactsById;
     
     MXKAlert *currentAlert;
     
@@ -77,20 +86,6 @@
     }
     
     _isAddParticipantSearchBarEditing = NO;
-    
-    if (!actualMembers)
-    {
-        actualMembers = [NSMutableArray array];
-    }
-    if (!invitedMembers)
-    {
-        invitedMembers = [NSMutableArray array];
-    }
-    
-    if (!mxkContactsById)
-    {
-        mxkContactsById = [NSMutableDictionary dictionary];
-    }
     
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
     [self refreshSearchBarItemsColor:_searchBarView];
@@ -135,13 +130,20 @@
     
     _mxRoom = nil;
     
-    invitableContacts = nil;
-    filteredActualMembers = nil;
-    filteredInvitedMembers = nil;
-    mxkContactsById = nil;
+    sortedParticipantsAdmin = nil;
+    sortedParticipants = nil;
+    sortedInvitedParticipantsAdmin = nil;
+    sortedInvitedParticipants = nil;
     
-    actualMembers = nil;
-    invitedMembers = nil;
+    invitableContacts = nil;
+    filteredActualParticipants = nil;
+    filteredInvitedParticipants = nil;
+    
+    contactsById = nil;
+    
+    actualParticipants = nil;
+    invitedParticipants = nil;
+    userContact = nil;
     
     if (currentAlert)
     {
@@ -186,6 +188,9 @@
 
 - (void)setMxRoom:(MXRoom *)mxRoom
 {
+    // Cancel any pending search
+    [self searchBarCancelButtonClicked:_searchBarView];
+    
     // Remove the previous listener
     if (leaveRoomNotificationObserver)
     {
@@ -194,24 +199,25 @@
     }
     if (membersListener)
     {
-        [self.mxRoom.liveTimeline removeListener:membersListener];
+        [_mxRoom.liveTimeline removeListener:membersListener];
+        membersListener = nil;
     }
     
     _mxRoom = mxRoom;
     
-    // Refresh displayed participants from the current room members
-    [self refreshParticipantsFromRoomMembers];
+    // Search bar header is hidden when no room is provided
+    _searchBarHeader.hidden = (self.mxRoom == nil);
     
-    if (mxRoom)
+    if (_mxRoom)
     {
         // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
         leaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
             
             // Check whether the user will leave the room related to the displayed participants
-            if (notif.object == self.mxRoom.mxSession)
+            if (notif.object == _mxRoom.mxSession)
             {
                 NSString *roomId = notif.userInfo[kMXSessionNotificationRoomIdKey];
-                if (roomId && [roomId isEqualToString:self.mxRoom.state.roomId])
+                if (roomId && [roomId isEqualToString:_mxRoom.state.roomId])
                 {
                     // We remove the current view controller.
                     [self withdrawViewControllerAnimated:YES completion:nil];
@@ -221,7 +227,7 @@
         
         // Register a listener for events that concern room members
         NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
-        membersListener = [self.mxRoom.liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
+        membersListener = [_mxRoom.liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
             
             // Consider only live event
             if (direction == MXTimelineDirectionForwards)
@@ -237,7 +243,20 @@
                             MXRoomMember *mxMember = [self.mxRoom.state memberWithUserId:event.stateKey];
                             if (mxMember)
                             {
+                                // Remove previous occurrence of this member (if any)
+                                [self removeParticipantByKey:mxMember.userId];
+                                
+                                // If any, remove 3pid invite corresponding to this room member
+                                if (mxMember.thirdPartyInviteToken)
+                                {
+                                    [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
+                                }
+                                
                                 [self handleRoomMember:mxMember];
+                                
+                                [self finalizeParticipantsList];
+                                
+                                [self.tableView reloadData];
                             }
                         }
                         
@@ -249,30 +268,30 @@
                         if (thirdPartyInvite)
                         {
                             [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite];
+                            
+                            [self finalizeParticipantsList];
+                            
+                            [self.tableView reloadData];
                         }
                         break;
                     }
                     case MXEventTypeRoomPowerLevels:
                     {
                         [self refreshParticipantsFromRoomMembers];
+                        
+                        [self.tableView reloadData];
                         break;
                     }
                     default:
                         break;
-                }
-                
-                // Refresh participants display (if visible)
-                if (membersSection != -1 || invitedSection != -1)
-                {
-                    [self.tableView reloadData];
                 }
             }
             
         }];
     }
     
-    // Search bar header is hidden when no room is provided
-    _searchBarHeader.hidden = (self.mxRoom == nil);
+    // Refresh the members list.
+    [self refreshParticipantsFromRoomMembers];
     
     [self.tableView reloadData];
 }
@@ -303,14 +322,15 @@
 
 - (void)refreshParticipantsFromRoomMembers
 {
-    // Flush existing participants list
-    actualMembers = [NSMutableArray array];
-    invitedMembers = [NSMutableArray array];
-    mxkContactsById = [NSMutableDictionary dictionary];
-    userMatrixId = nil;
+    sortedParticipants = [NSMutableArray array];
+    sortedParticipantsAdmin = [NSMutableArray array];
+    sortedInvitedParticipants = [NSMutableArray array];
+    sortedInvitedParticipantsAdmin = [NSMutableArray array];
+    userContact = nil;
     
     if (self.mxRoom)
     {
+        // Retrieve the current members from the room state
         NSArray *members = self.mxRoom.state.members;
         NSString *userId = self.mxRoom.mxSession.myUser.userId;
         NSArray *roomThirdPartyInvites = self.mxRoom.state.thirdPartyInvites;
@@ -323,7 +343,19 @@
                 if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
                 {
                     // The user is in this room
-                    userMatrixId = userId;
+                    
+                    // Check whether user is admin
+                    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+                    BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel);
+                    
+                    NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
+                    if (isAdmin)
+                    {
+                        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
+                    }
+                    
+                    userContact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+                    userContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
                 }
             }
             else
@@ -336,20 +368,13 @@
         {
             [self addRoomThirdPartyInviteToParticipants:roomThirdPartyInvite];
         }
+
+        [self finalizeParticipantsList];
     }
 }
 
 - (void)handleRoomMember:(MXRoomMember*)mxMember
 {
-    // Remove previous occurrence of this member (if any)
-    [self removeParticipantByKey:mxMember.userId];
-
-    // If any, remove 3pid invite corresponding to this room member
-    if (mxMember.thirdPartyInviteToken)
-    {
-        [self removeParticipantByKey:mxMember.thirdPartyInviteToken];
-    }
-    
     // Add this member after checking his status
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
@@ -381,9 +406,29 @@
         // Create the contact related to this member
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
-        [mxkContactsById setObject:contact forKey:mxMember.userId];
-
-        [self handleContact:contact withKey:mxMember.userId isAdmin:isAdmin isInvited:(mxMember.membership == MXMembershipInvite)];
+        
+        if (isAdmin)
+        {
+            if (mxMember.membership == MXMembershipInvite)
+            {
+                [sortedInvitedParticipantsAdmin addObject:contact];
+            }
+            else
+            {
+                [sortedParticipantsAdmin addObject:contact];
+            }
+        }
+        else
+        {
+            if (mxMember.membership == MXMembershipInvite)
+            {
+                [sortedInvitedParticipants addObject:contact];
+            }
+            else
+            {
+                [sortedParticipants addObject:contact];
+            }
+        }
     }
 }
 
@@ -394,121 +439,148 @@
     {
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
         contact.isThirdPartyInvite = YES;
-        mxkContactsById[roomThirdPartyInvite.token] = contact;
+        contact.mxThirdPartyInvite = roomThirdPartyInvite;
 
-        [self handleContact:contact withKey:roomThirdPartyInvite.token isAdmin:NO isInvited:YES];
+        [sortedInvitedParticipants addObject:contact];
     }
-}
-
-- (void)handleContact:(Contact*)contact withKey:(NSString*)key isAdmin:(BOOL)isAdmin isInvited:(BOOL)isInvited
-{
-    // Select the right array
-    NSMutableArray *memberIds = (isInvited ? invitedMembers : actualMembers);
-    
-    // Add this participant (admin is in first position, the other are sorted in alphabetical order by trimming special character ('@', '_'...).
-    NSUInteger index = 0;
-    NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_!~`@#$%^&*-+();:={}[],.<>?\\/\"\'"];
-    NSString *trimmedName = [contact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-    
-    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-    
-    if (isAdmin)
-    {
-        // Check whether there is other admin
-        for (NSString *userId in memberIds)
-        {
-            if ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel)
-            {
-                Contact *otherContact = [mxkContactsById objectForKey:userId];
-
-                // Sort admin in alphabetical order (skip symbols before comparing)
-                NSString *trimmedOtherName = [otherContact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-                if (!trimmedOtherName.length)
-                {
-                    if (trimmedName.length || [contact.displayName compare:otherContact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                    {
-                        break;
-                    }
-                }
-                else if (trimmedName.length && [trimmedName compare:trimmedOtherName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                {
-                    break;
-                }
-
-                index++;
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-    else
-    {
-        for (NSString *userId in memberIds)
-        {
-            // Pass admin(s)
-            if ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel)
-            {
-                index++;
-            }
-            else
-            {
-                Contact *otherContact = [mxkContactsById objectForKey:userId];
-
-                // Sort in alphabetical order (skip symbols before comparing)
-                NSString *trimmedOtherName = [otherContact.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-                if (!trimmedOtherName.length)
-                {
-                    if (trimmedName.length || [contact.displayName compare:otherContact.displayName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                    {
-                        break;
-                    }
-                }
-                else if (trimmedName.length && [trimmedName compare:trimmedOtherName options:NSCaseInsensitiveSearch] != NSOrderedDescending)
-                {
-                    break;
-                }
-
-                index++;
-            }
-        }
-    }
-
-    // Add this participant
-    [memberIds insertObject:key atIndex:index];
 }
 
 // key is a room member user id or a room 3pid invite token
 - (void)removeParticipantByKey:(NSString*)key
 {
-    if (actualMembers.count)
+    NSUInteger index;
+    
+    if (sortedParticipantsAdmin.count)
     {
-        NSUInteger index = [actualMembers indexOfObject:key];
-        if (index != NSNotFound)
+        for (index = 0; index < sortedParticipantsAdmin.count; index++)
         {
-            [mxkContactsById removeObjectForKey:key];
-            [actualMembers removeObjectAtIndex:index];
-            return;
+            Contact *contact = sortedParticipantsAdmin[index];
+            
+            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
+            {
+                [sortedParticipantsAdmin removeObjectAtIndex:index];
+                return;
+            }
         }
     }
     
-    if (invitedMembers.count)
+    if (sortedParticipants.count)
     {
-        NSUInteger index = [invitedMembers indexOfObject:key];
-        if (index != NSNotFound)
+        for (index = 0; index < sortedParticipants.count; index++)
         {
-            [mxkContactsById removeObjectForKey:key];
-            [invitedMembers removeObjectAtIndex:index];
+            Contact *contact = sortedParticipants[index];
+            
+            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
+            {
+                [sortedParticipants removeObjectAtIndex:index];
+                return;
+            }
         }
+    }
+    
+    if (sortedInvitedParticipantsAdmin.count)
+    {
+        for (index = 0; index < sortedInvitedParticipantsAdmin.count; index++)
+        {
+            Contact *contact = sortedInvitedParticipantsAdmin[index];
+            
+            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
+            {
+                [sortedInvitedParticipantsAdmin removeObjectAtIndex:index];
+                return;
+            }
+        }
+    }
+    
+    if (sortedInvitedParticipants.count)
+    {
+        for (index = 0; index < sortedInvitedParticipants.count; index++)
+        {
+            Contact *contact = sortedInvitedParticipants[index];
+            
+            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
+            {
+                [sortedInvitedParticipants removeObjectAtIndex:index];
+                return;
+            }
+            
+            if (contact.mxThirdPartyInvite && [contact.mxThirdPartyInvite.token isEqualToString:key])
+            {
+                [sortedInvitedParticipants removeObjectAtIndex:index];
+                return;
+            }
+        }
+    }
+}
+
+- (void)finalizeParticipantsList
+{
+    // Sort contacts in alphabetical order (Use sortingDisplayName in which symbols are skipped)
+    NSComparator comparator = ^NSComparisonResult(Contact *contact1, Contact *contact2) {
+        
+        if (contact1.sortingDisplayName.length && contact2.sortingDisplayName.length)
+        {
+            return [contact1.sortingDisplayName compare:contact2.sortingDisplayName options:NSCaseInsensitiveSearch];
+        }
+        else if (contact1.sortingDisplayName.length)
+        {
+            return NSOrderedAscending;
+        }
+        else if (contact2.sortingDisplayName.length)
+        {
+            return NSOrderedDescending;
+        }
+        
+        return [contact1.displayName compare:contact2.displayName options:NSCaseInsensitiveSearch];
+        
+    };
+    
+    // Sort each participants list in alphabetical order
+    [sortedParticipantsAdmin sortUsingComparator:comparator];
+    [sortedParticipants sortUsingComparator:comparator];
+    [sortedInvitedParticipantsAdmin sortUsingComparator:comparator];
+    [sortedInvitedParticipants sortUsingComparator:comparator];
+    
+    // Report sorted lists in the displayed participants list
+    actualParticipants = [NSMutableArray array];
+    [actualParticipants addObjectsFromArray:sortedParticipantsAdmin];
+    [actualParticipants addObjectsFromArray:sortedParticipants];
+    
+    invitedParticipants = [NSMutableArray array];
+    [invitedParticipants addObjectsFromArray:sortedInvitedParticipantsAdmin];
+    [invitedParticipants addObjectsFromArray:sortedInvitedParticipants];
+    
+    // Refer all used contacts in only one dictionary.
+    contactsById = [NSMutableDictionary dictionary];
+    for (Contact *contact in actualParticipants)
+    {
+        [contactsById setObject:contact forKey:contact.mxMember.userId];
+    }
+    for (Contact *contact in invitedParticipants)
+    {
+        if (contact.mxMember)
+        {
+            [contactsById setObject:contact forKey:contact.mxMember.userId];
+        }
+        else if (contact.mxThirdPartyInvite)
+        {
+            [contactsById setObject:contact forKey:contact.mxThirdPartyInvite.token];
+        }
+    }
+    if (userContact)
+    {
+        [contactsById setObject:userContact forKey:userContact.mxMember.userId];
     }
 }
 
 - (void)addPendingActionMask
 {
+    // Remove potential existing mask
+    [self removePendingActionMask];
+    
     // Add a spinner above the tableview to avoid that the user tap on any other button
     pendingMaskSpinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    pendingMaskSpinnerView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
+    pendingMaskSpinnerView.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.5];
     pendingMaskSpinnerView.frame = self.tableView.frame;
     pendingMaskSpinnerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
     
@@ -517,6 +589,16 @@
     
     // animate it
     [pendingMaskSpinnerView startAnimating];
+    
+    // Show the spinner after a delay so that if it is removed in a short future,
+    // it is not displayed to the end user.
+    pendingMaskSpinnerView.alpha = 0;
+    [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        
+        pendingMaskSpinnerView.alpha = 1;
+        
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (void)removePendingActionMask
@@ -534,30 +616,30 @@
 {
     NSInteger count = 0;
     
-    invitableSection = membersSection = invitedSection = -1;
+    invitableSection = participantsSection = invitedSection = -1;
     
     if (_isAddParticipantSearchBarEditing)
     {
         invitableSection = count++;
         
-        if (filteredActualMembers.count)
+        if (filteredActualParticipants.count)
         {
-            membersSection = count++;
+            participantsSection = count++;
         }
         
-        if (filteredInvitedMembers.count)
+        if (filteredInvitedParticipants.count)
         {
             invitedSection = count++;
         }
     }
     else
     {
-        if (userMatrixId || actualMembers.count)
+        if (userContact || actualParticipants.count)
         {
-            membersSection = count++;
+            participantsSection = count++;
         }
         
-        if (invitedMembers.count)
+        if (invitedParticipants.count)
         {
             invitedSection = count++;
         }
@@ -574,16 +656,16 @@
     {
         count = invitableContacts.count;
     }
-    else if (section == membersSection)
+    else if (section == participantsSection)
     {
         if (_isAddParticipantSearchBarEditing)
         {
-            count = filteredActualMembers.count;
+            count = filteredActualParticipants.count;
         }
         else
         {
-            count = actualMembers.count;
-            if (userMatrixId)
+            count = actualParticipants.count;
+            if (userContact)
             {
                 count++;
             }
@@ -593,11 +675,11 @@
     {
         if (_isAddParticipantSearchBarEditing)
         {
-            count = filteredInvitedMembers.count;
+            count = filteredInvitedParticipants.count;
         }
         else
         {
-            count = invitedMembers.count;
+            count = invitedParticipants.count;
         }
     }
     
@@ -627,26 +709,9 @@
     Contact *contact = nil;
     
     // oneself dedicated cell
-    if ((indexPath.section == membersSection && userMatrixId && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
+    if ((indexPath.section == participantsSection && userContact && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
     {
-        contact = [mxkContactsById objectForKey:userMatrixId];
-        
-        if (!contact)
-        {
-            // Check whether user is admin
-            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-            BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:userMatrixId] >= kVectorRoomAdminLevel);
-            
-            NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
-            if (isAdmin)
-            {
-                displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
-            }
-            
-            contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userMatrixId];
-            contact.mxMember = [self.mxRoom.state memberWithUserId:userMatrixId];
-            [mxkContactsById setObject:contact forKey:userMatrixId];
-        }
+        contact = userContact;
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -662,19 +727,19 @@
     else
     {
         NSInteger index = indexPath.row;
-        NSArray *memberIds;
+        NSArray *participants;
         
-        if (indexPath.section == membersSection)
+        if (indexPath.section == participantsSection)
         {
             if (_isAddParticipantSearchBarEditing)
             {
-                memberIds = filteredActualMembers;
+                participants = filteredActualParticipants;
             }
             else
             {
-                memberIds = actualMembers;
+                participants = actualParticipants;
                 
-                if (userMatrixId)
+                if (userContact)
                 {
                     index --;
                 }
@@ -684,18 +749,17 @@
         {
             if (_isAddParticipantSearchBarEditing)
             {
-                memberIds = filteredInvitedMembers;
+                participants = filteredInvitedParticipants;
             }
             else
             {
-                memberIds = invitedMembers;
+                participants = invitedParticipants;
             }
         }
         
-        if (index < memberIds.count)
+        if (index < participants.count)
         {
-            NSString *userId = memberIds[index];
-            contact = [mxkContactsById objectForKey:userId];
+            contact = participants[index];
         }
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -764,7 +828,7 @@
     {
         return 30.0;
     }
-    else if (section == membersSection && _isAddParticipantSearchBarEditing)
+    else if (section == participantsSection && _isAddParticipantSearchBarEditing)
     {
         return 1;
     }
@@ -791,7 +855,7 @@
         headerLabel.text = NSLocalizedStringFromTable(@"room_participants_invited_section", @"Vector", nil);
         [sectionHeader addSubview:headerLabel];
     }
-    else if (section == membersSection && _isAddParticipantSearchBarEditing)
+    else if (section == participantsSection && _isAddParticipantSearchBarEditing)
     {
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
         
@@ -927,26 +991,26 @@
         Contact *contact;
         
         // oneself dedicated cell
-        if ((indexPath.section == membersSection && userMatrixId && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
+        if ((indexPath.section == participantsSection && userContact && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
         {
-            contact = [mxkContactsById objectForKey:userMatrixId];
+            contact = userContact;
         }
         else
         {
             NSInteger index = indexPath.row;
-            NSArray *memberIds;
+            NSArray *participants;
             
-            if (indexPath.section == membersSection)
+            if (indexPath.section == participantsSection)
             {
                 if (_isAddParticipantSearchBarEditing)
                 {
-                    memberIds = filteredActualMembers;
+                    participants = filteredActualParticipants;
                 }
                 else
                 {
-                    memberIds = actualMembers;
+                    participants = actualParticipants;
                     
-                    if (userMatrixId)
+                    if (userContact)
                     {
                         index --;
                     }
@@ -956,18 +1020,17 @@
             {
                 if (_isAddParticipantSearchBarEditing)
                 {
-                    memberIds = filteredInvitedMembers;
+                    participants = filteredInvitedParticipants;
                 }
                 else
                 {
-                    memberIds = invitedMembers;
+                    participants = invitedParticipants;
                 }
             }
             
-            if (index < memberIds.count)
+            if (index < participants.count)
             {
-                NSString *userId = memberIds[index];
-                contact = [mxkContactsById objectForKey:userId];
+                contact = participants[index];
             }
         }
         
@@ -1002,7 +1065,7 @@
     NSMutableArray* actions = [[NSMutableArray alloc] init];
     
     // add the swipe to delete only on participants sections
-    if (indexPath.section == membersSection || indexPath.section == invitedSection)
+    if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
         NSString* title = @"        ";
         
@@ -1027,7 +1090,7 @@
     NSUInteger section = path.section;
     NSUInteger row = path.row;
     
-    if (section == membersSection || section == invitedSection)
+    if (section == participantsSection || section == invitedSection)
     {
         __weak typeof(self) weakSelf = self;
         
@@ -1037,7 +1100,7 @@
             currentAlert = nil;
         }
         
-        if (section == membersSection && userMatrixId && (0 == row))
+        if (section == participantsSection && userContact && (0 == row))
         {
             // Leave ?
             currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
@@ -1088,26 +1151,26 @@
         }
         else
         {
-            NSMutableArray *memberIds;
+            NSMutableArray *participants;
             
-            if (section == membersSection)
+            if (section == participantsSection)
             {
-                memberIds = actualMembers;
+                participants = actualParticipants;
                 
-                if (userMatrixId)
+                if (userContact)
                 {
                     row --;
                 }
             }
             else
             {
-                memberIds = invitedMembers;
+                participants = invitedParticipants;
             }
             
-            if (row < memberIds.count)
+            if (row < participants.count)
             {
-                NSString *memberUserId = memberIds[row];
-                MXKContact *contact = [mxkContactsById objectForKey:memberUserId];
+                Contact *contact = participants[row];
+                NSString *memberUserId = contact.mxMember ? contact.mxMember.userId : contact.mxThirdPartyInvite.token;
                 
                 // Kick ?
                 NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_remove_prompt_msg", @"Vector", nil), (contact ? contact.displayName : memberUserId)];
@@ -1138,8 +1201,7 @@
                                                                      
                                                                      [strongSelf removePendingActionMask];
                                                                      
-                                                                     [strongSelf->mxkContactsById removeObjectForKey:memberUserId];
-                                                                     [memberIds removeObjectAtIndex:row];
+                                                                     [participants removeObjectAtIndex:row];
                                                                      
                                                                      // Refresh display
                                                                      [strongSelf.tableView reloadData];
@@ -1238,14 +1300,14 @@
 {
     // Update search results.
     NSMutableArray *contacts;
-    NSMutableArray *memberIds;
-    NSMutableArray *invitedMemberIds;
+    NSMutableArray *participantsArray;
+    NSMutableArray *invitedParticipantsArray;
     
     if (currentSearchText.length && [searchText hasPrefix:currentSearchText])
     {
         contacts = invitableContacts;
-        memberIds = filteredActualMembers;
-        invitedMemberIds = filteredInvitedMembers;
+        participantsArray = filteredActualParticipants;
+        invitedParticipantsArray = filteredInvitedParticipants;
     }
     else
     {
@@ -1271,33 +1333,27 @@
             {
                 for (NSString *userId in identifiers)
                 {
-                    if ([actualMembers indexOfObject:userId] == NSNotFound && [invitedMembers indexOfObject:userId] == NSNotFound)
+                    if ([contactsById objectForKey:userId] == nil)
                     {
-                        if (![userId isEqualToString:userMatrixId])
-                        {
-                            Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
-                            splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
-                            [contacts addObject:splitContact];
-                        }
+                        Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
+                        splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
+                        [contacts addObject:splitContact];
                     }
                 }
             }
             else if (identifiers.count)
             {
                 NSString *userId = identifiers.firstObject;
-                if ([actualMembers indexOfObject:userId] == NSNotFound && [invitedMembers indexOfObject:userId] == NSNotFound)
+                if ([contactsById objectForKey:userId] == nil)
                 {
-                    if (![userId isEqualToString:userMatrixId])
-                    {
-                        [contacts addObject:contact];
-                    }
+                    [contacts addObject:contact];
                 }
             }
         }
         
-        // Copy members and invited members
-        memberIds = [actualMembers copy];
-        invitedMemberIds = [invitedMembers copy];
+        // Copy participants and invited participants
+        participantsArray = [actualParticipants copy];
+        invitedParticipantsArray = [invitedParticipants copy];
     }
     currentSearchText = searchText;
     
@@ -1317,25 +1373,23 @@
         }
     }
     
-    // Update filtered members list
-    filteredActualMembers = [NSMutableArray array];
-    for (NSString *memberId in memberIds)
+    // Update filtered participants list
+    filteredActualParticipants = [NSMutableArray array];
+    for (Contact *contact in participantsArray)
     {
-        Contact *contact = [mxkContactsById objectForKey:memberId];
-        if (contact && [contact matchedWithPatterns:@[currentSearchText]])
+        if ([contact matchedWithPatterns:@[currentSearchText]])
         {
-            [filteredActualMembers addObject:memberId];
+            [filteredActualParticipants addObject:contact];
         }
     }
     
-    // Update filtered invited members list
-    filteredInvitedMembers = [NSMutableArray array];
-    for (NSString *memberId in invitedMemberIds)
+    // Update filtered invited participants list
+    filteredInvitedParticipants = [NSMutableArray array];
+    for (Contact *contact in invitedParticipantsArray)
     {
-        Contact *contact = [mxkContactsById objectForKey:memberId];
-        if (contact && [contact matchedWithPatterns:@[currentSearchText]])
+        if ([contact matchedWithPatterns:@[currentSearchText]])
         {
-            [filteredInvitedMembers addObject:memberId];
+            [filteredInvitedParticipants addObject:contact];
         }
     }
     
@@ -1374,8 +1428,8 @@
 {
     searchBar.text = currentSearchText = nil;
     invitableContacts = nil;
-    filteredActualMembers = nil;
-    filteredInvitedMembers = nil;
+    filteredActualParticipants = nil;
+    filteredInvitedParticipants = nil;
     self.isAddParticipantSearchBarEditing = NO;
     
     // Leave search
