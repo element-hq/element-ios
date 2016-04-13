@@ -22,6 +22,13 @@
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
                         </constraints>
                     </view>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-sr-Kz4">
+                        <rect key="frame" x="42" y="10" width="20" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="5Do-zm-vSO"/>
+                            <constraint firstAttribute="width" constant="20" id="IIL-0b-xCh"/>
+                        </constraints>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Display name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn" userLabel="member display name">
                         <rect key="frame" x="69" y="14" width="481" height="21"/>
                         <constraints>
@@ -50,6 +57,7 @@
                     </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="e2Q-sr-Kz4" firstAttribute="trailing" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="7" id="Fib-p7-t8G"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>
@@ -58,6 +66,7 @@
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
+                    <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="e2Q-sr-Kz4" secondAttribute="top" constant="5" id="xrs-nE-h6t"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,6 +80,7 @@
                 <outlet property="customAccessoryView" destination="Ogo-Qt-u2C" id="Hec-bO-0Av"/>
                 <outlet property="customAccessoryViewLeadingConstraint" destination="cWl-2f-cvI" id="WSj-ru-Qxx"/>
                 <outlet property="lastPresenceLabel" destination="dQt-mN-T6b" id="FYZ-JD-0ck"/>
+                <outlet property="thumbnailBadgeView" destination="e2Q-sr-Kz4" id="kMn-et-a0z"/>
                 <outlet property="thumbnailView" destination="RX5-eD-c3c" id="GBi-K9-LhK"/>
             </connections>
         </tableViewCell>

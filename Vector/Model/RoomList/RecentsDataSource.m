@@ -29,6 +29,12 @@
 
 #import "RecentCellData.h"
 
+#define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
+#define RECENTSDATASOURCE_SECTION_INVITES       0x02
+#define RECENTSDATASOURCE_SECTION_FAVORITES     0x04
+#define RECENTSDATASOURCE_SECTION_CONVERSATIONS 0x08
+#define RECENTSDATASOURCE_SECTION_LOWPRIORITY   0x10
+
 @interface RecentsDataSource()
 {
     NSMutableArray* invitesCellDataArray;
@@ -42,6 +48,8 @@
     NSInteger conversationSection;
     NSInteger lowPrioritySection;
     NSInteger sectionsCount;
+    
+    NSInteger shrinkedSectionsBitMask;
     
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
 }
@@ -66,6 +74,8 @@
         conversationSection = -1;
         lowPrioritySection = -1;
         sectionsCount = 0;
+        
+        shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
         
@@ -219,19 +229,19 @@
     {
         count = 1;
     }
-    else if (section == favoritesSection)
+    else if (section == favoritesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
     {
         count = favoriteCellDataArray.count;
     }
-    else if (section == conversationSection)
+    else if (section == conversationSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
     {
         count = conversationCellDataArray.count;
     }
-    else if (section == lowPrioritySection)
+    else if (section == lowPrioritySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
         count = lowPriorityCellDataArray.count;
     }
-    else if (section == invitesSection)
+    else if (section == invitesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
     {
         count = invitesCellDataArray.count;
     }
@@ -241,7 +251,7 @@
         count++;
     }
     
-    if ([self isHiddenCellSection:section])
+    if (count && [self isHiddenCellSection:section])
     {
         count--;
     }
@@ -251,43 +261,89 @@
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
-    // add multi accounts section management
+    UIView *sectionHeader = nil;
     
-    if ((section == directorySection) || (section == favoritesSection) || (section == conversationSection) || (section == lowPrioritySection) || (section == invitesSection))
+    if (section < sectionsCount)
     {
-        UILabel* label = [[UILabel alloc] initWithFrame:frame];
-        
-        NSString* text = @"";
+        NSString* sectionTitle = @"";
+        NSInteger sectionBitwise = 0;
+        UIImageView *chevronView;
         
         if (section == directorySection)
         {
-            text = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_directory", @"Vector", nil);
         }
         else if (section == favoritesSection)
         {
-            text = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_favourites", @"Vector", nil);
+            sectionBitwise = RECENTSDATASOURCE_SECTION_FAVORITES;
         }
         else if (section == conversationSection)
         {
-            text = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_conversations", @"Vector", nil);
+            sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
         }
         else if (section == lowPrioritySection)
         {
-            text = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_low_priority", @"Vector", nil);
+            sectionBitwise = RECENTSDATASOURCE_SECTION_LOWPRIORITY;
         }
         else if (section == invitesSection)
         {
-            text = NSLocalizedStringFromTable(@"room_recents_invites", @"Vector", nil);
+            sectionTitle = NSLocalizedStringFromTable(@"room_recents_invites", @"Vector", nil);
+            sectionBitwise = RECENTSDATASOURCE_SECTION_INVITES;
         }
-    
-        label.text = [NSString stringWithFormat:@"   %@", text];
-        label.font = [UIFont boldSystemFontOfSize:15.0];
-        label.backgroundColor = kVectorColorLightGrey;
         
-        return label;
+        sectionHeader = [[UIView alloc] initWithFrame:frame];
+        sectionHeader.backgroundColor = kVectorColorLightGrey;
+        
+        if (sectionBitwise)
+        {
+            // Add shrink button
+            UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            CGRect frame = sectionHeader.frame;
+            frame.origin.x = frame.origin.y = 0;
+            shrinkButton.frame = frame;
+            shrinkButton.backgroundColor = [UIColor clearColor];
+            [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            shrinkButton.tag = sectionBitwise;
+            [sectionHeader addSubview:shrinkButton];
+            sectionHeader.userInteractionEnabled = YES;
+            
+            // Add shrink icon
+            UIImage *chevron;
+            if (shrinkedSectionsBitMask & sectionBitwise)
+            {
+                chevron = [UIImage imageNamed:@"disclosure_icon"];
+            }
+            else
+            {
+                chevron = [UIImage imageNamed:@"shrink_icon"];
+            }
+            chevronView = [[UIImageView alloc] initWithImage:chevron];
+            chevronView.contentMode = UIViewContentModeCenter;
+            frame = chevronView.frame;
+            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
+            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
+            chevronView.frame = frame;
+            [sectionHeader addSubview:chevronView];
+            chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        }
+        
+        // Add label
+        frame = sectionHeader.frame;
+        frame.origin.x = 20;
+        frame.origin.y = 5;
+        frame.size.width = chevronView ? chevronView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
+        frame.size.height -= 10;
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
+        headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        headerLabel.backgroundColor = [UIColor clearColor];
+        headerLabel.text = sectionTitle;
+        [sectionHeader addSubview:headerLabel];
     }
     
-    return [super viewForHeaderInSection:section withFrame:frame];
+    return sectionHeader;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)anIndexPath
@@ -319,7 +375,7 @@
             
             // add an imageview of the cell.
             // The image is a shot of the genuine cell.
-            // Thus, this cell has the same look as the genuine cell withourt computing it.
+            // Thus, this cell has the same look as the genuine cell without computing it.
             UIImageView* imageView = [cell viewWithTag:[cellIdentifier hash]];
             
             if (!imageView || (imageView != self.droppingCellBackGroundView))
@@ -458,14 +514,19 @@
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
 {
     NSIndexPath *indexPath = nil;
-    NSInteger index = NSNotFound;
+    NSInteger index;
     
-    if (!indexPath && (invitesSection >= 0))
+    if (invitesSection >= 0)
     {
         index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:invitesCellDataArray];
         
         if (index != NSNotFound)
         {
+            // Check whether the invitations are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES)
+            {
+                return nil;
+            }
             indexPath = [NSIndexPath indexPathForRow:index inSection:invitesSection];
         }
     }
@@ -476,6 +537,11 @@
         
         if (index != NSNotFound)
         {
+            // Check whether the favorites are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES)
+            {
+                return nil;
+            }
             indexPath = [NSIndexPath indexPathForRow:index inSection:favoritesSection];
         }
     }
@@ -486,6 +552,11 @@
         
         if (index != NSNotFound)
         {
+            // Check whether the conversations are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS)
+            {
+                return nil;
+            }
             indexPath = [NSIndexPath indexPathForRow:index inSection:conversationSection];
         }
     }
@@ -496,13 +567,13 @@
         
         if (index != NSNotFound)
         {
+            // Check whether the low priority rooms are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY)
+            {
+                return nil;
+            }
             indexPath = [NSIndexPath indexPathForRow:index inSection:lowPrioritySection];
         }
-    }
-    
-    if (!indexPath)
-    {
-        indexPath = [super cellIndexPathWithRoomId:roomId andMatrixSession:matrixSession];
     }
     
     return indexPath;
@@ -649,6 +720,31 @@
     
     // Call super to keep update readyRecentsDataSourceArray.
     [super dataSource:dataSource didCellChange:changes];
+}
+
+#pragma mark - Action
+
+- (IBAction)onButtonPressed:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]])
+    {
+        UIButton *shrinkButton = (UIButton*)sender;
+        NSInteger selectedSectionBit = shrinkButton.tag;
+        
+        if (shrinkedSectionsBitMask & selectedSectionBit)
+        {
+            // Disclose the section
+            shrinkedSectionsBitMask &= ~selectedSectionBit;
+        }
+        else
+        {
+            // Shrink this section
+            shrinkedSectionsBitMask |= selectedSectionBit;
+        }
+        
+        // Inform the delegate about the update
+        [self.delegate dataSource:self didCellChange:nil];
+    }
 }
 
 #pragma mark - Override MXKDataSource

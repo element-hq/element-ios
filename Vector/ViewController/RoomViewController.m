@@ -135,18 +135,6 @@
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     
-    // Set room title view
-    if (self.roomDataSource.isLive)
-    {
-        [self setRoomTitleViewClass:RoomTitleView.class];
-        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-    }
-    else
-    {
-        [self setRoomTitleViewClass:SimpleRoomTitleView.class];
-        self.titleView.editable = NO;
-    }
-
     // Prepare expanded header
     self.expandedHeaderContainer.backgroundColor = kVectorColorLightGrey;
     self.expandedHeaderContainerHeightConstraint.constant = 237;
@@ -211,14 +199,21 @@
     // Handle potential data source
     if (self.roomDataSource)
     {
+        // Set room title view
         if (self.roomDataSource.isLive)
         {
             self.navigationItem.rightBarButtonItem.enabled = YES;
+            
+            [self setRoomTitleViewClass:RoomTitleView.class];
+            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
         else
         {
             // Hide the search button
             self.navigationItem.rightBarButtonItem = nil;
+            
+            [self setRoomTitleViewClass:SimpleRoomTitleView.class];
+            self.titleView.editable = NO;
         }
         
         [self refreshRoomInputToolbar];
@@ -342,11 +337,17 @@
         if (self.roomDataSource.isLive)
         {
             self.navigationItem.rightBarButtonItem.enabled = YES;
+            
+            [self setRoomTitleViewClass:RoomTitleView.class];
+            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
         else
         {
             // Hide the search button
             self.navigationItem.rightBarButtonItem = nil;
+            
+            [self setRoomTitleViewClass:SimpleRoomTitleView.class];
+            self.titleView.editable = NO;
         }
         
         // Store ref on customized room data source
@@ -479,9 +480,12 @@
 
 - (void)hideExpandedHeader:(BOOL)isHidden
 {
-    // Check conditions before applying change on room header
-    // This operation is ignored when a screen rotation is in progress, or when the room data source has been removed.
-    if (self.expandedHeaderContainer.isHidden != isHidden && isSizeTransitionInProgress == NO && self.roomDataSource)
+    // Check conditions before applying change on room header.
+    // This operation is ignored:
+    // - if a screen rotation is in progress.
+    // - if the room data source has been removed.
+    // - if the room data source does not manage a live timeline.
+    if (self.expandedHeaderContainer.isHidden != isHidden && isSizeTransitionInProgress == NO && self.roomDataSource && self.roomDataSource.isLive)
     {
         self.expandedHeaderContainer.hidden = isHidden;
         

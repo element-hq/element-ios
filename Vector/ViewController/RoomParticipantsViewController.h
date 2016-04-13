@@ -20,6 +20,8 @@
 
 #import "SegmentedViewController.h"
 
+@class Contact;
+
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
@@ -28,31 +30,26 @@
 {
 @protected
     /**
-     The matrix id of the current user (nil if the user is not a participant of the room).
-     */
-    NSString *userMatrixId;
-    
-    /**
      Section indexes
      */
-    NSInteger searchResultSection;
-    NSInteger membersSection;
+    NSInteger participantsSection;
     NSInteger invitedSection;
+    NSInteger invitableSection;
     
     /**
-     The current list of joined members.
+     The current list of joined members (Array of 'Contact' instances).
      */
-    NSMutableArray *actualMembers;
+    NSMutableArray *actualParticipants;
     
     /**
-     The current list of invited members.
+     The current list of invited members (Array of 'Contact' instances).
      */
-    NSMutableArray *invitedMembers;
+    NSMutableArray *invitedParticipants;
     
     /**
-     Store MXKContact instance by matrix user id
+     The contact used to describe the current user (nil if the user is not a participant of the room).
      */
-    NSMutableDictionary *mxkContactsById;
+    Contact *userContact;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
