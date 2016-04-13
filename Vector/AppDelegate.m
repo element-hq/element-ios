@@ -112,6 +112,12 @@
      session to be running. Hence, this observer.
      */
     id universalLinkWaitingObserver;
+
+    /**
+     Completion block called when [self popToHomeViewControllerAnimated:] has been
+     completed.
+     */
+    void (^popToHomeViewControllerCompletion)();
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -460,23 +466,12 @@
         // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
             
-            [self popToHomeViewControllerAnimated:NO];
-            
-            // Dispatch the completion in order to let navigation stack refresh itself.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion();
-            });
-            
+            [self popToHomeViewControllerAnimated:NO completion:completion];
         }];
     }
     else
     {
-        [self popToHomeViewControllerAnimated:NO];
-        
-        // Dispatch the completion in order to let navigation stack refresh itself.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion();
-        });
+        [self popToHomeViewControllerAnimated:NO completion:completion];
     }
 }
 
@@ -532,11 +527,16 @@
 
 #pragma mark
 
-- (void)popToHomeViewControllerAnimated:(BOOL)animated
+- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
 {
-    // Force back to the main screen
-    if (_homeViewController)
+    // Force back to the main screen if this is the not the one that is displayed
+    if (_homeViewController && _homeViewController != _homeNavigationController.visibleViewController)
     {
+        // Listen to the homeNavigationController changes
+        // We need to be sure that homeViewController is back to the screen
+        popToHomeViewControllerCompletion = completion;
+        _homeNavigationController.delegate = self;
+
         [_homeNavigationController popToViewController:_homeViewController animated:animated];
         
         // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
@@ -552,6 +552,25 @@
         
         // Release the current selected room
         [_homeViewController closeSelectedRoom];
+    }
+    else
+    {
+        completion();
+    }
+}
+
+#pragma mark - UINavigationController delegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController == _homeViewController)
+    {
+        _homeNavigationController.delegate = nil;
+        if (popToHomeViewControllerCompletion)
+        {
+            popToHomeViewControllerCompletion();
+        }
+        popToHomeViewControllerCompletion = nil;
     }
 }
 
@@ -812,7 +831,7 @@
             else
             {
                 // TODO: Is it an invite?
-                NSLog(@"[AppDelegate] Universal link: TODO: The room (%@) is not known by any account", roomIdOrAlias);
+                NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account", roomIdOrAlias);
             }
         }
         else
@@ -1129,7 +1148,7 @@
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-    [self popToHomeViewControllerAnimated:NO];
+    [self popToHomeViewControllerAnimated:NO completion:nil];
     
     if (clearCache)
     {
