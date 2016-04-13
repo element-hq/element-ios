@@ -25,6 +25,7 @@
 		32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */; };
 		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
 		32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */; };
+		32C52BF61CBE4B0A00863B33 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C52BF51CBE4B0A00863B33 /* RoomEmailInvitation.m */; };
 		32D0A4BC1CA44509008F3451 /* plus_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4B91CA44509008F3451 /* plus_icon.png */; };
 		32D0A4BD1CA44509008F3451 /* plus_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */; };
 		32D0A4BE1CA44509008F3451 /* plus_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */; };
@@ -276,6 +277,8 @@
 		32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
 		32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
 		32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
+		32C52BF41CBE4B0A00863B33 /* RoomEmailInvitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomEmailInvitation.h; sourceTree = "<group>"; };
+		32C52BF51CBE4B0A00863B33 /* RoomEmailInvitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomEmailInvitation.m; sourceTree = "<group>"; };
 		32D0A4B91CA44509008F3451 /* plus_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_icon.png; sourceTree = "<group>"; };
 		32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon@2x.png"; sourceTree = "<group>"; };
 		32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon@3x.png"; sourceTree = "<group>"; };
@@ -812,6 +815,8 @@
 				F08BE0A11B87064000C480FB /* RoomDataSource.m */,
 				32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */,
 				32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */,
+				32C52BF41CBE4B0A00863B33 /* RoomEmailInvitation.h */,
+				32C52BF51CBE4B0A00863B33 /* RoomEmailInvitation.m */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -1416,6 +1421,7 @@
 			files = (
 				3235CD881C3423070084EA40 /* HomeSearchTableViewCell.m in Sources */,
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
+				32C52BF61CBE4B0A00863B33 /* RoomEmailInvitation.m in Sources */,
 				F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
