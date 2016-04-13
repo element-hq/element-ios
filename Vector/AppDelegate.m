@@ -916,10 +916,13 @@
 
             // Get the parameter value
             NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
-            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if (value.length)
+            {
+                value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-            queryParams[key] = value;
+                queryParams[key] = value;
+            }
         }
     }
 
