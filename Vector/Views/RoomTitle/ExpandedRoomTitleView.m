@@ -60,12 +60,12 @@
         if (self.roomTopic.text.length)
         {
             self.displayNameTextFieldTopConstraint.constant = 126;
-            self.roomMembersTopConstraint.constant = 203;
+            self.roomMembersLabelTopConstraint.constant = 203;
         }
         else
         {
             self.displayNameTextFieldTopConstraint.constant = 141;
-            self.roomMembersTopConstraint.constant = 193;
+            self.roomMembersLabelTopConstraint.constant = 193;
         }
         
         // Compute active members count

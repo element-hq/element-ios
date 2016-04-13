@@ -84,10 +84,9 @@
             <connections>
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
                 <outlet property="displayNameTextFieldTopConstraint" destination="Piq-rp-Pae" id="jnL-Hz-TWn"/>
-                <outlet property="displayNameTopConstraint" destination="Piq-rp-Pae" id="l3M-JY-pqB"/>
                 <outlet property="roomDetailsMask" destination="MFb-0F-eO8" id="ajK-sr-qf7"/>
                 <outlet property="roomMembers" destination="ou0-3Z-weL" id="FCF-ki-HuP"/>
-                <outlet property="roomMembersTopConstraint" destination="DWc-Lx-6Ta" id="dBZ-im-w3p"/>
+                <outlet property="roomMembersLabelTopConstraint" destination="DWc-Lx-6Ta" id="09y-zp-t4o"/>
                 <outlet property="roomTopic" destination="qD3-kA-DSI" id="mOj-AU-7LM"/>
                 <outlet property="titleMask" destination="8HH-9b-1yH" id="MFh-3r-I5e"/>
             </connections>

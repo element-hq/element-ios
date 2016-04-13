@@ -21,7 +21,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *roomTopic;
 @property (weak, nonatomic) IBOutlet UILabel *roomMembers;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMembersTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMembersLabelTopConstraint;
 
 @end
