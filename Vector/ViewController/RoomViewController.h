@@ -18,20 +18,32 @@
 
 #import "RoomTitleView.h"
 
+#import "RoomEmailInvitation.h"
+
 #import "UIViewController+VectorSearch.h"
 
 @interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
 
 // The expanded header
 @property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
 
+// The preview header
+@property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+
 /**
- Hide/Show the expanded header.
+ Show/Hide the expanded header.
  By default this header is hidden on new instantiated RoomViewController object.
  */
-- (void)hideExpandedHeader:(BOOL)isHidden;
+- (void)showExpandedHeader:(BOOL)isVisible;
+
+/**
+ Display an invitation preview.
+ 
+ @param emailInvitation the invitation received by email.
+ */
+- (void)displayEmailInvitation:(RoomEmailInvitation*)emailInvitation;
 
 @end
 
