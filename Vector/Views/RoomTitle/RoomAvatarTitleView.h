@@ -21,4 +21,6 @@
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomAvatarCenterXConstraint;
 
+@property (nonatomic) NSString *roomAvatarURL;
+
 @end

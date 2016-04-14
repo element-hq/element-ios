@@ -134,6 +134,8 @@
 		F025290C1C11B6FC00E1FE1B /* voice_call_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D01C11B6FC00E1FE1B /* voice_call_icon.png */; };
 		F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */; };
 		F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */; };
+		F02BB04B1CBE2EE70022A025 /* PreviewRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F02BB0491CBE2EE70022A025 /* PreviewRoomTitleView.m */; };
+		F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F02BB04A1CBE2EE70022A025 /* PreviewRoomTitleView.xib */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
 		F03FBCC51CBBF521000A5770 /* admin_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB31CBBF521000A5770 /* admin_icon.png */; };
 		F03FBCC61CBBF521000A5770 /* admin_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */; };
@@ -414,6 +416,9 @@
 		F02528D01C11B6FC00E1FE1B /* voice_call_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = voice_call_icon.png; sourceTree = "<group>"; };
 		F02528D11C11B6FC00E1FE1B /* voice_call_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@2x.png"; sourceTree = "<group>"; };
 		F02528D21C11B6FC00E1FE1B /* voice_call_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice_call_icon@3x.png"; sourceTree = "<group>"; };
+		F02BB0481CBE2EE70022A025 /* PreviewRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreviewRoomTitleView.h; path = RoomTitle/PreviewRoomTitleView.h; sourceTree = "<group>"; };
+		F02BB0491CBE2EE70022A025 /* PreviewRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PreviewRoomTitleView.m; path = RoomTitle/PreviewRoomTitleView.m; sourceTree = "<group>"; };
+		F02BB04A1CBE2EE70022A025 /* PreviewRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreviewRoomTitleView.xib; path = RoomTitle/PreviewRoomTitleView.xib; sourceTree = "<group>"; };
 		F03FBCB31CBBF521000A5770 /* admin_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = admin_icon.png; sourceTree = "<group>"; };
 		F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@2x.png"; sourceTree = "<group>"; };
 		F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@3x.png"; sourceTree = "<group>"; };
@@ -585,6 +590,9 @@
 		71046D581C0C631100DCA984 /* RoomTitle */ = {
 			isa = PBXGroup;
 			children = (
+				F02BB0481CBE2EE70022A025 /* PreviewRoomTitleView.h */,
+				F02BB0491CBE2EE70022A025 /* PreviewRoomTitleView.m */,
+				F02BB04A1CBE2EE70022A025 /* PreviewRoomTitleView.xib */,
 				32A8871E1C89B9580037DC17 /* SimpleRoomTitleView.h */,
 				32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */,
 				32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */,
@@ -1214,6 +1222,7 @@
 				F02528D81C11B6FC00E1FE1B /* camera_picture.png in Resources */,
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
+				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
 				F056418C1C7CBEBD002276ED /* group.png in Resources */,
 				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F0026B631C916E68001D2C04 /* priorityLow@3x.png in Resources */,
@@ -1481,6 +1490,7 @@
 				71B2A3BB1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m in Sources */,
 				F0D2D9851C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */,
+				F02BB04B1CBE2EE70022A025 /* PreviewRoomTitleView.m in Sources */,
 				F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F09EE0061C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F09EE0081C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,

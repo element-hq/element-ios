@@ -33,7 +33,8 @@
 "cancel" = "Cancel";
 "save" = "Save";
 "join" = "Join";
-"reject" = "Reject";
+"decline" = "Decline";
+"preview" = "Preview";
 "camera" = "Camera";
 "voice" = "Voice";
 "video" = "Video";
@@ -151,6 +152,11 @@
 "room_title_new_room" = "New room";
 "room_title_multiple_active_members" = "%d/%d active members";
 "room_title_one_active_member" = "%d/%d active member";
+
+// Room Preview
+"room_preview_invitation_format" = "You have been invited to join this room by %@";
+"room_preview_subtitle" = "This is a preview of this room. Files and other attachments have been disabled.";
+"room_preview_unlinked_email_warning" = "This invitation was sent to %@, which is not associated with this account.\nYou may wish to login with a different account, or add this email to your this account.";
 
 // Settings
 "account_logout_all" = "Logout all accounts";

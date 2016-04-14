@@ -34,19 +34,25 @@
     
     self.displayNameTextField.textColor = kVectorTextColorBlack;
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.titleMask addGestureRecognizer:tap];
-    self.titleMask.userInteractionEnabled = YES;
+    if (_titleMask)
+    {
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [self.titleMask addGestureRecognizer:tap];
+        self.titleMask.userInteractionEnabled = YES;
+    }
     
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.roomDetailsMask addGestureRecognizer:tap];
-    self.roomDetailsMask.userInteractionEnabled = YES;
+    if (_roomDetailsMask)
+    {
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [self.roomDetailsMask addGestureRecognizer:tap];
+        self.roomDetailsMask.userInteractionEnabled = YES;
+    }
 }
 
 - (void)layoutSubviews
