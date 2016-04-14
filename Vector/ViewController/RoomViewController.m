@@ -717,7 +717,7 @@
             {
                 previewHeader.mxRoom = self.roomDataSource.room;
             }
-            else
+            else if (roomEmailInvitation)
             {
                 previewHeader.emailInvitation = roomEmailInvitation;
 
@@ -1430,7 +1430,16 @@
     {
         if (roomEmailInvitation)
         {
-            //FIXME Accept the invitation
+            // Attempt to join the room
+            [self joinRoomWithRoomId:roomEmailInvitation.roomId andSignUrl:roomEmailInvitation.signUrl completion:^(BOOL succeed) {
+
+                if (succeed)
+                {
+                    roomEmailInvitation = nil;
+                    [self refreshRoomTitle];
+                }
+
+            }];
         }
         else
         {
@@ -1448,7 +1457,8 @@
     {
         if (roomEmailInvitation)
         {
-            //FIXME Decline this invitation
+            // Decline this invitation = leave this page
+            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
         }
         else
         {
