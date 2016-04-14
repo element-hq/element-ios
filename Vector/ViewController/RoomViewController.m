@@ -243,6 +243,12 @@
     }
     else
     {
+        if (roomEmailInvitation)
+        {
+            // Set room title view
+            [self refreshRoomTitle];
+        }
+
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
 }
@@ -714,6 +720,16 @@
             else
             {
                 previewHeader.emailInvitation = roomEmailInvitation;
+
+                if (roomEmailInvitation.email)
+                {
+                    // Warn the user that the email is not bound to his matrix account
+                    previewHeader.subInvitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), roomEmailInvitation.email];
+
+                    // room_preview_unlinked_email_warning is long long long and overlaps
+                    // bottomBorderView. So, hide this last one.
+                    previewHeader.bottomBorderView.hidden = YES;
+                }
             }
         }
         
@@ -743,6 +759,16 @@
             roomAvatarView.alpha = 0.0;
             
             shadowImage = [[UIImage alloc] init];
+
+            // Set the avatar provided by the email invitation
+            if (roomEmailInvitation && roomEmailInvitation.roomAvatarUrl)
+            {
+                RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
+                MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
+                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomEmailInvitation.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
+
+                roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
+            }
         }
         else
         {
@@ -778,27 +804,8 @@
     if (emailInvitation)
     {
         roomEmailInvitation = emailInvitation;
-        previewHeader.emailInvitation = emailInvitation;
         
         [self refreshRoomTitle];
-        
-        if (emailInvitation.roomAvatarUrl)
-        {
-            if ([self.titleView isKindOfClass:RoomAvatarTitleView.class])
-            {
-                RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
-                MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
-                NSString *roomAvatarUrl = [self.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:emailInvitation.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
-                
-                roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
-            }            
-        }
-        
-        if (emailInvitation.email)
-        {
-            // FIXME: Check whether the email is linked or not to the account
-            // If it is not linked, use 'previewHeader.subInvitationLabel' to warm the user with predefined string 'room_preview_unlinked_email_warning'.
-        }
     }
 }
 
