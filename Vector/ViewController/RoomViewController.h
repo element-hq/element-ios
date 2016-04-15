@@ -18,7 +18,7 @@
 
 #import "RoomTitleView.h"
 
-#import "RoomEmailInvitation.h"
+#import "RoomPreviewData.h"
 
 #import "UIViewController+VectorSearch.h"
 
@@ -39,11 +39,13 @@
 - (void)showExpandedHeader:(BOOL)isVisible;
 
 /**
- Display an invitation preview.
- 
- @param emailInvitation the invitation received by email.
+ Display the preview of a room that is unknown for the user.
+
+ This room can come from an email invitation link or a simple link to a room.
+
+ @param roomPreviewData the data for the room preview.
  */
-- (void)displayEmailInvitation:(RoomEmailInvitation*)emailInvitation;
+- (void)displayRoomPreview:(RoomPreviewData*)previewData;
 
 @end
 

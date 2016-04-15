@@ -90,8 +90,8 @@
     // Use this flag to select a specific tab (0: people, 1: settings).
     NSUInteger selectedRoomDetailsIndex;
     
-    // The room invitation received by email
-    RoomEmailInvitation *roomEmailInvitation;
+    // Preview data for a room invitation received by email or link to a room.
+    RoomPreviewData *roomPreviewData;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -243,7 +243,7 @@
     }
     else
     {
-        if (roomEmailInvitation)
+        if (roomPreviewData)
         {
             // Set room title view
             [self refreshRoomTitle];
@@ -526,7 +526,7 @@
         return YES;
     }
     
-    if (roomEmailInvitation)
+    if (roomPreviewData)
     {
         return YES;
     }
@@ -717,14 +717,14 @@
             {
                 previewHeader.mxRoom = self.roomDataSource.room;
             }
-            else if (roomEmailInvitation)
+            else if (roomPreviewData)
             {
-                previewHeader.emailInvitation = roomEmailInvitation;
+                previewHeader.emailInvitation = roomPreviewData.emailInvitation; //TODO
 
-                if (roomEmailInvitation.email)
+                if (roomPreviewData.emailInvitation.email)
                 {
                     // Warn the user that the email is not bound to his matrix account
-                    previewHeader.subInvitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), roomEmailInvitation.email];
+                    previewHeader.subInvitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), roomPreviewData.emailInvitation.email];
 
                     // room_preview_unlinked_email_warning is long long long and overlaps
                     // bottomBorderView. So, hide this last one.
@@ -761,11 +761,11 @@
             shadowImage = [[UIImage alloc] init];
 
             // Set the avatar provided by the email invitation
-            if (roomEmailInvitation && roomEmailInvitation.roomAvatarUrl)
+            if (roomPreviewData.emailInvitation.roomAvatarUrl)
             {
                 RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
                 MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
-                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomEmailInvitation.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
+                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.emailInvitation.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
 
                 roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
             }
@@ -799,11 +799,13 @@
 
 #pragma mark - Preview
 
-- (void)displayEmailInvitation:(RoomEmailInvitation*)emailInvitation
+- (void)displayRoomPreview:(RoomPreviewData *)previewData
 {
-    if (emailInvitation)
+    if (previewData)
     {
-        roomEmailInvitation = emailInvitation;
+        [self addMatrixSession:previewData.mxSession];
+        
+        roomPreviewData = previewData;
         
         [self refreshRoomTitle];
     }
@@ -1428,14 +1430,15 @@
     }
     else if (view == previewHeader.leftButton)
     {
-        if (roomEmailInvitation)
+        if (roomPreviewData.emailInvitation)
         {
             // Attempt to join the room
-            [self joinRoomWithRoomId:roomEmailInvitation.roomId andSignUrl:roomEmailInvitation.signUrl completion:^(BOOL succeed) {
+            // TODO: link without invitation params
+            [self joinRoomWithRoomId:roomPreviewData.roomId andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
 
                 if (succeed)
                 {
-                    roomEmailInvitation = nil;
+                    roomPreviewData = nil;
                     [self refreshRoomTitle];
                 }
 
@@ -1455,7 +1458,7 @@
     }
     else if (view == previewHeader.rightButton)
     {
-        if (roomEmailInvitation)
+        if (roomPreviewData)
         {
             // Decline this invitation = leave this page
             [[AppDelegate theDelegate] restoreInitialDisplay:^{}];

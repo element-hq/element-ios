@@ -26,6 +26,7 @@
 		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
 		32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */; };
 		32C52BF61CBE4B0A00863B33 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C52BF51CBE4B0A00863B33 /* RoomEmailInvitation.m */; };
+		32C52BF91CBFF50C00863B33 /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C52BF81CBFF50C00863B33 /* RoomPreviewData.m */; };
 		32D0A4BC1CA44509008F3451 /* plus_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4B91CA44509008F3451 /* plus_icon.png */; };
 		32D0A4BD1CA44509008F3451 /* plus_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */; };
 		32D0A4BE1CA44509008F3451 /* plus_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */; };
@@ -281,6 +282,8 @@
 		32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
 		32C52BF41CBE4B0A00863B33 /* RoomEmailInvitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomEmailInvitation.h; sourceTree = "<group>"; };
 		32C52BF51CBE4B0A00863B33 /* RoomEmailInvitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomEmailInvitation.m; sourceTree = "<group>"; };
+		32C52BF71CBFF50C00863B33 /* RoomPreviewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomPreviewData.h; sourceTree = "<group>"; };
+		32C52BF81CBFF50C00863B33 /* RoomPreviewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomPreviewData.m; sourceTree = "<group>"; };
 		32D0A4B91CA44509008F3451 /* plus_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_icon.png; sourceTree = "<group>"; };
 		32D0A4BA1CA44509008F3451 /* plus_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon@2x.png"; sourceTree = "<group>"; };
 		32D0A4BB1CA44509008F3451 /* plus_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon@3x.png"; sourceTree = "<group>"; };
@@ -821,10 +824,12 @@
 				F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */,
 				F08BE0A01B87064000C480FB /* RoomDataSource.h */,
 				F08BE0A11B87064000C480FB /* RoomDataSource.m */,
-				32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */,
-				32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */,
 				32C52BF41CBE4B0A00863B33 /* RoomEmailInvitation.h */,
 				32C52BF51CBE4B0A00863B33 /* RoomEmailInvitation.m */,
+				32C52BF71CBFF50C00863B33 /* RoomPreviewData.h */,
+				32C52BF81CBFF50C00863B33 /* RoomPreviewData.m */,
+				32AAC3E71C353CEA007A3B5B /* RoomSearchDataSource.h */,
+				32AAC3E81C353CEA007A3B5B /* RoomSearchDataSource.m */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -1455,6 +1460,7 @@
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				F0D2D9871C197DCB007B8C96 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				F0BE3DF01C6CE17200AC3111 /* RoomMemberDetailsViewController.m in Sources */,
+				32C52BF91CBFF50C00863B33 /* RoomPreviewData.m in Sources */,
 				F0C34B6F1C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				7165A25B1C05CD42003635D7 /* SegmentedViewController.m in Sources */,
 				F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */,

@@ -25,7 +25,7 @@
 /**
  The room in the invitation.
  */
-@property (nonatomic, readonly) NSString *roomId;
+@property (nonatomic, readonly) NSString *roomId; // TODO
 
 /**
  The invitation parameters.
@@ -42,10 +42,9 @@
 
 /**
  Contructor and parser of the query params of the email link.
- 
- @param roomId the targeted room.
+
  @param params the query parameters extracted from the link.
  */
-- (instancetype)initWithRoomId:(NSString*)roomId andParams:(NSDictionary*)params;
+- (instancetype)initWithParams:(NSDictionary*)params;
 
 @end

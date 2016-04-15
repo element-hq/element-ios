@@ -14,26 +14,29 @@
  limitations under the License.
  */
 
-#import "RoomEmailInvitation.h"
+#import "RoomPreviewData.h"
 
-@implementation RoomEmailInvitation
+@implementation RoomPreviewData
 
-- (instancetype)initWithParams:(NSDictionary *)params
+- (instancetype)initWithRoomId:(NSString *)roomId andSession:(MXSession *)mxSession
 {
     self = [super init];
     if (self)
     {
-        if (params)
-        {
-            _email = params[@"email"];
-            _signUrl = params[@"signurl"];
-            _roomName = params[@"room_name"];
-            _roomAvatarUrl = params[@"room_avatar_url"];
-            _inviterName = params[@"inviter_name"];
-            _guestAccessToken = params[@"guest_access_token"];
-            _guestUserId = params[@"guest_user_id"];
-        }
+        _roomId = roomId;
+        _mxSession = mxSession;
     }
     return self;
 }
+
+- (instancetype)initWithRoomId:(NSString *)roomId emailInvitationParams:(NSDictionary *)emailInvitationParams andSession:(MXSession *)mxSession
+{
+    self = [self initWithRoomId:roomId andSession:mxSession];
+    if (self)
+    {
+        _emailInvitation = [[RoomEmailInvitation alloc] initWithParams:emailInvitationParams];
+    }
+    return self;
+}
+
 @end
