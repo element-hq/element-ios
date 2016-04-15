@@ -1439,7 +1439,19 @@
                 if (succeed)
                 {
                     roomPreviewData = nil;
+
+                    // Enable back the text input
+                    [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+
+                    [UIView setAnimationsEnabled:NO];
+                    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+                    [UIView setAnimationsEnabled:YES];
+
+                    // And the extra area
+                    [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+
                     [self refreshRoomTitle];
+                    [self refreshRoomInputToolbar];
                 }
 
             }];
