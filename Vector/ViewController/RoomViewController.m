@@ -1430,10 +1430,10 @@
     }
     else if (view == previewHeader.leftButton)
     {
-        if (roomPreviewData.emailInvitation)
+        if (roomPreviewData)
         {
             // Attempt to join the room
-            // TODO: link without invitation params
+            // Note in case of simple link to a room the signUrl param is nil
             [self joinRoomWithRoomId:roomPreviewData.roomId andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
 
                 if (succeed)
