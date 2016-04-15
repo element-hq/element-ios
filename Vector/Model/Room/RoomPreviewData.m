@@ -35,6 +35,10 @@
     if (self)
     {
         _emailInvitation = [[RoomEmailInvitation alloc] initWithParams:emailInvitationParams];
+
+        // Report decoded data
+        _roomName = _emailInvitation.roomName;
+        _roomAvatarUrl = _emailInvitation.roomAvatarUrl;
     }
     return self;
 }

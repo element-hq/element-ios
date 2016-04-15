@@ -23,11 +23,6 @@
 @interface RoomEmailInvitation : NSObject
 
 /**
- The room in the invitation.
- */
-@property (nonatomic, readonly) NSString *roomId; // TODO
-
-/**
  The invitation parameters.
  Can be nil.
  */

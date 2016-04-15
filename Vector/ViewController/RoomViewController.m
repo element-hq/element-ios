@@ -719,7 +719,7 @@
             }
             else if (roomPreviewData)
             {
-                previewHeader.emailInvitation = roomPreviewData.emailInvitation; //TODO
+                previewHeader.roomPreviewData = roomPreviewData;
 
                 if (roomPreviewData.emailInvitation.email)
                 {
@@ -760,12 +760,12 @@
             
             shadowImage = [[UIImage alloc] init];
 
-            // Set the avatar provided by the email invitation
-            if (roomPreviewData.emailInvitation.roomAvatarUrl)
+            // Set the avatar provided in preview data
+            if (roomPreviewData.roomAvatarUrl)
             {
                 RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
                 MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
-                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.emailInvitation.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
+                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
 
                 roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
             }
