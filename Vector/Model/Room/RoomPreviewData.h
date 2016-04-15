@@ -44,7 +44,8 @@
 @property (nonatomic) MXSession *mxSession;
 
 /**
- TODO
+ Preview information.
+ They come from the `emailInvitationParams` or [self fetchPreviewData].
  */
 @property (nonatomic, readonly) NSString *roomName;
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
@@ -59,5 +60,16 @@
  */
 - (instancetype)initWithRoomId:(NSString*)roomId andSession:(MXSession*)mxSession;
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
+
+/**
+ Attempt to get more information from the homeserver about the room.
+
+ NOTE: This method is temporary while we do not support the full room preview
+       with preview of messages.
+ 
+ @param completion the block called when the request is complete. `successed` means
+        the homeserver provided some information.
+ */
+- (void)fetchPreviewData:(void (^)(BOOL successed))completion;
 
 @end

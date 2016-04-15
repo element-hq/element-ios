@@ -43,4 +43,33 @@
     return self;
 }
 
+- (void)fetchPreviewData:(void (^)(BOOL))completion
+{
+    // Make an /initialSync request to get preview data
+    [_mxSession.matrixRestClient initialSyncOfRoom:_roomId withLimit:0 success:^(MXRoomInitialSync *roomInitialSync) {
+
+        MXRoomState *roomState = [[MXRoomState alloc] initWithRoomId:_roomId andMatrixSession:_mxSession andDirection:YES];
+
+        // Make roomState digest state events of the room
+        for (MXEvent *stateEvent in roomInitialSync.state)
+        {
+            // Skip members events as they are not not interesting here and can be numerous
+            if (stateEvent.eventType != MXEventTypeRoomMember)
+            {
+                [roomState handleStateEvent:stateEvent];
+            }
+        }
+
+        // Report retrieved data
+        _roomName = roomState.displayname;
+        _roomAvatarUrl = roomState.avatar;
+        _roomTopic = roomState.topic;
+
+        completion(YES);
+
+    } failure:^(NSError *error) {
+        completion(NO);
+    }];
+}
+
 @end

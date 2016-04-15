@@ -843,16 +843,17 @@
                 if (queryParams)
                 {
                     roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
+                    [self showRoomPreview:roomPreviewData];
                 }
                 else
                 {
                     roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
 
-                    // TODO: Try to get more information about the room
-                    // We could attempt to do a room initialSync on it
+                    // Try to get more information about the room before opening its preview
+                    [roomPreviewData fetchPreviewData:^(BOOL successed) {
+                        [self showRoomPreview:roomPreviewData];
+                    }];
                 }
-
-                [self showRoomPreview:roomPreviewData];
             }
         }
         else
