@@ -16,7 +16,7 @@
 
 #import "RoomTitleView.h"
 
-#import "RoomEmailInvitation.h"
+#import "RoomPreviewData.h"
 
 @interface PreviewRoomTitleView : RoomTitleView
 
@@ -32,6 +32,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *subInvitationLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
 
-@property (strong, nonatomic) RoomEmailInvitation *emailInvitation;
+@property (strong, nonatomic) RoomPreviewData *roomPreviewData;
 
 @end
