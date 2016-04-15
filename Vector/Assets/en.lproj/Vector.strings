@@ -157,6 +157,8 @@
 "room_preview_invitation_format" = "You have been invited to join this room by %@";
 "room_preview_subtitle" = "This is a preview of this room. Files and other attachments have been disabled.";
 "room_preview_unlinked_email_warning" = "This invitation was sent to %@, which is not associated with this account.\nYou may wish to login with a different account, or add this email to your this account.";
+"room_preview_try_join_an_unknown_room" = "You are trying to access %@. Would you like to join in order to participate in the discussion?";
+"room_preview_try_join_an_unknown_room_default" = "a room";
 
 // Settings
 "account_logout_all" = "Logout all accounts";

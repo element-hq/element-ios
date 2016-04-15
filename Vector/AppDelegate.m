@@ -834,8 +834,26 @@
             }
             else
             {
-                // TODO: Is it an invite?
-                NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account", roomIdOrAlias);
+                NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account (email invitation: %@). Display its preview to try to join it", roomIdOrAlias, queryParams ? @"YES" : @"NO");
+
+                // FIXME: In case of multi-account, ask the user which one to use
+                MXKAccount* account = accountManager.activeAccounts.firstObject;
+
+                RoomPreviewData *roomPreviewData;
+                if (queryParams)
+                {
+                    roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
+                    [self showRoomPreview:roomPreviewData];
+                }
+                else
+                {
+                    roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
+
+                    // Try to get more information about the room before opening its preview
+                    [roomPreviewData fetchPreviewData:^(BOOL successed) {
+                        [self showRoomPreview:roomPreviewData];
+                    }];
+                }
             }
         }
         else
@@ -1386,6 +1404,13 @@
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
         [_homeViewController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
         
+    }];
+}
+
+- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
+{
+    [self restoreInitialDisplay:^{
+        [_homeViewController showRoomPreview:roomPreviewData];
     }];
 }
 

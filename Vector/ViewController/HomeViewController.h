@@ -17,8 +17,7 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "SegmentedViewController.h"
-
-@class RoomViewController;
+#import "RoomViewController.h"
 
 /**
  The `HomeViewController` screen is the main app screen.
@@ -33,6 +32,7 @@
 @property (nonatomic, readonly) NSString  *selectedRoomId;
 @property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
+@property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
 
 /**
@@ -55,6 +55,15 @@
  @param mxSession the matrix session in which the room should be available.
  */
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)mxSession;
+
+/**
+ Open the RoomViewController to display the preview of a room that is unknown for the user.
+
+ This room can come from an email invitation link or a simple link to a room.
+
+ @param roomPreviewData the data for the room preview.
+ */
+- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
  Close the current selected room (if any)

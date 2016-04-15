@@ -18,12 +18,11 @@
 
 @implementation RoomEmailInvitation
 
-- (instancetype)initWithRoomId:(NSString *)roomId andParams:(NSDictionary *)params
+- (instancetype)initWithParams:(NSDictionary *)params
 {
     self = [super init];
     if (self)
     {
-        _roomId = roomId;
         if (params)
         {
             _email = params[@"email"];

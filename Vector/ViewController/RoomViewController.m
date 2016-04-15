@@ -90,8 +90,8 @@
     // Use this flag to select a specific tab (0: people, 1: settings).
     NSUInteger selectedRoomDetailsIndex;
     
-    // The room invitation received by email
-    RoomEmailInvitation *roomEmailInvitation;
+    // Preview data for a room invitation received by email or link to a room.
+    RoomPreviewData *roomPreviewData;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -243,6 +243,12 @@
     }
     else
     {
+        if (roomPreviewData)
+        {
+            // Set room title view
+            [self refreshRoomTitle];
+        }
+
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
 }
@@ -520,7 +526,7 @@
         return YES;
     }
     
-    if (roomEmailInvitation)
+    if (roomPreviewData)
     {
         return YES;
     }
@@ -711,9 +717,19 @@
             {
                 previewHeader.mxRoom = self.roomDataSource.room;
             }
-            else
+            else if (roomPreviewData)
             {
-                previewHeader.emailInvitation = roomEmailInvitation;
+                previewHeader.roomPreviewData = roomPreviewData;
+
+                if (roomPreviewData.emailInvitation.email)
+                {
+                    // Warn the user that the email is not bound to his matrix account
+                    previewHeader.subInvitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), roomPreviewData.emailInvitation.email];
+
+                    // room_preview_unlinked_email_warning is long long long and overlaps
+                    // bottomBorderView. So, hide this last one.
+                    previewHeader.bottomBorderView.hidden = YES;
+                }
             }
         }
         
@@ -743,6 +759,16 @@
             roomAvatarView.alpha = 0.0;
             
             shadowImage = [[UIImage alloc] init];
+
+            // Set the avatar provided in preview data
+            if (roomPreviewData.roomAvatarUrl)
+            {
+                RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
+                MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
+                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
+
+                roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
+            }
         }
         else
         {
@@ -773,32 +799,15 @@
 
 #pragma mark - Preview
 
-- (void)displayEmailInvitation:(RoomEmailInvitation*)emailInvitation
+- (void)displayRoomPreview:(RoomPreviewData *)previewData
 {
-    if (emailInvitation)
+    if (previewData)
     {
-        roomEmailInvitation = emailInvitation;
-        previewHeader.emailInvitation = emailInvitation;
+        [self addMatrixSession:previewData.mxSession];
+        
+        roomPreviewData = previewData;
         
         [self refreshRoomTitle];
-        
-        if (emailInvitation.roomAvatarUrl)
-        {
-            if ([self.titleView isKindOfClass:RoomAvatarTitleView.class])
-            {
-                RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
-                MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
-                NSString *roomAvatarUrl = [self.roomDataSource.mxSession.matrixRestClient urlOfContentThumbnail:emailInvitation.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
-                
-                roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
-            }            
-        }
-        
-        if (emailInvitation.email)
-        {
-            // FIXME: Check whether the email is linked or not to the account
-            // If it is not linked, use 'previewHeader.subInvitationLabel' to warm the user with predefined string 'room_preview_unlinked_email_warning'.
-        }
     }
 }
 
@@ -1421,9 +1430,31 @@
     }
     else if (view == previewHeader.leftButton)
     {
-        if (roomEmailInvitation)
+        if (roomPreviewData)
         {
-            //FIXME Accept the invitation
+            // Attempt to join the room
+            // Note in case of simple link to a room the signUrl param is nil
+            [self joinRoomWithRoomId:roomPreviewData.roomId andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
+
+                if (succeed)
+                {
+                    roomPreviewData = nil;
+
+                    // Enable back the text input
+                    [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+
+                    [UIView setAnimationsEnabled:NO];
+                    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+                    [UIView setAnimationsEnabled:YES];
+
+                    // And the extra area
+                    [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+
+                    [self refreshRoomTitle];
+                    [self refreshRoomInputToolbar];
+                }
+
+            }];
         }
         else
         {
@@ -1439,9 +1470,10 @@
     }
     else if (view == previewHeader.rightButton)
     {
-        if (roomEmailInvitation)
+        if (roomPreviewData)
         {
-            //FIXME Decline this invitation
+            // Decline this invitation = leave this page
+            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
         }
         else
         {

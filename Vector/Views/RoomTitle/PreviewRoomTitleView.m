@@ -135,11 +135,25 @@
         
         self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
     }
-    else if (self.emailInvitation)
+    else if (self.roomPreviewData)
     {
-        self.displayNameTextField.text = self.emailInvitation.roomName;
+        self.displayNameTextField.text = self.roomPreviewData.roomName;
         self.roomMembers.text = nil;
-        self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), self.emailInvitation.inviterName];
+
+        if (self.roomPreviewData.emailInvitation.email)
+        {
+            self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), self.roomPreviewData.emailInvitation.inviterName];
+        }
+        else
+        {
+            // This is a room opened from a room link
+            NSString *roomName = self.roomPreviewData.roomName;
+            if (!roomName)
+            {
+                roomName = NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room_default", @"Vector", nil);
+            }
+            self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room", @"Vector", nil), roomName];
+        }
     }
     else
     {
@@ -148,11 +162,9 @@
     }
 }
 
-- (void)setEmailInvitation:(RoomEmailInvitation *)emailInvitation
+- (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
 {
-    _emailInvitation = emailInvitation;
-    
-    [self refreshDisplay];
+    _roomPreviewData = roomPreviewData;
 }
 
 @end

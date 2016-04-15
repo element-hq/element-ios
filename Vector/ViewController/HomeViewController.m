@@ -317,6 +317,18 @@
     }
 }
 
+- (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
+{
+    // Force hiding the keyboard
+    [self.searchBar resignFirstResponder];
+
+    _selectedRoomPreviewData = roomPreviewData;
+    _selectedRoomId = roomPreviewData.roomId;
+    _selectedRoomSession = roomPreviewData.mxSession;
+
+    [self performSegueWithIdentifier:@"showDetails" sender:self];
+}
+
 - (void)closeSelectedRoom
 {
     _selectedRoomId = nil;
@@ -439,31 +451,39 @@
 
             _currentRoomViewController = (RoomViewController *)controller;
 
-            // Live timeline or timeline from a search result?
-            MXKRoomDataSource *roomDataSource;
-            if (!searchViewController.selectedEvent)
+            if (!_selectedRoomPreviewData)
             {
-                if (!_selectedEventId)
+                // Live timeline or timeline from a search result?
+                MXKRoomDataSource *roomDataSource;
+                if (!searchViewController.selectedEvent)
                 {
-                    // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
-                    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-                    roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+                    if (!_selectedEventId)
+                    {
+                        // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
+                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
+                        roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+                    }
+                    else
+                    {
+                        // Open the room on the requested event
+                        roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
+                        [roomDataSource finalizeInitialization];
+                    }
                 }
                 else
                 {
-                    // Open the room on the requested event
-                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
+                    // Search result: Create a temp timeline from the selected event
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
                     [roomDataSource finalizeInitialization];
                 }
+                
+                [_currentRoomViewController displayRoom:roomDataSource];
             }
             else
             {
-                // Search result: Create a temp timeline from the selected event
-                roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
-                [roomDataSource finalizeInitialization];
+                [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
+                _selectedRoomPreviewData = nil;
             }
-
-            [_currentRoomViewController displayRoom:roomDataSource];
         }
 
         if (self.splitViewController)
