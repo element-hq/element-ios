@@ -86,5 +86,22 @@
 // Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
+#pragma mark - Universal link
+
+/**
+ Detect if a URL is a universal link for the application.
+ 
+ @return YES if the URL can be handled by the app.
+ */
+- (BOOL)isUniversalLink:(NSURL*)url;
+
+/**
+ Process the fragment part of a vector.im link.
+ 
+ @param fragment the fragment part of the universal link.
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
+
 @end
 

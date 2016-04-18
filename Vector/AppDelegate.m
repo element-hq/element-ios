@@ -724,6 +724,19 @@
 
 #pragma mark - Universal link
 
+- (BOOL)isUniversalLink:(NSURL*)url
+{
+    BOOL isUniversalLink;
+
+    if ([url.host isEqualToString:@"vector.im"]
+        && NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:url.path])
+    {
+        isUniversalLink = YES;
+    }
+
+    return isUniversalLink;
+}
+
 - (BOOL)handleUniversalLink:(NSUserActivity*)userActivity
 {
     NSURL *webURL = userActivity.webpageURL;
