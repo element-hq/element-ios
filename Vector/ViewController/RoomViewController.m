@@ -233,23 +233,13 @@
     self.navigationItem.rightBarButtonItem.target = self;
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     
-    // Handle potential data source
+    // Set up the room title view according to the data source (if any)
+    [self refreshRoomTitle];
+    
+    // Refresh tool bar if the room data source is set.
     if (self.roomDataSource)
     {
-        // Set room title view
-        [self refreshRoomTitle];
-        
         [self refreshRoomInputToolbar];
-    }
-    else
-    {
-        if (roomPreviewData)
-        {
-            // Set room title view
-            [self refreshRoomTitle];
-        }
-
-        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
 }
 
@@ -262,6 +252,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Refresh the room title view
+    [self refreshRoomTitle];
+    
+    // Refresh tool bar if the room data source is set.
+    if (self.roomDataSource)
+    {
+        [self refreshRoomInputToolbar];
+    }
     
     [self listenTypingNotifications];
 }
@@ -565,6 +564,10 @@
             self.titleView.editable = NO;
         }
     }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
 }
 
 - (void)refreshRoomInputToolbar
@@ -606,13 +609,14 @@
     // - if the room data source has been removed.
     // - if the room data source does not manage a live timeline.
     // - if the user's membership is not 'join'.
-    if (self.expandedHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.roomDataSource && self.roomDataSource.isLive && self.roomDataSource.room.state.membership == MXMembershipJoin)
+    // - if the view controller is not embedded inside a split view controller yet.
+    if (self.expandedHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.roomDataSource && self.roomDataSource.isLive && self.roomDataSource.room.state.membership == MXMembershipJoin && self.splitViewController)
     {
         self.expandedHeaderContainer.hidden = !isVisible;
         
         // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
         UINavigationController *mainNavigationController = self.navigationController;
-        if (self.splitViewController && self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+        if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
         {
             mainNavigationController = self.splitViewController.viewControllers.firstObject;
         }
@@ -670,8 +674,9 @@
 - (void)showPreviewHeader:(BOOL)isVisible
 {
     // Check conditions before applying change on room header.
-    // This operation is ignored when a screen rotation is in progress.
-    if (self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO)
+    // This operation is ignored if a screen rotation is in progress,
+    // or if the view controller is not embedded inside a split view controller yet.
+    if (self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
     {
         if (isVisible && !previewHeader)
         {
@@ -737,7 +742,7 @@
         
         // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
         UINavigationController *mainNavigationController = self.navigationController;
-        if (self.splitViewController && self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+        if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
         {
             mainNavigationController = self.splitViewController.viewControllers.firstObject;
         }
