@@ -33,10 +33,12 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
 
 /**
- Show/Hide the expanded header.
- By default this header is hidden on new instantiated RoomViewController object.
+ Force the display of the expanded header.
+ The default value is NO: this expanded header is hidden on new instantiated RoomViewController object.
+ 
+ When this property is YES, the expanded header is forced each time the view controller appears.
  */
-- (void)showExpandedHeader:(BOOL)isVisible;
+@property (nonatomic) BOOL showExpandedHeader;
 
 /**
  Display the preview of a room that is unknown for the user.

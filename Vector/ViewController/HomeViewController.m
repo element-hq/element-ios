@@ -651,6 +651,9 @@
                                                        
                                                        [self selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
                                                        
+                                                       // Force the expanded header
+                                                       self.currentRoomViewController.showExpandedHeader = YES;
+                                                       
                                                    } failure:^(NSError *error) {
                                                        
                                                        roomCreationRequest = nil;

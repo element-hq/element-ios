@@ -263,6 +263,11 @@
     }
     
     [self listenTypingNotifications];
+    
+    if (self.showExpandedHeader)
+    {
+        [self showExpandedHeader:YES];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -340,6 +345,12 @@
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
     contentInset.bottom = self.bottomLayoutGuide.length;
     self.bubblesTableView.contentInset = contentInset;
+    
+    if (self.expandedHeaderContainer.isHidden == NO)
+    {
+        // Adjust the top constraint of the bubbles table
+        self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
+    }
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -514,6 +525,14 @@
     }
     
     [super destroy];
+}
+
+#pragma mark -
+
+- (void)setShowExpandedHeader:(BOOL)showExpandedHeader
+{
+    _showExpandedHeader = showExpandedHeader;
+    [self showExpandedHeader:showExpandedHeader];
 }
 
 #pragma mark - Internals
@@ -1392,10 +1411,10 @@
 {
     [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
     
-    // Hide expanded header on scroll down
+    // Hide the expanded header on scroll down by reseting the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
     if (storedContentOffset < scrollView.contentOffset.y)
     {
-        [self showExpandedHeader:NO];
+        self.showExpandedHeader = NO;
     }
 }
 
