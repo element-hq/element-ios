@@ -152,6 +152,8 @@
 "room_title_new_room" = "New room";
 "room_title_multiple_active_members" = "%d/%d active members";
 "room_title_one_active_member" = "%d/%d active member";
+"room_title_members" = "%d members";
+"room_title_one_member" = "1 member";
 
 // Room Preview
 "room_preview_invitation_format" = "You have been invited to join this room by %@";

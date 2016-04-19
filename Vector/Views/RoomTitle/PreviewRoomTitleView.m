@@ -145,9 +145,38 @@
     else if (self.roomPreviewData)
     {
         self.displayNameTextField.text = self.roomPreviewData.roomName;
-        
-        self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomTopic];
-        self.roomMembers.text = nil;
+
+        // Display more information if available
+        if (self.roomPreviewData.roomState)
+        {
+            // Topic
+            self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomState.topic];
+
+            // Room members count
+            // Note that room members presence/activity is not available
+            NSUInteger memberCount = 0;
+            for (MXRoomMember *mxMember in self.roomPreviewData.roomState.members)
+            {
+                if (mxMember.membership == MXMembershipJoin)
+                {
+                    memberCount ++;
+                }
+            }
+
+            if (memberCount == 1)
+            {
+                self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
+            }
+            else
+            {
+                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), memberCount];
+            }
+        }
+        else
+        {
+            self.roomTopic.text = nil;
+            self.roomMembers.text = nil;
+        }
 
         if (self.roomPreviewData.emailInvitation.email)
         {
