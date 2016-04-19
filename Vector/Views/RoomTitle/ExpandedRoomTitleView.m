@@ -54,7 +54,7 @@
             self.displayNameTextField.textColor = kVectorTextColorBlack;
         }
         
-        self.roomTopic.text = self.mxRoom.state.topic;
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
         
         // Adjust the position of the display name and the member status according to the presence of a room topic.
         if (self.roomTopic.text.length)

@@ -33,6 +33,10 @@
     [super awakeFromNib];
     
     self.displayNameTextField.textColor = kVectorTextColorBlack;
+    
+    self.roomTopic.textColor = kVectorTextColorDarkGray;
+    self.roomTopic.numberOfLines = 0;
+    
     self.roomMembers.textColor = kVectorColorGreen;
     
     self.invitationLabel.textColor = kVectorTextColorDarkGray;
@@ -88,6 +92,9 @@
             self.displayNameTextField.textColor = kVectorTextColorBlack;
         }
         
+        // Display room topic
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
+        
         // Compute active members count, and look for the inviter
         NSArray *members = self.mxRoom.state.members;
         NSUInteger activeCount = 0;
@@ -138,6 +145,8 @@
     else if (self.roomPreviewData)
     {
         self.displayNameTextField.text = self.roomPreviewData.roomName;
+        
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomTopic];
         self.roomMembers.text = nil;
 
         if (self.roomPreviewData.emailInvitation.email)
@@ -158,6 +167,7 @@
     else
     {
         self.roomMembers.text = nil;
+        self.roomTopic.text = nil;
         self.invitationLabel.text = nil;
     }
 }
@@ -165,6 +175,8 @@
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
 {
     _roomPreviewData = roomPreviewData;
+    
+    [self refreshDisplay];
 }
 
 @end

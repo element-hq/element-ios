@@ -22,6 +22,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *mainHeaderContainer;
 
+@property (weak, nonatomic) IBOutlet UILabel *roomTopic;
+
 @property (weak, nonatomic) IBOutlet UILabel *roomMembers;
 @property (weak, nonatomic) IBOutlet UIView *roomMembersDetailsIcon;
 
