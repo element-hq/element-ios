@@ -367,6 +367,18 @@
     [super setKeyboardHeight:keyboardHeight];
 }
 
+- (void)startActivityIndicator
+{
+    // Redirect the operation to main displayed VC
+    [recentsViewController startActivityIndicator];
+}
+
+- (void)stopActivityIndicator
+{
+    // Redirect the operation to main displayed VC
+   [recentsViewController stopActivityIndicator];
+ }
+
 #pragma mark - Override UIViewController+VectorSearch
 
 - (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
