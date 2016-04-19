@@ -82,6 +82,11 @@
     }
 }
 
+- (NSArray<UIViewController *> *)viewControllers
+{
+    return viewControllers;
+}
+
 #pragma mark -
 
 - (void)addConstraint:(UIView*)view constraint:(NSLayoutConstraint*)aConstraint
