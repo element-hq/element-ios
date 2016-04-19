@@ -369,14 +369,19 @@
 
 - (void)startActivityIndicator
 {
-    // Redirect the operation to the main displayed VC
-    [recentsViewController startActivityIndicator];
+    // Redirect the operation to the currently displayed VC
+    // It is a MXKViewController or a MXKTableViewController. So it supports startActivityIndicator
+    [self.selectedViewController performSelector:@selector(startActivityIndicator)];
 }
 
 - (void)stopActivityIndicator
 {
-    // Redirect the operation to the main displayed VC
-   [recentsViewController stopActivityIndicator];
+    // The selected view controller mwy have changed since the call of [self startActivityIndicator]
+    // So, stop the activity indicator for all children
+    for (UIViewController *viewController in self.viewControllers)
+    {
+        [viewController performSelector:@selector(stopActivityIndicator)];
+    }
  }
 
 #pragma mark - Override UIViewController+VectorSearch
