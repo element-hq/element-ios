@@ -369,13 +369,13 @@
 
 - (void)startActivityIndicator
 {
-    // Redirect the operation to main displayed VC
+    // Redirect the operation to the main displayed VC
     [recentsViewController startActivityIndicator];
 }
 
 - (void)stopActivityIndicator
 {
-    // Redirect the operation to main displayed VC
+    // Redirect the operation to the main displayed VC
    [recentsViewController stopActivityIndicator];
  }
 
