@@ -121,23 +121,24 @@
             }
         }
         
-        // Display members status
-        if (memberCount)
-        {
-            if (activeCount > 1)
-            {
-                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), activeCount, memberCount];
-            }
-            else
-            {
-                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), activeCount, memberCount];
-            }
-        }
-        else
-        {
-            // Should not happen
-            self.roomMembers.text = nil;
-        }
+        // FIXME: Display members status when it will be available
+        self.roomMembers.text = nil;
+//        if (memberCount)
+//        {
+//            if (activeCount > 1)
+//            {
+//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), activeCount, memberCount];
+//            }
+//            else
+//            {
+//                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), activeCount, memberCount];
+//            }
+//        }
+//        else
+//        {
+//            // Should not happen
+//            self.roomMembers.text = nil;
+//        }
         
         self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
     }
