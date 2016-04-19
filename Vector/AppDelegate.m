@@ -572,9 +572,14 @@
         _homeNavigationController.delegate = nil;
         if (popToHomeViewControllerCompletion)
         {
-            popToHomeViewControllerCompletion();
+            void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
+            popToHomeViewControllerCompletion = nil;
+
+            // Dispatch the completion in order to let navigation stack refresh itself.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                popToHomeViewControllerCompletion2();
+            });
         }
-        popToHomeViewControllerCompletion = nil;
     }
 }
 
