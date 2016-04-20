@@ -1006,19 +1006,19 @@
 
 + (NSURL *)fixURLWithSeveralHashKeys:(NSURL *)url
 {
-    NSURL *fixedURL;
+    NSURL *fixedURL = url;
 
-    // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
-    NSString *urlString = url.absoluteString;
-    NSRange range = [urlString rangeOfString:@"%23"];
-    if (NSNotFound != range.location)
+    // The NSURL may have no fragment because it contains more that '%23' occurence
+    if (!url.fragment)
     {
-        urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
-        fixedURL = [NSURL URLWithString:urlString];
-    }
-    else
-    {
-        fixedURL = url;
+        // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
+        NSString *urlString = url.absoluteString;
+        NSRange range = [urlString rangeOfString:@"%23"];
+        if (NSNotFound != range.location)
+        {
+            urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
+            fixedURL = [NSURL URLWithString:urlString];
+        }
     }
 
     return fixedURL;
