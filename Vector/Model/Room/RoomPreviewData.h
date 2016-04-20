@@ -49,7 +49,13 @@
  */
 @property (nonatomic, readonly) NSString *roomName;
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
-@property (nonatomic, readonly) NSString *roomTopic;
+
+/**
+ A snapshot of the room state.
+ Note: This ivar may be replaced by a RoomDataSource ivar when the room preview will be
+ fully implemented.
+ */
+@property (nonatomic, readonly) MXRoomState *roomState;
 
 /**
  Contructors.
