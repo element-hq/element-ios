@@ -770,7 +770,6 @@
     [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
 
     // Sanity check
-    pathParams = nil;
     if (!pathParams.count)
     {
         NSLog(@"[AppDelegate] Universal link: Error: No path parameters");
