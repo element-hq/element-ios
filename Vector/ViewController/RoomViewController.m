@@ -89,6 +89,9 @@
     
     // Preview data for a room invitation received by email or link to a room.
     RoomPreviewData *roomPreviewData;
+
+    // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
+    CGPoint startScrollingPoint;
 }
 
 @property (strong, nonatomic) MXKAlert *currentAlert;
@@ -1450,6 +1453,71 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
+#pragma mark -
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewWillBeginDragging:)])
+    {
+        [super scrollViewWillBeginDragging:scrollView];
+    }
+    
+    if (self.expandedHeaderContainer.isHidden == NO)
+    {
+        // Store here the position of the first touch down event
+        UIPanGestureRecognizer *panGestureRecognizer = scrollView.panGestureRecognizer;
+        if (panGestureRecognizer && panGestureRecognizer.numberOfTouches)
+        {
+            startScrollingPoint = [panGestureRecognizer locationOfTouch:0 inView:self.view];
+        }
+        else
+        {
+            startScrollingPoint = CGPointZero;
+        }
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+    {
+        [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    }
+    
+    if (decelerate == NO)
+    {
+        // Handle swipe on expanded header
+        [self onScrollViewDidEndScrolling:scrollView];
+    }
+    else
+    {
+        // Dispatch async the expanded header handling in order to let the deceleration go first.
+        dispatch_async(dispatch_get_main_queue(), ^{
+        
+            // Handle swipe on expanded header
+            [self onScrollViewDidEndScrolling:scrollView];
+            
+        });
+    }
+}
+
+- (void)onScrollViewDidEndScrolling:(UIScrollView *)scrollView
+{
+    // Check whether the user's finger has been dragged over the expanded header.
+    // In that case the expanded header is collapsed
+    if (self.expandedHeaderContainer.isHidden == NO && (startScrollingPoint.y != 0))
+    {
+        UIPanGestureRecognizer *panGestureRecognizer = scrollView.panGestureRecognizer;
+        CGPoint translate = [panGestureRecognizer translationInView:self.view];
+        
+        if (startScrollingPoint.y + translate.y < self.expandedHeaderContainer.frame.size.height)
+        {
+            // Hide the expanded header by reseting the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
+            self.showExpandedHeader = NO;
+        }
+    }
 }
 
 #pragma mark - MXKRoomTitleViewDelegate
