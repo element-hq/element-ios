@@ -1275,18 +1275,10 @@
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
 
-        // Patch: iOS handles URL badly when there are several hash keys ('%23') in the link
-        // And vector.im links have often several hash keys...
+        // iOS Patch: fix vector.im urls before using it
         if ([url.host isEqualToString:@"vector.im"])
         {
-            // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
-            NSString *urlString = url.absoluteString;
-            NSRange range = [urlString rangeOfString:@"%23"];
-            if (NSNotFound != range.location)
-            {
-                urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
-                url = [NSURL URLWithString:urlString];
-            }
+            url = [AppDelegate fixURLWithSeveralHashKeys:url];
 
             // If the link can be open it by the app, let it do
             if ([[AppDelegate theDelegate] isUniversalLink:url])
