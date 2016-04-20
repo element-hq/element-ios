@@ -223,9 +223,11 @@
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
     
-    // Disable animation during the update of the inputToolBar height.
+    // Update the inputToolBar height.
+    CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+    // Disable animation during the update
     [UIView setAnimationsEnabled:NO];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
     [UIView setAnimationsEnabled:YES];
     
     // set extra area
@@ -364,7 +366,7 @@
     [self showExpandedHeader:NO];
     
     // Hide preview header (if any) during device rotation
-    BOOL isPreview = !self.previewHeaderContainer.isHidden;
+    BOOL isPreview = !self.previewScrollView.isHidden;
     if (isPreview)
     {
         [self showPreviewHeader:NO];
@@ -432,9 +434,15 @@
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
         
-        // Hide input tool bar and activity view. FIXME: These items should be removed instead of being hidden until they will be used for preview.
-        self.inputToolbarView.hidden = YES;
-        self.activitiesView.hidden = YES;
+        // Remove input tool bar and activity view if any
+        if (self.inputToolbarView)
+        {
+            [super setRoomInputToolbarViewClass:nil];
+        }
+        if (self.activitiesView)
+        {
+            [super setRoomActivitiesViewClass:nil];
+        }
         
         if (previewHeader)
         {
@@ -451,7 +459,50 @@
         self.titleView.editable = NO;
         
         expandedHeader.mxRoom = self.roomDataSource.room;
+        
+        // Restore tool bar view and room activities view if none
+        if (!self.inputToolbarView)
+        {
+            [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+            
+            // Update the inputToolBar height.
+            CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+            // Disable animation during the update
+            [UIView setAnimationsEnabled:NO];
+            [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
+            [UIView setAnimationsEnabled:YES];
+            
+            [self refreshRoomInputToolbar];
+        }
+        
+        if (!self.activitiesView)
+        {
+            // And the extra area
+            [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+        }
     }
+}
+
+- (void)setRoomInputToolbarViewClass:(Class)roomInputToolbarViewClass
+{
+    // Do not show toolbar in case of preview
+    if (self.isRoomPreview)
+    {
+        roomInputToolbarViewClass = nil;
+    }
+    
+    [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+}
+
+- (void)setRoomActivitiesViewClass:(Class)roomActivitiesViewClass
+{
+    // Do not show room activities in case of preview
+    if (self.isRoomPreview)
+    {
+        roomActivitiesViewClass = nil;
+    }
+    
+    [super setRoomActivitiesViewClass:roomActivitiesViewClass];
 }
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
@@ -715,7 +766,7 @@
 {
     // This operation is ignored if a screen rotation is in progress,
     // or if the view controller is not embedded inside a split view controller yet.
-    if (self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
+    if (self.previewScrollView.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
     {
         if (isVisible)
         {
@@ -784,7 +835,7 @@
             previewHeader = nil;
         }
         
-        self.previewHeaderContainer.hidden = !isVisible;
+        self.previewScrollView.hidden = !isVisible;
         
         // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
         UINavigationController *mainNavigationController = self.navigationController;
@@ -833,7 +884,6 @@
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
-                             self.bubblesTableViewTopConstraint.constant = (isVisible ? self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top : 0);
                              
                              if (roomAvatarView)
                              {
@@ -1568,9 +1618,12 @@
 
                     // Enable back the text input
                     [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-
+                    
+                    // Update the inputToolBar height.
+                    CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+                    // Disable animation during the update
                     [UIView setAnimationsEnabled:NO];
-                    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant completion:nil];
+                    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
                     [UIView setAnimationsEnabled:YES];
 
                     // And the extra area

@@ -14,6 +14,7 @@
                 <outlet property="expandedHeaderContainerHeightConstraint" destination="w9z-HS-7wJ" id="6uK-Bn-TcU"/>
                 <outlet property="previewHeaderContainer" destination="54r-18-K1g" id="Klt-RV-V1E"/>
                 <outlet property="previewHeaderContainerHeightConstraint" destination="goj-GZ-IkD" id="GbA-T9-kiL"/>
+                <outlet property="previewScrollView" destination="RJ4-Os-6tg" id="bK3-KK-FPe"/>
                 <outlet property="roomActivitiesContainer" destination="XX4-n6-hCm" id="uD0-ab-8s8"/>
                 <outlet property="roomActivitiesContainerHeightConstraint" destination="E8v-l2-8eV" id="ebD-oV-ttx"/>
                 <outlet property="roomInputToolbarContainer" destination="nLd-BP-JAE" id="1dp-P1-0js"/>
@@ -38,13 +39,25 @@
                         <constraint firstAttribute="height" constant="240" id="w9z-HS-7wJ"/>
                     </constraints>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54r-18-K1g">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="368"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RJ4-Os-6tg">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="559"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54r-18-K1g">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="368"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="368" id="goj-GZ-IkD"/>
+                            </constraints>
+                        </view>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="368" id="goj-GZ-IkD"/>
+                        <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="RJ4-Os-6tg" secondAttribute="top" id="4LN-XX-e47"/>
+                        <constraint firstAttribute="bottom" secondItem="54r-18-K1g" secondAttribute="bottom" id="JlP-zp-nqW"/>
+                        <constraint firstItem="54r-18-K1g" firstAttribute="centerX" secondItem="RJ4-Os-6tg" secondAttribute="centerX" id="Uet-zt-YLH"/>
+                        <constraint firstAttribute="trailing" secondItem="54r-18-K1g" secondAttribute="trailing" id="fMh-hQ-FxE"/>
+                        <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="RJ4-Os-6tg" secondAttribute="leading" id="xan-dj-Vcl"/>
                     </constraints>
-                </view>
+                </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XX4-n6-hCm" userLabel="Activities Container">
                     <rect key="frame" x="0.0" y="539" width="600" height="20"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -64,18 +77,19 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="BGD-sd-SQR" secondAttribute="trailing" id="0la-ok-MBr"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4Q7-hr-rqi"/>
+                <constraint firstItem="RJ4-Os-6tg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Pf-Cu-oku"/>
                 <constraint firstAttribute="trailing" secondItem="uK2-9a-rZj" secondAttribute="trailing" id="HbF-85-ctI"/>
                 <constraint firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" constant="41" id="Ksk-39-kfi"/>
-                <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="QGq-T0-Epo"/>
+                <constraint firstItem="RJ4-Os-6tg" firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" id="PzW-iz-SYV"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="top" id="QO8-nF-xys"/>
+                <constraint firstAttribute="trailing" secondItem="RJ4-Os-6tg" secondAttribute="trailing" id="Tya-RC-NBW"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="WhE-lH-ZtR"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="X14-4s-uGM"/>
                 <constraint firstAttribute="trailing" secondItem="nLd-BP-JAE" secondAttribute="trailing" id="YAu-gd-ItG"/>
-                <constraint firstAttribute="trailing" secondItem="54r-18-K1g" secondAttribute="trailing" id="b8H-xp-RH3"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="csl-KT-4s9"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="haP-Kv-OLI"/>
                 <constraint firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="kQ6-Cg-FMi"/>
-                <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="t02-d3-Zyf"/>
+                <constraint firstItem="RJ4-Os-6tg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="m1y-Uv-Nfp"/>
                 <constraint firstItem="uK2-9a-rZj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u8r-eN-1g8"/>
                 <constraint firstItem="uK2-9a-rZj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="y6b-JK-CF5"/>
             </constraints>
