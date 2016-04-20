@@ -747,6 +747,9 @@
     NSURL *webURL = userActivity.webpageURL;
     NSLog(@"[AppDelegate] handleUniversalLink: %@", webURL.absoluteString);
 
+    // iOS Patch: fix vector.im urls before using it
+    webURL = [AppDelegate fixURLWithSeveralHashKeys:webURL];
+
     return [self handleUniversalLinkFragment:webURL.fragment];
 }
 
@@ -765,6 +768,13 @@
     NSArray<NSString*> *pathParams;
     NSMutableDictionary *queryParams;
     [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
+
+    // Sanity check
+    if (!pathParams.count)
+    {
+        NSLog(@"[AppDelegate] Universal link: Error: No path parameters");
+        return NO;
+    }
 
     // Check the action to do
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -992,6 +1002,26 @@
 
     *outPathParams = pathParams;
     *outQueryParams = queryParams;
+}
+
++ (NSURL *)fixURLWithSeveralHashKeys:(NSURL *)url
+{
+    NSURL *fixedURL;
+
+    // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
+    NSString *urlString = url.absoluteString;
+    NSRange range = [urlString rangeOfString:@"%23"];
+    if (NSNotFound != range.location)
+    {
+        urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
+        fixedURL = [NSURL URLWithString:urlString];
+    }
+    else
+    {
+        fixedURL = url;
+    }
+
+    return fixedURL;
 }
 
 #pragma mark - Matrix sessions handling
