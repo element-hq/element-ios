@@ -71,9 +71,6 @@
     // The preview header
     PreviewRoomTitleView *previewHeader;
     
-    // The content offset at the beginning of header scrolling
-    CGFloat beginDraggingHeaderContentOffset;
-    
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
@@ -210,6 +207,12 @@
     
     [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
     
+    
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeGesture:)];
+    [swipe setNumberOfTouchesRequired:1];
+    [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
+    [self.expandedHeaderContainer addGestureRecognizer:swipe];
+    
     // Prepare preview header container
     self.previewHeaderContainer.backgroundColor = kVectorColorLightGrey;
     
@@ -345,7 +348,7 @@
     contentInset.bottom = self.bottomLayoutGuide.length;
     self.bubblesTableView.contentInset = contentInset;
     
-    if (self.expandedHeaderScrollView.isHidden == NO)
+    if (self.expandedHeaderContainer.isHidden == NO)
     {
         // Adjust the top constraint of the bubbles table
         self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
@@ -621,6 +624,18 @@
     }
 }
 
+- (void)onSwipeGesture:(UISwipeGestureRecognizer*)swipeGestureRecognizer
+{
+    UIView *view = swipeGestureRecognizer.view;
+    
+    if (view == self.expandedHeaderContainer)
+    {
+        // Hide the expanded header when user swipes upward on expanded header.
+        // We reset here the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
+        self.showExpandedHeader = NO;
+    }
+}
+
 #pragma mark - Hide/Show expanded header
 
 - (void)showExpandedHeader:(BOOL)isVisible
@@ -632,9 +647,9 @@
     // - if the room data source does not manage a live timeline.
     // - if the user's membership is not 'join'.
     // - if the view controller is not embedded inside a split view controller yet.
-    if (self.expandedHeaderScrollView.isHidden == isVisible && isSizeTransitionInProgress == NO && self.roomDataSource && self.roomDataSource.isLive && self.roomDataSource.room.state.membership == MXMembershipJoin && self.splitViewController)
+    if (self.expandedHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.roomDataSource && self.roomDataSource.isLive && self.roomDataSource.room.state.membership == MXMembershipJoin && self.splitViewController)
     {
-        self.expandedHeaderScrollView.hidden = !isVisible;
+        self.expandedHeaderContainer.hidden = !isVisible;
         
         // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
         UINavigationController *mainNavigationController = self.navigationController;
@@ -1437,41 +1452,6 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewWillBeginDragging:)])
-    {
-        [super scrollViewWillBeginDragging:scrollView];
-    }
-    
-    if (scrollView == self.expandedHeaderScrollView)
-    {
-        // Store the current offset to detect scroll down
-        beginDraggingHeaderContentOffset = scrollView.contentOffset.y;
-    }
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)])
-    {
-        [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-    }
-    
-    if (scrollView == self.expandedHeaderScrollView)
-    {
-        // Hide the expanded header on scroll down.
-        if (beginDraggingHeaderContentOffset < scrollView.contentOffset.y)
-        {
-            // We reset here the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
-            self.showExpandedHeader = NO;
-        }
-
-    }
-}
-
 #pragma mark - MXKRoomTitleViewDelegate
 
 - (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
@@ -1488,7 +1468,7 @@
     
     if (view == titleView.titleMask)
     {
-        if (self.expandedHeaderScrollView.isHidden)
+        if (self.expandedHeaderContainer.isHidden)
         {
             // Expand the header
             [self showExpandedHeader:YES];

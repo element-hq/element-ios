@@ -25,7 +25,6 @@
 @interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
 
 // The expanded header
-@property (weak, nonatomic) IBOutlet UIScrollView *expandedHeaderScrollView;
 @property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
 
