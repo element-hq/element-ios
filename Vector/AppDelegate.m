@@ -933,7 +933,7 @@
         }
         else
         {
-            NSLog(@"[AppDelegate] Universal link: Logout current session to complete the registration in next_link");
+            NSLog(@"[AppDelegate] Universal link: Logout current sessions and open AuthViewController to complete the registration in next_link");
 
             // At least one account should be logged it
             // Logout out before opening the Authentication screen
