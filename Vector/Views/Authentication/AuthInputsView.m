@@ -65,6 +65,13 @@
     // Validate first the provided session
     MXAuthenticationSession *validSession = [self validateAuthenticationSession:authSession];
     
+    // Cancel email validation if any
+    if (submittedEmail)
+    {
+        [submittedEmail cancelCurrentRequest];
+        submittedEmail = nil;
+    }
+    
     // Reset UI by hidding all items
     [self hideInputsContainer];
     
@@ -310,6 +317,12 @@
                                                                            } failure:^(NSError *error) {
                                                                                
                                                                                NSLog(@"[AuthInputsView] Failed to request email token: %@", error);
+                                                                               
+                                                                               // Ignore connection cancellation error
+                                                                               if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                                                                               {
+                                                                                   return;
+                                                                               }
                                                                                
                                                                                callback(nil);
                                                                                
