@@ -39,7 +39,7 @@
                         <constraint firstAttribute="height" constant="240" id="w9z-HS-7wJ"/>
                     </constraints>
                 </view>
-                <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RJ4-Os-6tg">
+                <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJ4-Os-6tg">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="559"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54r-18-K1g">
