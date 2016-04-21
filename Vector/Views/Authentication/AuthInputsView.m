@@ -275,7 +275,17 @@
                     {
                         // Launch email validation
                         submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
+
+                        // Create the next link that is common to all Vector.im clients
+                        // FIXME: /develop/ is not nice here
+                        NSString *nextLink = [NSString stringWithFormat:@"https://vector.im/develop/#/register?client_secret=%@&hs_url=%@&is_url=%@&session_id=%@",
+                                              [submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
+                                              [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
+                                              [restClient.identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
+                                              [currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
+
                         [submittedEmail requestValidationTokenWithMatrixRestClient:restClient
+                                                                          nextLink:nextLink
                                                                            success:^{
                                                                                
                                                                                NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
