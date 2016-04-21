@@ -14,6 +14,8 @@
 	<string>https://matrix.org</string>
 	<key>homeserver</key>
 	<string>matrix.org</string>
+	<key>webAppUrlDev</key>
+	<string>https://vector.im/develop</string>
 	<key>apnsDeviceToken</key>
 	<string></string>
 	<key>showAllEventsInRoomHistory</key>
