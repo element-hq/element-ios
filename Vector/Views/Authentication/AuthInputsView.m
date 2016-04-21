@@ -444,6 +444,11 @@
     return self.userLoginTextField.text;
 }
 
+- (NSString*)password
+{
+    return self.passWordTextField.text;
+}
+
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
