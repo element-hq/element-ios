@@ -44,10 +44,11 @@
     
     MXHTTPOperation *roomCreationRequest;
 
-    /**
-     Observer that check when the Authentification view controller has gone.
-     */
+    // Observer that checks when the Authentification view controller has gone.
     id authViewControllerObserver;
+
+    // The paratemers to pass to the Authentification view controller.
+    NSDictionary *authViewControllerNextLinkParameters;
 }
 
 @end
@@ -255,10 +256,17 @@
 
 - (void)showAuthenticationScreen
 {
+    [self showAuthenticationScreenWithNextLinkParameters:nil];
+}
+
+- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary *)nextLinkParameters
+{
+    authViewControllerNextLinkParameters = nextLinkParameters;
+
     [[AppDelegate theDelegate] restoreInitialDisplay:^{
-        
+
         [self performSegueWithIdentifier:@"showAuth" sender:self];
-        
+
     }];
 }
 
@@ -552,6 +560,13 @@
                 [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
                 authViewControllerObserver = nil;
             }];
+
+            // Forward parameters if any
+            if (authViewControllerNextLinkParameters)
+            {
+                [_authViewController registerWithNextLinkParameters:authViewControllerNextLinkParameters];
+                authViewControllerNextLinkParameters = nil;
+            }
         }
     }
 

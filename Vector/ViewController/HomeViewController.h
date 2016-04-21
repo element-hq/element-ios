@@ -44,6 +44,13 @@
 - (void)showAuthenticationScreen;
 
 /**
+ Display the authentication screen in order to pursue a registration process.
+
+ @param nextLinkParameters the parameters extracted from next_link link.
+ */
+- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary*)nextLinkParameters;
+
+/**
  Start displaying the screen with a user Matrix session.
  
  @param session the user Matrix session.
