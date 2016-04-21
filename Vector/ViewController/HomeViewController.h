@@ -18,6 +18,7 @@
 
 #import "SegmentedViewController.h"
 #import "RoomViewController.h"
+#import "AuthenticationViewController.h"
 
 /**
  The `HomeViewController` screen is the main app screen.
@@ -34,6 +35,8 @@
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
+// Reference to the current auth VC. It is not nil only when the auth screen is displayed.
+@property (nonatomic, readonly) AuthenticationViewController *authViewController;
 
 /**
  Display the authentication screen.

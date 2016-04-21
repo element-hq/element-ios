@@ -43,6 +43,11 @@
     UIImageView* createNewRoomImageView;
     
     MXHTTPOperation *roomCreationRequest;
+
+    /**
+     Observer that check when the Authentification view controller has gone.
+     */
+    id authViewControllerObserver;
 }
 
 @end
@@ -95,7 +100,13 @@
 - (void)destroy
 {
     [super destroy];
-    
+
+    if (authViewControllerObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+        authViewControllerObserver = nil;
+    }
+
     if (roomCreationRequest)
     {
         [roomCreationRequest cancel];
@@ -527,6 +538,20 @@
         {
             DirectoryViewController *directoryViewController = segue.destinationViewController;
             [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+        }
+        else if ([[segue identifier] isEqualToString:@"showAuth"])
+        {
+            // Keep ref on the authentification view controller while it is displayed
+            // ie until we get the notification about a new account
+            _authViewController = segue.destinationViewController;
+
+            authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                _authViewController = nil;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+                authViewControllerObserver = nil;
+            }];
         }
     }
 

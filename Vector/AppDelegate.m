@@ -922,8 +922,19 @@
     }
     else if ([pathParams[0] isEqualToString:@"register"])
     {
+        NSLog(@"[AppDelegate] Universal link: Registration next_link parameters: %@", queryParams);
+        continueUserActivity = YES;
+
         // This is the nextLink in the registration process
-        // The app should already display the auth VC. So, do nothing at the UI level
+        if (_homeViewController.authViewController)
+        {
+            NSLog(@"[AppDelegate] Universal link: Forward next_link parameter to the existing AuthViewController");
+            [_homeViewController.authViewController registerWithNextLinkParameters:queryParams];
+        }
+        else
+        {
+            NSLog(@"[AppDelegate] Universal link: TODO");
+        }
     }
     else
     {
