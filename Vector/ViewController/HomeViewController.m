@@ -47,7 +47,7 @@
     // Observer that checks when the Authentification view controller has gone.
     id authViewControllerObserver;
 
-    // The paratemers to pass to the Authentification view controller.
+    // The parameters to pass to the Authentification view controller.
     NSDictionary *authViewControllerNextLinkParameters;
 }
 
@@ -256,18 +256,35 @@
 
 - (void)showAuthenticationScreen
 {
-    [self showAuthenticationScreenWithNextLinkParameters:nil];
-}
-
-- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary *)nextLinkParameters
-{
-    authViewControllerNextLinkParameters = nextLinkParameters;
-
     [[AppDelegate theDelegate] restoreInitialDisplay:^{
 
         [self performSegueWithIdentifier:@"showAuth" sender:self];
 
     }];
+}
+
+- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary *)nextLinkParameters
+{
+    if (self.authViewController)
+    {
+        NSLog(@"[HomeViewController] Universal link: Forward next_link parameter to the existing AuthViewController");
+        [self.authViewController registerWithNextLinkParameters:nextLinkParameters];
+    }
+    else
+    {
+        NSLog(@"[HomeViewController] Universal link: Logout current sessions and open AuthViewController to complete the registration in next_link");
+
+        // Logout out before opening the Authentication screen
+        [[AppDelegate theDelegate] logout];
+
+        authViewControllerNextLinkParameters = nextLinkParameters;
+
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+
+            [self performSegueWithIdentifier:@"showAuth" sender:self];
+            
+        }];
+    }
 }
 
 - (void)displayWithSession:(MXSession *)mxSession

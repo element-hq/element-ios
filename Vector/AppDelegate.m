@@ -925,27 +925,7 @@
         NSLog(@"[AppDelegate] Universal link: Registration next_link parameters: %@", queryParams);
         continueUserActivity = YES;
 
-        // This is the nextLink in the registration process
-        if (_homeViewController.authViewController)
-        {
-            NSLog(@"[AppDelegate] Universal link: Forward next_link parameter to the existing AuthViewController");
-            [_homeViewController.authViewController registerWithNextLinkParameters:queryParams];
-        }
-        else
-        {
-            NSLog(@"[AppDelegate] Universal link: Logout current sessions and open AuthViewController to complete the registration in next_link");
-
-            // At least one account should be logged it
-            // Logout out before opening the Authentication screen
-            if (accountManager.activeAccounts.count)
-            {
-                [accountManager logout];
-            }
-
-            // Return to authentication screen
-            [_homeViewController showAuthenticationScreenWithNextLinkParameters:queryParams];
- 
-        }
+         [_homeViewController showAuthenticationScreenWithNextLinkParameters:queryParams];
     }
     else
     {
