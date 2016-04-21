@@ -154,8 +154,8 @@
         // Check whether a request is in progress
         if (!self.userInteractionEnabled)
         {
-            // Cancel the current operation, and reset the UI by forcing the authType property.
-            self.authType = self.authType;
+            // Cancel the current operation
+            [self cancel];
         }
         else if (self.authType == MXKAuthenticationTypeLogin)
         {
