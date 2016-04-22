@@ -76,6 +76,7 @@
 "room_creation_make_public_prompt_msg" = "Are you sure you want to make this chat public? Anyone can read your messages and join the chat.";
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
+"room_creation_wait_for_creation" = "A room is already being created. Please wait.";
 
 // Room recents
 "room_recents_directory" = "DIRECTORY";
