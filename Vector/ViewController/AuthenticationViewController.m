@@ -214,12 +214,6 @@
 
 #pragma mark -
 
-- (void)registerWithNextLinkParameters:(NSDictionary *)nextLinkParameters
-{
-    // Giom: Help!!!
-    NSLog(@"[AuthenticationViewController] registerWithNextLinkParameters: TODO: %@", nextLinkParameters);
-}
-
 - (void)hideServerOptionsContainer:(BOOL)hidden
 {
     if (self.serverOptionsContainer.isHidden == hidden)

@@ -33,12 +33,5 @@
 @property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
 @property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
 
-/**
- Pursue the registration process from the next_link sent in an email validation email.
- 
- @param nextLinkParameters the parameters extracted from next_link link.
- */
-- (void)registerWithNextLinkParameters:(NSDictionary*)nextLinkParameters;
-
 @end
 

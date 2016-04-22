@@ -922,10 +922,10 @@
     }
     else if ([pathParams[0] isEqualToString:@"register"])
     {
-        NSLog(@"[AppDelegate] Universal link: Registration next_link parameters: %@", queryParams);
+        NSLog(@"[AppDelegate] Universal link with registration parameters");
         continueUserActivity = YES;
-
-         [_homeViewController showAuthenticationScreenWithNextLinkParameters:queryParams];
+        
+        [_homeViewController showAuthenticationScreenWithRegistrationParameters:queryParams];
     }
     else
     {

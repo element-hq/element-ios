@@ -20,7 +20,15 @@
 
 @interface AuthInputsView ()
 {
+    /**
+     The current email validation
+     */
     MXK3PID  *submittedEmail;
+    
+    /**
+     The set of parameters ready to use for a registration.
+     */
+    NSDictionary *externalRegistrationParameters;
 }
 
 @end
@@ -71,6 +79,9 @@
         [submittedEmail cancelCurrentRequest];
         submittedEmail = nil;
     }
+    
+    // Reset external registration parameters
+    externalRegistrationParameters = nil;
     
     // Reset UI by hidding all items
     [self hideInputsContainer];
@@ -137,6 +148,12 @@
 
 - (NSString*)validateParameters
 {
+    // Consider everything is fine when external registration parameters are ready to use
+    if (externalRegistrationParameters)
+    {
+        return nil;
+    }
+    
     // Check the validity of the parameters
     NSString *errorMsg = nil;
     
@@ -217,6 +234,16 @@
 {
     if (callback)
     {
+        // Return external registration parameters if any
+        if (externalRegistrationParameters)
+        {
+            // We trigger here a registration based on external inputs. All the required data are handled by the session id.
+            NSLog(@"[AuthInputsView] prepareParameters: return external registration parameters");
+            callback(externalRegistrationParameters);
+            
+            // CAUTION: Do not reset this dictionary here, it is used later to handle this registration until the end (see [updateAuthSessionWithCompletedStages:didUpdateParameters:])
+        }
+        
         // Prepare here parameters dict by checking each required fields.
         NSDictionary *parameters = nil;
         
@@ -393,12 +420,25 @@
                     if (response.length)
                     {
                         // Update the parameters dict
-                        NSDictionary *parameters = @{
-                                                     @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
-                                                     @"username": self.userLoginTextField.text,
-                                                     @"password": self.passWordTextField.text,
-                                                     @"bind_email": @(YES)
-                                                     };
+                        NSDictionary *parameters;
+                        
+                        if (externalRegistrationParameters)
+                        {
+                            // We finalize here a registration triggered from external inputs. All the required data are handled by the session id
+                            parameters = @{
+                                           @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                           };
+                        }
+                        else
+                        {
+                            parameters = @{
+                                           @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                           @"username": self.userLoginTextField.text,
+                                           @"password": self.passWordTextField.text,
+                                           @"bind_email": @(YES)
+                                           };
+                        }
+                        
                         
                         callback (parameters);
                     }
@@ -417,6 +457,100 @@
         NSLog(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
         callback (nil);
     }
+}
+
+- (BOOL)setExternalRegistrationParameters:(NSDictionary *)registrationParameters
+{
+    // Presently we only support a registration based on next_link associated to a successful email validation.
+    NSString *homeserverURL;
+    NSString *identityURL;
+    
+    // Check the current authentication type
+    if (self.authType != MXKAuthenticationTypeRegister)
+    {
+        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong auth type");
+        return NO;
+    }
+    
+    // Retrieve the REST client from delegate
+    MXRestClient *restClient;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewEmailValidationRestClient:)])
+    {
+        restClient = [self.delegate authInputsViewEmailValidationRestClient:self];
+    }
+    
+    if (restClient)
+    {
+        // Sanity check on home server
+        id hs_url = registrationParameters[@"hs_url"];
+        if (hs_url && [hs_url isKindOfClass:NSString.class])
+        {
+            homeserverURL = hs_url;
+            
+            if ([homeserverURL isEqualToString:restClient.homeserver] == NO)
+            {
+                NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong homeserver URL");
+                return NO;
+            }
+        }
+        
+        // Sanity check on identity server
+        id is_url = registrationParameters[@"is_url"];
+        if (is_url && [is_url isKindOfClass:NSString.class])
+        {
+            identityURL = is_url;
+            
+            if ([identityURL isEqualToString:restClient.identityServer] == NO)
+            {
+                NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong identity server URL");
+                return NO;
+            }
+        }
+    }
+    else
+    {
+        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: not supported");
+        return NO;
+    }
+    
+    // Retrieve other parameters
+    NSString *clientSecret;
+    NSString *sid;
+    NSString *sessionId;
+    
+    id value = registrationParameters[@"client_secret"];
+    if (value && [value isKindOfClass:NSString.class])
+    {
+        clientSecret = value;
+    }
+    value = registrationParameters[@"sid"];
+    if (value && [value isKindOfClass:NSString.class])
+    {
+        sid = value;
+    }
+    value = registrationParameters[@"session_id"];
+    if (value && [value isKindOfClass:NSString.class])
+    {
+        sessionId = value;
+    }
+    
+    // Check validity of the required parameters
+    if (!homeserverURL.length || !identityURL.length || !clientSecret.length || !sid.length || !sessionId.length)
+    {
+        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong parameters");
+        return NO;
+    }
+    
+    // Prepare the registration parameters (Ready to use)
+    NSURL *identServerURL = [NSURL URLWithString:identityURL];
+    externalRegistrationParameters = @{
+                                       @"auth": @{@"session": sessionId, @"threepid_creds": @{@"client_secret": clientSecret, @"id_server": identServerURL.host, @"sid": sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                       };
+    
+    // Hide all inputs by default
+    [self hideInputsContainer];
+    
+    return YES;
 }
 
 - (BOOL)areAllRequiredFieldsSet

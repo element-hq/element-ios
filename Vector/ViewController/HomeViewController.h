@@ -44,11 +44,14 @@
 - (void)showAuthenticationScreen;
 
 /**
- Display the authentication screen in order to pursue a registration process.
+ Display the authentication screen in order to pursue a registration process by using a predefined set
+ of parameters.
+ 
+ If the provided registration parameters are not supported, we switch back to the default login screen.
 
- @param nextLinkParameters the parameters extracted from next_link link.
+ @param parameters the set of parameters.
  */
-- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary*)nextLinkParameters;
+- (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary*)parameters;
 
 /**
  Start displaying the screen with a user Matrix session.

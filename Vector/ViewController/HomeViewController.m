@@ -48,7 +48,7 @@
     id authViewControllerObserver;
 
     // The parameters to pass to the Authentification view controller.
-    NSDictionary *authViewControllerNextLinkParameters;
+    NSDictionary *authViewControllerRegistrationParameters;
 }
 
 @end
@@ -263,19 +263,19 @@
     }];
 }
 
-- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary *)nextLinkParameters
+- (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary *)parameters
 {
     if (self.authViewController)
     {
-        NSLog(@"[HomeViewController] Universal link: Forward next_link parameter to the existing AuthViewController");
-        [self.authViewController registerWithNextLinkParameters:nextLinkParameters];
+        NSLog(@"[HomeViewController] Universal link: Forward registration parameter to the existing AuthViewController");
+        self.authViewController.externalRegistrationParameters = parameters;
     }
     else
     {
-        NSLog(@"[HomeViewController] Universal link: Logout current sessions and open AuthViewController to complete the registration in next_link");
+        NSLog(@"[HomeViewController] Universal link: Logout current sessions and open AuthViewController to complete the registration");
 
         // Keep a ref on the params
-        authViewControllerNextLinkParameters = nextLinkParameters;
+        authViewControllerRegistrationParameters = parameters;
 
         // And do a logout out. It will then display AuthViewController
         [[AppDelegate theDelegate] logout];
@@ -574,10 +574,10 @@
             }];
 
             // Forward parameters if any
-            if (authViewControllerNextLinkParameters)
+            if (authViewControllerRegistrationParameters)
             {
-                [_authViewController registerWithNextLinkParameters:authViewControllerNextLinkParameters];
-                authViewControllerNextLinkParameters = nil;
+                _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
+                authViewControllerRegistrationParameters = nil;
             }
         }
     }
