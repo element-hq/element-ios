@@ -631,8 +631,12 @@
             // Enable the search button
             self.navigationItem.rightBarButtonItem.enabled = YES;
             
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+            // Do not change title view class here if the expanded header is visible.
+            if (self.expandedHeaderContainer.hidden)
+            {
+                [self setRoomTitleViewClass:RoomTitleView.class];
+                ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+            }
         }
         else
         {
