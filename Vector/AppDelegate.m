@@ -28,6 +28,7 @@
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
+#import "MatrixSDK/MatrixSDK.h"
 
 #import "AFNetworkReachabilityManager.h"
 
@@ -749,6 +750,45 @@
 
     // iOS Patch: fix vector.im urls before using it
     webURL = [AppDelegate fixURLWithSeveralHashKeys:webURL];
+
+    // Manage email validation link
+    if ([webURL.path isEqualToString:@"/_matrix/identity/api/v1/validate/email/submitToken"])
+    {
+        // Validate the email on the passed identity server
+        NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
+        MXRestClient *identityRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
+
+        // Extract required parameters from the link
+        NSArray<NSString*> *pathParams;
+        NSMutableDictionary *queryParams;
+        [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
+
+        [identityRestClient submitEmailValidationToken:queryParams[@"token"] clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
+
+            NSLog(@"[AppDelegate] handleUniversalLink. Email successfully validated.");
+
+            if (queryParams[@"nextLink"])
+            {
+                // Continue the registration with the passed nextLink
+                NSLog(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
+                NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
+                [self handleUniversalLinkFragment:nextLink.fragment];
+            }
+            else
+            {
+                // No nextLink in Vector world means validation for binding a new email
+                NSLog(@"[AppDelegate] handleUniversalLink. TODO: Complete email binding");
+            }
+
+        } failure:^(NSError *error) {
+
+            NSLog(@"[AppDelegate] handleUniversalLink. Error: submitToken failed: %@", error);
+            [self showErrorAsAlert:error];
+
+        }];
+
+        return YES;
+    }
 
     return [self handleUniversalLinkFragment:webURL.fragment];
 }

@@ -49,6 +49,9 @@
 
     // The parameters to pass to the Authentification view controller.
     NSDictionary *authViewControllerRegistrationParameters;
+
+    // Current alert (if any).
+    MXKAlert *currentAlert;
 }
 
 @end
@@ -101,6 +104,12 @@
 - (void)destroy
 {
     [super destroy];
+
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
 
     if (authViewControllerObserver)
     {
@@ -703,38 +712,67 @@
     // Sanity check
     if (self.mainSession)
     {
-        createNewRoomImageView.userInteractionEnabled = NO;
-        
-        [recentsViewController startActivityIndicator];
-        
-        // Create an empty room.
-        roomCreationRequest = [self.mainSession createRoom:nil
-                                                visibility:kMXRoomVisibilityPrivate
-                                                 roomAlias:nil
-                                                     topic:nil
-                                                   success:^(MXRoom *room) {
-                                                       
-                                                       roomCreationRequest = nil;
-                                                       [recentsViewController stopActivityIndicator];
-                                                       createNewRoomImageView.userInteractionEnabled = YES;
-                                                       
-                                                       [self selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
-                                                       
-                                                       // Force the expanded header
-                                                       self.currentRoomViewController.showExpandedHeader = YES;
-                                                       
-                                                   } failure:^(NSError *error) {
-                                                       
-                                                       roomCreationRequest = nil;
-                                                       [recentsViewController stopActivityIndicator];
-                                                       createNewRoomImageView.userInteractionEnabled = YES;
-                                                       
-                                                       NSLog(@"[RoomCreation] Create new room failed");
-                                                       
-                                                       // Alert user
-                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                       
-                                                   }];
+        // Create one room at time
+        if (!roomCreationRequest)
+        {
+            [recentsViewController startActivityIndicator];
+
+            // Create an empty room.
+            roomCreationRequest = [self.mainSession createRoom:nil
+                                                    visibility:kMXRoomVisibilityPrivate
+                                                     roomAlias:nil
+                                                         topic:nil
+                                                       success:^(MXRoom *room) {
+
+                                                           roomCreationRequest = nil;
+                                                           [recentsViewController stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+
+                                                           [self selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
+
+                                                           // Force the expanded header
+                                                           self.currentRoomViewController.showExpandedHeader = YES;
+
+                                                       } failure:^(NSError *error) {
+
+                                                           roomCreationRequest = nil;
+                                                           [recentsViewController stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+
+                                                           NSLog(@"[RoomCreation] Create new room failed");
+
+                                                           // Alert user
+                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                           
+                                                       }];
+        }
+        else
+        {
+            // Ask the user to wait
+            __weak __typeof(self) weakSelf = self;
+            currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                                   message:NSLocalizedStringFromTable(@"room_creation_wait_for_creation", @"Vector", nil)
+                                                     style:MXKAlertStyleAlert];
+
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                        style:MXKAlertActionStyleCancel
+                                                                      handler:^(MXKAlert *alert) {
+
+                                                                          __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                          strongSelf->currentAlert = nil;
+
+                                                                      }];
+            [currentAlert showInViewController:self];
+
+        }
     }
 }
 
