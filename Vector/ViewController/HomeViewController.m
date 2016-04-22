@@ -274,16 +274,11 @@
     {
         NSLog(@"[HomeViewController] Universal link: Logout current sessions and open AuthViewController to complete the registration in next_link");
 
-        // Logout out before opening the Authentication screen
-        [[AppDelegate theDelegate] logout];
-
+        // Keep a ref on the params
         authViewControllerNextLinkParameters = nextLinkParameters;
 
-        [[AppDelegate theDelegate] restoreInitialDisplay:^{
-
-            [self performSegueWithIdentifier:@"showAuth" sender:self];
-            
-        }];
+        // And do a logout out. It will then display AuthViewController
+        [[AppDelegate theDelegate] logout];
     }
 }
 
