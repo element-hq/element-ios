@@ -43,6 +43,12 @@
     UIImageView* createNewRoomImageView;
     
     MXHTTPOperation *roomCreationRequest;
+
+    // Observer that checks when the Authentification view controller has gone.
+    id authViewControllerObserver;
+
+    // The parameters to pass to the Authentification view controller.
+    NSDictionary *authViewControllerNextLinkParameters;
 }
 
 @end
@@ -95,7 +101,13 @@
 - (void)destroy
 {
     [super destroy];
-    
+
+    if (authViewControllerObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+        authViewControllerObserver = nil;
+    }
+
     if (roomCreationRequest)
     {
         [roomCreationRequest cancel];
@@ -245,10 +257,29 @@
 - (void)showAuthenticationScreen
 {
     [[AppDelegate theDelegate] restoreInitialDisplay:^{
-        
+
         [self performSegueWithIdentifier:@"showAuth" sender:self];
-        
+
     }];
+}
+
+- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary *)nextLinkParameters
+{
+    if (self.authViewController)
+    {
+        NSLog(@"[HomeViewController] Universal link: Forward next_link parameter to the existing AuthViewController");
+        [self.authViewController registerWithNextLinkParameters:nextLinkParameters];
+    }
+    else
+    {
+        NSLog(@"[HomeViewController] Universal link: Logout current sessions and open AuthViewController to complete the registration in next_link");
+
+        // Keep a ref on the params
+        authViewControllerNextLinkParameters = nextLinkParameters;
+
+        // And do a logout out. It will then display AuthViewController
+        [[AppDelegate theDelegate] logout];
+    }
 }
 
 - (void)displayWithSession:(MXSession *)mxSession
@@ -527,6 +558,27 @@
         {
             DirectoryViewController *directoryViewController = segue.destinationViewController;
             [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+        }
+        else if ([[segue identifier] isEqualToString:@"showAuth"])
+        {
+            // Keep ref on the authentification view controller while it is displayed
+            // ie until we get the notification about a new account
+            _authViewController = segue.destinationViewController;
+
+            authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                _authViewController = nil;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+                authViewControllerObserver = nil;
+            }];
+
+            // Forward parameters if any
+            if (authViewControllerNextLinkParameters)
+            {
+                [_authViewController registerWithNextLinkParameters:authViewControllerNextLinkParameters];
+                authViewControllerNextLinkParameters = nil;
+            }
         }
     }
 
