@@ -314,6 +314,8 @@
     {
         [recentsDataSource addMatrixSession:mxSession];
     }
+    
+    [super addMatrixSession:mxSession];
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -328,6 +330,8 @@
         [recentsViewController displayList:nil];
         [previousRecentlistDataSource destroy];
     }
+    
+    [super removeMatrixSession:mxSession];
 }
 
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
