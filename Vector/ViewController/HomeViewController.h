@@ -18,6 +18,7 @@
 
 #import "SegmentedViewController.h"
 #import "RoomViewController.h"
+#import "AuthenticationViewController.h"
 
 /**
  The `HomeViewController` screen is the main app screen.
@@ -34,11 +35,20 @@
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
+// Reference to the current auth VC. It is not nil only when the auth screen is displayed.
+@property (nonatomic, readonly) AuthenticationViewController *authViewController;
 
 /**
  Display the authentication screen.
  */
 - (void)showAuthenticationScreen;
+
+/**
+ Display the authentication screen in order to pursue a registration process.
+
+ @param nextLinkParameters the parameters extracted from next_link link.
+ */
+- (void)showAuthenticationScreenWithNextLinkParameters:(NSDictionary*)nextLinkParameters;
 
 /**
  Start displaying the screen with a user Matrix session.
