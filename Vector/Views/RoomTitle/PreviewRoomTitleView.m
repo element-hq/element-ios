@@ -199,6 +199,9 @@
         self.roomTopic.text = nil;
         self.invitationLabel.text = nil;
     }
+    
+    // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
+    [self layoutIfNeeded];
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
