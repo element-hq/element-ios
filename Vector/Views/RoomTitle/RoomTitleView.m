@@ -63,6 +63,8 @@
     {
         // Center horizontally the display name into the navigation bar
         CGRect frame = self.superview.frame;
+
+        // Look for the navigation bar.
         UINavigationBar *navigationBar;
         UIView *superView = self;
         while (superView.superview)
@@ -81,8 +83,12 @@
             CGSize navBarSize = navigationBar.frame.size;
             CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
             
-            // Center the display name
-            self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+            // Check whether the view is not moving away (see navigation between view controllers).
+            if (superviewCenterX < navBarSize.width)
+            {
+                // Center the display name
+                self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+            }
         }        
     }
 }
