@@ -44,6 +44,9 @@
     
     MXHTTPOperation *roomCreationRequest;
 
+    // Tell whether the authentication screen is preparing.
+    BOOL isAuthViewControllerPreparing;
+
     // Observer that checks when the Authentification view controller has gone.
     id authViewControllerObserver;
 
@@ -265,11 +268,17 @@
 
 - (void)showAuthenticationScreen
 {
-    [[AppDelegate theDelegate] restoreInitialDisplay:^{
-
-        [self performSegueWithIdentifier:@"showAuth" sender:self];
-
-    }];
+    // Check whether an authentication screen is not already shown or preparing
+    if (!self.authViewController && !isAuthViewControllerPreparing)
+    {
+        isAuthViewControllerPreparing = YES;
+        
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+            
+            [self performSegueWithIdentifier:@"showAuth" sender:self];
+            
+        }];
+    }
 }
 
 - (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary *)parameters
@@ -577,6 +586,7 @@
             // Keep ref on the authentification view controller while it is displayed
             // ie until we get the notification about a new account
             _authViewController = segue.destinationViewController;
+            isAuthViewControllerPreparing = NO;
 
             authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
