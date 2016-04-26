@@ -723,10 +723,10 @@
 
 - (void)refreshApplicationIconBadgeNumber
 {
-//    NSUInteger count = [MXKRoomDataSourceManager notificationCount];
-//    NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
-//    
-//    [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+    NSUInteger count = [MXKRoomDataSourceManager notificationCount];
+    NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = count;
 }
 
 #pragma mark - Universal link
