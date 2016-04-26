@@ -170,7 +170,6 @@
     
     // Prepare expanded header
     self.expandedHeaderContainer.backgroundColor = kVectorColorLightGrey;
-    self.expandedHeaderContainerHeightConstraint.constant = 240;
     
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
     expandedHeader.delegate = self;
@@ -178,6 +177,13 @@
     expandedHeader.translatesAutoresizingMaskIntoConstraints = NO;
     [self.expandedHeaderContainer addSubview:expandedHeader];
     // Force expanded header in full width
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.expandedHeaderContainer
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0
+                                                                      constant:0];
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
                                                                       attribute:NSLayoutAttributeLeading
                                                                       relatedBy:NSLayoutRelationEqual
@@ -192,23 +198,8 @@
                                                                        attribute:NSLayoutAttributeTrailing
                                                                       multiplier:1.0
                                                                         constant:0];
-    // Vertical constraints are required for iOS > 8
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.expandedHeaderContainer
-                                                                     attribute:NSLayoutAttributeTop
-                                                                    multiplier:1.0
-                                                                      constant:0];
-    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.expandedHeaderContainer
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0
-                                                                         constant:0];
     
-    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
+    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint]];
     
     
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeGesture:)];
@@ -457,8 +448,10 @@
         self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
         
         self.titleView.editable = NO;
-        
+
+        // Force expanded header refresh
         expandedHeader.mxRoom = self.roomDataSource.room;
+        self.expandedHeaderContainerHeightConstraint.constant = expandedHeader.bottomBorderView.frame.origin.y + 1;
         
         // Restore tool bar view and room activities view if none
         if (!self.inputToolbarView)
@@ -636,6 +629,12 @@
             {
                 [self setRoomTitleViewClass:RoomTitleView.class];
                 ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
+            }
+            else
+            {
+                // Force expanded header refresh
+                expandedHeader.mxRoom = self.roomDataSource.room;
+                self.expandedHeaderContainerHeightConstraint.constant = expandedHeader.bottomBorderView.frame.origin.y + 1;
             }
         }
         else
@@ -824,10 +823,6 @@
                 {
                     // Warn the user that the email is not bound to his matrix account
                     previewHeader.subInvitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), roomPreviewData.emailInvitation.email];
-
-                    // room_preview_unlinked_email_warning is long long long and overlaps
-                    // bottomBorderView. So, hide this last one.
-                    previewHeader.bottomBorderView.hidden = YES;
                 }
             }
             

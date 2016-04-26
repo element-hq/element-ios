@@ -9,7 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Cpa-Xt-cwB" customClass="PreviewRoomTitleView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="371"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="363"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BkF-x3-7fX">

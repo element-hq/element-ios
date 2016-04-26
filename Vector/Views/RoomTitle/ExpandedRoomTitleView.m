@@ -56,18 +56,6 @@
         
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
         
-        // Adjust the position of the display name and the member status according to the presence of a room topic.
-        if (self.roomTopic.text.length)
-        {
-            self.displayNameTextFieldTopConstraint.constant = 126;
-            self.roomMembersLabelTopConstraint.constant = 203;
-        }
-        else
-        {
-            self.displayNameTextFieldTopConstraint.constant = 141;
-            self.roomMembersLabelTopConstraint.constant = 193;
-        }
-        
         // Compute active members count
         NSArray *members = self.mxRoom.state.members;
         NSUInteger activeCount = 0;
@@ -110,6 +98,9 @@
         self.roomTopic.text = nil;
         self.roomMembers.text = nil;
     }
+    
+    // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
+    [self layoutIfNeeded];
 }
 
 @end
