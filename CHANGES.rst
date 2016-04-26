@@ -2,6 +2,7 @@ Changes in Vector iOS in 0.1.4 (2016-04-26)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version (v0.3.6).
  * Universal link: Support universal links declared at https://vector.im.
  * Room Members: Add Admin/Moderator badge on members's picture.
  * Room members: Support search option #154.
