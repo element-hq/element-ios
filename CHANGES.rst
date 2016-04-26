@@ -1,3 +1,40 @@
+Changes in Vector iOS in 0.1.4 (2016-04-26)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.6).
+ * Universal link: Support universal links declared at https://vector.im.
+ * Room Members: Add Admin/Moderator badge on members's picture.
+ * Room members: Support search option #154.
+ * Room member details: display matrix id when user taps on display name #129.
+ * Expanded Header: adjust labels position when room topic is empty #134.
+ * Expanded Header: the height is now variable.
+ * Chat screen: Support room preview.
+ * Support room preview from email invitation.
+ * Chat Screen: Expand header on new created room #229.
+ * Chat Screen: Collapse expander header when user scrolls it down.
+ * Chat Screen: Keep visible the expanded header or the preview in case of screen rotation, except on iPad and iPhone 6 plus.
+ * Universal link: Handle universal links clicked within the app.
+ * Universal link: Manage email validation link as universal link
+ * AppDelegate: Improved popToHomeViewControllerAnimated: there is now a completion callback called when we are sure that HomeVC is the visibility VC.
+ * AppDelegate: Added fixURLWithSeveralHashKeys method in order to fix iOS NSURLs with several hash keys in it.
+ * VoIP: Show an action sheet when the user clicks on the call button. He will be able to select Voice or Video Call.
+
+Bug fixes:
+ * Store: Detect and remove corrupted room data #160.
+ * Cannot paginate to the origin of the room #214.
+ * Wrong application icon badge number #254.
+ * The hint text animated weirdly horizontally after i send msgs #124.
+ * Cancelling registration while waiting for email validation does not actually cancel it #240.
+ * Chat screen: lag during the history scrolling. #192.
+ * Chat screen: wrong attachment is opened #237.
+ * Add nextLink to registration link #202.
+ * Room members: Add a specific section INVITED #132.
+ * Room Members: Handle correctly the power level.
+ * Messages: The user should be able to shrink/expand each section (Invites, Favourites, Conversations...).
+ * Chat header: Room details opening is delayed #181.
+ * Messages: Room creation button does not respond #249.
+
 Changes in Vector iOS in 0.1.3 (2016-04-08)
 ===============================================
 
