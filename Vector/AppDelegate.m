@@ -926,6 +926,10 @@
                         {
                             roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
 
+                            // Is it a link to an event of a room?
+                            // If yes, the event will be displayed once the room is joined
+                            roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+
                             // Try to get more information about the room before opening its preview
                             [roomPreviewData fetchPreviewData:^(BOOL successed) {
 
