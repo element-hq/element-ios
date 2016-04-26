@@ -143,6 +143,7 @@
 "room_event_action_copy" = "Copy";
 "room_event_action_share" = "Share";
 "room_event_action_redact" = "Redact";
+"room_event_action_permalink" = "Permalink";
 "room_event_action_save" = "Save";
 "room_event_action_resend" = "Resend";
 "room_event_action_delete" = "Delete";
