@@ -63,6 +63,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "GBDeviceInfo_iOS.h"
+
 @interface RoomViewController ()
 {
     // The expanded header
@@ -353,19 +355,27 @@
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
-    // Hide expanded header on device rotation
-    [self showExpandedHeader:NO];
-    
-    // Hide preview header (if any) during device rotation
-    BOOL isPreview = !self.previewScrollView.isHidden;
-    if (isPreview)
+    // Hide the expanded header or the preview in case of iPad and iPhone 6 plus.
+    // On these devices, the display mode of the splitviewcontroller may change during screen rotation.
+    // It may correspond to an overlay mode in portrait and a side-by-side mode in landscape.
+    // This display mode change involves a change at the navigation bar level.
+    // If we don't hide the header, the navigation bar is in a wrong state after rotation. FIXME: Find a way to keep visible the header on rotation.
+    if ([GBDeviceInfo deviceInfo].display == GBDeviceDisplayiPad || [GBDeviceInfo deviceInfo].display >= GBDeviceDisplayiPhone55Inch)
     {
-        [self showPreviewHeader:NO];
+        // Hide expanded header on device rotation
+        [self showExpandedHeader:NO];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // Hide preview header (if any) during device rotation
+        BOOL isPreview = !self.previewScrollView.isHidden;
+        if (isPreview)
+        {
+            [self showPreviewHeader:NO];
             
-            [self showPreviewHeader:YES];
-        });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self showPreviewHeader:YES];
+            });
+        }
     }
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
