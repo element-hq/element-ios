@@ -1309,8 +1309,25 @@
                             
                         }];
                     }];
+
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+
+                        // Create a permalink that is common to all Vector.im clients
+                        // FIXME: When available, use the prod Vector web app URL
+                        NSString *webAppUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
+
+                        NSString *permalink = [NSString stringWithFormat:@"%@/#/room/%@/%@",
+                                              webAppUrl,
+                                              selectedEvent.roomId,
+                                              selectedEvent.eventId];
+
+                        [[UIPasteboard generalPasteboard] setString:permalink];
+                    }];
                 }
-                
+
                 self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
