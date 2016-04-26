@@ -34,16 +34,16 @@
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
     self.leftButton.backgroundColor = kVectorColorGreen;
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateNormal];
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateHighlighted];
     [self.leftButton addTarget:self action:@selector(onJoinPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     self.rightButton.backgroundColor = kVectorColorGreen;
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"reject", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
     [self.rightButton addTarget:self action:@selector(onRejectedPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;

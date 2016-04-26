@@ -28,6 +28,7 @@
 #import "RageShakeManager.h"
 
 #import "NSBundle+MatrixKit.h"
+#import "MatrixSDK/MatrixSDK.h"
 
 #import "AFNetworkReachabilityManager.h"
 
@@ -100,6 +101,24 @@
      The room id of the current handled remote notification (if any)
      */
     NSString *remoteNotificationRoomId;
+
+    /**
+     The fragment of the universal link being processing.
+     Only one fragment is handled at a time.
+     */
+    NSString *universalLinkFragmentPending;
+
+    /**
+     An universal link may need to wait for an account to be logged in or for a
+     session to be running. Hence, this observer.
+     */
+    id universalLinkWaitingObserver;
+
+    /**
+     Completion block called when [self popToHomeViewControllerAnimated:] has been
+     completed.
+     */
+    void (^popToHomeViewControllerCompletion)();
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -322,6 +341,9 @@
         [self.mxInAppNotification dismiss:NO];
         self.mxInAppNotification = nil;
     }
+
+    // Discard any process on pending universal link
+    [self resetPendingUniversalLink];
     
     // Suspend all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -423,6 +445,18 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+    BOOL continueUserActivity;
+
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
+    {
+        continueUserActivity = [self handleUniversalLink:userActivity];
+    }
+
+    return continueUserActivity;
+}
+
 #pragma mark - Application layout handling
 
 - (void)restoreInitialDisplay:(void (^)())completion
@@ -433,23 +467,12 @@
         // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
             
-            [self popToHomeViewControllerAnimated:NO];
-            
-            // Dispatch the completion in order to let navigation stack refresh itself.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion();
-            });
-            
+            [self popToHomeViewControllerAnimated:NO completion:completion];
         }];
     }
     else
     {
-        [self popToHomeViewControllerAnimated:NO];
-        
-        // Dispatch the completion in order to let navigation stack refresh itself.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion();
-        });
+        [self popToHomeViewControllerAnimated:NO completion:completion];
     }
 }
 
@@ -505,11 +528,16 @@
 
 #pragma mark
 
-- (void)popToHomeViewControllerAnimated:(BOOL)animated
+- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
 {
-    // Force back to the main screen
-    if (_homeViewController)
+    // Force back to the main screen if this is the not the one that is displayed
+    if (_homeViewController && _homeViewController != _homeNavigationController.visibleViewController)
     {
+        // Listen to the homeNavigationController changes
+        // We need to be sure that homeViewController is back to the screen
+        popToHomeViewControllerCompletion = completion;
+        _homeNavigationController.delegate = self;
+
         [_homeNavigationController popToViewController:_homeViewController animated:animated];
         
         // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
@@ -525,6 +553,34 @@
         
         // Release the current selected room
         [_homeViewController closeSelectedRoom];
+    }
+    else
+    {
+        // Dispatch the completion in order to let navigation stack refresh itself
+        // It is required to display the auth VC at startup
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
+    }
+}
+
+#pragma mark - UINavigationController delegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController == _homeViewController)
+    {
+        _homeNavigationController.delegate = nil;
+        if (popToHomeViewControllerCompletion)
+        {
+            void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
+            popToHomeViewControllerCompletion = nil;
+
+            // Dispatch the completion in order to let navigation stack refresh itself.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                popToHomeViewControllerCompletion2();
+            });
+        }
     }
 }
 
@@ -622,7 +678,7 @@
                     
                     NSLog(@"[AppDelegate] didReceiveRemoteNotification: open the roomViewController %@", roomId);
                     
-                    [self showRoom:roomId withMatrixSession:dedicatedAccount.mxSession];
+                    [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
                 }
                 else
                 {
@@ -667,9 +723,348 @@
 
 - (void)refreshApplicationIconBadgeNumber
 {
-    NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber");
+    NSUInteger count = [MXKRoomDataSourceManager notificationCount];
+    NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = [MXKRoomDataSourceManager notificationCount];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+}
+
+#pragma mark - Universal link
+
+- (BOOL)isUniversalLink:(NSURL*)url
+{
+    BOOL isUniversalLink;
+
+    if ([url.host isEqualToString:@"vector.im"]
+        && NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:url.path])
+    {
+        isUniversalLink = YES;
+    }
+
+    return isUniversalLink;
+}
+
+- (BOOL)handleUniversalLink:(NSUserActivity*)userActivity
+{
+    NSURL *webURL = userActivity.webpageURL;
+    NSLog(@"[AppDelegate] handleUniversalLink: %@", webURL.absoluteString);
+
+    // iOS Patch: fix vector.im urls before using it
+    webURL = [AppDelegate fixURLWithSeveralHashKeys:webURL];
+
+    // Manage email validation link
+    if ([webURL.path isEqualToString:@"/_matrix/identity/api/v1/validate/email/submitToken"])
+    {
+        // Validate the email on the passed identity server
+        NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
+        MXRestClient *identityRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
+
+        // Extract required parameters from the link
+        NSArray<NSString*> *pathParams;
+        NSMutableDictionary *queryParams;
+        [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
+
+        [identityRestClient submitEmailValidationToken:queryParams[@"token"] clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
+
+            NSLog(@"[AppDelegate] handleUniversalLink. Email successfully validated.");
+
+            if (queryParams[@"nextLink"])
+            {
+                // Continue the registration with the passed nextLink
+                NSLog(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
+                NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
+                [self handleUniversalLinkFragment:nextLink.fragment];
+            }
+            else
+            {
+                // No nextLink in Vector world means validation for binding a new email
+                NSLog(@"[AppDelegate] handleUniversalLink. TODO: Complete email binding");
+            }
+
+        } failure:^(NSError *error) {
+
+            NSLog(@"[AppDelegate] handleUniversalLink. Error: submitToken failed: %@", error);
+            [self showErrorAsAlert:error];
+
+        }];
+
+        return YES;
+    }
+
+    return [self handleUniversalLinkFragment:webURL.fragment];
+}
+
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment
+{
+    BOOL continueUserActivity = NO;
+    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+
+    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
+
+    // The app manages only one universal link at a time
+    // Discard any pending one
+    [self resetPendingUniversalLink];
+
+    // Extract params
+    NSArray<NSString*> *pathParams;
+    NSMutableDictionary *queryParams;
+    [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
+
+    // Sanity check
+    if (!pathParams.count)
+    {
+        NSLog(@"[AppDelegate] Universal link: Error: No path parameters");
+        return NO;
+    }
+
+    // Check the action to do
+    if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
+    {
+        if (accountManager.activeAccounts.count)
+        {
+            // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
+            NSString *roomIdOrAlias = pathParams[1];
+
+            // Is it a link to an event of a room?
+            NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+
+            // Check there is an account that knows this room
+            MXKAccount *account = [accountManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
+            if (account)
+            {
+                NSString *roomId = roomIdOrAlias;
+
+                // Translate the alias into the room id
+                if ([roomIdOrAlias hasPrefix:@"#"])
+                {
+                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
+                    if (room)
+                    {
+                        roomId = room.roomId;
+                    }
+                }
+
+                // Open the room page
+                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+
+                continueUserActivity = YES;
+            }
+            else
+            {
+                // We will display something but we need to do some requests before.
+                // So, come back to the home VC and show its loading wheel while processing
+                [self restoreInitialDisplay:^{
+
+                    [_homeViewController startActivityIndicator];
+
+                    if ([roomIdOrAlias hasPrefix:@"#"])
+                    {
+                        // The alias may be not part of user's rooms states
+                        // Ask the HS to resolve the room alias into a room id and then retry
+                        universalLinkFragmentPending = fragment;
+                        MXKAccount* account = accountManager.activeAccounts.firstObject;
+                        [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+
+                            // Note: the activity indicator will not disappear if the session is not ready
+                            [_homeViewController stopActivityIndicator];
+
+                            // Check that 'fragment' has not been cancelled
+                            if ([universalLinkFragmentPending isEqualToString:fragment])
+                            {
+                                // Retry opening the link but with the returned room id
+                                NSString *newUniversalLinkFragment =
+                                [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+                                                                    withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                            }
+
+                        } failure:^(NSError *error) {
+                            NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+                        }];
+                    }
+                    else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
+                    {
+                        // The user does not know the room id but this may be because their session is not yet sync'ed
+                        // So, wait for the completion of the sync and then retry
+                        // FIXME: Manange all user's accounts not only the first one
+                        MXKAccount* account = accountManager.activeAccounts.firstObject;
+
+                        NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
+                        universalLinkFragmentPending = fragment;
+
+                        universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+
+                            // Check that 'fragment' has not been cancelled
+                            if ([universalLinkFragmentPending isEqualToString:fragment])
+                            {
+                                // Check whether the concerned session is the associated one
+                                if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
+                                {
+                                    NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
+                                    [self handleUniversalLinkFragment:fragment];
+                                }
+                            }
+                        }];
+                    }
+                    else
+                    {
+                        NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account (email invitation: %@). Display its preview to try to join it", roomIdOrAlias, queryParams ? @"YES" : @"NO");
+
+                        // FIXME: In case of multi-account, ask the user which one to use
+                        MXKAccount* account = accountManager.activeAccounts.firstObject;
+
+                        RoomPreviewData *roomPreviewData;
+                        if (queryParams)
+                        {
+                            // Note: the activity indicator will not disappear if the session is not ready
+                            [_homeViewController stopActivityIndicator];
+
+                            roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
+                            [self showRoomPreview:roomPreviewData];
+                        }
+                        else
+                        {
+                            roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
+
+                            // Try to get more information about the room before opening its preview
+                            [roomPreviewData fetchPreviewData:^(BOOL successed) {
+
+                                // Note: the activity indicator will not disappear if the session is not ready
+                                [_homeViewController stopActivityIndicator];
+
+                                [self showRoomPreview:roomPreviewData];
+                            }];
+                        }
+                    }
+                }];
+
+                // Let's say we are handling the case
+                continueUserActivity = YES;
+            }
+        }
+        else
+        {
+            // There is no account. The app will display the AuthenticationVC.
+            // Wait for a successful login
+            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+            universalLinkFragmentPending = fragment;
+
+            // Register an observer in order to handle new account
+            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                // Check that 'fragment' has not been cancelled
+                if ([universalLinkFragmentPending isEqualToString:fragment])
+                {
+                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                    [self handleUniversalLinkFragment:fragment];
+                }
+            }];
+        }
+    }
+    else if ([pathParams[0] isEqualToString:@"register"])
+    {
+        NSLog(@"[AppDelegate] Universal link with registration parameters");
+        continueUserActivity = YES;
+        
+        [_homeViewController showAuthenticationScreenWithRegistrationParameters:queryParams];
+    }
+    else
+    {
+        // Unknown command: Do nothing except coming back to the main screen
+        NSLog(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
+
+        [self popToHomeViewControllerAnimated:NO completion:nil];
+    }
+
+    return continueUserActivity;
+}
+
+- (void)resetPendingUniversalLink
+{
+    universalLinkFragmentPending = nil;
+    if (universalLinkWaitingObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:universalLinkWaitingObserver];
+        universalLinkWaitingObserver = nil;
+    }
+}
+
+/**
+ Extract params from the URL fragment part (after '#') of a vector.im Universal link:
+
+ The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
+ It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
+
+ @param fragment the fragment to parse.
+ @param outPathParams the decoded path params.
+ @param outQueryParams the decoded query params. If there is no query params, it will be nil.
+ */
+- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams
+{
+    NSParameterAssert(outPathParams && outQueryParams);
+
+    NSArray<NSString*> *pathParams;
+    NSMutableDictionary *queryParams;
+
+    NSArray<NSString*> *fragments = [fragment componentsSeparatedByString:@"?"];
+
+    // Extract path params
+    pathParams = [fragments[0] componentsSeparatedByString:@"/"];
+
+    // Remove the first empty path param string
+    pathParams = [pathParams filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+
+    // URL decode each path param
+    NSMutableArray<NSString*> *pathParams2 = [NSMutableArray arrayWithArray:pathParams];
+    for (NSInteger i = 0; i < pathParams.count; i++)
+    {
+        pathParams2[i] = [pathParams2[i] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    pathParams = pathParams2;
+
+    // Extract query params if any
+    if (fragments.count == 2)
+    {
+        queryParams = [[NSMutableDictionary alloc] init];
+        for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
+        {
+            // Get the parameter name
+            NSString *key = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:0];
+
+            // Get the parameter value
+            NSString *value = [[keyValue componentsSeparatedByString:@"="] objectAtIndex:1];
+            if (value.length)
+            {
+                value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+                queryParams[key] = value;
+            }
+        }
+    }
+
+    *outPathParams = pathParams;
+    *outQueryParams = queryParams;
+}
+
++ (NSURL *)fixURLWithSeveralHashKeys:(NSURL *)url
+{
+    NSURL *fixedURL = url;
+
+    // The NSURL may have no fragment because it contains more that '%23' occurence
+    if (!url.fragment)
+    {
+        // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
+        NSString *urlString = url.absoluteString;
+        NSRange range = [urlString rangeOfString:@"%23"];
+        if (NSNotFound != range.location)
+        {
+            urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
+            fixedURL = [NSURL URLWithString:urlString];
+        }
+    }
+
+    return fixedURL;
 }
 
 #pragma mark - Matrix sessions handling
@@ -893,7 +1288,7 @@
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-    [self popToHomeViewControllerAnimated:NO];
+    [self popToHomeViewControllerAnimated:NO completion:nil];
     
     if (clearCache)
     {
@@ -1036,7 +1431,7 @@
                          {
                              weakSelf.mxInAppNotification = nil;
                              // Show the room
-                             [weakSelf showRoom:event.roomId withMatrixSession:account.mxSession];
+                             [weakSelf showRoom:event.roomId andEventId:nil withMatrixSession:account.mxSession];
                          }];
                         
                         [self.mxInAppNotification showInViewController:self.window.rootViewController];
@@ -1110,13 +1505,20 @@
 
 #pragma mark - Matrix Rooms handling
 
-- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
     [self restoreInitialDisplay:^{
         
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_homeViewController selectRoomWithId:roomId inMatrixSession:mxSession];
+        [_homeViewController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
         
+    }];
+}
+
+- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
+{
+    [self restoreInitialDisplay:^{
+        [_homeViewController showRoomPreview:roomPreviewData];
     }];
 }
 
@@ -1150,7 +1552,7 @@
             if (mxRoom)
             {
                 // open it
-                [self showRoom:mxRoom.state.roomId withMatrixSession:mxSession];
+                [self showRoom:mxRoom.state.roomId andEventId:nil withMatrixSession:mxSession];
                 
                 if (completion)
                 {
@@ -1183,7 +1585,7 @@
                                   }
                                   
                                   // Open created room
-                                  [self showRoom:room.state.roomId withMatrixSession:mxSession];
+                                  [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];
                                   
                                   if (completion)
                                   {

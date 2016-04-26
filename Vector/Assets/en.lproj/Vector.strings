@@ -33,8 +33,11 @@
 "cancel" = "Cancel";
 "save" = "Save";
 "join" = "Join";
-"reject" = "Reject";
+"decline" = "Decline";
+"preview" = "Preview";
 "camera" = "Camera";
+"voice" = "Voice";
+"video" = "Video";
 
 // Authentication
 "auth_login" = "Log in";
@@ -73,6 +76,7 @@
 "room_creation_make_public_prompt_msg" = "Are you sure you want to make this chat public? Anyone can read your messages and join the chat.";
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
+"room_creation_wait_for_creation" = "A room is already being created. Please wait.";
 
 // Room recents
 "room_recents_directory" = "DIRECTORY";
@@ -102,17 +106,17 @@
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_admin_name" = "%@ (admin)";
-"room_participants_invite_another_user" = "Invite by name, email, id";
+"room_participants_invite_another_user" = "Invite/search by name, email, id";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
+"room_participants_invited_section" = "INVITED";
+
 "room_participants_active" = "Online";
-"room_participants_invite" = "Invite";
-"room_participants_leave" = "Left";
-"room_participants_ban" = "Banned";
 "room_participants_active_less_1_hour" = "Offline";
 "room_participants_active_less_x_hours" = "Offline %luh ago";
 "room_participants_active_less_x_days" = "Offline %lu days ago";
+"room_participants_offline" = "Offline";
 
 "room_participants_action_invite" = "Invite";
 "room_participants_action_leave" = "Leave this room";
@@ -149,6 +153,15 @@
 "room_title_new_room" = "New room";
 "room_title_multiple_active_members" = "%d/%d active members";
 "room_title_one_active_member" = "%d/%d active member";
+"room_title_members" = "%d members";
+"room_title_one_member" = "1 member";
+
+// Room Preview
+"room_preview_invitation_format" = "You have been invited to join this room by %@";
+"room_preview_subtitle" = "This is a preview of this room. Files and other attachments have been disabled.";
+"room_preview_unlinked_email_warning" = "This invitation was sent to %@, which is not associated with this account.\nYou may wish to login with a different account, or add this email to your this account.";
+"room_preview_try_join_an_unknown_room" = "You are trying to access %@. Would you like to join in order to participate in the discussion?";
+"room_preview_try_join_an_unknown_room_default" = "a room";
 
 // Settings
 "account_logout_all" = "Logout all accounts";

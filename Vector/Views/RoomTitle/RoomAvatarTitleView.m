@@ -77,12 +77,27 @@
         self.roomAvatar.clipsToBounds = YES;
         
     }
+    else if (self.roomAvatarURL)
+    {
+        [self.roomAvatar setImageURL:self.roomAvatarURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];        
+
+        // Round image view for thumbnail
+        self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
+        self.roomAvatar.clipsToBounds = YES;
+    }
     else
     {
         self.roomAvatar.image = [UIImage imageNamed:@"placeholder"];
     }    
     
     self.roomAvatar.backgroundColor = kVectorColorLightGrey;
+}
+
+- (void)setRoomAvatarURL:(NSString *)roomAvatarURL
+{
+    _roomAvatarURL = roomAvatarURL;
+    
+    [self refreshDisplay];
 }
 
 @end

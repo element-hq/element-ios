@@ -18,20 +18,37 @@
 
 #import "RoomTitleView.h"
 
+#import "RoomPreviewData.h"
+
 #import "UIViewController+VectorSearch.h"
 
 @interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
 
 // The expanded header
 @property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
 
+// The preview header
+@property (weak, nonatomic) IBOutlet UIScrollView *previewScrollView;
+@property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+
 /**
- Hide/Show the expanded header.
- By default this header is hidden on new instantiated RoomViewController object.
+ Force the display of the expanded header.
+ The default value is NO: this expanded header is hidden on new instantiated RoomViewController object.
+ 
+ When this property is YES, the expanded header is forced each time the view controller appears.
  */
-- (void)hideExpandedHeader:(BOOL)isHidden;
+@property (nonatomic) BOOL showExpandedHeader;
+
+/**
+ Display the preview of a room that is unknown for the user.
+
+ This room can come from an email invitation link or a simple link to a room.
+
+ @param roomPreviewData the data for the room preview.
+ */
+- (void)displayRoomPreview:(RoomPreviewData*)previewData;
 
 @end
 

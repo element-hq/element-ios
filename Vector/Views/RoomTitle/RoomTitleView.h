@@ -41,4 +41,9 @@
  */
 @property (nonatomic) id<RoomTitleViewTapGestureDelegate> tapGestureDelegate;
 
+/**
+ The method used to handle the gesture recognized by a receiver.
+ */
+- (void)reportTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer;
+
 @end

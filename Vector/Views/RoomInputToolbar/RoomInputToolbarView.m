@@ -25,6 +25,9 @@
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
+
+    // The call type selection (voice or video)
+    MXKAlert *callActionSheet;
 }
 
 @end
@@ -60,7 +63,7 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    self.separatorView.backgroundColor = kVectorColorSiver;
+    self.separatorView.backgroundColor = kVectorColorSilver;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -186,7 +189,33 @@
     {
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
         {
-            [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
+            // Ask the user the kind of the call: voice or video?
+            callActionSheet = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+
+            __weak typeof(self) weakSelf = self;
+            [callActionSheet addActionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->callActionSheet = nil;
+
+                [strongSelf.delegate roomInputToolbarView:strongSelf placeCallWithVideo:NO];
+            }];
+
+            [callActionSheet addActionWithTitle:NSLocalizedStringFromTable(@"video", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->callActionSheet = nil;
+
+                [strongSelf.delegate roomInputToolbarView:strongSelf placeCallWithVideo:YES];
+            }];
+
+            callActionSheet.cancelButtonIndex = [callActionSheet addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->callActionSheet = nil;
+            }];
+            
+            callActionSheet.sourceView = self.voiceCallButton;
+
+            [callActionSheet showInViewController:self.window.rootViewController];
         }
     }
     
@@ -197,6 +226,12 @@
 - (void)destroy
 {
     [self dismissMediaPicker];
+
+    if (callActionSheet)
+    {
+        [callActionSheet dismiss:NO];
+        callActionSheet = nil;
+    }
     
     [super destroy];
 }

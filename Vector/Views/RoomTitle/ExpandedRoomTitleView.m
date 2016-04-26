@@ -54,7 +54,7 @@
             self.displayNameTextField.textColor = kVectorTextColorBlack;
         }
         
-        self.roomTopic.text = self.mxRoom.state.topic;
+        self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
         
         // Compute active members count
         NSArray *members = self.mxRoom.state.members;
@@ -98,6 +98,9 @@
         self.roomTopic.text = nil;
         self.roomMembers.text = nil;
     }
+    
+    // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
+    [self layoutIfNeeded];
 }
 
 @end

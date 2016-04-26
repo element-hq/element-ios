@@ -74,6 +74,13 @@
     self.roomMemberNameLabel.textColor = kVectorTextColorBlack;
     self.roomMemberStatusLabel.textColor = kVectorColorGreen;
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.roomMemberNameLabelMask addGestureRecognizer:tap];
+    self.roomMemberNameLabelMask.userInteractionEnabled = YES;
+    
     self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
     
     memberTitleView = [RoomMemberTitleView roomMemberTitleView];
@@ -194,24 +201,27 @@
     {
         self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
         
+        // Update member badge
+        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+        NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+        if (powerLevel >= kVectorRoomAdminLevel)
+        {
+            memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
+            memberTitleView.memberBadge.hidden = NO;
+        }
+        else if (powerLevel >= kVectorRoomModeratorLevel)
+        {
+            memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
+            memberTitleView.memberBadge.hidden = NO;
+        }
+        else
+        {
+            memberTitleView.memberBadge.hidden = YES;
+        }
+        
         NSString* presenceText = nil;
         
-        if (self.mxRoomMember.membership != MXMembershipJoin)
-        {
-            if (self.mxRoomMember.membership == MXMembershipInvite)
-            {
-                presenceText =  NSLocalizedStringFromTable(@"room_participants_invite", @"Vector", nil);
-            }
-            else if (self.mxRoomMember.membership == MXMembershipLeave)
-            {
-                presenceText =  NSLocalizedStringFromTable(@"room_participants_leave", @"Vector", nil);
-            }
-            else if (self.mxRoomMember.membership == MXMembershipBan)
-            {
-                presenceText =  NSLocalizedStringFromTable(@"room_participants_ban", @"Vector", nil);
-            }
-        }
-        else if (self.mxRoomMember.userId)
+        if (self.mxRoomMember.userId)
         {
             MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
             if (user)
@@ -491,7 +501,7 @@
     return cell;
 }
 
-#pragma mark -
+#pragma mark - Action
 
 - (void)onActionButtonPressed:(id)sender
 {
@@ -529,5 +539,25 @@
         }
     }
 }
+
+- (void)handleTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+{
+    UIView *view = tapGestureRecognizer.view;
+    
+    if (view == self.roomMemberNameLabelMask && self.mxRoomMember.displayname)
+    {
+        if ([self.roomMemberNameLabel.text isEqualToString:self.mxRoomMember.displayname])
+        {
+            // Display room member matrix id
+            self.roomMemberNameLabel.text = self.mxRoomMember.userId;
+        }
+        else
+        {
+            // Restore display name
+            self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
+        }
+    }
+}
+
 
 @end

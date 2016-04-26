@@ -42,6 +42,11 @@ limitations under the License.
 @property (nonatomic, readonly) UIViewController *selectedViewController;
 
 /**
+ The view controllers managed by this SegmentedViewController instance.
+ */
+@property (nonatomic, readonly) NSArray<UIViewController*> *viewControllers;
+
+/**
  Returns the `UINib` object initialized for a `SegmentedViewController`.
 
  @return The initialized `UINib` object or `nil` if there were errors during initialization

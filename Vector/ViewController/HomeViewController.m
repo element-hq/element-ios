@@ -43,6 +43,18 @@
     UIImageView* createNewRoomImageView;
     
     MXHTTPOperation *roomCreationRequest;
+
+    // Tell whether the authentication screen is preparing.
+    BOOL isAuthViewControllerPreparing;
+
+    // Observer that checks when the Authentification view controller has gone.
+    id authViewControllerObserver;
+
+    // The parameters to pass to the Authentification view controller.
+    NSDictionary *authViewControllerRegistrationParameters;
+
+    // Current alert (if any).
+    MXKAlert *currentAlert;
 }
 
 @end
@@ -95,7 +107,19 @@
 - (void)destroy
 {
     [super destroy];
-    
+
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+
+    if (authViewControllerObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+        authViewControllerObserver = nil;
+    }
+
     if (roomCreationRequest)
     {
         [roomCreationRequest cancel];
@@ -244,11 +268,36 @@
 
 - (void)showAuthenticationScreen
 {
-    [[AppDelegate theDelegate] restoreInitialDisplay:^{
+    // Check whether an authentication screen is not already shown or preparing
+    if (!self.authViewController && !isAuthViewControllerPreparing)
+    {
+        isAuthViewControllerPreparing = YES;
         
-        [self performSegueWithIdentifier:@"showAuth" sender:self];
-        
-    }];
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+            
+            [self performSegueWithIdentifier:@"showAuth" sender:self];
+            
+        }];
+    }
+}
+
+- (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary *)parameters
+{
+    if (self.authViewController)
+    {
+        NSLog(@"[HomeViewController] Universal link: Forward registration parameter to the existing AuthViewController");
+        self.authViewController.externalRegistrationParameters = parameters;
+    }
+    else
+    {
+        NSLog(@"[HomeViewController] Universal link: Logout current sessions and open AuthViewController to complete the registration");
+
+        // Keep a ref on the params
+        authViewControllerRegistrationParameters = parameters;
+
+        // And do a logout out. It will then display AuthViewController
+        [[AppDelegate theDelegate] logout];
+    }
 }
 
 - (void)displayWithSession:(MXSession *)mxSession
@@ -274,6 +323,8 @@
     {
         [recentsDataSource addMatrixSession:mxSession];
     }
+    
+    [super addMatrixSession:mxSession];
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -288,14 +339,17 @@
         [recentsViewController displayList:nil];
         [previousRecentlistDataSource destroy];
     }
+    
+    [super removeMatrixSession:mxSession];
 }
 
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
 {
     // Force hiding the keyboard
     [self.searchBar resignFirstResponder];
 
     if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
+        && _selectedEventId && [_selectedEventId isEqualToString:eventId]
         && _selectedRoomSession && _selectedRoomSession == matrixSession)
     {
         // Nothing to do
@@ -303,6 +357,7 @@
     }
 
     _selectedRoomId = roomId;
+    _selectedEventId = eventId;
     _selectedRoomSession = matrixSession;
 
     if (roomId && matrixSession)
@@ -315,9 +370,22 @@
     }
 }
 
+- (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
+{
+    // Force hiding the keyboard
+    [self.searchBar resignFirstResponder];
+
+    _selectedRoomPreviewData = roomPreviewData;
+    _selectedRoomId = roomPreviewData.roomId;
+    _selectedRoomSession = roomPreviewData.mxSession;
+
+    [self performSegueWithIdentifier:@"showDetails" sender:self];
+}
+
 - (void)closeSelectedRoom
 {
     _selectedRoomId = nil;
+    _selectedEventId = nil;
     _selectedRoomSession = nil;
 
     if (_currentRoomViewController)
@@ -351,6 +419,23 @@
 
     [super setKeyboardHeight:keyboardHeight];
 }
+
+- (void)startActivityIndicator
+{
+    // Redirect the operation to the currently displayed VC
+    // It is a MXKViewController or a MXKTableViewController. So it supports startActivityIndicator
+    [self.selectedViewController performSelector:@selector(startActivityIndicator)];
+}
+
+- (void)stopActivityIndicator
+{
+    // The selected view controller mwy have changed since the call of [self startActivityIndicator]
+    // So, stop the activity indicator for all children
+    for (UIViewController *viewController in self.viewControllers)
+    {
+        [viewController performSelector:@selector(stopActivityIndicator)];
+    }
+ }
 
 #pragma mark - Override UIViewController+VectorSearch
 
@@ -436,22 +521,39 @@
 
             _currentRoomViewController = (RoomViewController *)controller;
 
-            // Live timeline or timeline from a search result?
-            MXKRoomDataSource *roomDataSource;
-            if (!searchViewController.selectedEvent)
+            if (!_selectedRoomPreviewData)
             {
-                // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
-                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-                roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+                // Live timeline or timeline from a search result?
+                MXKRoomDataSource *roomDataSource;
+                if (!searchViewController.selectedEvent)
+                {
+                    if (!_selectedEventId)
+                    {
+                        // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
+                        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
+                        roomDataSource = [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES];
+                    }
+                    else
+                    {
+                        // Open the room on the requested event
+                        roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
+                        [roomDataSource finalizeInitialization];
+                    }
+                }
+                else
+                {
+                    // Search result: Create a temp timeline from the selected event
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+                    [roomDataSource finalizeInitialization];
+                }
+                
+                [_currentRoomViewController displayRoom:roomDataSource];
             }
             else
             {
-                // Search result: Create a temp timeline from the selected event
-                roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
-                [roomDataSource finalizeInitialization];
+                [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
+                _selectedRoomPreviewData = nil;
             }
-
-            [_currentRoomViewController displayRoom:roomDataSource];
         }
 
         if (self.splitViewController)
@@ -478,6 +580,28 @@
         {
             DirectoryViewController *directoryViewController = segue.destinationViewController;
             [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+        }
+        else if ([[segue identifier] isEqualToString:@"showAuth"])
+        {
+            // Keep ref on the authentification view controller while it is displayed
+            // ie until we get the notification about a new account
+            _authViewController = segue.destinationViewController;
+            isAuthViewControllerPreparing = NO;
+
+            authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                _authViewController = nil;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+                authViewControllerObserver = nil;
+            }];
+
+            // Forward parameters if any
+            if (authViewControllerRegistrationParameters)
+            {
+                _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
+                authViewControllerRegistrationParameters = nil;
+            }
         }
     }
 
@@ -584,7 +708,7 @@
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
     // Open the room
-    [self selectRoomWithId:roomId inMatrixSession:matrixSession];
+    [self selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
 #pragma mark - Actions
@@ -602,35 +726,67 @@
     // Sanity check
     if (self.mainSession)
     {
-        createNewRoomImageView.userInteractionEnabled = NO;
-        
-        [recentsViewController startActivityIndicator];
-        
-        // Create an empty room.
-        roomCreationRequest = [self.mainSession createRoom:nil
-                                                visibility:kMXRoomVisibilityPrivate
-                                                 roomAlias:nil
-                                                     topic:nil
-                                                   success:^(MXRoom *room) {
-                                                       
-                                                       roomCreationRequest = nil;
-                                                       [recentsViewController stopActivityIndicator];
-                                                       createNewRoomImageView.userInteractionEnabled = YES;
-                                                       
-                                                       [self selectRoomWithId:room.state.roomId inMatrixSession:self.mainSession];
-                                                       
-                                                   } failure:^(NSError *error) {
-                                                       
-                                                       roomCreationRequest = nil;
-                                                       [recentsViewController stopActivityIndicator];
-                                                       createNewRoomImageView.userInteractionEnabled = YES;
-                                                       
-                                                       NSLog(@"[RoomCreation] Create new room failed");
-                                                       
-                                                       // Alert user
-                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                       
-                                                   }];
+        // Create one room at time
+        if (!roomCreationRequest)
+        {
+            [recentsViewController startActivityIndicator];
+
+            // Create an empty room.
+            roomCreationRequest = [self.mainSession createRoom:nil
+                                                    visibility:kMXRoomVisibilityPrivate
+                                                     roomAlias:nil
+                                                         topic:nil
+                                                       success:^(MXRoom *room) {
+
+                                                           roomCreationRequest = nil;
+                                                           [recentsViewController stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+
+                                                           [self selectRoomWithId:room.state.roomId andEventId:nil inMatrixSession:self.mainSession];
+
+                                                           // Force the expanded header
+                                                           self.currentRoomViewController.showExpandedHeader = YES;
+
+                                                       } failure:^(NSError *error) {
+
+                                                           roomCreationRequest = nil;
+                                                           [recentsViewController stopActivityIndicator];
+                                                           if (currentAlert)
+                                                           {
+                                                               [currentAlert dismiss:NO];
+                                                               currentAlert = nil;
+                                                           }
+
+                                                           NSLog(@"[RoomCreation] Create new room failed");
+
+                                                           // Alert user
+                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                           
+                                                       }];
+        }
+        else
+        {
+            // Ask the user to wait
+            __weak __typeof(self) weakSelf = self;
+            currentAlert = [[MXKAlert alloc] initWithTitle:nil
+                                                   message:NSLocalizedStringFromTable(@"room_creation_wait_for_creation", @"Vector", nil)
+                                                     style:MXKAlertStyleAlert];
+
+            currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                        style:MXKAlertActionStyleCancel
+                                                                      handler:^(MXKAlert *alert) {
+
+                                                                          __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                          strongSelf->currentAlert = nil;
+
+                                                                      }];
+            [currentAlert showInViewController:self];
+
+        }
     }
 }
 

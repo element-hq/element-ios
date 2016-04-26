@@ -34,19 +34,25 @@
     
     self.displayNameTextField.textColor = kVectorTextColorBlack;
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.titleMask addGestureRecognizer:tap];
-    self.titleMask.userInteractionEnabled = YES;
+    if (_titleMask)
+    {
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [self.titleMask addGestureRecognizer:tap];
+        self.titleMask.userInteractionEnabled = YES;
+    }
     
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.roomDetailsMask addGestureRecognizer:tap];
-    self.roomDetailsMask.userInteractionEnabled = YES;
+    if (_roomDetailsMask)
+    {
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
+        [tap setNumberOfTouchesRequired:1];
+        [tap setNumberOfTapsRequired:1];
+        [tap setDelegate:self];
+        [self.roomDetailsMask addGestureRecognizer:tap];
+        self.roomDetailsMask.userInteractionEnabled = YES;
+    }
 }
 
 - (void)layoutSubviews
@@ -57,6 +63,8 @@
     {
         // Center horizontally the display name into the navigation bar
         CGRect frame = self.superview.frame;
+
+        // Look for the navigation bar.
         UINavigationBar *navigationBar;
         UIView *superView = self;
         while (superView.superview)
@@ -75,8 +83,12 @@
             CGSize navBarSize = navigationBar.frame.size;
             CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
             
-            // Center the display name
-            self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+            // Check whether the view is not moving away (see navigation between view controllers).
+            if (superviewCenterX < navBarSize.width)
+            {
+                // Center the display name
+                self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
+            }
         }        
     }
 }

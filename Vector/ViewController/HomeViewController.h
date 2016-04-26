@@ -17,8 +17,8 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "SegmentedViewController.h"
-
-@class RoomViewController;
+#import "RoomViewController.h"
+#import "AuthenticationViewController.h"
 
 /**
  The `HomeViewController` screen is the main app screen.
@@ -31,13 +31,27 @@
 // References on the currently selected room and its view controller
 @property (nonatomic, readonly) RoomViewController *currentRoomViewController;
 @property (nonatomic, readonly) NSString  *selectedRoomId;
+@property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
+@property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
+// Reference to the current auth VC. It is not nil only when the auth screen is displayed.
+@property (nonatomic, readonly) AuthenticationViewController *authViewController;
 
 /**
  Display the authentication screen.
  */
 - (void)showAuthenticationScreen;
+
+/**
+ Display the authentication screen in order to pursue a registration process by using a predefined set
+ of parameters.
+ 
+ If the provided registration parameters are not supported, we switch back to the default login screen.
+
+ @param parameters the set of parameters.
+ */
+- (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary*)parameters;
 
 /**
  Start displaying the screen with a user Matrix session.
@@ -50,9 +64,19 @@
  Open the room with the provided identifier in a specific matrix session.
 
  @param roomId the room identifier.
+ @param eventId if not nil, the room will be opened on this event.
  @param mxSession the matrix session in which the room should be available.
  */
-- (void)selectRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession;
+- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)mxSession;
+
+/**
+ Open the RoomViewController to display the preview of a room that is unknown for the user.
+
+ This room can come from an email invitation link or a simple link to a room.
+
+ @param roomPreviewData the data for the room preview.
+ */
+- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
  Close the current selected room (if any)

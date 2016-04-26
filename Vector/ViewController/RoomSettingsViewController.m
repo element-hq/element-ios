@@ -43,7 +43,7 @@
 #define ROOM_SECTION_MUTE_NOTIFICATIONS  4
 #define ROOM_SECTION_COUNT               5
 
-#define ROOM_TOPIC_CELL_HEIGHT 99
+#define ROOM_TOPIC_CELL_HEIGHT 124
 
 @interface RoomSettingsViewController ()
 {
@@ -630,9 +630,11 @@
             }
                         
             roomTopicCell.mxkTextView.tintColor = kVectorColorGreen;
+            roomTopicCell.mxkTextView.font = [UIFont systemFontOfSize:16];
+            roomTopicCell.mxkTextView.bounces = NO;
             roomTopicCell.mxkTextView.delegate = self;
             
-            // disable the edition if the user cannoy update it
+            // disable the edition if the user cannot update it
             roomTopicCell.mxkTextView.editable = mxRoom.isModerator;
             roomTopicCell.mxkTextView.textColor = kVectorTextColorGray;
             

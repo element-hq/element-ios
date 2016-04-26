@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -20,16 +20,26 @@
                         <constraint firstAttribute="width" constant="84" id="BeT-JY-cq1"/>
                     </constraints>
                 </view>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f6h-pw-FvU">
+                    <rect key="frame" x="322" y="8" width="30" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="Rz8-gR-gAm"/>
+                        <constraint firstAttribute="height" constant="32" id="dHM-zo-WVT"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="7U9-Y6-cEm" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="C5g-ho-90L"/>
                 <constraint firstItem="7U9-Y6-cEm" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="13" id="Kwt-Sd-REk"/>
+                <constraint firstItem="f6h-pw-FvU" firstAttribute="trailing" secondItem="7U9-Y6-cEm" secondAttribute="trailing" constant="10" id="V4L-tJ-obt"/>
+                <constraint firstItem="7U9-Y6-cEm" firstAttribute="top" secondItem="f6h-pw-FvU" secondAttribute="top" constant="5" id="lPk-ot-k5l"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="memberAvatar" destination="7U9-Y6-cEm" id="8PP-8r-xoI"/>
                 <outlet property="memberAvatarCenterXConstraint" destination="C5g-ho-90L" id="ILx-zG-Dbj"/>
+                <outlet property="memberBadge" destination="f6h-pw-FvU" id="pDM-O6-238"/>
             </connections>
         </view>
     </objects>

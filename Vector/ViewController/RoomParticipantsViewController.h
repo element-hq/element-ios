@@ -20,35 +20,42 @@
 
 #import "SegmentedViewController.h"
 
+@class Contact;
+
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
- 
- When this property is nil, the view controller is able to handle a list of participants without room reference.
+ When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKTableViewController <UISearchBarDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 {
 @protected
     /**
-     The matrix id of the current user (nil if the user is not a participant of the room).
-     */
-    NSString *userMatrixId;
-    
-    /**
      Section indexes
      */
-    NSInteger searchResultSection;
     NSInteger participantsSection;
+    NSInteger invitedSection;
+    NSInteger invitableSection;
     
     /**
-     Mutable list of participants
+     The current list of joined members (Array of 'Contact' instances).
      */
-    NSMutableArray *mutableParticipants;
+    NSMutableArray *actualParticipants;
     
     /**
-     Store MXKContact instance by matrix user id
+     The current list of invited members (Array of 'Contact' instances).
      */
-    NSMutableDictionary *mxkContactsById;
+    NSMutableArray *invitedParticipants;
+    
+    /**
+     The contact used to describe the current user (nil if the user is not a participant of the room).
+     */
+    Contact *userContact;
 }
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
+@property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
 
 /**
  A matrix room (nil by default).
@@ -64,15 +71,6 @@
  The potential segmented view controller in which the view controller is displayed.
  */
 @property (nonatomic) SegmentedViewController *segmentedViewController;
-
-
-/**
- Customize the UITableViewCell before rendering it.
- 
- @param contactCell the cell to customize.
- @param indexPath path of the cell in the tableview.
- */
-- (void)customizeContactCell:(ContactTableViewCell*)contactCell atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

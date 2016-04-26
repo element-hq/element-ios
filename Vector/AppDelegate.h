@@ -19,7 +19,7 @@
 
 #import "HomeViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, UISplitViewControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
 {
     BOOL isAPNSRegistered;
     
@@ -81,10 +81,39 @@
 
 #pragma mark - Matrix Room handling
 
-- (void)showRoom:(NSString*)roomId withMatrixSession:(MXSession*)mxSession;
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
 // Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
 - (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+
+#pragma mark - Universal link
+
+/**
+ Detect if a URL is a universal link for the application.
+ 
+ @return YES if the URL can be handled by the app.
+ */
+- (BOOL)isUniversalLink:(NSURL*)url;
+
+/**
+ Process the fragment part of a vector.im link.
+ 
+ @param fragment the fragment part of the universal link.
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
+
+/**
+ Fix a http://vector.im path url.
+ 
+ This method fixes the issue with iOS which handles URL badly when there are several hash
+ keys ('%23') in the link.
+ Vector.im links have often several hash keys...
+
+ @param url a NSURL with possibly several hash keys and thus badly parsed.
+ @return a NSURL correctly parsed.
+ */
++ (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
 
 @end
 
