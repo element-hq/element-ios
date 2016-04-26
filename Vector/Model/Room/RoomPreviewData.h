@@ -44,6 +44,12 @@
 @property (nonatomic) MXSession *mxSession;
 
 /**
+ The id of the event where to start to show the room once joined.
+ It is non nil only for permalinks to rooms the user has not joined yet.
+ */
+@property (nonatomic) NSString *eventId;
+
+/**
  Preview information.
  They come from the `emailInvitationParams` or [self fetchPreviewData].
  */

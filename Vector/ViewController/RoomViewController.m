@@ -1640,6 +1640,7 @@
 
                 if (succeed)
                 {
+                    NSString *eventId = roomPreviewData.eventId;
                     roomPreviewData = nil;
 
                     // Enable back the text input
@@ -1657,6 +1658,15 @@
 
                     [self refreshRoomTitle];
                     [self refreshRoomInputToolbar];
+
+                    // If an event was specified, replace the datasource by a non live datasource showing the event
+                    if (eventId)
+                    {
+                        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession];
+                        [roomDataSource finalizeInitialization];
+
+                        [self displayRoom:roomDataSource];
+                    }
                 }
 
             }];
