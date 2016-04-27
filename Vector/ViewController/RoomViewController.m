@@ -366,7 +366,7 @@
         [self showExpandedHeader:NO];
         
         // Hide preview header (if any) during device rotation
-        BOOL isPreview = !self.previewScrollView.isHidden;
+        BOOL isPreview = self.previewScrollView && !self.previewScrollView.isHidden;
         if (isPreview)
         {
             [self showPreviewHeader:NO];
