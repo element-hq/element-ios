@@ -1,3 +1,13 @@
+Changes in Vector iOS in 0.1.5 (2016-04-27)
+===============================================
+
+Improvements:
+ * Chat Screen: Ability to copy event permalinks into the pasteboard from the edit menu #225
+
+Bug fixes:
+ * Fix crash when rotating 6+ or iPad at app start-up.
+ * Universal link on an unjoined room + an event iD is not properly managed #246.
+
 Changes in Vector iOS in 0.1.4 (2016-04-26)
 ===============================================
 

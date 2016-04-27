@@ -366,7 +366,7 @@
         [self showExpandedHeader:NO];
         
         // Hide preview header (if any) during device rotation
-        BOOL isPreview = !self.previewScrollView.isHidden;
+        BOOL isPreview = self.previewScrollView && !self.previewScrollView.isHidden;
         if (isPreview)
         {
             [self showPreviewHeader:NO];
@@ -1309,8 +1309,25 @@
                             
                         }];
                     }];
+
+                    [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+
+                        // Create a permalink that is common to all Vector.im clients
+                        // FIXME: When available, use the prod Vector web app URL
+                        NSString *webAppUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
+
+                        NSString *permalink = [NSString stringWithFormat:@"%@/#/room/%@/%@",
+                                              webAppUrl,
+                                              selectedEvent.roomId,
+                                              selectedEvent.eventId];
+
+                        [[UIPasteboard generalPasteboard] setString:permalink];
+                    }];
                 }
-                
+
                 self.currentAlert.cancelButtonIndex = [self.currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                     
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -1623,6 +1640,7 @@
 
                 if (succeed)
                 {
+                    NSString *eventId = roomPreviewData.eventId;
                     roomPreviewData = nil;
 
                     // Enable back the text input
@@ -1640,6 +1658,15 @@
 
                     [self refreshRoomTitle];
                     [self refreshRoomInputToolbar];
+
+                    // If an event was specified, replace the datasource by a non live datasource showing the event
+                    if (eventId)
+                    {
+                        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession];
+                        [roomDataSource finalizeInitialization];
+
+                        [self displayRoom:roomDataSource];
+                    }
                 }
 
             }];
