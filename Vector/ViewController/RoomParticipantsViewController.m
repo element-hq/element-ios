@@ -330,16 +330,7 @@
                 if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
                 {
                     // The user is in this room
-                    
-                    // Check whether user is admin
-                    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-                    BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel);
-                    
                     NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
-                    if (isAdmin)
-                    {
-                        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
-                    }
                     
                     userContact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
                     userContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
@@ -365,10 +356,6 @@
     // Add this member after checking his status
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
-        // Check whether this member is admin
-        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:mxMember.userId] >= kVectorRoomAdminLevel);
-        
         // Prepare the display name of this member
         NSString *displayName = mxMember.displayname;
         if (displayName.length == 0)
@@ -383,11 +370,6 @@
             {
                 displayName = mxMember.userId;
             }
-        }
-        
-        if (isAdmin)
-        {
-            displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
         }
         
         // Create the contact related to this member
