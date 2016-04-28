@@ -24,16 +24,6 @@
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
 /**
- The callback when a room invitation is rejected.
- */
-@property (nonatomic, copy) void (^onRoomInvitationReject)(MXRoom*);
-
-/**
- The callback when a room invitation is accepted.
- */
-@property (nonatomic, copy) void (^onRoomInvitationAccept)(MXRoom*);
-
-/**
  There is a pending drag and drop cell.
  It defines its path of the source cell.
  */

@@ -296,28 +296,46 @@
         return;
     }
     
-    if ([dataSource isKindOfClass:[RecentsDataSource class]])
-    {
-        RecentsDataSource* recentsDataSource = (RecentsDataSource*)dataSource;
-    
-        recentsDataSource.onRoomInvitationReject = ^(MXRoom* room) {
-            
-            [self setEditing:NO];
-            
-            [room leave:^{
-                [self.recentsTableView reloadData];
-            } failure:^(NSError *error) {
-                NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed", room.state.roomId);
-            }];
-
-        };
-        
-        recentsDataSource.onRoomInvitationAccept = ^(MXRoom* room) {
-            [self.delegate recentListViewController:self didSelectRoom:room.state.roomId inMatrixSession:room.mxSession];
-        };
-    }
-    
     [self refreshRecentsTable];
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
+{
+    // Handle here user actions on recents for Vector app
+    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+        
+        // Display room preview by selecting it.
+        [self.delegate recentListViewController:self didSelectRoom:invitedRoom.state.roomId inMatrixSession:invitedRoom.mxSession];
+    }
+    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+        
+        [self setEditing:NO];
+        
+        // Decline the invitation
+        [invitedRoom leave:^{
+            
+            [self.recentsTableView reloadData];
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed", invitedRoom.state.roomId);
+            
+        }];
+    }
+    else
+    {
+        // Keep default implementation for other actions if any
+        if ([super respondsToSelector:@selector(cell:didRecognizeAction:userInfo:)])
+        {
+            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        }
+    }
 }
 
 #pragma mark - swipe actions
