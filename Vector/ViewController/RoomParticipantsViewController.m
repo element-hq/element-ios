@@ -442,39 +442,73 @@
 
 - (void)finalizeParticipantsList
 {
-    // Sort contacts in alphabetical order (Use sortingDisplayName in which symbols are skipped)
-    NSComparator comparator = ^NSComparisonResult(Contact *contact1, Contact *contact2) {
+    // Sort contacts by last active, with "active now" first.
+    // ...and then by power
+    // ...and then alphabetically.
+    // We could tiebreak instead by "last recently spoken in this room" if we wanted to.
+    NSComparator comparator = ^NSComparisonResult(Contact *contactA, Contact *contactB) {
 
-        // Order first by power levels (admins then moderators then others)
-        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        NSInteger powerLevel1 = [powerLevels powerLevelOfUserWithUserID:contact1.mxMember.userId];
-        NSInteger powerLevel2 = [powerLevels powerLevelOfUserWithUserID:contact2.mxMember.userId];
+        MXUser *userA = [self.mxRoom.mxSession userWithUserId:contactA.mxMember.userId];
+        MXUser *userB = [self.mxRoom.mxSession userWithUserId:contactB.mxMember.userId];
 
-        if (powerLevel1 < powerLevel2)
+        if (!userA && !userB)
         {
-            return NSOrderedDescending;
+            return NSOrderedSame;
         }
-        else if (powerLevel1 > powerLevel2)
+        if (userA && !userB)
         {
             return NSOrderedAscending;
         }
-
-        // Then order by name
-        if (contact1.sortingDisplayName.length && contact2.sortingDisplayName.length)
-        {
-            return [contact1.sortingDisplayName compare:contact2.sortingDisplayName options:NSCaseInsensitiveSearch];
-        }
-        else if (contact1.sortingDisplayName.length)
-        {
-            return NSOrderedAscending;
-        }
-        else if (contact2.sortingDisplayName.length)
+        if (!userA && userB)
         {
             return NSOrderedDescending;
         }
-        
-        return [contact1.displayName compare:contact2.displayName options:NSCaseInsensitiveSearch];
-        
+
+        if (userA.isCurrentlyActive && userB.isCurrentlyActive)
+        {
+            // Order first by power levels (admins then moderators then others)
+            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
+            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
+
+            if (powerLevelA == powerLevelB)
+            {
+                // Then order by name
+                if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+                {
+                    return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+                }
+                else if (contactA.sortingDisplayName.length)
+                {
+                    return NSOrderedAscending;
+                }
+                else if (contactB.sortingDisplayName.length)
+                {
+                    return NSOrderedDescending;
+                }
+                return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+            }
+            else
+            {
+                return powerLevelB - powerLevelA;
+            }
+
+        }
+
+        if (userA.isCurrentlyActive && !userB.isCurrentlyActive)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA.isCurrentlyActive && userB.isCurrentlyActive)
+        {
+            return NSOrderedDescending;
+        }
+
+        // Finally, compare the timestamps
+        NSComparisonResult lastActiveAgoA = userA && userA.lastActiveAgo ? userA.lastActiveAgo : 0;
+        NSComparisonResult lastActiveAgoB = userB && userB.lastActiveAgo ? userB.lastActiveAgo : 0;
+
+        return lastActiveAgoA - lastActiveAgoB;
     };
     
     // Sort each participants list in alphabetical order
