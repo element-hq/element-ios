@@ -30,10 +30,6 @@
 
 @interface RoomParticipantsViewController ()
 {
-    // Array used to sort participants and invited members
-    NSMutableArray *sortedParticipants;
-    NSMutableArray *sortedInvitedParticipants;
-    
     // Search session
     NSString *currentSearchText;
     UIView* searchBarSeparator;
@@ -127,9 +123,6 @@
     }
     
     _mxRoom = nil;
-    
-    sortedParticipants = nil;
-    sortedInvitedParticipants = nil;
     
     invitableContacts = nil;
     filteredActualParticipants = nil;
@@ -318,8 +311,8 @@
 
 - (void)refreshParticipantsFromRoomMembers
 {
-    sortedParticipants = [NSMutableArray array];
-    sortedInvitedParticipants = [NSMutableArray array];
+    actualParticipants = [NSMutableArray array];
+    invitedParticipants = [NSMutableArray array];
     userContact = nil;
     
     if (self.mxRoom)
@@ -403,11 +396,11 @@
 
         if (mxMember.membership == MXMembershipInvite)
         {
-            [sortedInvitedParticipants addObject:contact];
+            [invitedParticipants addObject:contact];
         }
         else
         {
-            [sortedParticipants addObject:contact];
+            [actualParticipants addObject:contact];
         }
     }
 }
@@ -421,7 +414,7 @@
         contact.isThirdPartyInvite = YES;
         contact.mxThirdPartyInvite = roomThirdPartyInvite;
 
-        [sortedInvitedParticipants addObject:contact];
+        [invitedParticipants addObject:contact];
     }
 }
 
@@ -430,35 +423,35 @@
 {
     NSUInteger index;
 
-    if (sortedParticipants.count)
+    if (actualParticipants.count)
     {
-        for (index = 0; index < sortedParticipants.count; index++)
+        for (index = 0; index < actualParticipants.count; index++)
         {
-            Contact *contact = sortedParticipants[index];
+            Contact *contact = actualParticipants[index];
             
             if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
             {
-                [sortedParticipants removeObjectAtIndex:index];
+                [actualParticipants removeObjectAtIndex:index];
                 return;
             }
         }
     }
     
-    if (sortedInvitedParticipants.count)
+    if (invitedParticipants.count)
     {
-        for (index = 0; index < sortedInvitedParticipants.count; index++)
+        for (index = 0; index < invitedParticipants.count; index++)
         {
-            Contact *contact = sortedInvitedParticipants[index];
+            Contact *contact = invitedParticipants[index];
             
             if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
             {
-                [sortedInvitedParticipants removeObjectAtIndex:index];
+                [invitedParticipants removeObjectAtIndex:index];
                 return;
             }
             
             if (contact.mxThirdPartyInvite && [contact.mxThirdPartyInvite.token isEqualToString:key])
             {
-                [sortedInvitedParticipants removeObjectAtIndex:index];
+                [invitedParticipants removeObjectAtIndex:index];
                 return;
             }
         }
@@ -503,15 +496,8 @@
     };
     
     // Sort each participants list in alphabetical order
-    [sortedParticipants sortUsingComparator:comparator];
-    [sortedInvitedParticipants sortUsingComparator:comparator];
-    
-    // Report sorted lists in the displayed participants list
-    actualParticipants = [NSMutableArray array];
-    [actualParticipants addObjectsFromArray:sortedParticipants];
-    
-    invitedParticipants = [NSMutableArray array];
-    [invitedParticipants addObjectsFromArray:sortedInvitedParticipants];
+    [actualParticipants sortUsingComparator:comparator];
+    [invitedParticipants sortUsingComparator:comparator];
     
     // Refer all used contacts in only one dictionary.
     contactsById = [NSMutableDictionary dictionary];
