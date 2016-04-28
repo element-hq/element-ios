@@ -22,8 +22,14 @@
 
 #import "VectorDesignValues.h"
 
+#pragma mark - Constant definitions
+
+NSString *const kInviteRecentTableViewCellPreviewButtonPressed = @"kInviteRecentTableViewCellPreviewButtonPressed";
+NSString *const kInviteRecentTableViewCellDeclineButtonPressed = @"kInviteRecentTableViewCellDeclineButtonPressed";
+
+NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCellRoomKey";
+
 @implementation InviteRecentTableViewCell
-@synthesize onRejectClick, onJoinClick;
 
 #pragma mark - Class methods
 
@@ -36,7 +42,7 @@
     self.leftButton.backgroundColor = kVectorColorGreen;
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateNormal];
     [self.leftButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.leftButton addTarget:self action:@selector(onJoinPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.leftButton addTarget:self action:@selector(onPreviewPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [self.rightButton.layer setCornerRadius:5];
@@ -44,24 +50,34 @@
     self.rightButton.backgroundColor = kVectorColorGreen;
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.rightButton addTarget:self action:@selector(onRejectedPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)onRejectedPressed:(id)sender
+- (void)onDeclinePressed:(id)sender
 {
-    if (self.onRejectClick)
+    if (self.delegate)
     {
-        self.onRejectClick();
+        MXRoom *room = roomCellData.roomDataSource.room;
+        
+        if (room)
+        {
+            [self.delegate cell:self didRecognizeAction:kInviteRecentTableViewCellDeclineButtonPressed userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
+        }
     }
 }
 
-- (void)onJoinPressed:(id)sender
+- (void)onPreviewPressed:(id)sender
 {
-    if (self.onJoinClick)
+    if (self.delegate)
     {
-        self.onJoinClick();
+        MXRoom *room = roomCellData.roomDataSource.room;
+        
+        if (room)
+        {
+            [self.delegate cell:self didRecognizeAction:kInviteRecentTableViewCellPreviewButtonPressed userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
+        }
     }
 }
 

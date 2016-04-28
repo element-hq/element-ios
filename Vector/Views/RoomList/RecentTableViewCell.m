@@ -41,7 +41,7 @@
 
 - (void)render:(MXKCellData *)cellData
 {
-    id<MXKRecentCellDataStoring> roomCellData = (id<MXKRecentCellDataStoring>)cellData;
+    roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
         // Report computed values as is
