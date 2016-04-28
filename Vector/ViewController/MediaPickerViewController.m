@@ -376,7 +376,10 @@ static void *RecordingContext = &RecordingContext;
     // Update Captures collection display
     if (recentCaptures.count)
     {
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        // recents Collection is limited to the first 12 assets
+        NSInteger recentsCount = ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
+        
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
         [self.recentCapturesCollectionContainerView needsUpdateConstraints];
         
         [self.recentCapturesCollectionView reloadData];
@@ -429,7 +432,10 @@ static void *RecordingContext = &RecordingContext;
     if (recentCaptures.count)
     {
         self.recentCapturesCollectionView.hidden = NO;
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        
+        // recents Collection is limited to the first 12 assets
+        NSInteger recentsCount = ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
         [self.recentCapturesCollectionContainerView needsUpdateConstraints];
         
         [self.recentCapturesCollectionView reloadData];
@@ -1308,7 +1314,7 @@ static void *RecordingContext = &RecordingContext;
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     // Collection is limited to the first 12 assets
-    return (recentCaptures.count > 12) ? 12 : recentCaptures.count;
+    return ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
