@@ -31,9 +31,7 @@
 @interface RoomParticipantsViewController ()
 {
     // Array used to sort participants and invited members
-    NSMutableArray *sortedParticipantsAdmin;
     NSMutableArray *sortedParticipants;
-    NSMutableArray *sortedInvitedParticipantsAdmin;
     NSMutableArray *sortedInvitedParticipants;
     
     // Search session
@@ -130,9 +128,7 @@
     
     _mxRoom = nil;
     
-    sortedParticipantsAdmin = nil;
     sortedParticipants = nil;
-    sortedInvitedParticipantsAdmin = nil;
     sortedInvitedParticipants = nil;
     
     invitableContacts = nil;
@@ -323,9 +319,7 @@
 - (void)refreshParticipantsFromRoomMembers
 {
     sortedParticipants = [NSMutableArray array];
-    sortedParticipantsAdmin = [NSMutableArray array];
     sortedInvitedParticipants = [NSMutableArray array];
-    sortedInvitedParticipantsAdmin = [NSMutableArray array];
     userContact = nil;
     
     if (self.mxRoom)
@@ -406,28 +400,14 @@
         // Create the contact related to this member
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
-        
-        if (isAdmin)
+
+        if (mxMember.membership == MXMembershipInvite)
         {
-            if (mxMember.membership == MXMembershipInvite)
-            {
-                [sortedInvitedParticipantsAdmin addObject:contact];
-            }
-            else
-            {
-                [sortedParticipantsAdmin addObject:contact];
-            }
+            [sortedInvitedParticipants addObject:contact];
         }
         else
         {
-            if (mxMember.membership == MXMembershipInvite)
-            {
-                [sortedInvitedParticipants addObject:contact];
-            }
-            else
-            {
-                [sortedParticipants addObject:contact];
-            }
+            [sortedParticipants addObject:contact];
         }
     }
 }
@@ -449,21 +429,7 @@
 - (void)removeParticipantByKey:(NSString*)key
 {
     NSUInteger index;
-    
-    if (sortedParticipantsAdmin.count)
-    {
-        for (index = 0; index < sortedParticipantsAdmin.count; index++)
-        {
-            Contact *contact = sortedParticipantsAdmin[index];
-            
-            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
-            {
-                [sortedParticipantsAdmin removeObjectAtIndex:index];
-                return;
-            }
-        }
-    }
-    
+
     if (sortedParticipants.count)
     {
         for (index = 0; index < sortedParticipants.count; index++)
@@ -473,20 +439,6 @@
             if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
             {
                 [sortedParticipants removeObjectAtIndex:index];
-                return;
-            }
-        }
-    }
-    
-    if (sortedInvitedParticipantsAdmin.count)
-    {
-        for (index = 0; index < sortedInvitedParticipantsAdmin.count; index++)
-        {
-            Contact *contact = sortedInvitedParticipantsAdmin[index];
-            
-            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
-            {
-                [sortedInvitedParticipantsAdmin removeObjectAtIndex:index];
                 return;
             }
         }
@@ -517,7 +469,22 @@
 {
     // Sort contacts in alphabetical order (Use sortingDisplayName in which symbols are skipped)
     NSComparator comparator = ^NSComparisonResult(Contact *contact1, Contact *contact2) {
-        
+
+        // Order first by power levels (admins then moderators then others)
+        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+        NSInteger powerLevel1 = [powerLevels powerLevelOfUserWithUserID:contact1.mxMember.userId];
+        NSInteger powerLevel2 = [powerLevels powerLevelOfUserWithUserID:contact2.mxMember.userId];
+
+        if (powerLevel1 < powerLevel2)
+        {
+            return NSOrderedDescending;
+        }
+        else if (powerLevel1 > powerLevel2)
+        {
+            return NSOrderedAscending;
+        }
+
+        // Then order by name
         if (contact1.sortingDisplayName.length && contact2.sortingDisplayName.length)
         {
             return [contact1.sortingDisplayName compare:contact2.sortingDisplayName options:NSCaseInsensitiveSearch];
@@ -536,18 +503,14 @@
     };
     
     // Sort each participants list in alphabetical order
-    [sortedParticipantsAdmin sortUsingComparator:comparator];
     [sortedParticipants sortUsingComparator:comparator];
-    [sortedInvitedParticipantsAdmin sortUsingComparator:comparator];
     [sortedInvitedParticipants sortUsingComparator:comparator];
     
     // Report sorted lists in the displayed participants list
     actualParticipants = [NSMutableArray array];
-    [actualParticipants addObjectsFromArray:sortedParticipantsAdmin];
     [actualParticipants addObjectsFromArray:sortedParticipants];
     
     invitedParticipants = [NSMutableArray array];
-    [invitedParticipants addObjectsFromArray:sortedInvitedParticipantsAdmin];
     [invitedParticipants addObjectsFromArray:sortedInvitedParticipants];
     
     // Refer all used contacts in only one dictionary.
