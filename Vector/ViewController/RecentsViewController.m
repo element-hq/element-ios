@@ -330,8 +330,11 @@
     }
     else
     {
-        // Keep default implementation for other actions
-        [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        // Keep default implementation for other actions if any
+        if ([super respondsToSelector:@selector(cell:didRecognizeAction:userInfo:)])
+        {
+            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        }
     }
 }
 
