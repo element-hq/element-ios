@@ -453,7 +453,7 @@
 
         if (!userA && !userB)
         {
-            return NSOrderedSame;
+            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
         }
         if (userA && !userB)
         {
