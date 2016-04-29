@@ -501,6 +501,19 @@
     return cell;
 }
 
+#pragma mark - TableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+    {
+        TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
+        
+        [self onActionButtonPressed:cell.mxkButton];
+    }
+}
+
 #pragma mark - Action
 
 - (void)onActionButtonPressed:(id)sender
