@@ -12,6 +12,8 @@
 			<dict>
 				<key>NSExceptionRequiresForwardSecrecy</key>
 				<false/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
 			</dict>
 		</dict>
 	</dict>
