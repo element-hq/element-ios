@@ -43,7 +43,7 @@
                 break;
         }
 
-        if (user.isCurrentlyActive)
+        if (user.currentlyActive)
         {
             presenceText = [presenceText stringByAppendingString:[NSString stringWithFormat:@" %@",
                                                                   NSLocalizedStringFromTable(@"room_participants_now", @"Vector", nil)]];

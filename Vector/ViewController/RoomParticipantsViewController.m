@@ -464,7 +464,7 @@
             return NSOrderedDescending;
         }
 
-        if (userA.isCurrentlyActive && userB.isCurrentlyActive)
+        if (userA.currentlyActive && userB.currentlyActive)
         {
             // Order first by power levels (admins then moderators then others)
             MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
@@ -495,11 +495,11 @@
 
         }
 
-        if (userA.isCurrentlyActive && !userB.isCurrentlyActive)
+        if (userA.currentlyActive && !userB.currentlyActive)
         {
             return NSOrderedAscending;
         }
-        if (!userA.isCurrentlyActive && userB.isCurrentlyActive)
+        if (!userA.currentlyActive && userB.currentlyActive)
         {
             return NSOrderedDescending;
         }
