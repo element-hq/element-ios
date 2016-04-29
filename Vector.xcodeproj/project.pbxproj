@@ -21,6 +21,7 @@
 		325F6A481C21D4C100C12F51 /* chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A451C21D4C100C12F51 /* chevron@2x.png */; };
 		325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A461C21D4C100C12F51 /* chevron@3x.png */; };
 		327F8DB51C64DB9D00581CA3 /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */; };
+		329D08101CD26177007CECC6 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 329D080F1CD26177007CECC6 /* Tools.m */; };
 		32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */; };
 		32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */; };
 		32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32AAC3E51C3525DE007A3B5B /* RoomSearchViewController.m */; };
@@ -273,6 +274,8 @@
 		325F6A451C21D4C100C12F51 /* chevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@2x.png"; sourceTree = "<group>"; };
 		325F6A461C21D4C100C12F51 /* chevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@3x.png"; sourceTree = "<group>"; };
 		327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
+		329D080E1CD26177007CECC6 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
+		329D080F1CD26177007CECC6 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		32A8871E1C89B9580037DC17 /* SimpleRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleRoomTitleView.h; path = RoomTitle/SimpleRoomTitleView.h; sourceTree = "<group>"; };
 		32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleRoomTitleView.m; path = RoomTitle/SimpleRoomTitleView.m; sourceTree = "<group>"; };
 		32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SimpleRoomTitleView.xib; path = RoomTitle/SimpleRoomTitleView.xib; sourceTree = "<group>"; };
@@ -813,6 +816,8 @@
 				327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */,
 				F08BE09C1B87025B00C480FB /* EventFormatter.h */,
 				F08BE09D1B87025B00C480FB /* EventFormatter.m */,
+				329D080E1CD26177007CECC6 /* Tools.h */,
+				329D080F1CD26177007CECC6 /* Tools.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1484,6 +1489,7 @@
 				F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */,
 				71F7F5181C22CC7500E7ED8F /* MXRoom+Vector.m in Sources */,
 				F0D2D9831C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				329D08101CD26177007CECC6 /* Tools.m in Sources */,
 				F09EE0041C5134BE0078712F /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				71C5F2951C074ACC004C094B /* RoomSettingsViewController.m in Sources */,
