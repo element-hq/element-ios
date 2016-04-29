@@ -60,6 +60,7 @@
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 
 #import "AvatarGenerator.h"
+#import "Tools.h"
 
 #import "VectorDesignValues.h"
 
@@ -1374,18 +1375,15 @@
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
 
-        // iOS Patch: fix vector.im urls before using it
-        if ([url.host isEqualToString:@"vector.im"])
+        // If the link can be open it by the app, let it do
+        if ([Tools isUniversalLink:url])
         {
-            url = [AppDelegate fixURLWithSeveralHashKeys:url];
+            shouldDoAction = NO;
 
-            // If the link can be open it by the app, let it do
-            if ([[AppDelegate theDelegate] isUniversalLink:url])
-            {
-                shouldDoAction = NO;
+            // iOS Patch: fix vector.im urls before using it
+            url = [Tools fixURLWithSeveralHashKeys:url];
 
-                [[AppDelegate theDelegate] handleUniversalLinkFragment:url.fragment];
-            }
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:url.fragment];
         }
     }
 

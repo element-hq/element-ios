@@ -59,4 +59,44 @@
     return presenceText;
 }
 
+#pragma mark - Universal link
+
++ (BOOL)isUniversalLink:(NSURL*)url
+{
+    BOOL isUniversalLink;
+
+    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"])
+    {
+        // iOS Patch: fix vector.im urls before using it
+        url = [Tools fixURLWithSeveralHashKeys:url];
+
+        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:url.path])
+        {
+            isUniversalLink = YES;
+        }
+    }
+
+    return isUniversalLink;
+}
+
++ (NSURL *)fixURLWithSeveralHashKeys:(NSURL *)url
+{
+    NSURL *fixedURL = url;
+
+    // The NSURL may have no fragment because it contains more that '%23' occurence
+    if (!url.fragment)
+    {
+        // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
+        NSString *urlString = url.absoluteString;
+        NSRange range = [urlString rangeOfString:@"%23"];
+        if (NSNotFound != range.location)
+        {
+            urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
+            fixedURL = [NSURL URLWithString:urlString];
+        }
+    }
+
+    return fixedURL;
+}
+
 @end
