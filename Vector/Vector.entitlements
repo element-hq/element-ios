@@ -4,6 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:www.vector.im</string>
 		<string>applinks:vector.im</string>
 	</array>
 </dict>
