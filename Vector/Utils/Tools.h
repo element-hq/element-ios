@@ -28,4 +28,26 @@
  */
 + (NSString*)presenceText:(MXUser*)user;
 
+
+#pragma mark - Universal link
+
+/**
+ Detect if a URL is a universal link for the application.
+
+ @return YES if the URL can be handled by the app.
+ */
++ (BOOL)isUniversalLink:(NSURL*)url;
+
+/**
+ Fix a http://vector.im path url.
+
+ This method fixes the issue with iOS which handles URL badly when there are several hash
+ keys ('%23') in the link.
+ Vector.im links have often several hash keys...
+
+ @param url a NSURL with possibly several hash keys and thus badly parsed.
+ @return a NSURL correctly parsed.
+ */
++ (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
+
 @end
