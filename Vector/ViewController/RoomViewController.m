@@ -458,30 +458,35 @@
         self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
         
         self.titleView.editable = NO;
-
-        // Force expanded header refresh
-        expandedHeader.mxRoom = self.roomDataSource.room;
-        self.expandedHeaderContainerHeightConstraint.constant = expandedHeader.bottomBorderView.frame.origin.y + 1;
         
-        // Restore tool bar view and room activities view if none
-        if (!self.inputToolbarView)
+        if (self.roomDataSource)
         {
-            [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+            // Force expanded header refresh
+            expandedHeader.mxRoom = self.roomDataSource.room;
+            self.expandedHeaderContainerHeightConstraint.constant = expandedHeader.bottomBorderView.frame.origin.y + 1;
             
-            // Update the inputToolBar height.
-            CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
-            // Disable animation during the update
-            [UIView setAnimationsEnabled:NO];
-            [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
-            [UIView setAnimationsEnabled:YES];
+            // Restore tool bar view and room activities view if none
+            if (!self.inputToolbarView)
+            {
+                [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+                
+                // Update the inputToolBar height.
+                CGFloat height = (self.inputToolbarView ? ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant : 0);
+                // Disable animation during the update
+                [UIView setAnimationsEnabled:NO];
+                [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
+                [UIView setAnimationsEnabled:YES];
+                
+                [self refreshRoomInputToolbar];
+                
+                self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
+            }
             
-            [self refreshRoomInputToolbar];
-        }
-        
-        if (!self.activitiesView)
-        {
-            // And the extra area
-            [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+            if (!self.activitiesView)
+            {
+                // And the extra area
+                [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+            }
         }
     }
 }
