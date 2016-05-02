@@ -684,16 +684,8 @@ static void *RecordingContext = &RecordingContext;
                                                    object:nil];
         [videoPlayer requestThumbnailImagesAtTimes:@[@0.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
     }
-    
-    videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
-    [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
-    videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
-    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
-    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
-    [validationView addSubview:videoPlayerControl];
-    videoPlayerControl.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+
     [validationView showFullScreen];
-    videoPlayerControl.center = validationView.center;
 }
 
 - (void)dismissImageValidationView
@@ -1506,6 +1498,36 @@ static void *RecordingContext = &RecordingContext;
     {
         validationView.image = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
         [validationView bringSubviewToFront:videoPlayerControl];
+
+        // Now, there is a thumbnail, show the video control
+        videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
+        [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
+        videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+        [validationView addSubview:videoPlayerControl];
+        videoPlayerControl.center = validationView.imageView.center;
+
+        videoPlayerControl.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:validationView.imageView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1
+                                                                              constant:0.0f];
+
+        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:validationView.imageView
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                            multiplier:1
+                                                                              constant:0.0f];
+
+        [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
+
+        [videoPlayerControl layoutIfNeeded];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
