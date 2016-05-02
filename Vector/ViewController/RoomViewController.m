@@ -1375,6 +1375,8 @@
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
 
+        NSLog(@"#### shouldDoAction. url: %@", url);
+
         // If the link can be open it by the app, let it do
         if ([Tools isUniversalLink:url])
         {

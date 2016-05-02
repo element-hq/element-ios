@@ -65,16 +65,22 @@
 {
     BOOL isUniversalLink;
 
+    NSLog(@"#### isUniversalLink. url.host: %@", url.host);
+
     if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"])
     {
         // iOS Patch: fix vector.im urls before using it
         url = [Tools fixURLWithSeveralHashKeys:url];
+
+        NSLog(@"#### isUniversalLink. Fixed url: %@", url);
 
         if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:url.path])
         {
             isUniversalLink = YES;
         }
     }
+
+    NSLog(@"#### isUniversalLink. Result: %@", @(isUniversalLink));
 
     return isUniversalLink;
 }
