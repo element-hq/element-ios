@@ -48,7 +48,7 @@
             presenceText = [presenceText stringByAppendingString:[NSString stringWithFormat:@" %@",
                                                                   NSLocalizedStringFromTable(@"room_participants_now", @"Vector", nil)]];
         }
-        else if (0 < user.lastActiveAgo)
+        else if (-1 != user.lastActiveAgo && 0 < user.lastActiveAgo)
         {
             presenceText = [presenceText stringByAppendingString:[NSString stringWithFormat:@" %@ %@",
                                                                   [MXKTools formatSecondsIntervalFloored:(user.lastActiveAgo / 1000)],
