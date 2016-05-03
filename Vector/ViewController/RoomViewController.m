@@ -34,6 +34,7 @@
 #import "PreviewRoomTitleView.h"
 
 #import "RoomParticipantsViewController.h"
+#import "RoomMemberDetailsViewController.h"
 
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
@@ -1047,7 +1048,15 @@
     // Handle here user actions on bubbles for Vector app
     if (customizedRoomDataSource)
     {
-        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
+        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
+        {
+            selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            if (selectedRoomMember)
+            {
+                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+            }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -1462,6 +1471,21 @@
 
         RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource andMatrixSession:self.mainSession];
         [roomSearchViewController displaySearch:roomSearchDataSource];
+    }
+    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
+    {
+        if (selectedRoomMember)
+        {
+            RoomMemberDetailsViewController *memberViewController = pushedViewController;
+            // Set rageShake handler
+            memberViewController.rageShakeManager = [RageShakeManager sharedManager];
+            // Set delegate to handle start chat option
+            memberViewController.delegate = [AppDelegate theDelegate];
+            
+            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
+            
+            selectedRoomMember = nil;
+        }
     }
 
     // Hide back button title
