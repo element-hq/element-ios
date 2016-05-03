@@ -1526,8 +1526,6 @@ static void *RecordingContext = &RecordingContext;
                                                                               constant:0.0f];
 
         [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
-
-        [videoPlayerControl layoutIfNeeded];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
