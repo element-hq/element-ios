@@ -121,7 +121,7 @@
 "room_participants_action_invite" = "Invite";
 "room_participants_action_leave" = "Leave this room";
 "room_participants_action_remove" = "Remove from this room";
-"room_participants_action_ban" = "Ban";
+"room_participants_action_ban" = "Ban from this room";
 "room_participants_action_unban" = "Unban";
 "room_participants_action_ignore" = "Ignore";
 "room_participants_action_set_default_power_level" = "Reset to normal user";
