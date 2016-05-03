@@ -82,6 +82,8 @@
     _isAddParticipantSearchBarEditing = NO;
     
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+    _searchBarView.returnKeyType = UIReturnKeyDone;
+    _searchBarView.autocapitalizationType = NO;
     [self refreshSearchBarItemsColor:_searchBarView];
     
     _searchBarHeaderBorder.backgroundColor = kVectorColorSilver;
