@@ -17,6 +17,7 @@
 #import "AuthenticationViewController.h"
 
 #import "AuthInputsView.h"
+#import "ForgotPasswordInputsView.h"
 
 #import "RageShakeManager.h"
 
@@ -35,6 +36,8 @@
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self)
                                           bundle:[NSBundle bundleForClass:self]];
 }
+
+#pragma mark -
 
 - (void)viewDidLoad
 {
@@ -65,10 +68,12 @@
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     self.submitButton.enabled = YES;
     
-    [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setTitleColor:kVectorTextColorGray forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:kVectorTextColorGray forState:UIControlStateHighlighted];
+    NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
+    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kVectorColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
+    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
     
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
@@ -85,15 +90,13 @@
     // Custom used authInputsView
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeRegister];
+    [self registerAuthInputsViewClass:ForgotPasswordInputsView.class forAuthType:MXKAuthenticationTypeForgotPassword];
     
     // Initialize the auth inputs display
     AuthInputsView *authInputsView = [AuthInputsView authInputsView];
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
-    
-    // FIXME handle "Forgot password"
-    self.forgotPasswordButton.hidden = YES;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -105,11 +108,26 @@
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     }
-    else
+    else if (authType == MXKAuthenticationTypeRegister)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
     }
+    else if (authType == MXKAuthenticationTypeForgotPassword)
+    {
+        if (isPasswordReseted)
+        {
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_return_to_login", @"Vector", nil) forState:UIControlStateNormal];
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_return_to_login", @"Vector", nil) forState:UIControlStateHighlighted];
+        }
+        else
+        {
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_send_reset_email", @"Vector", nil) forState:UIControlStateNormal];
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_send_reset_email", @"Vector", nil) forState:UIControlStateHighlighted];
+        }
+    }
+    
+    self.forgotPasswordButton.hidden = (authType != MXKAuthenticationTypeLogin);
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -132,9 +150,14 @@
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
         }
-        else
+        else if (self.authType == MXKAuthenticationTypeRegister)
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+        }
+        else if (self.authType == MXKAuthenticationTypeForgotPassword)
+        {
+            // The right bar button is used to return to login.
+            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
         }
     }
 }
@@ -147,7 +170,8 @@
     }
     else if (sender == self.forgotPasswordButton)
     {
-        // TODO
+        // Update UI to reset password
+        self.authType = MXKAuthenticationTypeForgotPassword;
     }
     else if (sender == self.rightBarButtonItem)
     {
@@ -161,15 +185,11 @@
         {
             self.authType = MXKAuthenticationTypeRegister;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
-            // FIXME handle "Forgot password"
-//            self.forgotPasswordButton.hidden = YES;
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
-            // FIXME handle "Forgot password"
-//            self.forgotPasswordButton.hidden = NO;
         }
     }
     else if (sender == self.submitButton)

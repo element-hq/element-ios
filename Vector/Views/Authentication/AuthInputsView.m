@@ -66,81 +66,102 @@
     submittedEmail = nil;
 }
 
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGRect lastItemFrame;
+    
+    if (self.recaptchaWebView.isHidden)
+    {
+        lastItemFrame = self.repeatPasswordContainer.frame;
+    }
+    else
+    {
+        lastItemFrame = self.recaptchaWebView.frame;
+    }
+    
+    self.viewHeightConstraint.constant = lastItemFrame.origin.y + lastItemFrame.size.height;
+}
+
 #pragma mark -
 
 - (BOOL)setAuthSession:(MXAuthenticationSession *)authSession withAuthType:(MXKAuthenticationType)authType;
 {
-    // Validate first the provided session
-    MXAuthenticationSession *validSession = [self validateAuthenticationSession:authSession];
-    
-    // Cancel email validation if any
-    if (submittedEmail)
+    if (type == MXKAuthenticationTypeLogin || type == MXKAuthenticationTypeRegister)
     {
-        [submittedEmail cancelCurrentRequest];
-        submittedEmail = nil;
-    }
-    
-    // Reset external registration parameters
-    externalRegistrationParameters = nil;
-    
-    // Reset UI by hidding all items
-    [self hideInputsContainer];
-    
-    if ([super setAuthSession:validSession withAuthType:authType])
-    {
-        if (authType == MXKAuthenticationTypeLogin)
+        // Validate first the provided session
+        MXAuthenticationSession *validSession = [self validateAuthenticationSession:authSession];
+        
+        // Cancel email validation if any
+        if (submittedEmail)
         {
-            self.passWordTextField.returnKeyType = UIReturnKeyDone;
-            
-            self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-            
-            self.userLoginContainerTopConstraint.constant = 0;
-            self.passwordContainerTopConstraint.constant = 50;
-            
-            self.userLoginContainer.hidden = NO;
-            self.passwordContainer.hidden = NO;
-            self.emailContainer.hidden = YES;
-            self.repeatPasswordContainer.hidden = YES;
+            [submittedEmail cancelCurrentRequest];
+            submittedEmail = nil;
         }
-        else
+        
+        // Reset external registration parameters
+        externalRegistrationParameters = nil;
+        
+        // Reset UI by hidding all items
+        [self hideInputsContainer];
+        
+        if ([super setAuthSession:validSession withAuthType:authType])
         {
-            self.passWordTextField.returnKeyType = UIReturnKeyNext;
-            
-            self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
-            
-            if (self.isEmailIdentityFlowSupported)
+            if (authType == MXKAuthenticationTypeLogin)
             {
-                if (self.isEmailIdentityFlowRequired)
-                {
-                    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
-                }
-                else
-                {
-                    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
-                }
+                self.passWordTextField.returnKeyType = UIReturnKeyDone;
                 
-                self.userLoginContainerTopConstraint.constant = 50;
-                self.passwordContainerTopConstraint.constant = 100;
+                self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
                 
-                self.emailContainer.hidden = NO;
-            }
-            else
-            {
                 self.userLoginContainerTopConstraint.constant = 0;
                 self.passwordContainerTopConstraint.constant = 50;
                 
+                self.userLoginContainer.hidden = NO;
+                self.passwordContainer.hidden = NO;
                 self.emailContainer.hidden = YES;
+                self.repeatPasswordContainer.hidden = YES;
+            }
+            else
+            {
+                self.passWordTextField.returnKeyType = UIReturnKeyNext;
+                
+                self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil);
+                
+                if (self.isEmailIdentityFlowSupported)
+                {
+                    if (self.isEmailIdentityFlowRequired)
+                    {
+                        self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
+                    }
+                    else
+                    {
+                        self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
+                    }
+                    
+                    self.userLoginContainerTopConstraint.constant = 50;
+                    self.passwordContainerTopConstraint.constant = 100;
+                    
+                    self.emailContainer.hidden = NO;
+                }
+                else
+                {
+                    self.userLoginContainerTopConstraint.constant = 0;
+                    self.passwordContainerTopConstraint.constant = 50;
+                    
+                    self.emailContainer.hidden = YES;
+                }
+                
+                self.userLoginContainer.hidden = NO;
+                self.passwordContainer.hidden = NO;
+                self.repeatPasswordContainer.hidden = NO;
             }
             
-            self.userLoginContainer.hidden = NO;
-            self.passwordContainer.hidden = NO;
-            self.repeatPasswordContainer.hidden = NO;
+            CGRect frame = self.repeatPasswordContainer.frame;
+            self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
+            
+            return YES;
         }
-        
-        CGRect frame = self.repeatPasswordContainer.frame;
-        self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
-        
-        return YES;
     }
     
     return NO;
@@ -177,7 +198,7 @@
             errorMsg = [NSBundle mxk_localizedStringForKey:@"not_supported_yet"];
         }
     }
-    else
+    else if (type == MXKAuthenticationTypeRegister)
     {
         if (!self.userLoginTextField.text.length)
         {
@@ -292,7 +313,7 @@
                     }
                 }
             }
-            else
+            else if (type == MXKAuthenticationTypeRegister)
             {
                 // Check whether an email has been set, and if it is not handled yet
                 if (!self.emailContainer.isHidden && self.emailTextField.text.length && !self.isEmailIdentityFlowCompleted)

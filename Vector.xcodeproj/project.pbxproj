@@ -189,6 +189,8 @@
 		F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA231B78E42600B1FBBF /* RecentsViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
+		F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */; };
+		F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */; };
 		F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */; };
 		F09E24EE1C6DE24900D39503 /* RoomMemberTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F09E24EC1C6DE24900D39503 /* RoomMemberTitleView.xib */; };
 		F09EE0021C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F09EDFF71C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m */; };
@@ -494,6 +496,9 @@
 		F094AA271B78E42600B1FBBF /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F094AA281B78E42600B1FBBF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		F094AA291B78E42600B1FBBF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordInputsView.h; sourceTree = "<group>"; };
+		F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordInputsView.m; sourceTree = "<group>"; };
+		F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordInputsView.xib; sourceTree = "<group>"; };
 		F09E24EA1C6DE24900D39503 /* RoomMemberTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTitleView.h; sourceTree = "<group>"; };
 		F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTitleView.m; sourceTree = "<group>"; };
 		F09E24EC1C6DE24900D39503 /* RoomMemberTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberTitleView.xib; sourceTree = "<group>"; };
@@ -804,6 +809,9 @@
 		F084DAAA1BB57BD100B4C530 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */,
+				F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */,
+				F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */,
 				F047DBB61C576F6600952DA2 /* AuthInputsView.h */,
 				F047DBB71C576F6600952DA2 /* AuthInputsView.m */,
 				F047DBB81C576F6600952DA2 /* AuthInputsView.xib */,
@@ -1369,6 +1377,7 @@
 				F09EE0071C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */,
 				F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
+				F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */,
 				F0D2D9841C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				F0026B571C916E68001D2C04 /* leave@3x.png in Resources */,
 				F0026B561C916E68001D2C04 /* leave@2x.png in Resources */,
@@ -1505,6 +1514,7 @@
 				71EBE66D1C04C4D300E7D953 /* RoomActivitiesView.m in Sources */,
 				32D200881C16C2B100A4E396 /* HomeViewController.m in Sources */,
 				F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */,
+				F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */,
 				716FDC8A1C186A3A001034CB /* InviteRecentTableViewCell.m in Sources */,
 				F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				71B2A3BB1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m in Sources */,
