@@ -1375,17 +1375,15 @@
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
 
-        NSLog(@"#### shouldDoAction. url: %@", url);
-
         // If the link can be open it by the app, let it do
         if ([Tools isUniversalLink:url])
         {
             shouldDoAction = NO;
 
             // iOS Patch: fix vector.im urls before using it
-            url = [Tools fixURLWithSeveralHashKeys:url];
+            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
 
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:url.fragment];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
         }
     }
 
