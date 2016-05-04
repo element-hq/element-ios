@@ -360,9 +360,17 @@
                 }
                 
                 // Check whether the option Ignore may be presented
-                if (self.mxRoomMember.membership == MXMembershipJoin /*FIXME: is he already ignored ?*/)
+                if (self.mxRoomMember.membership == MXMembershipJoin)
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
+                    //FIXME: is he already ignored ?
+                    //                    if ()
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
+                    }
+                    //                    else
+                    //                    {
+                    //                        [actionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
+                    //                    }
                 }
                 break;
             }  
@@ -422,6 +430,9 @@
             break;
         case MXKRoomMemberDetailsActionIgnore:
             title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionUnignore:
+            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
             break;
         case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
             title = NSLocalizedStringFromTable(@"room_participants_action_set_default_power_level", @"Vector", nil);
