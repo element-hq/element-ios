@@ -1379,7 +1379,7 @@
                                     [strongSelf startActivityIndicator];
                                     
                                     // Add the user to the blacklist: ignored users
-                                    [strongSelf.mainSession ignoreUser:selectedEvent.sender success:^{
+                                    [strongSelf.mainSession ignoreUsers:@[selectedEvent.sender] success:^{
                                         
                                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                                         [strongSelf stopActivityIndicator];
