@@ -123,8 +123,8 @@
 "room_participants_action_remove" = "Remove from this room";
 "room_participants_action_ban" = "Ban from this room";
 "room_participants_action_unban" = "Unban";
-"room_participants_action_ignore" = "Hide the user's messages";
-"room_participants_action_unignore" = "Show the user's messages";
+"room_participants_action_ignore" = "Hide all messages from this user";
+"room_participants_action_unignore" = "Show all messages from this user";
 "room_participants_action_set_default_power_level" = "Reset to normal user";
 "room_participants_action_set_moderator" = "Make moderator";
 "room_participants_action_set_admin" = "Make admin";
@@ -146,9 +146,9 @@
 "room_event_action_share" = "Share";
 "room_event_action_redact" = "Redact";
 "room_event_action_permalink" = "Permalink";
-"room_event_action_report" = "Report to moderator";
+"room_event_action_report" = "Report content";
 "room_event_action_report_prompt_reason" = "Reason for reporting this content";
-"room_event_action_report_prompt_ignore_user" = "The content was successfully reported. Do you wish to hide all messages from this user?";
+"room_event_action_report_prompt_ignore_user" = "Do you want to hide all messages from this user?";
 "room_event_action_save" = "Save";
 "room_event_action_resend" = "Resend";
 "room_event_action_delete" = "Delete";
