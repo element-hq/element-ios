@@ -7,6 +7,8 @@ Improvements:
  * Room member details: Sort members with the same algo as Vector web client.
  * Universal link: Add www.vector.im as associated domain.
  * Chat screen: Open member details on tap-on-avatar #294.
+ * Ability to report abuse #295.
+ * Ability to ignore users #295.
 
 Bug fixes:
  * 6+/iPad: Better manage user with no room in landscape #268.
