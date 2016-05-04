@@ -1,3 +1,24 @@
+Changes in Vector iOS in 0.1.6 (2016-05-04)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.7).
+ * Room member details: Order members by power levels (me, admins then moderators then others).
+ * Room member details: Sort members with the same algo as Vector web client.
+ * Universal link: Add www.vector.im as associated domain.
+ * Chat screen: Open member details on tap-on-avatar #294.
+
+Bug fixes:
+ * 6+/iPad: Better manage user with no room in landscape #268.
+ * Handle the error on joining a room where everyone has left #283.
+ * Video playback stops when you rotate the device #266.
+ * 'Enable notifications on your device' toggle spills over the side on an iPhone 5 display #167.
+ * Media Picker: user's albums are missing #208.
+ * Authentication screen: inputs fields are missing (blank screen) on first app launch.
+ * Room member details: only the "start chat" text is clickable, not that whole button area. #282
+ * Media Picker: Fix icons used on video preview.
+ * Room Participants - Search session: the return key must be 'Done' instead of 'Search' #292.
+
 Changes in Vector iOS in 0.1.5 (2016-04-27)
 ===============================================
 
