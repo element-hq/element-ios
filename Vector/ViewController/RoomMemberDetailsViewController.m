@@ -362,18 +362,18 @@
                 // Check whether the option Ignore may be presented
                 if (self.mxRoomMember.membership == MXMembershipJoin)
                 {
-                    //FIXME: is he already ignored ?
-                    //                    if ()
+                    // is he already ignored ?
+                    if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
                     {
                         [actionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
                     }
-                    //                    else
-                    //                    {
-                    //                        [actionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
-                    //                    }
+                    else
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
+                    }
                 }
                 break;
-            }  
+            }
             case MXMembershipLeave:
             {
                 // Check conditions to be able to invite someone
