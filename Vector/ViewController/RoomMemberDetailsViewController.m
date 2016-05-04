@@ -358,8 +358,22 @@
                 {
                     [actionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
                 }
+                
+                // Check whether the option Ignore may be presented
+                if (self.mxRoomMember.membership == MXMembershipJoin)
+                {
+                    // is he already ignored ?
+                    if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
+                    }
+                    else
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
+                    }
+                }
                 break;
-            }  
+            }
             case MXMembershipLeave:
             {
                 // Check conditions to be able to invite someone
@@ -413,6 +427,12 @@
             break;
         case MXKRoomMemberDetailsActionUnban:
             title = NSLocalizedStringFromTable(@"room_participants_action_unban", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionIgnore:
+            title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionUnignore:
+            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
             break;
         case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
             title = NSLocalizedStringFromTable(@"room_participants_action_set_default_power_level", @"Vector", nil);

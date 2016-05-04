@@ -561,8 +561,11 @@
         // Dispatch the completion in order to let navigation stack refresh itself
         // It is required to display the auth VC at startup
         dispatch_async(dispatch_get_main_queue(), ^{
-            completion();
-        });
+            if (completion)
+            {
+                completion();
+            }
+         });
     }
 }
 
@@ -1163,6 +1166,15 @@
         {
             [self logout];
         }
+    }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+
+        NSLog(@"[AppDelegate] kMXSessionIgnoredUsersDidChangeNotification received. Reload the app");
+
+        // Reload entirely the app when a user has been ignored or unignored
+        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+
     }];
     
     // Observe settings changes
