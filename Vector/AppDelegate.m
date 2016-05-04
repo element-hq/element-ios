@@ -30,6 +30,8 @@
 #import "NSBundle+MatrixKit.h"
 #import "MatrixSDK/MatrixSDK.h"
 
+#import "Tools.h"
+
 #import "AFNetworkReachabilityManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -559,8 +561,11 @@
         // Dispatch the completion in order to let navigation stack refresh itself
         // It is required to display the auth VC at startup
         dispatch_async(dispatch_get_main_queue(), ^{
-            completion();
-        });
+            if (completion)
+            {
+                completion();
+            }
+         });
     }
 }
 
@@ -731,26 +736,13 @@
 
 #pragma mark - Universal link
 
-- (BOOL)isUniversalLink:(NSURL*)url
-{
-    BOOL isUniversalLink;
-
-    if ([url.host isEqualToString:@"vector.im"]
-        && NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:url.path])
-    {
-        isUniversalLink = YES;
-    }
-
-    return isUniversalLink;
-}
-
 - (BOOL)handleUniversalLink:(NSUserActivity*)userActivity
 {
     NSURL *webURL = userActivity.webpageURL;
     NSLog(@"[AppDelegate] handleUniversalLink: %@", webURL.absoluteString);
 
     // iOS Patch: fix vector.im urls before using it
-    webURL = [AppDelegate fixURLWithSeveralHashKeys:webURL];
+    webURL = [Tools fixURLWithSeveralHashKeys:webURL];
 
     // Manage email validation link
     if ([webURL.path isEqualToString:@"/_matrix/identity/api/v1/validate/email/submitToken"])
@@ -1051,26 +1043,6 @@
     *outQueryParams = queryParams;
 }
 
-+ (NSURL *)fixURLWithSeveralHashKeys:(NSURL *)url
-{
-    NSURL *fixedURL = url;
-
-    // The NSURL may have no fragment because it contains more that '%23' occurence
-    if (!url.fragment)
-    {
-        // Replacing the first '%23' occurence into a '#' makes NSURL works correctly
-        NSString *urlString = url.absoluteString;
-        NSRange range = [urlString rangeOfString:@"%23"];
-        if (NSNotFound != range.location)
-        {
-            urlString = [urlString stringByReplacingCharactersInRange:range withString:@"#"];
-            fixedURL = [NSURL URLWithString:urlString];
-        }
-    }
-
-    return fixedURL;
-}
-
 #pragma mark - Matrix sessions handling
 
 - (void)initMatrixSessions
@@ -1194,6 +1166,15 @@
         {
             [self logout];
         }
+    }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+
+        NSLog(@"[AppDelegate] kMXSessionIgnoredUsersDidChangeNotification received. Reload the app");
+
+        // Reload entirely the app when a user has been ignored or unignored
+        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+
     }];
     
     // Observe settings changes

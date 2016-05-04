@@ -33,9 +33,9 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     self.bubbleInfoContainer.hidden = NO;
     
     MXKRoomBubbleComponent *component;
-    if (componentIndex < self.bubbleData.bubbleComponents.count)
+    if (componentIndex < bubbleData.bubbleComponents.count)
     {
-        component  = self.bubbleData.bubbleComponents[componentIndex];
+        component  = bubbleData.bubbleComponents[componentIndex];
     }
     
     if (component && component.date)
@@ -44,7 +44,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         CGFloat timeLabelPosY = componentIndex ? component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant: 0;
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabelPosX, timeLabelPosY, VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH , 18)];
         
-        timeLabel.text = [self.bubbleData.eventFormatter timeStringFromDate:component.date];
+        timeLabel.text = [bubbleData.eventFormatter timeStringFromDate:component.date];
         timeLabel.textAlignment = NSTextAlignmentRight;
         timeLabel.textColor = kVectorTextColorGray;
         if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
@@ -99,7 +99,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
 
 - (void)selectComponent:(NSUInteger)componentIndex
 {
-    if (componentIndex < self.bubbleData.bubbleComponents.count)
+    if (componentIndex < bubbleData.bubbleComponents.count)
     {
         // Add time label
         [self addTimestampLabelForComponent:componentIndex];
@@ -199,9 +199,9 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         // Note edit button tag is equal to the index of the related component.
         NSInteger index = ((UIView*)sender).tag;
-        if (index < self.bubbleData.bubbleComponents.count)
+        if (index < bubbleData.bubbleComponents.count)
         {
-            MXKRoomBubbleComponent *component = self.bubbleData.bubbleComponents[index];
+            MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[index];
             selectedEvent = component.event;
         }
         
@@ -216,7 +216,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
 
 - (void)addEditButtonForComponent:(NSUInteger)componentIndex completion:(void (^ __nullable)(BOOL finished))completion
 {
-    MXKRoomBubbleComponent *component  = self.bubbleData.bubbleComponents[componentIndex];
+    MXKRoomBubbleComponent *component  = bubbleData.bubbleComponents[componentIndex];
     
     // Define 'Edit' button frame
     UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];

@@ -34,9 +34,9 @@
 {
     [super render:cellData];
     
-    if (self.bubbleData)
+    if (bubbleData)
     {
-        self.paginationLabel.text = [[self.bubbleData.eventFormatter dateStringFromDate:self.bubbleData.date withTime:NO] uppercaseString];
+        self.paginationLabel.text = [[bubbleData.eventFormatter dateStringFromDate:bubbleData.date withTime:NO] uppercaseString];
     }
 }
 

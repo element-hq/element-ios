@@ -20,7 +20,6 @@
 
 #import "VectorDesignValues.h"
 
-#import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
 
 #import "PublicRoomsDirectoryDataSource.h"
@@ -56,7 +55,6 @@
 @end
 
 @implementation RecentsDataSource
-@synthesize onRoomInvitationReject, onRoomInvitationAccept;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init
@@ -406,30 +404,7 @@
         indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
     }
     
-    UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
-    
-    // on invite cell, add listeners on accept / reject buttons
-    if (cell && [cell isKindOfClass:[InviteRecentTableViewCell class]])
-    {
-        id<MXKRecentCellDataStoring> roomData = [self cellDataAtIndexPath:indexPath];
-        InviteRecentTableViewCell* inviteRecentTableViewCell = (InviteRecentTableViewCell*)cell;
-        
-        inviteRecentTableViewCell.onRejectClick = ^(){
-            if (self.onRoomInvitationReject)
-            {
-                self.onRoomInvitationReject(roomData.roomDataSource.room);
-            }
-        };
-        
-        inviteRecentTableViewCell.onJoinClick = ^(){
-            if (self.onRoomInvitationAccept)
-            {
-                self.onRoomInvitationAccept(roomData.roomDataSource.room);
-            }
-        };
-    }
-    
-    return cell;
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)anIndexPath

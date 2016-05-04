@@ -219,29 +219,31 @@
         [tap setDelegate:self];
         [createNewRoomImageView addGestureRecognizer:tap];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
     // Check whether we're not logged in
     if (![MXKAccountManager sharedManager].accounts.count)
     {
         [self showAuthenticationScreen];
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
-    if (!self.splitViewController || self.splitViewController.isCollapsed)
-    {
-        // Release the current selected room (if any).
-        [self closeSelectedRoom];
-    }
     else
     {
-        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-        // the selected room (if any) is highlighted.
-        [self refreshCurrentSelectedCellInChild:YES];
+        // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
+        if (!self.splitViewController || self.splitViewController.isCollapsed)
+        {
+            // Release the current selected room (if any).
+            [self closeSelectedRoom];
+        }
+        else
+        {
+            // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+            // the selected room (if any) is highlighted.
+            [self refreshCurrentSelectedCellInChild:YES];
+        }
     }
 }
 

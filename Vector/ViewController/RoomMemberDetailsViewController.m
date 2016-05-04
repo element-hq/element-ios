@@ -25,6 +25,7 @@
 #import "RageShakeManager.h"
 
 #import "AvatarGenerator.h"
+#import "Tools.h"
 
 #import "TableViewCellWithButton.h"
 
@@ -219,41 +220,12 @@
             memberTitleView.memberBadge.hidden = YES;
         }
         
-        NSString* presenceText = nil;
+        NSString* presenceText;
         
         if (self.mxRoomMember.userId)
         {
             MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
-            if (user)
-            {
-                if (user.presence == MXPresenceOnline)
-                {
-                    presenceText  = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
-                }
-                else
-                {
-                    NSUInteger lastActiveMs = user.lastActiveAgo;
-                    
-                    if (-1 != lastActiveMs)
-                    {
-                        NSUInteger lastActivehour = lastActiveMs / 1000 / 60 / 60;
-                        NSUInteger lastActiveDays = lastActivehour / 24;
-                        
-                        if (lastActivehour < 1)
-                        {
-                            presenceText = NSLocalizedStringFromTable(@"room_participants_active_less_1_hour", @"Vector", nil);
-                        }
-                        else if (lastActivehour < 24)
-                        {
-                            presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_hours", @"Vector", nil), lastActivehour];
-                        }
-                        else
-                        {
-                            presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_days", @"Vector", nil), lastActiveDays];
-                        }
-                    }
-                }
-            }
+            presenceText = [Tools presenceText:user];
         }
         
         self.roomMemberStatusLabel.text = presenceText;
@@ -386,8 +358,22 @@
                 {
                     [actionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
                 }
+                
+                // Check whether the option Ignore may be presented
+                if (self.mxRoomMember.membership == MXMembershipJoin)
+                {
+                    // is he already ignored ?
+                    if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
+                    }
+                    else
+                    {
+                        [actionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
+                    }
+                }
                 break;
-            }  
+            }
             case MXMembershipLeave:
             {
                 // Check conditions to be able to invite someone
@@ -441,6 +427,12 @@
             break;
         case MXKRoomMemberDetailsActionUnban:
             title = NSLocalizedStringFromTable(@"room_participants_action_unban", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionIgnore:
+            title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            break;
+        case MXKRoomMemberDetailsActionUnignore:
+            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
             break;
         case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
             title = NSLocalizedStringFromTable(@"room_participants_action_set_default_power_level", @"Vector", nil);
@@ -499,6 +491,19 @@
     }
     
     return cell;
+}
+
+#pragma mark - TableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+    {
+        TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
+        
+        [self onActionButtonPressed:cell.mxkButton];
+    }
 }
 
 #pragma mark - Action

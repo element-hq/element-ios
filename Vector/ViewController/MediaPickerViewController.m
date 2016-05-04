@@ -376,7 +376,10 @@ static void *RecordingContext = &RecordingContext;
     // Update Captures collection display
     if (recentCaptures.count)
     {
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        // recents Collection is limited to the first 12 assets
+        NSInteger recentsCount = ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
+        
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
         [self.recentCapturesCollectionContainerView needsUpdateConstraints];
         
         [self.recentCapturesCollectionView reloadData];
@@ -429,7 +432,10 @@ static void *RecordingContext = &RecordingContext;
     if (recentCaptures.count)
     {
         self.recentCapturesCollectionView.hidden = NO;
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentCaptures.count / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
+        
+        // recents Collection is limited to the first 12 assets
+        NSInteger recentsCount = ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
         [self.recentCapturesCollectionContainerView needsUpdateConstraints];
         
         [self.recentCapturesCollectionView reloadData];
@@ -678,16 +684,8 @@ static void *RecordingContext = &RecordingContext;
                                                    object:nil];
         [videoPlayer requestThumbnailImagesAtTimes:@[@0.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
     }
-    
-    videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
-    [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
-    videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
-    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
-    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
-    [validationView addSubview:videoPlayerControl];
-    videoPlayerControl.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+
     [validationView showFullScreen];
-    videoPlayerControl.center = validationView.center;
 }
 
 - (void)dismissImageValidationView
@@ -1308,7 +1306,7 @@ static void *RecordingContext = &RecordingContext;
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     // Collection is limited to the first 12 assets
-    return (recentCaptures.count > 12) ? 12 : recentCaptures.count;
+    return ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1500,6 +1498,34 @@ static void *RecordingContext = &RecordingContext;
     {
         validationView.image = [[notification userInfo] objectForKey:MPMoviePlayerThumbnailImageKey];
         [validationView bringSubviewToFront:videoPlayerControl];
+
+        // Now, there is a thumbnail, show the video control
+        videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
+        [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
+        videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
+        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+        [validationView addSubview:videoPlayerControl];
+        videoPlayerControl.center = validationView.imageView.center;
+
+        videoPlayerControl.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:validationView.imageView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1
+                                                                              constant:0.0f];
+
+        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:validationView.imageView
+                                                                             attribute:NSLayoutAttributeCenterY
+                                                                            multiplier:1
+                                                                              constant:0.0f];
+
+        [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];

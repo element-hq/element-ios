@@ -21,6 +21,7 @@
 #import "VectorDesignValues.h"
 
 #import "AvatarGenerator.h"
+#import "Tools.h"
 
 #import "MXKContactManager.h"
 
@@ -194,7 +195,7 @@
 
 - (void)refreshContactPresence
 {
-    NSString* presenceText = nil;
+    NSString* presenceText;
     NSString* matrixId = [self getFirstMatrixId];
     
     if (matrixId)
@@ -212,36 +213,7 @@
             }
         }
 
-        if (user)
-        {
-            if (user.presence == MXPresenceOnline)
-            {
-                presenceText  = NSLocalizedStringFromTable(@"room_participants_active", @"Vector", nil);
-            }
-            else
-            {
-                NSUInteger lastActiveMs = user.lastActiveAgo;
-                
-                if (-1 != lastActiveMs)
-                {
-                    NSUInteger lastActivehour = lastActiveMs / 1000 / 60 / 60;
-                    NSUInteger lastActiveDays = lastActivehour / 24;
-                    
-                    if (lastActivehour < 1)
-                    {
-                        presenceText = NSLocalizedStringFromTable(@"room_participants_active_less_1_hour", @"Vector", nil);
-                    }
-                    else if (lastActivehour < 24)
-                    {
-                        presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_hours", @"Vector", nil), lastActivehour];
-                    }
-                    else
-                    {
-                        presenceText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_active_less_x_days", @"Vector", nil), lastActiveDays];
-                    }
-                }
-            }
-        }
+        presenceText = [Tools presenceText:user];
     }
     else if (contact.isThirdPartyInvite)
     {

@@ -30,12 +30,6 @@
 
 @interface RoomParticipantsViewController ()
 {
-    // Array used to sort participants and invited members
-    NSMutableArray *sortedParticipantsAdmin;
-    NSMutableArray *sortedParticipants;
-    NSMutableArray *sortedInvitedParticipantsAdmin;
-    NSMutableArray *sortedInvitedParticipants;
-    
     // Search session
     NSString *currentSearchText;
     UIView* searchBarSeparator;
@@ -88,6 +82,8 @@
     _isAddParticipantSearchBarEditing = NO;
     
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+    _searchBarView.returnKeyType = UIReturnKeyDone;
+    _searchBarView.autocapitalizationType = NO;
     [self refreshSearchBarItemsColor:_searchBarView];
     
     _searchBarHeaderBorder.backgroundColor = kVectorColorSilver;
@@ -129,11 +125,6 @@
     }
     
     _mxRoom = nil;
-    
-    sortedParticipantsAdmin = nil;
-    sortedParticipants = nil;
-    sortedInvitedParticipantsAdmin = nil;
-    sortedInvitedParticipants = nil;
     
     invitableContacts = nil;
     filteredActualParticipants = nil;
@@ -322,10 +313,8 @@
 
 - (void)refreshParticipantsFromRoomMembers
 {
-    sortedParticipants = [NSMutableArray array];
-    sortedParticipantsAdmin = [NSMutableArray array];
-    sortedInvitedParticipants = [NSMutableArray array];
-    sortedInvitedParticipantsAdmin = [NSMutableArray array];
+    actualParticipants = [NSMutableArray array];
+    invitedParticipants = [NSMutableArray array];
     userContact = nil;
     
     if (self.mxRoom)
@@ -343,16 +332,7 @@
                 if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
                 {
                     // The user is in this room
-                    
-                    // Check whether user is admin
-                    MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-                    BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:userId] >= kVectorRoomAdminLevel);
-                    
                     NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
-                    if (isAdmin)
-                    {
-                        displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
-                    }
                     
                     userContact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
                     userContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
@@ -378,10 +358,6 @@
     // Add this member after checking his status
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
-        // Check whether this member is admin
-        MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
-        BOOL isAdmin = ([powerLevels powerLevelOfUserWithUserID:mxMember.userId] >= kVectorRoomAdminLevel);
-        
         // Prepare the display name of this member
         NSString *displayName = mxMember.displayname;
         if (displayName.length == 0)
@@ -398,36 +374,17 @@
             }
         }
         
-        if (isAdmin)
-        {
-            displayName = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_admin_name", @"Vector", nil), displayName];
-        }
-        
         // Create the contact related to this member
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
-        
-        if (isAdmin)
+
+        if (mxMember.membership == MXMembershipInvite)
         {
-            if (mxMember.membership == MXMembershipInvite)
-            {
-                [sortedInvitedParticipantsAdmin addObject:contact];
-            }
-            else
-            {
-                [sortedParticipantsAdmin addObject:contact];
-            }
+            [invitedParticipants addObject:contact];
         }
         else
         {
-            if (mxMember.membership == MXMembershipInvite)
-            {
-                [sortedInvitedParticipants addObject:contact];
-            }
-            else
-            {
-                [sortedParticipants addObject:contact];
-            }
+            [actualParticipants addObject:contact];
         }
     }
 }
@@ -441,7 +398,7 @@
         contact.isThirdPartyInvite = YES;
         contact.mxThirdPartyInvite = roomThirdPartyInvite;
 
-        [sortedInvitedParticipants addObject:contact];
+        [invitedParticipants addObject:contact];
     }
 }
 
@@ -449,64 +406,36 @@
 - (void)removeParticipantByKey:(NSString*)key
 {
     NSUInteger index;
-    
-    if (sortedParticipantsAdmin.count)
+
+    if (actualParticipants.count)
     {
-        for (index = 0; index < sortedParticipantsAdmin.count; index++)
+        for (index = 0; index < actualParticipants.count; index++)
         {
-            Contact *contact = sortedParticipantsAdmin[index];
+            Contact *contact = actualParticipants[index];
             
             if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
             {
-                [sortedParticipantsAdmin removeObjectAtIndex:index];
+                [actualParticipants removeObjectAtIndex:index];
                 return;
             }
         }
     }
     
-    if (sortedParticipants.count)
+    if (invitedParticipants.count)
     {
-        for (index = 0; index < sortedParticipants.count; index++)
+        for (index = 0; index < invitedParticipants.count; index++)
         {
-            Contact *contact = sortedParticipants[index];
+            Contact *contact = invitedParticipants[index];
             
             if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
             {
-                [sortedParticipants removeObjectAtIndex:index];
-                return;
-            }
-        }
-    }
-    
-    if (sortedInvitedParticipantsAdmin.count)
-    {
-        for (index = 0; index < sortedInvitedParticipantsAdmin.count; index++)
-        {
-            Contact *contact = sortedInvitedParticipantsAdmin[index];
-            
-            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
-            {
-                [sortedInvitedParticipantsAdmin removeObjectAtIndex:index];
-                return;
-            }
-        }
-    }
-    
-    if (sortedInvitedParticipants.count)
-    {
-        for (index = 0; index < sortedInvitedParticipants.count; index++)
-        {
-            Contact *contact = sortedInvitedParticipants[index];
-            
-            if (contact.mxMember && [contact.mxMember.userId isEqualToString:key])
-            {
-                [sortedInvitedParticipants removeObjectAtIndex:index];
+                [invitedParticipants removeObjectAtIndex:index];
                 return;
             }
             
             if (contact.mxThirdPartyInvite && [contact.mxThirdPartyInvite.token isEqualToString:key])
             {
-                [sortedInvitedParticipants removeObjectAtIndex:index];
+                [invitedParticipants removeObjectAtIndex:index];
                 return;
             }
         }
@@ -515,40 +444,78 @@
 
 - (void)finalizeParticipantsList
 {
-    // Sort contacts in alphabetical order (Use sortingDisplayName in which symbols are skipped)
-    NSComparator comparator = ^NSComparisonResult(Contact *contact1, Contact *contact2) {
-        
-        if (contact1.sortingDisplayName.length && contact2.sortingDisplayName.length)
+    // Sort contacts by last active, with "active now" first.
+    // ...and then by power
+    // ...and then alphabetically.
+    // We could tiebreak instead by "last recently spoken in this room" if we wanted to.
+    NSComparator comparator = ^NSComparisonResult(Contact *contactA, Contact *contactB) {
+
+        MXUser *userA = [self.mxRoom.mxSession userWithUserId:contactA.mxMember.userId];
+        MXUser *userB = [self.mxRoom.mxSession userWithUserId:contactB.mxMember.userId];
+
+        if (!userA && !userB)
         {
-            return [contact1.sortingDisplayName compare:contact2.sortingDisplayName options:NSCaseInsensitiveSearch];
+            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
         }
-        else if (contact1.sortingDisplayName.length)
+        if (userA && !userB)
         {
             return NSOrderedAscending;
         }
-        else if (contact2.sortingDisplayName.length)
+        if (!userA && userB)
         {
             return NSOrderedDescending;
         }
-        
-        return [contact1.displayName compare:contact2.displayName options:NSCaseInsensitiveSearch];
-        
+
+        if (userA.currentlyActive && userB.currentlyActive)
+        {
+            // Order first by power levels (admins then moderators then others)
+            MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
+            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
+            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
+
+            if (powerLevelA == powerLevelB)
+            {
+                // Then order by name
+                if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+                {
+                    return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+                }
+                else if (contactA.sortingDisplayName.length)
+                {
+                    return NSOrderedAscending;
+                }
+                else if (contactB.sortingDisplayName.length)
+                {
+                    return NSOrderedDescending;
+                }
+                return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+            }
+            else
+            {
+                return powerLevelB - powerLevelA;
+            }
+
+        }
+
+        if (userA.currentlyActive && !userB.currentlyActive)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA.currentlyActive && userB.currentlyActive)
+        {
+            return NSOrderedDescending;
+        }
+
+        // Finally, compare the timestamps
+        NSComparisonResult lastActiveAgoA = userA && userA.lastActiveAgo ? userA.lastActiveAgo : 0;
+        NSComparisonResult lastActiveAgoB = userB && userB.lastActiveAgo ? userB.lastActiveAgo : 0;
+
+        return lastActiveAgoA - lastActiveAgoB;
     };
     
     // Sort each participants list in alphabetical order
-    [sortedParticipantsAdmin sortUsingComparator:comparator];
-    [sortedParticipants sortUsingComparator:comparator];
-    [sortedInvitedParticipantsAdmin sortUsingComparator:comparator];
-    [sortedInvitedParticipants sortUsingComparator:comparator];
-    
-    // Report sorted lists in the displayed participants list
-    actualParticipants = [NSMutableArray array];
-    [actualParticipants addObjectsFromArray:sortedParticipantsAdmin];
-    [actualParticipants addObjectsFromArray:sortedParticipants];
-    
-    invitedParticipants = [NSMutableArray array];
-    [invitedParticipants addObjectsFromArray:sortedInvitedParticipantsAdmin];
-    [invitedParticipants addObjectsFromArray:sortedInvitedParticipants];
+    [actualParticipants sortUsingComparator:comparator];
+    [invitedParticipants sortUsingComparator:comparator];
     
     // Refer all used contacts in only one dictionary.
     contactsById = [NSMutableDictionary dictionary];
