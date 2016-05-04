@@ -710,9 +710,10 @@
     
             enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             enableAllCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
-            [enableAllCell.mxkSwitch  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [enableAllCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
+            [enableAllCell layoutIfNeeded];
             cell = enableAllCell;
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
