@@ -22,6 +22,17 @@
 
 #import "VectorDesignValues.h"
 
+@interface AuthenticationViewController ()
+{
+    /**
+     Store the potential login error received by using the new default homeserver (vector.im)
+     while we retry a login process against the matrix.org HS.
+     */
+    NSError *loginError;
+}
+
+@end
+
 @implementation AuthenticationViewController
 
 + (UINib *)nib
@@ -210,6 +221,48 @@
     {
         [super onButtonPressed:sender];
     }
+}
+
+- (void)onFailureDuringAuthRequest:(NSError *)error
+{
+    // Homeserver migration: the default homeserver url has been updated with https://vector.im.
+    // The login process with an existing matrix.org accounts will then fail.
+    // Patch: Falling back to matrix.org HS so we don't break everyone's logins
+    if (self.authType == MXKAuthenticationTypeLogin)
+    {
+        if ([self.homeServerTextField.text isEqualToString:@"https://vector.im"])
+        {
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
+            {
+                // Retry against the matrix.org HS
+                NSLog(@"[MXKAuthenticationVC] Falling back to matrix.org HS");
+                
+                loginError = error;
+                [self setHomeServerTextFieldText:@"https://matrix.org"];
+                
+                [self onButtonPressed:self.submitButton];
+                
+                return;
+            }
+        }
+        else if (loginError)
+        {
+            // This is not an existing matrix.org accounts
+            NSLog(@"[MXKAuthenticationVC] This is not an existing matrix.org accounts");
+            
+            // Restore the default HS
+            [self setHomeServerTextFieldText: @"https://vector.im"];
+            
+            // Consider the original login error
+            [super onFailureDuringAuthRequest:loginError];
+            loginError = nil;
+            
+            return;
+        }
+    }
+    
+    [super onFailureDuringAuthRequest:loginError];
 }
 
 #pragma mark -
