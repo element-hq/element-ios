@@ -17,6 +17,7 @@
 #import "AuthInputsView.h"
 
 #import "VectorDesignValues.h"
+#import "Tools.h"
 
 @interface AuthInputsView ()
 {
@@ -311,11 +312,8 @@
                         submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
 
                         // Create the next link that is common to all Vector.im clients
-                        // FIXME: When available, use the prod Vector web app URL 
-                        NSString *webAppUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
-
                         NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&is_url=%@&session_id=%@",
-                                              webAppUrl,
+                                              [Tools webAppUrl],
                                               [submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                               [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                               [restClient.identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
