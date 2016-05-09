@@ -61,6 +61,13 @@
 
 #pragma mark - Universal link
 
++ (NSString *)webAppUrl
+{
+    // FIXME: When available, use the prod Vector web app URL
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
+    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
+}
+
 + (BOOL)isUniversalLink:(NSURL*)url
 {
     BOOL isUniversalLink = NO;

@@ -11,11 +11,13 @@
 	<key>identityserverurl</key>
 	<string>https://vector.im</string>
 	<key>homeserverurl</key>
-	<string>https://matrix.org</string>
+	<string>https://vector.im</string>
 	<key>homeserver</key>
 	<string>matrix.org</string>
 	<key>webAppUrlDev</key>
 	<string>https://vector.im/develop</string>
+	<key>webAppUrlBeta</key>
+	<string>https://vector.im/beta</string>
 	<key>apnsDeviceToken</key>
 	<string></string>
 	<key>showAllEventsInRoomHistory</key>

@@ -28,8 +28,12 @@
  */
 + (NSString*)presenceText:(MXUser*)user;
 
-
 #pragma mark - Universal link
+
+/**
+ The url of the Vector web application.
+ */
++ (NSString*)webAppUrl;
 
 /**
  Detect if a URL is a universal link for the application.
