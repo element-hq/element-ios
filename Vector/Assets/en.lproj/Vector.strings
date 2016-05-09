@@ -72,7 +72,7 @@
 "auth_reset_password_next_step_button" = "I have verified my email address";
 "auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
-"auth_reset_password_success_message" = "Your password has been reset.\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
+"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 
 // Chat creation
 "room_creation_title" = "New Chat";

@@ -206,7 +206,8 @@
                                                                        
                                                                        NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
                                                                        parameters = @{
-                                                                                      @"auth": @{@"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity, @"new_password": self.passWordTextField.text}                                                                                      };
+                                                                                      @"auth": @{@"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                                                                      @"new_password": self.passWordTextField.text};
                                                                        
                                                                        [self hideInputsContainer];
                                                                        
@@ -310,9 +311,6 @@
     self.repeatPasswordContainer.hidden = NO;
     
     [self layoutIfNeeded];
-    
-    CGRect frame = self.repeatPasswordContainer.frame;
-    self.viewHeightConstraint.constant = frame.origin.y + frame.size.height;
 }
 
 #pragma mark - actions

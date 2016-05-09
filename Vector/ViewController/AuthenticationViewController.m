@@ -114,6 +114,9 @@
 {
     super.authType = authType;
     
+    // Reset potential stored error.
+    loginError = nil;
+    
     if (authType == MXKAuthenticationTypeLogin)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
@@ -139,6 +142,19 @@
     }
     
     self.forgotPasswordButton.hidden = (authType != MXKAuthenticationTypeLogin);
+}
+
+- (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
+{
+    [super setAuthInputsView:authInputsView];
+    
+    // Restore here the actual content view height.
+    // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
+    self.contentViewHeightConstraint.constant = 415;
+    if (self.serverOptionsContainer.isHidden == NO)
+    {
+        self.contentViewHeightConstraint.constant += self.serverOptionsContainer.frame.size.height;
+    }
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -246,43 +262,68 @@
 - (void)onFailureDuringAuthRequest:(NSError *)error
 {
     // Homeserver migration: the default homeserver url has been updated with https://vector.im.
-    // The login process with an existing matrix.org accounts will then fail.
+    // The login (or forgot pwd) process with an existing matrix.org accounts will then fail.
     // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if (self.authType == MXKAuthenticationTypeLogin)
+    if ([self.homeServerTextField.text isEqualToString:@"https://vector.im"])
     {
-        if ([self.homeServerTextField.text isEqualToString:@"https://vector.im"])
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        
+        if (self.authType == MXKAuthenticationTypeLogin)
         {
-            MXError *mxError = [[MXError alloc] initWithNSError:error];
             if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
             {
-                // Retry against the matrix.org HS
-                NSLog(@"[MXKAuthenticationVC] Falling back to matrix.org HS");
+                // Falling back to matrix.org HS
+                NSLog(@"[MXKAuthenticationVC] Retry login against matrix.org");
                 
+                // Store the current error, and change the homeserver url
                 loginError = error;
                 [self setHomeServerTextFieldText:@"https://matrix.org"];
                 
+                // Trigger a new request
                 [self onButtonPressed:self.submitButton];
-                
                 return;
             }
         }
-        else if (loginError)
+        else if (self.authType == MXKAuthenticationTypeForgotPassword)
         {
-            // This is not an existing matrix.org accounts
-            NSLog(@"[MXKAuthenticationVC] This is not an existing matrix.org accounts");
-            
-            // Restore the default HS
-            [self setHomeServerTextFieldText: @"https://vector.im"];
-            
-            // Consider the original login error
-            [super onFailureDuringAuthRequest:loginError];
-            loginError = nil;
-            
-            return;
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringNotFound])
+            {
+                // Sanity check
+                if ([self.authInputsView isKindOfClass:ForgotPasswordInputsView.class])
+                {
+                    // Falling back to matrix.org HS
+                    NSLog(@"[MXKAuthenticationVC] Retry forgot password against matrix.org");
+                    
+                    // Store the current error, and change the homeserver url
+                    loginError = error;
+                    [self setHomeServerTextFieldText:@"https://matrix.org"];
+                    
+                    // Trigger a new request
+                    ForgotPasswordInputsView *authInputsView = (ForgotPasswordInputsView*)self.authInputsView;
+                    [authInputsView.nextStepButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+                    return;
+                }
+            }
         }
     }
     
-    [super onFailureDuringAuthRequest:loginError];
+    // Check whether we were retrying against matrix.org HS
+    if (loginError)
+    {
+        // This is not an existing matrix.org accounts
+        NSLog(@"[MXKAuthenticationVC] This is not an existing matrix.org accounts");
+        
+        // Restore the default HS
+        [self setHomeServerTextFieldText: @"https://vector.im"];
+        
+        // Consider the original login error
+        [super onFailureDuringAuthRequest:loginError];
+        loginError = nil;
+    }
+    else
+    {
+        [super onFailureDuringAuthRequest:error];
+    }
 }
 
 #pragma mark -
@@ -356,6 +397,25 @@
         CGPoint offset = self.authenticationScrollView.contentOffset;
         offset.y += self.serverOptionsContainer.frame.size.height;
         self.authenticationScrollView.contentOffset = offset;
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    // Override here the handling of the authInputsView height change.
+    if ([@"viewHeightConstraint.constant" isEqualToString:keyPath])
+    {
+        // Contrary to the default implementation in 'MXKAuthenticationViewController', the content view height must not be updated.
+        self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
+        
+        // Force to render the view
+        [self.view layoutIfNeeded];
+    }
+    else
+    {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
