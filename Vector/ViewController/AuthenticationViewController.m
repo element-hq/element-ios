@@ -114,8 +114,14 @@
 {
     super.authType = authType;
     
-    // Reset potential stored error.
-    loginError = nil;
+    // Check a potential stored error.
+    if (loginError)
+    {
+        // Restore the default HS
+        NSLog(@"[AuthenticationVC] Switch back to default homeserver");
+        [self setHomeServerTextFieldText: @"https://vector.im"];
+        loginError = nil;
+    }
     
     if (authType == MXKAuthenticationTypeLogin)
     {
@@ -273,7 +279,7 @@
             if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
             {
                 // Falling back to matrix.org HS
-                NSLog(@"[MXKAuthenticationVC] Retry login against matrix.org");
+                NSLog(@"[AuthenticationVC] Retry login against matrix.org");
                 
                 // Store the current error, and change the homeserver url
                 loginError = error;
@@ -292,7 +298,7 @@
                 if ([self.authInputsView isKindOfClass:ForgotPasswordInputsView.class])
                 {
                     // Falling back to matrix.org HS
-                    NSLog(@"[MXKAuthenticationVC] Retry forgot password against matrix.org");
+                    NSLog(@"[AuthenticationVC] Retry forgot password against matrix.org");
                     
                     // Store the current error, and change the homeserver url
                     loginError = error;
@@ -311,7 +317,7 @@
     if (loginError)
     {
         // This is not an existing matrix.org accounts
-        NSLog(@"[MXKAuthenticationVC] This is not an existing matrix.org accounts");
+        NSLog(@"[AuthenticationVC] This is not an existing matrix.org accounts");
         
         // Restore the default HS
         [self setHomeServerTextFieldText: @"https://vector.im"];

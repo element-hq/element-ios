@@ -574,13 +574,6 @@
 
 - (BOOL)areAllRequiredFieldsSet
 {
-//    BOOL ret = [super areAllRequiredFieldsSet];
-//    
-//    // Check required fields
-//    ret = (ret && self.userLoginTextField.text.length && self.passWordTextField.text.length && (!self.isEmailIdentityFlowRequired || self.emailTextField.text.length) && (self.authType == MXKAuthenticationTypeLogin || self.repeatPasswordTextField.text.length));
-//    
-//    return ret;
-    
     // Keep enable the submit button.
     return YES;
 }
