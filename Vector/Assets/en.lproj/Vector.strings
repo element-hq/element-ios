@@ -42,12 +42,16 @@
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
+"auth_send_reset_email" = "Send Reset Email";
+"auth_return_to_login" = "Return to login screen";
 "auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
+"auth_new_password_placeholder" = "New password";
 "auth_user_name_placeholder" = "Your name";
 "auth_optional_email_placeholder" = "Email address (optional)";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
+"auth_repeat_new_password_placeholder" = "Confirm your new password";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_password" = "Password too short (min 6)";
@@ -56,11 +60,19 @@
 "auth_missing_optional_email" = "If you don't specify an email address, you won't be able to reset your password. Are you sure?";
 "auth_missing_email" = "Missing email address";
 "auth_password_dont_match" = "Passwords don't match";
+"auth_username_in_use" = "Username in use";
 "auth_forgot_password" = "Forgot password?";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
 "auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
-"auth_username_in_use" = "Username in use";
+"auth_reset_password_message" = "To reset your password, enter the email address linked to your account:";
+"auth_reset_password_missing_email" = "The email address linked to your account must be entered.";
+"auth_reset_password_missing_password" = "A new password must be entered.";
+"auth_reset_password_email_validation_message" = "An email has been sent to %@. Once you've followed the link it contains, click below.";
+"auth_reset_password_next_step_button" = "I have verified my email address";
+"auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
+"auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
+"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 
 // Chat creation
 "room_creation_title" = "New Chat";
