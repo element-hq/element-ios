@@ -1046,7 +1046,7 @@
     // Handle here user actions on bubbles for Vector app
     if (customizedRoomDataSource)
     {
-        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
+        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
         {
             selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (selectedRoomMember)
