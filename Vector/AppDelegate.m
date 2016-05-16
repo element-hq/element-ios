@@ -1019,8 +1019,8 @@
     pathParams = pathParams2;
 
     // Extract query params if any
-    // Query params are in the form [queryParam1Key]=[queryParam1Value], so the '=' presence
-    // is mandatory
+    // Query params are in the form [queryParam1Key]=[queryParam1Value], so the
+    // presence of at least one '=' character is mandatory
     if (fragments.count == 2 && (NSNotFound != [fragments[1] rangeOfString:@"="].location))
     {
         queryParams = [[NSMutableDictionary alloc] init];
