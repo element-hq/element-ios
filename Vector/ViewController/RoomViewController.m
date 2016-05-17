@@ -1066,15 +1066,8 @@
             }
             else if (tappedEvent)
             {
-                if (tappedEvent.mxkState != MXKEventStateSendingFailed)
-                {
-                    // Highlight this event in displayed message
-                    customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
-                }
-                else
-                {
-                    [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:userInfo];
-                }
+                // Highlight this event in displayed message
+                customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
             }
             
             // Force table refresh
@@ -1455,6 +1448,7 @@
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
                  && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.mxkState == MXKEventStateSendingFailed)
         {
+            // Shortcut: when clicking on an unsent media, show the action sheet to resend it
             [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
         }
         else
