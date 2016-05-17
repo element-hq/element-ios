@@ -24,4 +24,11 @@
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
 }
 
+- (void)render:(MXKCellData *)cellData
+{
+    [super render:cellData];
+
+    [RoomOutgoingAttachmentBubbleCell render:cellData inBubbleCell:self];
+}
+
 @end
