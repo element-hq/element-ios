@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -98,10 +98,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbr-Th-TTb">
+                        <rect key="frame" x="46" y="4" width="469" height="30"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstAttribute="bottomMargin" secondItem="UyS-dv-e6D" secondAttribute="bottom" constant="-8" id="0Px-B9-vGZ"/>
+                    <constraint firstItem="sbr-Th-TTb" firstAttribute="top" secondItem="q9c-0p-QyP" secondAttribute="top" constant="-6" id="0Sa-QA-Ayd"/>
                     <constraint firstItem="UyS-dv-e6D" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="27k-iO-CWT"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="2Ih-ga-N9s"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="13" id="6mM-Ag-m0K"/>
@@ -116,7 +121,10 @@
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="XSL-TG-m62"/>
                     <constraint firstItem="q9c-0p-QyP" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="13" id="YWK-C2-15w"/>
                     <constraint firstItem="OrM-nA-kyg" firstAttribute="centerX" secondItem="5IE-JS-uf3" secondAttribute="centerX" id="bSG-YD-kBX"/>
+                    <constraint firstItem="sbr-Th-TTb" firstAttribute="leading" secondItem="q9c-0p-QyP" secondAttribute="leading" constant="-10" id="cSe-lQ-V4C"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="hQV-lO-7aQ"/>
+                    <constraint firstItem="sbr-Th-TTb" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="kgf-e5-LIg"/>
+                    <constraint firstItem="sbr-Th-TTb" firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" id="mK0-5t-Ivx"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="K9X-gn-noF" secondAttribute="leading" id="p93-5h-lvW"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerX" secondItem="Cot-3X-2cU" secondAttribute="centerX" id="sF7-QL-vdj"/>
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="13" id="tuw-aU-ncu"/>
@@ -144,6 +152,7 @@
                 <outlet property="progressView" destination="fdx-qs-8en" id="V7E-pn-Xze"/>
                 <outlet property="statsLabel" destination="eU5-iK-u8i" id="MSm-kU-RSY"/>
                 <outlet property="userNameLabel" destination="q9c-0p-QyP" id="JId-R7-LoM"/>
+                <outlet property="userNameTapGestureMaskView" destination="sbr-Th-TTb" id="jz6-Gf-FqU"/>
             </connections>
         </tableViewCell>
     </objects>

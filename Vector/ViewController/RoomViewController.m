@@ -1046,12 +1046,21 @@
     // Handle here user actions on bubbles for Vector app
     if (customizedRoomDataSource)
     {
-        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
+        if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
             selectedRoomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
             if (selectedRoomMember)
             {
                 [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+            }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
+        {
+            // Add the member display name in text input
+            MXRoomMember *roomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            if (roomMember)
+            {
+                [self mention:roomMember];
             }
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
