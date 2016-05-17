@@ -1066,8 +1066,15 @@
             }
             else if (tappedEvent)
             {
-                // Highlight this event in displayed message
-                customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
+                if (tappedEvent.mxkState != MXKEventStateSendingFailed)
+                {
+                    // Highlight this event in displayed message
+                    customizedRoomDataSource.selectedEventId = tappedEvent.eventId;
+                }
+                else
+                {
+                    [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:userInfo];
+                }
             }
             
             // Force table refresh
@@ -1444,6 +1451,11 @@
                     currentAlert = nil;
                 }
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
+                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.mxkState == MXKEventStateSendingFailed)
+        {
+            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
         }
         else
         {
