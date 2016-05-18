@@ -1454,6 +1454,12 @@
                 }
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
+                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.mxkState == MXKEventStateSendingFailed)
+        {
+            // Shortcut: when clicking on an unsent media, show the action sheet to resend it
+            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
+        }
         else
         {
             // Keep default implementation for other actions
