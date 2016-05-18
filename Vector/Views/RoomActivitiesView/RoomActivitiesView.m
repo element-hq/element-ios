@@ -66,17 +66,17 @@
         [tappableNotif addAttribute:NSLinkAttributeName value:@"onResendLink" range:range];
         
         NSRange wholeString = NSMakeRange(0, tappableNotif.length);
-        [tappableNotif addAttribute:NSForegroundColorAttributeName value:kVectorTextColorRed range:wholeString];
+        [tappableNotif addAttribute:NSForegroundColorAttributeName value:kVectorColorPinkRed range:wholeString];
         [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
         
         self.messageTextView.attributedText = tappableNotif;
-        self.messageTextView.tintColor = kVectorTextColorRed;
+        self.messageTextView.tintColor = kVectorColorPinkRed;
         self.messageTextView.hidden = NO;
     }
     else
     {
         self.messageLabel.text = notification;
-        self.messageLabel.textColor = kVectorTextColorRed;
+        self.messageLabel.textColor = kVectorColorPinkRed;
         self.messageLabel.hidden = NO;
     }
     
@@ -106,7 +106,7 @@
     {
         self.iconImageView.image = [UIImage imageNamed:@"error"];
         self.messageLabel.text = labelText;
-        self.messageLabel.textColor = kVectorTextColorRed;
+        self.messageLabel.textColor = kVectorColorPinkRed;
         
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;

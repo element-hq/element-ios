@@ -36,47 +36,76 @@
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
     
+    // Initialize unread count badge
+    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
+    _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    
     self.roomTitle.textColor = kVectorTextColorBlack;
+    self.lastEventDescription.textColor = kVectorTextColorGray;
+    self.lastEventDate.textColor = kVectorTextColorGray;
+    self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
 }
 
 - (void)render:(MXKCellData *)cellData
 {
+    // Hide by default missed notifications and unread widgets
+    self.missedNotifAndUnreadIndicator.hidden = YES;
+    self.missedNotifAndUnreadBadgeBgView.hidden = YES;
+    self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
         // Report computed values as is
         self.roomTitle.text = roomCellData.roomDisplayname;
+        self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         self.lastEventDate.text = roomCellData.lastEventDate;
-        
-        // Manage lastEventAttributedTextMessage optional property
-        if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
-        {
-            self.lastEventDescription.attributedText = roomCellData.lastEventAttributedTextMessage;
-        }
-        else
-        {
-            self.lastEventDescription.text = roomCellData.lastEventTextMessage;
-        }
         
         // Notify unreads and bing
         if (roomCellData.hasUnread)
         {
-            self.bingIndicator.hidden = NO;
-            if (0 < roomCellData.highlightCount)
+            self.missedNotifAndUnreadIndicator.hidden = NO;
+            
+            if (0 < roomCellData.notificationCount)
             {
-                self.bingIndicator.backgroundColor = roomCellData.recentsDataSource.eventFormatter.bingTextColor;
-                self.lastEventDate.textColor = self.bingIndicator.backgroundColor;
+                self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? kVectorColorPinkRed : kVectorColorGreen;
+                
+                self.missedNotifAndUnreadBadgeBgView.hidden = NO;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;
+                
+                self.missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", roomCellData.notificationCount];
+                [self.missedNotifAndUnreadBadgeLabel sizeToFit];
+                
+                self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
             }
             else
             {
-                self.bingIndicator.backgroundColor = kVectorColorSilver;
-                self.lastEventDate.textColor = kVectorTextColorGray;
+                self.missedNotifAndUnreadIndicator.backgroundColor = kVectorColorSilver;
+            }
+            
+            // Use bold font for the room title
+            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+            {
+                self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
+            }
+            else
+            {
+                self.roomTitle.font = [UIFont boldSystemFontOfSize:17];
             }
         }
         else
         {
-            self.bingIndicator.hidden = YES;
             self.lastEventDate.textColor = kVectorTextColorGray;
+            
+            // The room title is not bold anymore
+            if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+            {
+                self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+            }
+            else
+            {
+                self.roomTitle.font = [UIFont systemFontOfSize:17];
+            }
         }
         
         self.roomAvatar.backgroundColor = [UIColor clearColor];

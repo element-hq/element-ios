@@ -476,8 +476,8 @@
         
         if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
         {
-            [cell.mxkButton setTitleColor:kVectorTextColorRed forState:UIControlStateNormal];
-            [cell.mxkButton setTitleColor:kVectorTextColorRed forState:UIControlStateHighlighted];
+            [cell.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateNormal];
+            [cell.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateHighlighted];
         }
         else
         {
