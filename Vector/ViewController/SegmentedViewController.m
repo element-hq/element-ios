@@ -89,38 +89,6 @@
 
 #pragma mark -
 
-- (void)addConstraint:(UIView*)view constraint:(NSLayoutConstraint*)aConstraint
-{
-    // sanity check
-    if (view && aConstraint)
-    {
-        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-        {
-            [NSLayoutConstraint activateConstraints:@[aConstraint]];
-        }
-        else
-        {
-            [view addConstraint:aConstraint];
-        }
-    }
-}
-
-- (void)removeConstraint:(UIView*)view constraint:(NSLayoutConstraint*)aConstraint
-{
-    // sanity check
-    if (view && aConstraint)
-    {
-        if ([NSLayoutConstraint respondsToSelector:@selector(deactivateConstraints:)])
-        {
-            [NSLayoutConstraint deactivateConstraints:@[aConstraint]];
-        }
-        else
-        {
-            [view removeConstraint:aConstraint];
-        }
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -138,7 +106,7 @@
     }
 
     // Adjust Top
-    [self removeConstraint:self.view constraint:self.selectionContainerTopConstraint];
+    [NSLayoutConstraint deactivateConstraints:@[self.selectionContainerTopConstraint]];
     
     // it is not possible to define a constraint to the topLayoutGuide in the xib editor
     // so do it in the code ..
@@ -150,7 +118,7 @@
                                                                  multiplier:1.0f
                                                                    constant:0.0f];
     
-    [self addConstraint:self.selectionContainer constraint:self.selectionContainerTopConstraint];
+    [NSLayoutConstraint activateConstraints:@[self.selectionContainerTopConstraint]];
     
     [self createSegmentedViews];
 }
@@ -205,7 +173,7 @@
     
     NSUInteger count = viewControllers.count;
     
-    for(NSUInteger index = 0; index < count; index++)
+    for (NSUInteger index = 0; index < count; index++)
     {
         // create programmatically each label
         UILabel *label = [[UILabel alloc] init];
@@ -273,17 +241,7 @@
         
         
         // set the constraints
-        if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-        {
-            [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
-        }
-        else
-        {
-            [self.selectionContainer addConstraint:leftConstraint];
-            [self.selectionContainer addConstraint:rightConstraint];
-            [self.selectionContainer addConstraint:topConstraint];
-            [label addConstraint:heightConstraint];
-        }
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, heightConstraint]];
         
         UITapGestureRecognizer *labelTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onLabelTouch:)];
         [labelTapGesture setNumberOfTouchesRequired:1];
@@ -303,6 +261,9 @@
 
 - (void)addSelectedMarkerView
 {
+    // Sanity check
+    NSAssert(sectionLabels.count, @"[SegmentedViewController] addSelectedMarkerView failed - At least one view controller is required");
+
     // create the selected marker view
     selectedMarkerView = [[UIView alloc] init];
     selectedMarkerView.backgroundColor = kVectorColorGreen;
@@ -345,21 +306,14 @@
                                                                          constant:3];
     
     // set the constraints
-    if ([NSLayoutConstraint respondsToSelector:@selector(activateConstraints:)])
-    {
-        [NSLayoutConstraint activateConstraints:@[leftMarkerViewConstraint, widthConstraint, bottomConstraint, heightConstraint]];
-    }
-    else
-    {
-        [self.selectionContainer addConstraint:leftMarkerViewConstraint];
-        [self.selectionContainer addConstraint:bottomConstraint];
-        [selectedMarkerView addConstraint:heightConstraint];
-        [selectedMarkerView addConstraint:heightConstraint];
-    }
+    [NSLayoutConstraint activateConstraints:@[leftMarkerViewConstraint, widthConstraint, bottomConstraint, heightConstraint]];
 }
 
 - (void)displaySelectedViewController
 {
+    // Sanity check
+    NSAssert(sectionLabels.count, @"[SegmentedViewController] displaySelectedViewController failed - At least one view controller is required");
+
     if (_selectedViewController)
     {
         NSUInteger index = [viewControllers indexOfObject:_selectedViewController];
@@ -373,17 +327,14 @@
         [_selectedViewController.view removeFromSuperview];
         [_selectedViewController removeFromParentViewController];
         
-        [self removeConstraint:_selectedViewController.view constraint:displayedVCWidthConstraint];
-        [self removeConstraint:_selectedViewController.view constraint:displayedVCHeightConstraint];
-        [self removeConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
-        [self removeConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
+        [NSLayoutConstraint deactivateConstraints:@[displayedVCTopConstraint, displayedVCLeftConstraint, displayedVCWidthConstraint, displayedVCHeightConstraint]];
     }
     
     UILabel* label = [sectionLabels objectAtIndex:_selectedIndex];
     label.font = [UIFont boldSystemFontOfSize:17];
 
     // update the marker view position
-    [self removeConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+    [NSLayoutConstraint deactivateConstraints:@[leftMarkerViewConstraint]];
 
     leftMarkerViewConstraint = [NSLayoutConstraint constraintWithItem:selectedMarkerView
                                                             attribute:NSLayoutAttributeLeading
@@ -393,7 +344,7 @@
                                                            multiplier:1.0
                                                              constant:0];
 
-    [self addConstraint:selectedMarkerView constraint:leftMarkerViewConstraint];
+    [NSLayoutConstraint activateConstraints:@[leftMarkerViewConstraint]];
 
     // Set the new selected view controller
     _selectedViewController = [viewControllers objectAtIndex:_selectedIndex];
@@ -414,7 +365,6 @@
                                                             attribute:NSLayoutAttributeTop
                                                            multiplier:1.0f
                                                              constant:0.0f];
-    [self addConstraint:self.viewControllerContainer constraint:displayedVCTopConstraint];
     
     displayedVCLeftConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                              attribute:NSLayoutAttributeLeading
@@ -424,8 +374,6 @@
                                                             multiplier:1.0f
                                                               constant:0.0f];
     
-    [self addConstraint:self.viewControllerContainer constraint:displayedVCLeftConstraint];
-    
     displayedVCWidthConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                                         attribute:NSLayoutAttributeWidth
                                                                         relatedBy:NSLayoutRelationEqual
@@ -433,7 +381,6 @@
                                                                         attribute:NSLayoutAttributeWidth
                                                                        multiplier:1.0
                                                                          constant:0];
-    [self addConstraint:_selectedViewController.view constraint:displayedVCWidthConstraint];
     
     displayedVCHeightConstraint = [NSLayoutConstraint constraintWithItem:_selectedViewController.view
                                                               attribute:NSLayoutAttributeHeight
@@ -442,7 +389,8 @@
                                                               attribute:NSLayoutAttributeHeight
                                                              multiplier:1.0
                                                                constant:0];
-    [self addConstraint:_selectedViewController.view constraint:displayedVCHeightConstraint];
+    
+    [NSLayoutConstraint activateConstraints:@[displayedVCTopConstraint, displayedVCLeftConstraint, displayedVCWidthConstraint, displayedVCHeightConstraint]];
     
     [_selectedViewController didMoveToParentViewController:self];
     [_selectedViewController endAppearanceTransition];
