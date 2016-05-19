@@ -58,8 +58,20 @@
     {
         // Report computed values as is
         self.roomTitle.text = roomCellData.roomDisplayname;
-        self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         self.lastEventDate.text = roomCellData.lastEventDate;
+        
+        // Manage lastEventAttributedTextMessage optional property
+        if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
+        {
+            // Force the default text color for the last message (cancel highlighted message color)
+            NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
+            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:kVectorTextColorGray range:NSMakeRange(0, lastEventDescription.length)];
+            self.lastEventDescription.attributedText = lastEventDescription;
+        }
+        else
+        {
+            self.lastEventDescription.text = roomCellData.lastEventTextMessage;
+        }
         
         // Notify unreads and bing
         if (roomCellData.hasUnread)
