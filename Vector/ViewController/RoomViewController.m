@@ -96,6 +96,9 @@
 
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -268,6 +271,13 @@
     {
         [self showExpandedHeader:YES];
     }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -295,25 +305,16 @@
     // Hide expanded/preview header to restore navigation bar settings
     [self showExpandedHeader:NO];
     [self showPreviewHeader:NO];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if (self.childViewControllers)
-    {
-        // Dispose data source defined for room member list view controller (if any)
-        for (id childViewController in self.childViewControllers)
-        {
-            if ([childViewController isKindOfClass:[MXKRoomMemberListViewController class]])
-            {
-                MXKRoomMemberListViewController *viewController = (MXKRoomMemberListViewController*)childViewController;
-                MXKDataSource *dataSource = [viewController dataSource];
-                [viewController destroy];
-                [dataSource destroy];
-            }
-        }
-    }
-    
     [super viewDidAppear:animated];
     
     if (self.roomDataSource)
