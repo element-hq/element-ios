@@ -32,6 +32,8 @@
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
 
+#import "AppDelegate.h"
+
 @interface RecentsViewController ()
 {
     // The "parent" segmented view controller
@@ -52,6 +54,9 @@
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
     id UIApplicationDidEnterBackgroundNotificationObserver;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -135,6 +140,13 @@
     {
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self scrollToTop:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -143,6 +155,12 @@
     
     // Leave potential editing mode
     [self setEditing:NO];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -202,7 +220,7 @@
     
     if (_shouldScrollToTopOnRefresh)
     {
-        [self scrollToTop];
+        [self scrollToTop:NO];
         _shouldScrollToTopOnRefresh = NO;
     }
     
@@ -215,14 +233,9 @@
     }    
 }
 
-- (void)scrollToTop
+- (void)scrollToTop:(BOOL)animated
 {
-    // Stop any scrolling effect before scrolling to the tableview top
-    [UIView setAnimationsEnabled:NO];
-
-    self.recentsTableView.contentOffset = CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top);
-    
-    [UIView setAnimationsEnabled:YES];
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.contentInset.left, -self.recentsTableView.contentInset.top) animated:animated];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible

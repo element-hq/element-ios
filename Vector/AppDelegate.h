@@ -19,6 +19,12 @@
 
 #import "HomeViewController.h"
 
+#pragma mark - Notifications
+/**
+ Posted when the user taps the clock status bar.
+ */
+extern NSString *const kAppDelegateDidTapStatusBarNotification;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
 {
     BOOL isAPNSRegistered;

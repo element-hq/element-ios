@@ -50,6 +50,8 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
+NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
+
 @interface AppDelegate ()
 {
     /**
@@ -1764,6 +1766,23 @@
     // to avoid empty room View Controller in portrait orientation
     // else, the user cannot select a room
     return NO;
+}
+
+#pragma mark - Status Bar Tap handling
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self.window];
+    
+    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+    
+    if (CGRectContainsPoint(statusBarFrame, point))
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateDidTapStatusBarNotification object:nil];
+    }
 }
 
 @end

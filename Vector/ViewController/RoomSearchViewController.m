@@ -30,10 +30,15 @@
 
 #import "RageShakeManager.h"
 
+#import "AppDelegate.h"
+
 @interface RoomSearchViewController ()
 {
     // The event selected in the search results
     MXEvent *selectedEvent;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -68,6 +73,24 @@
     if (self.searchBar.text.length == 0)
     {
         [self showSearch:animated];
+    }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.searchTableView setContentOffset:CGPointMake(-self.searchTableView.contentInset.left, -self.searchTableView.contentInset.top) animated:YES];
+        
+    }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
 }
 

@@ -96,6 +96,9 @@
     NSInteger userSettingsPhoneNumberIndex;
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 /**
@@ -244,6 +247,13 @@
 
     // Refresh linked emails in parallel
     [self loadLinkedEmails];
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -274,6 +284,11 @@
         notificationCenterDidFailObserver = nil;
     }
     
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 #pragma mark - Internal methods
