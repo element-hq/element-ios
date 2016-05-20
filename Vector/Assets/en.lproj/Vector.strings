@@ -264,3 +264,7 @@
 "room_displayname_more_than_two_members" = "%@ and %u others";
 "room_displayname_no_title" = "Empty room";
 
+// No VoIP support
+"no_voip_title" = "Incoming call";
+"no_voip" = "%@ is calling you but the iOS Vector app does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
+
