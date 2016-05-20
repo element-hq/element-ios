@@ -965,8 +965,30 @@
 
 - (void)togglePushNotifications:(id)sender
 {
-    // sanity check
-    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    // Check first whether the user allow notification from device settings
+    if ([[MXKAccountManager sharedManager] isAPNSAvailable] == NO)
+    {
+        [currentAlert dismiss:NO];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil)
+                                               message:nil
+                                                 style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+        }];
+        
+        [currentAlert showInViewController:self];
+        
+        // Keep off the switch
+        ((UISwitch*)sender).on = NO;
+    }
+    else if ([MXKAccountManager sharedManager].activeAccounts.count)
     {
         [self startActivityIndicator];
         

@@ -205,6 +205,7 @@
 
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_global_settings_info" = "Global notification settings are available on your Vector web client";
+"settings_on_denied_notification" = "Notifications are denied for Vector, please allow them in your device settings";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
 //"settings_messages_my_user_name" = "Msg containing my user name";
