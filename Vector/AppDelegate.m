@@ -1837,6 +1837,14 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                         [noCallSupportAlert dismiss:NO];
                     }
 
+                    MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
+
+                    // Sanity and invite expiration checks
+                    if (!callInviteEventContent || event.age >= callInviteEventContent.lifetime)
+                    {
+                        return;
+                    }
+
                     MXUser *caller = [mxSession userWithUserId:event.sender];
                     NSString *callerDisplayname = caller.displayname;
                     if (!callerDisplayname.length)
@@ -1862,18 +1870,14 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                     [noCallSupportAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"reject_call"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
                         // Reject the call by sending the hangup event
-                        MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
-                        if (callInviteEventContent)
-                        {
-                            NSDictionary *content = @{
-                                                      @"call_id": callInviteEventContent.callId,
-                                                      @"version": @(0)
-                                                      };
+                        NSDictionary *content = @{
+                                                  @"call_id": callInviteEventContent.callId,
+                                                  @"version": @(0)
+                                                  };
 
-                            [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content success:nil failure:^(NSError *error) {
-                                NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event. Error: %@", error);
-                            }];
-                        }
+                        [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content success:nil failure:^(NSError *error) {
+                            NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event. Error: %@", error);
+                        }];
 
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         strongSelf->noCallSupportAlert = nil;
