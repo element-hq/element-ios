@@ -63,7 +63,7 @@
             self.bingTextFont = [UIFont systemFontOfSize:15];
         }
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
-        self.callInviteTextFont = [UIFont italicSystemFontOfSize:15];
+        self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
     }
     return self;
 }
