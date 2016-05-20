@@ -127,7 +127,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     /**
      The listeners to call events.
      There is one listener per MXSession.
-     The key is the userId of the MXSession. The value, the listener.
+     The key is an identifier of the MXSession. The value, the listener.
      */
     NSMutableDictionary *callEventsListeners;
 
@@ -1821,7 +1821,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 - (void)enableNoVoIPOnMatrixSession:(MXSession*)mxSession
 {
     // Listen to call events
-    callEventsListeners[mxSession.matrixRestClient.credentials.userId] =
+    callEventsListeners[@(mxSession.hash)] =
     [mxSession listenToEventsOfTypes:@[
                                        kMXEventTypeStringCallInvite,
                                        kMXEventTypeStringCallCandidates,
@@ -1914,8 +1914,8 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 - (void)disableNoVoIPOnMatrixSession:(MXSession*)mxSession
 {
     // Stop listening to the call events of this session 
-    [mxSession removeListener:callEventsListeners[mxSession.matrixRestClient.credentials.userId]];
-    [callEventsListeners removeObjectForKey:mxSession.matrixRestClient.credentials.userId];
+    [mxSession removeListener:callEventsListeners[@(mxSession.hash)]];
+    [callEventsListeners removeObjectForKey:@(mxSession.hash)];
 }
 
 @end
