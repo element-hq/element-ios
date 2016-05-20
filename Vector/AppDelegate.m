@@ -1110,6 +1110,11 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
             {
                 [mxSession enableVoIPWithCallStack:callStack];
             }
+            else
+            {
+                // When there is no call stack, display alerts on call invites
+                [self enableNoVoIPOnMatrixSession:mxSession];
+            }
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
@@ -1271,8 +1276,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         {
             [_homeViewController addMatrixSession:mxSession];
         }
-
-        [self enableNoVoIPOnMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
     }
@@ -1285,6 +1288,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     // Update home data sources
     [_homeViewController removeMatrixSession:mxSession];
 
+    // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
