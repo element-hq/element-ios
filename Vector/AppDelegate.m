@@ -491,6 +491,13 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
             
             [self popToHomeViewControllerAnimated:NO completion:completion];
+            
+            // Restore noCallSupportAlert if any
+            if (noCallSupportAlert)
+            {
+                NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
+                [noCallSupportAlert showInViewController:self.window.rootViewController];
+            }
         }];
     }
     else
@@ -715,10 +722,10 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
             {
                 _completionHandler = completionHandler;
 
-                NSLog(@"[AppDelegate] : starts a background sync");
+                NSLog(@"[AppDelegate] didReceiveRemoteNotification: starts a background sync");
                 
                 [dedicatedAccount backgroundSync:20000 success:^{
-                    NSLog(@"[AppDelegate]: the background sync succeeds");
+                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: the background sync succeeds");
                     
                     if (_completionHandler)
                     {
@@ -726,7 +733,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                         _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
-                    NSLog(@"[AppDelegate]: the background sync fails");
+                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: the background sync fails");
                     
                     if (_completionHandler)
                     {
@@ -741,7 +748,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         }
         else
         {
-            NSLog(@"[AppDelegate]: didReceiveRemoteNotification : no linked session / account has been found.");
+            NSLog(@"[AppDelegate] didReceiveRemoteNotification : no linked session / account has been found.");
         }
     }
     completionHandler(UIBackgroundFetchResultNoData);
