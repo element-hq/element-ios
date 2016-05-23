@@ -30,8 +30,9 @@
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
-#define SETTINGS_SECTION_OTHER_INDEX                    3
-#define SETTINGS_SECTION_COUNT                          4
+#define SETTINGS_SECTION_ADVANCED_INDEX                 3
+#define SETTINGS_SECTION_OTHER_INDEX                    4
+#define SETTINGS_SECTION_COUNT                          5
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -454,6 +455,10 @@
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        count = 1;
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         count = OTHER_COUNT;
@@ -469,6 +474,9 @@
     if (!cell)
     {
         cell = [[MXKTableViewCellWithLabelAndTextField alloc] init];
+        
+        cell.mxkLabelLeadingConstraint.constant = 15;
+        cell.mxkTextFieldTrailingConstraint.constant = 15;
     }
     
     cell.mxkTextField.userInteractionEnabled = YES;
@@ -492,6 +500,9 @@
     if (!cell)
     {
         cell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
+        
+        cell.mxkLabelLeadingConstraint.constant = 15;
+        cell.mxkSwitchTrailingConstraint.constant = 15;
     }
     
     return cell;
@@ -547,6 +558,11 @@
             if (!profileCell)
             {
                 profileCell = [[MXKTableViewCellWithLabelAndMXKImageView alloc] init];
+                
+                profileCell.mxkLabelLeadingConstraint.constant = 15;
+                profileCell.mxkImageViewTrailingConstraint.constant = 10;
+                
+                profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
             }
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
@@ -782,6 +798,21 @@
 //        [switchCell.mxkSwitch addTarget:self action:@selector(onRuleUpdate:) forControlEvents:UIControlEventTouchUpInside];
     
     }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        MXKTableViewCell *configCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!configCell)
+        {
+            configCell = [[MXKTableViewCell alloc] init];
+            configCell.textLabel.font = [UIFont systemFontOfSize:17];
+        }
+        
+        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
+        
+        configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        configCell.textLabel.numberOfLines = 0;
+        cell = configCell;
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         if (row == OTHER_VERSION_INDEX)
@@ -843,6 +874,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        // TODO Handle multi accounts
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+        label.numberOfLines = 0;
+        label.font = [UIFont systemFontOfSize:17];
+        
+        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@",[NSBundle mxk_localizedStringForKey:@"settings_config_user_id"],  [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
+        
+        label.text = [NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        
+        [label sizeToFit];
+        return label.frame.size.height + 16;
+    }
+    
     return 50;
 }
 
@@ -877,6 +925,10 @@
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {

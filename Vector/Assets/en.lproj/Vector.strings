@@ -185,11 +185,14 @@
 "account_logout_all" = "Logout all accounts";
 
 "settings_config_no_build_info" = "(no build info)";
-"settings_title_config" = "Configuration";
 "settings_clear_cache" = "Clear cache";
+"settings_config_home_server" = "Home server is %@";
+"settings_config_identity_server" = "Identity server is %@";
+"settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 
 "settings_sign_out" = "Sign Out";
