@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -144,33 +144,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="7NM-zW-wJT"/>
-                    <connections>
-                        <segue destination="KeQ-Sp-kmH" kind="show" identifier="showAccountDetails" id="flf-61-vgV"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZKJ-22-Asy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1404" y="96"/>
-        </scene>
-        <!--Account Details View Controller-->
-        <scene sceneID="V8G-Oz-3KA">
-            <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="KeQ-Sp-kmH" customClass="AccountDetailsViewController" sceneMemberID="viewController">
-                    <connections>
-                        <segue destination="h5x-Kb-9pa" kind="show" identifier="showGlobalNotificationSettings" id="kgj-1g-opx"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KBx-ZK-1zU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2297" y="88"/>
-        </scene>
-        <!--Global notification settings-->
-        <scene sceneID="QZt-ZR-Vkj">
-            <objects>
-                <tableViewController title="Global notification settings" hidesBottomBarWhenPushed="YES" id="h5x-Kb-9pa" customClass="GlobalNotificationSettingsViewController" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iOf-Cf-2Ew" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3237" y="96"/>
         </scene>
         <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">

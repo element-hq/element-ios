@@ -125,30 +125,9 @@
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXKAccount *account = notif.object;
-        if (account)
-        {
-            if (self.childViewControllers.count)
-            {
-                for (id viewController in self.childViewControllers)
-                {
-                    // Check whether details of this account was displayed
-                    if ([viewController isKindOfClass:[MXKAccountDetailsViewController class]])
-                    {
-                        MXKAccountDetailsViewController *accountDetailsViewController = viewController;
-                        if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:account.mxCredentials.userId])
-                        {
-                            // pop the account details view controller
-                            [self.navigationController popToRootViewControllerAnimated:YES];
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        
         // Refresh table to remove this account
         [self.tableView reloadData];
+        
     }];
     
     // Add observer to handle accounts update
@@ -156,6 +135,7 @@
         
         [self stopActivityIndicator];
         [self.tableView reloadData];
+        
     }];
     
     // Add observer to apns
@@ -163,6 +143,7 @@
         
         [self stopActivityIndicator];
         [self.tableView reloadData];
+        
     }];
     
     
