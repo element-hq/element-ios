@@ -1888,7 +1888,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
                     }];
 
-                    noCallSupportAlert.sourceView = self.window.rootViewController.view;
                     [noCallSupportAlert showInViewController:self.window.rootViewController];
                     break;
                 }
