@@ -484,20 +484,28 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 - (void)restoreInitialDisplay:(void (^)())completion
 {
-    // Dismiss potential media picker
+    // Dismiss potential view controllers that were presented modally (like the media picker).
     if (self.window.rootViewController.presentedViewController)
     {
         // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
             
-            [self popToHomeViewControllerAnimated:NO completion:completion];
+            [self popToHomeViewControllerAnimated:NO completion:^{
+                
+                if (completion)
+                {
+                    completion();
+                }
+                
+                // Restore noCallSupportAlert if any
+                if (noCallSupportAlert)
+                {
+                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
+                    [noCallSupportAlert showInViewController:self.window.rootViewController];
+                }
+                
+            }];
             
-            // Restore noCallSupportAlert if any
-            if (noCallSupportAlert)
-            {
-                NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
-                [noCallSupportAlert showInViewController:self.window.rootViewController];
-            }
         }];
     }
     else
