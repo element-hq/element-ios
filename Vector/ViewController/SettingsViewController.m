@@ -126,8 +126,11 @@
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Refresh table to remove this account
-        [self.tableView reloadData];
+        if ([MXKAccountManager sharedManager].accounts.count)
+        {
+            // Refresh table to remove this account
+            [self.tableView reloadData];
+        }
         
     }];
     
@@ -993,7 +996,17 @@
 
 - (void)onSignout:(id)sender
 {
-   [[MXKAccountManager sharedManager] logout];
+    UIButton *signOutButton = (UIButton*)sender;
+    [signOutButton setTintColor:[UIColor lightGrayColor]];
+    signOutButton.enabled = NO;
+    
+    [self startActivityIndicator];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [[MXKAccountManager sharedManager] logout];
+        
+    });
 }
 
 - (void)togglePushNotifications:(id)sender
