@@ -655,6 +655,8 @@
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
+                newEmailCell.mxkTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                newEmailCell.mxkTextField.spellCheckingType = UITextSpellCheckingTypeNo;
                 newEmailCell.mxkTextField.delegate = self;
 
                 [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
