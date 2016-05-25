@@ -22,7 +22,7 @@
 
 #import "UIViewController+VectorSearch.h"
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, RoomTitleViewTapGestureDelegate>
 
 // The expanded header
 @property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
