@@ -220,6 +220,7 @@
 "settings_version" = "Version %@";
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";
+"settings_third_party_notices" = "Third-party Notices";
 "settings_clear_cache" = "Clear cache";
 
 "settings_change_password" = "Change password";

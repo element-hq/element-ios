@@ -47,8 +47,9 @@
 #define OTHER_VERSION_INDEX         0
 #define OTHER_TERM_CONDITIONS_INDEX 1
 #define OTHER_PRIVACY_INDEX         2
-#define OTHER_CLEAR_CACHE_INDEX     3
-#define OTHER_COUNT                 4
+#define OTHER_THIRD_PARTY_INDEX     3
+#define OTHER_CLEAR_CACHE_INDEX     4
+#define OTHER_COUNT                 5
 
 
 @interface SettingsViewController ()
@@ -822,36 +823,58 @@
     {
         if (row == OTHER_VERSION_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *versionCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCell *versionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!versionCell)
+            {
+                versionCell = [[MXKTableViewCell alloc] init];
+                versionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
             
             NSString* appVersion = [AppDelegate theDelegate].appVersion;
             NSString* build = [AppDelegate theDelegate].build;
             
-            versionCell.mxkLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
-            versionCell.mxkTextField.userInteractionEnabled = NO;
-            versionCell.mxkTextField.text = nil;
+            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
             
             cell = versionCell;
         }
         else if (row == OTHER_TERM_CONDITIONS_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *termAndConditionCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCell *termAndConditionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!termAndConditionCell)
+            {
+                termAndConditionCell = [[MXKTableViewCell alloc] init];
+                termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
             
-            termAndConditionCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
-            termAndConditionCell.mxkTextField.userInteractionEnabled = NO;
-            termAndConditionCell.mxkTextField.text = nil;
+            termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             
             cell = termAndConditionCell;
         }
         else if (row == OTHER_PRIVACY_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *privacyPolicyCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCell *privacyPolicyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!privacyPolicyCell)
+            {
+                privacyPolicyCell = [[MXKTableViewCell alloc] init];
+                privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
             
-            privacyPolicyCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
-            privacyPolicyCell.mxkTextField.userInteractionEnabled = NO;
-            privacyPolicyCell.mxkTextField.text = nil;
+            privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             
             cell = privacyPolicyCell;
+        }
+        else if (row == OTHER_THIRD_PARTY_INDEX)
+        {
+            MXKTableViewCell *thirdPartyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!thirdPartyCell)
+            {
+                thirdPartyCell = [[MXKTableViewCell alloc] init];
+                thirdPartyCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
+            
+            thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
+            
+            cell = thirdPartyCell;
         }
         else if (row == OTHER_CLEAR_CACHE_INDEX)
         {
@@ -964,6 +987,13 @@
            else if (row == OTHER_PRIVACY_INDEX)
            {
                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/privacy.html"];
+               [self.navigationController pushViewController:webViewViewController animated:YES];
+           }
+           else if (row == OTHER_THIRD_PARTY_INDEX)
+           {
+               NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
+               
+               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
                [self.navigationController pushViewController:webViewViewController animated:YES];
            }
         }
