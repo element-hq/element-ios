@@ -143,6 +143,7 @@
 "room_participants_action_start_chat" = "Start chat";
 "room_participants_action_start_voice_call" = "Start voice call";
 "room_participants_action_start_video_call" = "Start video call";
+"room_participants_action_mention" = "Mention";
 
 // Chat
 "room_one_user_is_typing" = "%@ is typing...";

@@ -314,6 +314,19 @@
     }
 }
 
+- (void)setEnableMention:(BOOL)enableMention
+{
+    if (_enableMention != enableMention)
+    {
+        _enableMention = enableMention;
+        
+        if (detailsViewController)
+        {
+            detailsViewController.enableMention = enableMention;
+        }
+    }
+}
+
 #pragma mark - Internals
 
 - (void)setNavBarButtons
@@ -1020,6 +1033,11 @@
         if (contact.mxMember)
         {
             detailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            
+            // Set delegate to handle action on member (start chat, mention)
+            detailsViewController.delegate = self;
+            detailsViewController.enableMention = _enableMention;
+            
             [detailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
             
             // Check whether the view controller is displayed inside a segmented one.
@@ -1065,6 +1083,30 @@
     return actions;
 }
 
+#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
+{
+    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
+}
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member
+{
+    if (_delegate)
+    {
+        id<RoomParticipantsViewControllerDelegate> delegate = _delegate;
+        
+        // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
+        MXKViewController *viewController = _segmentedViewController ? _segmentedViewController : self;
+        
+        // Withdraw the current view controller, and let the delegate mention the member
+        [viewController withdrawViewControllerAnimated:YES completion:^{
+            
+            [delegate roomParticipantsViewController:self mention:member];
+            
+        }];
+    }
+}
 
 #pragma mark - Actions
 
