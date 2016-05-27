@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -306,8 +306,9 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="415" id="6v6-fz-e8o"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="width" secondItem="rhx-dD-4EJ" secondAttribute="width" id="EBX-KN-pRT"/>
-                                <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="300" id="UEM-Mh-0H9"/>
+                                <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" priority="250" constant="300" id="UEM-Mh-0H9"/>
                                 <constraint firstItem="xWb-IJ-v7F" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="YnP-Nk-QxR"/>
+                                <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xWb-IJ-v7F" secondAttribute="bottom" id="aGH-m3-xL3"/>
                                 <constraint firstAttribute="width" constant="600" placeholder="YES" id="hOT-Wn-hIb"/>
                                 <constraint firstAttribute="trailing" secondItem="xWb-IJ-v7F" secondAttribute="trailing" id="hko-ol-XDd"/>
                                 <constraint firstItem="xWb-IJ-v7F" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="76" id="khR-Uj-OTH"/>

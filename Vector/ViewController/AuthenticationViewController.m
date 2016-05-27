@@ -156,11 +156,7 @@
     
     // Restore here the actual content view height.
     // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
-    self.contentViewHeightConstraint.constant = 415;
-    if (self.serverOptionsContainer.isHidden == NO)
-    {
-        self.contentViewHeightConstraint.constant += self.serverOptionsContainer.frame.size.height;
-    }
+    [self refreshContentViewHeightConstraint];
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -168,7 +164,12 @@
     super.userInteractionEnabled = userInteractionEnabled;
     
     // Show/Hide server options
-    _optionsContainer.hidden = !userInteractionEnabled;
+    if (_optionsContainer.hidden == userInteractionEnabled)
+    {
+        _optionsContainer.hidden = !userInteractionEnabled;
+        
+        [self refreshContentViewHeightConstraint];
+    }
     
     // Update the label of the right bar button according to its actual action.
     if (!userInteractionEnabled)
@@ -334,6 +335,23 @@
 
 #pragma mark -
 
+- (void)refreshContentViewHeightConstraint
+{
+    // Refresh content view height by considering the options container display.
+    CGRect serverOptionsContainerFrame = self.serverOptionsContainer.frame;
+    
+    self.contentViewHeightConstraint.constant = self.optionsContainer.frame.origin.y + 10;
+    
+    if (!self.optionsContainer.isHidden)
+    {
+        self.contentViewHeightConstraint.constant += serverOptionsContainerFrame.origin.y;
+        if (!self.serverOptionsContainer.isHidden)
+        {
+            self.contentViewHeightConstraint.constant += serverOptionsContainerFrame.size.height;
+        }
+    }
+}
+
 - (void)hideServerOptionsContainer:(BOOL)hidden
 {
     if (self.serverOptionsContainer.isHidden == hidden)
@@ -413,11 +431,13 @@
     // Override here the handling of the authInputsView height change.
     if ([@"viewHeightConstraint.constant" isEqualToString:keyPath])
     {
-        // Contrary to the default implementation in 'MXKAuthenticationViewController', the content view height must not be updated.
         self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
         
         // Force to render the view
         [self.view layoutIfNeeded];
+        
+        // Refresh content view height by considering the updated frame of the options container.
+        [self refreshContentViewHeightConstraint];
     }
     else
     {
