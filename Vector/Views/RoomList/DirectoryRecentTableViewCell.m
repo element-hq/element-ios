@@ -37,13 +37,23 @@
 
         case MXKDataSourceStateReady:
         {
-            // Concatenate all patterns into one string
-            NSString *filter = [publicRoomsDirectoryDataSource.searchPatternsList componentsJoinedByString:@" "];
-
-            self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
-            self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil),
-                                          publicRoomsDirectoryDataSource.filteredRooms.count,
-                                          filter];
+            if (publicRoomsDirectoryDataSource.searchPatternsList)
+            {
+                // Concatenate all patterns into one string
+                NSString *filter = [publicRoomsDirectoryDataSource.searchPatternsList componentsJoinedByString:@" "];
+                
+                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
+                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil),
+                                              publicRoomsDirectoryDataSource.filteredRooms.count,
+                                              filter];
+            }
+            else
+            {
+                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
+                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_description", @"Vector", nil),
+                                              publicRoomsDirectoryDataSource.filteredRooms.count];
+            }
+            
 
             if (publicRoomsDirectoryDataSource.filteredRooms.count)
             {

@@ -73,6 +73,9 @@
         lowPrioritySection = -1;
         sectionsCount = 0;
         
+        _hideRecents = NO;
+        _hidepublicRoomsDirectory = YES;
+        
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -179,6 +182,28 @@
     MXSession *mxSession = notif.object;
     if ([self.mxSessions indexOfObject:mxSession] != NSNotFound)
     {
+        [self refreshRoomsSectionsAndReload];
+    }
+}
+
+#pragma mark - 
+
+- (void)setHidepublicRoomsDirectory:(BOOL)hidepublicRoomsDirectory
+{
+    if (_hidepublicRoomsDirectory != hidepublicRoomsDirectory)
+    {
+        _hidepublicRoomsDirectory = hidepublicRoomsDirectory;
+        
+        [self refreshRoomsSectionsAndReload];
+    }
+}
+
+- (void)setHideRecents:(BOOL)hideRecents
+{
+    if (_hideRecents != hideRecents)
+    {
+        _hideRecents = hideRecents;
+        
         [self refreshRoomsSectionsAndReload];
     }
 }
@@ -573,25 +598,20 @@
 - (void)refreshRoomsSections
 {
     // FIXME manage multi accounts
-    NSUInteger sectionIndex = 0;
-
     favoriteCellDataArray = [[NSMutableArray alloc] init];
     conversationCellDataArray = [[NSMutableArray alloc] init];
     lowPriorityCellDataArray = [[NSMutableArray alloc] init];
     
     directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
-
-    // Manage the public room search results cell outside the recents.
-    // Show the cell showing the public rooms directory search result
-    // once a search is active
-    if (_publicRoomsDirectoryDataSource.searchPatternsList)
+    
+    if (!_hidepublicRoomsDirectory)
     {
-        directorySection = sectionIndex;
-        sectionIndex++;
+        // The public rooms directory cell is then visible whatever the search activity.
+        directorySection = sectionsCount++;
     }
 
-    if (displayedRecentsDataSourceArray.count > 0)
+    if (!_hideRecents && displayedRecentsDataSourceArray.count > 0)
     {
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
         MXSession* session = recentsDataSource.mxSession;
@@ -642,33 +662,27 @@
         [invitesCellDataArray removeObject:[NSNull null]];
         if (invitesCellDataArray.count > 0)
         {
-            invitesSection = sectionIndex;
-            sectionIndex++;
+            invitesSection = sectionsCount++;
         }
         
         [favoriteCellDataArray removeObject:[NSNull null]];
         if (favoriteCellDataArray.count > 0)
         {
-            favoritesSection = sectionIndex;
-            sectionIndex++;
+            favoritesSection = sectionsCount++;
         }
         
         [conversationCellDataArray removeObject:[NSNull null]];
         if (conversationCellDataArray.count > 0)
         {
-            conversationSection = sectionIndex;
-            sectionIndex++;
+            conversationSection = sectionsCount++;
         }
         
         [lowPriorityCellDataArray removeObject:[NSNull null]];
         if (lowPriorityCellDataArray.count > 0)
         {
-            lowPrioritySection = sectionIndex;
-            sectionIndex++;
+            lowPrioritySection = sectionsCount++;
         }
     }
-
-    sectionsCount = sectionIndex;
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes

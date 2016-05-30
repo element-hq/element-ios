@@ -636,12 +636,8 @@
 
     [recentsDataSource searchWithPatterns:nil];
 
-     // If the currently selected tab is the recents, force to show it right now
-     // The transition looks smoother
-    if (animated && self.selectedViewController.view.hidden == YES && self.selectedViewController == recentsViewController)
-    {
-        self.selectedViewController.view.hidden = NO;
-    }
+     recentsDataSource.hideRecents = NO;
+     recentsDataSource.hidepublicRoomsDirectory = YES;
 }
 
 // Update search results under the currently selected tab
@@ -649,7 +645,8 @@
 {
     if (self.searchBar.text.length)
     {
-        self.selectedViewController.view.hidden = NO;
+        recentsDataSource.hideRecents = NO;
+        recentsDataSource.hidepublicRoomsDirectory = NO;
         self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
@@ -677,8 +674,16 @@
     }
     else
     {
-        // Nothing to search = Show nothing
-        self.selectedViewController.view.hidden = YES;
+        // Nothing to search, show only the public dictionary
+        recentsDataSource.hideRecents = YES;
+        recentsDataSource.hidepublicRoomsDirectory = NO;
+        
+        // Reset message search if any
+        if (searchDataSource.searchText.length)
+        {
+            [searchDataSource searchMessageText:nil];
+        }
+        
         [self checkAndShowBackgroundImage];
     }
 }
@@ -690,6 +695,11 @@
     if (self.selectedViewController == recentsViewController)
     {
         // As the public room search is local, it can be updated on each text change
+        [self updateSearch];
+    }
+    else if (!self.searchBar.text.length)
+    {
+        // Reset message search if any
         [self updateSearch];
     }
 }
