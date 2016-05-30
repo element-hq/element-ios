@@ -764,7 +764,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 - (void)refreshApplicationIconBadgeNumber
 {
-    NSUInteger count = [MXKRoomDataSourceManager notificationCount];
+    NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
