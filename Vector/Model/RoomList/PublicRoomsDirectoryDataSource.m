@@ -45,7 +45,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     NSString *searchPatternsListString = [_searchPatternsList componentsJoinedByString:@""];
     NSString *newSearchPatternsListString = [newSearchPatternsList componentsJoinedByString:@""];
 
-    if (![newSearchPatternsListString isEqualToString:searchPatternsListString])
+    if ((searchPatternsListString || newSearchPatternsListString) && ![newSearchPatternsListString isEqualToString:searchPatternsListString])
     {
         _searchPatternsList = newSearchPatternsList;
         [self refreshPublicRooms];

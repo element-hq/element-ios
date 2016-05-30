@@ -420,6 +420,8 @@
     [self setKeyboardHeightForBackgroundImage:keyboardHeight];
 
     [super setKeyboardHeight:keyboardHeight];
+    
+    [self checkAndShowBackgroundImage];
 }
 
 - (void)startActivityIndicator
@@ -451,19 +453,32 @@
     }
 }
 
-// Check if there is enough room for displaying the background
-// before displaying it
+// Check conditions before displaying the background
 - (void)checkAndShowBackgroundImage
 {
-    // In landscape with the iPhone 5 & 6 screen size, the backgroundImageView overlaps the tabs header,
-    // So, hide backgroundImageView
-    if (self.backgroundImageView.superview.frame.size.height > 375 && (self.searchBar.text.length == 0))
+    // Note: This background is hidden when keyboard is dismissed.
+    // The other conditions depend on the current selected view controller.
+    if (self.selectedViewController == recentsViewController)
     {
-        self.backgroundImageView.hidden = NO;
+        self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidepublicRoomsDirectory || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == searchViewController)
+    {
+        self.backgroundImageView.hidden = (((searchDataSource.serverCount != 0) && !searchViewController.noResultsLabel.isHidden) || (self.keyboardHeight == 0));
     }
     else
     {
-        self.backgroundImageView.hidden = YES;
+        self.backgroundImageView.hidden = (self.keyboardHeight == 0);
+    }
+    
+    if (!self.backgroundImageView.hidden)
+    {
+        // Check whether there is enough space to display this background
+        // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
+        if ((self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
+        {
+            self.backgroundImageView.hidden = YES;
+        }
     }
 }
 
@@ -678,14 +693,15 @@
         recentsDataSource.hideRecents = YES;
         recentsDataSource.hidepublicRoomsDirectory = NO;
         
-        // Reset message search if any
+        // Reset search result (if any)
+        [recentsDataSource searchWithPatterns:nil];
         if (searchDataSource.searchText.length)
         {
             [searchDataSource searchMessageText:nil];
         }
-        
-        [self checkAndShowBackgroundImage];
     }
+    
+    [self checkAndShowBackgroundImage];
 }
 
 #pragma mark - UISearchBarDelegate
