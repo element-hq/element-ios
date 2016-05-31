@@ -51,6 +51,8 @@
 #define OTHER_CLEAR_CACHE_INDEX     4
 #define OTHER_COUNT                 5
 
+typedef void (^blockSettingsViewController_onReadyToDestroy)();
+
 
 @interface SettingsViewController ()
 {
@@ -101,6 +103,9 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+    
+    BOOL isSavingInProgress;
+    blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
 }
 
 /**
@@ -170,9 +175,26 @@
 
 - (void)destroy
 {
-    [self reset];
-    
-    [super destroy];
+    if (isSavingInProgress)
+    {
+        __weak typeof(self) weakSelf = self;
+        onReadyToDestroyHandler = ^() {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf destroy];
+            }
+            
+        };
+    }
+    else
+    {
+        // Dispose all resources
+        [self reset];
+        
+        [super destroy];
+    }
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -301,6 +323,8 @@
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    onReadyToDestroyHandler = nil;
 }
 
 -(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
@@ -333,6 +357,7 @@
 {
     __weak typeof(self) weakSelf = self;
 
+    [currentAlert dismiss:NO];
     currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"]
                                               message:message
                                                 style:MXKAlertStyleAlert];
@@ -1131,6 +1156,8 @@
     }
     
     [self startActivityIndicator];
+    isSavingInProgress = YES;
+    __weak typeof(self) weakSelf = self;
     
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     MXMyUser* myUser = account.mxSession.myUser;
@@ -1138,43 +1165,28 @@
     if (newDisplayName && ![myUser.displayname isEqualToString:newDisplayName])
     {
         // Save display name
-        __weak typeof(self) weakSelf = self;
         [account setUserDisplayName:newDisplayName success:^{
             
-            // Update the current displayname
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->newDisplayName = nil;
-            
-            // Go to the next change saving step
-            [strongSelf onSave:nil];
+            if (weakSelf)
+            {
+                // Update the current displayname
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->newDisplayName = nil;
+                
+                // Go to the next change saving step
+                [strongSelf onSave:nil];
+            }
             
         } failure:^(NSError *error) {
             
             NSLog(@"[Vector Settings View Controller] Failed to set displayName");
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
             
-            // Alert user
-            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-            if (!title)
+            if (weakSelf)
             {
-                title = [NSBundle mxk_localizedStringForKey:@"account_error_display_name_change_failed"];
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf handleErrorDuringProfileChangeSaving:error];
             }
-            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
             
-            MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-;
-            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-                                       {
-                                           strongSelf->newDisplayName = nil;
-                                           // Loop to end saving
-                                           [strongSelf onSave:nil];
-                                       }];
-            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-             {
-                 // Loop to retry saving
-                 [strongSelf onSave:nil];
-             }];
-            [alert showInViewController:strongSelf];
         }];
         
         return;
@@ -1188,41 +1200,134 @@
         // Upload picture
         MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:account.mxSession initialRange:0 andRange:1.0];
         
-        [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url)
-         {
-             // Store uploaded picture url and trigger picture saving
-             uploadedAvatarURL = url;
-             newAvatarImage = nil;
-             
-             [self onSave:nil];
-         } failure:^(NSError *error)
-         {
-             NSLog(@"[Vector SettingsViewController] Failed to upload image");
-             uploadedAvatarURL = nil;
-             newAvatarImage = nil;
-         }];
+        [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                // Store uploaded picture url and trigger picture saving
+                strongSelf->uploadedAvatarURL = url;
+                strongSelf->newAvatarImage = nil;
+                [strongSelf onSave:nil];
+            }
+            
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[Vector SettingsViewController] Failed to upload image");
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf handleErrorDuringProfileChangeSaving:error];
+            }
+            
+        }];
         
+        return;
     }
     else if (uploadedAvatarURL)
     {
-        __weak typeof(self) weakSelf = self;
         [account setUserAvatarUrl:uploadedAvatarURL
                              success:^{
-                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                 strongSelf->uploadedAvatarURL = nil;
-                                 [strongSelf onSave:nil];
+                                 
+                                 if (weakSelf)
+                                 {
+                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                     strongSelf->uploadedAvatarURL = nil;
+                                     [strongSelf onSave:nil];
+                                 }
+                                 
                              }
                              failure:^(NSError *error) {
+                                 
                                  NSLog(@"[Vector SettingsViewController] Failed to set avatar url");
                                 
-                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                 strongSelf->uploadedAvatarURL = nil;
-                                 [strongSelf onSave:nil];
+                                 if (weakSelf)
+                                 {
+                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                     [strongSelf handleErrorDuringProfileChangeSaving:error];
+                                 }
+                                 
                              }];
+        
+        return;
     }
     
+    // Backup is complete
+    isSavingInProgress = NO;
     [self stopActivityIndicator];
-    [self.tableView reloadData];
+    
+    // Ready to leave
+    if (onReadyToDestroyHandler)
+    {
+        onReadyToDestroyHandler();
+        onReadyToDestroyHandler = nil;
+    }
+    else
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (void)handleErrorDuringProfileChangeSaving:(NSError*)error
+{
+    // Sanity check: retrieve the current root view controller
+    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+    if (rootViewController)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        // Alert user
+        NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+        if (!title)
+        {
+            title = [NSBundle mxk_localizedStringForKey:@"settings_fail_to_update_profile"];
+        }
+        NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+        
+        [currentAlert dismiss:NO];
+        currentAlert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+                
+                // Reset the updated displayname
+                strongSelf->newDisplayName = nil;
+                
+                // Discard picture change
+                strongSelf->uploadedAvatarURL = nil;
+                strongSelf->newAvatarImage = nil;
+                
+                // Loop to end saving
+                [strongSelf onSave:nil];
+            }
+            
+        }];
+        
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+                
+                // Loop to retry saving
+                [strongSelf onSave:nil];
+            }
+            
+        }];
+        
+        
+        [currentAlert showInViewController:rootViewController];
+    }
 }
 
 - (IBAction)onAddNewEmail:(id)sender
