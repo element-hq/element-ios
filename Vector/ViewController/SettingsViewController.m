@@ -104,8 +104,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
+    // Postpone destroy operation when saving or pwd reset is in progress
     BOOL isSavingInProgress;
+    BOOL isResetPwdInProgress;
     blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
+    
+    //
+    UIAlertController *resetPwdAlertController;
 }
 
 /**
@@ -175,7 +180,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
-    if (isSavingInProgress)
+    if (isSavingInProgress || isResetPwdInProgress)
     {
         __weak typeof(self) weakSelf = self;
         onReadyToDestroyHandler = ^() {
@@ -272,6 +277,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         [currentAlert dismiss:NO];
         currentAlert = nil;
+    }
+    
+    if (resetPwdAlertController)
+    {
+        [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+        resetPwdAlertController = nil;
     }
 
     if (notificationCenterWillUpdateObserver)
@@ -1259,9 +1270,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     isSavingInProgress = NO;
     [self stopActivityIndicator];
     
-    // Ready to leave
+    // Check whether destroy has been called durign saving
     if (onReadyToDestroyHandler)
     {
+        // Ready to destroy
         onReadyToDestroyHandler();
         onReadyToDestroyHandler = nil;
     }
@@ -1335,11 +1347,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Email check
     if (![MXTools isEmailAddress:newEmailTextField.text])
     {
-        MXKAlert *alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] style:MXKAlertStyleAlert];
+        [currentAlert dismiss:NO];
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] style:MXKAlertStyleAlert];
 
-        alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+            }
+            
         }];
-        [alert showInViewController:self];
+        [currentAlert showInViewController:self];
 
         return;
     }
@@ -1466,95 +1489,177 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)displayPasswordAlert
 {
-    UIAlertController * alert =   [UIAlertController
-                                   alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil)
-                                   message:nil
-                                   preferredStyle:UIAlertControllerStyleAlert];
+    __weak typeof(self) weakSelf = self;
+    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
-    savePasswordAction = [UIAlertAction
-                         actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil)
-                         style:UIAlertActionStyleDefault
-                         handler:^(UIAlertAction * action)
-                         {
-                             if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
-                             {
-                                [self startActivityIndicator];
-                                 
-                                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-                                 [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
             
-                                     [self stopActivityIndicator];
-
-                                     MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
-                                     
-                                     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                     }];
-                                     
-                                     [alert showInViewController:self];
-                                     
-                                 } failure:^(NSError *error) {
-                                     
-                                      [self stopActivityIndicator];
-                                     
-                                     MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
-                                     
-                                     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                     }];
-                                     
-                                     [alert showInViewController:self];                                     
-                                 }];
-                             }
-                             else
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                             }
-                             
-                         }];
+            strongSelf->resetPwdAlertController = nil;
+            
+            if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
+            {
+                [strongSelf startActivityIndicator];
+                strongSelf->isResetPwdInProgress = YES;
+                
+                MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+                
+                [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        
+                        strongSelf->isResetPwdInProgress = NO;
+                        [strongSelf stopActivityIndicator];
+                        
+                        // Display a successful message only if the settings screen is still visible (destroy is not called yet)
+                        if (!strongSelf->onReadyToDestroyHandler)
+                        {
+                            [strongSelf->currentAlert dismiss:NO];
+                            
+                            strongSelf->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
+                            
+                            strongSelf->currentAlert.cancelButtonIndex = [strongSelf->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                if (weakSelf)
+                                {
+                                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                    
+                                    strongSelf->currentAlert = nil;
+                                    
+                                    // Check whether destroy has been called durign pwd change
+                                    if (strongSelf->onReadyToDestroyHandler)
+                                    {
+                                        // Ready to destroy
+                                        strongSelf->onReadyToDestroyHandler();
+                                        strongSelf->onReadyToDestroyHandler = nil;
+                                    }
+                                }
+                                
+                            }];
+                            
+                            [strongSelf->currentAlert showInViewController:strongSelf];
+                        }
+                        else
+                        {
+                            // Ready to destroy
+                            strongSelf->onReadyToDestroyHandler();
+                            strongSelf->onReadyToDestroyHandler = nil;
+                        }
+                    }
+                    
+                } failure:^(NSError *error) {
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        
+                        strongSelf->isResetPwdInProgress = NO;
+                        [strongSelf stopActivityIndicator];
+                        
+                        // Display a failure message on the current screen
+                        UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+                        if (rootViewController)
+                        {
+                            [strongSelf->currentAlert dismiss:NO];
+                            strongSelf->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
+                            
+                            strongSelf->currentAlert.cancelButtonIndex = [strongSelf->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                if (weakSelf)
+                                {
+                                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                    
+                                    strongSelf->currentAlert = nil;
+                                    
+                                    // Check whether destroy has been called durign pwd change
+                                    if (strongSelf->onReadyToDestroyHandler)
+                                    {
+                                        // Ready to destroy
+                                        strongSelf->onReadyToDestroyHandler();
+                                        strongSelf->onReadyToDestroyHandler = nil;
+                                    }
+                                }
+                                
+                            }];
+                            
+                            [strongSelf->currentAlert showInViewController:rootViewController];
+                        }
+                    }
+                    
+                }];
+            }
+        }
+        
+    }];
     
     // disable by default
     // check if the textfields have the right value
     savePasswordAction.enabled = NO;
     
-    UIAlertAction* cancel = [UIAlertAction
-                             actionWithTitle:@"Cancel"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                             }];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-        currentPasswordTextField = textField;
-        currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
-        currentPasswordTextField.secureTextEntry = YES;
-        [currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->resetPwdAlertController = nil;
+        }
+        
+    }];
+    
+    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->currentPasswordTextField = textField;
+            strongSelf->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
+            strongSelf->currentPasswordTextField.secureTextEntry = YES;
+            [strongSelf->currentPasswordTextField addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }
          
      }];
     
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         newPasswordTextField1 = textField;
-         newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
-         newPasswordTextField1.secureTextEntry = YES;
-         [newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-         
-     }];
+    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->newPasswordTextField1 = textField;
+            strongSelf->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
+            strongSelf->newPasswordTextField1.secureTextEntry = YES;
+            [strongSelf->newPasswordTextField1 addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }
+        
+    }];
     
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         newPasswordTextField2 = textField;
-         newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
-         newPasswordTextField2.secureTextEntry = YES;
-         [newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-         
-         newPasswordTextField2 = textField;
-     }];
+    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->newPasswordTextField2 = textField;
+            strongSelf->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
+            strongSelf->newPasswordTextField2.secureTextEntry = YES;
+            [strongSelf->newPasswordTextField2 addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }
+    }];
 
     
-    [alert addAction:cancel];
-    [alert addAction:savePasswordAction];
+    [resetPwdAlertController addAction:cancel];
+    [resetPwdAlertController addAction:savePasswordAction];
 
-    [self presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
 @end
