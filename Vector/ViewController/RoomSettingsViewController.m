@@ -21,7 +21,6 @@
 
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
-#import "TableViewCellWithLabelAndMXKImageView.h"
 #import "TableViewCellWithLabelAndSwitch.h"
 
 #import "TableViewCellSeparator.h"
@@ -592,11 +591,18 @@
         }
         else if (row == ROOM_SECTION_PHOTO)
         {
-            TableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+            MXKTableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
             
             if (!roomPhotoCell)
             {
-                roomPhotoCell = [[TableViewCellWithLabelAndMXKImageView alloc] init];
+                roomPhotoCell = [[MXKTableViewCellWithLabelAndMXKImageView alloc] init];
+                
+                roomPhotoCell.mxkLabelLeadingConstraint.constant = 15;
+                roomPhotoCell.mxkImageViewTrailingConstraint.constant = 10;
+                
+                roomPhotoCell.mxkImageViewWidthConstraint.constant = roomPhotoCell.mxkImageViewHeightConstraint.constant = 30;
+                
+                roomPhotoCell.mxkImageViewDisplayBoxType = MXKTableViewCellDisplayBoxTypeCircle;
                 
                 // tap on avatar to update it
                 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomAvatarTap:)];
@@ -615,8 +621,6 @@
                 roomPhotoCell.mxkImageView.alpha = mxRoom.isModerator ? 1.0f : 0.5f;
             }
             
-            [roomPhotoCell.mxkImageView.layer setCornerRadius:roomPhotoCell.mxkImageView.frame.size.width / 2];
-            roomPhotoCell.mxkImageView.clipsToBounds = YES;
             roomPhotoCell.userInteractionEnabled = mxRoom.isModerator;
             
             cell = roomPhotoCell;

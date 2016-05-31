@@ -603,6 +603,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 profileCell.mxkImageViewTrailingConstraint.constant = 10;
                 
                 profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
+                
+                profileCell.mxkImageViewDisplayBoxType = MXKTableViewCellDisplayBoxTypeCircle;
+                
+                // tap on avatar to update it
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onProfileAvatarTap:)];
+                [profileCell.mxkImageView addGestureRecognizer:tap];
             }
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
@@ -627,9 +633,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                     profileCell.mxkImageView.image = avatarImage;
                 }
             }
-            
-            [profileCell.mxkImageView.layer setCornerRadius:profileCell.mxkImageView.frame.size.width / 2];
-            profileCell.mxkImageView.clipsToBounds = YES;
             
             cell = profileCell;
         }
@@ -1037,13 +1040,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             if (row == userSettingsProfilePictureIndex)
             {
-                mediaPicker = [MediaPickerViewController mediaPickerViewController];
-                mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-                mediaPicker.delegate = self;
-                UINavigationController *navigationController = [UINavigationController new];
-                [navigationController pushViewController:mediaPicker animated:NO];
-                
-                [self presentViewController:navigationController animated:YES completion:nil];
+                [self onProfileAvatarTap:nil];
             }
             else if (row == userSettingsChangePasswordIndex)
             {
@@ -1418,6 +1415,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
     }
+}
+
+- (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
+{
+    mediaPicker = [MediaPickerViewController mediaPickerViewController];
+    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    mediaPicker.delegate = self;
+    UINavigationController *navigationController = [UINavigationController new];
+    [navigationController pushViewController:mediaPicker animated:NO];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - MediaPickerViewController Delegate
