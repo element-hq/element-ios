@@ -1,3 +1,45 @@
+Changes in Vector iOS in 0.1.8 (2016-06-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.8).
+ * Authentication: Support forgot password option.
+ * Messages: Display badges for missed notifications and unread msgs #290.
+ * Handle missing VoIP better #323.
+ * Add login information to the settings page #330.
+ * Directory should be accessible from search even if the search field is empty #104.
+ * Settings: Publish third party licenses #304.
+ * Settings: Prompt user when notifications are denied.
+ * Settings: Disable spell-checking on add email field.
+ * Permalinks: Use the beta path of the web app instead of /develop.
+ * Authentication: Update the default login flow to the vector.im HS.
+ * Authentication: Support automatic fallback to matrix.org HS for existing users.
+ * Chat screen: Improved images & videos sending failure UX: Show a red border when the attachment sending failed.
+ * Change App badge handling: Replace the missed notifications count with the missed discussions count.
+ * Created Room: replace active member label with "invite members" #346.
+
+Bug fixes:
+ * Settings: App crashes when user goes back during saving #345.
+ * Tapping on icons in recents view doesn't work #298.
+ * Crash when the ?, the punctuation mark, is considered as part of a link #320.
+ * Messages: All blank after upgrade; no spinner #311.
+ * The client should automatically log out when the password is updated from another client #247.
+ * Application can crash when a video failed to be converted before sending #318.
+ * Room Participants - Search result: the user id should be displayed when 2 members has the same display name #293.
+ * Loading one image thumbnail in a sequence seems to set all fullres images downloading #316.
+ * It's too hard to press names to auto-insert nicks #309.
+ * Need to check push notification registration #333.
+ * Option to autocomplete nicknames from their member info page #317.
+ * Messages: Apply apple look&feel on overscroll #179.
+ * It sounds like something is filling up the logs #344.
+ * When images & videos fail to send, it is not clear that they are stuck as 'red' unsent messges #313.
+ * Chat screen: Tap on clock status bar should scroll you up #289.
+ * tap-on-recents-status-bar doesn't scroll me to top #125.
+ * Signout button gives zero user feedback when tapped #302.
+ * Champagne search bubbles appears over the rooms list while searching a room member #64.
+ * Settings: Profile avatar is not clickable #351.
+ * Default text in the memberlist search box would be less confusing if it was 'Search/invite by...' instead of the other way around #349.
+
 Changes in Vector iOS in 0.1.6 (2016-05-04)
 ===============================================
 
