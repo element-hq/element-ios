@@ -33,7 +33,6 @@
 #import "SimpleRoomTitleView.h"
 #import "PreviewRoomTitleView.h"
 
-#import "RoomParticipantsViewController.h"
 #import "RoomMemberDetailsViewController.h"
 
 #import "SegmentedViewController.h"
@@ -96,6 +95,9 @@
 
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -268,6 +270,13 @@
     {
         [self showExpandedHeader:YES];
     }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -295,25 +304,16 @@
     // Hide expanded/preview header to restore navigation bar settings
     [self showExpandedHeader:NO];
     [self showPreviewHeader:NO];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if (self.childViewControllers)
-    {
-        // Dispose data source defined for room member list view controller (if any)
-        for (id childViewController in self.childViewControllers)
-        {
-            if ([childViewController isKindOfClass:[MXKRoomMemberListViewController class]])
-            {
-                MXKRoomMemberListViewController *viewController = (MXKRoomMemberListViewController*)childViewController;
-                MXKDataSource *dataSource = [viewController dataSource];
-                [viewController destroy];
-                [dataSource destroy];
-            }
-        }
-    }
-    
     [super viewDidAppear:animated];
     
     if (self.roomDataSource)
@@ -1054,6 +1054,15 @@
                 [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
+        {
+            // Add the member display name in text input
+            MXRoomMember *roomMember = [self.roomDataSource.room.state memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            if (roomMember)
+            {
+                [self mention:roomMember];
+            }
+        }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
@@ -1329,11 +1338,8 @@
                         [strongSelf cancelEventSelection];
 
                         // Create a permalink that is common to all Vector.im clients
-                        // FIXME: When available, use the prod Vector web app URL
-                        NSString *webAppUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
-
                         NSString *permalink = [NSString stringWithFormat:@"%@/#/room/%@/%@",
-                                              webAppUrl,
+                                              [Tools webAppUrl],
                                               selectedEvent.roomId,
                                               selectedEvent.eventId];
 
@@ -1448,6 +1454,12 @@
                 }
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView]
+                 && ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event.mxkState == MXKEventStateSendingFailed)
+        {
+            // Shortcut: when clicking on an unsent media, show the action sheet to resend it
+            [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellVectorEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.event}];
+        }
         else
         {
             // Keep default implementation for other actions
@@ -1526,6 +1538,8 @@
             [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
             
             RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
+            participantsViewController.delegate = self;
+            participantsViewController.enableMention = YES;
             participantsViewController.mxRoom = [session roomWithRoomId:roomid];
             participantsViewController.segmentedViewController = segmentedViewController;
             [viewControllers addObject:participantsViewController];
@@ -1563,10 +1577,10 @@
         if (selectedRoomMember)
         {
             RoomMemberDetailsViewController *memberViewController = pushedViewController;
-            // Set rageShake handler
-            memberViewController.rageShakeManager = [RageShakeManager sharedManager];
-            // Set delegate to handle start chat option
-            memberViewController.delegate = [AppDelegate theDelegate];
+            
+            // Set delegate to handle action on member (start chat, memtion)
+            memberViewController.delegate = self;
+            memberViewController.enableMention = YES;
             
             [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
             
@@ -1625,6 +1639,25 @@
 
         }];
     }
+}
+
+#pragma mark - RoomParticipantsViewControllerDelegate
+
+- (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member
+{
+    [self mention:member];
+}
+
+#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
+{
+    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
+}
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member
+{
+    [self mention:member];
 }
 
 #pragma mark - Action

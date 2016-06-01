@@ -17,10 +17,22 @@
 #import "AuthenticationViewController.h"
 
 #import "AuthInputsView.h"
+#import "ForgotPasswordInputsView.h"
 
 #import "RageShakeManager.h"
 
 #import "VectorDesignValues.h"
+
+@interface AuthenticationViewController ()
+{
+    /**
+     Store the potential login error received by using the new default homeserver (vector.im)
+     while we retry a login process against the matrix.org HS.
+     */
+    NSError *loginError;
+}
+
+@end
 
 @implementation AuthenticationViewController
 
@@ -35,6 +47,8 @@
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self)
                                           bundle:[NSBundle bundleForClass:self]];
 }
+
+#pragma mark -
 
 - (void)viewDidLoad
 {
@@ -65,10 +79,12 @@
     [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     self.submitButton.enabled = YES;
     
-    [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitle:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setTitleColor:kVectorTextColorGray forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:kVectorTextColorGray forState:UIControlStateHighlighted];
+    NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
+    [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kVectorColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
+    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
     
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
@@ -85,31 +101,62 @@
     // Custom used authInputsView
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeRegister];
+    [self registerAuthInputsViewClass:ForgotPasswordInputsView.class forAuthType:MXKAuthenticationTypeForgotPassword];
     
     // Initialize the auth inputs display
     AuthInputsView *authInputsView = [AuthInputsView authInputsView];
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
-    
-    // FIXME handle "Forgot password"
-    self.forgotPasswordButton.hidden = YES;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
 {
     super.authType = authType;
     
+    // Check a potential stored error.
+    if (loginError)
+    {
+        // Restore the default HS
+        NSLog(@"[AuthenticationVC] Switch back to default homeserver");
+        [self setHomeServerTextFieldText: @"https://vector.im"];
+        loginError = nil;
+    }
+    
     if (authType == MXKAuthenticationTypeLogin)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
     }
-    else
+    else if (authType == MXKAuthenticationTypeRegister)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
     }
+    else if (authType == MXKAuthenticationTypeForgotPassword)
+    {
+        if (isPasswordReseted)
+        {
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_return_to_login", @"Vector", nil) forState:UIControlStateNormal];
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_return_to_login", @"Vector", nil) forState:UIControlStateHighlighted];
+        }
+        else
+        {
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_send_reset_email", @"Vector", nil) forState:UIControlStateNormal];
+            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_send_reset_email", @"Vector", nil) forState:UIControlStateHighlighted];
+        }
+    }
+    
+    self.forgotPasswordButton.hidden = (authType != MXKAuthenticationTypeLogin);
+}
+
+- (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
+{
+    [super setAuthInputsView:authInputsView];
+    
+    // Restore here the actual content view height.
+    // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
+    [self refreshContentViewHeightConstraint];
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -117,7 +164,12 @@
     super.userInteractionEnabled = userInteractionEnabled;
     
     // Show/Hide server options
-    _optionsContainer.hidden = !userInteractionEnabled;
+    if (_optionsContainer.hidden == userInteractionEnabled)
+    {
+        _optionsContainer.hidden = !userInteractionEnabled;
+        
+        [self refreshContentViewHeightConstraint];
+    }
     
     // Update the label of the right bar button according to its actual action.
     if (!userInteractionEnabled)
@@ -132,9 +184,14 @@
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
         }
-        else
+        else if (self.authType == MXKAuthenticationTypeRegister)
         {
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+        }
+        else if (self.authType == MXKAuthenticationTypeForgotPassword)
+        {
+            // The right bar button is used to return to login.
+            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
         }
     }
 }
@@ -147,7 +204,8 @@
     }
     else if (sender == self.forgotPasswordButton)
     {
-        // TODO
+        // Update UI to reset password
+        self.authType = MXKAuthenticationTypeForgotPassword;
     }
     else if (sender == self.rightBarButtonItem)
     {
@@ -161,15 +219,11 @@
         {
             self.authType = MXKAuthenticationTypeRegister;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
-            // FIXME handle "Forgot password"
-//            self.forgotPasswordButton.hidden = YES;
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
             self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
-            // FIXME handle "Forgot password"
-//            self.forgotPasswordButton.hidden = NO;
         }
     }
     else if (sender == self.submitButton)
@@ -212,7 +266,91 @@
     }
 }
 
+- (void)onFailureDuringAuthRequest:(NSError *)error
+{
+    // Homeserver migration: the default homeserver url has been updated with https://vector.im.
+    // The login (or forgot pwd) process with an existing matrix.org accounts will then fail.
+    // Patch: Falling back to matrix.org HS so we don't break everyone's logins
+    if ([self.homeServerTextField.text isEqualToString:@"https://vector.im"])
+    {
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        
+        if (self.authType == MXKAuthenticationTypeLogin)
+        {
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
+            {
+                // Falling back to matrix.org HS
+                NSLog(@"[AuthenticationVC] Retry login against matrix.org");
+                
+                // Store the current error, and change the homeserver url
+                loginError = error;
+                [self setHomeServerTextFieldText:@"https://matrix.org"];
+                
+                // Trigger a new request
+                [self onButtonPressed:self.submitButton];
+                return;
+            }
+        }
+        else if (self.authType == MXKAuthenticationTypeForgotPassword)
+        {
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringNotFound])
+            {
+                // Sanity check
+                if ([self.authInputsView isKindOfClass:ForgotPasswordInputsView.class])
+                {
+                    // Falling back to matrix.org HS
+                    NSLog(@"[AuthenticationVC] Retry forgot password against matrix.org");
+                    
+                    // Store the current error, and change the homeserver url
+                    loginError = error;
+                    [self setHomeServerTextFieldText:@"https://matrix.org"];
+                    
+                    // Trigger a new request
+                    ForgotPasswordInputsView *authInputsView = (ForgotPasswordInputsView*)self.authInputsView;
+                    [authInputsView.nextStepButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+                    return;
+                }
+            }
+        }
+    }
+    
+    // Check whether we were retrying against matrix.org HS
+    if (loginError)
+    {
+        // This is not an existing matrix.org accounts
+        NSLog(@"[AuthenticationVC] This is not an existing matrix.org accounts");
+        
+        // Restore the default HS
+        [self setHomeServerTextFieldText: @"https://vector.im"];
+        
+        // Consider the original login error
+        [super onFailureDuringAuthRequest:loginError];
+        loginError = nil;
+    }
+    else
+    {
+        [super onFailureDuringAuthRequest:error];
+    }
+}
+
 #pragma mark -
+
+- (void)refreshContentViewHeightConstraint
+{
+    // Refresh content view height by considering the options container display.
+    CGRect serverOptionsContainerFrame = self.serverOptionsContainer.frame;
+    
+    self.contentViewHeightConstraint.constant = self.optionsContainer.frame.origin.y + 10;
+    
+    if (!self.optionsContainer.isHidden)
+    {
+        self.contentViewHeightConstraint.constant += serverOptionsContainerFrame.origin.y;
+        if (!self.serverOptionsContainer.isHidden)
+        {
+            self.contentViewHeightConstraint.constant += serverOptionsContainerFrame.size.height;
+        }
+    }
+}
 
 - (void)hideServerOptionsContainer:(BOOL)hidden
 {
@@ -283,6 +421,27 @@
         CGPoint offset = self.authenticationScrollView.contentOffset;
         offset.y += self.serverOptionsContainer.frame.size.height;
         self.authenticationScrollView.contentOffset = offset;
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    // Override here the handling of the authInputsView height change.
+    if ([@"viewHeightConstraint.constant" isEqualToString:keyPath])
+    {
+        self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
+        
+        // Force to render the view
+        [self.view layoutIfNeeded];
+        
+        // Refresh content view height by considering the updated frame of the options container.
+        [self refreshContentViewHeightConstraint];
+    }
+    else
+    {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

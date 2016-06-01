@@ -420,6 +420,8 @@
     [self setKeyboardHeightForBackgroundImage:keyboardHeight];
 
     [super setKeyboardHeight:keyboardHeight];
+    
+    [self checkAndShowBackgroundImage];
 }
 
 - (void)startActivityIndicator
@@ -451,19 +453,32 @@
     }
 }
 
-// Check if there is enough room for displaying the background
-// before displaying it
+// Check conditions before displaying the background
 - (void)checkAndShowBackgroundImage
 {
-    // In landscape with the iPhone 5 & 6 screen size, the backgroundImageView overlaps the tabs header,
-    // So, hide backgroundImageView
-    if (self.backgroundImageView.superview.frame.size.height > 375 && (self.searchBar.text.length == 0))
+    // Note: This background is hidden when keyboard is dismissed.
+    // The other conditions depend on the current selected view controller.
+    if (self.selectedViewController == recentsViewController)
     {
-        self.backgroundImageView.hidden = NO;
+        self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidepublicRoomsDirectory || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == searchViewController)
+    {
+        self.backgroundImageView.hidden = (((searchDataSource.serverCount != 0) && !searchViewController.noResultsLabel.isHidden) || (self.keyboardHeight == 0));
     }
     else
     {
-        self.backgroundImageView.hidden = YES;
+        self.backgroundImageView.hidden = (self.keyboardHeight == 0);
+    }
+    
+    if (!self.backgroundImageView.hidden)
+    {
+        // Check whether there is enough space to display this background
+        // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
+        if ((self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
+        {
+            self.backgroundImageView.hidden = YES;
+        }
     }
 }
 
@@ -636,12 +651,8 @@
 
     [recentsDataSource searchWithPatterns:nil];
 
-     // If the currently selected tab is the recents, force to show it right now
-     // The transition looks smoother
-    if (animated && self.selectedViewController.view.hidden == YES && self.selectedViewController == recentsViewController)
-    {
-        self.selectedViewController.view.hidden = NO;
-    }
+     recentsDataSource.hideRecents = NO;
+     recentsDataSource.hidepublicRoomsDirectory = YES;
 }
 
 // Update search results under the currently selected tab
@@ -649,7 +660,8 @@
 {
     if (self.searchBar.text.length)
     {
-        self.selectedViewController.view.hidden = NO;
+        recentsDataSource.hideRecents = NO;
+        recentsDataSource.hidepublicRoomsDirectory = NO;
         self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
@@ -677,10 +689,19 @@
     }
     else
     {
-        // Nothing to search = Show nothing
-        self.selectedViewController.view.hidden = YES;
-        [self checkAndShowBackgroundImage];
+        // Nothing to search, show only the public dictionary
+        recentsDataSource.hideRecents = YES;
+        recentsDataSource.hidepublicRoomsDirectory = NO;
+        
+        // Reset search result (if any)
+        [recentsDataSource searchWithPatterns:nil];
+        if (searchDataSource.searchText.length)
+        {
+            [searchDataSource searchMessageText:nil];
+        }
     }
+    
+    [self checkAndShowBackgroundImage];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -690,6 +711,11 @@
     if (self.selectedViewController == recentsViewController)
     {
         // As the public room search is local, it can be updated on each text change
+        [self updateSearch];
+    }
+    else if (!self.searchBar.text.length)
+    {
+        // Reset message search if any
         [self updateSearch];
     }
 }

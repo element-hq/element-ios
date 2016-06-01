@@ -50,7 +50,7 @@
         self.prefixTextColor = kVectorTextColorGray;
         self.bingTextColor = kVectorColorGreen;
         self.sendingTextColor = kVectorTextColorGray;
-        self.errorTextColor = kVectorTextColorRed;
+        self.errorTextColor = kVectorColorPinkRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
@@ -63,7 +63,7 @@
             self.bingTextFont = [UIFont systemFontOfSize:15];
         }
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
-        self.callInviteTextFont = [UIFont italicSystemFontOfSize:15];
+        self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
     }
     return self;
 }

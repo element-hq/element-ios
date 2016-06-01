@@ -42,12 +42,16 @@
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
+"auth_send_reset_email" = "Send Reset Email";
+"auth_return_to_login" = "Return to login screen";
 "auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
+"auth_new_password_placeholder" = "New password";
 "auth_user_name_placeholder" = "Your name";
 "auth_optional_email_placeholder" = "Email address (optional)";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
+"auth_repeat_new_password_placeholder" = "Confirm your new password";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_password" = "Password too short (min 6)";
@@ -56,11 +60,19 @@
 "auth_missing_optional_email" = "If you don't specify an email address, you won't be able to reset your password. Are you sure?";
 "auth_missing_email" = "Missing email address";
 "auth_password_dont_match" = "Passwords don't match";
+"auth_username_in_use" = "Username in use";
 "auth_forgot_password" = "Forgot password?";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
 "auth_recaptcha_message" = "This Home Server would like to make sure you are not a robot";
-"auth_username_in_use" = "Username in use";
+"auth_reset_password_message" = "To reset your password, enter the email address linked to your account:";
+"auth_reset_password_missing_email" = "The email address linked to your account must be entered.";
+"auth_reset_password_missing_password" = "A new password must be entered.";
+"auth_reset_password_email_validation_message" = "An email has been sent to %@. Once you've followed the link it contains, click below.";
+"auth_reset_password_next_step_button" = "I have verified my email address";
+"auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
+"auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this Homeserver.";
+"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 
 // Chat creation
 "room_creation_title" = "New Chat";
@@ -91,6 +103,8 @@
 "search_people" = "People";
 
 // Directory
+"directory_title" = "Browse directory";
+"directory_description" = "%tu rooms";
 "directory_search_results_title" = "Browse directory results";
 "directory_search_results" = "%tu results found for %@";
 "directory_searching_title" = "Searching directory...";
@@ -105,7 +119,7 @@
 "room_participants_leave_prompt_msg" = "Are you sure you want to leave this chat?";
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
-"room_participants_invite_another_user" = "Invite/search by name, email, id";
+"room_participants_invite_another_user" = "Search/invite by name, email, id";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
@@ -131,6 +145,7 @@
 "room_participants_action_start_chat" = "Start chat";
 "room_participants_action_start_voice_call" = "Start voice call";
 "room_participants_action_start_video_call" = "Start video call";
+"room_participants_action_mention" = "Mention";
 
 // Chat
 "room_one_user_is_typing" = "%@ is typing...";
@@ -159,6 +174,7 @@
 "room_title_new_room" = "New room";
 "room_title_multiple_active_members" = "%d/%d active members";
 "room_title_one_active_member" = "%d/%d active member";
+"room_title_invite_members" = "Invite members";
 "room_title_members" = "%d members";
 "room_title_one_member" = "1 member";
 
@@ -173,11 +189,14 @@
 "account_logout_all" = "Logout all accounts";
 
 "settings_config_no_build_info" = "(no build info)";
-"settings_title_config" = "Configuration";
 "settings_clear_cache" = "Clear cache";
+"settings_config_home_server" = "Home server is %@";
+"settings_config_identity_server" = "Identity server is %@";
+"settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 
 "settings_sign_out" = "Sign Out";
@@ -190,9 +209,11 @@
 "settings_change_password" = "Change password";
 "settings_phone_number" = "Phone Number";
 "settings_night_mode" = "Night Mode";
+"settings_fail_to_update_profile" = "Fail to update profile";
 
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_global_settings_info" = "Global notification settings are available on your Vector web client";
+"settings_on_denied_notification" = "Notifications are denied for Vector, please allow them in your device settings";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
 //"settings_messages_my_user_name" = "Msg containing my user name";
@@ -204,6 +225,7 @@
 "settings_version" = "Version %@";
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";
+"settings_third_party_notices" = "Third-party Notices";
 "settings_clear_cache" = "Clear cache";
 
 "settings_change_password" = "Change password";
@@ -251,4 +273,8 @@
 "room_displayname_two_members" = "%@ and %@";
 "room_displayname_more_than_two_members" = "%@ and %u others";
 "room_displayname_no_title" = "Empty room";
+
+// No VoIP support
+"no_voip_title" = "Incoming call";
+"no_voip" = "%@ is calling you but the iOS Vector app does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
 

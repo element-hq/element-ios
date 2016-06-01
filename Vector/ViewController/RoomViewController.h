@@ -20,9 +20,11 @@
 
 #import "RoomPreviewData.h"
 
+#import "RoomParticipantsViewController.h"
+
 #import "UIViewController+VectorSearch.h"
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate>
 
 // The expanded header
 @property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;

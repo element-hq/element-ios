@@ -42,6 +42,10 @@
     // Contact instances by matrix user id, or room 3pid invite token.
     NSMutableDictionary *contactsById;
     
+    // When a search session is in progress, this dictionary tells for each display name
+    // whether it appears several times.
+    NSMutableDictionary <NSString*,NSNumber*> *isMultiUseNameByDisplayName;
+    
     MXKAlert *currentAlert;
     
     // Mask view while processing a request
@@ -54,6 +58,9 @@
     id leaveRoomNotificationObserver;
     
     RoomMemberDetailsViewController *detailsViewController;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -132,6 +139,8 @@
     
     contactsById = nil;
     
+    isMultiUseNameByDisplayName = nil;
+    
     actualParticipants = nil;
     invitedParticipants = nil;
     userContact = nil;
@@ -159,6 +168,13 @@
     
     // Refresh display
     [self.tableView reloadData];
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -173,6 +189,12 @@
  
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 #pragma mark -
@@ -298,6 +320,19 @@
     }
 }
 
+- (void)setEnableMention:(BOOL)enableMention
+{
+    if (_enableMention != enableMention)
+    {
+        _enableMention = enableMention;
+        
+        if (detailsViewController)
+        {
+            detailsViewController.enableMention = enableMention;
+        }
+    }
+}
+
 #pragma mark - Internals
 
 - (void)setNavBarButtons
@@ -386,6 +421,17 @@
         {
             [actualParticipants addObject:contact];
         }
+    }
+}
+
+- (void)reloadSearchResult
+{
+    if (currentSearchText.length)
+    {
+        NSString *searchText = currentSearchText;
+        currentSearchText = nil;
+        
+        [self searchBar:_searchBarView textDidChange:searchText];
     }
 }
 
@@ -538,6 +584,9 @@
     {
         [contactsById setObject:userContact forKey:userContact.mxMember.userId];
     }
+    
+    // Reload search result if any
+    [self reloadSearchResult];
 }
 
 - (void)addPendingActionMask
@@ -689,6 +738,19 @@
             contact = invitableContacts[indexPath.row];
             
             participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            
+            // Disambiguate the display name when it appears several times.
+            if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+            {
+                NSArray *identifiers = contact.matrixIdentifiers;
+                if (identifiers.count)
+                {
+                    NSString *participantId = identifiers.firstObject;
+                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
+                    
+                    contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
+                }
+            }
         }
     }
     else
@@ -727,6 +789,36 @@
         if (index < participants.count)
         {
             contact = participants[index];
+            
+            // Sanity check
+            if (contact && contact.mxMember.userId)
+            {
+                // Disambiguate the display name when it appears several times.
+                NSString *disambiguatedDisplayName;
+                
+                if (self.isAddParticipantSearchBarEditing)
+                {
+                    // Consider here the dictionary which lists all the display names of the search result.
+                    if ([isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+                    {
+                        disambiguatedDisplayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, contact.mxMember.userId];
+                    }
+                }
+                else
+                {
+                    // Update the display name by considering the current room state.
+                    disambiguatedDisplayName = [self.mxRoom.state memberName:contact.mxMember.userId];
+                    if ([disambiguatedDisplayName isEqualToString:contact.displayName])
+                    {
+                        disambiguatedDisplayName = nil;
+                    }
+                }
+                
+                if (disambiguatedDisplayName)
+                {
+                    contact = [[Contact alloc] initMatrixContactWithDisplayName:disambiguatedDisplayName andMatrixID:contact.mxMember.userId];
+                }
+            }
         }
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1004,6 +1096,11 @@
         if (contact.mxMember)
         {
             detailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            
+            // Set delegate to handle action on member (start chat, mention)
+            detailsViewController.delegate = self;
+            detailsViewController.enableMention = _enableMention;
+            
             [detailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
             
             // Check whether the view controller is displayed inside a segmented one.
@@ -1049,6 +1146,30 @@
     return actions;
 }
 
+#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
+{
+    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
+}
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member
+{
+    if (_delegate)
+    {
+        id<RoomParticipantsViewControllerDelegate> delegate = _delegate;
+        
+        // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
+        MXKViewController *viewController = _segmentedViewController ? _segmentedViewController : self;
+        
+        // Withdraw the current view controller, and let the delegate mention the member
+        [viewController withdrawViewControllerAnimated:YES completion:^{
+            
+            [delegate roomParticipantsViewController:self mention:member];
+            
+        }];
+    }
+}
 
 #pragma mark - Actions
 
@@ -1302,8 +1423,7 @@
                 {
                     if ([contactsById objectForKey:userId] == nil)
                     {
-                        Contact *splitContact = [[Contact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
-                        splitContact.mxMember = [self.mxRoom.state memberWithUserId:userId];
+                        MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                         [contacts addObject:splitContact];
                     }
                 }
@@ -1324,6 +1444,8 @@
     }
     currentSearchText = searchText;
     
+    isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
+    
     // Update invitable contacts list:
     invitableContacts = [NSMutableArray array];
     if (searchText.length)
@@ -1337,6 +1459,8 @@
         if ([contact matchedWithPatterns:@[currentSearchText]])
         {
             [invitableContacts addObject:contact];
+            
+            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
         }
     }
     
@@ -1347,6 +1471,8 @@
         if ([contact matchedWithPatterns:@[currentSearchText]])
         {
             [filteredActualParticipants addObject:contact];
+            
+            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
         }
     }
     
@@ -1357,6 +1483,8 @@
         if ([contact matchedWithPatterns:@[currentSearchText]])
         {
             [filteredInvitedParticipants addObject:contact];
+            
+            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
         }
     }
     
@@ -1398,6 +1526,8 @@
     filteredActualParticipants = nil;
     filteredInvitedParticipants = nil;
     self.isAddParticipantSearchBarEditing = NO;
+    
+    isMultiUseNameByDisplayName = nil;
     
     // Leave search
     [searchBar resignFirstResponder];

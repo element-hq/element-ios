@@ -52,8 +52,6 @@
 		717928481C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717928411C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib */; };
 		717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */; };
 		7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */; };
-		71B2A3BB1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B2A3B91C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m */; };
-		71B2A3BC1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B2A3BA1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib */; };
 		71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B2A3BE1C203C7100472061 /* TableViewCellWithLabelAndSwitch.m */; };
 		71B2A3C11C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B2A3BF1C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib */; };
 		71C5F2951C074ACC004C094B /* RoomSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C5F2941C074ACC004C094B /* RoomSettingsViewController.m */; };
@@ -169,6 +167,7 @@
 		F05641931C7DF9DE002276ED /* error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641901C7DF9DE002276ED /* error@2x.png */; };
 		F05641941C7DF9DE002276ED /* error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641911C7DF9DE002276ED /* error@3x.png */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
+		F067F2BC1CF6F0EA00F35EE8 /* third_party_licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -183,12 +182,12 @@
 		F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F094AA0B1B78E42600B1FBBF /* Localizable.strings */; };
 		F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = F094AA0D1B78E42600B1FBBF /* Vector.strings */; };
 		F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F094AA141B78E42600B1FBBF /* countryCodes.plist */; };
-		F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */; };
 		F094AA301B78E42600B1FBBF /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */; };
-		F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */; };
 		F094AA351B78E42600B1FBBF /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA231B78E42600B1FBBF /* RecentsViewController.m */; };
 		F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA271B78E42600B1FBBF /* RoomViewController.m */; };
 		F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F094AA291B78E42600B1FBBF /* SettingsViewController.m */; };
+		F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */; };
+		F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */; };
 		F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */; };
 		F09E24EE1C6DE24900D39503 /* RoomMemberTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F09E24EC1C6DE24900D39503 /* RoomMemberTitleView.xib */; };
 		F09EE0021C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F09EDFF71C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m */; };
@@ -325,9 +324,6 @@
 		717928421C03852C00407D96 /* TableViewCellWithLabelAndTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndTextField.h; path = TableViewCell/TableViewCellWithLabelAndTextField.h; sourceTree = "<group>"; };
 		717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndTextField.m; path = TableViewCell/TableViewCellWithLabelAndTextField.m; sourceTree = "<group>"; };
 		717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndTextField.xib; path = TableViewCell/TableViewCellWithLabelAndTextField.xib; sourceTree = "<group>"; };
-		71B2A3B81C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndMXKImageView.h; path = TableViewCell/TableViewCellWithLabelAndMXKImageView.h; sourceTree = "<group>"; };
-		71B2A3B91C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndMXKImageView.m; path = TableViewCell/TableViewCellWithLabelAndMXKImageView.m; sourceTree = "<group>"; };
-		71B2A3BA1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndMXKImageView.xib; path = TableViewCell/TableViewCellWithLabelAndMXKImageView.xib; sourceTree = "<group>"; };
 		71B2A3BD1C203C7100472061 /* TableViewCellWithLabelAndSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndSwitch.h; path = TableViewCell/TableViewCellWithLabelAndSwitch.h; sourceTree = "<group>"; };
 		71B2A3BE1C203C7100472061 /* TableViewCellWithLabelAndSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndSwitch.m; path = TableViewCell/TableViewCellWithLabelAndSwitch.m; sourceTree = "<group>"; };
 		71B2A3BF1C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndSwitch.xib; path = TableViewCell/TableViewCellWithLabelAndSwitch.xib; sourceTree = "<group>"; };
@@ -460,6 +456,7 @@
 		F05641911C7DF9DE002276ED /* error@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "error@3x.png"; sourceTree = "<group>"; };
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
+		F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = third_party_licenses.html; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -482,18 +479,17 @@
 		F094AA0C1B78E42600B1FBBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F094AA0E1B78E42600B1FBBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Vector.strings; sourceTree = "<group>"; };
 		F094AA141B78E42600B1FBBF /* countryCodes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = countryCodes.plist; sourceTree = "<group>"; };
-		F094AA161B78E42600B1FBBF /* AccountDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountDetailsViewController.h; sourceTree = "<group>"; };
-		F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDetailsViewController.m; sourceTree = "<group>"; };
 		F094AA181B78E42600B1FBBF /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
-		F094AA1C1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalNotificationSettingsViewController.h; sourceTree = "<group>"; };
-		F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalNotificationSettingsViewController.m; sourceTree = "<group>"; };
 		F094AA221B78E42600B1FBBF /* RecentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsViewController.h; sourceTree = "<group>"; };
 		F094AA231B78E42600B1FBBF /* RecentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsViewController.m; sourceTree = "<group>"; };
 		F094AA261B78E42600B1FBBF /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		F094AA271B78E42600B1FBBF /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		F094AA281B78E42600B1FBBF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		F094AA291B78E42600B1FBBF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordInputsView.h; sourceTree = "<group>"; };
+		F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordInputsView.m; sourceTree = "<group>"; };
+		F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordInputsView.xib; sourceTree = "<group>"; };
 		F09E24EA1C6DE24900D39503 /* RoomMemberTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberTitleView.h; sourceTree = "<group>"; };
 		F09E24EB1C6DE24900D39503 /* RoomMemberTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberTitleView.m; sourceTree = "<group>"; };
 		F09E24EC1C6DE24900D39503 /* RoomMemberTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberTitleView.xib; sourceTree = "<group>"; };
@@ -643,9 +639,6 @@
 				7179283F1C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.h */,
 				717928401C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m */,
 				717928411C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib */,
-				71B2A3B81C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.h */,
-				71B2A3B91C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m */,
-				71B2A3BA1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib */,
 				717928421C03852C00407D96 /* TableViewCellWithLabelAndTextField.h */,
 				717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */,
 				717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */,
@@ -804,6 +797,9 @@
 		F084DAAA1BB57BD100B4C530 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				F0989F4B1CD7769000FA6EAC /* ForgotPasswordInputsView.h */,
+				F0989F4C1CD7769000FA6EAC /* ForgotPasswordInputsView.m */,
+				F0989F4D1CD7769000FA6EAC /* ForgotPasswordInputsView.xib */,
 				F047DBB61C576F6600952DA2 /* AuthInputsView.h */,
 				F047DBB71C576F6600952DA2 /* AuthInputsView.m */,
 				F047DBB81C576F6600952DA2 /* AuthInputsView.xib */,
@@ -888,6 +884,7 @@
 		F094A9A51B78D8F000B1FBBF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */,
 				F094AA031B78E3D400B1FBBF /* empty.mm */,
 				F094AA041B78E3D400B1FBBF /* Vector-Defaults.plist */,
 				F094A9A61B78D8F000B1FBBF /* Info.plist */,
@@ -956,15 +953,11 @@
 				F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */,
 				F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */,
 				F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */,
-				F094AA161B78E42600B1FBBF /* AccountDetailsViewController.h */,
-				F094AA171B78E42600B1FBBF /* AccountDetailsViewController.m */,
 				F094AA181B78E42600B1FBBF /* AuthenticationViewController.h */,
 				F094AA191B78E42600B1FBBF /* AuthenticationViewController.m */,
 				F047DBB41C576F2200952DA2 /* AuthenticationViewController.xib */,
 				325F6A371C21810E00C12F51 /* DirectoryViewController.h */,
 				325F6A381C21810E00C12F51 /* DirectoryViewController.m */,
-				F094AA1C1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.h */,
-				F094AA1D1B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m */,
 				3235CD831C341FAA0084EA40 /* HomeSearchViewController.h */,
 				3235CD841C341FAA0084EA40 /* HomeSearchViewController.m */,
 				32D200861C16C2B100A4E396 /* HomeViewController.h */,
@@ -1233,7 +1226,6 @@
 				F03FBCCF1CBBF521000A5770 /* shrink_icon@2x.png in Resources */,
 				F0F83FC21C93089500E7D322 /* video_icon@2x.png in Resources */,
 				F03FBCD81CBC49B6000A5770 /* disclosure_icon@2x.png in Resources */,
-				71B2A3BC1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.xib in Resources */,
 				F03FBCD01CBBF521000A5770 /* shrink_icon@3x.png in Resources */,
 				F02528D81C11B6FC00E1FE1B /* camera_picture.png in Resources */,
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
@@ -1347,6 +1339,7 @@
 				F094A9B41B78D8F000B1FBBF /* Main.storyboard in Resources */,
 				71F7F51E1C23079F00E7ED8F /* ContactTableViewCell.xib in Resources */,
 				F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */,
+				F067F2BC1CF6F0EA00F35EE8 /* third_party_licenses.html in Resources */,
 				F094A9B91B78D8F000B1FBBF /* LaunchScreen.xib in Resources */,
 				F0C34B621C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
@@ -1369,6 +1362,7 @@
 				F09EE0071C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				F0418BE41C9067B40030356E /* edit_icon@2x.png in Resources */,
 				F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
+				F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */,
 				F0D2D9841C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				F0026B571C916E68001D2C04 /* leave@3x.png in Resources */,
 				F0026B561C916E68001D2C04 /* leave@2x.png in Resources */,
@@ -1453,7 +1447,6 @@
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
-				F094AA2F1B78E42600B1FBBF /* AccountDetailsViewController.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
 				F022285B1C64D529000AF23C /* ExpandedRoomTitleView.m in Sources */,
@@ -1479,7 +1472,6 @@
 				F09E24ED1C6DE24900D39503 /* RoomMemberTitleView.m in Sources */,
 				325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */,
 				3235CD8D1C34309E0084EA40 /* HomeSearchCellData.m in Sources */,
-				F094AA321B78E42600B1FBBF /* GlobalNotificationSettingsViewController.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
@@ -1505,9 +1497,9 @@
 				71EBE66D1C04C4D300E7D953 /* RoomActivitiesView.m in Sources */,
 				32D200881C16C2B100A4E396 /* HomeViewController.m in Sources */,
 				F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */,
+				F0989F4E1CD7769000FA6EAC /* ForgotPasswordInputsView.m in Sources */,
 				716FDC8A1C186A3A001034CB /* InviteRecentTableViewCell.m in Sources */,
 				F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
-				71B2A3BB1C2013DC00472061 /* TableViewCellWithLabelAndMXKImageView.m in Sources */,
 				F0D2D9851C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */,
 				F02BB04B1CBE2EE70022A025 /* PreviewRoomTitleView.m in Sources */,

@@ -30,8 +30,9 @@
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
-#define SETTINGS_SECTION_OTHER_INDEX                    3
-#define SETTINGS_SECTION_COUNT                          4
+#define SETTINGS_SECTION_ADVANCED_INDEX                 3
+#define SETTINGS_SECTION_OTHER_INDEX                    4
+#define SETTINGS_SECTION_COUNT                          5
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -46,8 +47,11 @@
 #define OTHER_VERSION_INDEX         0
 #define OTHER_TERM_CONDITIONS_INDEX 1
 #define OTHER_PRIVACY_INDEX         2
-#define OTHER_CLEAR_CACHE_INDEX     3
-#define OTHER_COUNT                 4
+#define OTHER_THIRD_PARTY_INDEX     3
+#define OTHER_CLEAR_CACHE_INDEX     4
+#define OTHER_COUNT                 5
+
+typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 
 @interface SettingsViewController ()
@@ -96,6 +100,17 @@
     NSInteger userSettingsPhoneNumberIndex;
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
+    
+    // Postpone destroy operation when saving or pwd reset is in progress
+    BOOL isSavingInProgress;
+    BOOL isResetPwdInProgress;
+    blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
+    
+    //
+    UIAlertController *resetPwdAlertController;
 }
 
 /**
@@ -122,30 +137,12 @@
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXKAccount *account = notif.object;
-        if (account)
+        if ([MXKAccountManager sharedManager].accounts.count)
         {
-            if (self.childViewControllers.count)
-            {
-                for (id viewController in self.childViewControllers)
-                {
-                    // Check whether details of this account was displayed
-                    if ([viewController isKindOfClass:[MXKAccountDetailsViewController class]])
-                    {
-                        MXKAccountDetailsViewController *accountDetailsViewController = viewController;
-                        if ([accountDetailsViewController.mxAccount.mxCredentials.userId isEqualToString:account.mxCredentials.userId])
-                        {
-                            // pop the account details view controller
-                            [self.navigationController popToRootViewControllerAnimated:YES];
-                            break;
-                        }
-                    }
-                }
-            }
+            // Refresh table to remove this account
+            [self.tableView reloadData];
         }
         
-        // Refresh table to remove this account
-        [self.tableView reloadData];
     }];
     
     // Add observer to handle accounts update
@@ -153,6 +150,7 @@
         
         [self stopActivityIndicator];
         [self.tableView reloadData];
+        
     }];
     
     // Add observer to apns
@@ -160,6 +158,7 @@
         
         [self stopActivityIndicator];
         [self.tableView reloadData];
+        
     }];
     
     
@@ -181,9 +180,26 @@
 
 - (void)destroy
 {
-    [self reset];
-    
-    [super destroy];
+    if (isSavingInProgress || isResetPwdInProgress)
+    {
+        __weak typeof(self) weakSelf = self;
+        onReadyToDestroyHandler = ^() {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf destroy];
+            }
+            
+        };
+    }
+    else
+    {
+        // Dispose all resources
+        [self reset];
+        
+        [super destroy];
+    }
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -244,6 +260,13 @@
 
     // Refresh linked emails in parallel
     [self loadLinkedEmails];
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -254,6 +277,12 @@
     {
         [currentAlert dismiss:NO];
         currentAlert = nil;
+    }
+    
+    if (resetPwdAlertController)
+    {
+        [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+        resetPwdAlertController = nil;
     }
 
     if (notificationCenterWillUpdateObserver)
@@ -274,6 +303,11 @@
         notificationCenterDidFailObserver = nil;
     }
     
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 #pragma mark - Internal methods
@@ -300,6 +334,8 @@
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    onReadyToDestroyHandler = nil;
 }
 
 -(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
@@ -332,6 +368,7 @@
 {
     __weak typeof(self) weakSelf = self;
 
+    [currentAlert dismiss:NO];
     currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"]
                                               message:message
                                                 style:MXKAlertStyleAlert];
@@ -458,6 +495,10 @@
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        count = 1;
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         count = OTHER_COUNT;
@@ -473,6 +514,9 @@
     if (!cell)
     {
         cell = [[MXKTableViewCellWithLabelAndTextField alloc] init];
+        
+        cell.mxkLabelLeadingConstraint.constant = 15;
+        cell.mxkTextFieldTrailingConstraint.constant = 15;
     }
     
     cell.mxkTextField.userInteractionEnabled = YES;
@@ -496,6 +540,9 @@
     if (!cell)
     {
         cell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
+        
+        cell.mxkLabelLeadingConstraint.constant = 15;
+        cell.mxkSwitchTrailingConstraint.constant = 15;
     }
     
     return cell;
@@ -551,6 +598,17 @@
             if (!profileCell)
             {
                 profileCell = [[MXKTableViewCellWithLabelAndMXKImageView alloc] init];
+                
+                profileCell.mxkLabelLeadingConstraint.constant = 15;
+                profileCell.mxkImageViewTrailingConstraint.constant = 10;
+                
+                profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
+                
+                profileCell.mxkImageViewDisplayBoxType = MXKTableViewCellDisplayBoxTypeCircle;
+                
+                // tap on avatar to update it
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onProfileAvatarTap:)];
+                [profileCell.mxkImageView addGestureRecognizer:tap];
             }
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
@@ -575,9 +633,6 @@
                     profileCell.mxkImageView.image = avatarImage;
                 }
             }
-            
-            [profileCell.mxkImageView.layer setCornerRadius:profileCell.mxkImageView.frame.size.width / 2];
-            profileCell.mxkImageView.clipsToBounds = YES;
             
             cell = profileCell;
         }
@@ -640,6 +695,8 @@
                 newEmailCell.mxkTextField.text = newEmailTextField.text;
                 newEmailCell.mxkTextField.userInteractionEnabled = YES;
                 newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
+                newEmailCell.mxkTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                newEmailCell.mxkTextField.spellCheckingType = UITextSpellCheckingTypeNo;
                 newEmailCell.mxkTextField.delegate = self;
 
                 [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -786,40 +843,77 @@
 //        [switchCell.mxkSwitch addTarget:self action:@selector(onRuleUpdate:) forControlEvents:UIControlEventTouchUpInside];
     
     }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        MXKTableViewCell *configCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!configCell)
+        {
+            configCell = [[MXKTableViewCell alloc] init];
+            configCell.textLabel.font = [UIFont systemFontOfSize:17];
+        }
+        
+        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
+        
+        configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        configCell.textLabel.numberOfLines = 0;
+        cell = configCell;
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         if (row == OTHER_VERSION_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *versionCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCell *versionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!versionCell)
+            {
+                versionCell = [[MXKTableViewCell alloc] init];
+                versionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
             
             NSString* appVersion = [AppDelegate theDelegate].appVersion;
             NSString* build = [AppDelegate theDelegate].build;
             
-            versionCell.mxkLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
-            versionCell.mxkTextField.userInteractionEnabled = NO;
-            versionCell.mxkTextField.text = nil;
+            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
             
             cell = versionCell;
         }
         else if (row == OTHER_TERM_CONDITIONS_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *termAndConditionCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCell *termAndConditionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!termAndConditionCell)
+            {
+                termAndConditionCell = [[MXKTableViewCell alloc] init];
+                termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
             
-            termAndConditionCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
-            termAndConditionCell.mxkTextField.userInteractionEnabled = NO;
-            termAndConditionCell.mxkTextField.text = nil;
+            termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             
             cell = termAndConditionCell;
         }
         else if (row == OTHER_PRIVACY_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *privacyPolicyCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCell *privacyPolicyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!privacyPolicyCell)
+            {
+                privacyPolicyCell = [[MXKTableViewCell alloc] init];
+                privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
             
-            privacyPolicyCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
-            privacyPolicyCell.mxkTextField.userInteractionEnabled = NO;
-            privacyPolicyCell.mxkTextField.text = nil;
+            privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             
             cell = privacyPolicyCell;
+        }
+        else if (row == OTHER_THIRD_PARTY_INDEX)
+        {
+            MXKTableViewCell *thirdPartyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!thirdPartyCell)
+            {
+                thirdPartyCell = [[MXKTableViewCell alloc] init];
+                thirdPartyCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
+            
+            thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
+            
+            cell = thirdPartyCell;
         }
         else if (row == OTHER_CLEAR_CACHE_INDEX)
         {
@@ -847,6 +941,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        // TODO Handle multi accounts
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+        label.numberOfLines = 0;
+        label.font = [UIFont systemFontOfSize:17];
+        
+        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@",[NSBundle mxk_localizedStringForKey:@"settings_config_user_id"],  [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
+        
+        label.text = [NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        
+        [label sizeToFit];
+        return label.frame.size.height + 16;
+    }
+    
     return 50;
 }
 
@@ -882,6 +993,10 @@
     {
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
@@ -913,18 +1028,19 @@
                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/privacy.html"];
                [self.navigationController pushViewController:webViewViewController animated:YES];
            }
+           else if (row == OTHER_THIRD_PARTY_INDEX)
+           {
+               NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
+               
+               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
+               [self.navigationController pushViewController:webViewViewController animated:YES];
+           }
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
         {
             if (row == userSettingsProfilePictureIndex)
             {
-                mediaPicker = [MediaPickerViewController mediaPickerViewController];
-                mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-                mediaPicker.delegate = self;
-                UINavigationController *navigationController = [UINavigationController new];
-                [navigationController pushViewController:mediaPicker animated:NO];
-                
-                [self presentViewController:navigationController animated:YES completion:nil];
+                [self onProfileAvatarTap:nil];
             }
             else if (row == userSettingsChangePasswordIndex)
             {
@@ -945,13 +1061,45 @@
 
 - (void)onSignout:(id)sender
 {
-   [[MXKAccountManager sharedManager] logout];
+    UIButton *signOutButton = (UIButton*)sender;
+    [signOutButton setTintColor:[UIColor lightGrayColor]];
+    signOutButton.enabled = NO;
+    
+    [self startActivityIndicator];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [[MXKAccountManager sharedManager] logout];
+        
+    });
 }
 
 - (void)togglePushNotifications:(id)sender
 {
-    // sanity check
-    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    // Check first whether the user allow notification from device settings
+    if ([[MXKAccountManager sharedManager] isAPNSAvailable] == NO)
+    {
+        [currentAlert dismiss:NO];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil)
+                                               message:nil
+                                                 style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+        }];
+        
+        [currentAlert showInViewController:self];
+        
+        // Keep off the switch
+        ((UISwitch*)sender).on = NO;
+    }
+    else if ([MXKAccountManager sharedManager].activeAccounts.count)
     {
         [self startActivityIndicator];
         
@@ -1016,6 +1164,8 @@
     }
     
     [self startActivityIndicator];
+    isSavingInProgress = YES;
+    __weak typeof(self) weakSelf = self;
     
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     MXMyUser* myUser = account.mxSession.myUser;
@@ -1023,43 +1173,28 @@
     if (newDisplayName && ![myUser.displayname isEqualToString:newDisplayName])
     {
         // Save display name
-        __weak typeof(self) weakSelf = self;
         [account setUserDisplayName:newDisplayName success:^{
             
-            // Update the current displayname
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->newDisplayName = nil;
-            
-            // Go to the next change saving step
-            [strongSelf onSave:nil];
+            if (weakSelf)
+            {
+                // Update the current displayname
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->newDisplayName = nil;
+                
+                // Go to the next change saving step
+                [strongSelf onSave:nil];
+            }
             
         } failure:^(NSError *error) {
             
             NSLog(@"[Vector Settings View Controller] Failed to set displayName");
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
             
-            // Alert user
-            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-            if (!title)
+            if (weakSelf)
             {
-                title = [NSBundle mxk_localizedStringForKey:@"account_error_display_name_change_failed"];
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf handleErrorDuringProfileChangeSaving:error];
             }
-            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
             
-            MXKAlert *alert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-;
-            alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-                                       {
-                                           strongSelf->newDisplayName = nil;
-                                           // Loop to end saving
-                                           [strongSelf onSave:nil];
-                                       }];
-            [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert)
-             {
-                 // Loop to retry saving
-                 [strongSelf onSave:nil];
-             }];
-            [alert showInViewController:strongSelf];
         }];
         
         return;
@@ -1073,41 +1208,135 @@
         // Upload picture
         MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:account.mxSession initialRange:0 andRange:1.0];
         
-        [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url)
-         {
-             // Store uploaded picture url and trigger picture saving
-             uploadedAvatarURL = url;
-             newAvatarImage = nil;
-             
-             [self onSave:nil];
-         } failure:^(NSError *error)
-         {
-             NSLog(@"[Vector SettingsViewController] Failed to upload image");
-             uploadedAvatarURL = nil;
-             newAvatarImage = nil;
-         }];
+        [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                // Store uploaded picture url and trigger picture saving
+                strongSelf->uploadedAvatarURL = url;
+                strongSelf->newAvatarImage = nil;
+                [strongSelf onSave:nil];
+            }
+            
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[Vector SettingsViewController] Failed to upload image");
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf handleErrorDuringProfileChangeSaving:error];
+            }
+            
+        }];
         
+        return;
     }
     else if (uploadedAvatarURL)
     {
-        __weak typeof(self) weakSelf = self;
         [account setUserAvatarUrl:uploadedAvatarURL
                              success:^{
-                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                 strongSelf->uploadedAvatarURL = nil;
-                                 [strongSelf onSave:nil];
+                                 
+                                 if (weakSelf)
+                                 {
+                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                     strongSelf->uploadedAvatarURL = nil;
+                                     [strongSelf onSave:nil];
+                                 }
+                                 
                              }
                              failure:^(NSError *error) {
+                                 
                                  NSLog(@"[Vector SettingsViewController] Failed to set avatar url");
                                 
-                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                 strongSelf->uploadedAvatarURL = nil;
-                                 [strongSelf onSave:nil];
+                                 if (weakSelf)
+                                 {
+                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                     [strongSelf handleErrorDuringProfileChangeSaving:error];
+                                 }
+                                 
                              }];
+        
+        return;
     }
     
+    // Backup is complete
+    isSavingInProgress = NO;
     [self stopActivityIndicator];
-    [self.tableView reloadData];
+    
+    // Check whether destroy has been called durign saving
+    if (onReadyToDestroyHandler)
+    {
+        // Ready to destroy
+        onReadyToDestroyHandler();
+        onReadyToDestroyHandler = nil;
+    }
+    else
+    {
+        [self.tableView reloadData];
+    }
+}
+
+- (void)handleErrorDuringProfileChangeSaving:(NSError*)error
+{
+    // Sanity check: retrieve the current root view controller
+    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+    if (rootViewController)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        // Alert user
+        NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+        if (!title)
+        {
+            title = [NSBundle mxk_localizedStringForKey:@"settings_fail_to_update_profile"];
+        }
+        NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+        
+        [currentAlert dismiss:NO];
+        currentAlert = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+                
+                // Reset the updated displayname
+                strongSelf->newDisplayName = nil;
+                
+                // Discard picture change
+                strongSelf->uploadedAvatarURL = nil;
+                strongSelf->newAvatarImage = nil;
+                
+                // Loop to end saving
+                [strongSelf onSave:nil];
+            }
+            
+        }];
+        
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+                
+                // Loop to retry saving
+                [strongSelf onSave:nil];
+            }
+            
+        }];
+        
+        
+        [currentAlert showInViewController:rootViewController];
+    }
 }
 
 - (IBAction)onAddNewEmail:(id)sender
@@ -1115,11 +1344,22 @@
     // Email check
     if (![MXTools isEmailAddress:newEmailTextField.text])
     {
-        MXKAlert *alert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] style:MXKAlertStyleAlert];
+        [currentAlert dismiss:NO];
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] style:MXKAlertStyleAlert];
 
-        alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                strongSelf->currentAlert = nil;
+            }
+            
         }];
-        [alert showInViewController:self];
+        [currentAlert showInViewController:self];
 
         return;
     }
@@ -1175,6 +1415,17 @@
         
         self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
     }
+}
+
+- (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
+{
+    mediaPicker = [MediaPickerViewController mediaPickerViewController];
+    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    mediaPicker.delegate = self;
+    UINavigationController *navigationController = [UINavigationController new];
+    [navigationController pushViewController:mediaPicker animated:NO];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - MediaPickerViewController Delegate
@@ -1246,95 +1497,177 @@
 
 - (void)displayPasswordAlert
 {
-    UIAlertController * alert =   [UIAlertController
-                                   alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil)
-                                   message:nil
-                                   preferredStyle:UIAlertControllerStyleAlert];
+    __weak typeof(self) weakSelf = self;
+    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
-    savePasswordAction = [UIAlertAction
-                         actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil)
-                         style:UIAlertActionStyleDefault
-                         handler:^(UIAlertAction * action)
-                         {
-                             if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
-                             {
-                                [self startActivityIndicator];
-                                 
-                                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-                                 [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
             
-                                     [self stopActivityIndicator];
-
-                                     MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
-                                     
-                                     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                     }];
-                                     
-                                     [alert showInViewController:self];
-                                     
-                                 } failure:^(NSError *error) {
-                                     
-                                      [self stopActivityIndicator];
-                                     
-                                     MXKAlert *alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
-                                     
-                                     alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                     }];
-                                     
-                                     [alert showInViewController:self];                                     
-                                 }];
-                             }
-                             else
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                             }
-                             
-                         }];
+            strongSelf->resetPwdAlertController = nil;
+            
+            if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
+            {
+                [strongSelf startActivityIndicator];
+                strongSelf->isResetPwdInProgress = YES;
+                
+                MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+                
+                [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        
+                        strongSelf->isResetPwdInProgress = NO;
+                        [strongSelf stopActivityIndicator];
+                        
+                        // Display a successful message only if the settings screen is still visible (destroy is not called yet)
+                        if (!strongSelf->onReadyToDestroyHandler)
+                        {
+                            [strongSelf->currentAlert dismiss:NO];
+                            
+                            strongSelf->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) style:MXKAlertStyleAlert];
+                            
+                            strongSelf->currentAlert.cancelButtonIndex = [strongSelf->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                if (weakSelf)
+                                {
+                                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                    
+                                    strongSelf->currentAlert = nil;
+                                    
+                                    // Check whether destroy has been called durign pwd change
+                                    if (strongSelf->onReadyToDestroyHandler)
+                                    {
+                                        // Ready to destroy
+                                        strongSelf->onReadyToDestroyHandler();
+                                        strongSelf->onReadyToDestroyHandler = nil;
+                                    }
+                                }
+                                
+                            }];
+                            
+                            [strongSelf->currentAlert showInViewController:strongSelf];
+                        }
+                        else
+                        {
+                            // Ready to destroy
+                            strongSelf->onReadyToDestroyHandler();
+                            strongSelf->onReadyToDestroyHandler = nil;
+                        }
+                    }
+                    
+                } failure:^(NSError *error) {
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        
+                        strongSelf->isResetPwdInProgress = NO;
+                        [strongSelf stopActivityIndicator];
+                        
+                        // Display a failure message on the current screen
+                        UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+                        if (rootViewController)
+                        {
+                            [strongSelf->currentAlert dismiss:NO];
+                            strongSelf->currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) style:MXKAlertStyleAlert];
+                            
+                            strongSelf->currentAlert.cancelButtonIndex = [strongSelf->currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+                                
+                                if (weakSelf)
+                                {
+                                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                    
+                                    strongSelf->currentAlert = nil;
+                                    
+                                    // Check whether destroy has been called durign pwd change
+                                    if (strongSelf->onReadyToDestroyHandler)
+                                    {
+                                        // Ready to destroy
+                                        strongSelf->onReadyToDestroyHandler();
+                                        strongSelf->onReadyToDestroyHandler = nil;
+                                    }
+                                }
+                                
+                            }];
+                            
+                            [strongSelf->currentAlert showInViewController:rootViewController];
+                        }
+                    }
+                    
+                }];
+            }
+        }
+        
+    }];
     
     // disable by default
     // check if the textfields have the right value
     savePasswordAction.enabled = NO;
     
-    UIAlertAction* cancel = [UIAlertAction
-                             actionWithTitle:@"Cancel"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                             }];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-        currentPasswordTextField = textField;
-        currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
-        currentPasswordTextField.secureTextEntry = YES;
-        [currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->resetPwdAlertController = nil;
+        }
+        
+    }];
+    
+    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->currentPasswordTextField = textField;
+            strongSelf->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
+            strongSelf->currentPasswordTextField.secureTextEntry = YES;
+            [strongSelf->currentPasswordTextField addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }
          
      }];
     
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         newPasswordTextField1 = textField;
-         newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
-         newPasswordTextField1.secureTextEntry = YES;
-         [newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-         
-     }];
+    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->newPasswordTextField1 = textField;
+            strongSelf->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
+            strongSelf->newPasswordTextField1.secureTextEntry = YES;
+            [strongSelf->newPasswordTextField1 addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }
+        
+    }];
     
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         newPasswordTextField2 = textField;
-         newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
-         newPasswordTextField2.secureTextEntry = YES;
-         [newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-         
-         newPasswordTextField2 = textField;
-     }];
+    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            strongSelf->newPasswordTextField2 = textField;
+            strongSelf->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
+            strongSelf->newPasswordTextField2.secureTextEntry = YES;
+            [strongSelf->newPasswordTextField2 addTarget:strongSelf action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }
+    }];
 
     
-    [alert addAction:cancel];
-    [alert addAction:savePasswordAction];
+    [resetPwdAlertController addAction:cancel];
+    [resetPwdAlertController addAction:savePasswordAction];
 
-    [self presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
 @end

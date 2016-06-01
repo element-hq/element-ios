@@ -39,6 +39,8 @@
  */
 @property (nonatomic, readonly) UIImageView *backgroundImageView;
 
+@property (nonatomic, readonly) NSLayoutConstraint *backgroundImageViewBottomConstraint;
+
 /**
  Show/Hide the search bar.
 

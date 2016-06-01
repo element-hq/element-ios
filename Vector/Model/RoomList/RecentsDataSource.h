@@ -46,6 +46,16 @@
 @property (nonatomic, readonly) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
 
 /**
+ Hide the public rooms directory cell. YES by default.
+ */
+@property (nonatomic) BOOL hidepublicRoomsDirectory;
+
+/**
+ Hide recents. NO by default.
+ */
+@property (nonatomic) BOOL hideRecents;
+
+/**
  Return the header height from the section.
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;

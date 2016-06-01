@@ -21,7 +21,6 @@
 
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
-#import "TableViewCellWithLabelAndMXKImageView.h"
 #import "TableViewCellWithLabelAndSwitch.h"
 
 #import "TableViewCellSeparator.h"
@@ -33,6 +32,8 @@
 #import "AvatarGenerator.h"
 
 #import "MXRoom+Vector.h"
+
+#import "AppDelegate.h"
 
 #define ROOM_SECTION 0
 
@@ -70,6 +71,9 @@
     
     // switches
     UISwitch *roomNotifSwitch;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 @end
 
@@ -119,6 +123,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAccountUserInfoDidChange:) name:kMXKAccountUserInfoDidChangeNotification object:nil];
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -129,6 +140,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKAccountUserInfoDidChangeNotification object:nil];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
 }
 
 // this method is called when the viewcontroller is displayed inside another one.
@@ -574,11 +591,18 @@
         }
         else if (row == ROOM_SECTION_PHOTO)
         {
-            TableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+            MXKTableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
             
             if (!roomPhotoCell)
             {
-                roomPhotoCell = [[TableViewCellWithLabelAndMXKImageView alloc] init];
+                roomPhotoCell = [[MXKTableViewCellWithLabelAndMXKImageView alloc] init];
+                
+                roomPhotoCell.mxkLabelLeadingConstraint.constant = 15;
+                roomPhotoCell.mxkImageViewTrailingConstraint.constant = 10;
+                
+                roomPhotoCell.mxkImageViewWidthConstraint.constant = roomPhotoCell.mxkImageViewHeightConstraint.constant = 30;
+                
+                roomPhotoCell.mxkImageViewDisplayBoxType = MXKTableViewCellDisplayBoxTypeCircle;
                 
                 // tap on avatar to update it
                 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomAvatarTap:)];
@@ -597,8 +621,6 @@
                 roomPhotoCell.mxkImageView.alpha = mxRoom.isModerator ? 1.0f : 0.5f;
             }
             
-            [roomPhotoCell.mxkImageView.layer setCornerRadius:roomPhotoCell.mxkImageView.frame.size.width / 2];
-            roomPhotoCell.mxkImageView.clipsToBounds = YES;
             roomPhotoCell.userInteractionEnabled = mxRoom.isModerator;
             
             cell = roomPhotoCell;

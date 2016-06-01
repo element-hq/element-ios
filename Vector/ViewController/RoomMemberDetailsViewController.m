@@ -68,9 +68,6 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Set delegate to handle start chat option
-    self.delegate = [AppDelegate theDelegate];
-    
     self.memberHeaderView.backgroundColor = kVectorColorLightGrey;
     self.roomMemberNameLabel.textColor = kVectorTextColorBlack;
     self.roomMemberStatusLabel.textColor = kVectorColorGreen;
@@ -404,6 +401,12 @@
         }
     }
     
+    if (self.enableMention)
+    {
+        // Add mention option
+        [actionsArray addObject:@(MXKRoomMemberDetailsActionMention)];
+    }
+    
     return actionsArray.count;
 }
 
@@ -452,6 +455,9 @@
         case MXKRoomMemberDetailsActionStartVideoCall:
             title = NSLocalizedStringFromTable(@"room_participants_action_start_video_call", @"Vector", nil);
             break;
+        case MXKRoomMemberDetailsActionMention:
+            title = NSLocalizedStringFromTable(@"room_participants_action_mention", @"Vector", nil);
+            break;
         default:
             break;
     }
@@ -476,8 +482,8 @@
         
         if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
         {
-            [cell.mxkButton setTitleColor:kVectorTextColorRed forState:UIControlStateNormal];
-            [cell.mxkButton setTitleColor:kVectorTextColorRed forState:UIControlStateHighlighted];
+            [cell.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateNormal];
+            [cell.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateHighlighted];
         }
         else
         {

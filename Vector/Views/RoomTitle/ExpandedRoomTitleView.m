@@ -78,13 +78,21 @@
         
         if (memberCount)
         {
-            if (activeCount > 1)
+            // Check whether the logged in user is alone in this room
+            if (memberCount == 1 && self.mxRoom.state.membership == MXMembershipJoin)
             {
-                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), activeCount, memberCount];
+                self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_invite_members", @"Vector", nil);
             }
             else
             {
-                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), activeCount, memberCount];
+                if (activeCount > 1)
+                {
+                    self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), activeCount, memberCount];
+                }
+                else
+                {
+                    self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), activeCount, memberCount];
+                }
             }
         }
         else

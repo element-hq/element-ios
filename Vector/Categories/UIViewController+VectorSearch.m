@@ -71,6 +71,11 @@
     return self.searchInternals.backgroundImageView;
 }
 
+- (NSLayoutConstraint *)backgroundImageViewBottomConstraint
+{
+    return self.searchInternals.backgroundImageViewBottomConstraint;
+}
+
 - (void)showSearch:(BOOL)animated
 {
     // Backup screen header before displaying the search bar in it

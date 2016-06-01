@@ -50,6 +50,8 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
+NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
+
 @interface AppDelegate ()
 {
     /**
@@ -121,6 +123,18 @@
      completed.
      */
     void (^popToHomeViewControllerCompletion)();
+
+    /**
+     The listeners to call events.
+     There is one listener per MXSession.
+     The key is an identifier of the MXSession. The value, the listener.
+     */
+    NSMutableDictionary *callEventsListeners;
+
+    /**
+     Currently displayed "Call not supported" alert.
+     */
+    MXKAlert *noCallSupportAlert;
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
@@ -221,6 +235,7 @@
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
     
     mxSessionArray = [NSMutableArray array];
+    callEventsListeners = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
     // to the recents list in Recents Tab.
@@ -314,6 +329,12 @@
     {
         [accountPicker dismiss:NO];
         accountPicker = nil;
+    }
+
+    if (noCallSupportAlert)
+    {
+        [noCallSupportAlert dismiss:NO];
+        noCallSupportAlert = nil;
     }
 }
 
@@ -463,13 +484,28 @@
 
 - (void)restoreInitialDisplay:(void (^)())completion
 {
-    // Dismiss potential media picker
+    // Dismiss potential view controllers that were presented modally (like the media picker).
     if (self.window.rootViewController.presentedViewController)
     {
         // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
             
-            [self popToHomeViewControllerAnimated:NO completion:completion];
+            [self popToHomeViewControllerAnimated:NO completion:^{
+                
+                if (completion)
+                {
+                    completion();
+                }
+                
+                // Restore noCallSupportAlert if any
+                if (noCallSupportAlert)
+                {
+                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
+                    [noCallSupportAlert showInViewController:self.window.rootViewController];
+                }
+                
+            }];
+            
         }];
     }
     else
@@ -694,10 +730,10 @@
             {
                 _completionHandler = completionHandler;
 
-                NSLog(@"[AppDelegate] : starts a background sync");
+                NSLog(@"[AppDelegate] didReceiveRemoteNotification: starts a background sync");
                 
                 [dedicatedAccount backgroundSync:20000 success:^{
-                    NSLog(@"[AppDelegate]: the background sync succeeds");
+                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: the background sync succeeds");
                     
                     if (_completionHandler)
                     {
@@ -705,7 +741,7 @@
                         _completionHandler = nil;
                     }
                 } failure:^(NSError *error) {
-                    NSLog(@"[AppDelegate]: the background sync fails");
+                    NSLog(@"[AppDelegate] didReceiveRemoteNotification: the background sync fails");
                     
                     if (_completionHandler)
                     {
@@ -720,7 +756,7 @@
         }
         else
         {
-            NSLog(@"[AppDelegate]: didReceiveRemoteNotification : no linked session / account has been found.");
+            NSLog(@"[AppDelegate] didReceiveRemoteNotification : no linked session / account has been found.");
         }
     }
     completionHandler(UIBackgroundFetchResultNoData);
@@ -728,7 +764,7 @@
 
 - (void)refreshApplicationIconBadgeNumber
 {
-    NSUInteger count = [MXKRoomDataSourceManager notificationCount];
+    NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
@@ -1019,7 +1055,9 @@
     pathParams = pathParams2;
 
     // Extract query params if any
-    if (fragments.count == 2)
+    // Query params are in the form [queryParam1Key]=[queryParam1Value], so the
+    // presence of at least one '=' character is mandatory
+    if (fragments.count == 2 && (NSNotFound != [fragments[1] rangeOfString:@"="].location))
     {
         queryParams = [[NSMutableDictionary alloc] init];
         for (NSString *keyValue in [fragments[1] componentsSeparatedByString:@"&"])
@@ -1086,6 +1124,11 @@
             if (callStack)
             {
                 [mxSession enableVoIPWithCallStack:callStack];
+            }
+            else
+            {
+                // When there is no call stack, display alerts on call invites
+                [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
             // Each room member will be considered as a potential contact.
@@ -1259,6 +1302,9 @@
     
     // Update home data sources
     [_homeViewController removeMatrixSession:mxSession];
+
+    // If any, disable the no VoIP support workaround
+    [self disableNoVoIPOnMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
 }
@@ -1651,13 +1697,6 @@
     [self startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
 }
 
-#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
-
-- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
-{
-    [self startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
-}
-
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar
@@ -1762,6 +1801,128 @@
     // to avoid empty room View Controller in portrait orientation
     // else, the user cannot select a room
     return NO;
+}
+
+#pragma mark - Status Bar Tap handling
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self.window];
+    
+    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+    
+    if (CGRectContainsPoint(statusBarFrame, point))
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateDidTapStatusBarNotification object:nil];
+    }
+}
+
+#pragma mark - No call support
+/**
+ Display a "Call not supported" alert when the session receives a call invitation.
+
+ @param mxSession the session to spy
+ */
+- (void)enableNoVoIPOnMatrixSession:(MXSession*)mxSession
+{
+    // Listen to call events
+    callEventsListeners[@(mxSession.hash)] =
+    [mxSession listenToEventsOfTypes:@[
+                                       kMXEventTypeStringCallInvite,
+                                       kMXEventTypeStringCallCandidates,
+                                       kMXEventTypeStringCallAnswer,
+                                       kMXEventTypeStringCallHangup
+                                       ]
+                             onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject)
+    {
+        if (MXTimelineDirectionForwards == direction)
+        {
+            switch (event.eventType)
+            {
+                case MXEventTypeCallInvite:
+                {
+                    if (noCallSupportAlert)
+                    {
+                        [noCallSupportAlert dismiss:NO];
+                    }
+
+                    MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
+
+                    // Sanity and invite expiration checks
+                    if (!callInviteEventContent || event.age >= callInviteEventContent.lifetime)
+                    {
+                        return;
+                    }
+
+                    MXUser *caller = [mxSession userWithUserId:event.sender];
+                    NSString *callerDisplayname = caller.displayname;
+                    if (!callerDisplayname.length)
+                    {
+                        callerDisplayname = event.sender;
+                    }
+
+                    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"no_voip", @"Vector", nil), callerDisplayname];
+
+                    noCallSupportAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"no_voip_title", @"Vector", nil)
+                                                                 message:message
+                                                                   style:MXKAlertStyleAlert];
+
+                    __weak typeof(self) weakSelf = self;
+
+                    noCallSupportAlert.cancelButtonIndex = [noCallSupportAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ignore"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        strongSelf->noCallSupportAlert = nil;
+
+                    }];
+
+                    [noCallSupportAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"reject_call"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                        // Reject the call by sending the hangup event
+                        NSDictionary *content = @{
+                                                  @"call_id": callInviteEventContent.callId,
+                                                  @"version": @(0)
+                                                  };
+
+                        [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content success:nil failure:^(NSError *error) {
+                            NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event. Error: %@", error);
+                        }];
+
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        strongSelf->noCallSupportAlert = nil;
+
+                    }];
+
+                    [noCallSupportAlert showInViewController:self.window.rootViewController];
+                    break;
+                }
+
+                case MXEventTypeCallAnswer:
+                case MXEventTypeCallHangup:
+                    // The call has ended. The alert is no more needed.
+                    if (noCallSupportAlert)
+                    {
+                        [noCallSupportAlert dismiss:YES];
+                        noCallSupportAlert = nil;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }];
+
+}
+
+- (void)disableNoVoIPOnMatrixSession:(MXSession*)mxSession
+{
+    // Stop listening to the call events of this session 
+    [mxSession removeListener:callEventsListeners[@(mxSession.hash)]];
+    [callEventsListeners removeObjectForKey:@(mxSession.hash)];
 }
 
 @end

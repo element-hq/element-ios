@@ -21,12 +21,30 @@
 #import "SegmentedViewController.h"
 
 @class Contact;
+@class RoomParticipantsViewController;
+
+/**
+ `RoomParticipantsViewController` delegate.
+ */
+@protocol RoomParticipantsViewControllerDelegate <NSObject>
+
+/**
+ Tells the delegate that the user wants to mention a room member.
+ 
+ @discussion the `RoomParticipantsViewController` instance is withdrawn automatically.
+ 
+ @param roomParticipantsViewController the `RoomParticipantsViewController` instance.
+ @param member the room member to mention.
+ */
+- (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member;
+
+@end
 
 /**
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, MXKRoomMemberDetailsViewControllerDelegate>
 {
 @protected
     /**
@@ -71,6 +89,16 @@
  The potential segmented view controller in which the view controller is displayed.
  */
 @property (nonatomic) SegmentedViewController *segmentedViewController;
+
+/**
+ Enable mention option in member details view. NO by default
+ */
+@property (nonatomic) BOOL enableMention;
+
+/**
+ The delegate for the view controller.
+ */
+@property (nonatomic) id<RoomParticipantsViewControllerDelegate> delegate;
 
 @end
 
