@@ -50,6 +50,10 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         _searchPatternsList = newSearchPatternsList;
         [self refreshPublicRooms];
     }
+    else if (!newSearchPatternsListString)
+    {
+        [self refreshPublicRooms];
+    }
 }
 
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
@@ -78,10 +82,14 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     // Do not refresh data if it is not too old
     if (lastRefreshDate && -lastRefreshDate.timeIntervalSinceNow < kPublicRoomsDirectoryDataExpiration)
     {
-        // Apply the new filter on the current data
-        [self refreshFilteredPublicRooms];
-
-        [self setState:MXKDataSourceStateReady];
+        // Do not disturb the current request if any
+        if (!publicRoomsRequest)
+        {
+            // Apply the new filter on the current data
+            [self refreshFilteredPublicRooms];
+            
+            [self setState:MXKDataSourceStateReady];
+        }
     }
     else
     {
@@ -128,6 +136,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             [self setState:MXKDataSourceStateReady];
 
         } failure:^(NSError *error) {
+            
             NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
             
             [self setState:MXKDataSourceStateFailed];
@@ -137,6 +146,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
+            
         }];
     }
 }

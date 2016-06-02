@@ -84,7 +84,8 @@
     [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:kVectorColorGreen range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
+    
+    [self updateForgotPwdButtonVisibility];
     
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.serverOptionsTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
@@ -147,7 +148,7 @@
         }
     }
     
-    self.forgotPasswordButton.hidden = (authType != MXKAuthenticationTypeLogin);
+    [self updateForgotPwdButtonVisibility];
 }
 
 - (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
@@ -330,6 +331,22 @@
     else
     {
         [super onFailureDuringAuthRequest:error];
+    }
+}
+
+- (void)updateForgotPwdButtonVisibility
+{
+    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin);
+    
+    // Adjust minimum leading constraint of the submit button
+    if (self.forgotPasswordButton.isHidden)
+    {
+        self.submitButtonMinLeadingConstraint.constant = 19;
+    }
+    else
+    {
+        CGRect frame = self.forgotPasswordButton.frame;
+        self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
     }
 }
 

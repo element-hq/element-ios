@@ -11,7 +11,7 @@
 	<key>identityserverurl</key>
 	<string>https://vector.im</string>
 	<key>homeserverurl</key>
-	<string>https://vector.im</string>
+	<string>https://matrix.org</string>
 	<key>homeserver</key>
 	<string>matrix.org</string>
 	<key>webAppUrlDev</key>

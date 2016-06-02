@@ -102,7 +102,15 @@
     {
         // Join the room before opening it
         [self startActivityIndicator];
-        [dataSource.mxSession joinRoom:publicRoom.roomId success:^(MXRoom *room) {
+        
+        // We promote here join by room alias instead of room id
+        NSString *roomIdOrAlias = publicRoom.roomId;
+        if (publicRoom.aliases.count)
+        {
+            roomIdOrAlias = publicRoom.aliases.firstObject;
+        }
+        
+        [dataSource.mxSession joinRoom:roomIdOrAlias success:^(MXRoom *room) {
 
             [self stopActivityIndicator];
 
