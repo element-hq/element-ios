@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 @property (weak, nonatomic) IBOutlet UIButton *serverOptionsTickButton;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *submitButtonMinLeadingConstraint;
+
 @property (weak, nonatomic) IBOutlet UIView *serverOptionsContainer;
 @property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
 @property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
