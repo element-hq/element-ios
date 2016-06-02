@@ -50,6 +50,10 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         _searchPatternsList = newSearchPatternsList;
         [self refreshPublicRooms];
     }
+    else if (!newSearchPatternsListString)
+    {
+        [self refreshPublicRooms];
+    }
 }
 
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
