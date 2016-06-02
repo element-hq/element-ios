@@ -59,6 +59,8 @@
         _roomAvatar.image = avatarImage;
     }
 
+    _roomAvatar.backgroundColor = [UIColor clearColor];
+    
     _roomAvatar.contentMode = UIViewContentModeScaleAspectFill;
 }
 
