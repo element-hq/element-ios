@@ -1,3 +1,16 @@
+Changes in Vector iOS in 0.1.9 (2016-06-02)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.9).
+ * Remove the 'optional' in the email registration field #352.
+ * Restore matrix.org as default homeserver.
+
+Bug fixes:
+ * Directory item in search doesn't open the directory if I don't search #353.
+ * Room avatars on matrix.org are badly rendered in the directory from a vector.im account #355.
+ * Authentication: "Send Reset Email" is truncated on iPhone 4S.
+
 Changes in Vector iOS in 0.1.8 (2016-06-01)
 ===============================================
 

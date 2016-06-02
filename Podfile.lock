@@ -25,7 +25,7 @@ PODS:
   - GBJailbreakDetection (1.3.0)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.8.13)
-  - MatrixKit (0.3.8):
+  - MatrixKit (0.3.9):
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.7)
     - MatrixSDK (~> 0.6.8)
@@ -47,7 +47,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 4aad610e27a776f9c2d4b490f9940a828af2fa8c
+    :commit: d480f21af49c9426755b5b6812aab276bd07f32d
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :commit: cfd8ecefbb052616c98b98126da0ef666188dc56
@@ -59,7 +59,7 @@ SPEC CHECKSUMS:
   GBJailbreakDetection: a216773574b62dddb6c876ffdb52c54ac05e27e0
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: 3a37004baf779b4262ab29a31a87d2ae668159d4
-  MatrixKit: 41e89abd182910c5f52a4e7239886552fd6e0a6b
+  MatrixKit: 9c8ceb305c33019bfe2c6f06512f60d80381ceb7
   MatrixSDK: 6810a9781ad61ac26a52bd127b136000af7eb622
 
 COCOAPODS: 0.39.0
