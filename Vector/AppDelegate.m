@@ -16,7 +16,10 @@
 
 #import "AppDelegate.h"
 
-#import <Google/Analytics.h>
+// Google Analytics
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
@@ -637,26 +640,36 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     // Check whether the user has enabled the sending of crash reports.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
     {
-        // Catch and log crashes
-        [MXLogger logCrashes:YES];
-        [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
-        
-        // Configure tracker from GoogleService-Info.plist.
-        NSError *configureError;
-        [[GGLContext sharedInstance] configureWithError:&configureError];
-        NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
-        
-        // Optional: configure GAI options.
-        GAI *gai = [GAI sharedInstance];
-        // Disable GA UncaughtException: their crash reports are quite limited (100 first chars of the stack trace)
-        // Let's MXLogger manage them
-        gai.trackUncaughtExceptions = NO;
-        
-        // Set Google Analytics dispatch interval to e.g. 20 seconds.
-        gai.dispatchInterval = 20;
-        
-        // Check if there is crash log to send to GA
-        [self checkExceptionToReport];
+        // Retrieve trackerId from GoogleService-Info.plist.
+        NSString *googleServiceInfoPath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
+        NSDictionary *googleServiceInfo = [NSDictionary dictionaryWithContentsOfFile:googleServiceInfoPath];
+        NSString *gaTrackingID = [googleServiceInfo objectForKey:@"TRACKING_ID"];
+        if (gaTrackingID)
+        {
+            // Catch and log crashes
+            [MXLogger logCrashes:YES];
+            [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
+            
+            // Configure GAI options.
+            GAI *gai = [GAI sharedInstance];
+            
+            // Disable GA UncaughtException: their crash reports are quite limited (100 first chars of the stack trace)
+            // Let's MXLogger manage them
+            gai.trackUncaughtExceptions = NO;
+            
+            // Initialize it with the app tracker ID
+            [gai trackerWithTrackingId:gaTrackingID];
+            
+            // Set Google Analytics dispatch interval to e.g. 20 seconds.
+            gai.dispatchInterval = 20;
+            
+            // Check if there is crash log to send to GA
+            [self checkExceptionToReport];
+        }
+        else
+        {
+            NSLog(@"[AppDelegate] Unable to find tracker id for Google Analytics");
+        }
     }
     else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
     {
