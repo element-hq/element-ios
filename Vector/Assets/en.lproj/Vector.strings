@@ -278,3 +278,6 @@
 "no_voip_title" = "Incoming call";
 "no_voip" = "%@ is calling you but the iOS Vector app does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
 
+// Crash report
+"google_analytics_use_prompt" = "Do you accept to help us to improve the application behaviour by sending crash reports?";
+

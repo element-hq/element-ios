@@ -26,9 +26,6 @@ int main(int argc, char * argv[]) {
         if (!isatty(STDERR_FILENO)) {
             [MXLogger redirectNSLogToFiles:YES];
         }
-        // Catch and log crashes
-        [MXLogger logCrashes:YES];
-        [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
 
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }

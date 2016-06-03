@@ -24,5 +24,7 @@ pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :br
 
 pod 'GBDeviceInfo', '~> 3.4.0'
 
+pod 'Google/Analytics'
+
 end
 

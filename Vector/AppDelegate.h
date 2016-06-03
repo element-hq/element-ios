@@ -81,6 +81,10 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
 
+#pragma mark - Crash reports handling
+
+- (void)configureGoogleAnalytics;
+
 #pragma mark - APNS methods
 
 - (void)registerUserNotificationSettings;

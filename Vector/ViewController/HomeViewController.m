@@ -232,6 +232,13 @@
     }
     else
     {
+        // Check whether the user has been already prompted to send crash reports.
+        // (Check whether 'enableCrashReport' flag has been set once)
+        if (![[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
+        {
+            [self promptUserBeforeUsingGoogleAnalytics];
+        }
+        
         // Release the current selected room (if any) except if the Room ViewController is still visible (see splitViewController.isCollapsed condition)
         if (!self.splitViewController || self.splitViewController.isCollapsed)
         {
@@ -495,6 +502,52 @@
 }
 
 #pragma mark - Internal methods
+
+- (void)promptUserBeforeUsingGoogleAnalytics
+{
+    NSLog(@"[HomeViewController]: Invite the user to send crash reports");
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [currentAlert dismiss:NO];
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil)
+                                           message:nil
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                                style:MXKAlertActionStyleDefault
+                                                              handler:^(MXKAlert *alert) {
+                                                                  
+                                                                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
+                                                                  [[NSUserDefaults standardUserDefaults] synchronize];
+                                                                  
+                                                                  if (weakSelf)
+                                                                  {
+                                                                      __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                      strongSelf->currentAlert = nil;
+                                                                  }
+                                                                  
+                                                              }];
+    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                               style:MXKAlertActionStyleDefault
+                             handler:^(MXKAlert *alert) {
+                                 
+                                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
+                                 [[NSUserDefaults standardUserDefaults] synchronize];
+                                 
+                                 if (weakSelf)
+                                 {
+                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                     strongSelf->currentAlert = nil;
+                                 }
+                                 
+                                 [[AppDelegate theDelegate] configureGoogleAnalytics];
+                                 
+                             }];
+    
+    [currentAlert showInViewController:self];
+}
 
 // Made the currently displayed child update its selected cell
 - (void)refreshCurrentSelectedCellInChild:(BOOL)forceVisible
@@ -789,7 +842,7 @@
                                                                currentAlert = nil;
                                                            }
 
-                                                           NSLog(@"[RoomCreation] Create new room failed");
+                                                           NSLog(@"[HomeViewController] Create new room failed");
 
                                                            // Alert user
                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
