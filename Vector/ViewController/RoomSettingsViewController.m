@@ -120,6 +120,14 @@
 {
     [super viewWillAppear:animated];
     
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAccountUserInfoDidChange:) name:kMXKAccountUserInfoDidChangeNotification object:nil];

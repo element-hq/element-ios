@@ -222,6 +222,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     [super viewWillAppear:animated];
     
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
     if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
     {
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;

@@ -17,6 +17,11 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 
+// Google Analytics
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
+
 #import "HomeViewController.h"
 
 #pragma mark - Notifications

@@ -16,11 +16,6 @@
 
 #import "AppDelegate.h"
 
-// Google Analytics
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-
 #import "RecentsDataSource.h"
 #import "RoomDataSource.h"
 
@@ -694,7 +689,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         // The doc says the exception description must not exceeed 100 chars but it seems
         // to accept much more.
         // https://developers.google.com/analytics/devguides/collection/ios/v3/exceptions#overview
-        id tracker = [[GAI sharedInstance] defaultTracker];
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
         [tracker send:[[GAIDictionaryBuilder
                         createExceptionWithDescription:description
                         withFatal:[NSNumber numberWithBool:YES]] build]];

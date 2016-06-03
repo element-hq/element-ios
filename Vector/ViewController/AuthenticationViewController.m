@@ -16,6 +16,8 @@
 
 #import "AuthenticationViewController.h"
 
+#import "AppDelegate.h"
+
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
 
@@ -109,6 +111,19 @@
     MXAuthenticationSession *authSession = [MXAuthenticationSession modelFromJSON:@{@"flows":@[@{@"stages":@[kMXLoginFlowTypePassword]}]}];
     [authInputsView setAuthSession:authSession withAuthType:MXKAuthenticationTypeLogin];
     self.authInputsView = authInputsView;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
