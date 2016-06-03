@@ -460,7 +460,7 @@
     // The other conditions depend on the current selected view controller.
     if (self.selectedViewController == recentsViewController)
     {
-        self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidepublicRoomsDirectory || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidePublicRoomsDirectory || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == searchViewController)
     {
@@ -652,7 +652,7 @@
     [recentsDataSource searchWithPatterns:nil];
 
      recentsDataSource.hideRecents = NO;
-     recentsDataSource.hidepublicRoomsDirectory = YES;
+     recentsDataSource.hidePublicRoomsDirectory = YES;
 }
 
 // Update search results under the currently selected tab
@@ -661,7 +661,7 @@
     if (self.searchBar.text.length)
     {
         recentsDataSource.hideRecents = NO;
-        recentsDataSource.hidepublicRoomsDirectory = NO;
+        recentsDataSource.hidePublicRoomsDirectory = NO;
         self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
@@ -691,7 +691,7 @@
     {
         // Nothing to search, show only the public dictionary
         recentsDataSource.hideRecents = YES;
-        recentsDataSource.hidepublicRoomsDirectory = NO;
+        recentsDataSource.hidePublicRoomsDirectory = NO;
         
         // Reset search result (if any)
         [recentsDataSource searchWithPatterns:nil];

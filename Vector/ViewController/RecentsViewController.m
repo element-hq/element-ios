@@ -230,7 +230,18 @@
     if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
     {
         [self refreshCurrentSelectedCell:YES];
-    }    
+    }
+    
+    // The Directory cell is displayed when the recents list is empty
+    RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+    if (recentsDataSource.hidePublicRoomsDirectory)
+    {
+        recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
+    }
+    else if (homeViewController.searchBarHidden)
+    {
+        recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
+    }
 }
 
 - (void)scrollToTop:(BOOL)animated

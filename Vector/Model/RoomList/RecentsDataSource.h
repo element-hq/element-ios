@@ -48,7 +48,7 @@
 /**
  Hide the public rooms directory cell. YES by default.
  */
-@property (nonatomic) BOOL hidepublicRoomsDirectory;
+@property (nonatomic) BOOL hidePublicRoomsDirectory;
 
 /**
  Hide recents. NO by default.
