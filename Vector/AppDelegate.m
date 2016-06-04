@@ -300,7 +300,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Configure Google Analytics here if the option is enabled
-    [self configureGoogleAnalytics];
+    [self startGoogleAnalytics];
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -462,13 +462,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
-    // End a session. The next hit from this tracker will be the last in the current session.
-    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"end"];
-    
-    // Flush pending GA messages
-    [[GAI sharedInstance] dispatch];
-    
-    [MXLogger logCrashes:NO];
+    [self stopGoogleAnalytics];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
@@ -630,7 +624,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 #pragma mark - Crash report handling
 
-- (void)configureGoogleAnalytics
+- (void)startGoogleAnalytics
 {
     // Check whether the user has enabled the sending of crash reports.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
@@ -670,6 +664,21 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     {
         NSLog(@"[AppDelegate] The user decides to do not use Google Analytics");
     }
+}
+
+- (void)stopGoogleAnalytics
+{
+    GAI *gai = [GAI sharedInstance];
+    
+    // End a session. The next hit from this tracker will be the last in the current session.
+    [[gai defaultTracker] set:kGAISessionControl value:@"end"];
+    
+    // Flush pending GA messages
+    [gai dispatch];
+    
+    [gai removeTrackerByName:[gai defaultTracker].name];
+    
+    [MXLogger logCrashes:NO];
 }
 
 // Check if there is a crash log to send to server

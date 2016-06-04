@@ -88,7 +88,8 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
 #pragma mark - Crash reports handling
 
-- (void)configureGoogleAnalytics;
+- (void)startGoogleAnalytics;
+- (void)stopGoogleAnalytics;
 
 #pragma mark - APNS methods
 

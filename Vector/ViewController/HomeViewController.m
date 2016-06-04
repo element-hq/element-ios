@@ -550,7 +550,7 @@
                                      strongSelf->currentAlert = nil;
                                  }
                                  
-                                 [[AppDelegate theDelegate] configureGoogleAnalytics];
+                                 [[AppDelegate theDelegate] startGoogleAnalytics];
                                  
                              }];
     
