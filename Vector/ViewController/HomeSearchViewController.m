@@ -16,6 +16,8 @@
 
 #import "HomeSearchViewController.h"
 
+#import "AppDelegate.h"
+
 #import "HomeViewController.h"
 
 #import "HomeSearchCellData.h"
@@ -44,6 +46,19 @@
 
     // Hide line separators of empty cells
     self.searchTableView.tableFooterView = [[UIView alloc] init];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 }
 
 - (void)displaySearch:(MXKSearchDataSource *)searchDataSource

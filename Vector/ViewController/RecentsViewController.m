@@ -134,6 +134,14 @@
 {
     [super viewWillAppear:animated];
     
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
     if (indexPath)

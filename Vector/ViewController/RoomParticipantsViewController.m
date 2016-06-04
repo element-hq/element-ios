@@ -160,6 +160,14 @@
 {
     [super viewWillAppear:animated];
     
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
     if (detailsViewController)
     {
         [detailsViewController destroy];

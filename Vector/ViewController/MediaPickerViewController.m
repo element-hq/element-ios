@@ -16,6 +16,8 @@
 
 #import "MediaPickerViewController.h"
 
+#import "AppDelegate.h"
+
 #import <Photos/Photos.h>
 
 #import <MediaPlayer/MediaPlayer.h>
@@ -156,6 +158,14 @@ static void *RecordingContext = &RecordingContext;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
     
     [self reloadRecentCapturesCollection];
     [self reloadUserLibraryAlbums];

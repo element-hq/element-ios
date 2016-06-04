@@ -68,6 +68,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 
     // Enable the search field at the screen opening
     if (self.searchBar.text.length == 0)
@@ -115,7 +123,6 @@
         self.backgroundImageView.hidden = YES;
     }
 }
-
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
 {

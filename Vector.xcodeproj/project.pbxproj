@@ -89,6 +89,7 @@
 		F003AA7C1C68A1F6008B430C /* ExpandedRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F003AA7B1C68A1F6008B430C /* ExpandedRoomTitleView.xib */; };
 		F003AA801C690628008B430C /* RoomAvatarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F003AA7E1C690628008B430C /* RoomAvatarTitleView.m */; };
 		F003AA811C690628008B430C /* RoomAvatarTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F003AA7F1C690628008B430C /* RoomAvatarTitleView.xib */; };
+		F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */; };
 		F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */; };
 		F00C47871BFF77C800DBABC9 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */; };
 		F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C478A1BFF854400DBABC9 /* RecentsDataSource.m */; };
@@ -372,6 +373,7 @@
 		F003AA7D1C690628008B430C /* RoomAvatarTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RoomAvatarTitleView.h; path = RoomTitle/RoomAvatarTitleView.h; sourceTree = "<group>"; };
 		F003AA7E1C690628008B430C /* RoomAvatarTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RoomAvatarTitleView.m; path = RoomTitle/RoomAvatarTitleView.m; sourceTree = "<group>"; };
 		F003AA7F1C690628008B430C /* RoomAvatarTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RoomAvatarTitleView.xib; path = RoomTitle/RoomAvatarTitleView.xib; sourceTree = "<group>"; };
+		F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F00C47831BFF77C800DBABC9 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
@@ -884,6 +886,7 @@
 		F094A9A51B78D8F000B1FBBF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F008D6FB1D0180FB0049444D /* GoogleService-Info.plist */,
 				F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */,
 				F094AA031B78E3D400B1FBBF /* empty.mm */,
 				F094AA041B78E3D400B1FBBF /* Vector-Defaults.plist */,
@@ -1228,6 +1231,7 @@
 				F03FBCD81CBC49B6000A5770 /* disclosure_icon@2x.png in Resources */,
 				F03FBCD01CBBF521000A5770 /* shrink_icon@3x.png in Resources */,
 				F02528D81C11B6FC00E1FE1B /* camera_picture.png in Resources */,
+				F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */,
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
 				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
