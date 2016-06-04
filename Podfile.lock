@@ -36,24 +36,7 @@ PODS:
 DEPENDENCIES:
   - GBDeviceInfo (~> 3.4.0)
   - GoogleAnalytics
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-
-EXTERNAL SOURCES:
-  MatrixKit:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-
-CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: d480f21af49c9426755b5b6812aab276bd07f32d
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :commit: cfd8ecefbb052616c98b98126da0ef666188dc56
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  - MatrixKit (~> 0.3.9)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
