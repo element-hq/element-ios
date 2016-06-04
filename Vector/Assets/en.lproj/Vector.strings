@@ -47,7 +47,7 @@
 "auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
 "auth_new_password_placeholder" = "New password";
-"auth_user_name_placeholder" = "Your name";
+"auth_user_name_placeholder" = "User name";
 "auth_optional_email_placeholder" = "Email address";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
