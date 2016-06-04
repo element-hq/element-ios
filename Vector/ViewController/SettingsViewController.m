@@ -48,8 +48,9 @@
 #define OTHER_TERM_CONDITIONS_INDEX 1
 #define OTHER_PRIVACY_INDEX         2
 #define OTHER_THIRD_PARTY_INDEX     3
-#define OTHER_CLEAR_CACHE_INDEX     4
-#define OTHER_COUNT                 5
+#define OTHER_CRASH_REPORT_INDEX    4
+#define OTHER_CLEAR_CACHE_INDEX     5
+#define OTHER_COUNT                 6
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
@@ -221,6 +222,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
     
     if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
     {
@@ -515,7 +524,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         cell = [[MXKTableViewCellWithLabelAndTextField alloc] init];
         
-        cell.mxkLabelLeadingConstraint.constant = 15;
+        UIEdgeInsets separatorInset = cell.separatorInset;
+        
+        cell.mxkLabelLeadingConstraint.constant = separatorInset.left;
         cell.mxkTextFieldTrailingConstraint.constant = 15;
     }
     
@@ -541,7 +552,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         cell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
         
-        cell.mxkLabelLeadingConstraint.constant = 15;
+        UIEdgeInsets separatorInset = cell.separatorInset;
+        
+        cell.mxkLabelLeadingConstraint.constant = separatorInset.left;
         cell.mxkSwitchTrailingConstraint.constant = 15;
     }
     
@@ -915,6 +928,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = thirdPartyCell;
         }
+        else if (row == OTHER_CRASH_REPORT_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView];
+            
+            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
+            sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
+            [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [sendCrashReportCell layoutIfNeeded];
+            cell = sendCrashReportCell;
+        }
         else if (row == OTHER_CLEAR_CACHE_INDEX)
         {
             MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -1110,6 +1135,30 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
+- (void)toggleSendCrashReport:(id)sender
+{
+    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
+    if (enable)
+    {
+        NSLog(@"[SettingsViewController] disable automatic crash report sending");
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enableCrashReport"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[AppDelegate theDelegate] stopGoogleAnalytics];
+        
+        // Remove potential crash file.
+        [MXLogger deleteCrashLog];
+    }
+    else
+    {
+        NSLog(@"[SettingsViewController] enable automatic crash report sending");
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enableCrashReport"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
 - (void)onClearCache:(id)sender
 {
     [[AppDelegate theDelegate] reloadMatrixSessions:YES];
@@ -1187,7 +1236,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[Vector Settings View Controller] Failed to set displayName");
+            NSLog(@"[SettingsViewController] Failed to set displayName");
             
             if (weakSelf)
             {
@@ -1223,7 +1272,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[Vector SettingsViewController] Failed to upload image");
+            NSLog(@"[SettingsViewController] Failed to upload image");
             
             if (weakSelf)
             {
@@ -1250,7 +1299,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                              }
                              failure:^(NSError *error) {
                                  
-                                 NSLog(@"[Vector SettingsViewController] Failed to set avatar url");
+                                 NSLog(@"[SettingsViewController] Failed to set avatar url");
                                 
                                  if (weakSelf)
                                  {

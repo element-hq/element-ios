@@ -50,10 +50,6 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         _searchPatternsList = newSearchPatternsList;
         [self refreshPublicRooms];
     }
-    else if (!newSearchPatternsListString)
-    {
-        [self refreshPublicRooms];
-    }
 }
 
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
@@ -74,8 +70,6 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
     return indexPath;
 }
-
-#pragma mark - Private methods
 
 - (void)refreshPublicRooms
 {
@@ -150,6 +144,8 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         }];
     }
 }
+
+#pragma mark - Private methods
 
 - (void)refreshFilteredPublicRooms
 {

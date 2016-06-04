@@ -74,7 +74,7 @@
         sectionsCount = 0;
         
         _hideRecents = NO;
-        _hidepublicRoomsDirectory = YES;
+        _hidePublicRoomsDirectory = YES;
         
         shrinkedSectionsBitMask = 0;
         
@@ -188,11 +188,16 @@
 
 #pragma mark - 
 
-- (void)setHidepublicRoomsDirectory:(BOOL)hidepublicRoomsDirectory
+- (void)setHidePublicRoomsDirectory:(BOOL)hidePublicRoomsDirectory
 {
-    if (_hidepublicRoomsDirectory != hidepublicRoomsDirectory)
+    if (_hidePublicRoomsDirectory != hidePublicRoomsDirectory)
     {
-        _hidepublicRoomsDirectory = hidepublicRoomsDirectory;
+        _hidePublicRoomsDirectory = hidePublicRoomsDirectory;
+        
+        if (!_hidePublicRoomsDirectory)
+        {
+            [self.publicRoomsDirectoryDataSource refreshPublicRooms];
+        }
         
         [self refreshRoomsSectionsAndReload];
     }
@@ -605,7 +610,7 @@
     directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
     
-    if (!_hidepublicRoomsDirectory)
+    if (!_hidePublicRoomsDirectory)
     {
         // The public rooms directory cell is then visible whatever the search activity.
         directorySection = sectionsCount++;

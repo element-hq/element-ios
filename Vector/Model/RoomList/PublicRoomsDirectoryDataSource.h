@@ -51,6 +51,11 @@
 @property (nonatomic, readonly) NSArray<MXPublicRoom*> *filteredRooms;
 
 /**
+ Refresh public rooms list (take into account the potential search pattern list).
+ */
+- (void)refreshPublicRooms;
+
+/**
  Get the index path of the cell related to the provided roomId and session.
 
  @param roomId the room identifier.

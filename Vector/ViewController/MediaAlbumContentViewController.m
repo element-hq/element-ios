@@ -16,6 +16,8 @@
 
 #import "MediaAlbumContentViewController.h"
 
+#import "AppDelegate.h"
+
 #import "VectorDesignValues.h"
 
 #import "RageShakeManager.h"
@@ -95,6 +97,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
     
     self.navigationItem.title = _assetsCollection.localizedTitle;
     

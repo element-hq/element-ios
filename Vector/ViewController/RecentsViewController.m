@@ -134,6 +134,14 @@
 {
     [super viewWillAppear:animated];
     
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
     if (indexPath)
@@ -230,7 +238,21 @@
     if (self.splitViewController && (![self.splitViewController respondsToSelector:@selector(isCollapsed)] || !self.splitViewController.isCollapsed))
     {
         [self refreshCurrentSelectedCell:YES];
-    }    
+    }
+    
+    if (self.dataSource.mxSession.state == MXSessionStateRunning)
+    {
+        // The Directory cell is displayed when the recents list is empty
+        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+        if (recentsDataSource.hidePublicRoomsDirectory)
+        {
+            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
+        }
+        else if (homeViewController.searchBarHidden)
+        {
+            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
+        }
+    }
 }
 
 - (void)scrollToTop:(BOOL)animated

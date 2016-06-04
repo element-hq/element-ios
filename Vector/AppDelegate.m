@@ -299,6 +299,9 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    // Configure Google Analytics here if the option is enabled
+    [self startGoogleAnalytics];
+    
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -379,6 +382,9 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     [self refreshApplicationIconBadgeNumber];
     
     _isAppForeground = NO;
+    
+    // GA: End a session while the app is in background
+    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"end"];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -395,6 +401,9 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     [[MXKAccountManager sharedManager] prepareSessionForActiveAccounts];
     
     _isAppForeground = YES;
+    
+    // GA: Start a new session. The next hit from this tracker will be the first in a new session.
+    [[[GAI sharedInstance] defaultTracker] set:kGAISessionControl value:@"start"];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -402,20 +411,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
     
     remoteNotificationRoomId = nil;
-
-    // Check if the app crashed last time
-    if ([MXLogger crashLog])
-    {
-#ifndef DEBUG
-        // In distributed version, clear the cache to not annoy user more.
-        // In debug mode, the developer will be pleased to investigate what is wrong in the cache.
-        NSLog(@"[AppDelegate] Clear the cache due to app crash");
-        [self reloadMatrixSessions:YES];
-#endif
-
-        // Ask the user to send a bug report
-        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
-    }
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
@@ -466,6 +461,8 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 {
     NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    [self stopGoogleAnalytics];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
@@ -622,6 +619,93 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                 popToHomeViewControllerCompletion2();
             });
         }
+    }
+}
+
+#pragma mark - Crash report handling
+
+- (void)startGoogleAnalytics
+{
+    // Check whether the user has enabled the sending of crash reports.
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
+    {
+        // Retrieve trackerId from GoogleService-Info.plist.
+        NSString *googleServiceInfoPath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
+        NSDictionary *googleServiceInfo = [NSDictionary dictionaryWithContentsOfFile:googleServiceInfoPath];
+        NSString *gaTrackingID = [googleServiceInfo objectForKey:@"TRACKING_ID"];
+        if (gaTrackingID)
+        {
+            // Catch and log crashes
+            [MXLogger logCrashes:YES];
+            [MXLogger setBuildVersion:[AppDelegate theDelegate].build];
+            
+            // Configure GAI options.
+            GAI *gai = [GAI sharedInstance];
+            
+            // Disable GA UncaughtException: their crash reports are quite limited (100 first chars of the stack trace)
+            // Let's MXLogger manage them
+            gai.trackUncaughtExceptions = NO;
+            
+            // Initialize it with the app tracker ID
+            [gai trackerWithTrackingId:gaTrackingID];
+            
+            // Set Google Analytics dispatch interval to e.g. 20 seconds.
+            gai.dispatchInterval = 20;
+            
+            // Check if there is crash log to send to GA
+            [self checkExceptionToReport];
+        }
+        else
+        {
+            NSLog(@"[AppDelegate] Unable to find tracker id for Google Analytics");
+        }
+    }
+    else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"enableCrashReport"])
+    {
+        NSLog(@"[AppDelegate] The user decides to do not use Google Analytics");
+    }
+}
+
+- (void)stopGoogleAnalytics
+{
+    GAI *gai = [GAI sharedInstance];
+    
+    // End a session. The next hit from this tracker will be the last in the current session.
+    [[gai defaultTracker] set:kGAISessionControl value:@"end"];
+    
+    // Flush pending GA messages
+    [gai dispatch];
+    
+    [gai removeTrackerByName:[gai defaultTracker].name];
+    
+    [MXLogger logCrashes:NO];
+}
+
+// Check if there is a crash log to send to server
+- (void)checkExceptionToReport
+{
+    // Check if the app crashed last time
+    NSString *filePath = [MXLogger crashLog];
+    if (filePath)
+    {
+        NSString *description = [[NSString alloc] initWithContentsOfFile:filePath
+                                                            usedEncoding:nil
+                                                                   error:nil];
+        
+        NSLog(@"[AppDelegate] Send crash log to Google Analytics:\n%@", description);
+        
+        // Send it via Google Analytics
+        // The doc says the exception description must not exceeed 100 chars but it seems
+        // to accept much more.
+        // https://developers.google.com/analytics/devguides/collection/ios/v3/exceptions#overview
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder
+                        createExceptionWithDescription:description
+                        withFatal:[NSNumber numberWithBool:YES]] build]];
+        [[GAI sharedInstance] dispatch];
+        
+        // The crash file can be removed now
+        [MXLogger deleteCrashLog];
     }
 }
 

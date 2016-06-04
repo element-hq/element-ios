@@ -47,7 +47,7 @@
 "auth_user_id_placeholder" = "Email or user name";
 "auth_password_placeholder" = "Password";
 "auth_new_password_placeholder" = "New password";
-"auth_user_name_placeholder" = "Your name";
+"auth_user_name_placeholder" = "User name";
 "auth_optional_email_placeholder" = "Email address";
 "auth_email_placeholder" = "Email address";
 "auth_repeat_password_placeholder" = "Repeat password";
@@ -119,7 +119,7 @@
 "room_participants_leave_prompt_msg" = "Are you sure you want to leave this chat?";
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
-"room_participants_invite_another_user" = "Search/invite by name, email, id";
+"room_participants_invite_another_user" = "Search / invite by name, email, id";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 
@@ -226,6 +226,7 @@
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_third_party_notices" = "Third-party Notices";
+"settings_send_crash_report" = "Send anon crash & usage data";
 "settings_clear_cache" = "Clear cache";
 
 "settings_change_password" = "Change password";
@@ -277,4 +278,7 @@
 // No VoIP support
 "no_voip_title" = "Incoming call";
 "no_voip" = "%@ is calling you but the iOS Vector app does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
+
+// Crash report
+"google_analytics_use_prompt" = "Would you like to help improve Vector by automatically reporting anonymous crash reports and usage data?";
 

@@ -1,3 +1,12 @@
+Changes in Vector iOS in 0.1.10 (2016-06-04)
+===============================================
+
+Improvements:
+ * Directory section is displayed by default in Messages when recents list is empty.
+ * Support GA services #335.
+ * Room Participants: Increase the search field from 44px to 50px high to give it slightly more prominence.
+ * Room Participants - Search bar: Adjust green separator to make it more obviously tappable and less like a header.
+
 Changes in Vector iOS in 0.1.9 (2016-06-02)
 ===============================================
 

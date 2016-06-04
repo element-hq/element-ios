@@ -17,6 +17,11 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 
+// Google Analytics
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
+
 #import "HomeViewController.h"
 
 #pragma mark - Notifications
@@ -80,6 +85,11 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
+
+#pragma mark - Crash reports handling
+
+- (void)startGoogleAnalytics;
+- (void)stopGoogleAnalytics;
 
 #pragma mark - APNS methods
 
