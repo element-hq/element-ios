@@ -1326,6 +1326,8 @@
     searchBar.barTintColor = searchBar.tintColor = kVectorColorGreen;
     searchBar.tintColor = kVectorColorGreen;
     
+    // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
+
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
     searchBarTextField.textColor = kVectorTextColorGray;
@@ -1341,6 +1343,7 @@
     effectBackgroundTop.hidden = YES;
     effectBackgroundBottom.hidden = YES;
     
+/*
     // add line separator under the textfield
     if (!searchBarSeparator)
     {
@@ -1386,10 +1389,13 @@
         
         [NSLayoutConstraint activateConstraints:@[leftConstraint, widthConstraint, heightConstraint, bottomConstraint]];
     }
-    
+*/
     
     // place holder
-    [searchBarTextField setValue:kVectorTextColorGray forKeyPath:@"_placeholderLabel.textColor"];
+    searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
+                                                                               attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
+                                                                                            NSUnderlineColorAttributeName: kVectorColorGreen,
+                                                                                            NSForegroundColorAttributeName: kVectorColorGreen}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
