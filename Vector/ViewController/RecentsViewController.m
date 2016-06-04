@@ -240,15 +240,18 @@
         [self refreshCurrentSelectedCell:YES];
     }
     
-    // The Directory cell is displayed when the recents list is empty
-    RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
-    if (recentsDataSource.hidePublicRoomsDirectory)
+    if (self.dataSource.mxSession.state == MXSessionStateRunning)
     {
-        recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
-    }
-    else if (homeViewController.searchBarHidden)
-    {
-        recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
+        // The Directory cell is displayed when the recents list is empty
+        RecentsDataSource *recentsDataSource = (RecentsDataSource*)self.dataSource;
+        if (recentsDataSource.hidePublicRoomsDirectory)
+        {
+            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections != 0);
+        }
+        else if (homeViewController.searchBarHidden)
+        {
+            recentsDataSource.hidePublicRoomsDirectory = (self.recentsTableView.numberOfSections > 1);
+        }
     }
 }
 
