@@ -879,7 +879,9 @@
             [self setRoomTitleViewClass:RoomAvatarTitleView.class];
             // Note the avatar title view does not define tap gesture.
             
-            roomAvatarView = ((RoomAvatarTitleView*)self.titleView).roomAvatar;
+            RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
+            
+            roomAvatarView = roomAvatarTitleView.roomAvatar;
             roomAvatarView.alpha = 0.0;
             
             shadowImage = [[UIImage alloc] init];
@@ -887,11 +889,17 @@
             // Set the avatar provided in preview data
             if (roomPreviewData.roomAvatarUrl)
             {
-                RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
-                MXKImageView *roomAvatarView = roomAvatarTitleView.roomAvatar;
                 NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
 
                 roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
+            }
+            else if (roomPreviewData.roomId && roomPreviewData.roomName)
+            {
+                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateRoomAvatar:roomPreviewData.roomId andDisplayName:roomPreviewData.roomName];
+            }
+            else
+            {
+                roomAvatarTitleView.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
             }
         }
         else

@@ -71,24 +71,23 @@
     if (self.mxRoom)
     {
         [self.mxRoom setRoomAvatarImageIn:self.roomAvatar];
-        
-        // Round image view for thumbnail
-        self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
-        self.roomAvatar.clipsToBounds = YES;
-        
     }
     else if (self.roomAvatarURL)
     {
-        [self.roomAvatar setImageURL:self.roomAvatarURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];        
-
-        // Round image view for thumbnail
-        self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
-        self.roomAvatar.clipsToBounds = YES;
+        [self.roomAvatar setImageURL:self.roomAvatarURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:[UIImage imageNamed:@"placeholder"]];
+    }
+    else if (self.roomAvatarPlaceholder)
+    {
+        self.roomAvatar.image = self.roomAvatarPlaceholder;
     }
     else
     {
-        self.roomAvatar.image = [UIImage imageNamed:@"placeholder"];
-    }    
+        self.roomAvatar.image = nil;
+    }
+    
+    // Round image view for thumbnail
+    self.roomAvatar.layer.cornerRadius = self.roomAvatar.frame.size.width / 2;
+    self.roomAvatar.clipsToBounds = YES;
     
     self.roomAvatar.backgroundColor = kVectorColorLightGrey;
 }
@@ -96,6 +95,13 @@
 - (void)setRoomAvatarURL:(NSString *)roomAvatarURL
 {
     _roomAvatarURL = roomAvatarURL;
+    
+    [self refreshDisplay];
+}
+
+- (void)setRoomAvatarPlaceholder:(UIImage *)roomAvatarPlaceholder
+{
+    _roomAvatarPlaceholder = roomAvatarPlaceholder;
     
     [self refreshDisplay];
 }
