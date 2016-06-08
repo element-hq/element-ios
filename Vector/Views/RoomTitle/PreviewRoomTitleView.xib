@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -12,6 +12,13 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="363"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y5s-FK-My4">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="215"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="215" id="YtX-K2-uD7"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BkF-x3-7fX">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="215"/>
                     <subviews>
@@ -44,7 +51,7 @@
                             </constraints>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="ou0-3Z-weL" firstAttribute="top" secondItem="Tk0-pA-9a0" secondAttribute="bottom" constant="14" id="2WN-tp-d7G"/>
                         <constraint firstItem="6uH-I3-RQg" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="3uN-6W-rVZ"/>
@@ -123,17 +130,20 @@
                 <constraint firstAttribute="trailing" secondItem="WmW-5h-jL1" secondAttribute="trailing" constant="60" id="1b7-i7-NOb"/>
                 <constraint firstAttribute="trailing" secondItem="BkF-x3-7fX" secondAttribute="trailing" id="33r-D5-3uy"/>
                 <constraint firstItem="gIX-nY-f6M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="7Kn-g9-Ya6"/>
-                <constraint firstItem="gIX-nY-f6M" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="bottom" constant="24" id="7Rv-NQ-cUQ"/>
                 <constraint firstItem="WmW-5h-jL1" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="60" id="8dy-U2-a3G"/>
                 <constraint firstItem="BCO-DT-F0C" firstAttribute="top" secondItem="IwA-0X-IYb" secondAttribute="bottom" constant="13" id="G2S-aH-ycH"/>
                 <constraint firstItem="BCO-DT-F0C" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="H07-HA-2Px"/>
+                <constraint firstItem="y5s-FK-My4" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="IU0-R1-jNV"/>
                 <constraint firstAttribute="trailing" secondItem="BCO-DT-F0C" secondAttribute="trailing" id="Izl-ms-lGJ"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gIX-nY-f6M" secondAttribute="trailing" constant="31" id="Ljb-d3-KKM"/>
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="Uvb-cK-dQf"/>
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" id="Zru-9A-ifB"/>
+                <constraint firstAttribute="trailing" secondItem="y5s-FK-My4" secondAttribute="trailing" id="d4g-19-C58"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IwA-0X-IYb" secondAttribute="trailing" constant="31" id="iGR-eh-0e9"/>
                 <constraint firstItem="WmW-5h-jL1" firstAttribute="top" secondItem="gIX-nY-f6M" secondAttribute="bottom" constant="24" id="ioD-jo-XQe"/>
                 <constraint firstItem="IwA-0X-IYb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="lpD-yd-qgt"/>
+                <constraint firstItem="y5s-FK-My4" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" id="n0d-R8-HiM"/>
+                <constraint firstItem="gIX-nY-f6M" firstAttribute="top" secondItem="y5s-FK-My4" secondAttribute="bottom" constant="24" id="qwA-2S-BIP"/>
                 <constraint firstItem="IwA-0X-IYb" firstAttribute="centerX" secondItem="Cpa-Xt-cwB" secondAttribute="centerX" id="tJ8-2s-eo2"/>
                 <constraint firstItem="gIX-nY-f6M" firstAttribute="centerX" secondItem="Cpa-Xt-cwB" secondAttribute="centerX" id="ydM-eo-gTg"/>
             </constraints>
@@ -145,6 +155,8 @@
                 <outlet property="displayNameTextFieldTopConstraint" destination="Piq-rp-Pae" id="9PR-H2-Nuv"/>
                 <outlet property="invitationLabel" destination="gIX-nY-f6M" id="kcf-aA-DJN"/>
                 <outlet property="leftButton" destination="osd-JP-2az" id="HrL-Qy-UDt"/>
+                <outlet property="mainHeaderBackground" destination="y5s-FK-My4" id="pzg-kT-PSG"/>
+                <outlet property="mainHeaderBackgroundHeightConstraint" destination="YtX-K2-uD7" id="47y-aL-t94"/>
                 <outlet property="mainHeaderContainer" destination="BkF-x3-7fX" id="1fp-xz-ETJ"/>
                 <outlet property="rightButton" destination="461-vO-hLZ" id="u8R-Rg-WAv"/>
                 <outlet property="roomMembers" destination="ou0-3Z-weL" id="lRs-fz-QXc"/>
