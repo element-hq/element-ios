@@ -43,22 +43,20 @@
     return self;
 }
 
-- (void)fetchPreviewData:(void (^)(BOOL))completion
+- (void)peekInRoom:(void (^)(BOOL successed))completion
 {
-    // Make an /initialSync request to get preview data
-    [_mxSession.matrixRestClient initialSyncOfRoom:_roomId withLimit:0 success:^(MXRoomInitialSync *roomInitialSync) {
+    [_mxSession peekInRoomWithRoomId:_roomId success:^(MXPeekingRoom *peekingRoom) {
 
-        _roomState = [[MXRoomState alloc] initWithRoomId:_roomId andMatrixSession:_mxSession andDirection:YES];
+        // Create the room data source
+        // It will be automatically released when the RoomViewController that displays it will disappear
+        _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom AndInitialEventId:_eventId];
+        [_roomDataSource finalizeInitialization];
 
-        // Make roomState digest state events of the room
-        for (MXEvent *stateEvent in roomInitialSync.state)
-        {
-            [_roomState handleStateEvent:stateEvent];
-        }
+        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_mxSession];
+        [roomDataSourceManager addRoomDataSource:_roomDataSource];
 
-        // Report retrieved data
-        _roomName = _roomState.displayname;
-        _roomAvatarUrl = _roomState.avatar;
+        _roomName = peekingRoom.state.displayname;
+        _roomAvatarUrl = peekingRoom.state.avatar;
 
         completion(YES);
 

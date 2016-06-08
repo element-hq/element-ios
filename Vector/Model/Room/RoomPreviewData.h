@@ -18,6 +18,7 @@
 
 #import "RoomEmailInvitation.h"
 #import "MXSession.h"
+#import "RoomDataSource.h"
 
 /**
  The `RoomEmailInvitation` gathers information for displaying the preview of a
@@ -57,11 +58,10 @@
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
 
 /**
- A snapshot of the room state.
- Note: This ivar may be replaced by a RoomDataSource ivar when the room preview will be
- fully implemented.
+ The RoomDataSource to peek into the room. 
+ Note: this object is creating when [self peekInRoom:] succeeds.
  */
-@property (nonatomic, readonly) MXRoomState *roomState;
+@property (nonatomic, readonly) RoomDataSource *roomDataSource;
 
 /**
  Contructors.
@@ -74,14 +74,14 @@
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
 
 /**
- Attempt to get more information from the homeserver about the room.
+ Attempt to peek into room to get room data (state, messages history, etc).
 
- NOTE: This method is temporary while we do not support the full room preview
-       with preview of messages.
- 
+ The operation succeeds only if the room history is world_readable.
+
  @param completion the block called when the request is complete. `successed` means
-        the homeserver provided some information.
+                   the self.roomDataSource has been created and is ready to provide
+                   room history.
  */
-- (void)fetchPreviewData:(void (^)(BOOL successed))completion;
+- (void)peekInRoom:(void (^)(BOOL successed))completion;
 
 @end

@@ -405,7 +405,8 @@
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
 
             // Let the manager release this live room data source
-            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:!_currentRoomViewController.roomDataSource.isLive];
+            BOOL forceClose = !_currentRoomViewController.roomDataSource.isLive || _currentRoomViewController.roomDataSource.isPeeking;
+            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:forceClose];
         }
 
         [_currentRoomViewController destroy];
@@ -622,8 +623,7 @@
             }
             else
             {
-                [_currentRoomViewController displayRoom:_selectedRoomPreviewData.roomDataSource];
-                //[_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
+                [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
                 _selectedRoomPreviewData = nil;
             }
         }
