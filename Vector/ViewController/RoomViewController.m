@@ -906,10 +906,7 @@
             self.previewHeaderContainer.hidden = NO;
             
             // Finalize preview header display according to the screen orientation
-            UIInterfaceOrientation currentScreenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-            BOOL isLandscapeOriented = (currentScreenOrientation == UIInterfaceOrientationLandscapeRight || currentScreenOrientation == UIInterfaceOrientationLandscapeLeft);
-            
-            [self refreshPreviewHeader:isLandscapeOriented];
+            [self refreshPreviewHeader:UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])];
         }
         else
         {
