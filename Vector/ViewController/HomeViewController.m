@@ -399,12 +399,13 @@
 
     if (_currentRoomViewController)
     {
-        if (_currentRoomViewController.roomDataSource && _currentRoomViewController.roomDataSource.isLive)
+        if (_currentRoomViewController.roomDataSource)
         {
-            // Let the manager release this live room data source
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
+
+            // Let the manager release this live room data source
+            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:!_currentRoomViewController.roomDataSource.isLive];
         }
 
         [_currentRoomViewController destroy];
@@ -621,7 +622,8 @@
             }
             else
             {
-                [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
+                [_currentRoomViewController displayRoom:_selectedRoomPreviewData.roomDataSource];
+                //[_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
                 _selectedRoomPreviewData = nil;
             }
         }
