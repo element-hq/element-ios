@@ -31,7 +31,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
 
 // The preview header
-@property (weak, nonatomic) IBOutlet UIScrollView *previewScrollView;
 @property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
 

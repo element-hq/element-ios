@@ -20,10 +20,12 @@
 
 @interface PreviewRoomTitleView : RoomTitleView
 
+@property (weak, nonatomic) IBOutlet UIView *mainHeaderBackground;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainHeaderBackgroundHeightConstraint;
+
 @property (weak, nonatomic) IBOutlet UIView *mainHeaderContainer;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomTopic;
-
 @property (weak, nonatomic) IBOutlet UILabel *roomMembers;
 @property (weak, nonatomic) IBOutlet UIView *roomMembersDetailsIcon;
 

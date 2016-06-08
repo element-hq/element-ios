@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UIView *titleMask;
 @property (weak, nonatomic) IBOutlet UIView *roomDetailsMask;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterXConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *roomDetailsIconImageView;
 
 /**
  The tap gesture delegate.

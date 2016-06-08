@@ -370,20 +370,36 @@
     // If we don't hide the header, the navigation bar is in a wrong state after rotation. FIXME: Find a way to keep visible the header on rotation.
     if ([GBDeviceInfo deviceInfo].display == GBDeviceDisplayiPad || [GBDeviceInfo deviceInfo].display >= GBDeviceDisplayiPhone55Inch)
     {
-        // Hide expanded header on device rotation
+        // Hide expanded header (if any) on device rotation
         [self showExpandedHeader:NO];
         
-        // Hide preview header (if any) during device rotation
-        BOOL isPreview = self.previewScrollView && !self.previewScrollView.isHidden;
-        if (isPreview)
+        // Refresh preview header (if any) during device rotation
+        if (previewHeader)
         {
+            // Hide preview header before rotating
             [self showPreviewHeader:NO];
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
+
+                // Restore preview header
                 [self showPreviewHeader:YES];
             });
         }
+    }
+    else if (previewHeader)
+    {
+        if (previewHeader.mainHeaderContainer.hidden)
+        {
+            // Patch: Adjust the main background height to display a correct navigation bar background until the preview header is refreshed.
+            CGRect frame = self.navigationController.navigationBar.frame;
+            previewHeader.mainHeaderBackgroundHeightConstraint.constant = frame.size.height - frame.origin.y;
+        }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+            [self refreshPreviewHeader:YES];
+            
+        });
     }
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
@@ -456,6 +472,7 @@
         if (previewHeader)
         {
             previewHeader.mxRoom = self.roomDataSource.room;
+            
             self.previewHeaderContainerHeightConstraint.constant = previewHeader.bottomBorderView.frame.origin.y + 1;
         }
     }
@@ -535,16 +552,18 @@
         // Check
         if (roomAlias.length)
         {
-            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room)
-             {
-                 // Show the room
-                 [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
-             } failure:^(NSError *error)
-             {
-                 NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed", roomAlias);
-                 //Alert user
-                 [[AppDelegate theDelegate] showErrorAsAlert:error];
-             }];
+            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
+                
+                // Show the room
+                [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[Vector RoomVC] Join roomAlias (%@) failed", roomAlias);
+                //Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                
+            }];
         }
         else
         {
@@ -792,7 +811,7 @@
 {
     // This operation is ignored if a screen rotation is in progress,
     // or if the view controller is not embedded inside a split view controller yet.
-    if (self.previewScrollView.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
+    if (self.previewHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.splitViewController)
     {
         if (isVisible)
         {
@@ -849,82 +868,153 @@
                 }
             }
             
-            self.previewHeaderContainerHeightConstraint.constant = previewHeader.bottomBorderView.frame.origin.y + 1;
+            self.previewHeaderContainer.hidden = NO;
+            
+            // Finalize preview header display according to the screen orientation
+            [self refreshPreviewHeader:YES];
         }
         else
         {
             [previewHeader removeFromSuperview];
             previewHeader = nil;
-        }
-        
-        self.previewScrollView.hidden = !isVisible;
-        
-        // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-        UINavigationController *mainNavigationController = self.navigationController;
-        if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-        {
-            mainNavigationController = self.splitViewController.viewControllers.firstObject;
-        }
-        
-        // When the expanded header is displayed, we hide the bottom border of the navigation bar (the shadow image).
-        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
-        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
-        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
-        // image will be used regardless of the value of this property.
-        UIImage *shadowImage = nil;
-        MXKImageView *roomAvatarView = nil;
-        
-        if (isVisible)
-        {
-            [self setRoomTitleViewClass:RoomAvatarTitleView.class];
-            // Note the avatar title view does not define tap gesture.
             
-            RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
+            self.previewHeaderContainer.hidden = YES;
             
-            roomAvatarView = roomAvatarTitleView.roomAvatar;
-            roomAvatarView.alpha = 0.0;
-            
-            shadowImage = [[UIImage alloc] init];
-
-            // Set the avatar provided in preview data
-            if (roomPreviewData.roomAvatarUrl)
+            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+            UINavigationController *mainNavigationController = self.navigationController;
+            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
             {
-                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
-
-                roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
+                mainNavigationController = self.splitViewController.viewControllers.firstObject;
             }
-            else if (roomPreviewData.roomId && roomPreviewData.roomName)
+            
+            // Set a default title view class without handling tap gesture (Let [self refreshRoomTitle] refresh this view correctly).
+            [self setRoomTitleViewClass:RoomTitleView.class];
+            
+            // Remove details icon
+            RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
+            [roomTitleView.roomDetailsIconImageView removeFromSuperview];
+            roomTitleView.roomDetailsIconImageView = nil;
+            
+            // Remove the shadow image used to hide the bottom border of the navigation bar when the preview header is displayed
+            [mainNavigationController.navigationBar setShadowImage:nil];
+            [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+            
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 
+                                 // Force to render the view
+                                 [self.view layoutIfNeeded];
+                             }
+                             completion:^(BOOL finished){
+                             }];
+        }
+    }
+}
+
+- (void)refreshPreviewHeader:(BOOL)force
+{
+    if (previewHeader)
+    {
+        // Adjust the preview header layout according to the screen orientation
+        UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+        BOOL hidePreviewMainHeader = NO;
+        
+        switch (screenOrientation)
+        {
+            case UIInterfaceOrientationLandscapeRight:
+            case UIInterfaceOrientationLandscapeLeft:
             {
-                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateRoomAvatar:roomPreviewData.roomId andDisplayName:roomPreviewData.roomName];
+                hidePreviewMainHeader = YES;
+                break;
+            }
+            default:
+                break;
+        }
+        
+        if (force || (previewHeader.mainHeaderContainer.isHidden != hidePreviewMainHeader))
+        {
+            MXKImageView *roomAvatarView = nil;
+            
+            if (hidePreviewMainHeader)
+            {
+                CGRect frame = self.navigationController.navigationBar.frame;
+                
+                previewHeader.mainHeaderContainer.hidden = YES;
+                previewHeader.mainHeaderBackgroundHeightConstraint.constant = frame.size.height + (frame.origin.y > 0 ? frame.origin.y : 0);
+                
+                [self setRoomTitleViewClass:RoomTitleView.class];
+                // We don't want to handle tap gesture here
+                
+                // Remove details icon
+                RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
+                [roomTitleView.roomDetailsIconImageView removeFromSuperview];
+                roomTitleView.roomDetailsIconImageView = nil;
             }
             else
             {
-                roomAvatarTitleView.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
+                previewHeader.mainHeaderContainer.hidden = NO;
+                previewHeader.mainHeaderBackgroundHeightConstraint.constant = previewHeader.mainHeaderContainer.frame.size.height;
+                
+                [self setRoomTitleViewClass:RoomAvatarTitleView.class];
+                // Note the avatar title view does not define tap gesture.
+                
+                RoomAvatarTitleView *roomAvatarTitleView = (RoomAvatarTitleView*)self.titleView;
+                
+                roomAvatarView = roomAvatarTitleView.roomAvatar;
+                roomAvatarView.alpha = 0.0;
+                
+                // Set the avatar provided in preview data
+                if (roomPreviewData.roomAvatarUrl)
+                {
+                    NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:roomAvatarView.frame.size withMethod:MXThumbnailingMethodCrop];
+                    
+                    roomAvatarTitleView.roomAvatarURL = roomAvatarUrl;
+                }
+                else if (roomPreviewData.roomId && roomPreviewData.roomName)
+                {
+                    roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateRoomAvatar:roomPreviewData.roomId andDisplayName:roomPreviewData.roomName];
+                }
+                else
+                {
+                    roomAvatarTitleView.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
+                }
             }
-        }
-        else
-        {
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            // We don't want to handle tap gesture here
-        }
-        
-        // Report shadow image
-        [mainNavigationController.navigationBar setShadowImage:shadowImage];
-        [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
-        
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             
-                             if (roomAvatarView)
-                             {
-                                 roomAvatarView.alpha = 1;
+            
+            // Force the layout of previewHeader to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
+            [previewHeader layoutIfNeeded];
+            
+            self.previewHeaderContainerHeightConstraint.constant = previewHeader.bottomBorderView.frame.origin.y + 1;
+            
+            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+            UINavigationController *mainNavigationController = self.navigationController;
+            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+            {
+                mainNavigationController = self.splitViewController.viewControllers.firstObject;
+            }
+            
+            // When the preview header is displayed, we hide the bottom border of the navigation bar (the shadow image).
+            // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
+            // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
+            // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
+            // image will be used regardless of the value of this property.
+            UIImage *shadowImage = [[UIImage alloc] init];
+            [mainNavigationController.navigationBar setShadowImage:shadowImage];
+            [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
+            
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 
+                                 if (roomAvatarView)
+                                 {
+                                     roomAvatarView.alpha = 1;
+                                 }
+                                 
+                                 // Force to render the view
+                                 [self.view layoutIfNeeded];
                              }
-                             
-                             // Force to render the view
-                             [self.view layoutIfNeeded];
-                         }
-                         completion:^(BOOL finished){
-                         }];
+                             completion:^(BOOL finished){
+                             }];
+        }
     }
 }
 

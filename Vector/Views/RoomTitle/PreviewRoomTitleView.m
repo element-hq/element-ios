@@ -32,6 +32,8 @@
 {
     [super awakeFromNib];
     
+    self.mainHeaderBackground.backgroundColor = kVectorColorLightGrey;
+    
     self.displayNameTextField.textColor = kVectorTextColorBlack;
     
     self.roomTopic.textColor = kVectorTextColorDarkGray;
