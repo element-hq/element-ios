@@ -59,7 +59,7 @@
 
 /**
  The RoomDataSource to peek into the room. 
- Note: this object is creating when [self peekInRoom:] succeeds.
+ Note: this object is created when [self peekInRoom:] succeeds.
  */
 @property (nonatomic, readonly) RoomDataSource *roomDataSource;
 
@@ -74,7 +74,7 @@
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
 
 /**
- Attempt to peek into room to get room data (state, messages history, etc).
+ Attempt to peek into the room to get room data (state, messages history, etc).
 
  The operation succeeds only if the room history is world_readable.
 
