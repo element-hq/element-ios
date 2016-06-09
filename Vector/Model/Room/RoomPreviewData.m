@@ -48,12 +48,10 @@
     [_mxSession peekInRoomWithRoomId:_roomId success:^(MXPeekingRoom *peekingRoom) {
 
         // Create the room data source
-        // It will be automatically released when the RoomViewController that displays it will disappear
-        _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom AndInitialEventId:_eventId];
+        // It will be automatically released in the destroy metho of the RoomViewController
+        // that will display the data source
+        _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
-
-        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_mxSession];
-        [roomDataSourceManager addRoomDataSource:_roomDataSource];
 
         _roomName = peekingRoom.state.displayname;
         _roomAvatarUrl = peekingRoom.state.avatar;

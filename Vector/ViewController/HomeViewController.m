@@ -399,15 +399,15 @@
 
     if (_currentRoomViewController)
     {
-        if (_currentRoomViewController.roomDataSource)
+        if (_currentRoomViewController.roomDataSource
+            && _currentRoomViewController.roomDataSource.isLive
+            && !_currentRoomViewController.roomDataSource.isPeeking)
         {
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
 
             // Let the manager release live room data sources where the user is in
-            // and force close all others.
-            BOOL forceClose = !_currentRoomViewController.roomDataSource.isLive || _currentRoomViewController.roomDataSource.isPeeking;
-            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:forceClose];
+            [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
         }
 
         [_currentRoomViewController destroy];
