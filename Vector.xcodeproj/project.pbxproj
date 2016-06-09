@@ -220,6 +220,15 @@
 		F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34CAF1C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m */; };
 		F0C34CB41C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34CB01C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib */; };
 		F0C34CB81C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */; };
+		F0CC25671D099F30000819CA /* newmessages.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC255E1D099F30000819CA /* newmessages.png */; };
+		F0CC25681D099F30000819CA /* newmessages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC255F1D099F30000819CA /* newmessages@2x.png */; };
+		F0CC25691D099F30000819CA /* newmessages@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25601D099F30000819CA /* newmessages@3x.png */; };
+		F0CC256A1D099F30000819CA /* scrolldown.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25611D099F30000819CA /* scrolldown.png */; };
+		F0CC256B1D099F30000819CA /* scrolldown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25621D099F30000819CA /* scrolldown@2x.png */; };
+		F0CC256C1D099F30000819CA /* scrolldown@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25631D099F30000819CA /* scrolldown@3x.png */; };
+		F0CC256D1D099F30000819CA /* scrollup.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25641D099F30000819CA /* scrollup.png */; };
+		F0CC256E1D099F30000819CA /* scrollup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25651D099F30000819CA /* scrollup@2x.png */; };
+		F0CC256F1D099F30000819CA /* scrollup@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25661D099F30000819CA /* scrollup@3x.png */; };
 		F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CC4DBE1C4E26FA003BBE45 /* MediaAlbumTableCell.m */; };
 		F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0CC4DBF1C4E26FA003BBE45 /* MediaAlbumTableCell.xib */; };
 		F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CC4DC81C4E594C003BBE45 /* MediaAlbumContentViewController.m */; };
@@ -539,6 +548,15 @@
 		F0C34CB01C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		F0C34CB61C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXKRoomBubbleTableViewCell+Vector.h"; sourceTree = "<group>"; };
 		F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Vector.m"; sourceTree = "<group>"; };
+		F0CC255E1D099F30000819CA /* newmessages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newmessages.png; sourceTree = "<group>"; };
+		F0CC255F1D099F30000819CA /* newmessages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newmessages@2x.png"; sourceTree = "<group>"; };
+		F0CC25601D099F30000819CA /* newmessages@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newmessages@3x.png"; sourceTree = "<group>"; };
+		F0CC25611D099F30000819CA /* scrolldown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scrolldown.png; sourceTree = "<group>"; };
+		F0CC25621D099F30000819CA /* scrolldown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scrolldown@2x.png"; sourceTree = "<group>"; };
+		F0CC25631D099F30000819CA /* scrolldown@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scrolldown@3x.png"; sourceTree = "<group>"; };
+		F0CC25641D099F30000819CA /* scrollup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scrollup.png; sourceTree = "<group>"; };
+		F0CC25651D099F30000819CA /* scrollup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scrollup@2x.png"; sourceTree = "<group>"; };
+		F0CC25661D099F30000819CA /* scrollup@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scrollup@3x.png"; sourceTree = "<group>"; };
 		F0CC4DBD1C4E26FA003BBE45 /* MediaAlbumTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumTableCell.h; sourceTree = "<group>"; };
 		F0CC4DBE1C4E26FA003BBE45 /* MediaAlbumTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumTableCell.m; sourceTree = "<group>"; };
 		F0CC4DBF1C4E26FA003BBE45 /* MediaAlbumTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAlbumTableCell.xib; sourceTree = "<group>"; };
@@ -1028,6 +1046,15 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F0CC255E1D099F30000819CA /* newmessages.png */,
+				F0CC255F1D099F30000819CA /* newmessages@2x.png */,
+				F0CC25601D099F30000819CA /* newmessages@3x.png */,
+				F0CC25611D099F30000819CA /* scrolldown.png */,
+				F0CC25621D099F30000819CA /* scrolldown@2x.png */,
+				F0CC25631D099F30000819CA /* scrolldown@3x.png */,
+				F0CC25641D099F30000819CA /* scrollup.png */,
+				F0CC25651D099F30000819CA /* scrollup@2x.png */,
+				F0CC25661D099F30000819CA /* scrollup@3x.png */,
 				F03FBCD41CBC49B6000A5770 /* disclosure_icon.png */,
 				F03FBCD51CBC49B6000A5770 /* disclosure_icon@2x.png */,
 				F03FBCD61CBC49B6000A5770 /* disclosure_icon@3x.png */,
@@ -1237,6 +1264,7 @@
 				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
 				F056418C1C7CBEBD002276ED /* group.png in Resources */,
 				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				F0CC256F1D099F30000819CA /* scrollup@3x.png in Resources */,
 				F0026B631C916E68001D2C04 /* priorityLow@3x.png in Resources */,
 				F0026B5B1C916E68001D2C04 /* notificationsOff.png in Resources */,
 				F0DDDBB81C5A5F55000C6C46 /* Icon-170@2x.png in Resources */,
@@ -1260,6 +1288,7 @@
 				F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */,
 				7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */,
 				F025290B1C11B6FC00E1FE1B /* upload_icon@3x.png in Resources */,
+				F0CC25691D099F30000819CA /* newmessages@3x.png in Resources */,
 				F02529011C11B6FC00E1FE1B /* settings_icon@2x.png in Resources */,
 				F0026B511C916E68001D2C04 /* favourite@3x.png in Resources */,
 				F02528F91C11B6FC00E1FE1B /* search_icon@3x.png in Resources */,
@@ -1283,11 +1312,13 @@
 				F003AA811C690628008B430C /* RoomAvatarTitleView.xib in Resources */,
 				F0026B551C916E68001D2C04 /* leave.png in Resources */,
 				F0C34B701C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				F0CC256A1D099F30000819CA /* scrolldown.png in Resources */,
 				F025290D1C11B6FC00E1FE1B /* voice_call_icon@2x.png in Resources */,
 				F0026B531C916E68001D2C04 /* favouriteOff@2x.png in Resources */,
 				F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */,
 				F0026B5D1C916E68001D2C04 /* notificationsOff@3x.png in Resources */,
 				F0C34CB21C16269D00C36F09 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				F0CC25671D099F30000819CA /* newmessages.png in Resources */,
 				F03FBCCC1CBBF521000A5770 /* mod_icon@2x.png in Resources */,
 				F0026B4F1C916E68001D2C04 /* favourite.png in Resources */,
 				F02528DC1C11B6FC00E1FE1B /* camera_switch.png in Resources */,
@@ -1301,6 +1332,7 @@
 				F0D2D98A1C197DCB007B8C96 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F05641941C7DF9DE002276ED /* error@3x.png in Resources */,
 				F02528E21C11B6FC00E1FE1B /* create_room@3x.png in Resources */,
+				F0CC25681D099F30000819CA /* newmessages@2x.png in Resources */,
 				F02528E11C11B6FC00E1FE1B /* create_room@2x.png in Resources */,
 				F03FBCD71CBC49B6000A5770 /* disclosure_icon.png in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
@@ -1309,6 +1341,7 @@
 				F0026B621C916E68001D2C04 /* priorityLow@2x.png in Resources */,
 				F094AA2B1B78E42600B1FBBF /* Localizable.strings in Resources */,
 				F0026B591C916E68001D2C04 /* notifications@2x.png in Resources */,
+				F0CC256D1D099F30000819CA /* scrollup.png in Resources */,
 				F02528FA1C11B6FC00E1FE1B /* selection_tick.png in Resources */,
 				325F6A471C21D4C100C12F51 /* chevron.png in Resources */,
 				F02528F41C11B6FC00E1FE1B /* remove_icon@3x.png in Resources */,
@@ -1349,6 +1382,7 @@
 				F094A9B61B78D8F000B1FBBF /* Images.xcassets in Resources */,
 				F094AA061B78E3D400B1FBBF /* Vector-Defaults.plist in Resources */,
 				F0026B601C916E68001D2C04 /* priorityHigh@3x.png in Resources */,
+				F0CC256B1D099F30000819CA /* scrolldown@2x.png in Resources */,
 				F00C47871BFF77C800DBABC9 /* RecentTableViewCell.xib in Resources */,
 				716FDC8B1C186A3A001034CB /* InviteRecentTableViewCell.xib in Resources */,
 				F02529051C11B6FC00E1FE1B /* typing@3x.png in Resources */,
@@ -1357,6 +1391,7 @@
 				F0CC4DCB1C4E594C003BBE45 /* MediaAlbumContentViewController.xib in Resources */,
 				32BE98161CD7AA6F00E822E3 /* camera_play@2x.png in Resources */,
 				F02528E71C11B6FC00E1FE1B /* logo.png in Resources */,
+				F0CC256C1D099F30000819CA /* scrolldown@3x.png in Resources */,
 				32D200841C15C56A00A4E396 /* search_bg@2x.png in Resources */,
 				F0C34B721C15CA2E00C36F09 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */,
@@ -1372,6 +1407,7 @@
 				F0026B561C916E68001D2C04 /* leave@2x.png in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
 				F0F83FC11C93089500E7D322 /* video_icon.png in Resources */,
+				F0CC256E1D099F30000819CA /* scrollup@2x.png in Resources */,
 				F0A2413A1CB7E28F00E150C3 /* RoomParticipantsViewController.xib in Resources */,
 				F0026B521C916E68001D2C04 /* favouriteOff.png in Resources */,
 				32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */,
