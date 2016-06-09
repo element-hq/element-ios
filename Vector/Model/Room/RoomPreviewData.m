@@ -50,6 +50,7 @@
         // Create the room data source
         // It will be automatically released in the destroy metho of the RoomViewController
         // that will display the data source
+        // FIXME: release this room data source like it should be
         _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
 

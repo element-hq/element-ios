@@ -399,6 +399,7 @@
 
     if (_currentRoomViewController)
     {
+        // FIXME: review this code when peekingRoom will be supported
         if (_currentRoomViewController.roomDataSource
             && _currentRoomViewController.roomDataSource.isLive
             && !_currentRoomViewController.roomDataSource.isPeeking)
