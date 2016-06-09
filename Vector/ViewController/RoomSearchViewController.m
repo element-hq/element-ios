@@ -217,6 +217,7 @@
         [roomDataSource finalizeInitialization];
 
         [roomViewController displayRoom:roomDataSource];
+        roomViewController.hasRoomDataSourceOwnership = YES;
     }
 }
 
