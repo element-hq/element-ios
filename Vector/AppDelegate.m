@@ -1043,7 +1043,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                             roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
 
                             // Try to get more information about the room before opening its preview
-                            [roomPreviewData fetchPreviewData:^(BOOL successed) {
+                            [roomPreviewData peekInRoom:^(BOOL successed) {
 
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [_homeViewController stopActivityIndicator];

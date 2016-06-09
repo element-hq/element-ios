@@ -149,15 +149,15 @@
         self.displayNameTextField.text = self.roomPreviewData.roomName;
 
         // Display more information if available
-        if (self.roomPreviewData.roomState)
+        if (self.roomPreviewData.roomDataSource)
         {
             // Topic
-            self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomState.topic];
+            self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomDataSource.room.state.topic];
 
             // Room members count
             // Note that room members presence/activity is not available
             NSUInteger memberCount = 0;
-            for (MXRoomMember *mxMember in self.roomPreviewData.roomState.members)
+            for (MXRoomMember *mxMember in self.roomPreviewData.roomDataSource.room.state.members)
             {
                 if (mxMember.membership == MXMembershipJoin)
                 {

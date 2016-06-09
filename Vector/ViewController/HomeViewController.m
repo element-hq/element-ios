@@ -399,11 +399,15 @@
 
     if (_currentRoomViewController)
     {
-        if (_currentRoomViewController.roomDataSource && _currentRoomViewController.roomDataSource.isLive)
+        // FIXME: review this code when peekingRoom will be supported
+        if (_currentRoomViewController.roomDataSource
+            && _currentRoomViewController.roomDataSource.isLive
+            && !_currentRoomViewController.roomDataSource.isPeeking)
         {
-            // Let the manager release this live room data source
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+
+            // Let the manager release live room data sources where the user is in
             [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
         }
 
@@ -608,6 +612,7 @@
                         // Open the room on the requested event
                         roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
                         [roomDataSource finalizeInitialization];
+                        _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                     }
                 }
                 else
@@ -615,6 +620,7 @@
                     // Search result: Create a temp timeline from the selected event
                     roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
                     [roomDataSource finalizeInitialization];
+                    _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                 }
                 
                 [_currentRoomViewController displayRoom:roomDataSource];
