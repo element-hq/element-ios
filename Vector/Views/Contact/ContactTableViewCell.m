@@ -85,7 +85,7 @@
 
 - (void)render:(MXKCellData *)cellData
 {
-    // remove any pending observers
+    // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (mxPresenceObserver)
@@ -94,10 +94,11 @@
         mxPresenceObserver = nil;
     }
     
+    // Clear the default background color of a MXKImageView instance
+    self.thumbnailView.backgroundColor = [UIColor clearColor];
     
     // Sanity check: accept only object of MXKContact classes or sub-classes
     NSParameterAssert([cellData isKindOfClass:[MXKContact class]]);
-    
     contact = (MXKContact*)cellData;
     
     // sanity check
