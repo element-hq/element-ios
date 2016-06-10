@@ -43,14 +43,22 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (_roomDataSource)
+    {
+        [_roomDataSource destroy];
+        _roomDataSource = nil;
+    }
+    
+    _emailInvitation = nil;
+}
+
 - (void)peekInRoom:(void (^)(BOOL successed))completion
 {
     [_mxSession peekInRoomWithRoomId:_roomId success:^(MXPeekingRoom *peekingRoom) {
 
         // Create the room data source
-        // It will be automatically released in the destroy metho of the RoomViewController
-        // that will display the data source
-        // FIXME: release this room data source like it should be
         _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
         [_roomDataSource finalizeInitialization];
 
@@ -60,7 +68,9 @@
         completion(YES);
 
     } failure:^(NSError *error) {
+        
         completion(NO);
+        
     }];
 }
 

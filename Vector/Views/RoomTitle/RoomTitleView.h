@@ -16,6 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "RoomPreviewData.h"
+
 // We add here a protocol to handle tap gesture in title view.
 @class RoomTitleView;
 @protocol RoomTitleViewTapGestureDelegate <NSObject>
@@ -36,6 +38,11 @@
 @property (weak, nonatomic) IBOutlet UIView *roomDetailsMask;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterXConstraint;
 @property (weak, nonatomic) IBOutlet UIImageView *roomDetailsIconImageView;
+
+/**
+ The room preview data may be used when mxRoom instance is not available
+ */
+@property (strong, nonatomic) RoomPreviewData *roomPreviewData;
 
 /**
  The tap gesture delegate.
