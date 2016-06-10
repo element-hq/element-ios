@@ -43,13 +43,18 @@
 @property (nonatomic) BOOL showExpandedHeader;
 
 /**
+ Preview data for a room invitation received by email, or a link to a room.
+ */
+@property (nonatomic, readonly) RoomPreviewData *roomPreviewData;
+
+/**
  Display the preview of a room that is unknown for the user.
 
  This room can come from an email invitation link or a simple link to a room.
 
  @param roomPreviewData the data for the room preview.
  */
-- (void)displayRoomPreview:(RoomPreviewData*)previewData;
+- (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 @end
 

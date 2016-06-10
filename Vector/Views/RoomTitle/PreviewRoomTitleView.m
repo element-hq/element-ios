@@ -41,14 +41,13 @@
     
     self.roomMembers.textColor = kVectorColorGreen;
     
-    self.invitationLabel.textColor = kVectorTextColorDarkGray;
-    self.invitationLabel.numberOfLines = 0;
-    self.subInvitationLabel.text = nil;
+    self.previewLabel.textColor = kVectorTextColorDarkGray;
+    self.previewLabel.numberOfLines = 0;
+    self.previewLabel.text = nil;
     
-    self.subInvitationLabel.textColor = kVectorTextColorGray;
-    self.subInvitationLabel.numberOfLines = 0;
-    
-    self.subInvitationLabel.text = nil;// FIXME: Use NSLocalizedStringFromTable(@"room_preview_subtitle", @"Vector", nil);
+    self.subNoticeLabel.textColor = kVectorTextColorGray;
+    self.subNoticeLabel.numberOfLines = 0;
+    self.subNoticeLabel.text = nil;
     
     self.bottomBorderView.backgroundColor = kVectorColorLightGrey;
     
@@ -81,8 +80,67 @@
 {
     [super refreshDisplay];
     
-    if (self.mxRoom)
+    // Consider in priority the preview data (if any)
+    if (self.roomPreviewData)
     {
+        // Display more information if available
+        if (self.roomPreviewData.roomDataSource)
+        {
+            // Topic
+            self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomDataSource.room.state.topic];
+            
+            // Room members count
+            // Note that room members presence/activity is not available
+            NSUInteger memberCount = 0;
+            for (MXRoomMember *mxMember in self.roomPreviewData.roomDataSource.room.state.members)
+            {
+                if (mxMember.membership == MXMembershipJoin)
+                {
+                    memberCount ++;
+                }
+            }
+            
+            if (memberCount == 1)
+            {
+                self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
+            }
+            else
+            {
+                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), memberCount];
+            }
+            
+            // Display the default preview subtitle in case of peeking
+            self.subNoticeLabel.text = NSLocalizedStringFromTable(@"room_preview_subtitle", @"Vector", nil);
+        }
+        else
+        {
+            self.roomTopic.text = nil;
+            self.roomMembers.text = nil;
+            self.subNoticeLabel.text = nil;
+        }
+        
+        if (self.roomPreviewData.emailInvitation.email)
+        {
+            // The user has been invited to join this room by email
+            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), self.roomPreviewData.emailInvitation.inviterName];
+            
+            // Warn the user that the email is not bound to his matrix account
+            self.subNoticeLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), self.roomPreviewData.emailInvitation.email];
+        }
+        else
+        {
+            // This is a room opened from a room link, or from the room search.
+            NSString *roomName = self.roomPreviewData.roomName;
+            if (!roomName)
+            {
+                roomName = NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room_default", @"Vector", nil);
+            }
+            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room", @"Vector", nil), roomName];
+        }
+    }
+    else if (self.mxRoom)
+    {
+        // The user is here invited to join a room (This invitation has been received from server sync)
         self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
         if (!self.displayNameTextField.text.length)
         {
@@ -117,7 +175,7 @@
                     activeCount ++;
                 }
                 
-                // Presently only one member is available from invited rom data
+                // Presently only one member is available from invited room data
                 // This is the inviter
                 inviter = mxMember.displayname.length ? mxMember.displayname : mxMember.userId;
             }
@@ -142,75 +200,17 @@
 //            self.roomMembers.text = nil;
 //        }
         
-        self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
-    }
-    else if (self.roomPreviewData)
-    {
-        self.displayNameTextField.text = self.roomPreviewData.roomName;
-
-        // Display more information if available
-        if (self.roomPreviewData.roomDataSource)
-        {
-            // Topic
-            self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomDataSource.room.state.topic];
-
-            // Room members count
-            // Note that room members presence/activity is not available
-            NSUInteger memberCount = 0;
-            for (MXRoomMember *mxMember in self.roomPreviewData.roomDataSource.room.state.members)
-            {
-                if (mxMember.membership == MXMembershipJoin)
-                {
-                    memberCount ++;
-                }
-            }
-
-            if (memberCount == 1)
-            {
-                self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
-            }
-            else
-            {
-                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), memberCount];
-            }
-        }
-        else
-        {
-            self.roomTopic.text = nil;
-            self.roomMembers.text = nil;
-        }
-
-        if (self.roomPreviewData.emailInvitation.email)
-        {
-            self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), self.roomPreviewData.emailInvitation.inviterName];
-        }
-        else
-        {
-            // This is a room opened from a room link
-            NSString *roomName = self.roomPreviewData.roomName;
-            if (!roomName)
-            {
-                roomName = NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room_default", @"Vector", nil);
-            }
-            self.invitationLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room", @"Vector", nil), roomName];
-        }
+        self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
     }
     else
     {
         self.roomMembers.text = nil;
         self.roomTopic.text = nil;
-        self.invitationLabel.text = nil;
+        self.previewLabel.text = nil;
     }
     
     // Force the layout of subviews to update the position of 'bottomBorderView' which is used to define the actual height of the preview container.
     [self layoutIfNeeded];
-}
-
-- (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
-{
-    _roomPreviewData = roomPreviewData;
-    
-    [self refreshDisplay];
 }
 
 @end

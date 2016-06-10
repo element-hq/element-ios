@@ -399,10 +399,9 @@
 
     if (_currentRoomViewController)
     {
-        // FIXME: review this code when peekingRoom will be supported
-        if (_currentRoomViewController.roomDataSource
-            && _currentRoomViewController.roomDataSource.isLive
-            && !_currentRoomViewController.roomDataSource.isPeeking)
+        // If the displayed data is not a preview, let the manager release the room data source
+        // (except if the view controller has the room data source ownership).
+        if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
         {
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
@@ -581,11 +580,13 @@
             // Release existing Room view controller (if any)
             if (_currentRoomViewController)
             {
-                if (_currentRoomViewController.roomDataSource)
+                // If the displayed data is not a preview, let the manager release the room data source
+                // (except if the view controller has the room data source ownership).
+                if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
                 {
-                    // Let the manager release this room data source
                     MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
                     MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                    
                     [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
                 }
 
@@ -612,6 +613,8 @@
                         // Open the room on the requested event
                         roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
                         [roomDataSource finalizeInitialization];
+                        
+                        // Give the data source ownership to the room view controller.
                         _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                     }
                 }
@@ -620,6 +623,8 @@
                     // Search result: Create a temp timeline from the selected event
                     roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
                     [roomDataSource finalizeInitialization];
+                    
+                    // Give the data source ownership to the room view controller.
                     _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                 }
                 

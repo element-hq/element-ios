@@ -16,8 +16,6 @@
 
 #import "RoomTitleView.h"
 
-#import "RoomPreviewData.h"
-
 @interface PreviewRoomTitleView : RoomTitleView
 
 @property (weak, nonatomic) IBOutlet UIView *mainHeaderBackground;
@@ -29,13 +27,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *roomMembers;
 @property (weak, nonatomic) IBOutlet UIView *roomMembersDetailsIcon;
 
-@property (weak, nonatomic) IBOutlet UILabel *invitationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *previewLabel;
 @property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
-@property (weak, nonatomic) IBOutlet UILabel *subInvitationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subNoticeLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
-
-@property (strong, nonatomic) RoomPreviewData *roomPreviewData;
 
 @end

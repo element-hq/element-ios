@@ -9,7 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Cpa-Xt-cwB" customClass="PreviewRoomTitleView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="363"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="355"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y5s-FK-My4">
@@ -78,7 +78,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmW-5h-jL1" userLabel="buttonsContainer">
-                    <rect key="frame" x="60" y="283" width="480" height="30"/>
+                    <rect key="frame" x="60" y="276" width="480" height="30"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osd-JP-2az" userLabel="Left Button">
                             <rect key="frame" x="0.0" y="0.0" width="230" height="30"/>
@@ -111,13 +111,13 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IwA-0X-IYb">
-                    <rect key="frame" x="281" y="331" width="38" height="18"/>
+                    <rect key="frame" x="281" y="323" width="38" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BCO-DT-F0C">
-                    <rect key="frame" x="0.0" y="362" width="600" height="1"/>
+                    <rect key="frame" x="0.0" y="354" width="600" height="1"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="LTH-xc-zcs"/>
@@ -126,7 +126,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="IwA-0X-IYb" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="bottom" constant="18" id="0ft-2Y-gk3"/>
+                <constraint firstItem="IwA-0X-IYb" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="bottom" constant="17" id="0ft-2Y-gk3"/>
                 <constraint firstAttribute="trailing" secondItem="WmW-5h-jL1" secondAttribute="trailing" constant="60" id="1b7-i7-NOb"/>
                 <constraint firstAttribute="trailing" secondItem="BkF-x3-7fX" secondAttribute="trailing" id="33r-D5-3uy"/>
                 <constraint firstItem="gIX-nY-f6M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="7Kn-g9-Ya6"/>
@@ -140,7 +140,7 @@
                 <constraint firstItem="BkF-x3-7fX" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" id="Zru-9A-ifB"/>
                 <constraint firstAttribute="trailing" secondItem="y5s-FK-My4" secondAttribute="trailing" id="d4g-19-C58"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IwA-0X-IYb" secondAttribute="trailing" constant="31" id="iGR-eh-0e9"/>
-                <constraint firstItem="WmW-5h-jL1" firstAttribute="top" secondItem="gIX-nY-f6M" secondAttribute="bottom" constant="24" id="ioD-jo-XQe"/>
+                <constraint firstItem="WmW-5h-jL1" firstAttribute="top" secondItem="gIX-nY-f6M" secondAttribute="bottom" constant="17" id="ioD-jo-XQe"/>
                 <constraint firstItem="IwA-0X-IYb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="lpD-yd-qgt"/>
                 <constraint firstItem="y5s-FK-My4" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" id="n0d-R8-HiM"/>
                 <constraint firstItem="gIX-nY-f6M" firstAttribute="top" secondItem="y5s-FK-My4" secondAttribute="bottom" constant="24" id="qwA-2S-BIP"/>
@@ -153,16 +153,16 @@
                 <outlet property="buttonsContainer" destination="WmW-5h-jL1" id="X5t-T9-BT5"/>
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="PgQ-tb-Qad"/>
                 <outlet property="displayNameTextFieldTopConstraint" destination="Piq-rp-Pae" id="9PR-H2-Nuv"/>
-                <outlet property="invitationLabel" destination="gIX-nY-f6M" id="kcf-aA-DJN"/>
                 <outlet property="leftButton" destination="osd-JP-2az" id="HrL-Qy-UDt"/>
                 <outlet property="mainHeaderBackground" destination="y5s-FK-My4" id="pzg-kT-PSG"/>
                 <outlet property="mainHeaderBackgroundHeightConstraint" destination="YtX-K2-uD7" id="47y-aL-t94"/>
                 <outlet property="mainHeaderContainer" destination="BkF-x3-7fX" id="1fp-xz-ETJ"/>
+                <outlet property="previewLabel" destination="gIX-nY-f6M" id="Bxi-6M-rTb"/>
                 <outlet property="rightButton" destination="461-vO-hLZ" id="u8R-Rg-WAv"/>
                 <outlet property="roomMembers" destination="ou0-3Z-weL" id="lRs-fz-QXc"/>
                 <outlet property="roomMembersDetailsIcon" destination="S3Y-wJ-HOe" id="QjQ-wY-EOS"/>
                 <outlet property="roomTopic" destination="Tk0-pA-9a0" id="iAe-bC-f6X"/>
-                <outlet property="subInvitationLabel" destination="IwA-0X-IYb" id="dh4-pi-rLa"/>
+                <outlet property="subNoticeLabel" destination="IwA-0X-IYb" id="aUb-Pt-V44"/>
             </connections>
         </view>
     </objects>
