@@ -820,7 +820,7 @@
 
             // Create an empty room.
             roomCreationRequest = [self.mainSession createRoom:nil
-                                                    visibility:kMXRoomVisibilityPrivate
+                                                    visibility:kMXRoomDirectoryVisibilityPrivate
                                                      roomAlias:nil
                                                          topic:nil
                                                        success:^(MXRoom *room) {

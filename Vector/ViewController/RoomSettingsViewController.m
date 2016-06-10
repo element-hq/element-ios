@@ -715,7 +715,8 @@
             
             privPublicCell.mxkTextField.userInteractionEnabled = NO;
             privPublicCell.mxkTextField.text = @"";
-            privPublicCell.mxkLabel.text = mxRoom.state.isPublic ?  NSLocalizedStringFromTable(@"room_details_room_is_public", @"Vector", nil) : NSLocalizedStringFromTable(@"room_details_room_is_private", @"Vector", nil);
+            // FIXME: Do we want to display that the join rule of this room is public?
+            privPublicCell.mxkLabel.text = mxRoom.state.isJoinRulePublic ?  NSLocalizedStringFromTable(@"room_details_room_is_public", @"Vector", nil) : NSLocalizedStringFromTable(@"room_details_room_is_private", @"Vector", nil);
             
             cell = privPublicCell;
         }
