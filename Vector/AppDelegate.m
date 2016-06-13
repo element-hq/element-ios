@@ -1769,13 +1769,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
 }
 
-#pragma mark - MXKContactDetailsViewControllerDelegate
-
-- (void)contactDetailsViewController:(MXKContactDetailsViewController *)contactDetailsViewController startChatWithMatrixId:(NSString *)matrixId completion:(void (^)(void))completion
-{
-    [self startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
-}
-
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar

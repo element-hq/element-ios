@@ -30,7 +30,7 @@
  */
 extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
 {
     BOOL isAPNSRegistered;
     
