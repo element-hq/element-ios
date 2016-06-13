@@ -28,6 +28,8 @@
 
 #import "RoomActivitiesView.h"
 
+#import "AttachmentsViewController.h"
+
 #import "RoomAvatarTitleView.h"
 #import "ExpandedRoomTitleView.h"
 #import "SimpleRoomTitleView.h"
@@ -225,6 +227,9 @@
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+    
+    // Custom the attachmnet viewer
+    [self setAttachmentsViewerClass:AttachmentsViewController.class];
     
     // Set rageShake handler
     self.rageShakeManager = [RageShakeManager sharedManager];

@@ -140,6 +140,7 @@
 		F02BB04B1CBE2EE70022A025 /* PreviewRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F02BB0491CBE2EE70022A025 /* PreviewRoomTitleView.m */; };
 		F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F02BB04A1CBE2EE70022A025 /* PreviewRoomTitleView.xib */; };
 		F02D87C69D1FFCD2C1531F3D /* libPods-Vector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B179239B79688A61A3F465F /* libPods-Vector.a */; };
+		F03DE2A51D0EFA6A00E8B65C /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */; };
 		F03FBCC51CBBF521000A5770 /* admin_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB31CBBF521000A5770 /* admin_icon.png */; };
 		F03FBCC61CBBF521000A5770 /* admin_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */; };
 		F03FBCC71CBBF521000A5770 /* admin_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */; };
@@ -436,6 +437,8 @@
 		F02BB0481CBE2EE70022A025 /* PreviewRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreviewRoomTitleView.h; path = RoomTitle/PreviewRoomTitleView.h; sourceTree = "<group>"; };
 		F02BB0491CBE2EE70022A025 /* PreviewRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PreviewRoomTitleView.m; path = RoomTitle/PreviewRoomTitleView.m; sourceTree = "<group>"; };
 		F02BB04A1CBE2EE70022A025 /* PreviewRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreviewRoomTitleView.xib; path = RoomTitle/PreviewRoomTitleView.xib; sourceTree = "<group>"; };
+		F03DE2A31D0EFA6A00E8B65C /* AttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentsViewController.h; sourceTree = "<group>"; };
+		F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentsViewController.m; sourceTree = "<group>"; };
 		F03FBCB31CBBF521000A5770 /* admin_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = admin_icon.png; sourceTree = "<group>"; };
 		F03FBCB41CBBF521000A5770 /* admin_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@2x.png"; sourceTree = "<group>"; };
 		F03FBCB51CBBF521000A5770 /* admin_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin_icon@3x.png"; sourceTree = "<group>"; };
@@ -971,6 +974,8 @@
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F03DE2A31D0EFA6A00E8B65C /* AttachmentsViewController.h */,
+				F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */,
 				F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */,
 				F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */,
 				F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */,
@@ -1501,6 +1506,7 @@
 				F09EE0021C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */,
+				F03DE2A51D0EFA6A00E8B65C /* AttachmentsViewController.m in Sources */,
 				71352D591C10569F001D50B0 /* AvatarGenerator.m in Sources */,
 				71F7F51D1C23079F00E7ED8F /* ContactTableViewCell.m in Sources */,
 				717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
