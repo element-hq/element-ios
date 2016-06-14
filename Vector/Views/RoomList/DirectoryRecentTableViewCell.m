@@ -18,9 +18,19 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+#import "VectorDesignValues.h"
+
 @implementation DirectoryRecentTableViewCell
 
 #pragma mark - Class methods
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.titleLabel.textColor = kVectorTextColorBlack;
+    self.descriptionLabel.textColor = kVectorTextColorGray;
+}
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource
 {

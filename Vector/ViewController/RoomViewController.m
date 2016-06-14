@@ -1956,8 +1956,15 @@
             // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
             NSString *eventId = roomPreviewData.eventId;
             
+            // We promote here join by room alias instead of room id when an alias is available.
+            NSString *roomIdOrAlias = roomPreviewData.roomId;
+            if (roomPreviewData.roomDataSource.room.state.aliases.count)
+            {
+                roomIdOrAlias = roomPreviewData.roomDataSource.room.state.aliases.firstObject;
+            }
+            
             // Note in case of simple link to a room the signUrl param is nil
-            [self joinRoomWithRoomId:roomPreviewData.roomId andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
+            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
 
                 if (succeed)
                 {

@@ -107,31 +107,9 @@
     }
     else
     {
-        // Join the room before opening it
-        [self startActivityIndicator];
-        
-        // We promote here join by room alias instead of room id
-        NSString *roomIdOrAlias = publicRoom.roomId;
-        if (publicRoom.aliases.count)
-        {
-            roomIdOrAlias = publicRoom.aliases.firstObject;
-        }
-        
-        [dataSource.mxSession joinRoom:roomIdOrAlias success:^(MXRoom *room) {
-
-            [self stopActivityIndicator];
-
-            [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
-
-        } failure:^(NSError *error) {
-
-            [self stopActivityIndicator];
-
-            NSLog(@"[DirectoryVC] Failed to join public room (%@)", publicRoom.displayname);
-
-            // Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
+        // Preview the public room
+        NSString *fragment = [NSString stringWithFormat:@"/room/%@", [publicRoom.roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
     }
 }
 
