@@ -92,11 +92,8 @@
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
     
-    if (self.mainSession)
-    {
-        // Report the session into each created tab.
-        [self displayWithSession:self.mainSession];
-    }
+    // Initialize here the data sources if a matrix session has been already set.
+    [self initializeDataSources];
 }
 
 - (void)dealloc
@@ -309,28 +306,63 @@
     }
 }
 
-- (void)displayWithSession:(MXSession *)mxSession
+- (void)initializeDataSources
 {
-    [super addMatrixSession:mxSession];
-
-    // Init the recents data source
-    recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mxSession];
-    [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
-
-    // Init the search for messages
-    searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mxSession];
-    [searchViewController displaySearch:searchDataSource];
+    MXSession *mainSession = self.mainSession;
     
-    // Do not go to search mode when first opening the home
-    [self hideSearch:NO];
+    if (mainSession)
+    {
+        // Init the recents data source
+        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
+        
+        // Init the search for messages
+        searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
+        [searchViewController displaySearch:searchDataSource];
+        
+        // Check whether there are others sessions
+        NSArray* mxSessions = self.mxSessions;
+        if (mxSessions.count > 1)
+        {
+            for (MXSession *mxSession in mxSessions)
+            {
+                if (mxSession != mainSession)
+                {
+                    // Add the session to the recents data source
+                    [recentsDataSource addMatrixSession:mxSession];
+                    
+                    // FIXME: Update searchDataSource
+                }
+            }
+        }
+        
+        // Do not go to search mode when first opening the home
+        [self hideSearch:NO];
+    }
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession
 {
-    // Add the session to the existing recents data source
-    if (recentsDataSource)
+    // Check whether the controller's view is loaded into memory.
+    if (recentsViewController)
     {
-        [recentsDataSource addMatrixSession:mxSession];
+        // Check whether the data sources have been initialized.
+        if (!recentsDataSource)
+        {
+            // Add first the session. The updated sessions list will be used during data sources initialization.
+            [super addMatrixSession:mxSession];
+            
+            // Prepare data sources and return
+            [self initializeDataSources];
+            return;
+        }
+        else
+        {
+            // Add the session to the existing recents data source
+            [recentsDataSource addMatrixSession:mxSession];
+            
+            // FIXME: Update searchDataSource
+        }
     }
     
     [super addMatrixSession:mxSession];
@@ -703,6 +735,14 @@
     tableViewMaskLayer.hidden = YES;
 
     [self updateSearch];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:@"RoomsGlobalSearch"];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 }
 
 - (void)hideSearch:(BOOL)animated
@@ -715,8 +755,20 @@
 
     [recentsDataSource searchWithPatterns:nil];
 
-     recentsDataSource.hideRecents = NO;
-     recentsDataSource.hidePublicRoomsDirectory = YES;
+    recentsDataSource.hideRecents = NO;
+    recentsDataSource.hidePublicRoomsDirectory = YES;
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        NSString *currentScreenName = [tracker get:kGAIScreenName];
+        if (!currentScreenName || ![currentScreenName isEqualToString:@"RoomsList"])
+        {
+            [tracker set:kGAIScreenName value:@"RoomsList"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+        }
+    }
 }
 
 // Update search results under the currently selected tab

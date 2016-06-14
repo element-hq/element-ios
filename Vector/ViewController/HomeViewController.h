@@ -54,13 +54,6 @@
 - (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary*)parameters;
 
 /**
- Start displaying the screen with a user Matrix session.
- 
- @param session the user Matrix session.
- */
-- (void)displayWithSession:(MXSession*)session;
-
-/**
  Open the room with the provided identifier in a specific matrix session.
 
  @param roomId the room identifier.

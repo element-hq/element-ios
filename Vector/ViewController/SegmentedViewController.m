@@ -468,8 +468,6 @@
     {
         // update the selected index
         self.selectedIndex = pos;
-        
-        [self displaySelectedViewController];
     }
 }
 

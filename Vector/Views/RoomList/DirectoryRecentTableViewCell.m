@@ -49,8 +49,8 @@
             }
             else
             {
-                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
-                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_description", @"Vector", nil),
+                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_cell_title", @"Vector", nil);
+                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_cell_description", @"Vector", nil),
                                               publicRoomsDirectoryDataSource.rooms.count];
             }
             

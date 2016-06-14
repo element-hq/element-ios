@@ -103,8 +103,8 @@
 "search_people" = "People";
 
 // Directory
-"directory_title" = "Browse directory";
-"directory_description" = "%tu rooms";
+"directory_cell_title" = "Browse directory";
+"directory_cell_description" = "%tu rooms";
 "directory_search_results_title" = "Browse directory results";
 "directory_search_results" = "%tu results found for %@";
 "directory_searching_title" = "Searching directory...";

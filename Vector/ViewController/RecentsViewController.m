@@ -134,27 +134,37 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
+    // Check whether the view controller is displayed in its "parent" segmented view controller.
+    if (homeViewController)
     {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
-    
-    // Deselect the current selected row, it will be restored on viewDidAppear (if any)
-    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-    if (indexPath)
-    {
-        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-    }
-    
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        // Screen tracking (via Google Analytics)
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        if (tracker)
+        {
+            NSString *screenName = homeViewController.searchBarHidden ? @"RoomsList" : @"RoomsGlobalSearch";
+            NSString *currentScreenName = [tracker get:kGAIScreenName];
+            
+            if (!currentScreenName || ![currentScreenName isEqualToString:screenName])
+            {
+                [tracker set:kGAIScreenName value:screenName];
+                [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            }
+        }
         
-        [self scrollToTop:YES];
+        // Deselect the current selected row, it will be restored on viewDidAppear (if any)
+        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+        if (indexPath)
+        {
+            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
         
-    }];
+        // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+        kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            [self scrollToTop:YES];
+            
+        }];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

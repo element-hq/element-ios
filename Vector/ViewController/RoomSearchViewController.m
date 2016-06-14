@@ -73,7 +73,7 @@
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker set:kGAIScreenName value:@"RoomMessagesSearch"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
 

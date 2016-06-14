@@ -1360,16 +1360,8 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         // Report this session to contact manager
         [[MXKContactManager sharedManager] addMatrixSession:mxSession];
         
-        // Update recents data source (The recents view controller will be updated by its data source)
-        if (!mxSessionArray.count)
-        {
-            // This is the first added session, list all the recents for the logged user
-            [_homeViewController displayWithSession:mxSession];
-        }
-        else
-        {
-            [_homeViewController addMatrixSession:mxSession];
-        }
+        // Update home data sources
+        [_homeViewController addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
     }
