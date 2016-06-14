@@ -99,7 +99,7 @@ static UILabel* backgroundLabel = nil;
  */
 + (UIImage*)avatarForText:(NSString*)aText andColorIndex:(NSUInteger)colorIndex
 {
-    if ([aText hasPrefix:@"@"] || [aText hasPrefix:@"#"])
+    if ([aText hasPrefix:@"@"] || [aText hasPrefix:@"#"] || [aText hasPrefix:@"!"])
     {
         aText = [aText substringFromIndex:1];
     }

@@ -31,6 +31,7 @@
 
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
+#import "RoomIdOrAliasTableViewCell.h"
 
 #import "AppDelegate.h"
 
@@ -629,6 +630,18 @@
     {
         // Show the directory screen
         [homeViewController showPublicRoomsDirectory];
+    }
+    else if ([cell isKindOfClass:[RoomIdOrAliasTableViewCell class]])
+    {
+        NSString *roomIdOrAlias = ((RoomIdOrAliasTableViewCell*)cell).titleLabel.text;
+        
+        if (roomIdOrAlias.length)
+        {
+            // Open the room or preview it
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        }
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     else
     {
