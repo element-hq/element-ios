@@ -57,6 +57,8 @@
     MXKAlert *currentAlert;
 }
 
+@property(nonatomic,getter=isHidden) BOOL hidden;
+
 @end
 
 @implementation HomeViewController
@@ -92,6 +94,9 @@
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
     
+    // Add room creation button programatically
+    [self addRoomCreationButton];
+    
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
 }
@@ -122,11 +127,21 @@
         [roomCreationRequest cancel];
         roomCreationRequest = nil;
     }
+    
+    if (createNewRoomImageView)
+    {
+        [createNewRoomImageView removeFromSuperview];
+        createNewRoomImageView = nil;
+        tableViewMaskLayer = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Show the home view controller content only when a user is logged in.
+    self.hidden = ([MXKAccountManager sharedManager].accounts.count == 0);
 
     // Let's child display the loading not the home view controller
     if (self.activityIndicator)
@@ -134,93 +149,11 @@
         [self.activityIndicator stopAnimating];
         self.activityIndicator = nil;
     }
-
-    // Add blur mask programatically
-    if (!tableViewMaskLayer)
-    {
-        tableViewMaskLayer = [CAGradientLayer layer];
-
-        CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-        CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
-
-        tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
-
-        // display a gradient to the rencents bottom (20% of the bottom of the screen)
-        tableViewMaskLayer.locations = [NSArray arrayWithObjects:
-                                        [NSNumber numberWithFloat:0],
-                                        [NSNumber numberWithFloat:0.85],
-                                        [NSNumber numberWithFloat:1.0], nil];
-
-        tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        tableViewMaskLayer.anchorPoint = CGPointZero;
-
-        // CAConstraint is not supported on IOS.
-        // it seems only being supported on Mac OS.
-        // so viewDidLayoutSubviews will refresh the layout bounds.
-        [self.view.layer addSublayer:tableViewMaskLayer];
-    }
     
     // Refresh the search results if a search in in progress
     if (!self.searchBarHidden)
     {
         [self updateSearch];
-    }
-
-    // Add new room button programatically
-    if (!createNewRoomImageView)
-    {
-        createNewRoomImageView = [[UIImageView alloc] init];
-        [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:createNewRoomImageView];
-
-        createNewRoomImageView.backgroundColor = [UIColor clearColor];
-        createNewRoomImageView.contentMode = UIViewContentModeCenter;
-        createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
-
-        CGFloat side = 78.0f;
-        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                           attribute:NSLayoutAttributeWidth
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:nil
-                                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                                          multiplier:1
-                                                                            constant:side];
-
-        NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                            attribute:NSLayoutAttributeHeight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:nil
-                                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                                           multiplier:1
-                                                                             constant:side];
-
-        NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.view
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                            multiplier:1
-                                                                              constant:0];
-
-        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:createNewRoomImageView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1
-                                                                             constant:9];
-
-        // Available on iOS 8 and later
-        [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
-        
-        createNewRoomImageView.userInteractionEnabled = YES;
-
-        // Handle tap gesture
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [tap setDelegate:self];
-        [createNewRoomImageView addGestureRecognizer:tap];
     }
 }
 
@@ -544,6 +477,85 @@
 
 #pragma mark - Internal methods
 
+- (void)addRoomCreationButton
+{
+    // Add blur mask programatically
+    tableViewMaskLayer = [CAGradientLayer layer];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+    
+    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    
+    // display a gradient to the rencents bottom (20% of the bottom of the screen)
+    tableViewMaskLayer.locations = [NSArray arrayWithObjects:
+                                    [NSNumber numberWithFloat:0],
+                                    [NSNumber numberWithFloat:0.85],
+                                    [NSNumber numberWithFloat:1.0], nil];
+    
+    tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    tableViewMaskLayer.anchorPoint = CGPointZero;
+    
+    // CAConstraint is not supported on IOS.
+    // it seems only being supported on Mac OS.
+    // so viewDidLayoutSubviews will refresh the layout bounds.
+    [self.view.layer addSublayer:tableViewMaskLayer];
+    
+    // Add room create button
+    createNewRoomImageView = [[UIImageView alloc] init];
+    [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:createNewRoomImageView];
+    
+    createNewRoomImageView.backgroundColor = [UIColor clearColor];
+    createNewRoomImageView.contentMode = UIViewContentModeCenter;
+    createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
+    
+    CGFloat side = 78.0f;
+    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1
+                                                                        constant:side];
+    
+    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1
+                                                                         constant:side];
+    
+    NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.view
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1
+                                                                          constant:0];
+    
+    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:createNewRoomImageView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1
+                                                                         constant:9];
+    
+    // Available on iOS 8 and later
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+    
+    createNewRoomImageView.userInteractionEnabled = YES;
+    
+    // Handle tap gesture
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [createNewRoomImageView addGestureRecognizer:tap];
+}
+
 - (void)promptUserBeforeUsingGoogleAnalytics
 {
     NSLog(@"[HomeViewController]: Invite the user to send crash reports");
@@ -595,6 +607,17 @@
 {
     // TODO: Manage other children than recents
     [recentsViewController refreshCurrentSelectedCell:forceVisible];
+}
+
+- (void)setHidden:(BOOL)hidden
+{
+    _hidden = hidden;
+    
+    self.selectionContainer.hidden = hidden;
+    self.viewControllerContainer.hidden = hidden;
+    self.navigationController.navigationBar.hidden = hidden;
+    
+    createNewRoomImageView.hidden = hidden;
 }
 
 #pragma mark - Navigation
