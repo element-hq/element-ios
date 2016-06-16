@@ -236,6 +236,7 @@
         searchInternals.searchBar = searchBar;
 
         self.searchInternals = searchInternals;
+        self.searchInternals.searchBarHidden = YES;
     }
     return searchInternals;
 }
