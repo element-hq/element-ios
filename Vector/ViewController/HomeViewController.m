@@ -159,6 +159,12 @@
         // so viewDidLayoutSubviews will refresh the layout bounds.
         [self.view.layer addSublayer:tableViewMaskLayer];
     }
+    
+    // Refresh the search results if a search in in progress
+    if (!self.searchBarHidden)
+    {
+        [self updateSearch];
+    }
 
     // Add new room button programatically
     if (!createNewRoomImageView)
