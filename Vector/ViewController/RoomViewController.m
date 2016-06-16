@@ -360,6 +360,25 @@
     // Check whether the expanded header is visible
     if (self.expandedHeaderContainer.isHidden == NO)
     {
+        // Adjust the expanded header height by taking into account the actual position of the room avatar
+        // This position depends automaticcaly on the screen orientation.
+        if ([self.titleView isKindOfClass:[RoomAvatarTitleView class]])
+        {
+            RoomAvatarTitleView *avatarTitleView = (RoomAvatarTitleView*)self.titleView;
+            CGRect roomAvatarFrame = avatarTitleView.roomAvatar.frame;
+            CGPoint roomAvatarActualPosition = [avatarTitleView convertPoint:roomAvatarFrame.origin toView:self.view];
+            
+            CGFloat avatarHeaderHeight = roomAvatarActualPosition.y + roomAvatarFrame.size.height;
+            if (expandedHeader.roomAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
+            {
+                expandedHeader.roomAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
+                
+                // Force the layout of expandedHeader to update the position of 'bottomBorderView' which
+                // is used to define the actual height of the expanded header container.
+                [expandedHeader layoutIfNeeded];
+            }
+        }
+        
         // Adjust the top constraint of the bubbles table
         CGRect frame = expandedHeader.bottomBorderView.frame;
         self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
