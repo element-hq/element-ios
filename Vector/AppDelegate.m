@@ -119,6 +119,11 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     id universalLinkWaitingObserver;
 
     /**
+     Suspend the error notifications when the navigation stack of the root view controller is updating.
+     */
+    BOOL isErrorNotificationSuspended;
+
+    /**
      Completion block called when [self popToHomeViewControllerAnimated:] has been
      completed.
      */
@@ -481,6 +486,9 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 - (void)restoreInitialDisplay:(void (^)())completion
 {
+    // Suspend error notifications during navigation stack change.
+    isErrorNotificationSuspended = YES;
+    
     // Dismiss potential view controllers that were presented modally (like the media picker).
     if (self.window.rootViewController.presentedViewController)
     {
@@ -501,13 +509,33 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                     [noCallSupportAlert showInViewController:self.window.rootViewController];
                 }
                 
+                // Enable error notification (Check whether a notification is pending)
+                isErrorNotificationSuspended = NO;
+                if (self.errorNotification)
+                {
+                    [self showErrorNotification];
+                }
+                
             }];
             
         }];
     }
     else
     {
-        [self popToHomeViewControllerAnimated:NO completion:completion];
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+            // Enable error notification (Check whether a notification is pending)
+            isErrorNotificationSuspended = NO;
+            if (self.errorNotification)
+            {
+                [self showErrorNotification];
+            }
+        }];
     }
 }
 
@@ -550,7 +578,8 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                                                     [AppDelegate theDelegate].errorNotification = nil;
                                                 }];
     
-    [self.errorNotification showInViewController:self.window.rootViewController];
+    // Display the error notification
+    [self showErrorNotification];
     
     // Switch in offline mode in case of network reachability error
     if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
@@ -559,6 +588,21 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
     
     return self.errorNotification;
+}
+
+- (void)showErrorNotification
+{
+    if (!isErrorNotificationSuspended)
+    {
+        if (self.window.rootViewController.presentedViewController)
+        {
+            [self.errorNotification showInViewController:self.window.rootViewController.presentedViewController];
+        }
+        else
+        {
+            [self.errorNotification showInViewController:self.window.rootViewController];
+        }
+    }
 }
 
 #pragma mark
@@ -577,14 +621,10 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
     else
     {
-        // Dispatch the completion in order to let navigation stack refresh itself
-        // It is required to display the auth VC at startup
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion();
-            }
-         });
+        if (completion)
+        {
+            completion();
+        }
     }
 }
 
