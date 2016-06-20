@@ -18,7 +18,8 @@
 
 @interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate>
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionTableViewTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarHeaderBackground;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMemberAvatarHeaderBackgroundHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *memberHeaderView;
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;

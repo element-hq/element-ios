@@ -188,6 +188,28 @@
     memberTitleView = nil;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    if (memberTitleView)
+    {
+        // Adjust the header height by taking into account the actual position of the member avatar in title view
+        // This position depends automatically on the screen orientation.
+        CGRect memberAvatarFrame = memberTitleView.memberAvatar.frame;
+        CGPoint memberAvatarActualPosition = [memberTitleView convertPoint:memberAvatarFrame.origin toView:self.view];
+        
+        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + memberAvatarFrame.size.height;
+        if (_roomMemberAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
+        {
+            _roomMemberAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
+            
+            // Force the layout of the header
+            [self.memberHeaderView layoutIfNeeded];
+        }
+    }
+}
+
+#pragma mark -
+
 - (UIImage*)picturePlaceholder
 {
     if (self.mxRoomMember)

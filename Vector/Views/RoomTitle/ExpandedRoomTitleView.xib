@@ -19,7 +19,7 @@
                     </constraints>
                 </view>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
-                    <rect key="frame" x="249" y="126" width="103" height="22"/>
+                    <rect key="frame" x="249" y="125" width="103" height="23"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
@@ -88,7 +88,7 @@
                 <constraint firstAttribute="trailing" secondItem="Ckb-7c-sTg" secondAttribute="trailing" id="erV-R4-LXD"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="gnq-cO-l4Y"/>
                 <constraint firstItem="qD3-kA-DSI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="jjG-gN-eIv"/>
-                <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="uSp-YH-L18" secondAttribute="bottom" constant="9" id="rAh-mV-nb5"/>
+                <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="uSp-YH-L18" secondAttribute="bottom" constant="8" id="rAh-mV-nb5"/>
                 <constraint firstItem="ou0-3Z-weL" firstAttribute="top" secondItem="qD3-kA-DSI" secondAttribute="bottom" constant="14" id="sJB-Wr-gFl"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ou0-3Z-weL" secondAttribute="trailing" constant="31" id="sPZ-Hp-JeH"/>
                 <constraint firstAttribute="trailing" secondItem="MFb-0F-eO8" secondAttribute="trailing" id="vjK-vS-uzY"/>
