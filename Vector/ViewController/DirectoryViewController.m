@@ -27,6 +27,9 @@
 @interface DirectoryViewController ()
 {
     PublicRoomsDirectoryDataSource *dataSource;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -61,6 +64,13 @@
         [tracker set:kGAIScreenName value:@"Directory"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+    }];
 
     [self.tableView reloadData];
 }
@@ -80,6 +90,17 @@
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
