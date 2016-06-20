@@ -247,6 +247,8 @@
 		F0DA3FC81C4691CD0055438B /* details_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DA3FC51C4691CD0055438B /* details_icon.png */; };
 		F0DA3FC91C4691CD0055438B /* details_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DA3FC61C4691CD0055438B /* details_icon@2x.png */; };
 		F0DA3FCA1C4691CD0055438B /* details_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DA3FC71C4691CD0055438B /* details_icon@3x.png */; };
+		F0DD2C701D1308E800654345 /* ContactPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0DD2C6F1D1308E800654345 /* ContactPickerViewController.m */; };
+		F0DD2C721D141B0600654345 /* ContactPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0DD2C711D141B0600654345 /* ContactPickerViewController.xib */; };
 		F0DDDBB71C5A5F55000C6C46 /* Icon-170.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DDDBB41C5A5F55000C6C46 /* Icon-170.png */; };
 		F0DDDBB81C5A5F55000C6C46 /* Icon-170@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DDDBB51C5A5F55000C6C46 /* Icon-170@2x.png */; };
 		F0DDDBB91C5A5F55000C6C46 /* Icon-170@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0DDDBB61C5A5F55000C6C46 /* Icon-170@3x.png */; };
@@ -586,6 +588,9 @@
 		F0DA3FC51C4691CD0055438B /* details_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = details_icon.png; sourceTree = "<group>"; };
 		F0DA3FC61C4691CD0055438B /* details_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "details_icon@2x.png"; sourceTree = "<group>"; };
 		F0DA3FC71C4691CD0055438B /* details_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "details_icon@3x.png"; sourceTree = "<group>"; };
+		F0DD2C6E1D1308E800654345 /* ContactPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactPickerViewController.h; sourceTree = "<group>"; };
+		F0DD2C6F1D1308E800654345 /* ContactPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactPickerViewController.m; sourceTree = "<group>"; };
+		F0DD2C711D141B0600654345 /* ContactPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactPickerViewController.xib; sourceTree = "<group>"; };
 		F0DDDBB41C5A5F55000C6C46 /* Icon-170.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-170.png"; sourceTree = "<group>"; };
 		F0DDDBB51C5A5F55000C6C46 /* Icon-170@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-170@2x.png"; sourceTree = "<group>"; };
 		F0DDDBB61C5A5F55000C6C46 /* Icon-170@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-170@3x.png"; sourceTree = "<group>"; };
@@ -982,6 +987,9 @@
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0DD2C6E1D1308E800654345 /* ContactPickerViewController.h */,
+				F0DD2C6F1D1308E800654345 /* ContactPickerViewController.m */,
+				F0DD2C711D141B0600654345 /* ContactPickerViewController.xib */,
 				F03DE2A31D0EFA6A00E8B65C /* AttachmentsViewController.h */,
 				F03DE2A41D0EFA6A00E8B65C /* AttachmentsViewController.m */,
 				F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */,
@@ -1317,6 +1325,7 @@
 				32D0A4BE1CA44509008F3451 /* plus_icon@3x.png in Resources */,
 				71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */,
 				F0026B5A1C916E68001D2C04 /* notifications@3x.png in Resources */,
+				F0DD2C721D141B0600654345 /* ContactPickerViewController.xib in Resources */,
 				71B2A3C11C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib in Resources */,
 				F02528D51C11B6FC00E1FE1B /* camera_capture.png in Resources */,
 				F05641851C7CBB58002276ED /* bubbles_bg_landscape@3x.png in Resources */,
@@ -1503,6 +1512,7 @@
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
+				F0DD2C701D1308E800654345 /* ContactPickerViewController.m in Sources */,
 				F022285B1C64D529000AF23C /* ExpandedRoomTitleView.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */,

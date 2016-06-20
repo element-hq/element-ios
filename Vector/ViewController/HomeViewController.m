@@ -25,6 +25,7 @@
 
 #import "MXKSearchDataSource.h"
 #import "HomeSearchViewController.h"
+#import "ContactPickerViewController.h"
 
 #import "AppDelegate.h"
 
@@ -35,6 +36,8 @@
 
     HomeSearchViewController *searchViewController;
     MXKSearchDataSource *searchDataSource;
+    
+    ContactPickerViewController *contactsViewController;
 
     // Display a gradient view above the screen
     CAGradientLayer* tableViewMaskLayer;
@@ -78,10 +81,11 @@
     searchViewController = [HomeSearchViewController searchViewController];
     [viewControllers addObject:searchViewController];
 
-    // FIXME Add search People tab
-//    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-//    MXKViewController *tempPeopleVC = [[MXKViewController alloc] init];
-//    [viewControllers addObject:tempPeopleVC];
+    // Add search People tab
+    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
+    contactsViewController = [ContactPickerViewController contactPickerViewController];
+    // TODO add delegate
+    [viewControllers addObject:contactsViewController];
 
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
@@ -445,7 +449,11 @@
     }
     else if (self.selectedViewController == searchViewController)
     {
-        self.backgroundImageView.hidden = (((searchDataSource.serverCount != 0) && !searchViewController.noResultsLabel.isHidden) || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = ((searchDataSource.serverCount != 0) || !searchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == contactsViewController)
+    {
+        self.backgroundImageView.hidden = (([contactsViewController.contactsTableView numberOfRowsInSection:0] != 0) || !contactsViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
     else
     {
@@ -831,6 +839,10 @@
                 });
             }
         }
+        else if (self.selectedViewController == contactsViewController)
+        {
+            [contactsViewController searchWithPattern:self.searchBar.text];
+        }
     }
     else
     {
@@ -844,6 +856,7 @@
         {
             [searchDataSource searchMessageText:nil];
         }
+        [contactsViewController searchWithPattern:nil];
     }
     
     [self checkAndShowBackgroundImage];
@@ -856,6 +869,11 @@
     if (self.selectedViewController == recentsViewController)
     {
         // As the public room search is local, it can be updated on each text change
+        [self updateSearch];
+    }
+    else if (self.selectedViewController == contactsViewController)
+    {
+        // As the contact search is local, it can be updated on each text change
         [self updateSearch];
     }
     else if (!self.searchBar.text.length)
