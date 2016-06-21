@@ -120,7 +120,7 @@
     [super removeMatrixSession:matrixSession];
     
     // sanity check
-    if (matrixSession && matrixSession.myUser && matrixSession.myUser.userId)
+    if (matrixSession.myUser && matrixSession.myUser.userId)
     {
         id roomTagListener = [roomTagsListenerByUserId objectForKey:matrixSession.myUser.userId];
         
@@ -129,12 +129,12 @@
             [matrixSession removeListener:roomTagListener];
             [roomTagsListenerByUserId removeObjectForKey:matrixSession.myUser.userId];
         }
-
-        if (_publicRoomsDirectoryDataSource.mxSession == matrixSession)
-        {
-            [_publicRoomsDirectoryDataSource destroy];
-            _publicRoomsDirectoryDataSource = nil;
-        }
+    }
+    
+    if (_publicRoomsDirectoryDataSource.mxSession == matrixSession)
+    {
+        [_publicRoomsDirectoryDataSource destroy];
+        _publicRoomsDirectoryDataSource = nil;
     }
 }
 

@@ -83,39 +83,31 @@
     // Consider in priority the preview data (if any)
     if (self.roomPreviewData)
     {
-        // Display more information if available
+        // Room topic
+        self.roomTopic.text = self.roomPreviewData.roomTopic;
+        
+        // Joined members count
+        if (self.roomPreviewData.numJoinedMembers == 1)
+        {
+            self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
+        }
+        else if (self.roomPreviewData.numJoinedMembers != 1)
+        {
+            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), self.roomPreviewData.numJoinedMembers];
+        }
+        else
+        {
+            self.roomMembers.text = nil;
+        }
+        
+        // Preview subtitle
         if (self.roomPreviewData.roomDataSource)
         {
-            // Topic
-            self.roomTopic.text = [MXTools stripNewlineCharacters:self.roomPreviewData.roomDataSource.room.state.topic];
-            
-            // Room members count
-            // Note that room members presence/activity is not available
-            NSUInteger memberCount = 0;
-            for (MXRoomMember *mxMember in self.roomPreviewData.roomDataSource.room.state.members)
-            {
-                if (mxMember.membership == MXMembershipJoin)
-                {
-                    memberCount ++;
-                }
-            }
-            
-            if (memberCount == 1)
-            {
-                self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
-            }
-            else
-            {
-                self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), memberCount];
-            }
-            
             // Display the default preview subtitle in case of peeking
             self.subNoticeLabel.text = NSLocalizedStringFromTable(@"room_preview_subtitle", @"Vector", nil);
         }
         else
         {
-            self.roomTopic.text = nil;
-            self.roomMembers.text = nil;
             self.subNoticeLabel.text = nil;
         }
         
