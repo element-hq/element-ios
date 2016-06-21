@@ -55,14 +55,14 @@
     NSInteger invitableSection;
     
     /**
-     The current list of joined members (Array of 'Contact' instances).
+     The current list of joined members.
      */
-    NSMutableArray *actualParticipants;
+    NSMutableArray<Contact*> *actualParticipants;
     
     /**
-     The current list of invited members (Array of 'Contact' instances).
+     The current list of invited members.
      */
-    NSMutableArray *invitedParticipants;
+    NSMutableArray<Contact*> *invitedParticipants;
     
     /**
      The contact used to describe the current user (nil if the user is not a participant of the room).
@@ -99,6 +99,22 @@
  The delegate for the view controller.
  */
 @property (nonatomic) id<RoomParticipantsViewControllerDelegate> delegate;
+
+/**
+ Returns the `UINib` object initialized for a `RoomParticipantsViewController`.
+ 
+ @return The initialized `UINib` object or `nil` if there were errors during initialization
+ or the nib file could not be located.
+ */
++ (UINib *)nib;
+
+/**
+ Creates and returns a new `RoomParticipantsViewController` object.
+ 
+ @discussion This is the designated initializer for programmatic instantiation.
+ @return An initialized `RoomParticipantsViewController` object if successful, `nil` otherwise.
+ */
++ (instancetype)roomParticipantsViewController;
 
 @end
 
