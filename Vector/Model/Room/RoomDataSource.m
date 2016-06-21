@@ -233,8 +233,31 @@
                 bubbleCell.blurred = YES;
             }
         }
+
+        // Manage initial event (case of permalink or search result)
+        if (self.timeline.initialEventId)
+        {
+            // Reset the marker
+            if (bubbleCell.markerView)
+            {
+                [bubbleCell.markerView removeFromSuperview];
+            }
+
+            // Check if the cell contains this initial event
+            for (NSUInteger index = 0; index < cellData.bubbleComponents.count; index++)
+            {
+                MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
+
+                if ([component.event.eventId isEqualToString:self.timeline.initialEventId])
+                {
+                    // If yes, mark the event
+                    [bubbleCell markComponent:index];
+                    break;
+                }
+            }
+        }
     }
-    
+
     return cell;
 }
 
