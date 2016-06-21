@@ -22,8 +22,11 @@
 #import "EventFormatter.h"
 
 #import "HomeViewController.h"
-#import "SettingsViewController.h"
 #import "RoomViewController.h"
+
+#import "DirectoryViewController.h"
+#import "SettingsViewController.h"
+#import "ContactDetailsViewController.h"
 
 #import "RageShakeManager.h"
 
@@ -243,42 +246,38 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     callEventsListeners = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
-    // to the recents list in Recents Tab.
+    // to the Home screen ("Messages").
     // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
-    UIViewController* recents = self.window.rootViewController;
+    UIViewController* rootViewController = self.window.rootViewController;
     _homeNavigationController = nil;
-    if ([recents isKindOfClass:[UISplitViewController class]])
+    if ([rootViewController isKindOfClass:[UISplitViewController class]])
     {
-        UISplitViewController *splitViewController = (UISplitViewController *)recents;
+        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
         splitViewController.delegate = self;
         
         _homeNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
-        UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
-        if ([detailsViewController isKindOfClass:[UINavigationController class]])
+        if (splitViewController.viewControllers.count == 2)
         {
-            UINavigationController *navigationController = (UINavigationController*)detailsViewController;
-            detailsViewController = navigationController.topViewController;
+            UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
+            
+            if ([detailsViewController isKindOfClass:[UINavigationController class]])
+            {
+                _secondaryNavigationController = (UINavigationController*)detailsViewController;
+                detailsViewController = _secondaryNavigationController.topViewController;
+            }
+            
+            detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
         }
         
-        // IOS >= 8
-        if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+        // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
+        // to avoid empty room View Controller in portrait orientation
+        // else, the user cannot select a room
+        // shouldHideViewController delegate method is also implemented
+        if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
         {
-            detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-            
-            // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
-            // to avoid empty room View Controller in portrait orientation
-            // else, the user cannot select a room
-            // shouldHideViewController delegate method is also implemented
-            if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
-            {
-                splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-            }
+            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         }
-    }
-    else if ([recents isKindOfClass:[UINavigationController class]])
-    {
-        _homeNavigationController = (UINavigationController*)recents;
     }
     
     if (_homeNavigationController)
@@ -488,6 +487,12 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 {
     // Suspend error notifications during navigation stack change.
     isErrorNotificationSuspended = YES;
+    
+    // Cancel search
+    if (_homeViewController)
+    {
+        [_homeViewController hideSearch:NO];
+    }
     
     // Dismiss potential view controllers that were presented modally (like the media picker).
     if (self.window.rootViewController.presentedViewController)
@@ -1078,7 +1083,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                             roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
 
                             // Try to get more information about the room before opening its preview
-                            [roomPreviewData peekInRoom:^(BOOL successed) {
+                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
 
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [_homeViewController stopActivityIndicator];
@@ -1886,9 +1891,46 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 #pragma mark - SplitViewController delegate
 
+- (nullable UIViewController *)splitViewController:(UISplitViewController *)splitViewController separateSecondaryViewControllerFromPrimaryViewController:(UIViewController *)primaryViewController
+{
+    UIViewController *topViewController = _homeNavigationController.topViewController;
+    
+    // Check the case where we don't want to use as a secondary view controller the top view controller
+    // of the navigation controller of the home view controller.
+    if ([topViewController isKindOfClass:[DirectoryViewController class]]
+        || [topViewController isKindOfClass:[SettingsViewController class]]
+        || [topViewController isKindOfClass:[ContactDetailsViewController class]])
+    {
+        if (_secondaryNavigationController)
+        {
+            // Return the default secondary view controller to keep on primaryViewController side
+            // the Directory, the Settings or the Contact details view controller.
+            return _secondaryNavigationController;
+        }
+        else
+        {
+            // Return a fake room view controller for the secondary view controller.
+            return [RoomViewController roomViewController];
+        }
+    }
+    return nil;
+}
+
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
-    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
+    RoomViewController *roomViewController;
+    
+    if ([secondaryViewController isKindOfClass:[RoomViewController class]])
+    {
+        roomViewController = (RoomViewController*)secondaryViewController;
+    }
+    else if ([secondaryViewController isKindOfClass:[UINavigationController class]] &&
+             [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]])
+    {
+        roomViewController = (RoomViewController*)[(UINavigationController *)secondaryViewController topViewController];
+    }
+    
+    if (roomViewController && roomViewController.roomDataSource == nil && roomViewController.roomPreviewData == nil)
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;
