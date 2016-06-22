@@ -276,7 +276,7 @@
     // Observe contact presence change
     mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        NSString* matrixId = [self getFirstMatrixId];
+        NSString* matrixId = self.firstMatrixId;
         
         if (matrixId && [matrixId isEqualToString:notif.object])
         {
@@ -297,7 +297,7 @@
 
 #pragma mark -
 
-- (NSString*)getFirstMatrixId
+- (NSString*)firstMatrixId
 {
     NSString* matrixId = nil;
     
@@ -316,7 +316,7 @@
     
     if (!image)
     {
-        NSString* matrixId = [self getFirstMatrixId];
+        NSString* matrixId = self.firstMatrixId;
         
         if (matrixId)
         {
@@ -341,7 +341,7 @@
 - (void)refreshContactPresence
 {
     NSString* presenceText;
-    NSString* matrixId = [self getFirstMatrixId];
+    NSString* matrixId = self.firstMatrixId;
     
     if (matrixId)
     {
@@ -432,7 +432,7 @@
             }
             
             // Check whether the option Ignore may be presented
-            if (![self.mainSession isUserIgnored:[self getFirstMatrixId]])
+            if (![self.mainSession isUserIgnored:self.firstMatrixId])
             {
                 [actionsArray addObject:@(ContactDetailsActionIgnore)];
             }
@@ -575,7 +575,7 @@
                     
                     // Add the user to the blacklist: ignored users
                     [strongSelf addPendingActionMask];
-                    [strongSelf.mainSession ignoreUsers:@[[strongSelf getFirstMatrixId]]
+                    [strongSelf.mainSession ignoreUsers:@[[strongSelf firstMatrixId]]
                                                 success:^{
                                                     
                                                     [strongSelf removePendingActionMask];
@@ -583,7 +583,7 @@
                                                 } failure:^(NSError *error) {
                                                     
                                                     [strongSelf removePendingActionMask];
-                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed: %@", [strongSelf getFirstMatrixId], error);
+                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed: %@", [strongSelf firstMatrixId], error);
                                                     
                                                     // Notify MatrixKit user
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -606,7 +606,7 @@
                 // Remove the member from the ignored user list.
                 [self addPendingActionMask];
                 __weak __typeof(self) weakSelf = self;
-                [self.mainSession unIgnoreUsers:@[[self getFirstMatrixId]]
+                [self.mainSession unIgnoreUsers:@[self.firstMatrixId]
                                         success:^{
                                             
                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -616,7 +616,7 @@
                                             
                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                                             [strongSelf removePendingActionMask];
-                                            NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", [self getFirstMatrixId], error);
+                                            NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", self.firstMatrixId, error);
                                             
                                             // Notify MatrixKit user
                                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -628,7 +628,7 @@
             {
                 [self addPendingActionMask];
                 
-                [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:[self getFirstMatrixId] completion:^{
+                [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:self.firstMatrixId completion:^{
                     
                     [self removePendingActionMask];
                 }];
@@ -640,7 +640,7 @@
                 BOOL isVideoCall = (button.tag == ContactDetailsActionStartVideoCall);
                 [self addPendingActionMask];
                 
-                NSString *matrixId = [self getFirstMatrixId];
+                NSString *matrixId = self.firstMatrixId;
                 MXRoom* oneToOneRoom = [self.mainSession privateOneToOneRoomWithUserId:matrixId];
                 
                 // Place the call directly if the room exists
@@ -706,7 +706,7 @@
         if ([self.contactNameLabel.text isEqualToString:_contact.displayName])
         {
             // Display contact's matrix id
-            NSString *matrixId = [self getFirstMatrixId];
+            NSString *matrixId = self.firstMatrixId;
             if (matrixId.length)
             {
                 self.contactNameLabel.text = matrixId;
