@@ -124,13 +124,32 @@
     // Check whether the user has already joined the selected public room
     if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
+        // Open the public room.
         [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
     }
     else
     {
         // Preview the public room
-        NSString *fragment = [NSString stringWithFormat:@"/room/%@", [publicRoom.roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        if (publicRoom.worldReadable)
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:dataSource.mxSession];
+            
+            [self startActivityIndicator];
+            
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                
+                [self stopActivityIndicator];
+                
+                [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+            }];
+        }
+        else
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
+            [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+        }
+        
     }
 }
 
@@ -138,9 +157,7 @@
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
-    });
+    [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible

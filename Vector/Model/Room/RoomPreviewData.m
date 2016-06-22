@@ -25,6 +25,7 @@
     {
         _roomId = roomId;
         _mxSession = mxSession;
+        _numJoinedMembers = -1;
     }
     return self;
 }
@@ -39,6 +40,21 @@
         // Report decoded data
         _roomName = _emailInvitation.roomName;
         _roomAvatarUrl = _emailInvitation.roomAvatarUrl;
+    }
+    return self;
+}
+
+- (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession
+{
+    self = [self initWithRoomId:publicRoom.roomId andSession:mxSession];
+    if (self)
+    {
+        // Report public room data
+        _roomName = publicRoom.name;
+        _roomAvatarUrl = publicRoom.avatarUrl;
+        _roomTopic = publicRoom.topic;
+        _roomAliases = publicRoom.aliases;
+        _numJoinedMembers = publicRoom.numJoinedMembers;
     }
     return self;
 }
@@ -64,11 +80,26 @@
 
         _roomName = peekingRoom.state.displayname;
         _roomAvatarUrl = peekingRoom.state.avatar;
+        
+        _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
+        _roomAliases = peekingRoom.state.aliases;
+        
+        // Room members count
+        // Note that room members presence/activity is not available
+        _numJoinedMembers = 0;
+        for (MXRoomMember *mxMember in peekingRoom.state.members)
+        {
+            if (mxMember.membership == MXMembershipJoin)
+            {
+                _numJoinedMembers ++;
+            }
+        }
 
         completion(YES);
 
     } failure:^(NSError *error) {
         
+        _roomName = _roomId;
         completion(NO);
         
     }];

@@ -52,10 +52,12 @@
 
 /**
  Preview information.
- They come from the `emailInvitationParams` or [self fetchPreviewData].
  */
 @property (nonatomic, readonly) NSString *roomName;
+@property (nonatomic, readonly) NSString *roomTopic;
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
+@property (nonatomic, readonly) NSArray<NSString*> *roomAliases;
+@property (nonatomic, readonly) NSInteger numJoinedMembers; // -1 if unknown.
 
 /**
  The RoomDataSource to peek into the room. 
@@ -72,6 +74,14 @@
  */
 - (instancetype)initWithRoomId:(NSString*)roomId andSession:(MXSession*)mxSession;
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
+
+/**
+ Contructors.
+ 
+ @param publicRoom a public room returned by the publicRoom request.
+ @param mxSession the session to open the room preview with.
+ */
+- (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession;
 
 /**
  Attempt to peek into the room to get room data (state, messages history, etc).
