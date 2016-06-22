@@ -43,10 +43,6 @@
     
     ContactPickerViewController *contactsViewController;
     MXKContact *selectedContact;
-    
-    DirectoryViewController *directoryViewController;
-    ContactDetailsViewController *contactDetailsViewController;
-    SettingsViewController * settingsViewController;
 
     // Display a gradient view above the screen
     CAGradientLayer* tableViewMaskLayer;
@@ -221,67 +217,6 @@
         }
     }
 }
-
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
-//{
-//    // On iPad and iPhone 6 plus, the display mode of the splitviewcontroller may change during screen rotation.
-//    // It may correspond to an overlay mode in portrait and a side-by-side mode in landscape.
-//    
-//    // We patch here to keep Directory view controller, Settings view controller or Contact details view controller
-//    // on primary view controller in case of landscape display.
-//    if ([GBDeviceInfo deviceInfo].display == GBDeviceDisplayiPad || [GBDeviceInfo deviceInfo].display >= GBDeviceDisplayiPhone55Inch)
-//    {
-//        if (directoryViewController || contactDetailsViewController || settingsViewController)
-//        {
-//            // Keep this view controller on primary view controller in case of landscape display.
-//            
-//            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
-//            {
-//                // Retrieve the affine transform indicating the amount of rotation being applied to the interface.
-//                // This transform is the identity transform when no rotation is applied;
-//                // otherwise, it is a transform that applies a 90 degree, -90 degree, or 180 degree rotation.
-//                CGAffineTransform transform = coordinator.targetTransform;
-//                
-//                // Consider here only the transform that applies a +/- 90 degree.
-//                if (transform.b * transform.c == -1)
-//                {
-//                    if (directoryViewController)
-//                    {
-//                        [directoryViewController withdrawViewControllerAnimated:NO completion:nil];
-//                        
-//                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                            
-//                            [self performSegueWithIdentifier:@"showDirectory" sender:self];
-//                            
-//                        });
-//                    }
-//                    else if (contactDetailsViewController)
-//                    {
-//                        [contactDetailsViewController withdrawViewControllerAnimated:NO completion:nil];
-//                        
-//                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                            
-//                            [self performSegueWithIdentifier:@"showContactDetails" sender:self];
-//                            
-//                        });
-//                    }
-//                    else if (settingsViewController)
-//                    {
-//                        [settingsViewController withdrawViewControllerAnimated:NO completion:nil];
-//                        
-//                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                            
-//                            [self performSegueWithIdentifier:@"showSettings" sender:self];
-//                            
-//                        });
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//}
 
 #pragma mark -
 
@@ -797,23 +732,15 @@
         // Keep ref on destinationViewController
         [super prepareForSegue:segue sender:sender];
         
-        directoryViewController = nil;
-        contactDetailsViewController = nil;
-        settingsViewController = nil;
-
         if ([[segue identifier] isEqualToString:@"showDirectory"])
         {
-            directoryViewController = segue.destinationViewController;
+            DirectoryViewController *directoryViewController = segue.destinationViewController;
             [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
         }
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
         {
-            contactDetailsViewController = segue.destinationViewController;
+            ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
             contactDetailsViewController.contact = selectedContact;
-        }
-        else if ([[segue identifier] isEqualToString:@"showSettings"])
-        {
-            settingsViewController = segue.destinationViewController;
         }
         else if ([[segue identifier] isEqualToString:@"showAuth"])
         {
