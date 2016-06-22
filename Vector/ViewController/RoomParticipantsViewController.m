@@ -893,7 +893,7 @@
                 NSString *searchText = mxkContact.displayName;
                 
                 // Check whether this input is a valid email or a Matrix user ID before adding the plus icon.
-                if (![MXTools isEmailAddress:searchText] && ([searchText characterAtIndex:0] != '@' || [searchText containsString:@":"] == NO))
+                if (![MXTools isEmailAddress:searchText] && ![MXTools isMatrixUserIdentifier:searchText])
                 {
                     participantCell.contentView.alpha = 0.5;
                     participantCell.userInteractionEnabled = NO;
