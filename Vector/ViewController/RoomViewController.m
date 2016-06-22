@@ -1729,7 +1729,7 @@
             // members screens
             [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
             
-            RoomParticipantsViewController* participantsViewController = [[RoomParticipantsViewController alloc] init];
+            RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
             participantsViewController.delegate = self;
             participantsViewController.enableMention = YES;
             participantsViewController.mxRoom = [session roomWithRoomId:roomid];

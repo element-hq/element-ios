@@ -35,9 +35,9 @@
     UIView* searchBarSeparator;
     
     // Search results
-    NSMutableArray *invitableContacts;
-    NSMutableArray *filteredActualParticipants;
-    NSMutableArray *filteredInvitedParticipants;
+    NSMutableArray<MXKContact*> *invitableContacts;
+    NSMutableArray<Contact*> *filteredActualParticipants;
+    NSMutableArray<Contact*> *filteredInvitedParticipants;
     
     // Contact instances by matrix user id, or room 3pid invite token.
     NSMutableDictionary *contactsById;
@@ -67,10 +67,33 @@
 
 @implementation RoomParticipantsViewController
 
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+                          bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
+}
+
++ (instancetype)roomParticipantsViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+                                          bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
+}
+
+#pragma mark -
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Check whether the view controller has been pushed via storyboard
+    if (!_tableView)
+    {
+        // Instantiate view controller objects
+        [[[self class] nib] instantiateWithOwner:self options:nil];
+    }
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
@@ -730,12 +753,13 @@
     
     participantCell.mxRoom = self.mxRoom;
     
-    Contact *contact = nil;
+    MXKContact *mxkContact;
+    Contact* contact;
     
     // oneself dedicated cell
     if ((indexPath.section == participantsSection && userContact && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
     {
-        contact = userContact;
+        mxkContact = userContact;
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -743,20 +767,20 @@
     {
         if (indexPath.row < invitableContacts.count)
         {
-            contact = invitableContacts[indexPath.row];
+            mxkContact = invitableContacts[indexPath.row];
             
             participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
             
             // Disambiguate the display name when it appears several times.
-            if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+            if (mxkContact.displayName && [isMultiUseNameByDisplayName[mxkContact.displayName] isEqualToNumber:@(YES)])
             {
-                NSArray *identifiers = contact.matrixIdentifiers;
+                NSArray *identifiers = mxkContact.matrixIdentifiers;
                 if (identifiers.count)
                 {
                     NSString *participantId = identifiers.firstObject;
-                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
+                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", mxkContact.displayName, participantId];
                     
-                    contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
+                    mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
                 }
             }
         }
@@ -827,14 +851,16 @@
                     contact = [[Contact alloc] initMatrixContactWithDisplayName:disambiguatedDisplayName andMatrixID:contact.mxMember.userId];
                 }
             }
+            
+            mxkContact = contact;
         }
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    if (contact)
+    if (mxkContact)
     {
-        [participantCell render:contact];
+        [participantCell render:mxkContact];
         
         // The search displays contacts to invite. Add a plus icon to the cell
         // in order to make it more understandable for the end user
@@ -843,7 +869,7 @@
             if (indexPath.row == 0)
             {
                 // This is the text entered by the user
-                NSString *searchText = contact.displayName;
+                NSString *searchText = mxkContact.displayName;
                 
                 // Check whether this input is a valid email or a Matrix user ID before adding the plus icon.
                 if (![MXTools isEmailAddress:searchText] && ([searchText characterAtIndex:0] != '@' || [searchText containsString:@":"] == NO))
@@ -861,7 +887,7 @@
                 participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
             }
         }
-        else if (contact.mxMember)
+        else if (contact && contact.mxMember)
         {
             // Update member badge
             MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
@@ -952,10 +978,10 @@
         {
             // This is the text entered by the user
             // Try to invite what he typed
-            MXKContact *contact = invitableContacts[row];
+            MXKContact *mxkContact = invitableContacts[row];
 
             // Invite this user
-            NSString *participantId = contact.displayName;
+            NSString *participantId = mxkContact.displayName;
             
             // Is it an email or a Matrix user ID?
             if ([MXTools isEmailAddress:participantId])
@@ -999,9 +1025,9 @@
         }
         else if (row < invitableContacts.count)
         {
-            MXKContact *contact = invitableContacts[row];
+            MXKContact *mxkContact = invitableContacts[row];
             
-            NSArray *identifiers = contact.matrixIdentifiers;
+            NSArray *identifiers = mxkContact.matrixIdentifiers;
             if (identifiers.count)
             {
                 NSString *participantId = identifiers.firstObject;
@@ -1027,7 +1053,7 @@
             else
             {
                 // This is a local email contact
-                NSString *emailAddress = contact.displayName;
+                NSString *emailAddress = mxkContact.displayName;
                 
                 // Sanity check
                 if ([MXTools isEmailAddress:emailAddress])
@@ -1401,9 +1427,11 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     // Update search results.
-    NSMutableArray *contacts;
-    NSMutableArray *participantsArray;
-    NSMutableArray *invitedParticipantsArray;
+    NSMutableArray<MXKContact*> *contacts;
+    NSMutableArray<Contact*> *participantsArray;
+    NSMutableArray<Contact*> *invitedParticipantsArray;
+    
+    searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if (currentSearchText.length && [searchText hasPrefix:currentSearchText])
     {
@@ -1456,26 +1484,32 @@
         participantsArray = [actualParticipants copy];
         invitedParticipantsArray = [invitedParticipants copy];
     }
+    
     currentSearchText = searchText;
     
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
     
     // Update invitable contacts list:
     invitableContacts = [NSMutableArray array];
-    if (searchText.length)
+    
+    if (currentSearchText.length)
     {
+        for (MXKContact* contact in contacts)
+        {
+            if ([contact hasPrefix:currentSearchText])
+            {
+                [invitableContacts addObject:contact];
+                
+                isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+            }
+        }
+        
+        // Sort the refreshed list of the invitable contacts
+        [self sortInvitableContacts];
+        
         // Show what the user is typing in a cell. So that he can click on it
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
-        [invitableContacts addObject:contact];
-    }
-    for (MXKContact* contact in contacts)
-    {
-        if ([contact matchedWithPatterns:@[currentSearchText]])
-        {
-            [invitableContacts addObject:contact];
-            
-            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
-        }
+        [invitableContacts insertObject:contact atIndex:0];
     }
     
     // Update filtered participants list
@@ -1545,6 +1579,77 @@
     
     // Leave search
     [searchBar resignFirstResponder];
+}
+
+#pragma mark -
+
+- (void)sortInvitableContacts
+{
+    // Sort contacts by last active, with "active now" first.
+    // ...and then alphabetically.
+    NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
+        
+        MXUser *userA;
+        MXUser *userB;
+        
+        if (contactA.matrixIdentifiers.count)
+        {
+            userA = [self.mxRoom.mxSession userWithUserId:contactA.matrixIdentifiers.firstObject];
+        }
+        if (contactB.matrixIdentifiers.count)
+        {
+            userB = [self.mxRoom.mxSession userWithUserId:contactB.matrixIdentifiers.firstObject];
+        }
+        
+        if (!userA && !userB)
+        {
+            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+        }
+        if (userA && !userB)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA && userB)
+        {
+            return NSOrderedDescending;
+        }
+        
+        if (userA.currentlyActive && userB.currentlyActive)
+        {
+            // Then order by name
+            if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+            {
+                return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+            }
+            else if (contactA.sortingDisplayName.length)
+            {
+                return NSOrderedAscending;
+            }
+            else if (contactB.sortingDisplayName.length)
+            {
+                return NSOrderedDescending;
+            }
+            return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+        }
+        
+        if (userA.currentlyActive && !userB.currentlyActive)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA.currentlyActive && userB.currentlyActive)
+        {
+            return NSOrderedDescending;
+        }
+        
+        // Finally, compare the timestamps
+        NSComparisonResult lastActiveAgoA = userA && userA.lastActiveAgo ? userA.lastActiveAgo : 0;
+        NSComparisonResult lastActiveAgoB = userB && userB.lastActiveAgo ? userB.lastActiveAgo : 0;
+        
+        return lastActiveAgoA - lastActiveAgoB;
+    };
+    
+    // Sort invitable contacts list
+    [invitableContacts sortUsingComparator:comparator];
 }
 
 @end
