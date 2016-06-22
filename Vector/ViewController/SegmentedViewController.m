@@ -73,6 +73,29 @@
     _selectedIndex = index;
 }
 
+- (void)destroy
+{
+    for (id viewController in viewControllers)
+    {
+        if ([viewController respondsToSelector:@selector(destroy)])
+        {
+            [viewController destroy];
+        }
+    }
+    viewControllers = nil;
+    sectionTitles = nil;
+    
+    sectionLabels = nil;
+    
+    if (selectedMarkerView)
+    {
+        [selectedMarkerView removeFromSuperview];
+        selectedMarkerView = nil;
+    }
+    
+    [super destroy];
+}
+
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
     if (_selectedIndex != selectedIndex)

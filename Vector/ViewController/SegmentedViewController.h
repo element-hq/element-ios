@@ -69,6 +69,9 @@ limitations under the License.
 /**
  init the segmentedViewController with a list of UIViewControllers.
  The subviewcontrollers must implement didMoveToParentViewController to display the navbar button.
+ 
+ @discussion: the segmentedViewController gets the ownership of the provided arrays and their content.
+ 
  @param titles the section tiles
  @param viewControllers the list of viewControllers to display.
  @param defaultSelected index of the default selected UIViewController in the list.

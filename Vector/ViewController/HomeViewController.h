@@ -17,13 +17,16 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "SegmentedViewController.h"
+
+#import "ContactPickerViewController.h"
+
 #import "RoomViewController.h"
 #import "AuthenticationViewController.h"
 
 /**
  The `HomeViewController` screen is the main app screen.
  */
-@interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate>
+@interface HomeViewController : SegmentedViewController <MXKRecentListViewControllerDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, ContactPickerViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;

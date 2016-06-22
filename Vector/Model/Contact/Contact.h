@@ -22,6 +22,4 @@
 
 @property (nonatomic) MXRoomThirdPartyInvite* mxThirdPartyInvite;
 
-@property (nonatomic) NSString* sortingDisplayName;
-
 @end

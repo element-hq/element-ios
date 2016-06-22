@@ -43,24 +43,4 @@
     return thumbnail;
 }
 
-- (NSString*)sortingDisplayName
-{
-    if (!_sortingDisplayName)
-    {
-        // Sanity check - display name should not be nil here
-        if (self.displayName)
-        {
-            NSCharacterSet *specialCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_!~`@#$%^&*-+();:={}[],.<>?\\/\"\'"];
-            
-            _sortingDisplayName = [self.displayName stringByTrimmingCharactersInSet:specialCharacterSet];
-        }
-        else
-        {
-            return @"";
-        }
-    }
-    
-    return _sortingDisplayName;
-}
-
 @end

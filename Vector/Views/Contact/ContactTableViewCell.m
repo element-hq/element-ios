@@ -71,7 +71,7 @@
 
 // returns the first matrix id of the contact
 // nil if there is none
-- (NSString*)getFirstMatrixId
+- (NSString*)firstMatrixId
 {
     NSString* matrixId = nil;
     
@@ -118,7 +118,7 @@
     // Observe contact presence change
     mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        NSString* matrixId = [self getFirstMatrixId];
+        NSString* matrixId = self.firstMatrixId;
         
         if (matrixId && [matrixId isEqualToString:notif.object])
         {
@@ -170,7 +170,7 @@
     
     if (!image)
     {
-        NSString* matrixId = [self getFirstMatrixId];
+        NSString* matrixId = self.firstMatrixId;
         
         if (matrixId)
         {
@@ -197,7 +197,7 @@
 - (void)refreshContactPresence
 {
     NSString* presenceText;
-    NSString* matrixId = [self getFirstMatrixId];
+    NSString* matrixId = self.firstMatrixId;
     
     if (matrixId)
     {
