@@ -273,6 +273,17 @@
     [self refreshContactDetails];
 }
 
+- (void)setEnableVoipCall:(BOOL)enableVoipCall
+{
+    if (_enableVoipCall != enableVoipCall)
+    {
+        _enableVoipCall = enableVoipCall;
+        
+        // Refresh displayed options
+        [self.tableView reloadData];
+    }
+}
+
 #pragma mark -
 
 - (void)registerOnContactChangeNotifications
@@ -338,6 +349,8 @@
     [self refreshContactDisplayName];
     [self refreshContactPresence];
     [self refreshContactThumbnail];
+    
+    [self.tableView reloadData];
 }
 
 - (NSString*)firstMatrixId
@@ -618,7 +631,7 @@
                     
                     // Add the user to the blacklist: ignored users
                     [strongSelf addPendingActionMask];
-                    [strongSelf.mainSession ignoreUsers:@[[strongSelf firstMatrixId]]
+                    [strongSelf.mainSession ignoreUsers:@[strongSelf.firstMatrixId]
                                                 success:^{
                                                     
                                                     [strongSelf removePendingActionMask];
@@ -626,7 +639,7 @@
                                                 } failure:^(NSError *error) {
                                                     
                                                     [strongSelf removePendingActionMask];
-                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed: %@", [strongSelf firstMatrixId], error);
+                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed: %@", strongSelf.firstMatrixId, error);
                                                     
                                                     // Notify MatrixKit user
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
