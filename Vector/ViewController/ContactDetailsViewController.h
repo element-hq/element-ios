@@ -53,5 +53,21 @@ typedef enum : NSUInteger
  */
 @property (nonatomic) BOOL enableVoipCall;
 
+/**
+ Returns the `UINib` object initialized for a `ContactDetailsViewController`.
+ 
+ @return The initialized `UINib` object or `nil` if there were errors during initialization
+ or the nib file could not be located.
+ */
++ (UINib *)nib;
+
+/**
+ Creates and returns a new `ContactDetailsViewController` object.
+ 
+ @discussion This is the designated initializer for programmatic instantiation.
+ @return An initialized `ContactDetailsViewController` object if successful, `nil` otherwise.
+ */
++ (instancetype)contactDetailsViewController;
+
 @end
 

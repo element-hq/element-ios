@@ -27,6 +27,7 @@
 "create" = "Create";
 "leave" = "Leave";
 "remove" = "Remove";
+"invite" = "Invite";
 "retry" = "Retry";
 "on" = "On";
 "off" = "Off";
@@ -119,6 +120,8 @@
 "room_participants_leave_prompt_msg" = "Are you sure you want to leave this chat?";
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
+"room_participants_invite_prompt_title" = "Invite?";
+"room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
 "room_participants_invite_another_user" = "Search / invite by name, email, id";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
