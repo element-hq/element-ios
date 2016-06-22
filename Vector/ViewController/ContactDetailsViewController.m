@@ -189,34 +189,33 @@
         [self addMatrixSession:mxSession];
     }
     
-    // Force refresh
-    self.contact = _contact;
+    if (_contact)
+    {
+        // Register on notifications related to the contact change
+        [self registerOnContactChangeNotifications];
+        
+        // Force refresh
+        [self refreshContactDetails];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    // Remove any pending observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    if (mxPresenceObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:mxPresenceObserver];
-        mxPresenceObserver = nil;
-    }
+    [self cancelRegistrationOnContactChangeNotifications];
     
     // Restore navigation bar display
     [self hideNavigationBarBorder:NO];
     
     self.bottomImageView.hidden = YES;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKContactThumbnailUpdateNotification object:nil];
 }
 
 - (void)destroy
 {
     [super destroy];
+    
+    [self cancelRegistrationOnContactChangeNotifications];
     
     if (UIApplicationWillChangeStatusBarOrientationNotificationObserver)
     {
@@ -259,17 +258,25 @@
 
 - (void)setContact:(MXKContact *)contact
 {
-    // Remove any pending observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    if (mxPresenceObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:mxPresenceObserver];
-        mxPresenceObserver = nil;
-    }
+    [self cancelRegistrationOnContactChangeNotifications];
     
     _contact = contact;
     
+    [self registerOnContactChangeNotifications];
+    
+    if (!_contact.isMatrixContact)
+    {
+        // Refresh matrix info of the contact
+        [[MXKContactManager sharedManager] updateMatrixIDsForLocalContact:_contact];
+    }
+    
+    [self refreshContactDetails];
+}
+
+#pragma mark -
+
+- (void)registerOnContactChangeNotifications
+{
     // Be warned when the thumbnail is updated
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXKContactThumbnailUpdateNotification object:nil];
     
@@ -284,18 +291,54 @@
         }
     }];
     
-    if (!_contact.isMatrixContact)
+    // Observe 'MXKContactManager' notifications
+    if (_contact.isMatrixContact)
     {
-        // Refresh matrix info of the contact
-        [[MXKContactManager sharedManager] updateMatrixIDsForLocalContact:_contact];
+        // Observe 'MXKContactManager' notification on Matrix contacts to refresh details.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerNotification:)  name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
+    }
+    else
+    {
+        // Observe 'MXKContactManager' notifications on Local contacts to refresh details.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerNotification:)  name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerNotification:)  name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
+    }
+}
+
+- (void)cancelRegistrationOnContactChangeNotifications
+{
+    // Remove any pending observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (mxPresenceObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxPresenceObserver];
+        mxPresenceObserver = nil;
+    }
+}
+
+- (void)onContactManagerNotification:(NSNotification *)notif
+{
+    // Check whether a contact Id is provided
+    if (notif.object)
+    {
+        NSString* contactID = notif.object;
+        if (![contactID isEqualToString:_contact.contactID])
+        {
+            // Ignore
+            return;
+        }
     }
     
+    [self refreshContactDetails];
+}
+
+- (void)refreshContactDetails
+{
     [self refreshContactDisplayName];
     [self refreshContactPresence];
     [self refreshContactThumbnail];
 }
-
-#pragma mark -
 
 - (NSString*)firstMatrixId
 {
@@ -413,7 +456,7 @@
 {
     [actionsArray removeAllObjects];
     
-    if (_contact.isMatrixContact)
+    if (_contact.matrixIdentifiers.count)
     {
         // Consider the case of the user himself
         if ([_contact.matrixIdentifiers indexOfObject:self.mainSession.myUser.userId] != NSNotFound)
