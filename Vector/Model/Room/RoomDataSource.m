@@ -234,15 +234,15 @@
             }
         }
 
+        // Reset the marker if any
+        if (bubbleCell.markerView)
+        {
+            [bubbleCell.markerView removeFromSuperview];
+        }
+
         // Manage initial event (case of permalink or search result)
         if (self.timeline.initialEventId)
         {
-            // Reset the marker
-            if (bubbleCell.markerView)
-            {
-                [bubbleCell.markerView removeFromSuperview];
-            }
-
             // Check if the cell contains this initial event
             for (NSUInteger index = 0; index < cellData.bubbleComponents.count; index++)
             {
