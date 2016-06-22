@@ -45,13 +45,25 @@ extern NSString *const kMXKRoomBubbleCellVectorEditButtonPressed;
 - (void)selectComponent:(NSUInteger)componentIndex;
 
 /**
+ Mark a component in receiver.
+
+ @param componentIndex index of the component in bubble message data
+ */
+- (void)markComponent:(NSUInteger)componentIndex;
+
+/**
  Blur the view by adding a transparent overlay. Default is NO.
  */
 @property(nonatomic) BOOL blurred;
 
 /**
- The 'edit' button displayed in front of the selected component (if any). Default is nil.
+ The 'edit' button displayed at in the top-right corner of the selected component (if any). Default is nil.
  */
 @property(nonatomic) UIButton *editButton;
+
+/**
+ The marker view displayed in front of the marked component (if any).
+ */
+@property (nonatomic) UIView *markerView;
 
 @end

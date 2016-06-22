@@ -24,6 +24,9 @@
 
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_TIMELABEL_WIDTH 39
 
+#define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X 48
+#define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH 4
+
 NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCellVectorEditButtonPressed";
 
 @implementation MXKRoomBubbleTableViewCell (Vector)
@@ -130,6 +133,76 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     }
 }
 
+- (void)markComponent:(NSUInteger)componentIndex
+{
+    if (componentIndex < bubbleData.bubbleComponents.count)
+    {
+        MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[componentIndex];
+
+        // Define the marker frame
+        CGFloat markPosY = component.position.y + self.msgTextViewTopConstraint.constant;
+
+        CGFloat markHeight;
+        if (componentIndex == bubbleData.bubbleComponents.count - 1)
+        {
+            // There is no component after this component in the cell,
+            // use the rest of the cell height
+            markHeight = self.contentView.frame.size.height - markPosY;
+        }
+        else
+        {
+            // Stop the marker height to the top of the next component in the cell
+            MXKRoomBubbleComponent *nextComponent  = bubbleData.bubbleComponents[componentIndex + 1];
+            markHeight = nextComponent.position.y - component.position.y;
+        }
+
+        UIView *markerView = [[UIView alloc] initWithFrame:CGRectMake(VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X,
+                                                                markPosY,
+                                                                VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH,
+                                                                markHeight)];
+        markerView.backgroundColor = kVectorColorGreen;
+
+        [markerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.contentView addSubview:markerView];
+
+        // Define the marker constraints
+        NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:markerView
+                                                                          attribute:NSLayoutAttributeLeading
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.contentView
+                                                                          attribute:NSLayoutAttributeLeading
+                                                                         multiplier:1.0
+                                                                           constant:VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X];
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:markerView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.contentView
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0
+                                                                          constant:markPosY];
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:markerView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1.0
+                                                                            constant:VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH];
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:markerView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:markHeight];
+
+        // Available on iOS 8 and later
+        [NSLayoutConstraint activateConstraints:@[leftConstraint, topConstraint, widthConstraint, heightConstraint]];
+        
+        // Store the created button
+        self.markerView = markerView;
+    }
+}
+
 - (void)setBlurred:(BOOL)blurred
 {
     objc_setAssociatedObject(self, @selector(blurred), [NSNumber numberWithBool:blurred], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -187,6 +260,16 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
 - (UIButton*)editButton
 {
     return objc_getAssociatedObject(self, @selector(editButton));
+}
+
+- (void)setMarkerView:(UIView *)markerView
+{
+    objc_setAssociatedObject(self, @selector(markerView), markerView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(UIView *)markerView
+{
+    return objc_getAssociatedObject(self, @selector(markerView));
 }
 
 #pragma mark - User actions
