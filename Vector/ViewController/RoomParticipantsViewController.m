@@ -596,11 +596,18 @@
             return NSOrderedDescending;
         }
 
-        // Finally, compare the timestamps
-        NSComparisonResult lastActiveAgoA = userA && userA.lastActiveAgo ? userA.lastActiveAgo : 0;
-        NSComparisonResult lastActiveAgoB = userB && userB.lastActiveAgo ? userB.lastActiveAgo : 0;
-
-        return lastActiveAgoA - lastActiveAgoB;
+        // Finally, compare the lastActiveAgo
+        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
+        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
+        
+        if (lastActiveAgoA == lastActiveAgoB)
+        {
+            return NSOrderedSame;
+        }
+        else
+        {
+            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
+        }
     };
     
     // Sort each participants list in alphabetical order
@@ -1668,11 +1675,18 @@
             return NSOrderedDescending;
         }
         
-        // Finally, compare the timestamps
-        NSComparisonResult lastActiveAgoA = userA && userA.lastActiveAgo ? userA.lastActiveAgo : 0;
-        NSComparisonResult lastActiveAgoB = userB && userB.lastActiveAgo ? userB.lastActiveAgo : 0;
+        // Finally, compare the lastActiveAgo
+        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
+        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
         
-        return lastActiveAgoA - lastActiveAgoB;
+        if (lastActiveAgoA == lastActiveAgoB)
+        {
+            return NSOrderedSame;
+        }
+        else
+        {
+            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
+        }
     };
     
     // Sort invitable contacts list
