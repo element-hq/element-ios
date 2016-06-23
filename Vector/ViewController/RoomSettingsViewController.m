@@ -1,5 +1,5 @@
 /*
- Copyright 2014 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,14 +16,11 @@
 
 #import "RoomSettingsViewController.h"
 
-#import <Photos/Photos.h>
-#import <MediaPlayer/MediaPlayer.h>
-
 #import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
 #import "TableViewCellWithLabelAndSwitch.h"
 
-#import "TableViewCellSeparator.h"
+#import "SegmentedViewController.h"
 
 #import "RageShakeManager.h"
 
@@ -35,16 +32,23 @@
 
 #import "AppDelegate.h"
 
-#define ROOM_SECTION 0
+#define ROOM_SETTINGS_MAIN_SECTION_INDEX 0
+#define ROOM_SETTINGS_SECTION_COUNT      1
 
-#define ROOM_SECTION_PHOTO               0
-#define ROOM_SECTION_NAME                1
-#define ROOM_SECTION_TOPIC               2
-#define ROOM_SECTION_PRIV_PUB            3
-#define ROOM_SECTION_MUTE_NOTIFICATIONS  4
-#define ROOM_SECTION_COUNT               5
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO               0
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_NAME                1
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC               2
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_PRIV_PUB            3
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS  4
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT               5
 
 #define ROOM_TOPIC_CELL_HEIGHT 124
+
+NSString *const kRoomSettingsAvatarKey = @"kRoomSettingsAvatarKey";
+NSString *const kRoomSettingsAvatarURLKey = @"kRoomSettingsAvatarURLKey";
+NSString *const kRoomSettingsNameKey = @"kRoomSettingsNameKey";
+NSString *const kRoomSettingsTopicKey = @"kRoomSettingsTopicKey";
+NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
 
 @interface RoomSettingsViewController ()
 {
@@ -55,7 +59,10 @@
     UITextView* topicTextView;
     UITextField* nameTextField;
     
-    // pending http operation
+    // The potential image loader
+    MXKMediaLoader *uploader;
+    
+    // The pending http operation
     MXHTTPOperation* pendingOperation;
     
     // the updating spinner
@@ -73,19 +80,16 @@
     UISwitch *roomNotifSwitch;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    id appDelegateDidTapStatusBarNotificationObserver;
 }
 @end
 
 @implementation RoomSettingsViewController
 
-- (UINavigationItem*) getNavigationItem
+- (UINavigationItem*)getNavigationItem
 {
-    // this viewController can be displayed
-    // 1- with a "standard" push mode
-    // 2- within a segmentedViewController i.e. inside another viewcontroller
-    // so, we need to use the parent controller when it is required.
-    UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
+    // Check whether the view controller is currently displayed inside a segmented view controller or not.
+    UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
     
     return topViewController.navigationItem;
 }
@@ -93,7 +97,7 @@
 - (void)setNavBarButtons
 {
     [self getNavigationItem].rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSave:)];
-    [self getNavigationItem].rightBarButtonItem.enabled = ([self getUpdatedItemsDict].count != 0);
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     [self getNavigationItem].leftBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
 }
 
@@ -106,12 +110,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // TODO use a color panel
-    // not an hard coded one.
-    CGFloat item = (242.0f / 255.0);
-    
-    self.tableView.backgroundColor = [UIColor colorWithRed:item green:item blue:item alpha:item];
-    self.tableView.separatorColor = [UIColor clearColor];
+    updatedItemsDict = [[NSMutableDictionary alloc] init];
     
     [self setNavBarButtons];
 }
@@ -132,8 +131,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAccountUserInfoDidChange:) name:kMXKAccountUserInfoDidChangeNotification object:nil];
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    // Observe appDelegateDidTapStatusBarNotificationObserver.
+    appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
         
@@ -149,10 +148,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKAccountUserInfoDidChangeNotification object:nil];
     
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    if (appDelegateDidTapStatusBarNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
+        appDelegateDidTapStatusBarNotificationObserver = nil;
     }
 }
 
@@ -167,26 +166,41 @@
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
+    if (uploader)
+    {
+        [uploader cancel];
+        uploader = nil;
+    }
+    
     if (pendingOperation)
     {
         [pendingOperation cancel];
         pendingOperation = nil;
     }
     
+    if (appDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
+        appDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
     [super destroy];
 }
 
-#pragma mark - private
-
-- (NSMutableDictionary*)getUpdatedItemsDict
+- (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
-    if (!updatedItemsDict)
+    // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
     {
-        updatedItemsDict = [[NSMutableDictionary alloc] init];
+        [((SegmentedViewController*)self.parentViewController) withdrawViewControllerAnimated:animated completion:completion];
     }
-    
-    return updatedItemsDict;
+    else
+    {
+        [super withdrawViewControllerAnimated:animated completion:completion];
+    }
 }
+
+#pragma mark - private
 
 - (void)dismissFirstResponder
 {
@@ -201,31 +215,23 @@
     }
 }
 
-- (void)showUpdatingSpinner
+- (void)startActivityIndicator
 {
-    if (!updatingSpinner)
-    {
-        self.tableView.userInteractionEnabled = NO;
-        
-        // Add a spinner
-        updatingSpinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        updatingSpinner.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-        updatingSpinner.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-        updatingSpinner.hidesWhenStopped = NO;
-        [updatingSpinner startAnimating];
-        updatingSpinner.center = self.view.center;
-        [self.view addSubview:updatingSpinner];
-    }
+    // Lock user interaction
+    self.tableView.userInteractionEnabled = NO;
+    
+    [super startActivityIndicator];
 }
 
-- (void)hideUpdatingSpinner
+- (void)stopActivityIndicator
 {
-    self.tableView.userInteractionEnabled = YES;
-    
-    if (updatingSpinner)
+    // Check local conditions before stop the activity indicator
+    if (!pendingOperation && !uploader)
     {
-        [updatingSpinner removeFromSuperview];
-        updatingSpinner = nil;
+        // Unlock user interaction
+        self.tableView.userInteractionEnabled = YES;
+        
+        [super stopActivityIndicator];
     }
 }
 
@@ -233,45 +239,41 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    // avoid nil pointer
-    NSString* text = (textView.text) ? textView.text : @"";
-    
     if (topicTextView == textView)
     {
-        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        NSString* currentTopic = mxRoomState.topic;
         
-        if ([text isEqualToString:mxRoomState.topic])
+        // Check whether the topic has been actually changed
+        if ((textView.text || currentTopic) && ([textView.text isEqualToString:currentTopic] == NO))
         {
-            [dict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+            [updatedItemsDict setObject:(textView.text ? textView.text : @"") forKey:kRoomSettingsTopicKey];
         }
         else
         {
-            [dict setObject:text forKey:@"ROOM_SECTION_TOPIC"];
+            [updatedItemsDict removeObjectForKey:kRoomSettingsTopicKey];
         }
         
-        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
+        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
 }
 
 - (IBAction)onTextFieldUpdate:(UITextField*)textField
 {
-    // avoid nil pointer
-    NSString* text = (textField.text) ? textField.text : @"";
-    
     if (nameTextField == textField)
     {
-        NSMutableDictionary* dict = [self getUpdatedItemsDict];
+        NSString* currentName = mxRoomState.name;
         
-        if ([text isEqualToString:mxRoomState.name])
+        // Check whether the name has been actually changed
+        if ((textField.text || currentName) && ([textField.text isEqualToString:currentName] == NO))
         {
-            [dict removeObjectForKey:@"ROOM_SECTION_NAME"];
+            [updatedItemsDict setObject:(textField.text ? textField.text : @"") forKey:kRoomSettingsNameKey];
         }
         else
         {
-            [dict setObject:text forKey:@"ROOM_SECTION_NAME"];
+            [updatedItemsDict removeObjectForKey:kRoomSettingsNameKey];
         }
         
-        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
+        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
 }
 
@@ -301,24 +303,46 @@
 - (IBAction)onCancel:(id)sender
 {
     // if there are some updated fields
-    if (updatedItemsDict && (updatedItemsDict.count > 0))
+    if (updatedItemsDict.count)
     {
         // ensure that the user understands that the updates will be lost if
-        MXKAlert* alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_with_updates", @"Vector", nil) style:MXKAlertStyleAlert];
+        [currentAlert dismiss:NO];
         
-        [alert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
-            [self.navigationController popViewControllerAnimated:YES];
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_with_updates", @"Vector", nil) style:MXKAlertStyleAlert];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+                
+                [strongSelf->updatedItemsDict removeAllObjects];
+                
+                [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+            }
+            
         }];
         
-        [alert addActionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            [self onSave:nil];
+        [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+                
+                [strongSelf onSave:nil];
+            }
+            
         }];
         
-        [alert showInViewController:self];
+        [currentAlert showInViewController:self];
     }
     else
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self withdrawViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -326,86 +350,125 @@
 {
     __weak typeof(self) weakSelf = self;
     
-    currentAlert = [[MXKAlert alloc] initWithTitle:nil
-                                           message:message
-                                             style:MXKAlertStyleAlert];
+    [currentAlert dismiss:NO];
     
-    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                style:MXKAlertActionStyleCancel
-                                                              handler:^(MXKAlert *alert) {
-                                                                  
-                                                                  // save anything else
-                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                                                  [strongSelf->updatedItemsDict removeObjectForKey:key];
-                                                                  strongSelf->currentAlert = nil;
-                                                                  [strongSelf onSave:nil];
-                                                                  
-                                                              }];
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:message style:MXKAlertStyleAlert];
     
-    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil)
-                               style:MXKAlertActionStyleDefault
-                             handler:^(MXKAlert *alert) {
-                                 
-                                 // try again
-                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                                 strongSelf->currentAlert = nil;
-                                 [strongSelf onSave:nil];
-                                 
-                             }];
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+            // Discard related change
+            [strongSelf->updatedItemsDict removeObjectForKey:key];
+            
+            // Save anything else
+            [strongSelf onSave:nil];
+        }
+        
+    }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        if (weakSelf)
+        {
+            // try again
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            [strongSelf onSave:nil];
+        }
+        
+    }];
     
     [currentAlert showInViewController:self];
 }
 
 - (IBAction)onSave:(id)sender
 {
-    [self showUpdatingSpinner];
+    [self startActivityIndicator];
     
-    // check if there is some update
-    if (mxRoomState && updatedItemsDict && (updatedItemsDict.count > 0))
+    // check if there is some updates related to room state
+    if (mxRoomState && updatedItemsDict.count)
     {
-        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"])
+        __weak typeof(self) weakSelf = self;
+        
+        if ([updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
         {
             // Retrieve the current picture and make sure its orientation is up
-            UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"]];
+            UIImage *updatedPicture = [MXKTools forceImageOrientationUp:[updatedItemsDict objectForKey:kRoomSettingsAvatarKey]];
             
             // Upload picture
-            MXKMediaLoader *uploader = [MXKMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
+            uploader = [MXKMediaManager prepareUploaderWithMatrixSession:mxRoom.mxSession initialRange:0 andRange:1.0];
             
-            [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url)
-             {
-                 [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO"];
-                 [updatedItemsDict setObject:url forKey:@"ROOM_SECTION_PHOTO_URL"];
-                 
-                 [self onSave:nil];
-             } failure:^(NSError *error)
-             {
-                 NSLog(@"[RoomSettingsViewController] Failed to upload image");
-                 [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO"];
-                 [self onSave:nil];
-             }];
+            [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
+                
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->uploader = nil;
+                    
+                    [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsAvatarKey];
+                    [strongSelf->updatedItemsDict setObject:url forKey:kRoomSettingsAvatarURLKey];
+                    
+                    [strongSelf onSave:nil];
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[RoomSettingsViewController] Image upload failed");
+                
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->uploader = nil;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_avatar", @"Vector", nil) withKey:kRoomSettingsAvatarKey];
+                        
+                    });
+                }
+                
+            }];
             
             return;
         }
         
-        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO_URL"])
-        {
-            __weak typeof(self) weakSelf = self;
+        if ([updatedItemsDict objectForKey:kRoomSettingsAvatarURLKey])
+        { 
+            NSString* photoUrl = [updatedItemsDict objectForKey:kRoomSettingsAvatarURLKey];
             
-            NSString* photoUrl = [updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO_URL"];
-            
-            [mxRoom setAvatar:photoUrl success:^{
+            pendingOperation = [mxRoom setAvatar:photoUrl success:^{
                 
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO_URL"];
-                [strongSelf onSave:nil];
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->pendingOperation = nil;
+                    [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsAvatarURLKey];
+                    [strongSelf onSave:nil];
+                }
                 
             } failure:^(NSError *error) {
                 
                 NSLog(@"[RoomSettingsViewController] Failed to update the room avatar");
                 
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_PHOTO_URL"];
-                [strongSelf onSave:nil];
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    strongSelf->pendingOperation = nil;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_avatar", @"Vector", nil) withKey:kRoomSettingsAvatarURLKey];
+                        
+                    });
+                }
                 
             }];
             
@@ -413,131 +476,118 @@
         }
         
         // has a new room name
-        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
+        if ([updatedItemsDict objectForKey:kRoomSettingsNameKey])
         {
-            NSString* newName = [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"];
+            NSString* newName = [updatedItemsDict objectForKey:kRoomSettingsNameKey];
             
-            if (![newName isEqualToString:mxRoomState.name])
-            {
-                __weak typeof(self) weakSelf = self;
+            pendingOperation = [mxRoom setName:newName success:^{
                 
-                pendingOperation = [mxRoom setName:newName success:^{
+                if (weakSelf)
+                {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_NAME"];
+                    [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsNameKey];
                     [strongSelf onSave:nil];
-                    
-                } failure:^(NSError *error) {
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[RoomSettingsViewController] Rename room failed");
+                
+                if (weakSelf)
+                {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                
-                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_room_name", @"Vector", nil) withKey:@"ROOM_SECTION_NAME"];
+                        
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_room_name", @"Vector", nil) withKey:kRoomSettingsNameKey];
                         
                     });
-                    
-                    NSLog(@"[onDone] Rename room failed");
-                }];
+                }
                 
-                return;
-            }
+            }];
+            
+            return;
         }
         
         // has a new room topic
-        if ([updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"])
+        if ([updatedItemsDict objectForKey:kRoomSettingsTopicKey])
         {
-            NSString* newTopic = [updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"];
+            NSString* newTopic = [updatedItemsDict objectForKey:kRoomSettingsTopicKey];
             
-            if (![newTopic isEqualToString:mxRoomState.topic])
-            {
-                __weak typeof(self) weakSelf = self;
+            pendingOperation = [mxRoom setTopic:newTopic success:^{
                 
-                pendingOperation = [mxRoom setTopic:newTopic success:^{
+                if (weakSelf)
+                {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
                     
                     strongSelf->pendingOperation = nil;
-                    [strongSelf->updatedItemsDict removeObjectForKey:@"ROOM_SECTION_TOPIC"];
+                    [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsTopicKey];
                     [strongSelf onSave:nil];
-                    
-                } failure:^(NSError *error) {
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[RoomSettingsViewController] Rename topic failed");
+                
+                if (weakSelf)
+                {
                     __strong __typeof(weakSelf)strongSelf = weakSelf;
-
+                    
                     strongSelf->pendingOperation = nil;
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_topic", @"Vector", nil) withKey:@"ROOM_SECTION_TOPIC"];
+                        [strongSelf onSaveFailed:NSLocalizedStringFromTable(@"room_details_fail_to_update_topic", @"Vector", nil) withKey:kRoomSettingsTopicKey];
                         
                     });
-                    
-                    NSLog(@"[onDone] Rename topic failed");
-                }];
+                }
                 
-                return;
-            }
+            }];
+            
+            return;
         }
     }
     
-    if ([updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"])
+    if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
     {
         [mxRoom setMute:roomNotifSwitch.on completion:nil];
-        [updatedItemsDict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+        [updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
         [self onSave:nil];
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     
-    [self hideUpdatingSpinner];
+    [self stopActivityIndicator];
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return ROOM_SETTINGS_SECTION_COUNT;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == ROOM_SECTION)
+    if (section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        // add separators
-        return ROOM_SECTION_COUNT * 2 + 1;
+        return ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT;
     }
     
     return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 33.0f;
-}
-
-- (UITableViewHeaderFooterView *)headerViewForSection:(NSInteger)section
-{
-    UITableViewHeaderFooterView *header = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, 10, 33)];
-    
-    header.backgroundColor = [UIColor redColor];
-    
-    return header;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == ROOM_SECTION)
+    if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        NSInteger row = indexPath.row;
-        
-        // is a separator ?
-        if ((row % 2) == 0)
-        {
-            return 1.0f;
-        }
-        
-        // retrieve row as a ROOM_SECTION_XX index
-        row = (row - 1) / 2;
-        
-        if (row == ROOM_SECTION_TOPIC)
+        if (indexPath.row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
         {
             return ROOM_TOPIC_CELL_HEIGHT;
         }
@@ -552,27 +602,9 @@
     UITableViewCell* cell = nil;
     
     // general settings
-    if (indexPath.section == ROOM_SECTION)
+    if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        if ((row % 2) == 0)
-        {
-            UITableViewCell* sepCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellSeparator defaultReuseIdentifier]];
-            
-            if (!sepCell)
-            {
-                sepCell = [[TableViewCellSeparator alloc] init];
-            }
-            
-            // the borders are drawn in dark grey
-            sepCell.contentView.backgroundColor = ((row == 0) || (row == ROOM_SECTION_COUNT * 2)) ? [UIColor darkGrayColor] : [UIColor lightGrayColor];
-            
-            return sepCell;
-        }
-        
-        // retrieve row as a ROOM_SECTION_XX index
-        row = (row - 1) / 2;
-        
-        if (row == ROOM_SECTION_MUTE_NOTIFICATIONS)
+        if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS)
         {
             TableViewCellWithLabelAndSwitch *roomNotifCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
             
@@ -586,9 +618,9 @@
             roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
             roomNotifSwitch = roomNotifCell.mxkSwitch;
             
-            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
             {
-                roomNotifSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"]).boolValue;
+                roomNotifSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey]).boolValue;
             }
             else
             {
@@ -597,7 +629,7 @@
             
             cell = roomNotifCell;
         }
-        else if (row == ROOM_SECTION_PHOTO)
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
         {
             MXKTableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
             
@@ -619,9 +651,9 @@
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
             
-            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
             {
-                roomPhotoCell.mxkImageView.image = (UIImage*)[updatedItemsDict objectForKey:@"ROOM_SECTION_PHOTO"];
+                roomPhotoCell.mxkImageView.image = (UIImage*)[updatedItemsDict objectForKey:kRoomSettingsAvatarKey];
             }
             else
             {
@@ -633,7 +665,7 @@
             
             cell = roomPhotoCell;
         }
-        else if (row == ROOM_SECTION_TOPIC)
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
             
@@ -650,9 +682,9 @@
             roomTopicCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
             topicTextView = roomTopicCell.mxkTextView;
             
-            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:kRoomSettingsTopicKey])
             {
-                roomTopicCell.mxkTextView.text = (NSString*)[updatedItemsDict objectForKey:@"ROOM_SECTION_TOPIC"];
+                roomTopicCell.mxkTextView.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsTopicKey];
             }
             else
             {
@@ -670,7 +702,7 @@
             
             cell = roomTopicCell;
         }
-        else if (row == ROOM_SECTION_NAME)
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_NAME)
         {
             TableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndTextField defaultReuseIdentifier]];
             
@@ -683,9 +715,9 @@
             roomNameCell.mxkTextField.userInteractionEnabled = YES;
             roomNameCell.mxkTextField.tintColor = kVectorColorGreen;
             
-            if (updatedItemsDict && [updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"])
+            if (updatedItemsDict && [updatedItemsDict objectForKey:kRoomSettingsNameKey])
             {
-                roomNameCell.mxkTextField.text = (NSString*)[updatedItemsDict objectForKey:@"ROOM_SECTION_NAME"];
+                roomNameCell.mxkTextField.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsNameKey];
             }
             else
             {
@@ -704,7 +736,7 @@
             // Add a "textFieldDidChange" notification method to the text field control.
             [roomNameCell.mxkTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
         }
-        else if (row == ROOM_SECTION_PRIV_PUB)
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PRIV_PUB)
         {
             TableViewCellWithLabelAndTextField *privPublicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndTextField defaultReuseIdentifier]];
             
@@ -731,20 +763,9 @@
     {
         [self dismissFirstResponder];
         
-        if (indexPath.section == ROOM_SECTION)
+        if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
         {
-            NSUInteger row = indexPath.row;
-            
-            // the even views are the line separator
-            if ((row % 2) == 0)
-            {
-                return;
-            }
-            
-            // retrieve row as a ROOM_SECTION_XX index
-            row = (row - 1) / 2;
-            
-            if (row == ROOM_SECTION_PHOTO)
+            if (indexPath.row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
             {
                 [self onRoomAvatarTap:nil];
             }
@@ -771,8 +792,7 @@
     {
         [self getNavigationItem].rightBarButtonItem.enabled = YES;
         
-        NSMutableDictionary* dict = [self getUpdatedItemsDict];
-        [dict setObject:image forKey:@"ROOM_SECTION_PHOTO"];
+        [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
         
         [self.tableView reloadData];
     }
@@ -801,19 +821,16 @@
 {
     if (uiSwitch == roomNotifSwitch)
     {
-        NSMutableDictionary* dict = [self getUpdatedItemsDict];
-        
         if (roomNotifSwitch.on == mxRoom.isMute)
         {
-            [dict removeObjectForKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+            [updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
         }
         else
         {
-            [dict setObject:[NSNumber numberWithBool:roomNotifSwitch.on] forKey:@"ROOM_SECTION_MUTE_NOTIFICATIONS"];
+            [updatedItemsDict setObject:[NSNumber numberWithBool:roomNotifSwitch.on] forKey:kRoomSettingsMuteNotifKey];
         }
         
-        [self getNavigationItem].rightBarButtonItem.enabled = (dict.count != 0);
-        [self.tableView reloadData];
+        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
 }
 
