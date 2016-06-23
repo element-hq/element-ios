@@ -260,6 +260,7 @@
     if (mediaPicker)
     {
         [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
+        [mediaPicker destroy];
         mediaPicker = nil;
     }
 }
