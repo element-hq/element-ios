@@ -1733,7 +1733,6 @@
             participantsViewController.delegate = self;
             participantsViewController.enableMention = YES;
             participantsViewController.mxRoom = [session roomWithRoomId:roomid];
-            participantsViewController.segmentedViewController = segmentedViewController;
             [viewControllers addObject:participantsViewController];
             
             [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];

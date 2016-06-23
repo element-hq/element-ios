@@ -231,9 +231,9 @@
 - (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
     // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
-    if (_segmentedViewController)
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
     {
-        [_segmentedViewController withdrawViewControllerAnimated:animated completion:completion];
+        [((SegmentedViewController*)self.parentViewController) withdrawViewControllerAnimated:animated completion:completion];
     }
     else
     {
@@ -381,11 +381,8 @@
 
 - (void)setNavBarButtons
 {
-    // this viewController can be displayed
-    // 1- with a "standard" push mode
-    // 2- within a segmentedViewController i.e. inside another viewcontroller
-    // so, we need to use the parent controller when it is required.
-    UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
+    // Check whether the view controller is currently displayed inside a segmented view controller or not.
+    UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
     topViewController.navigationItem.rightBarButtonItem = nil;
     topViewController.navigationItem.leftBarButtonItem = nil;
 }
@@ -680,12 +677,12 @@
 - (void)pushViewController:(UIViewController*)viewController
 {
     // Check whether the view controller is displayed inside a segmented one.
-    if (self.segmentedViewController)
+    if (self.parentViewController)
     {
         // Hide back button title
-        self.segmentedViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
-        [self.segmentedViewController.navigationController pushViewController:viewController animated:YES];
+        [self.parentViewController.navigationController pushViewController:viewController animated:YES];
     }
     else
     {

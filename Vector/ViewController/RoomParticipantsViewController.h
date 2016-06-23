@@ -86,11 +86,6 @@
 @property (nonatomic) BOOL isAddParticipantSearchBarEditing;
 
 /**
- The potential segmented view controller in which the view controller is displayed.
- */
-@property (nonatomic) SegmentedViewController *segmentedViewController;
-
-/**
  Enable mention option in member details view. NO by default
  */
 @property (nonatomic) BOOL enableMention;
