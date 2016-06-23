@@ -228,6 +228,19 @@
     }
 }
 
+- (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
+    // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
+    if (_segmentedViewController)
+    {
+        [_segmentedViewController withdrawViewControllerAnimated:animated completion:completion];
+    }
+    else
+    {
+        [super withdrawViewControllerAnimated:animated completion:completion];
+    }
+}
+
 #pragma mark -
 
 - (void)setMxRoom:(MXRoom *)mxRoom
@@ -778,7 +791,8 @@
     // oneself dedicated cell
     if ((indexPath.section == participantsSection && userContact && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
     {
-        mxkContact = userContact;
+        contact = userContact;
+        mxkContact = contact;
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -1102,11 +1116,8 @@
     {
         id<RoomParticipantsViewControllerDelegate> delegate = _delegate;
         
-        // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
-        MXKViewController *viewController = _segmentedViewController ? _segmentedViewController : self;
-        
         // Withdraw the current view controller, and let the delegate mention the member
-        [viewController withdrawViewControllerAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:^{
             
             [delegate roomParticipantsViewController:self mention:member];
             
@@ -1157,15 +1168,7 @@
                                          [strongSelf addPendingActionMask];
                                          [strongSelf.mxRoom leave:^{
                                              
-                                             // check if there is a parent view controller
-                                             if (strongSelf.parentViewController)
-                                             {
-                                                 [strongSelf.navigationController popViewControllerAnimated:YES];
-                                             }
-                                             else
-                                             {
-                                                 [strongSelf withdrawViewControllerAnimated:YES completion:nil];
-                                             }
+                                             [strongSelf withdrawViewControllerAnimated:YES completion:nil];
                                              
                                          } failure:^(NSError *error) {
                                              
