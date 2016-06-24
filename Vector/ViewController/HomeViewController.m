@@ -631,7 +631,7 @@
     self.viewControllerContainer.hidden = hidden;
     self.navigationController.navigationBar.hidden = hidden;
     
-    createNewRoomImageView.hidden = hidden;
+    createNewRoomImageView.hidden = (hidden ? YES : !self.searchBarHidden);
 }
 
 #pragma mark - Navigation
