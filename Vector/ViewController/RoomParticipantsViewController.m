@@ -378,6 +378,32 @@
     }
 }
 
+- (void)startActivityIndicator
+{
+    // Check whether the current view controller is displayed inside a segmented view controller in order to run the right activity view
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+    {
+        [((SegmentedViewController*)self.parentViewController) startActivityIndicator];
+    }
+    else
+    {
+        [super startActivityIndicator];
+    }
+}
+
+- (void)stopActivityIndicator
+{
+    // Check whether the current view controller is displayed inside a segmented view controller in order to stop the right activity view
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+    {
+        [((SegmentedViewController*)self.parentViewController) stopActivityIndicator];
+    }
+    else
+    {
+        [super stopActivityIndicator];
+    }
+}
+
 #pragma mark - Internals
 
 - (void)setNavBarButtons
