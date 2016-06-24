@@ -155,10 +155,21 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
     }
 }
 
-// this method is called when the viewcontroller is displayed inside another one.
+// Those methods are called when the viewcontroller is added or removed from a container view controller.
+- (void)willMoveToParentViewController:(nullable UIViewController *)parent
+{
+    // Prompt user to save changes (if any) when the view controller is removed
+    if (!parent && updatedItemsDict.count)
+    {
+        [self promptUserToSaveChanges];
+    }
+    
+    [super willMoveToParentViewController:parent];
+}
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
+    
     [self setNavBarButtons];
 }
 
@@ -235,6 +246,44 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
     }
 }
 
+- (void)promptUserToSaveChanges
+{
+    // ensure that the user understands that the updates will be lost if
+    [currentAlert dismiss:NO];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_with_updates", @"Vector", nil) style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+            [strongSelf->updatedItemsDict removeAllObjects];
+            
+            [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+        }
+        
+    }];
+    
+    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+            [strongSelf onSave:nil];
+        }
+        
+    }];
+    
+    [currentAlert showInViewController:self];
+}
+
 #pragma mark - actions
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -302,43 +351,10 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
 
 - (IBAction)onCancel:(id)sender
 {
-    // if there are some updated fields
+    // Check whether some changes have been done
     if (updatedItemsDict.count)
     {
-        // ensure that the user understands that the updates will be lost if
-        [currentAlert dismiss:NO];
-        
-        __weak typeof(self) weakSelf = self;
-        
-        currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_with_updates", @"Vector", nil) style:MXKAlertStyleAlert];
-        
-        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
-            
-            if (weakSelf)
-            {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->currentAlert = nil;
-                
-                [strongSelf->updatedItemsDict removeAllObjects];
-                
-                [strongSelf withdrawViewControllerAnimated:YES completion:nil];
-            }
-            
-        }];
-        
-        [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-            
-            if (weakSelf)
-            {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->currentAlert = nil;
-                
-                [strongSelf onSave:nil];
-            }
-            
-        }];
-        
-        [currentAlert showInViewController:self];
+        [self promptUserToSaveChanges];
     }
     else
     {

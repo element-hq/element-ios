@@ -22,10 +22,13 @@
 
 @interface SegmentedViewController ()
 {
+    // Tell whether the segmented view is appeared (see viewWillAppear/viewWillDisappear).
+    BOOL isViewAppeared;
+    
     // list of displayed UIViewControllers
     NSArray* viewControllers;
     
-    // displayed viewController
+    // The constraints of the displayed viewController
     NSLayoutConstraint *displayedVCTopConstraint;
     NSLayoutConstraint *displayedVCLeftConstraint;
     NSLayoutConstraint *displayedVCWidthConstraint;
@@ -155,6 +158,8 @@
         // Make iOS invoke child viewWillAppear
         [_selectedViewController beginAppearanceTransition:YES animated:animated];
     }
+    
+    isViewAppeared = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -166,6 +171,8 @@
         // Make iOS invoke child viewWillDisappear
         [_selectedViewController beginAppearanceTransition:NO animated:animated];
     }
+    
+    isViewAppeared = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -347,6 +354,8 @@
             label.font = [UIFont systemFontOfSize:17];
         }
         
+        [_selectedViewController willMoveToParentViewController:nil];
+        
         [_selectedViewController.view removeFromSuperview];
         [_selectedViewController removeFromParentViewController];
         
@@ -372,8 +381,11 @@
     // Set the new selected view controller
     _selectedViewController = [viewControllers objectAtIndex:_selectedIndex];
 
-    // Make iOS invoke child viewWillAppear
-    [_selectedViewController beginAppearanceTransition:YES animated:YES];
+    // Make iOS invoke selectedViewController viewWillAppear when the segmented view is already visible
+    if (isViewAppeared)
+    {
+        [_selectedViewController beginAppearanceTransition:YES animated:YES];
+    }
 
     [self addChildViewController:_selectedViewController];
     
@@ -416,11 +428,12 @@
     [NSLayoutConstraint activateConstraints:@[displayedVCTopConstraint, displayedVCLeftConstraint, displayedVCWidthConstraint, displayedVCHeightConstraint]];
     
     [_selectedViewController didMoveToParentViewController:self];
-    [_selectedViewController endAppearanceTransition];
- 
-    // refresh the navbar background color
-    // to display if the homeserver is reachable.
-    [self onMatrixSessionChange];
+    
+    // Make iOS invoke selectedViewController viewDidAppear when the segmented view is already visible
+    if (isViewAppeared)
+    {
+        [_selectedViewController endAppearanceTransition];
+    }
 }
 
 #pragma mark - Search

@@ -127,10 +127,11 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
-// this method is called when the viewcontroller is displayed inside another one.
+// This method is called when the viewcontroller is added or removed from a container view controller.
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
+    
     [self setNavBarButtons];
 }
 
