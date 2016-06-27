@@ -52,12 +52,12 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
 
 @interface RoomSettingsViewController ()
 {
-    // updated user data
+    // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
     
-    // active items
-    UITextView* topicTextView;
+    // The current table items
     UITextField* nameTextField;
+    UITextView* topicTextView;
     
     // The potential image loader
     MXKMediaLoader *uploader;
@@ -127,9 +127,7 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionStateChange:) name:kMXSessionStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAccountUserInfoDidChange:) name:kMXKAccountUserInfoDidChangeNotification object:nil];
     
     // Observe appDelegateDidTapStatusBarNotificationObserver.
     appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -144,9 +142,8 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
     [super viewWillDisappear:animated];
     
     [self dismissFirstResponder];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKAccountUserInfoDidChangeNotification object:nil];
     
     if (appDelegateDidTapStatusBarNotificationObserver)
     {
@@ -158,10 +155,16 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
 // Those methods are called when the viewcontroller is added or removed from a container view controller.
 - (void)willMoveToParentViewController:(nullable UIViewController *)parent
 {
-    // Prompt user to save changes (if any) when the view controller is removed
-    if (!parent && updatedItemsDict.count)
+    // Check whether the view is removed from its parent.
+    if (!parent)
     {
-        [self promptUserToSaveChanges];
+        [self dismissFirstResponder];
+        
+        // Prompt user to save changes (if any).
+        if (updatedItemsDict.count)
+        {
+            [self promptUserToSaveChanges];
+        }
     }
     
     [super willMoveToParentViewController:parent];
@@ -211,7 +214,53 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
     }
 }
 
+- (void)refreshRoomSettings
+{
+    // Check whether a text input is currently edited
+    BOOL isNameEdited = nameTextField ? nameTextField.isFirstResponder : NO;
+    BOOL isTopicEdited = topicTextView ? topicTextView.isFirstResponder : NO;
+    
+    // Trigger a full table reloadData
+    [super refreshRoomSettings];
+    
+    // Restore the previous edited field
+    if (isNameEdited)
+    {
+        [self editRoomName];
+    }
+    else if (isTopicEdited)
+    {
+        [self editRoomTopic];
+    }
+}
+
 #pragma mark - private
+
+- (void)editRoomName
+{
+    if (![nameTextField becomeFirstResponder])
+    {
+        // Retry asynchronously
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self editRoomName];
+            
+        });
+    }
+}
+
+- (void)editRoomTopic
+{
+    if (![topicTextView becomeFirstResponder])
+    {
+        // Retry asynchronously
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self editRoomTopic];
+            
+        });
+    }
+}
 
 - (void)dismissFirstResponder
 {
@@ -231,7 +280,15 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
     // Lock user interaction
     self.tableView.userInteractionEnabled = NO;
     
-    [super startActivityIndicator];
+    // Check whether the current view controller is displayed inside a segmented view controller in order to run the right activity view
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+    {
+        [((SegmentedViewController*)self.parentViewController) startActivityIndicator];
+    }
+    else
+    {
+        [super startActivityIndicator];
+    }
 }
 
 - (void)stopActivityIndicator
@@ -242,7 +299,15 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
         // Unlock user interaction
         self.tableView.userInteractionEnabled = YES;
         
-        [super stopActivityIndicator];
+        // Check whether the current view controller is displayed inside a segmented view controller in order to stop the right activity view
+        if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+        {
+            [((SegmentedViewController*)self.parentViewController) stopActivityIndicator];
+        }
+        else
+        {
+            [super stopActivityIndicator];
+        }
     }
 }
 
@@ -326,31 +391,15 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
     }
 }
 
-- (void)didMXSessionStateChange:(NSNotification *)notif
-{
-    // Check this is our Matrix session that has changed
-    if (notif.object == self.session)
-    {
-        // refresh when the session sync is done.
-        if (MXSessionStateRunning == self.session.state)
-        {
-            [self.tableView reloadData];
-        }
-    }
-}
-
 - (void)didUpdateRules:(NSNotification *)notif
 {
-    [self.tableView reloadData];
-}
-
-- (void)didAccountUserInfoDidChange:(NSNotification *)notif
-{
-    [self.tableView reloadData];
+    [self refreshRoomSettings];
 }
 
 - (IBAction)onCancel:(id)sender
 {
+    [self dismissFirstResponder];
+    
     // Check whether some changes have been done
     if (updatedItemsDict.count)
     {
@@ -615,7 +664,11 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    UITableViewCell* cell = nil;
+    UITableViewCell* cell;
+    
+    // Check user's power level to know which settings are editable.
+    MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
+    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     // general settings
     if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
@@ -663,6 +716,8 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
                 // tap on avatar to update it
                 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onRoomAvatarTap:)];
                 [roomPhotoCell.mxkImageView addGestureRecognizer:tap];
+                
+                roomPhotoCell.mxkImageView.backgroundColor = [UIColor clearColor];
             }
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
@@ -674,10 +729,10 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
             else
             {
                 [mxRoom setRoomAvatarImageIn:roomPhotoCell.mxkImageView];
-                roomPhotoCell.mxkImageView.alpha = mxRoom.isModerator ? 1.0f : 0.5f;
+                
+                roomPhotoCell.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAvatar]);
+                roomPhotoCell.mxkImageView.alpha = roomPhotoCell.userInteractionEnabled ? 1.0f : 0.5f;
             }
-            
-            roomPhotoCell.userInteractionEnabled = mxRoom.isModerator;
             
             cell = roomPhotoCell;
         }
@@ -696,25 +751,26 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
             }
             
             roomTopicCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
+            
             topicTextView = roomTopicCell.mxkTextView;
             
             if (updatedItemsDict && [updatedItemsDict objectForKey:kRoomSettingsTopicKey])
             {
-                roomTopicCell.mxkTextView.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsTopicKey];
+                topicTextView.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsTopicKey];
             }
             else
             {
-                roomTopicCell.mxkTextView.text = mxRoomState.topic;
+                topicTextView.text = mxRoomState.topic;
             }
                         
-            roomTopicCell.mxkTextView.tintColor = kVectorColorGreen;
-            roomTopicCell.mxkTextView.font = [UIFont systemFontOfSize:16];
-            roomTopicCell.mxkTextView.bounces = NO;
-            roomTopicCell.mxkTextView.delegate = self;
+            topicTextView.tintColor = kVectorColorGreen;
+            topicTextView.font = [UIFont systemFontOfSize:16];
+            topicTextView.bounces = NO;
+            topicTextView.delegate = self;
             
             // disable the edition if the user cannot update it
-            roomTopicCell.mxkTextView.editable = mxRoom.isModerator;
-            roomTopicCell.mxkTextView.textColor = kVectorTextColorGray;
+            topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
+            topicTextView.textColor = kVectorTextColorGray;
             
             cell = roomTopicCell;
         }
@@ -728,29 +784,30 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
             }
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
-            roomNameCell.mxkTextField.userInteractionEnabled = YES;
-            roomNameCell.mxkTextField.tintColor = kVectorColorGreen;
+            roomNameCell.accessoryType = UITableViewCellAccessoryNone;
+            
+            nameTextField = roomNameCell.mxkTextField;
+            
+            nameTextField.userInteractionEnabled = YES;
+            nameTextField.tintColor = kVectorColorGreen;
             
             if (updatedItemsDict && [updatedItemsDict objectForKey:kRoomSettingsNameKey])
             {
-                roomNameCell.mxkTextField.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsNameKey];
+                nameTextField.text = (NSString*)[updatedItemsDict objectForKey:kRoomSettingsNameKey];
             }
             else
             {
-                roomNameCell.mxkTextField.text = mxRoomState.name;
+                nameTextField.text = mxRoomState.name;
             }
-            roomNameCell.accessoryType = UITableViewCellAccessoryNone;
             
-            cell = roomNameCell;
-            nameTextField = roomNameCell.mxkTextField;
-            
-            // disable the edition if the user cannoy update it
-            roomNameCell.editable = mxRoom.isModerator;
-            roomNameCell.mxkTextField.textColor = kVectorTextColorGray;
-            
+            // disable the edition if the user cannot update it
+            roomNameCell.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
+            nameTextField.textColor = kVectorTextColorGray;
             
             // Add a "textFieldDidChange" notification method to the text field control.
-            [roomNameCell.mxkTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
+            [nameTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
+            
+            cell = roomNameCell;
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PRIV_PUB)
         {
@@ -810,7 +867,7 @@ NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
         
         [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
         
-        [self.tableView reloadData];
+        [self refreshRoomSettings];
     }
 }
 
