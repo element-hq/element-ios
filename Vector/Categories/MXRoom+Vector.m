@@ -22,18 +22,6 @@
 
 @implementation MXRoom (Vector)
 
-#pragma mark - User power level
-
-- (BOOL)isModerator
-{
-    // Check whether the user has enough power to rename the room or update the avatar
-    MXRoomPowerLevels *powerLevels = [self.state powerLevels];
-    
-    NSInteger userPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxSession.myUser.userId];
-    
-    return (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
-}
-
 #pragma mark - Room avatar
 
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
