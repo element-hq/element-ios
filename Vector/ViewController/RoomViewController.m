@@ -684,6 +684,14 @@
         customizedRoomDataSource = nil;
     }
     
+    [self removeTypingNotificationsListener];
+    
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
         // Here [destroy] is called before [viewWillDisappear:]
@@ -2069,9 +2077,11 @@
         if (typingNotifListener)
         {
             [self.roomDataSource.room.liveTimeline removeListener:typingNotifListener];
-            currentTypingUsers = nil;
+            typingNotifListener = nil;
         }
     }
+    
+    currentTypingUsers = nil;
 }
 
 - (void)listenTypingNotifications

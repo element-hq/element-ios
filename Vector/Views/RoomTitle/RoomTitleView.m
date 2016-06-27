@@ -129,6 +129,13 @@
     }
 }
 
+- (void)destroy
+{
+    self.tapGestureDelegate = nil;
+    
+    [super destroy];
+}
+
 - (void)reportTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
 {
     if (self.tapGestureDelegate)
