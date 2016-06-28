@@ -93,7 +93,7 @@
 
 // Room recents
 "room_recents_directory" = "DIRECTORY";
-"room_recents_favourites" = "FAVORITES";
+"room_recents_favourites" = "FAVOURITES";
 "room_recents_conversations" = "ROOMS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
@@ -245,6 +245,8 @@
 "room_details_photo" = "Room Photo";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
+"room_details_favourite_tag" = "Favourite";
+"room_details_low_priority_tag" = "Low priority";
 "room_details_people" = "Members";
 "room_details_settings" = "Settings";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
