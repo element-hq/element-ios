@@ -206,6 +206,8 @@
 		F0A2413A1CB7E28F00E150C3 /* RoomParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A241391CB7E28F00E150C3 /* RoomParticipantsViewController.xib */; };
 		F0AF11F51D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AF11F31D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m */; };
 		F0AF11F61D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0AF11F41D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib */; };
+		F0B7037E1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */; };
+		F0B7037F1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */; };
 		F0BE3DF01C6CE17200AC3111 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */; };
 		F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */; };
 		F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */; };
@@ -536,6 +538,9 @@
 		F0AF11F21D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIdOrAliasTableViewCell.h; sourceTree = "<group>"; };
 		F0AF11F31D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIdOrAliasTableViewCell.m; sourceTree = "<group>"; };
 		F0AF11F41D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIdOrAliasTableViewCell.xib; sourceTree = "<group>"; };
+		F0B7037B1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithTickAndLabel.h; path = TableViewCell/TableViewCellWithTickAndLabel.h; sourceTree = "<group>"; };
+		F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithTickAndLabel.m; path = TableViewCell/TableViewCellWithTickAndLabel.m; sourceTree = "<group>"; };
+		F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithTickAndLabel.xib; path = TableViewCell/TableViewCellWithTickAndLabel.xib; sourceTree = "<group>"; };
 		F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberDetailsViewController.h; sourceTree = "<group>"; };
 		F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberDetailsViewController.m; sourceTree = "<group>"; };
 		F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberDetailsViewController.xib; sourceTree = "<group>"; };
@@ -670,6 +675,9 @@
 		7179283B1C0384DE00407D96 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				F0B7037B1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.h */,
+				F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */,
+				F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */,
 				F072E99E1D217C2C002921AF /* TableViewCellWithSwitches.h */,
 				F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */,
 				F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */,
@@ -1298,6 +1306,7 @@
 				F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */,
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
+				F0B7037F1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib in Resources */,
 				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
 				F056418C1C7CBEBD002276ED /* group.png in Resources */,
 				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -1562,6 +1571,7 @@
 				71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
 				F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */,
+				F0B7037E1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m in Sources */,
 				32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */,
 				32F2E61B1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				3235CD851C341FAA0084EA40 /* HomeSearchViewController.m in Sources */,
