@@ -26,6 +26,7 @@
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
     
     self.userNameLabel.textColor = kVectorTextColorBlack;
+    self.messageTextView.tintColor = kVectorColorGreen;
 }
 
 @end

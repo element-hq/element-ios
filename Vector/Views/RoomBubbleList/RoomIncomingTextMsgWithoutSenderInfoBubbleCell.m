@@ -16,6 +16,15 @@
 
 #import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomIncomingTextMsgWithoutSenderInfoBubbleCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+
+    self.messageTextView.tintColor = kVectorColorGreen;
+}
 
 @end

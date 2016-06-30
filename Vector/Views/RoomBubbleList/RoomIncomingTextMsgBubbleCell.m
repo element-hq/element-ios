@@ -25,6 +25,7 @@
     [super awakeFromNib];
     
     self.userNameLabel.textColor = kVectorTextColorBlack;
+    self.messageTextView.tintColor = kVectorColorGreen;
 }
 
 @end
