@@ -22,6 +22,7 @@ UIColor *kVectorColorLightGrey;
 UIColor *kVectorColorSilver;
 UIColor *kVectorColorOrange;
 UIColor *kVectorColorPinkRed;
+UIColor *kVectorColorRed;
 
 UIColor *kVectorTextColorBlack;
 UIColor *kVectorTextColorDarkGray;
@@ -45,6 +46,7 @@ NSInteger const kVectorRoomAdminLevel = 100;
     kVectorColorLightGrey = [UIColor colorWithRed:(242.0 / 255.0) green:(242.0 / 255.0) blue:(242.0 / 255.0) alpha:1.0];
     kVectorColorSilver = [UIColor colorWithRed:(199.0 / 255.0) green:(199.0 / 255.0) blue:(204.0 / 255.0) alpha:1.0];
     kVectorColorPinkRed = [UIColor colorWithRed:(255.0 / 255.0) green:(0.0 / 255.0) blue:(100.0 / 255.0) alpha:1.0];
+    kVectorColorRed = UIColorFromRGB(0xFF4444);
 
     kVectorTextColorBlack = [UIColor colorWithRed:(60.0 / 255.0) green:(60.0 / 255.0) blue:(60.0 / 255.0) alpha:1.0];
     kVectorTextColorDarkGray = [UIColor colorWithRed:(74.0 / 255.0) green:(74.0 / 255.0) blue:(74.0 / 255.0) alpha:1.0];
