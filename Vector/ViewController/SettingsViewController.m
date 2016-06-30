@@ -783,7 +783,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [enableAllCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
-            [enableAllCell layoutIfNeeded];
             cell = enableAllCell;
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
@@ -937,7 +936,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
-            [sendCrashReportCell layoutIfNeeded];
             cell = sendCrashReportCell;
         }
         else if (row == OTHER_CLEAR_CACHE_INDEX)

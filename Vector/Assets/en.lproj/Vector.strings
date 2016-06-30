@@ -241,22 +241,32 @@
 
 // Room Details
 "room_details_title" = "Room Details";
-"room_details_mute_notifs" = "Mute notifications";
+"room_details_people" = "Members";
+"room_details_settings" = "Settings";
 "room_details_photo" = "Room Photo";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
-"room_details_people" = "Members";
-"room_details_settings" = "Settings";
+"room_details_mute_notifs" = "Mute notifications";
+"room_details_access_section"="WHO CAN ACCESS THIS ROOM?";
+"room_details_access_section_invited_only"="Only people who have been invited";
+"room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
+"room_details_access_section_anyone"="Anyone who knows the room's link, including guests";
+"room_details_access_section_directory_toggle"="List this room in room directory";
+"room_details_history_section"="WHO CAN READ HISTORY?";
+"room_details_history_section_anyone"="Anyone";
+"room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
+"room_details_history_section_members_only_since_invited"="Members only (since they were invited)";
+"room_details_history_section_members_only_since_joined"="Members only (since they joined)";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
+"room_details_fail_to_update_room_guest_access" = "Fail to update the room guest access";
+"room_details_fail_to_update_room_join_rule" = "Fail to update the join rule";
+"room_details_fail_to_update_room_directory_visibility" = "Fail to update the room directory visibility";
+"room_details_fail_to_update_history_visibility" = "Fail to update the history visibility";
 "room_details_with_updates" = "Do you want to save changes?";
-"room_details_room_is_public" = "This room is public";
-"room_details_room_is_private" = "This room is private";
-
-"notification_settings_global_notification_settings" = "Global Notification Settings";
 
 // Media picker
 "media_picker_library" = "Library";
