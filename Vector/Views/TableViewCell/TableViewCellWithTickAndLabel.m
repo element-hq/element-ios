@@ -28,6 +28,8 @@
     {
         _tick.image = [UIImage imageNamed:@"selection_untick"];
     }
+    
+    _enabled = enabled;
 }
 
 @end

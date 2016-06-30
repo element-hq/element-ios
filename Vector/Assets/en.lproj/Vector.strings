@@ -259,6 +259,8 @@
 "room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
 "room_details_history_section_members_only_since_invited"="Members only (since they were invited)";
 "room_details_history_section_members_only_since_joined"="Members only (since they joined)";
+"room_details_history_section_prompt_title" = "Privacy warning";
+"room_details_history_section_prompt_msg" = "Changes to who can read history will only apply to future messages in this room. The visibility of existing history will be unchanged.";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";

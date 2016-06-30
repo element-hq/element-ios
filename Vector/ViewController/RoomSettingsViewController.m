@@ -89,10 +89,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     MXRoomDirectoryVisibility actualDirectoryVisibility;
     
     // History Visibility items
-    TableViewCellWithTickAndLabel *historyVisibilityWorldReadableTickCell;
-    TableViewCellWithTickAndLabel *historyVisibilitySharedTickCell;
-    TableViewCellWithTickAndLabel *historyVisibilityInvitedTickCell;
-    TableViewCellWithTickAndLabel *historyVisibilityJoinedTickCell;
+    NSMutableDictionary<MXRoomHistoryVisibility, TableViewCellWithTickAndLabel*> *historyVisibilityTickCells;
     
     // The potential image loader
     MXKMediaLoader *uploader;
@@ -146,6 +143,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     updatedItemsDict = [[NSMutableDictionary alloc] init];
+    historyVisibilityTickCells = [[NSMutableDictionary alloc] initWithCapacity:4];
     
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
@@ -239,6 +237,9 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
         appDelegateDidTapStatusBarNotificationObserver = nil;
     }
+    
+    updatedItemsDict = nil;
+    historyVisibilityTickCells = nil;
     
     [super destroy];
 }
@@ -1275,7 +1276,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 historyVisibilityCell.enabled = ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityWorldReadable]);
             }
             
-            historyVisibilityWorldReadableTickCell = historyVisibilityCell;
+            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityWorldReadable];
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY)
         {
@@ -1298,7 +1299,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 historyVisibilityCell.enabled = ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityShared]);
             }
             
-            historyVisibilitySharedTickCell = historyVisibilityCell;
+            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityShared];
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED)
         {
@@ -1321,7 +1322,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 historyVisibilityCell.enabled = ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityInvited]);
             }
             
-            historyVisibilityInvitedTickCell = historyVisibilityCell;
+            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityInvited];
         }
         else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED)
         {
@@ -1344,8 +1345,10 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 historyVisibilityCell.enabled = ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityJoined]);
             }
             
-            historyVisibilityJoinedTickCell = historyVisibilityCell;
+            [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityJoined];
         }
+        
+        cell = historyVisibilityCell;
     }
     
     // Sanity check
@@ -1376,7 +1379,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             if (indexPath.row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY)
             {
                 // Ignore the selection if the option is already enabled
-                if (! accessInvitedOnlyTickCell.enabled)
+                if (! accessInvitedOnlyTickCell.isEnabled)
                 {
                     // Enable this option
                     accessInvitedOnlyTickCell.enabled = YES;
@@ -1395,13 +1398,15 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                     {
                         [updatedItemsDict setObject:kMXRoomJoinRuleInvite forKey:kRoomSettingsJoinRuleKey];
                         
-                        if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessForbidden])
+                        // Update guest access to allow guest on invitation.
+                        // Note: if guest_access is "forbidden" here, guests cannot join this room even if explicitly invited.
+                        if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessCanJoin])
                         {
                             [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
                         }
                         else
                         {
-                            [updatedItemsDict setObject:kMXRoomGuestAccessForbidden forKey:kRoomSettingsGuestAccessKey];
+                            [updatedItemsDict setObject:kMXRoomGuestAccessCanJoin forKey:kRoomSettingsGuestAccessKey];
                         }
                     }
                 }
@@ -1409,7 +1414,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             else if (indexPath.row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST)
             {
                 // Ignore the selection if the option is already enabled
-                if (! accessAnyoneApartGuestTickCell.enabled)
+                if (! accessAnyoneApartGuestTickCell.isEnabled)
                 {
                     // Enable this option
                     accessAnyoneApartGuestTickCell.enabled = YES;
@@ -1449,7 +1454,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             else if (indexPath.row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE)
             {
                 // Ignore the selection if the option is already enabled
-                if (! accessAnyoneTickCell.enabled)
+                if (! accessAnyoneTickCell.isEnabled)
                 {
                     // Enable this option
                     accessAnyoneTickCell.enabled = YES;
@@ -1491,105 +1496,101 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         }
         else if (indexPath.section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
         {
-            if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE)
+            // Ignore the selection if the option is already enabled
+            TableViewCellWithTickAndLabel *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            if (! selectedCell.isEnabled)
             {
-                // Ignore the selection if the option is already enabled
-                if (! historyVisibilityWorldReadableTickCell.enabled)
+                MXRoomHistoryVisibility historyVisibility;
+                
+                if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE)
                 {
-                    // Enable this option
-                    historyVisibilityWorldReadableTickCell.enabled = YES;
-                    // Disable other options
-                    historyVisibilitySharedTickCell.enabled = NO;
-                    historyVisibilityInvitedTickCell.enabled = NO;
-                    historyVisibilityJoinedTickCell.enabled = NO;
-                    
-                    // Check the actual option
-                    if ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityWorldReadable])
-                    {
-                        // No change on history visibility
-                        [updatedItemsDict removeObjectForKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                    else
-                    {
-                        [updatedItemsDict setObject:kMXRoomHistoryVisibilityWorldReadable forKey:kRoomSettingsHistoryVisibilityKey];
-                    }
+                    historyVisibility = kMXRoomHistoryVisibilityWorldReadable;
+                }
+                else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY)
+                {
+                    historyVisibility = kMXRoomHistoryVisibilityShared;
+                }
+                else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED)
+                {
+                    historyVisibility = kMXRoomHistoryVisibilityInvited;
+                }
+                else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED)
+                {
+                    historyVisibility = kMXRoomHistoryVisibilityJoined;
+                }
+                
+                if (historyVisibility)
+                {
+                    // Prompt the user before taking into account the change
+                    [self shouldChangeHistoryVisibility:historyVisibility];
                 }
             }
-            else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY)
-            {
-                // Ignore the selection if the option is already enabled
-                if (! historyVisibilitySharedTickCell.enabled)
-                {
-                    // Enable this option
-                    historyVisibilitySharedTickCell.enabled = YES;
-                    // Disable other options
-                    historyVisibilityWorldReadableTickCell.enabled = NO;
-                    historyVisibilityInvitedTickCell.enabled = NO;
-                    historyVisibilityJoinedTickCell.enabled = NO;
-                    
-                    // Check the actual option
-                    if ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityShared])
-                    {
-                        // No change on history visibility
-                        [updatedItemsDict removeObjectForKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                    else
-                    {
-                        [updatedItemsDict setObject:kMXRoomHistoryVisibilityShared forKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                }
-            }
-            else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED)
-            {
-                // Ignore the selection if the option is already enabled
-                if (! historyVisibilityInvitedTickCell.enabled)
-                {
-                    // Enable this option
-                    historyVisibilityInvitedTickCell.enabled = YES;
-                    // Disable other options
-                    historyVisibilityWorldReadableTickCell.enabled = NO;
-                    historyVisibilitySharedTickCell.enabled = NO;
-                    historyVisibilityJoinedTickCell.enabled = NO;
-                    
-                    // Check the actual option
-                    if ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityInvited])
-                    {
-                        // No change on history visibility
-                        [updatedItemsDict removeObjectForKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                    else
-                    {
-                        [updatedItemsDict setObject:kMXRoomHistoryVisibilityInvited forKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                }
-            }
-            else if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED)
-            {
-                // Ignore the selection if the option is already enabled
-                if (! historyVisibilityJoinedTickCell.enabled)
-                {
-                    // Enable this option
-                    historyVisibilityJoinedTickCell.enabled = YES;
-                    // Disable other options
-                    historyVisibilityWorldReadableTickCell.enabled = NO;
-                    historyVisibilitySharedTickCell.enabled = NO;
-                    historyVisibilityInvitedTickCell.enabled = NO;
-                    
-                    // Check the actual option
-                    if ([mxRoomState.historyVisibility isEqualToString:kMXRoomHistoryVisibilityJoined])
-                    {
-                        // No change on history visibility
-                        [updatedItemsDict removeObjectForKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                    else
-                    {
-                        [updatedItemsDict setObject:kMXRoomHistoryVisibilityJoined forKey:kRoomSettingsHistoryVisibilityKey];
-                    }
-                }
-            }
-            
-            [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
         }
+    }
+}
+
+#pragma mark -
+
+- (void)shouldChangeHistoryVisibility:(MXRoomHistoryVisibility)historyVisibility
+{
+    // Prompt the user before applying the change on room history visibility
+    [currentAlert dismiss:NO];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_details_history_section_prompt_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"room_details_history_section_prompt_msg", @"Vector", nil) style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+        }
+        
+    }];
+    
+    [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+            [strongSelf changeHistoryVisibility:historyVisibility];
+        }
+        
+    }];
+    
+    [currentAlert showInViewController:self];
+}
+
+- (void)changeHistoryVisibility:(MXRoomHistoryVisibility)historyVisibility
+{
+    if (historyVisibility)
+    {
+        // Disable all history visibility options
+        NSArray *tickCells = historyVisibilityTickCells.allValues;
+        for (TableViewCellWithTickAndLabel *historyVisibilityTickCell in tickCells)
+        {
+            historyVisibilityTickCell.enabled = NO;
+        }
+        
+        // Enable the selected option
+        historyVisibilityTickCells[historyVisibility].enabled = YES;
+        
+        // Check the actual option
+        if ([mxRoomState.historyVisibility isEqualToString:historyVisibility])
+        {
+            // No change on history visibility
+            [updatedItemsDict removeObjectForKey:kRoomSettingsHistoryVisibilityKey];
+        }
+        else
+        {
+            [updatedItemsDict setObject:historyVisibility forKey:kRoomSettingsHistoryVisibilityKey];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
 }
 
