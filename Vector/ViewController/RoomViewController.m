@@ -420,7 +420,7 @@
     // It may correspond to an overlay mode in portrait and a side-by-side mode in landscape.
     // This display mode change involves a change at the navigation bar level.
     // If we don't hide the header, the navigation bar is in a wrong state after rotation. FIXME: Find a way to keep visible the header on rotation.
-    if ([GBDeviceInfo deviceInfo].display == GBDeviceDisplayiPad || [GBDeviceInfo deviceInfo].display >= GBDeviceDisplayiPhone55Inch)
+    if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay5p5Inch)
     {
         // Hide expanded header (if any) on device rotation
         [self showExpandedHeader:NO];
