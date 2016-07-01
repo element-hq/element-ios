@@ -391,7 +391,33 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     [currentAlert showInViewController:self];
 }
 
-#pragma mark - actions
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView;
+{
+    if (topicTextView == textView)
+    {
+        UIView *contentView = topicTextView.superview;
+        if (contentView)
+        {
+            // refresh cell's layout
+            [contentView.superview setNeedsLayout];
+        }
+    }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if (topicTextView == textView)
+    {
+        UIView *contentView = topicTextView.superview;
+        if (contentView)
+        {
+            // refresh cell's layout
+            [contentView.superview setNeedsLayout];
+        }
+    }
+}
 
 - (void)textViewDidChange:(UITextView *)textView
 {
@@ -412,6 +438,8 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
     }
 }
+
+#pragma mark - actions
 
 - (IBAction)onTextFieldUpdate:(UITextField*)textField
 {
@@ -985,9 +1013,9 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            roomTopicCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
+            roomTopicCell.label.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
             
-            topicTextView = roomTopicCell.mxkTextView;
+            topicTextView = roomTopicCell.textView;
             
             if ([updatedItemsDict objectForKey:kRoomSettingsTopicKey])
             {
@@ -999,7 +1027,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             }
                         
             topicTextView.tintColor = kVectorColorGreen;
-            topicTextView.font = [UIFont systemFontOfSize:16];
+            topicTextView.font = [UIFont systemFontOfSize:15];
             topicTextView.bounces = NO;
             topicTextView.delegate = self;
             
@@ -1024,6 +1052,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             nameTextField = roomNameCell.mxkTextField;
             
             nameTextField.tintColor = kVectorColorGreen;
+            nameTextField.font = [UIFont systemFontOfSize:17];
             nameTextField.borderStyle = UITextBorderStyleNone;
             nameTextField.textAlignment = NSTextAlignmentRight;
             
