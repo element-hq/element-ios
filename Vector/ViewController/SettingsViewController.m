@@ -227,7 +227,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker set:kGAIScreenName value:@"Settings"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
     
@@ -533,7 +533,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = [UIColor lightGrayColor];
+    cell.mxkTextField.textColor = kVectorTextColorGray;
     
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
@@ -783,7 +783,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [enableAllCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
-            [enableAllCell layoutIfNeeded];
             cell = enableAllCell;
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
@@ -937,7 +936,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
             
-            [sendCrashReportCell layoutIfNeeded];
             cell = sendCrashReportCell;
         }
         else if (row == OTHER_CLEAR_CACHE_INDEX)

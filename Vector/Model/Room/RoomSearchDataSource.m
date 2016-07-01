@@ -37,6 +37,13 @@
     return self;
 }
 
+- (void)destroy
+{
+    roomDataSource = nil;
+    
+    [super destroy];
+}
+
 - (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults
 {
     // Convert the HS results into `RoomViewController` cells

@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 
 #import "MXKTableViewCell.h"
 
-@interface TableViewCellWithLabelAndSwitch : MXKTableViewCell
+@interface TableViewCellWithTickAndLabel : MXKTableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
-@property (strong, nonatomic) IBOutlet UISwitch *mxkSwitch;
+@property (strong, nonatomic) IBOutlet UIImageView *tick;
+@property (strong, nonatomic) IBOutlet UILabel *label;
+
+@property (nonatomic, getter=isEnabled) BOOL enabled;
 
 @end

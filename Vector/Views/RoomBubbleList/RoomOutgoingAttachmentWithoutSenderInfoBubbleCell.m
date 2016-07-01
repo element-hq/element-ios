@@ -16,12 +16,16 @@
 
 #import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
 
+#import "VectorDesignValues.h"
+
 @implementation RoomOutgoingAttachmentWithoutSenderInfoBubbleCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
     self.readReceiptsAlignment = ReadReceiptAlignmentRight;
+    self.messageTextView.tintColor = kVectorColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData

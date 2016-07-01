@@ -32,10 +32,6 @@
 {
     [super awakeFromNib];
     
-    // Round image view
-    [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
-    _roomAvatar.clipsToBounds = YES;
-    
     // Initialize unread count badge
     [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
     _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
@@ -44,6 +40,15 @@
     self.lastEventDescription.textColor = kVectorTextColorGray;
     self.lastEventDate.textColor = kVectorTextColorGray;
     self.missedNotifAndUnreadBadgeLabel.textColor = [UIColor whiteColor];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // Round image view
+    [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
+    _roomAvatar.clipsToBounds = YES;
 }
 
 - (void)render:(MXKCellData *)cellData

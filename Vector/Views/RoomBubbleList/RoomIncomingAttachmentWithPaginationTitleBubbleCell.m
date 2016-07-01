@@ -28,6 +28,7 @@
     
     self.paginationLabel.textColor = kVectorColorGreen;
     self.paginationSeparatorView.backgroundColor = kVectorColorGreen;
+    self.messageTextView.tintColor = kVectorColorGreen;
 }
 
 - (void)render:(MXKCellData *)cellData

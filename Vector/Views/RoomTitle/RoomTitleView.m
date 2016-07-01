@@ -28,6 +28,11 @@
                           bundle:[NSBundle bundleForClass:[RoomTitleView class]]];
 }
 
+- (void)dealloc
+{
+    _roomPreviewData = nil;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -93,11 +98,23 @@
     }
 }
 
+- (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
+{
+    _roomPreviewData = roomPreviewData;
+    
+    [self refreshDisplay];
+}
+
 - (void)refreshDisplay
 {
     [super refreshDisplay];
     
-    if (self.mxRoom)
+    // Consider in priority the preview data (if any)
+    if (self.roomPreviewData)
+    {
+        self.displayNameTextField.text = self.roomPreviewData.roomName;
+    }
+    else if (self.mxRoom)
     {
         self.displayNameTextField.text = self.mxRoom.vectorDisplayname;
         if (!self.displayNameTextField.text.length)
@@ -110,6 +127,13 @@
             self.displayNameTextField.textColor = kVectorTextColorBlack;
         }
     }
+}
+
+- (void)destroy
+{
+    self.tapGestureDelegate = nil;
+    
+    [super destroy];
 }
 
 - (void)reportTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer

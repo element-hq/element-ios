@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,11 +14,23 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCellWithLabelAndTextField.h"
+#import "TableViewCellWithTickAndLabel.h"
 
-@interface TableViewCellWithLabelAndTextField : MXKTableViewCellWithLabelAndTextField
+@implementation TableViewCellWithTickAndLabel
 
-// YES to allow text edition
-@property (nonatomic) BOOL editable;
+- (void)setEnabled:(BOOL)enabled
+{
+    if (enabled)
+    {
+        _tick.image = [UIImage imageNamed:@"selection_tick"];
+    }
+    else
+    {
+        _tick.image = [UIImage imageNamed:@"selection_untick"];
+    }
+    
+    _enabled = enabled;
+}
 
 @end
+

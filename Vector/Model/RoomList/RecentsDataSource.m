@@ -20,6 +20,7 @@
 
 #import "VectorDesignValues.h"
 
+#import "RoomIdOrAliasTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
 
 #import "PublicRoomsDirectoryDataSource.h"
@@ -41,6 +42,7 @@
     NSMutableArray* conversationCellDataArray;
     NSMutableArray* lowPriorityCellDataArray;
 
+    NSInteger searchedRoomIdOrAliasSection; // used to display the potential room id or alias typed during search.
     NSInteger directorySection;
     NSInteger invitesSection;
     NSInteger favoritesSection;
@@ -51,6 +53,9 @@
     NSInteger shrinkedSectionsBitMask;
     
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
+    
+    // The potential room id or alias typed in search input.
+    NSString *roomIdOrAlias;
 }
 @end
 
@@ -66,6 +71,7 @@
         conversationCellDataArray = [[NSMutableArray alloc] init];
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
 
+        searchedRoomIdOrAliasSection = -1;
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
@@ -114,7 +120,7 @@
     [super removeMatrixSession:matrixSession];
     
     // sanity check
-    if (matrixSession && matrixSession.myUser && matrixSession.myUser.userId)
+    if (matrixSession.myUser && matrixSession.myUser.userId)
     {
         id roomTagListener = [roomTagsListenerByUserId objectForKey:matrixSession.myUser.userId];
         
@@ -123,12 +129,12 @@
             [matrixSession removeListener:roomTagListener];
             [roomTagsListenerByUserId removeObjectForKey:matrixSession.myUser.userId];
         }
-
-        if (_publicRoomsDirectoryDataSource.mxSession == matrixSession)
-        {
-            [_publicRoomsDirectoryDataSource destroy];
-            _publicRoomsDirectoryDataSource = nil;
-        }
+    }
+    
+    if (_publicRoomsDirectoryDataSource.mxSession == matrixSession)
+    {
+        [_publicRoomsDirectoryDataSource destroy];
+        _publicRoomsDirectoryDataSource = nil;
     }
 }
 
@@ -253,7 +259,11 @@
 {
     NSUInteger count = 0;
 
-    if (section == directorySection)
+    if (section == searchedRoomIdOrAliasSection)
+    {
+        count = 1;
+    }
+    else if (section == directorySection)
     {
         count = 1;
     }
@@ -291,7 +301,7 @@
 {
     UIView *sectionHeader = nil;
     
-    if (section < sectionsCount)
+    if (section < sectionsCount && section != searchedRoomIdOrAliasSection)
     {
         NSString* sectionTitle = @"";
         NSInteger sectionBitwise = 0;
@@ -374,14 +384,26 @@
     return sectionHeader;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)anIndexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)theIndexPath
 {
-    NSIndexPath* indexPath = anIndexPath;
-
-    // For the cell showing the public rooms directory search result,
-    // skip the MatrixKit mechanism and return directly the UITableViewCell
-    if (indexPath.section == directorySection)
+    NSIndexPath* indexPath = theIndexPath;
+    
+    if (indexPath.section == searchedRoomIdOrAliasSection)
     {
+        RoomIdOrAliasTableViewCell *roomIdOrAliasCell = [tableView dequeueReusableCellWithIdentifier:RoomIdOrAliasTableViewCell.defaultReuseIdentifier];
+        if (!roomIdOrAliasCell)
+        {
+            roomIdOrAliasCell = [[RoomIdOrAliasTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[RoomIdOrAliasTableViewCell defaultReuseIdentifier]];
+        }
+        
+        [roomIdOrAliasCell render:roomIdOrAlias];
+        
+        return roomIdOrAliasCell;
+    }
+    else if (indexPath.section == directorySection)
+    {
+        // For the cell showing the public rooms directory search result,
+        // skip the MatrixKit mechanism and return directly the UITableViewCell
         DirectoryRecentTableViewCell *directoryCell = [tableView dequeueReusableCellWithIdentifier:DirectoryRecentTableViewCell.defaultReuseIdentifier];
         if (!directoryCell)
         {
@@ -395,7 +417,7 @@
 
     if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == indexPath.section))
     {
-        if ([anIndexPath isEqual:self.droppingCellIndexPath])
+        if ([theIndexPath isEqual:self.droppingCellIndexPath])
         {
             static NSString* cellIdentifier = @"VectorRecentsMovingCell";
             
@@ -423,31 +445,31 @@
             return cell;
         }
         
-        if (anIndexPath.row > self.droppingCellIndexPath.row)
+        if (theIndexPath.row > self.droppingCellIndexPath.row)
         {
-            indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
+            indexPath = [NSIndexPath indexPathForRow:theIndexPath.row-1 inSection:theIndexPath.section];
         }
     }
     
-    if (self.hiddenCellIndexPath && [anIndexPath isEqual:self.hiddenCellIndexPath])
+    if (self.hiddenCellIndexPath && [theIndexPath isEqual:self.hiddenCellIndexPath])
     {
-        indexPath = [NSIndexPath indexPathForRow:anIndexPath.row-1 inSection:anIndexPath.section];
+        indexPath = [NSIndexPath indexPathForRow:theIndexPath.row-1 inSection:theIndexPath.section];
     }
     
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
-- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)anIndexPath
+- (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)theIndexPath
 {
     id<MXKRecentCellDataStoring> cellData = nil;
-    NSInteger row = anIndexPath.row;
-    NSInteger section = anIndexPath.section;
+    NSInteger row = theIndexPath.row;
+    NSInteger section = theIndexPath.section;
     
     if (self.droppingCellIndexPath  && (self.droppingCellIndexPath.section == section))
     {
-        if (anIndexPath.row > self.droppingCellIndexPath.row)
+        if (theIndexPath.row > self.droppingCellIndexPath.row)
         {
-            row = anIndexPath.row - 1;
+            row = theIndexPath.row - 1;
         }
     }
     
@@ -473,10 +495,15 @@
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    // For the cell showing the public rooms directory search result,
-    // skip the MatrixKit mechanism and return directly the cell height
+    if (indexPath.section == searchedRoomIdOrAliasSection)
+    {
+        return RoomIdOrAliasTableViewCell.cellHeight;
+    }
+    
     if (indexPath.section == directorySection)
     {
+        // For the cell showing the public rooms directory search result,
+        // skip the MatrixKit mechanism and return directly the cell height
         return DirectoryRecentTableViewCell.cellHeight;
     }
 
@@ -607,8 +634,14 @@
     conversationCellDataArray = [[NSMutableArray alloc] init];
     lowPriorityCellDataArray = [[NSMutableArray alloc] init];
     
-    directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
+    searchedRoomIdOrAliasSection = directorySection = favoritesSection = conversationSection = lowPrioritySection = invitesSection = -1;
     sectionsCount = 0;
+    
+    if (roomIdOrAlias.length)
+    {
+        // The current search pattern corresponds to a valid room id or room alias
+        searchedRoomIdOrAliasSection = sectionsCount++;
+    }
     
     if (!_hidePublicRoomsDirectory)
     {
@@ -751,6 +784,23 @@
 #pragma mark - Override MXKRecentsDataSource
 - (void)searchWithPatterns:(NSArray *)patternsList
 {
+    // Check whether the typed input is a room alias or a room identifier.
+    roomIdOrAlias = nil;
+    if (patternsList.count == 1)
+    {
+        NSString *pattern = patternsList[0];
+        
+        if ([MXTools isMatrixRoomAlias:pattern] || [MXTools isMatrixRoomIdentifier:pattern])
+        {
+            // Display this room id/alias only if it is not already joined by the user
+            MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+            if (![accountManager accountKnowingRoomWithRoomIdOrAlias:pattern])
+            {
+                roomIdOrAlias = pattern;
+            }
+        }
+    }
+    
     [super searchWithPatterns:patternsList];
 
     if (_publicRoomsDirectoryDataSource)

@@ -30,7 +30,7 @@
  */
 extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, MXKContactDetailsViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
 {
     BOOL isAPNSRegistered;
     
@@ -54,6 +54,7 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
 @property (nonatomic) BOOL isOffline;
 
 @property (nonatomic, readonly) UINavigationController *homeNavigationController;
+@property (nonatomic, readonly) UINavigationController *secondaryNavigationController;
 
 // Associated matrix sessions (empty by default).
 @property (nonatomic, readonly) NSArray *mxSessions;

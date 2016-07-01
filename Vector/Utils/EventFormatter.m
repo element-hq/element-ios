@@ -48,9 +48,9 @@
         self.defaultTextColor = kVectorTextColorBlack;
         self.subTitleTextColor = kVectorTextColorGray;
         self.prefixTextColor = kVectorTextColorGray;
-        self.bingTextColor = kVectorColorGreen;
+        self.bingTextColor = kVectorColorPinkRed;
         self.sendingTextColor = kVectorTextColorGray;
-        self.errorTextColor = kVectorColorPinkRed;
+        self.errorTextColor = kVectorColorRed;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];

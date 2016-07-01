@@ -22,5 +22,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomAvatarCenterXConstraint;
 
 @property (nonatomic) NSString *roomAvatarURL;
+@property (nonatomic) UIImage  *roomAvatarPlaceholder;
 
 @end

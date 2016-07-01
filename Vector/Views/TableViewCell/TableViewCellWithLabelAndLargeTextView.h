@@ -16,11 +16,14 @@
 
 #import "MXKTableViewCell.h"
 
-@interface TableViewCellWithLabelAndLargeTextView : MXKTableViewCell
-{
-}
+@interface TableViewCellWithLabelAndLargeTextView : MXKTableViewCell <UITextViewDelegate>
 
-@property (strong, nonatomic) IBOutlet UILabel *mxkLabel;
-@property (strong, nonatomic) IBOutlet UITextView *mxkTextView;
+@property (strong, nonatomic) IBOutlet UILabel *label;
+@property (strong, nonatomic) IBOutlet UITextView *textView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelTrailingMinConstraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewTrailingConstraint;
 
 @end

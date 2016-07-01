@@ -32,6 +32,7 @@ extern UIColor *kVectorColorLightGrey;
 extern UIColor *kVectorColorSilver;
 extern UIColor *kVectorColorOrange;
 extern UIColor *kVectorColorPinkRed;
+extern UIColor *kVectorColorRed;
 
 #pragma mark - Vector Text Colors
 extern UIColor *kVectorTextColorBlack;

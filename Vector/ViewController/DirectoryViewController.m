@@ -27,6 +27,9 @@
 @interface DirectoryViewController ()
 {
     PublicRoomsDirectoryDataSource *dataSource;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
 }
 
 @end
@@ -58,9 +61,16 @@
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker set:kGAIScreenName value:@"Directory"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
+        
+    }];
 
     [self.tableView reloadData];
 }
@@ -80,6 +90,17 @@
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
@@ -103,35 +124,32 @@
     // Check whether the user has already joined the selected public room
     if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
+        // Open the public room.
         [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
     }
     else
     {
-        // Join the room before opening it
-        [self startActivityIndicator];
-        
-        // We promote here join by room alias instead of room id
-        NSString *roomIdOrAlias = publicRoom.roomId;
-        if (publicRoom.aliases.count)
+        // Preview the public room
+        if (publicRoom.worldReadable)
         {
-            roomIdOrAlias = publicRoom.aliases.firstObject;
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:dataSource.mxSession];
+            
+            [self startActivityIndicator];
+            
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                
+                [self stopActivityIndicator];
+                
+                [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
+            }];
+        }
+        else
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
+            [[AppDelegate theDelegate].homeViewController showRoomPreview:roomPreviewData];
         }
         
-        [dataSource.mxSession joinRoom:roomIdOrAlias success:^(MXRoom *room) {
-
-            [self stopActivityIndicator];
-
-            [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
-
-        } failure:^(NSError *error) {
-
-            [self stopActivityIndicator];
-
-            NSLog(@"[DirectoryVC] Failed to join public room (%@)", publicRoom.displayname);
-
-            // Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
     }
 }
 
@@ -139,9 +157,7 @@
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
-    });
+    [[AppDelegate theDelegate].homeViewController selectRoomWithId:roomId andEventId:nil inMatrixSession:mxSession];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible

@@ -131,8 +131,6 @@ static void *RecordingContext = &RecordingContext;
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
-    userAlbumsQueue = dispatch_queue_create("media.picker.user.albums", DISPATCH_QUEUE_SERIAL);
-    
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -144,9 +142,11 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)dealloc
 {
-    cameraQueue = nil;
-    userAlbumsQueue = nil;
-    userAlbums = nil;
+    // Check whether destroy is required
+    if (captureSession)
+    {
+        [self destroy];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -163,8 +163,13 @@ static void *RecordingContext = &RecordingContext;
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker set:kGAIScreenName value:@"MediaPicker"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
+    
+    if (!userAlbumsQueue)
+    {
+        userAlbumsQueue = dispatch_queue_create("media.picker.user.albums", DISPATCH_QUEUE_SERIAL);
     }
     
     [self reloadRecentCapturesCollection];
@@ -471,6 +476,7 @@ static void *RecordingContext = &RecordingContext;
         PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
         
         NSMutableArray *updatedUserAlbums = [NSMutableArray array];
+        __block PHAssetCollection *cameraRollAlbum, *videoAlbum;
         
         // Set up fetch options.
         PHFetchOptions *options = [[PHFetchOptions alloc] init];
@@ -497,10 +503,31 @@ static void *RecordingContext = &RecordingContext;
             
             if (assets.count)
             {
-                [updatedUserAlbums addObject:collection];
+                if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
+                {
+                    cameraRollAlbum = collection;
+                }
+                else if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumVideos)
+                {
+                    videoAlbum = collection;
+                }
+                else
+                {
+                    [updatedUserAlbums addObject:collection];
+                }
             }
             
         }];
+        
+        // Move the camera roll at the top, followed by video and the rest by default
+        if (videoAlbum)
+        {
+            [updatedUserAlbums insertObject:videoAlbum atIndex:0];
+        }
+        if (cameraRollAlbum)
+        {
+            [updatedUserAlbums insertObject:cameraRollAlbum atIndex:0];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -765,6 +792,8 @@ static void *RecordingContext = &RecordingContext;
     [self dismissImageValidationView];
     
     cameraQueue = nil;
+    userAlbumsQueue = nil;
+    userAlbums = nil;
     
     [super destroy];
 }

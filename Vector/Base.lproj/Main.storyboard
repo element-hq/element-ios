@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--RecentsNav-->
+        <!--HomeNav-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController title="Recents" id="RMx-3f-FxP" userLabel="RecentsNav" sceneMemberID="viewController">
+                <navigationController title="Messages" id="RMx-3f-FxP" userLabel="HomeNav" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -164,6 +164,24 @@
             </objects>
             <point key="canvasLocation" x="-740" y="-1649"/>
         </scene>
+        <!--Contact Details View Controller-->
+        <scene sceneID="grY-bt-CcD">
+            <objects>
+                <viewController id="gkO-rP-nGK" customClass="ContactDetailsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0f8-Tg-Zlw"/>
+                        <viewControllerLayoutGuide type="bottom" id="GF2-be-Jca"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eRR-tG-G8a">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="01q-h6-40E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2354" y="-3212"/>
+        </scene>
         <!--Home View Controller-->
         <scene sceneID="O3K-sK-0fA">
             <objects>
@@ -180,7 +198,7 @@
                     <navigationItem key="navigationItem" id="lkL-Yi-y5i">
                         <barButtonItem key="leftBarButtonItem" image="settings_icon.png" id="RwK-LB-3ML">
                             <connections>
-                                <segue destination="1TJ-Md-cjN" kind="show" id="rCU-QE-kdQ"/>
+                                <segue destination="1TJ-Md-cjN" kind="show" identifier="showSettings" id="rCU-QE-kdQ"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="search_icon.png" id="mxO-nq-rJ1">
@@ -194,7 +212,8 @@
                         <outlet property="settingsBarButtonItem" destination="RwK-LB-3ML" id="T3b-ii-7fa"/>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showDetails" id="agy-3r-khl"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vfC-8C-AsT"/>
-                        <segue destination="dP6-5F-5s0" kind="showDetail" identifier="showDirectory" action="showViewController:sender:" id="hvq-zV-OB7"/>
+                        <segue destination="dP6-5F-5s0" kind="show" identifier="showDirectory" id="hvq-zV-OB7"/>
+                        <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="tcD-xb-ae8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>

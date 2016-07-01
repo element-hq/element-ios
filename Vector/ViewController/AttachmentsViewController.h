@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-#import "TableViewCellSeparator.h"
+#import <MatrixKit/MatrixKit.h>
 
-@implementation TableViewCellSeparator
+@interface AttachmentsViewController : MXKAttachmentsViewController
 
 @end
+

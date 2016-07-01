@@ -18,6 +18,7 @@
 
 #import "RoomEmailInvitation.h"
 #import "MXSession.h"
+#import "RoomDataSource.h"
 
 /**
  The `RoomEmailInvitation` gathers information for displaying the preview of a
@@ -51,17 +52,18 @@
 
 /**
  Preview information.
- They come from the `emailInvitationParams` or [self fetchPreviewData].
  */
 @property (nonatomic, readonly) NSString *roomName;
+@property (nonatomic, readonly) NSString *roomTopic;
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
+@property (nonatomic, readonly) NSArray<NSString*> *roomAliases;
+@property (nonatomic, readonly) NSInteger numJoinedMembers; // -1 if unknown.
 
 /**
- A snapshot of the room state.
- Note: This ivar may be replaced by a RoomDataSource ivar when the room preview will be
- fully implemented.
+ The RoomDataSource to peek into the room. 
+ Note: this object is created when [self peekInRoom:] succeeds.
  */
-@property (nonatomic, readonly) MXRoomState *roomState;
+@property (nonatomic, readonly) RoomDataSource *roomDataSource;
 
 /**
  Contructors.
@@ -74,14 +76,22 @@
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
 
 /**
- Attempt to get more information from the homeserver about the room.
-
- NOTE: This method is temporary while we do not support the full room preview
-       with preview of messages.
+ Contructors.
  
- @param completion the block called when the request is complete. `successed` means
-        the homeserver provided some information.
+ @param publicRoom a public room returned by the publicRoom request.
+ @param mxSession the session to open the room preview with.
  */
-- (void)fetchPreviewData:(void (^)(BOOL successed))completion;
+- (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession;
+
+/**
+ Attempt to peek into the room to get room data (state, messages history, etc).
+
+ The operation succeeds only if the room history is world_readable.
+
+ @param completion the block called when the request is complete. `successed` means
+                   the self.roomDataSource has been created and is ready to provide
+                   room history.
+ */
+- (void)peekInRoom:(void (^)(BOOL successed))completion;
 
 @end

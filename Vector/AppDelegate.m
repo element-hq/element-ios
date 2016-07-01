@@ -22,8 +22,11 @@
 #import "EventFormatter.h"
 
 #import "HomeViewController.h"
-#import "SettingsViewController.h"
 #import "RoomViewController.h"
+
+#import "DirectoryViewController.h"
+#import "SettingsViewController.h"
+#import "ContactDetailsViewController.h"
 
 #import "RageShakeManager.h"
 
@@ -117,6 +120,11 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
      session to be running. Hence, this observer.
      */
     id universalLinkWaitingObserver;
+
+    /**
+     Suspend the error notifications when the navigation stack of the root view controller is updating.
+     */
+    BOOL isErrorNotificationSuspended;
 
     /**
      Completion block called when [self popToHomeViewControllerAnimated:] has been
@@ -238,42 +246,38 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     callEventsListeners = [NSMutableDictionary dictionary];
     
     // To simplify navigation into the app, we retrieve here the navigation controller and the view controller related
-    // to the recents list in Recents Tab.
+    // to the Home screen ("Messages").
     // Note: UISplitViewController is not supported on iPhone for iOS < 8.0
-    UIViewController* recents = self.window.rootViewController;
+    UIViewController* rootViewController = self.window.rootViewController;
     _homeNavigationController = nil;
-    if ([recents isKindOfClass:[UISplitViewController class]])
+    if ([rootViewController isKindOfClass:[UISplitViewController class]])
     {
-        UISplitViewController *splitViewController = (UISplitViewController *)recents;
+        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
         splitViewController.delegate = self;
         
         _homeNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         
-        UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
-        if ([detailsViewController isKindOfClass:[UINavigationController class]])
+        if (splitViewController.viewControllers.count == 2)
         {
-            UINavigationController *navigationController = (UINavigationController*)detailsViewController;
-            detailsViewController = navigationController.topViewController;
+            UIViewController *detailsViewController = [splitViewController.viewControllers lastObject];
+            
+            if ([detailsViewController isKindOfClass:[UINavigationController class]])
+            {
+                _secondaryNavigationController = (UINavigationController*)detailsViewController;
+                detailsViewController = _secondaryNavigationController.topViewController;
+            }
+            
+            detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
         }
         
-        // IOS >= 8
-        if ([splitViewController respondsToSelector:@selector(displayModeButtonItem)])
+        // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
+        // to avoid empty room View Controller in portrait orientation
+        // else, the user cannot select a room
+        // shouldHideViewController delegate method is also implemented
+        if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
         {
-            detailsViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
-            
-            // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
-            // to avoid empty room View Controller in portrait orientation
-            // else, the user cannot select a room
-            // shouldHideViewController delegate method is also implemented
-            if ([splitViewController respondsToSelector:@selector(preferredDisplayMode)] && [(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
-            {
-                splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-            }
+            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         }
-    }
-    else if ([recents isKindOfClass:[UINavigationController class]])
-    {
-        _homeNavigationController = (UINavigationController*)recents;
     }
     
     if (_homeNavigationController)
@@ -481,6 +485,15 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 - (void)restoreInitialDisplay:(void (^)())completion
 {
+    // Suspend error notifications during navigation stack change.
+    isErrorNotificationSuspended = YES;
+    
+    // Cancel search
+    if (_homeViewController)
+    {
+        [_homeViewController hideSearch:NO];
+    }
+    
     // Dismiss potential view controllers that were presented modally (like the media picker).
     if (self.window.rootViewController.presentedViewController)
     {
@@ -501,13 +514,33 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                     [noCallSupportAlert showInViewController:self.window.rootViewController];
                 }
                 
+                // Enable error notification (Check whether a notification is pending)
+                isErrorNotificationSuspended = NO;
+                if (self.errorNotification)
+                {
+                    [self showErrorNotification];
+                }
+                
             }];
             
         }];
     }
     else
     {
-        [self popToHomeViewControllerAnimated:NO completion:completion];
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+            // Enable error notification (Check whether a notification is pending)
+            isErrorNotificationSuspended = NO;
+            if (self.errorNotification)
+            {
+                [self showErrorNotification];
+            }
+        }];
     }
 }
 
@@ -550,7 +583,8 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                                                     [AppDelegate theDelegate].errorNotification = nil;
                                                 }];
     
-    [self.errorNotification showInViewController:self.window.rootViewController];
+    // Display the error notification
+    [self showErrorNotification];
     
     // Switch in offline mode in case of network reachability error
     if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
@@ -559,6 +593,21 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
     
     return self.errorNotification;
+}
+
+- (void)showErrorNotification
+{
+    if (!isErrorNotificationSuspended)
+    {
+        if (self.window.rootViewController.presentedViewController)
+        {
+            [self.errorNotification showInViewController:self.window.rootViewController.presentedViewController];
+        }
+        else
+        {
+            [self.errorNotification showInViewController:self.window.rootViewController];
+        }
+    }
 }
 
 #pragma mark
@@ -574,31 +623,13 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         _homeNavigationController.delegate = self;
 
         [_homeNavigationController popToViewController:_homeViewController animated:animated];
-        
-        // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
-        // when a ViewController has hidden it (see MXKAttachmentsViewController).
-        // Patch: restore navigation bar by default here.
-        _homeNavigationController.navigationBarHidden = NO;
-        
-        // For unknown reason, the default settings of the navigation bar are not restored correctly by [popToViewController:animated:]
-        // when a ViewController has changed them (see RoomViewController, RoomMemberDetailsViewController).
-        // Patch: restore default settings here.
-        [_homeNavigationController.navigationBar setShadowImage:nil];
-        [_homeNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        
-        // Release the current selected room
-        [_homeViewController closeSelectedRoom];
     }
     else
     {
-        // Dispatch the completion in order to let navigation stack refresh itself
-        // It is required to display the auth VC at startup
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion();
-            }
-         });
+        if (completion)
+        {
+            completion();
+        }
     }
 }
 
@@ -609,6 +640,15 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     if (viewController == _homeViewController)
     {
         _homeNavigationController.delegate = nil;
+        
+        // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
+        // when a ViewController has hidden it (see MXKAttachmentsViewController).
+        // Patch: restore navigation bar by default here.
+        _homeNavigationController.navigationBarHidden = NO;
+        
+        // Release the current selected room (if any).
+        [_homeViewController closeSelectedRoom];
+        
         if (popToHomeViewControllerCompletion)
         {
             void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
@@ -1043,7 +1083,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                             roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
 
                             // Try to get more information about the room before opening its preview
-                            [roomPreviewData fetchPreviewData:^(BOOL successed) {
+                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
 
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [_homeViewController stopActivityIndicator];
@@ -1365,16 +1405,8 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         // Report this session to contact manager
         [[MXKContactManager sharedManager] addMatrixSession:mxSession];
         
-        // Update recents data source (The recents view controller will be updated by its data source)
-        if (!mxSessionArray.count)
-        {
-            // This is the first added session, list all the recents for the logged user
-            [_homeViewController displayWithSession:mxSession];
-        }
-        else
-        {
-            [_homeViewController addMatrixSession:mxSession];
-        }
+        // Update home data sources
+        [_homeViewController addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
     }
@@ -1678,7 +1710,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
             {
                 // create a new room
                 [mxSession createRoom:nil
-                           visibility:kMXRoomVisibilityPrivate
+                           visibility:kMXRoomDirectoryVisibilityPrivate
                             roomAlias:nil
                                 topic:nil
                               success:^(MXRoom *room) {
@@ -1774,13 +1806,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
 }
 
-#pragma mark - MXKContactDetailsViewControllerDelegate
-
-- (void)contactDetailsViewController:(MXKContactDetailsViewController *)contactDetailsViewController startChatWithMatrixId:(NSString *)matrixId completion:(void (^)(void))completion
-{
-    [self startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
-}
-
 #pragma mark - Call status handling
 
 - (void)addCallStatusBar
@@ -1866,9 +1891,46 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 #pragma mark - SplitViewController delegate
 
+- (nullable UIViewController *)splitViewController:(UISplitViewController *)splitViewController separateSecondaryViewControllerFromPrimaryViewController:(UIViewController *)primaryViewController
+{
+    UIViewController *topViewController = _homeNavigationController.topViewController;
+    
+    // Check the case where we don't want to use as a secondary view controller the top view controller
+    // of the navigation controller of the home view controller.
+    if ([topViewController isKindOfClass:[DirectoryViewController class]]
+        || [topViewController isKindOfClass:[SettingsViewController class]]
+        || [topViewController isKindOfClass:[ContactDetailsViewController class]])
+    {
+        if (_secondaryNavigationController)
+        {
+            // Return the default secondary view controller to keep on primaryViewController side
+            // the Directory, the Settings or the Contact details view controller.
+            return _secondaryNavigationController;
+        }
+        else
+        {
+            // Return a fake room view controller for the secondary view controller.
+            return [RoomViewController roomViewController];
+        }
+    }
+    return nil;
+}
+
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
 {
-    if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]] && ([(RoomViewController *)[(UINavigationController *)secondaryViewController topViewController] roomDataSource] == nil))
+    RoomViewController *roomViewController;
+    
+    if ([secondaryViewController isKindOfClass:[RoomViewController class]])
+    {
+        roomViewController = (RoomViewController*)secondaryViewController;
+    }
+    else if ([secondaryViewController isKindOfClass:[UINavigationController class]] &&
+             [[(UINavigationController *)secondaryViewController topViewController] isKindOfClass:[RoomViewController class]])
+    {
+        roomViewController = (RoomViewController*)[(UINavigationController *)secondaryViewController topViewController];
+    }
+    
+    if (roomViewController && roomViewController.roomDataSource == nil && roomViewController.roomPreviewData == nil)
     {
         // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
         return YES;

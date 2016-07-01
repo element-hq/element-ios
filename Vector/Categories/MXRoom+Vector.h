@@ -22,11 +22,6 @@
 @interface MXRoom (Vector)
 
 /**
- Tell whether the oneself user is a moderator of the room.
- */
-@property(nonatomic, readonly) BOOL isModerator;
-
-/**
  The vector displayname of the room
  */
 @property(nonatomic, readonly) NSString* vectorDisplayname;

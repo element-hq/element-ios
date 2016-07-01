@@ -20,4 +20,11 @@
 
 @implementation RoomOutgoingTextMsgWithoutSenderNameBubbleCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+
+    self.messageTextView.tintColor = kVectorColorGreen;
+}
+
 @end

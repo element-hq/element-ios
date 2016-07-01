@@ -21,12 +21,17 @@
 
 #import "RoomDataSource.h"
 #import "RoomViewController.h"
+
 #import "DirectoryViewController.h"
+#import "ContactDetailsViewController.h"
+#import "SettingsViewController.h"
 
 #import "MXKSearchDataSource.h"
 #import "HomeSearchViewController.h"
 
 #import "AppDelegate.h"
+
+#import "GBDeviceInfo_iOS.h"
 
 @interface HomeViewController ()
 {
@@ -35,6 +40,9 @@
 
     HomeSearchViewController *searchViewController;
     MXKSearchDataSource *searchDataSource;
+    
+    ContactPickerViewController *contactsViewController;
+    MXKContact *selectedContact;
 
     // Display a gradient view above the screen
     CAGradientLayer* tableViewMaskLayer;
@@ -57,6 +65,8 @@
     MXKAlert *currentAlert;
 }
 
+@property(nonatomic,getter=isHidden) BOOL hidden;
+
 @end
 
 @implementation HomeViewController
@@ -76,10 +86,11 @@
     searchViewController = [HomeSearchViewController searchViewController];
     [viewControllers addObject:searchViewController];
 
-    // FIXME Add search People tab
-//    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-//    MXKViewController *tempPeopleVC = [[MXKViewController alloc] init];
-//    [viewControllers addObject:tempPeopleVC];
+    // Add search People tab
+    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
+    contactsViewController = [ContactPickerViewController contactPickerViewController];
+    contactsViewController.delegate = self;
+    [viewControllers addObject:contactsViewController];
 
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
@@ -92,11 +103,11 @@
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
     
-    if (self.mainSession)
-    {
-        // Report the session into each created tab.
-        [self displayWithSession:self.mainSession];
-    }
+    // Add room creation button programatically
+    [self addRoomCreationButton];
+    
+    // Initialize here the data sources if a matrix session has been already set.
+    [self initializeDataSources];
 }
 
 - (void)dealloc
@@ -125,19 +136,21 @@
         [roomCreationRequest cancel];
         roomCreationRequest = nil;
     }
+    
+    if (createNewRoomImageView)
+    {
+        [createNewRoomImageView removeFromSuperview];
+        createNewRoomImageView = nil;
+        tableViewMaskLayer = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking (via Google Analytics)
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    if (tracker)
-    {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    }
+    // Show the home view controller content only when a user is logged in.
+    self.hidden = ([MXKAccountManager sharedManager].accounts.count == 0);
 
     // Let's child display the loading not the home view controller
     if (self.activityIndicator)
@@ -145,87 +158,11 @@
         [self.activityIndicator stopAnimating];
         self.activityIndicator = nil;
     }
-
-    // Add blur mask programatically
-    if (!tableViewMaskLayer)
+    
+    // Refresh the search results if a search in in progress
+    if (!self.searchBarHidden)
     {
-        tableViewMaskLayer = [CAGradientLayer layer];
-
-        CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
-        CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
-
-        tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
-
-        // display a gradient to the rencents bottom (20% of the bottom of the screen)
-        tableViewMaskLayer.locations = [NSArray arrayWithObjects:
-                                        [NSNumber numberWithFloat:0],
-                                        [NSNumber numberWithFloat:0.85],
-                                        [NSNumber numberWithFloat:1.0], nil];
-
-        tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        tableViewMaskLayer.anchorPoint = CGPointZero;
-
-        // CAConstraint is not supported on IOS.
-        // it seems only being supported on Mac OS.
-        // so viewDidLayoutSubviews will refresh the layout bounds.
-        [self.view.layer addSublayer:tableViewMaskLayer];
-    }
-
-    // Add new room button programatically
-    if (!createNewRoomImageView)
-    {
-        createNewRoomImageView = [[UIImageView alloc] init];
-        [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:createNewRoomImageView];
-
-        createNewRoomImageView.backgroundColor = [UIColor clearColor];
-        createNewRoomImageView.contentMode = UIViewContentModeCenter;
-        createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
-
-        CGFloat side = 78.0f;
-        NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                           attribute:NSLayoutAttributeWidth
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:nil
-                                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                                          multiplier:1
-                                                                            constant:side];
-
-        NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                            attribute:NSLayoutAttributeHeight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:nil
-                                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                                           multiplier:1
-                                                                             constant:side];
-
-        NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.view
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                            multiplier:1
-                                                                              constant:0];
-
-        NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:createNewRoomImageView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1
-                                                                             constant:9];
-
-        // Available on iOS 8 and later
-        [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
-        
-        createNewRoomImageView.userInteractionEnabled = YES;
-
-        // Handle tap gesture
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [tap setDelegate:self];
-        [createNewRoomImageView addGestureRecognizer:tap];
+        [self updateSearch];
     }
 }
 
@@ -317,28 +254,63 @@
     }
 }
 
-- (void)displayWithSession:(MXSession *)mxSession
+- (void)initializeDataSources
 {
-    [super addMatrixSession:mxSession];
-
-    // Init the recents data source
-    recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mxSession];
-    [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
-
-    // Init the search for messages
-    searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mxSession];
-    [searchViewController displaySearch:searchDataSource];
+    MXSession *mainSession = self.mainSession;
     
-    // Do not go to search mode when first opening the home
-    [self hideSearch:NO];
+    if (mainSession)
+    {
+        // Init the recents data source
+        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
+        
+        // Init the search for messages
+        searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
+        [searchViewController displaySearch:searchDataSource];
+        
+        // Check whether there are others sessions
+        NSArray* mxSessions = self.mxSessions;
+        if (mxSessions.count > 1)
+        {
+            for (MXSession *mxSession in mxSessions)
+            {
+                if (mxSession != mainSession)
+                {
+                    // Add the session to the recents data source
+                    [recentsDataSource addMatrixSession:mxSession];
+                    
+                    // FIXME: Update searchDataSource
+                }
+            }
+        }
+        
+        // Do not go to search mode when first opening the home
+        [self hideSearch:NO];
+    }
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession
 {
-    // Add the session to the existing recents data source
-    if (recentsDataSource)
+    // Check whether the controller's view is loaded into memory.
+    if (recentsViewController)
     {
-        [recentsDataSource addMatrixSession:mxSession];
+        // Check whether the data sources have been initialized.
+        if (!recentsDataSource)
+        {
+            // Add first the session. The updated sessions list will be used during data sources initialization.
+            [super addMatrixSession:mxSession];
+            
+            // Prepare data sources and return
+            [self initializeDataSources];
+            return;
+        }
+        else
+        {
+            // Add the session to the existing recents data source
+            [recentsDataSource addMatrixSession:mxSession];
+            
+            // FIXME: Update searchDataSource
+        }
     }
     
     [super addMatrixSession:mxSession];
@@ -349,13 +321,14 @@
     [recentsDataSource removeMatrixSession:mxSession];
     
     // Check whether there are others sessions
-    if (!self.mxSessions.count)
+    if (!recentsDataSource.mxSessions.count)
     {
-        // Keep reference on existing dataSource to release it properly
-        MXKRecentsDataSource *previousRecentlistDataSource = recentsViewController.dataSource;
         [recentsViewController displayList:nil];
-        [previousRecentlistDataSource destroy];
+        [recentsDataSource destroy];
+        recentsDataSource = nil;
     }
+    
+    // FIXME: Handle correctly searchDataSource
     
     [super removeMatrixSession:mxSession];
 }
@@ -407,11 +380,14 @@
 
     if (_currentRoomViewController)
     {
-        if (_currentRoomViewController.roomDataSource && _currentRoomViewController.roomDataSource.isLive)
+        // If the displayed data is not a preview, let the manager release the room data source
+        // (except if the view controller has the room data source ownership).
+        if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
         {
-            // Let the manager release this live room data source
             MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+
+            // Let the manager release live room data sources where the user is in
             [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
         }
 
@@ -479,7 +455,11 @@
     }
     else if (self.selectedViewController == searchViewController)
     {
-        self.backgroundImageView.hidden = (((searchDataSource.serverCount != 0) && !searchViewController.noResultsLabel.isHidden) || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = ((searchDataSource.serverCount != 0) || !searchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == contactsViewController)
+    {
+        self.backgroundImageView.hidden = (([contactsViewController.contactsTableView numberOfRowsInSection:0] != 0) || !contactsViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
     else
     {
@@ -510,6 +490,85 @@
 }
 
 #pragma mark - Internal methods
+
+- (void)addRoomCreationButton
+{
+    // Add blur mask programatically
+    tableViewMaskLayer = [CAGradientLayer layer];
+    
+    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:1.0 alpha:0].CGColor;
+    
+    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    
+    // display a gradient to the rencents bottom (20% of the bottom of the screen)
+    tableViewMaskLayer.locations = [NSArray arrayWithObjects:
+                                    [NSNumber numberWithFloat:0],
+                                    [NSNumber numberWithFloat:0.85],
+                                    [NSNumber numberWithFloat:1.0], nil];
+    
+    tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    tableViewMaskLayer.anchorPoint = CGPointZero;
+    
+    // CAConstraint is not supported on IOS.
+    // it seems only being supported on Mac OS.
+    // so viewDidLayoutSubviews will refresh the layout bounds.
+    [self.view.layer addSublayer:tableViewMaskLayer];
+    
+    // Add room create button
+    createNewRoomImageView = [[UIImageView alloc] init];
+    [createNewRoomImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:createNewRoomImageView];
+    
+    createNewRoomImageView.backgroundColor = [UIColor clearColor];
+    createNewRoomImageView.contentMode = UIViewContentModeCenter;
+    createNewRoomImageView.image = [UIImage imageNamed:@"create_room"];
+    
+    CGFloat side = 78.0f;
+    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1
+                                                                        constant:side];
+    
+    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1
+                                                                         constant:side];
+    
+    NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:createNewRoomImageView
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.view
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1
+                                                                          constant:0];
+    
+    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:createNewRoomImageView
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1
+                                                                         constant:9];
+    
+    // Available on iOS 8 and later
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, bottomConstraint]];
+    
+    createNewRoomImageView.userInteractionEnabled = YES;
+    
+    // Handle tap gesture
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onNewRoomPressed)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [createNewRoomImageView addGestureRecognizer:tap];
+}
 
 - (void)promptUserBeforeUsingGoogleAnalytics
 {
@@ -564,6 +623,17 @@
     [recentsViewController refreshCurrentSelectedCell:forceVisible];
 }
 
+- (void)setHidden:(BOOL)hidden
+{
+    _hidden = hidden;
+    
+    self.selectionContainer.hidden = hidden;
+    self.viewControllerContainer.hidden = hidden;
+    self.navigationController.navigationBar.hidden = hidden;
+    
+    createNewRoomImageView.hidden = (hidden ? YES : !self.searchBarHidden);
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -585,11 +655,13 @@
             // Release existing Room view controller (if any)
             if (_currentRoomViewController)
             {
-                if (_currentRoomViewController.roomDataSource)
+                // If the displayed data is not a preview, let the manager release the room data source
+                // (except if the view controller has the room data source ownership).
+                if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
                 {
-                    // Let the manager release this room data source
                     MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
                     MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
+                    
                     [roomDataSourceManager closeRoomDataSource:_currentRoomViewController.roomDataSource forceClose:NO];
                 }
 
@@ -616,6 +688,9 @@
                         // Open the room on the requested event
                         roomDataSource = [[RoomDataSource alloc] initWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession];
                         [roomDataSource finalizeInitialization];
+                        
+                        // Give the data source ownership to the room view controller.
+                        _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                     }
                 }
                 else
@@ -623,6 +698,9 @@
                     // Search result: Create a temp timeline from the selected event
                     roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
                     [roomDataSource finalizeInitialization];
+                    
+                    // Give the data source ownership to the room view controller.
+                    _currentRoomViewController.hasRoomDataSourceOwnership = YES;
                 }
                 
                 [_currentRoomViewController displayRoom:roomDataSource];
@@ -653,11 +731,16 @@
     {
         // Keep ref on destinationViewController
         [super prepareForSegue:segue sender:sender];
-
+        
         if ([[segue identifier] isEqualToString:@"showDirectory"])
         {
             DirectoryViewController *directoryViewController = segue.destinationViewController;
             [directoryViewController displayWitDataSource:recentsDataSource.publicRoomsDirectoryDataSource];
+        }
+        else if ([[segue identifier] isEqualToString:@"showContactDetails"])
+        {
+            ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.contact = selectedContact;
         }
         else if ([[segue identifier] isEqualToString:@"showAuth"])
         {
@@ -700,6 +783,14 @@
     tableViewMaskLayer.hidden = YES;
 
     [self updateSearch];
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        [tracker set:kGAIScreenName value:@"RoomsGlobalSearch"];
+        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    }
 }
 
 - (void)hideSearch:(BOOL)animated
@@ -712,8 +803,20 @@
 
     [recentsDataSource searchWithPatterns:nil];
 
-     recentsDataSource.hideRecents = NO;
-     recentsDataSource.hidePublicRoomsDirectory = YES;
+    recentsDataSource.hideRecents = NO;
+    recentsDataSource.hidePublicRoomsDirectory = YES;
+    
+    // Screen tracking (via Google Analytics)
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    if (tracker)
+    {
+        NSString *currentScreenName = [tracker get:kGAIScreenName];
+        if (!currentScreenName || ![currentScreenName isEqualToString:@"RoomsList"])
+        {
+            [tracker set:kGAIScreenName value:@"RoomsList"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+        }
+    }
 }
 
 // Update search results under the currently selected tab
@@ -747,6 +850,10 @@
                 });
             }
         }
+        else if (self.selectedViewController == contactsViewController)
+        {
+            [contactsViewController searchWithPattern:self.searchBar.text];
+        }
     }
     else
     {
@@ -760,6 +867,7 @@
         {
             [searchDataSource searchMessageText:nil];
         }
+        [contactsViewController searchWithPattern:nil];
     }
     
     [self checkAndShowBackgroundImage];
@@ -772,6 +880,11 @@
     if (self.selectedViewController == recentsViewController)
     {
         // As the public room search is local, it can be updated on each text change
+        [self updateSearch];
+    }
+    else if (self.selectedViewController == contactsViewController)
+    {
+        // As the contact search is local, it can be updated on each text change
         [self updateSearch];
     }
     else if (!self.searchBar.text.length)
@@ -800,6 +913,18 @@
     [self selectRoomWithId:roomId andEventId:nil inMatrixSession:matrixSession];
 }
 
+#pragma mark - ContactPickerViewControllerDelegate
+
+- (void)contactPickerViewController:(ContactPickerViewController *)contactPickerViewController didSelectContact:(MXKContact*)contact
+{
+    selectedContact = contact;
+    
+    // Force hiding the keyboard
+    [self.searchBar resignFirstResponder];
+    
+    [self performSegueWithIdentifier:@"showContactDetails" sender:self];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender
@@ -822,7 +947,7 @@
 
             // Create an empty room.
             roomCreationRequest = [self.mainSession createRoom:nil
-                                                    visibility:kMXRoomVisibilityPrivate
+                                                    visibility:kMXRoomDirectoryVisibilityPrivate
                                                      roomAlias:nil
                                                          topic:nil
                                                        success:^(MXRoom *room) {

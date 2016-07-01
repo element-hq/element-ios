@@ -25,6 +25,7 @@
     {
         _roomId = roomId;
         _mxSession = mxSession;
+        _numJoinedMembers = -1;
     }
     return self;
 }
@@ -43,27 +44,64 @@
     return self;
 }
 
-- (void)fetchPreviewData:(void (^)(BOOL))completion
+- (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession
 {
-    // Make an /initialSync request to get preview data
-    [_mxSession.matrixRestClient initialSyncOfRoom:_roomId withLimit:0 success:^(MXRoomInitialSync *roomInitialSync) {
+    self = [self initWithRoomId:publicRoom.roomId andSession:mxSession];
+    if (self)
+    {
+        // Report public room data
+        _roomName = publicRoom.name;
+        _roomAvatarUrl = publicRoom.avatarUrl;
+        _roomTopic = publicRoom.topic;
+        _roomAliases = publicRoom.aliases;
+        _numJoinedMembers = publicRoom.numJoinedMembers;
+    }
+    return self;
+}
 
-        _roomState = [[MXRoomState alloc] initWithRoomId:_roomId andMatrixSession:_mxSession andDirection:YES];
+- (void)dealloc
+{
+    if (_roomDataSource)
+    {
+        [_roomDataSource destroy];
+        _roomDataSource = nil;
+    }
+    
+    _emailInvitation = nil;
+}
 
-        // Make roomState digest state events of the room
-        for (MXEvent *stateEvent in roomInitialSync.state)
+- (void)peekInRoom:(void (^)(BOOL successed))completion
+{
+    [_mxSession peekInRoomWithRoomId:_roomId success:^(MXPeekingRoom *peekingRoom) {
+
+        // Create the room data source
+        _roomDataSource = [[RoomDataSource alloc] initWithPeekingRoom:peekingRoom andInitialEventId:_eventId];
+        [_roomDataSource finalizeInitialization];
+
+        _roomName = peekingRoom.state.displayname;
+        _roomAvatarUrl = peekingRoom.state.avatar;
+        
+        _roomTopic = [MXTools stripNewlineCharacters:peekingRoom.state.topic];;
+        _roomAliases = peekingRoom.state.aliases;
+        
+        // Room members count
+        // Note that room members presence/activity is not available
+        _numJoinedMembers = 0;
+        for (MXRoomMember *mxMember in peekingRoom.state.members)
         {
-            [_roomState handleStateEvent:stateEvent];
+            if (mxMember.membership == MXMembershipJoin)
+            {
+                _numJoinedMembers ++;
+            }
         }
-
-        // Report retrieved data
-        _roomName = _roomState.displayname;
-        _roomAvatarUrl = _roomState.avatar;
 
         completion(YES);
 
     } failure:^(NSError *error) {
+        
+        _roomName = _roomId;
         completion(NO);
+        
     }];
 }
 

@@ -35,9 +35,9 @@
     UIView* searchBarSeparator;
     
     // Search results
-    NSMutableArray *invitableContacts;
-    NSMutableArray *filteredActualParticipants;
-    NSMutableArray *filteredInvitedParticipants;
+    NSMutableArray<MXKContact*> *invitableContacts;
+    NSMutableArray<Contact*> *filteredActualParticipants;
+    NSMutableArray<Contact*> *filteredInvitedParticipants;
     
     // Contact instances by matrix user id, or room 3pid invite token.
     NSMutableDictionary *contactsById;
@@ -56,8 +56,8 @@
     
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
-    
-    RoomMemberDetailsViewController *detailsViewController;
+
+    RoomMemberDetailsViewController *memberDetailsViewController;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -67,10 +67,33 @@
 
 @implementation RoomParticipantsViewController
 
+#pragma mark - Class methods
+
++ (UINib *)nib
+{
+    return [UINib nibWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+                          bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
+}
+
++ (instancetype)roomParticipantsViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+                                          bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
+}
+
+#pragma mark -
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Check whether the view controller has been pushed via storyboard
+    if (!_tableView)
+    {
+        // Instantiate view controller objects
+        [[[self class] nib] instantiateWithOwner:self options:nil];
+    }
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
@@ -104,10 +127,11 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
-// this method is called when the viewcontroller is displayed inside another one.
+// This method is called when the viewcontroller is added or removed from a container view controller.
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
+    
     [self setNavBarButtons];
 }
 
@@ -164,14 +188,14 @@
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:[NSString stringWithFormat:@"%@", self.class]];
+        [tracker set:kGAIScreenName value:@"RoomParticipants"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
-    
-    if (detailsViewController)
+
+    if (memberDetailsViewController)
     {
-        [detailsViewController destroy];
-        detailsViewController = nil;
+        [memberDetailsViewController destroy];
+        memberDetailsViewController = nil;
     }
     
     // Refresh display
@@ -202,6 +226,19 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+}
+
+- (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
+    // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+    {
+        [((SegmentedViewController*)self.parentViewController) withdrawViewControllerAnimated:animated completion:completion];
+    }
+    else
+    {
+        [super withdrawViewControllerAnimated:animated completion:completion];
     }
 }
 
@@ -334,10 +371,36 @@
     {
         _enableMention = enableMention;
         
-        if (detailsViewController)
+        if (memberDetailsViewController)
         {
-            detailsViewController.enableMention = enableMention;
+            memberDetailsViewController.enableMention = enableMention;
         }
+    }
+}
+
+- (void)startActivityIndicator
+{
+    // Check whether the current view controller is displayed inside a segmented view controller in order to run the right activity view
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+    {
+        [((SegmentedViewController*)self.parentViewController) startActivityIndicator];
+    }
+    else
+    {
+        [super startActivityIndicator];
+    }
+}
+
+- (void)stopActivityIndicator
+{
+    // Check whether the current view controller is displayed inside a segmented view controller in order to stop the right activity view
+    if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
+    {
+        [((SegmentedViewController*)self.parentViewController) stopActivityIndicator];
+    }
+    else
+    {
+        [super stopActivityIndicator];
     }
 }
 
@@ -345,11 +408,8 @@
 
 - (void)setNavBarButtons
 {
-    // this viewController can be displayed
-    // 1- with a "standard" push mode
-    // 2- within a segmentedViewController i.e. inside another viewcontroller
-    // so, we need to use the parent controller when it is required.
-    UIViewController* topViewController = (self.parentViewController) ? self.parentViewController : self;
+    // Check whether the view controller is currently displayed inside a segmented view controller or not.
+    UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
     topViewController.navigationItem.rightBarButtonItem = nil;
     topViewController.navigationItem.leftBarButtonItem = nil;
 }
@@ -560,11 +620,18 @@
             return NSOrderedDescending;
         }
 
-        // Finally, compare the timestamps
-        NSComparisonResult lastActiveAgoA = userA && userA.lastActiveAgo ? userA.lastActiveAgo : 0;
-        NSComparisonResult lastActiveAgoB = userB && userB.lastActiveAgo ? userB.lastActiveAgo : 0;
-
-        return lastActiveAgoA - lastActiveAgoB;
+        // Finally, compare the lastActiveAgo
+        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
+        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
+        
+        if (lastActiveAgoA == lastActiveAgoB)
+        {
+            return NSOrderedSame;
+        }
+        else
+        {
+            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
+        }
     };
     
     // Sort each participants list in alphabetical order
@@ -631,6 +698,25 @@
     {
         [pendingMaskSpinnerView removeFromSuperview];
         pendingMaskSpinnerView = nil;
+    }
+}
+
+- (void)pushViewController:(UIViewController*)viewController
+{
+    // Check whether the view controller is displayed inside a segmented one.
+    if (self.parentViewController)
+    {
+        // Hide back button title
+        self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        [self.parentViewController.navigationController pushViewController:viewController animated:YES];
+    }
+    else
+    {
+        // Hide back button title
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
@@ -730,12 +816,14 @@
     
     participantCell.mxRoom = self.mxRoom;
     
-    Contact *contact = nil;
+    MXKContact *mxkContact;
+    Contact* contact;
     
     // oneself dedicated cell
     if ((indexPath.section == participantsSection && userContact && indexPath.row == 0) && !_isAddParticipantSearchBarEditing)
     {
         contact = userContact;
+        mxkContact = contact;
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -743,20 +831,22 @@
     {
         if (indexPath.row < invitableContacts.count)
         {
-            contact = invitableContacts[indexPath.row];
+            mxkContact = invitableContacts[indexPath.row];
             
             participantCell.selectionStyle = UITableViewCellSelectionStyleDefault;
             
-            // Disambiguate the display name when it appears several times.
-            if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
+            // Append the matrix identifier (if any) to the display name.
+            NSArray *identifiers = mxkContact.matrixIdentifiers;
+            if (identifiers.count)
             {
-                NSArray *identifiers = contact.matrixIdentifiers;
-                if (identifiers.count)
+                NSString *participantId = identifiers.firstObject;
+                
+                // Check whether the display name is not already the matrix id
+                if (![mxkContact.displayName isEqualToString:participantId])
                 {
-                    NSString *participantId = identifiers.firstObject;
-                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", contact.displayName, participantId];
+                    NSString *displayName = [NSString stringWithFormat:@"%@ (%@)", mxkContact.displayName, participantId];
                     
-                    contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
+                    mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:participantId];
                 }
             }
         }
@@ -827,14 +917,16 @@
                     contact = [[Contact alloc] initMatrixContactWithDisplayName:disambiguatedDisplayName andMatrixID:contact.mxMember.userId];
                 }
             }
+            
+            mxkContact = contact;
         }
         
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    if (contact)
+    if (mxkContact)
     {
-        [participantCell render:contact];
+        [participantCell render:mxkContact];
         
         // The search displays contacts to invite. Add a plus icon to the cell
         // in order to make it more understandable for the end user
@@ -843,10 +935,10 @@
             if (indexPath.row == 0)
             {
                 // This is the text entered by the user
-                NSString *searchText = contact.displayName;
+                NSString *searchText = mxkContact.displayName;
                 
                 // Check whether this input is a valid email or a Matrix user ID before adding the plus icon.
-                if (![MXTools isEmailAddress:searchText] && ([searchText characterAtIndex:0] != '@' || [searchText containsString:@":"] == NO))
+                if (![MXTools isEmailAddress:searchText] && ![MXTools isMatrixUserIdentifier:searchText])
                 {
                     participantCell.contentView.alpha = 0.5;
                     participantCell.userInteractionEnabled = NO;
@@ -861,7 +953,7 @@
                 participantCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
             }
         }
-        else if (contact.mxMember)
+        else if (contact && contact.mxMember)
         {
             // Update member badge
             MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
@@ -948,109 +1040,11 @@
     
     if (indexPath.section == invitableSection)
     {
-        if (row == 0)
+        if (row < invitableContacts.count)
         {
-            // This is the text entered by the user
-            // Try to invite what he typed
-            MXKContact *contact = invitableContacts[row];
-
-            // Invite this user
-            NSString *participantId = contact.displayName;
+            MXKContact *mxkContact = invitableContacts[row];
             
-            // Is it an email or a Matrix user ID?
-            if ([MXTools isEmailAddress:participantId])
-            {
-                [self addPendingActionMask];
-                [self.mxRoom inviteUserByEmail:participantId success:^{
-                    
-                    [self removePendingActionMask];
-                    
-                    // Refresh display by leaving search session
-                    [self searchBarCancelButtonClicked:_searchBarView];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self removePendingActionMask];
-                    
-                    NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
-                    // Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
-            }
-            else
-            {
-                [self addPendingActionMask];
-                [self.mxRoom inviteUser:participantId success:^{
-                    
-                    [self removePendingActionMask];
-                    
-                    // Refresh display by leaving search session
-                    [self searchBarCancelButtonClicked:_searchBarView];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self removePendingActionMask];
-                    
-                    NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
-                    // Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
-            }
-        }
-        else if (row < invitableContacts.count)
-        {
-            MXKContact *contact = invitableContacts[row];
-            
-            NSArray *identifiers = contact.matrixIdentifiers;
-            if (identifiers.count)
-            {
-                NSString *participantId = identifiers.firstObject;
-
-                // Invite this user if a room is defined
-                [self addPendingActionMask];
-                [self.mxRoom inviteUser:participantId success:^{
-                    
-                    [self removePendingActionMask];
-                    
-                    // Refresh display by leaving search session
-                    [self searchBarCancelButtonClicked:_searchBarView];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self removePendingActionMask];
-                    
-                    NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
-                    // Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
-            }
-            else
-            {
-                // This is a local email contact
-                NSString *emailAddress = contact.displayName;
-                
-                // Sanity check
-                if ([MXTools isEmailAddress:emailAddress])
-                {
-                    // Invite this user if a room is defined
-                    [self addPendingActionMask];
-                    [self.mxRoom inviteUserByEmail:emailAddress success:^{
-                        
-                        [self removePendingActionMask];
-                        
-                        // Refresh display by leaving search session
-                        [self searchBarCancelButtonClicked:_searchBarView];
-                        
-                    } failure:^(NSError *error) {
-                        
-                        [self removePendingActionMask];
-                        
-                        NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", emailAddress);
-                        // Alert user
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    }];
-                }
-            }
+            [self didSelectInvitableContact:mxkContact];
         }
     }
     else
@@ -1103,29 +1097,15 @@
         
         if (contact.mxMember)
         {
-            detailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
             
             // Set delegate to handle action on member (start chat, mention)
-            detailsViewController.delegate = self;
-            detailsViewController.enableMention = _enableMention;
+            memberDetailsViewController.delegate = self;
+            memberDetailsViewController.enableMention = _enableMention;
             
-            [detailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
+            [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
             
-            // Check whether the view controller is displayed inside a segmented one.
-            if (self.segmentedViewController)
-            {
-                // Hide back button title
-                self.segmentedViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-                
-                [self.segmentedViewController.navigationController pushViewController:detailsViewController animated:YES];
-            }
-            else
-            {
-                // Hide back button title
-                self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-                
-                [self.navigationController pushViewController:detailsViewController animated:YES];
-            }
+            [self pushViewController:memberDetailsViewController];
         }
     }
     
@@ -1167,11 +1147,8 @@
     {
         id<RoomParticipantsViewControllerDelegate> delegate = _delegate;
         
-        // Check whether the current view controller is displayed inside a segmented view controller in order to withdraw the right item
-        MXKViewController *viewController = _segmentedViewController ? _segmentedViewController : self;
-        
         // Withdraw the current view controller, and let the delegate mention the member
-        [viewController withdrawViewControllerAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:^{
             
             [delegate roomParticipantsViewController:self mention:member];
             
@@ -1222,15 +1199,7 @@
                                          [strongSelf addPendingActionMask];
                                          [strongSelf.mxRoom leave:^{
                                              
-                                             // check if there is a parent view controller
-                                             if (strongSelf.parentViewController)
-                                             {
-                                                 [strongSelf.navigationController popViewControllerAnimated:YES];
-                                             }
-                                             else
-                                             {
-                                                 [strongSelf withdrawViewControllerAnimated:YES completion:nil];
-                                             }
+                                             [strongSelf withdrawViewControllerAnimated:YES completion:nil];
                                              
                                          } failure:^(NSError *error) {
                                              
@@ -1318,6 +1287,120 @@
     }
 }
 
+#pragma mark -
+
+- (void)didSelectInvitableContact:(MXKContact*)contact
+{
+    __weak typeof(self) weakSelf = self;
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
+    
+    // Invite ?
+    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_invite_prompt_msg", @"Vector", nil), contact.displayName];
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_prompt_title", @"Vector", nil)
+                                           message:promptMsg
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:MXKAlertActionStyleCancel
+                                                              handler:^(MXKAlert *alert) {
+                                                                  
+                                                                  __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                  strongSelf->currentAlert = nil;
+                                                                  
+                                                              }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
+                               style:MXKAlertActionStyleDefault
+                             handler:^(MXKAlert *alert) {
+                                 
+                                 __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                 strongSelf->currentAlert = nil;
+                                 
+                                 NSArray *identifiers = contact.matrixIdentifiers;
+                                 if (identifiers.count)
+                                 {
+                                     NSString *participantId = identifiers.firstObject;
+                                     
+                                     // Invite this user if a room is defined
+                                     [strongSelf addPendingActionMask];
+                                     [strongSelf.mxRoom inviteUser:participantId success:^{
+                                         
+                                         __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                         [strongSelf removePendingActionMask];
+                                         
+                                         // Refresh display by leaving search session
+                                         [strongSelf searchBarCancelButtonClicked:strongSelf.searchBarView];
+                                         
+                                     } failure:^(NSError *error) {
+                                         
+                                         __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                         [strongSelf removePendingActionMask];
+                                         
+                                         NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                         // Alert user
+                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                     }];
+                                 }
+                                 else
+                                 {
+                                     // This is the text entered by the user, or a local email contact
+                                     NSString *participantId = contact.displayName;
+                                     
+                                     // Is it an email or a Matrix user ID?
+                                     if ([MXTools isEmailAddress:participantId])
+                                     {
+                                         [strongSelf addPendingActionMask];
+                                         [strongSelf.mxRoom inviteUserByEmail:participantId success:^{
+                                             
+                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                             [strongSelf removePendingActionMask];
+                                             
+                                             // Refresh display by leaving search session
+                                             [strongSelf searchBarCancelButtonClicked:strongSelf.searchBarView];
+                                             
+                                         } failure:^(NSError *error) {
+                                             
+                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                             [strongSelf removePendingActionMask];
+                                             
+                                             NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
+                                             // Alert user
+                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                         }];
+                                     }
+                                     else
+                                     {
+                                         [strongSelf addPendingActionMask];
+                                         [strongSelf.mxRoom inviteUser:participantId success:^{
+                                             
+                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                             [strongSelf removePendingActionMask];
+                                             
+                                             // Refresh display by leaving search session
+                                             [strongSelf searchBarCancelButtonClicked:strongSelf.searchBarView];
+                                             
+                                         } failure:^(NSError *error) {
+                                             
+                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                             [strongSelf removePendingActionMask];
+                                             
+                                             NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                             // Alert user
+                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                         }];
+                                     }
+                                 }
+
+                             }];
+    
+    [currentAlert showInViewController:self];
+}
+
 #pragma mark - UISearchBar delegate
 
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
@@ -1401,9 +1484,11 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     // Update search results.
-    NSMutableArray *contacts;
-    NSMutableArray *participantsArray;
-    NSMutableArray *invitedParticipantsArray;
+    NSMutableArray<MXKContact*> *contacts;
+    NSMutableArray<Contact*> *participantsArray;
+    NSMutableArray<Contact*> *invitedParticipantsArray;
+    
+    searchText = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if (currentSearchText.length && [searchText hasPrefix:currentSearchText])
     {
@@ -1456,26 +1541,32 @@
         participantsArray = [actualParticipants copy];
         invitedParticipantsArray = [invitedParticipants copy];
     }
+    
     currentSearchText = searchText;
     
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
     
     // Update invitable contacts list:
     invitableContacts = [NSMutableArray array];
-    if (searchText.length)
+    
+    if (currentSearchText.length)
     {
+        for (MXKContact* contact in contacts)
+        {
+            if ([contact hasPrefix:currentSearchText])
+            {
+                [invitableContacts addObject:contact];
+                
+                isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+            }
+        }
+        
+        // Sort the refreshed list of the invitable contacts
+        [self sortInvitableContacts];
+        
         // Show what the user is typing in a cell. So that he can click on it
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:nil];
-        [invitableContacts addObject:contact];
-    }
-    for (MXKContact* contact in contacts)
-    {
-        if ([contact matchedWithPatterns:@[currentSearchText]])
-        {
-            [invitableContacts addObject:contact];
-            
-            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
-        }
+        [invitableContacts insertObject:contact atIndex:0];
     }
     
     // Update filtered participants list
@@ -1545,6 +1636,85 @@
     
     // Leave search
     [searchBar resignFirstResponder];
+}
+
+#pragma mark -
+
+- (void)sortInvitableContacts
+{
+    // Sort invitable contacts by displaying local email first
+    // ...and then by last active, with "active now" first.
+    // ...and then alphabetically.
+    NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
+        
+        MXUser *userA;
+        MXUser *userB;
+        
+        if (contactA.matrixIdentifiers.count)
+        {
+            userA = [self.mxRoom.mxSession userWithUserId:contactA.matrixIdentifiers.firstObject];
+        }
+        if (contactB.matrixIdentifiers.count)
+        {
+            userB = [self.mxRoom.mxSession userWithUserId:contactB.matrixIdentifiers.firstObject];
+        }
+        
+        if (!userA && !userB)
+        {
+            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+        }
+        if (userA && !userB)
+        {
+            return NSOrderedDescending;
+        }
+        if (!userA && userB)
+        {
+            return NSOrderedAscending;
+        }
+        
+        if (userA.currentlyActive && userB.currentlyActive)
+        {
+            // Then order by name
+            if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+            {
+                return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+            }
+            else if (contactA.sortingDisplayName.length)
+            {
+                return NSOrderedAscending;
+            }
+            else if (contactB.sortingDisplayName.length)
+            {
+                return NSOrderedDescending;
+            }
+            return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+        }
+        
+        if (userA.currentlyActive && !userB.currentlyActive)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA.currentlyActive && userB.currentlyActive)
+        {
+            return NSOrderedDescending;
+        }
+        
+        // Finally, compare the lastActiveAgo
+        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
+        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
+        
+        if (lastActiveAgoA == lastActiveAgoB)
+        {
+            return NSOrderedSame;
+        }
+        else
+        {
+            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
+        }
+    };
+    
+    // Sort invitable contacts list
+    [invitableContacts sortUsingComparator:comparator];
 }
 
 @end

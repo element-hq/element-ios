@@ -1,3 +1,41 @@
+Changes in Vector iOS in 0.1.11 (2016-07-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.10).
+ * Room preview: Show a preview of messages.
+ * Room preview: Improve header in landscape
+ * Add missing slash commands: /invite, /part and /topic #223.
+ * Add Markdown typing support and display of "org.matrix.custom.html" messages body #403
+ * Room search: search result includes the search pattern when it corresponds to a valid room alias or id #328
+ * Room search: Room preview is used when the user selects a public room that he did not join yet #329.
+ * Rooms global search: Refresh the current search results when view will appear.
+ * Directory: handle tap on clock status bar.
+ * Search Screen: add People tab and contact picker.
+ * Chat screen: Mark event in permalinks or search results.
+ * Chat screen: Show bing in pink red #410.
+ * Chat screen: Show links in green.
+ * Room Participants: Validate correctly matrix user identifier during search session.
+ * Room Settings: Prompt user to save changes when Members list tab is selected.
+ * Room Settings: Add favourite/low prio toggle in room settings #218.
+ * Room Settings: Have proper room settings (Room access, History visibility) #337.
+ 
+Bug fixes:
+ * Room screen:  Tap on attached video does nothing #380.
+ * Hitting back after search results does not refresh results #190.
+ * App crashes on : [<__NSDictionaryM> valueForUndefinedKey:] this class is not key value coding-compliant for the key <redacted>.
+ * MXKEventFormatter: Add sanity check on event content values to fix "-[__NSCFDictionary length]: unrecognized selector sent to instance" exception.
+ * MXKRoomActivitiesView: Fix exception on undefined MXKRoomActivitiesView.xib.
+ * App freezes on iOS8 when user goes back on Recents from a Room Chat.
+ * Room Preview: the room avatar is missing on invited room received by email #371.
+ * Authentication view is not presented when app is launched offline #375.
+ * Initial launch flickers up a blank Messages page before the Login page is shown #287.
+ * Can't view MemberInfo when inviting users without actually inviting them #271.
+ * Room Participants: Idle contacts must be listed before offline contacts in search result.
+ * Media Picker: move the camera roll at the top of the folders #373.
+ * Room members: double loading wheel #180.
+ * App crashes on '/join' command when no param is provided.
+
 Changes in Vector iOS in 0.1.10 (2016-06-04)
 ===============================================
 

@@ -18,9 +18,19 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+#import "VectorDesignValues.h"
+
 @implementation DirectoryRecentTableViewCell
 
 #pragma mark - Class methods
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.titleLabel.textColor = kVectorTextColorBlack;
+    self.descriptionLabel.textColor = kVectorTextColorGray;
+}
 
 - (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource
 {
@@ -49,8 +59,8 @@
             }
             else
             {
-                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
-                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_description", @"Vector", nil),
+                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_cell_title", @"Vector", nil);
+                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_cell_description", @"Vector", nil),
                                               publicRoomsDirectoryDataSource.rooms.count];
             }
             

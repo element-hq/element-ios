@@ -44,11 +44,17 @@
 {
     [super awakeFromNib];
     
-    self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
-    self.thumbnailView.clipsToBounds = YES;
-    
     // apply the vector colours
     self.lastPresenceLabel.textColor = kVectorTextColorGray;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // Round image view
+    self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
+    self.thumbnailView.clipsToBounds = YES;
 }
 
 - (void)setShowCustomAccessoryView:(BOOL)show
@@ -71,7 +77,7 @@
 
 // returns the first matrix id of the contact
 // nil if there is none
-- (NSString*)getFirstMatrixId
+- (NSString*)firstMatrixId
 {
     NSString* matrixId = nil;
     
@@ -85,7 +91,7 @@
 
 - (void)render:(MXKCellData *)cellData
 {
-    // remove any pending observers
+    // Remove any pending observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (mxPresenceObserver)
@@ -94,10 +100,11 @@
         mxPresenceObserver = nil;
     }
     
+    // Clear the default background color of a MXKImageView instance
+    self.thumbnailView.backgroundColor = [UIColor clearColor];
     
     // Sanity check: accept only object of MXKContact classes or sub-classes
     NSParameterAssert([cellData isKindOfClass:[MXKContact class]]);
-    
     contact = (MXKContact*)cellData;
     
     // sanity check
@@ -117,7 +124,7 @@
     // Observe contact presence change
     mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        NSString* matrixId = [self getFirstMatrixId];
+        NSString* matrixId = self.firstMatrixId;
         
         if (matrixId && [matrixId isEqualToString:notif.object])
         {
@@ -169,7 +176,7 @@
     
     if (!image)
     {
-        NSString* matrixId = [self getFirstMatrixId];
+        NSString* matrixId = self.firstMatrixId;
         
         if (matrixId)
         {
@@ -196,7 +203,7 @@
 - (void)refreshContactPresence
 {
     NSString* presenceText;
-    NSString* matrixId = [self getFirstMatrixId];
+    NSString* matrixId = self.firstMatrixId;
     
     if (matrixId)
     {
