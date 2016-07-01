@@ -7,7 +7,8 @@ Improvements:
  * Room preview: Improve header in landscape
  * Add missing slash commands: /invite, /part and /topic #223.
  * Add Markdown typing support and display of "org.matrix.custom.html" messages body #403
- * Room search: search result should include the search pattern when it corresponds to a valid room alias or id #328 #329.
+ * Room search: search result includes the search pattern when it corresponds to a valid room alias or id #328
+ * Room search: Room preview is used when the user selects a public room that he did not join yet #329.
  * Rooms global search: Refresh the current search results when view will appear.
  * Directory: handle tap on clock status bar.
  * Search Screen: add People tab and contact picker.
@@ -32,7 +33,8 @@ Bug fixes:
  * Can't view MemberInfo when inviting users without actually inviting them #271.
  * Room Participants: Idle contacts must be listed before offline contacts in search result.
  * Media Picker: move the camera roll at the top of the folders #373.
- * Room members: double loading wheel #180
+ * Room members: double loading wheel #180.
+ * App crashes on '/join' command when no param is provided.
 
 Changes in Vector iOS in 0.1.10 (2016-06-04)
 ===============================================
