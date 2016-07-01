@@ -21,14 +21,20 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="a text" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="6xh-yB-9FP" userLabel="Mxk TextView">
-                        <rect key="frame" x="65" y="12" width="520" height="100"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="a text" translatesAutoresizingMaskIntoConstraints="NO" id="6xh-yB-9FP">
+                        <rect key="frame" x="532" y="12" width="53" height="100"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="53" id="Nrj-Yh-zMx"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <connections>
+                            <outlet property="delegate" destination="5Je-1y-foH" id="wnl-hm-OTD"/>
+                        </connections>
                     </textView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="6xh-yB-9FP" firstAttribute="leading" secondItem="DE7-uC-Oz2" secondAttribute="trailing" constant="8" id="1S8-WD-YdX"/>
+                    <constraint firstItem="6xh-yB-9FP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DE7-uC-Oz2" secondAttribute="trailing" constant="8" id="oCm-jb-bm0"/>
                     <constraint firstItem="DE7-uC-Oz2" firstAttribute="leading" secondItem="hCm-wd-Yup" secondAttribute="leading" constant="15" id="qse-r7-x6e"/>
                 </constraints>
             </tableViewCellContentView>
@@ -39,8 +45,11 @@
                 <constraint firstAttribute="trailing" secondItem="6xh-yB-9FP" secondAttribute="trailing" constant="15" id="hIh-cS-5Lj"/>
             </constraints>
             <connections>
-                <outlet property="mxkLabel" destination="DE7-uC-Oz2" id="944-Ob-lSz"/>
-                <outlet property="mxkTextView" destination="6xh-yB-9FP" id="8FX-Mo-Dhp"/>
+                <outlet property="label" destination="DE7-uC-Oz2" id="xmR-kD-5aJ"/>
+                <outlet property="labelTrailingMinConstraint" destination="oCm-jb-bm0" id="tK1-sl-BS3"/>
+                <outlet property="textView" destination="6xh-yB-9FP" id="dus-5x-CwT"/>
+                <outlet property="textViewTrailingConstraint" destination="hIh-cS-5Lj" id="iVx-5Q-LSe"/>
+                <outlet property="textViewWidthConstraint" destination="Nrj-Yh-zMx" id="Bws-Zg-agY"/>
             </connections>
         </tableViewCell>
     </objects>
