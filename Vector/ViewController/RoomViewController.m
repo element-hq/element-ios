@@ -622,9 +622,16 @@
     if ([string hasPrefix:kCmdJoinRoom])
     {
         // Join a room
-        NSString *roomAlias = [string substringFromIndex:kCmdJoinRoom.length + 1];
-        // Remove white space from both ends
-        roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *roomAlias;
+        
+        // Sanity check
+        if (string.length > kCmdJoinRoom.length)
+        {
+            roomAlias = [string substringFromIndex:kCmdJoinRoom.length + 1];
+            
+            // Remove white space from both ends
+            roomAlias = [roomAlias stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        }
         
         // Check
         if (roomAlias.length)
