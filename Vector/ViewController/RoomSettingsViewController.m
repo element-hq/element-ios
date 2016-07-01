@@ -16,7 +16,6 @@
 
 #import "RoomSettingsViewController.h"
 
-#import "TableViewCellWithLabelAndTextField.h"
 #import "TableViewCellWithLabelAndLargeTextView.h"
 #import "TableViewCellWithSwitches.h"
 #import "TableViewCellWithTickAndLabel.h"
@@ -148,7 +147,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithLabelAndLargeTextView.class forCellReuseIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
-    [self.tableView registerClass:TableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[TableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithSwitches.class forCellReuseIdentifier:[TableViewCellWithSwitches defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithTickAndLabel.class forCellReuseIdentifier:[TableViewCellWithTickAndLabel defaultReuseIdentifier]];
     
@@ -986,11 +985,6 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            // define the cell height
-            CGRect frame = roomTopicCell.frame;
-            frame.size.height = ROOM_TOPIC_CELL_HEIGHT;
-            roomTopicCell.frame = frame;
-            
             roomTopicCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
             
             topicTextView = roomTopicCell.mxkTextView;
@@ -1017,15 +1011,21 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_NAME)
         {
-            TableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            UIEdgeInsets separatorInset = roomNameCell.separatorInset;
+            
+            roomNameCell.mxkLabelLeadingConstraint.constant = separatorInset.left;
+            roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
             
             nameTextField = roomNameCell.mxkTextField;
             
-            nameTextField.userInteractionEnabled = YES;
             nameTextField.tintColor = kVectorColorGreen;
+            nameTextField.borderStyle = UITextBorderStyleNone;
+            nameTextField.textAlignment = NSTextAlignmentRight;
             
             if ([updatedItemsDict objectForKey:kRoomSettingsNameKey])
             {
@@ -1037,7 +1037,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             }
             
             // disable the edition if the user cannot update it
-            roomNameCell.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
+            nameTextField.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
             nameTextField.textColor = kVectorTextColorGray;
             
             // Add a "textFieldDidChange" notification method to the text field control.

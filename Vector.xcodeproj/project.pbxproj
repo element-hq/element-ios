@@ -46,14 +46,8 @@
 		7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7165A25A1C05CD42003635D7 /* SegmentedViewController.xib */; };
 		716FDC8A1C186A3A001034CB /* InviteRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 716FDC881C186A3A001034CB /* InviteRecentTableViewCell.m */; };
 		716FDC8B1C186A3A001034CB /* InviteRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 716FDC891C186A3A001034CB /* InviteRecentTableViewCell.xib */; };
-		717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7179283D1C03852C00407D96 /* TableViewCellSeparator.m */; };
-		717928461C03852C00407D96 /* TableViewCellSeparator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7179283E1C03852C00407D96 /* TableViewCellSeparator.xib */; };
 		717928471C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 717928401C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m */; };
 		717928481C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717928411C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib */; };
-		717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */; };
-		7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */; };
-		71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B2A3BE1C203C7100472061 /* TableViewCellWithLabelAndSwitch.m */; };
-		71B2A3C11C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B2A3BF1C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib */; };
 		71C5F2951C074ACC004C094B /* RoomSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C5F2941C074ACC004C094B /* RoomSettingsViewController.m */; };
 		71EBE66D1C04C4D300E7D953 /* RoomActivitiesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71EBE66B1C04C4D300E7D953 /* RoomActivitiesView.m */; };
 		71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71EBE66C1C04C4D300E7D953 /* RoomActivitiesView.xib */; };
@@ -336,18 +330,9 @@
 		716FDC871C186A3A001034CB /* InviteRecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteRecentTableViewCell.h; sourceTree = "<group>"; };
 		716FDC881C186A3A001034CB /* InviteRecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteRecentTableViewCell.m; sourceTree = "<group>"; };
 		716FDC891C186A3A001034CB /* InviteRecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InviteRecentTableViewCell.xib; sourceTree = "<group>"; };
-		7179283C1C03852C00407D96 /* TableViewCellSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellSeparator.h; path = TableViewCell/TableViewCellSeparator.h; sourceTree = "<group>"; };
-		7179283D1C03852C00407D96 /* TableViewCellSeparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellSeparator.m; path = TableViewCell/TableViewCellSeparator.m; sourceTree = "<group>"; };
-		7179283E1C03852C00407D96 /* TableViewCellSeparator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellSeparator.xib; path = TableViewCell/TableViewCellSeparator.xib; sourceTree = "<group>"; };
 		7179283F1C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndLargeTextView.h; path = TableViewCell/TableViewCellWithLabelAndLargeTextView.h; sourceTree = "<group>"; };
 		717928401C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndLargeTextView.m; path = TableViewCell/TableViewCellWithLabelAndLargeTextView.m; sourceTree = "<group>"; };
 		717928411C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndLargeTextView.xib; path = TableViewCell/TableViewCellWithLabelAndLargeTextView.xib; sourceTree = "<group>"; };
-		717928421C03852C00407D96 /* TableViewCellWithLabelAndTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndTextField.h; path = TableViewCell/TableViewCellWithLabelAndTextField.h; sourceTree = "<group>"; };
-		717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndTextField.m; path = TableViewCell/TableViewCellWithLabelAndTextField.m; sourceTree = "<group>"; };
-		717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndTextField.xib; path = TableViewCell/TableViewCellWithLabelAndTextField.xib; sourceTree = "<group>"; };
-		71B2A3BD1C203C7100472061 /* TableViewCellWithLabelAndSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithLabelAndSwitch.h; path = TableViewCell/TableViewCellWithLabelAndSwitch.h; sourceTree = "<group>"; };
-		71B2A3BE1C203C7100472061 /* TableViewCellWithLabelAndSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithLabelAndSwitch.m; path = TableViewCell/TableViewCellWithLabelAndSwitch.m; sourceTree = "<group>"; };
-		71B2A3BF1C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithLabelAndSwitch.xib; path = TableViewCell/TableViewCellWithLabelAndSwitch.xib; sourceTree = "<group>"; };
 		71C5F2931C074ACC004C094B /* RoomSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSettingsViewController.h; sourceTree = "<group>"; };
 		71C5F2941C074ACC004C094B /* RoomSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSettingsViewController.m; sourceTree = "<group>"; };
 		71C5F2991C077007004C094B /* VectorDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorDesignValues.h; sourceTree = "<group>"; };
@@ -684,18 +669,9 @@
 				F05641781C7C9FD7002276ED /* TableViewCellWithButton.h */,
 				F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */,
 				F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */,
-				7179283C1C03852C00407D96 /* TableViewCellSeparator.h */,
-				7179283D1C03852C00407D96 /* TableViewCellSeparator.m */,
-				7179283E1C03852C00407D96 /* TableViewCellSeparator.xib */,
-				71B2A3BD1C203C7100472061 /* TableViewCellWithLabelAndSwitch.h */,
-				71B2A3BE1C203C7100472061 /* TableViewCellWithLabelAndSwitch.m */,
-				71B2A3BF1C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib */,
 				7179283F1C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.h */,
 				717928401C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.m */,
 				717928411C03852C00407D96 /* TableViewCellWithLabelAndLargeTextView.xib */,
-				717928421C03852C00407D96 /* TableViewCellWithLabelAndTextField.h */,
-				717928431C03852C00407D96 /* TableViewCellWithLabelAndTextField.m */,
-				717928441C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib */,
 			);
 			name = TableViewCell;
 			sourceTree = "<group>";
@@ -1332,7 +1308,6 @@
 				F025290E1C11B6FC00E1FE1B /* voice_call_icon@3x.png in Resources */,
 				F02528FC1C11B6FC00E1FE1B /* selection_tick@3x.png in Resources */,
 				F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */,
-				7179284A1C03852C00407D96 /* TableViewCellWithLabelAndTextField.xib in Resources */,
 				F025290B1C11B6FC00E1FE1B /* upload_icon@3x.png in Resources */,
 				F0CC25691D099F30000819CA /* newmessages@3x.png in Resources */,
 				F02529011C11B6FC00E1FE1B /* settings_icon@2x.png in Resources */,
@@ -1351,7 +1326,6 @@
 				71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */,
 				F0026B5A1C916E68001D2C04 /* notifications@3x.png in Resources */,
 				F0DD2C721D141B0600654345 /* ContactPickerViewController.xib in Resources */,
-				71B2A3C11C203C7100472061 /* TableViewCellWithLabelAndSwitch.xib in Resources */,
 				F0DD2C7C1D18386300654345 /* ContactDetailsViewController.xib in Resources */,
 				F02528D51C11B6FC00E1FE1B /* camera_capture.png in Resources */,
 				F05641851C7CBB58002276ED /* bubbles_bg_landscape@3x.png in Resources */,
@@ -1412,7 +1386,6 @@
 				F056418D1C7CBEBD002276ED /* group@2x.png in Resources */,
 				F0026B501C916E68001D2C04 /* favourite@2x.png in Resources */,
 				71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */,
-				717928461C03852C00407D96 /* TableViewCellSeparator.xib in Resources */,
 				F02528F31C11B6FC00E1FE1B /* remove_icon@2x.png in Resources */,
 				F09EE0091C5134BE0078712F /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				325F6A431C21D20F00C12F51 /* DirectoryRecentTableViewCell.xib in Resources */,
@@ -1537,7 +1510,6 @@
 				F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */,
 				F072E9A01D217C2C002921AF /* TableViewCellWithSwitches.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
-				717928491C03852C00407D96 /* TableViewCellWithLabelAndTextField.m in Sources */,
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
@@ -1568,7 +1540,6 @@
 				325F6A391C21810E00C12F51 /* DirectoryViewController.m in Sources */,
 				3235CD8D1C34309E0084EA40 /* HomeSearchCellData.m in Sources */,
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
-				71B2A3C01C203C7100472061 /* TableViewCellWithLabelAndSwitch.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
 				F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */,
 				F0B7037E1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m in Sources */,
@@ -1605,7 +1576,6 @@
 				327F8DB51C64DB9D00581CA3 /* VectorDesignValues.m in Sources */,
 				F094AA371B78E42600B1FBBF /* RoomViewController.m in Sources */,
 				F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */,
-				717928451C03852C00407D96 /* TableViewCellSeparator.m in Sources */,
 				F094AA381B78E42600B1FBBF /* SettingsViewController.m in Sources */,
 				F094AA301B78E42600B1FBBF /* AuthenticationViewController.m in Sources */,
 				F0C34CB81C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m in Sources */,

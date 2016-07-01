@@ -44,11 +44,17 @@
 {
     [super awakeFromNib];
     
-    self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
-    self.thumbnailView.clipsToBounds = YES;
-    
     // apply the vector colours
     self.lastPresenceLabel.textColor = kVectorTextColorGray;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // Round image view
+    self.thumbnailView.layer.cornerRadius = self.thumbnailView.frame.size.width / 2;
+    self.thumbnailView.clipsToBounds = YES;
 }
 
 - (void)setShowCustomAccessoryView:(BOOL)show

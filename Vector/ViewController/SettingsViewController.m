@@ -533,7 +533,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = [UIColor lightGrayColor];
+    cell.mxkTextField.textColor = kVectorTextColorGray;
     
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
