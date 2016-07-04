@@ -105,9 +105,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
-    // Postpone destroy operation when saving or pwd reset is in progress
+    // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
     BOOL isResetPwdInProgress;
+    BOOL isEmailBindingInProgress;
     blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
     
     //
@@ -181,7 +182,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)destroy
 {
-    if (isSavingInProgress || isResetPwdInProgress)
+    if (isSavingInProgress || isResetPwdInProgress || isEmailBindingInProgress)
     {
         __weak typeof(self) weakSelf = self;
         onReadyToDestroyHandler = ^() {
@@ -384,54 +385,96 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
     currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
 
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf->currentAlert = nil;
-
-        [strongSelf stopActivityIndicator];
-
-         // Reset new email adding
-         strongSelf.newEmailEditingEnabled = NO;
+        if (weakSelf)
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+            
+            [strongSelf stopActivityIndicator];
+            
+            // Reset new email adding
+            strongSelf.newEmailEditingEnabled = NO;
+        }
+        
     }];
 
     __strong __typeof(threePID)strongThreePID = threePID;
 
     [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
-        // We always bind emails when registering, so let's do the same here
-        [threePID add3PIDToUser:YES success:^{
-
+        if (weakSelf)
+        {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
-
-            [strongSelf stopActivityIndicator];
-
-            // Reset new email adding
-            strongSelf.newEmailEditingEnabled = NO;
-
-            // Update linked emails
-            [strongSelf loadLinkedEmails];
-
-        } failure:^(NSError *error) {
-
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            strongSelf->currentAlert = nil;
-
-            NSLog(@"[SettingsViewController] Failed to bind email: %@", error);
-
-            // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
-            MXError *mxError = [[MXError alloc] initWithNSError:error];
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
-            {
-                [strongSelf showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
-            }
-            else
-            {
-                [strongSelf stopActivityIndicator];
-
-                // Notify MatrixKit user
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-            }
-        }];
+            strongSelf->isEmailBindingInProgress = YES;
+            
+            // We always bind emails when registering, so let's do the same here
+            [threePID add3PIDToUser:YES success:^{
+                
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->isEmailBindingInProgress = NO;
+                    
+                    // Check whether destroy has been called during email binding
+                    if (strongSelf->onReadyToDestroyHandler)
+                    {
+                        // Ready to destroy
+                        strongSelf->onReadyToDestroyHandler();
+                        strongSelf->onReadyToDestroyHandler = nil;
+                    }
+                    else
+                    {
+                        strongSelf->currentAlert = nil;
+                        
+                        [strongSelf stopActivityIndicator];
+                        
+                        // Reset new email adding
+                        strongSelf.newEmailEditingEnabled = NO;
+                        
+                        // Update linked emails
+                        [strongSelf loadLinkedEmails];
+                    }
+                }
+                
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[SettingsViewController] Failed to bind email: %@", error);
+                
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->isEmailBindingInProgress = NO;
+                    
+                    // Check whether destroy has been called during email binding
+                    if (strongSelf->onReadyToDestroyHandler)
+                    {
+                        // Ready to destroy
+                        strongSelf->onReadyToDestroyHandler();
+                        strongSelf->onReadyToDestroyHandler = nil;
+                    }
+                    else
+                    {
+                        strongSelf->currentAlert = nil;
+                        
+                        // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
+                        MXError *mxError = [[MXError alloc] initWithNSError:error];
+                        if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
+                        {
+                            [strongSelf showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
+                        }
+                        else
+                        {
+                            [strongSelf stopActivityIndicator];
+                            
+                            // Notify MatrixKit user
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                        }
+                    }
+                }
+                
+            }];
+        }
+        
     }];
 
     [currentAlert showInViewController:self];
