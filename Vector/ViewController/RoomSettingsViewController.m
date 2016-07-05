@@ -41,7 +41,8 @@
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC               2
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_TAG                 3
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS  4
-#define ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT               5
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE               5
+#define ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT               6
 
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY            0
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST 1
@@ -148,6 +149,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithLabelAndLargeTextView.class forCellReuseIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:MXKTableViewCellWithButton.class forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithCheckBoxAndLabel.class forCellReuseIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier]];
     
@@ -970,7 +972,6 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 roomNotifSwitch.on = mxRoom.isMute;
             }
             
-            [roomNotifCell layoutIfNeeded];
             cell = roomNotifCell;
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
@@ -1115,6 +1116,22 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             }
             
             cell = roomTagCell;
+        }
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE)
+        {
+            MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            NSString* title = NSLocalizedStringFromTable(@"leave", @"Vector", nil);
+            
+            [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
+            [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+            [leaveCell.mxkButton setTintColor:kVectorColorGreen];
+            leaveCell.mxkButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+            
+            [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [leaveCell.mxkButton addTarget:self action:@selector(onLeave:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = leaveCell;
         }
     }
     else if (indexPath.section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
@@ -1650,6 +1667,59 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
 }
 
 #pragma mark - actions
+
+- (void)onLeave:(id)sender
+{
+    // Prompt user before leaving the room
+    __weak typeof(self) weakSelf = self;
+    
+    [currentAlert dismiss:NO];
+    
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
+                                           message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
+                                             style:MXKAlertStyleAlert];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:MXKAlertActionStyleCancel
+                                                              handler:^(MXKAlert *alert) {
+                                                                  
+                                                                  if (weakSelf)
+                                                                  {
+                                                                      __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                      strongSelf->currentAlert = nil;
+                                                                  }
+                                                              }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+                               style:MXKAlertActionStyleDefault
+                             handler:^(MXKAlert *alert) {
+                                 
+                                 if (weakSelf)
+                                 {
+                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                     strongSelf->currentAlert = nil;
+                                     
+                                     [strongSelf startActivityIndicator];
+                                     [strongSelf->mxRoom leave:^{
+                                         
+                                         [strongSelf withdrawViewControllerAnimated:YES completion:nil];
+                                         
+                                     } failure:^(NSError *error) {
+                                         
+                                         [strongSelf stopActivityIndicator];
+                                         
+                                         NSLog(@"[RoomSettingsViewController] Leave room failed");
+                                         // Alert user
+                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                         
+                                     }];
+                                 }
+                                 
+                             }];
+    
+    [currentAlert showInViewController:self];
+}
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
 {
