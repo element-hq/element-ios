@@ -164,8 +164,8 @@
 		F05641941C7DF9DE002276ED /* error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641911C7DF9DE002276ED /* error@3x.png */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
 		F067F2BC1CF6F0EA00F35EE8 /* third_party_licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */; };
-		F072E9A01D217C2C002921AF /* TableViewCellWithSwitches.m in Sources */ = {isa = PBXBuildFile; fileRef = F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */; };
-		F072E9A21D217EA0002921AF /* TableViewCellWithSwitches.xib in Resources */ = {isa = PBXBuildFile; fileRef = F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */; };
+		F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */ = {isa = PBXBuildFile; fileRef = F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */; };
+		F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -466,9 +466,9 @@
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
 		F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = third_party_licenses.html; sourceTree = "<group>"; };
-		F072E99E1D217C2C002921AF /* TableViewCellWithSwitches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithSwitches.h; path = TableViewCell/TableViewCellWithSwitches.h; sourceTree = "<group>"; };
-		F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithSwitches.m; path = TableViewCell/TableViewCellWithSwitches.m; sourceTree = "<group>"; };
-		F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithSwitches.xib; path = TableViewCell/TableViewCellWithSwitches.xib; sourceTree = "<group>"; };
+		F07ECA4A1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithCheckBoxes.h; path = TableViewCell/TableViewCellWithCheckBoxes.h; sourceTree = "<group>"; };
+		F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithCheckBoxes.m; path = TableViewCell/TableViewCellWithCheckBoxes.m; sourceTree = "<group>"; };
+		F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithCheckBoxes.xib; path = TableViewCell/TableViewCellWithCheckBoxes.xib; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -660,12 +660,12 @@
 		7179283B1C0384DE00407D96 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				F07ECA4A1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.h */,
+				F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */,
+				F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */,
 				F0B7037B1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.h */,
 				F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */,
 				F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */,
-				F072E99E1D217C2C002921AF /* TableViewCellWithSwitches.h */,
-				F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */,
-				F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */,
 				F05641781C7C9FD7002276ED /* TableViewCellWithButton.h */,
 				F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */,
 				F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */,
@@ -1434,10 +1434,10 @@
 				F0026B521C916E68001D2C04 /* favouriteOff.png in Resources */,
 				32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */,
 				F02528FD1C11B6FC00E1FE1B /* selection_untick.png in Resources */,
+				F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */,
 				F0026B5C1C916E68001D2C04 /* notificationsOff@2x.png in Resources */,
 				F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */,
 				F02528DD1C11B6FC00E1FE1B /* camera_switch@2x.png in Resources */,
-				F072E9A21D217EA0002921AF /* TableViewCellWithSwitches.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1508,7 +1508,6 @@
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
 				32C52BF61CBE4B0A00863B33 /* RoomEmailInvitation.m in Sources */,
 				F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */,
-				F072E9A01D217C2C002921AF /* TableViewCellWithSwitches.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
@@ -1569,6 +1568,7 @@
 				F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F0D2D9851C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */,
+				F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */,
 				F02BB04B1CBE2EE70022A025 /* PreviewRoomTitleView.m in Sources */,
 				F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F09EE0061C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,

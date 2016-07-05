@@ -17,7 +17,6 @@
 #import "RoomSettingsViewController.h"
 
 #import "TableViewCellWithLabelAndLargeTextView.h"
-#import "TableViewCellWithSwitches.h"
 #import "TableViewCellWithTickAndLabel.h"
 
 #import "SegmentedViewController.h"
@@ -77,8 +76,9 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     // The current table items
     UITextField* nameTextField;
     UITextView* topicTextView;
-    UISwitch *favouriteTagSwitch;
-    UISwitch *lowPriorityTagSwitch;
+    
+    // The room tag items
+    TableViewCellWithCheckBoxes *roomTagCell;
     
     // Room Access items
     TableViewCellWithTickAndLabel *accessInvitedOnlyTickCell;
@@ -148,7 +148,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithLabelAndLargeTextView.class forCellReuseIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
-    [self.tableView registerClass:TableViewCellWithSwitches.class forCellReuseIdentifier:[TableViewCellWithSwitches defaultReuseIdentifier]];
+    [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithTickAndLabel.class forCellReuseIdentifier:[TableViewCellWithTickAndLabel defaultReuseIdentifier]];
     
     [self setNavBarButtons];
@@ -1076,22 +1076,18 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TAG)
         {
-            TableViewCellWithSwitches *tagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithSwitches defaultReuseIdentifier] forIndexPath:indexPath];
+            roomTagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
             
-            tagCell.switchesNumber = 2;
+            roomTagCell.checkboxesNumber = 2;
             
-            favouriteTagSwitch = tagCell.switches[0];
-            [favouriteTagSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-            favouriteTagSwitch.onTintColor = kVectorColorGreen;
+            roomTagCell.allowsMultipleSelection = NO;
+            roomTagCell.delegate = self;
             
-            lowPriorityTagSwitch = tagCell.switches[1];
-            [lowPriorityTagSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
-            lowPriorityTagSwitch.onTintColor = kVectorColorGreen;
-            
+            NSArray *labels = roomTagCell.labels;
             UILabel *label;
-            label = tagCell.labels[0];
+            label = labels[0];
             label.text = NSLocalizedStringFromTable(@"room_details_favourite_tag", @"Vector", nil);
-            label = tagCell.labels[1];
+            label = labels[1];
             label.text = NSLocalizedStringFromTable(@"room_details_low_priority_tag", @"Vector", nil);
             
             if ([updatedItemsDict objectForKey:kRoomSettingsTagKey])
@@ -1099,27 +1095,26 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 NSString *roomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
                 if ([roomTag isEqualToString:kMXRoomTagFavourite])
                 {
-                    favouriteTagSwitch.on = YES;
-                    lowPriorityTagSwitch.on = NO;
+                    [roomTagCell setCheckBoxValue:YES atIndex:0];
                 }
                 else if ([roomTag isEqualToString:kMXRoomTagLowPriority])
                 {
-                    favouriteTagSwitch.on = NO;
-                    lowPriorityTagSwitch.on = YES;
-                }
-                else
-                {
-                    favouriteTagSwitch.on = NO;
-                    lowPriorityTagSwitch.on = NO;
+                    [roomTagCell setCheckBoxValue:YES atIndex:1];
                 }
             }
             else
             {
-                favouriteTagSwitch.on = (mxRoom.accountData.tags[kMXRoomTagFavourite] != 0);
-                lowPriorityTagSwitch.on = (mxRoom.accountData.tags[kMXRoomTagLowPriority] != 0);
+                if (mxRoom.accountData.tags[kMXRoomTagFavourite] != nil)
+                {
+                    [roomTagCell setCheckBoxValue:YES atIndex:0];
+                }
+                else if (mxRoom.accountData.tags[kMXRoomTagLowPriority] != nil)
+                {
+                    [roomTagCell setCheckBoxValue:YES atIndex:1];
+                }
             }
             
-            cell = tagCell;
+            cell = roomTagCell;
         }
     }
     else if (indexPath.section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
@@ -1669,97 +1664,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
 
 - (void)onSwitchUpdate:(UISwitch*)theSwitch
 {
-    if (theSwitch == favouriteTagSwitch)
-    {
-        if (favouriteTagSwitch.on)
-        {
-            // Check the actual tag on mxRoom
-            if (mxRoom.accountData.tags[kMXRoomTagFavourite])
-            {
-                [updatedItemsDict removeObjectForKey:kRoomSettingsTagKey];
-            }
-            else
-            {
-                [updatedItemsDict setObject:kMXRoomTagFavourite forKey:kRoomSettingsTagKey];
-            }
-            
-            // Force off the low priority toggle
-            lowPriorityTagSwitch.on = NO;
-        }
-        else
-        {
-            // Retrieve the current change on room tag (if any)
-            NSString *updatedRoomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
-            
-            // Check the actual tag on mxRoom
-            if (mxRoom.accountData.tags[kMXRoomTagFavourite])
-            {
-                // The actual tag must be updated, check whether another tag is already set
-                if (!updatedRoomTag)
-                {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
-                }
-            }
-            else if (updatedRoomTag && [updatedRoomTag isEqualToString:kMXRoomTagFavourite])
-            {
-                // Cancel the updated tag, but take into account the cancellation of the another tag (low priority) when favourite was selected
-                if (mxRoom.accountData.tags[kMXRoomTagLowPriority])
-                {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
-                }
-                else
-                {
-                    [updatedItemsDict removeObjectForKey:kRoomSettingsTagKey];
-                }
-            }
-        }
-    }
-    else if (theSwitch == lowPriorityTagSwitch)
-    {
-        if (lowPriorityTagSwitch.on)
-        {
-            // Check the actual tag on mxRoom
-            if (mxRoom.accountData.tags[kMXRoomTagLowPriority])
-            {
-                [updatedItemsDict removeObjectForKey:kRoomSettingsTagKey];
-            }
-            else
-            {
-                [updatedItemsDict setObject:kMXRoomTagLowPriority forKey:kRoomSettingsTagKey];
-            }
-            
-            // Force off the favourite toggle
-            favouriteTagSwitch.on = NO;
-        }
-        else
-        {
-            // Retrieve the current change on room tag (if any)
-            NSString *updatedRoomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
-            
-            // Check the actual tag on mxRoom
-            if (mxRoom.accountData.tags[kMXRoomTagLowPriority])
-            {
-                // The actual tag must be updated, check whether another tag is already set
-                if (!updatedRoomTag)
-                {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
-                }
-            }
-            else if (updatedRoomTag && [updatedRoomTag isEqualToString:kMXRoomTagLowPriority])
-            {
-                // Cancel the updated tag, but take into account the cancellation of the another tag (favourite) when low priority was selected
-                if (mxRoom.accountData.tags[kMXRoomTagFavourite])
-                {
-                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
-                }
-                else
-                {
-                    [updatedItemsDict removeObjectForKey:kRoomSettingsTagKey];
-                }
-            }
-        }
-    }
-    else if (theSwitch == roomNotifSwitch)
+    if (theSwitch == roomNotifSwitch)
     {
         if (roomNotifSwitch.on == mxRoom.isMute)
         {
@@ -1794,6 +1699,67 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
+
+#pragma mark - TableViewCellWithCheckBoxesDelegate
+
+- (void)tableViewCellWithCheckBoxes:(TableViewCellWithCheckBoxes *)tableViewCellWithCheckBoxes didTapOnCheckBoxAtIndex:(NSUInteger)index
+{
+    if (tableViewCellWithCheckBoxes == roomTagCell)
+    {
+        NSString *tappedRoomTag = (index == 0) ? kMXRoomTagFavourite : kMXRoomTagLowPriority;
+        BOOL isCurrentlySelected = [roomTagCell checkBoxValueAtIndex:index];
+        
+        if (isCurrentlySelected)
+        {
+            // The user wants to unselect this tag
+            // Retrieve the current change on room tag (if any)
+            NSString *updatedRoomTag = [updatedItemsDict objectForKey:kRoomSettingsTagKey];
+            
+            // Check the actual tag on mxRoom
+            if (mxRoom.accountData.tags[tappedRoomTag])
+            {
+                // The actual tag must be updated, check whether another tag is already set
+                if (!updatedRoomTag)
+                {
+                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
+                }
+            }
+            else if (updatedRoomTag && [updatedRoomTag isEqualToString:tappedRoomTag])
+            {
+                // Cancel the updated tag, but take into account the cancellation of another tag when 'tappedRoomTag' was selected.
+                if (mxRoom.accountData.tags.count)
+                {
+                    [updatedItemsDict setObject:@"" forKey:kRoomSettingsTagKey];
+                }
+                else
+                {
+                    [updatedItemsDict removeObjectForKey:kRoomSettingsTagKey];
+                }
+            }
+            
+            // Unselect the tag
+            [roomTagCell setCheckBoxValue:NO atIndex:index];
+        }
+        else
+        {
+            // The user wants to select this room tag
+            // Check the actual tag on mxRoom
+            if (mxRoom.accountData.tags[tappedRoomTag])
+            {
+                [updatedItemsDict removeObjectForKey:kRoomSettingsTagKey];
+            }
+            else
+            {
+                [updatedItemsDict setObject:tappedRoomTag forKey:kRoomSettingsTagKey];
+            }
+            
+            // Select the tapped tag
+            [roomTagCell setCheckBoxValue:YES atIndex:index];
+        }
+        
+        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+    }
 }
 
 @end
