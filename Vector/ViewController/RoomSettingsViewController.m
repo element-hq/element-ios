@@ -17,7 +17,7 @@
 #import "RoomSettingsViewController.h"
 
 #import "TableViewCellWithLabelAndLargeTextView.h"
-#import "TableViewCellWithTickAndLabel.h"
+#import "TableViewCellWithCheckBoxAndLabel.h"
 
 #import "SegmentedViewController.h"
 
@@ -81,14 +81,14 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     TableViewCellWithCheckBoxes *roomTagCell;
     
     // Room Access items
-    TableViewCellWithTickAndLabel *accessInvitedOnlyTickCell;
-    TableViewCellWithTickAndLabel *accessAnyoneApartGuestTickCell;
-    TableViewCellWithTickAndLabel *accessAnyoneTickCell;
+    TableViewCellWithCheckBoxAndLabel *accessInvitedOnlyTickCell;
+    TableViewCellWithCheckBoxAndLabel *accessAnyoneApartGuestTickCell;
+    TableViewCellWithCheckBoxAndLabel *accessAnyoneTickCell;
     UISwitch *directoryVisibilitySwitch;
     MXRoomDirectoryVisibility actualDirectoryVisibility;
     
     // History Visibility items
-    NSMutableDictionary<MXRoomHistoryVisibility, TableViewCellWithTickAndLabel*> *historyVisibilityTickCells;
+    NSMutableDictionary<MXRoomHistoryVisibility, TableViewCellWithCheckBoxAndLabel*> *historyVisibilityTickCells;
     
     // The potential image loader
     MXKMediaLoader *uploader;
@@ -149,7 +149,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     [self.tableView registerClass:TableViewCellWithLabelAndLargeTextView.class forCellReuseIdentifier:[TableViewCellWithLabelAndLargeTextView defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
-    [self.tableView registerClass:TableViewCellWithTickAndLabel.class forCellReuseIdentifier:[TableViewCellWithTickAndLabel defaultReuseIdentifier]];
+    [self.tableView registerClass:TableViewCellWithCheckBoxAndLabel.class forCellReuseIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier]];
     
     [self setNavBarButtons];
 }
@@ -1078,7 +1078,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         {
             roomTagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
             
-            roomTagCell.checkboxesNumber = 2;
+            roomTagCell.checkBoxesNumber = 2;
             
             roomTagCell.allowsMultipleSelection = NO;
             roomTagCell.delegate = self;
@@ -1195,7 +1195,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         }
         else
         {
-            TableViewCellWithTickAndLabel *roomAccessCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithTickAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
+            TableViewCellWithCheckBoxAndLabel *roomAccessCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
             
             if (indexPath.row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY)
             {
@@ -1277,7 +1277,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     }
     else if (indexPath.section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
     {
-        TableViewCellWithTickAndLabel *historyVisibilityCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithTickAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
+        TableViewCellWithCheckBoxAndLabel *historyVisibilityCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
         
         if (indexPath.row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE)
         {
@@ -1521,7 +1521,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
         else if (indexPath.section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
         {
             // Ignore the selection if the option is already enabled
-            TableViewCellWithTickAndLabel *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            TableViewCellWithCheckBoxAndLabel *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
             if (! selectedCell.isEnabled)
             {
                 MXRoomHistoryVisibility historyVisibility;
@@ -1595,7 +1595,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
     {
         // Disable all history visibility options
         NSArray *tickCells = historyVisibilityTickCells.allValues;
-        for (TableViewCellWithTickAndLabel *historyVisibilityTickCell in tickCells)
+        for (TableViewCellWithCheckBoxAndLabel *historyVisibilityTickCell in tickCells)
         {
             historyVisibilityTickCell.enabled = NO;
         }

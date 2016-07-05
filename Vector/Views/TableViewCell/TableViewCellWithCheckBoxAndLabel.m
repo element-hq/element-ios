@@ -14,13 +14,23 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCell.h"
+#import "TableViewCellWithCheckBoxAndLabel.h"
 
-@interface TableViewCellWithTickAndLabel : MXKTableViewCell
+@implementation TableViewCellWithCheckBoxAndLabel
 
-@property (strong, nonatomic) IBOutlet UIImageView *tick;
-@property (strong, nonatomic) IBOutlet UILabel *label;
-
-@property (nonatomic, getter=isEnabled) BOOL enabled;
+- (void)setEnabled:(BOOL)enabled
+{
+    if (enabled)
+    {
+        _checkBox.image = [UIImage imageNamed:@"selection_tick"];
+    }
+    else
+    {
+        _checkBox.image = [UIImage imageNamed:@"selection_untick"];
+    }
+    
+    _enabled = enabled;
+}
 
 @end
+

@@ -46,12 +46,12 @@
 /**
  The number of boxes
  */
-@property (nonatomic) NSUInteger checkboxesNumber;
+@property (nonatomic) NSUInteger checkBoxesNumber;
 
 /**
- The current array of checkboxes
+ The current array of checkBoxes
  */
-@property (nonatomic, readonly) NSArray<UIImageView*> *checkboxes;
+@property (nonatomic, readonly) NSArray<UIImageView*> *checkBoxes;
 
 /**
  The current array of labels

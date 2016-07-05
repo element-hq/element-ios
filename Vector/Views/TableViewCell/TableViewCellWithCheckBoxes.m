@@ -21,16 +21,16 @@
 
 @interface TableViewCellWithCheckBoxes ()
 {
-    NSMutableArray *checkboxesArray;
+    NSMutableArray *checkBoxesArray;
     NSMutableArray *labelArray;
 }
 @end
 
 @implementation TableViewCellWithCheckBoxes
 
-- (void)setCheckboxesNumber:(NSUInteger)checkboxesNumber
+- (void)setCheckBoxesNumber:(NSUInteger)checkBoxesNumber
 {
-    if (_checkboxesNumber == checkboxesNumber)
+    if (_checkBoxesNumber == checkBoxesNumber)
     {
         return;
     }
@@ -42,24 +42,24 @@
         [view removeFromSuperview];
     }
     
-    _checkboxesNumber = checkboxesNumber;
+    _checkBoxesNumber = checkBoxesNumber;
     
-    if (!_checkboxesNumber)
+    if (!_checkBoxesNumber)
     {
         // Nothing to do
         return;
     }
     
-    checkboxesArray = [NSMutableArray arrayWithCapacity:checkboxesNumber];
-    labelArray = [NSMutableArray arrayWithCapacity:checkboxesNumber];
+    checkBoxesArray = [NSMutableArray arrayWithCapacity:checkBoxesNumber];
+    labelArray = [NSMutableArray arrayWithCapacity:checkBoxesNumber];
     
-    CGFloat containerWidth = (self.mainContainer.frame.size.width - ((checkboxesNumber - 1.0) * TABLEVIEWCELLWITHCHECKBOXES_MARGIN)) / checkboxesNumber;
+    CGFloat containerWidth = (self.mainContainer.frame.size.width - ((checkBoxesNumber - 1.0) * TABLEVIEWCELLWITHCHECKBOXES_MARGIN)) / checkBoxesNumber;
     
     UIView *previousContainer = nil;
     NSLayoutConstraint *topConstraint, *leftConstraint, *bottomConstraint;
     NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint, *centerXConstraint;
     
-    for (NSInteger index = 0; index < checkboxesNumber; index++)
+    for (NSInteger index = 0; index < checkBoxesNumber; index++)
     {
         UIView *checkboxContainer = [[UIView alloc] initWithFrame:CGRectMake(index * (containerWidth + TABLEVIEWCELLWITHCHECKBOXES_MARGIN), 0, containerWidth, self.mainContainer.frame.size.height)];
         checkboxContainer.backgroundColor = [UIColor clearColor];
@@ -81,8 +81,8 @@
                                                            relatedBy:NSLayoutRelationEqual
                                                               toItem:self.mainContainer
                                                            attribute:NSLayoutAttributeWidth
-                                                          multiplier:(1.0 / checkboxesNumber)
-                                                            constant:(- ((checkboxesNumber - 1.0) * TABLEVIEWCELLWITHCHECKBOXES_MARGIN) / checkboxesNumber)];
+                                                          multiplier:(1.0 / checkBoxesNumber)
+                                                            constant:(- ((checkBoxesNumber - 1.0) * TABLEVIEWCELLWITHCHECKBOXES_MARGIN) / checkBoxesNumber)];
         }
         else
         {
@@ -130,7 +130,7 @@
         // Store the new check box unselected by default
         checkbox.image = [UIImage imageNamed:@"selection_untick"];
         checkbox.tag = 0;
-        [checkboxesArray addObject:checkbox];
+        [checkBoxesArray addObject:checkbox];
         
         UILabel *theLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, containerWidth - 60, 31)];
         theLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -241,9 +241,9 @@
     }
 }
 
-- (NSArray*)checkboxes
+- (NSArray*)checkBoxes
 {
-    return [NSArray arrayWithArray:checkboxesArray];
+    return [NSArray arrayWithArray:checkBoxesArray];
 }
 
 - (NSArray*)labels
@@ -253,9 +253,9 @@
 
 - (void)setCheckBoxValue:(BOOL)isSelected atIndex:(NSUInteger)index
 {
-    if (index < checkboxesArray.count)
+    if (index < checkBoxesArray.count)
     {
-        UIImageView *checkBox = checkboxesArray[index];
+        UIImageView *checkBox = checkBoxesArray[index];
         
         if (isSelected && !checkBox.tag)
         {
@@ -265,11 +265,11 @@
             if (!self.allowsMultipleSelection)
             {
                 // Unselect others check boxes
-                for (NSUInteger k = 0; k < checkboxesArray.count; k++)
+                for (NSUInteger k = 0; k < checkBoxesArray.count; k++)
                 {
                     if (k != index)
                     {
-                        checkBox = checkboxesArray[k];
+                        checkBox = checkBoxesArray[k];
                         if (checkBox.tag)
                         {
                             checkBox.image = [UIImage imageNamed:@"selection_untick"];
@@ -289,9 +289,9 @@
 
 - (BOOL)checkBoxValueAtIndex:(NSUInteger)index
 {
-    if (index < checkboxesArray.count)
+    if (index < checkBoxesArray.count)
     {
-        UIImageView *checkBox = checkboxesArray[index];
+        UIImageView *checkBox = checkBoxesArray[index];
         
         return ((BOOL)checkBox.tag);
     }
