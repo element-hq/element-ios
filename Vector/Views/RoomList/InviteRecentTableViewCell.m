@@ -52,6 +52,9 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
     [self.rightButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
     
+    self.noticeBadgeView.backgroundColor = kVectorColorPinkRed;
+    [self.noticeBadgeView.layer setCornerRadius:10];
+    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
