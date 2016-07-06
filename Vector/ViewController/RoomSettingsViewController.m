@@ -1208,6 +1208,9 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 }];
             }
             
+            // Check whether the user can change this option
+            directoryVisibilitySwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
+            
             cell = directoryToggleCell;
         }
         else
@@ -1288,9 +1291,12 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
                 accessAnyoneTickCell = roomAccessCell;
             }
             
+            // Check whether the user can change this option
+            roomAccessCell.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomJoinRules]);
+            roomAccessCell.checkBox.alpha = roomAccessCell.userInteractionEnabled ? 1.0f : 0.5f;
+            
             cell = roomAccessCell;
         }
-        
     }
     else if (indexPath.section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
     {
@@ -1388,6 +1394,10 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
             
             [historyVisibilityTickCells setObject:historyVisibilityCell forKey:kMXRoomHistoryVisibilityJoined];
         }
+        
+        // Check whether the user can change this option
+        historyVisibilityCell.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomHistoryVisibility]);
+        historyVisibilityCell.checkBox.alpha = historyVisibilityCell.userInteractionEnabled ? 1.0f : 0.5f;
         
         cell = historyVisibilityCell;
     }
