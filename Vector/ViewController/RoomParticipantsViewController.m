@@ -974,6 +974,15 @@
     return participantCell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == participantsSection || indexPath.section == invitedSection)
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     // iOS8 requires this method to enable editing (see editActionsForRowAtIndexPath).
@@ -1114,20 +1123,21 @@
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray* actions = [[NSMutableArray alloc] init];
+    NSMutableArray* actions;
     
     // add the swipe to delete only on participants sections
     if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        NSString* title = @"        ";
+        actions = [[NSMutableArray alloc] init];
         
-        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        // Patch: Force the width of the button by adding whitespace characters into the title string.
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"        "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             
             [self onDeleteAt:indexPath];
         
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(30, 30)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(25, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
