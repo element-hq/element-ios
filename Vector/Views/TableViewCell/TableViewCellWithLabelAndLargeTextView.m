@@ -16,11 +16,15 @@
 
 #import "TableViewCellWithLabelAndLargeTextView.h"
 
+#import "VectorDesignValues.h"
+
 @implementation TableViewCellWithLabelAndLargeTextView
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    _label.textColor = kVectorTextColorBlack;
     
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.

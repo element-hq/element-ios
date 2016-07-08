@@ -573,6 +573,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         cell.mxkTextFieldTrailingConstraint.constant = 15;
     }
     
+    cell.mxkLabel.textColor = kVectorTextColorBlack;
+    
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
@@ -600,6 +602,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         cell.mxkLabelLeadingConstraint.constant = separatorInset.left;
         cell.mxkSwitchTrailingConstraint.constant = 15;
     }
+    
+    cell.mxkLabel.textColor = kVectorTextColorBlack;
     
     return cell;
 }
@@ -668,6 +672,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
+            profileCell.mxkLabel.textColor = kVectorTextColorBlack;
             
             // if the user defines a new avatar
             if (newAvatarImage)
@@ -911,6 +916,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
         configCell.textLabel.numberOfLines = 0;
+        configCell.textLabel.textColor = kVectorTextColorBlack;
+        
         cell = configCell;
     }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
@@ -928,6 +935,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString* build = [AppDelegate theDelegate].build;
             
             versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
+            versionCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = versionCell;
         }
@@ -941,6 +949,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+            termAndConditionCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = termAndConditionCell;
         }
@@ -954,6 +963,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
+            privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = privacyPolicyCell;
         }
@@ -967,6 +977,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
+            thirdPartyCell.textLabel.textColor = kVectorTextColorBlack;
             
             cell = thirdPartyCell;
         }
@@ -992,6 +1003,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             NSString *btnTitle = [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil)];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [clearCacheBtnCell.mxkButton setTintColor:kVectorColorGreen];
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [clearCacheBtnCell.mxkButton addTarget:self action:@selector(onClearCache:) forControlEvents:UIControlEventTouchUpInside];

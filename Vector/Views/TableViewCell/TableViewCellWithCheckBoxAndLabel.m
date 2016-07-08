@@ -16,7 +16,16 @@
 
 #import "TableViewCellWithCheckBoxAndLabel.h"
 
+#import "VectorDesignValues.h"
+
 @implementation TableViewCellWithCheckBoxAndLabel
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    _label.textColor = kVectorTextColorBlack;
+}
 
 - (void)setEnabled:(BOOL)enabled
 {
