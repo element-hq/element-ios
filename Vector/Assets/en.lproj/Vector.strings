@@ -263,6 +263,10 @@
 "room_details_history_section_prompt_msg" = "Changes to who can read history will only apply to future messages in this room. The visibility of existing history will be unchanged.";
 "room_details_addresses_section"="Addresses";
 "room_details_no_local_addresses" = "This room has no local addresses";
+"room_details_new_address" = "Add new address";
+"room_details_new_address_placeholder" = "Add new address (e.g. #foo:example.org)";
+"room_details_addresses_invalid_address_prompt_title" = "Invalid alias format";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
 "room_details_advanced_section"="Advanced";

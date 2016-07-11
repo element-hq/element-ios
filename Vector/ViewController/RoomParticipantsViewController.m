@@ -384,6 +384,9 @@
     if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
     {
         [((SegmentedViewController*)self.parentViewController) startActivityIndicator];
+        
+        // Force stop the activity view of the view controller
+        [self.activityIndicator stopAnimating];
     }
     else
     {
@@ -397,6 +400,9 @@
     if (self.parentViewController && [self.parentViewController isKindOfClass:SegmentedViewController.class])
     {
         [((SegmentedViewController*)self.parentViewController) stopActivityIndicator];
+        
+        // Force stop the activity view of the view controller
+        [self.activityIndicator stopAnimating];
     }
     else
     {
