@@ -270,7 +270,7 @@
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
 "room_details_advanced_section"="Advanced";
-"room_details_advanced_room_id"="This room's internal ID is %@";
+"room_details_advanced_room_id"="Room ID:";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
@@ -281,7 +281,8 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
-"room_details_with_updates" = "Do you want to save changes?";
+"room_details_save_changes_prompt" = "Do you want to save changes?";
+"room_details_copy_room_id" = "Copy Room ID";
 
 // Media picker
 "media_picker_library" = "Library";

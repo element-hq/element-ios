@@ -77,6 +77,7 @@ NSString *const kRoomSettingsCanonicalAliasKey = @"kRoomSettingsCanonicalAliasKe
 NSString *const kRoomSettingsNameCellViewIdentifier = @"kRoomSettingsNameCellViewIdentifier";
 NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellViewIdentifier";
 NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressCellViewIdentifier";
+NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvancedCellViewIdentifier";
 
 @interface RoomSettingsViewController ()
 {
@@ -242,6 +243,12 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
 - (void)destroy
 {
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    if (currentAlert)
+    {
+        [currentAlert dismiss:NO];
+        currentAlert = nil;
+    }
     
     if (uploader)
     {
@@ -423,7 +430,7 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
     
     __weak typeof(self) weakSelf = self;
     
-    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_with_updates", @"Vector", nil) style:MXKAlertStyleAlert];
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_save_changes_prompt", @"Vector", nil) style:MXKAlertStyleAlert];
     
     currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
         
@@ -452,6 +459,43 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
     }];
     
     [currentAlert showInViewController:self];
+}
+
+- (void)promptUserToCopyRoomId:(UILabel*)roomIdLabel
+{
+    if (roomIdLabel)
+    {
+        [currentAlert dismiss:NO];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+        
+        [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_details_copy_room_id", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+                
+                [[UIPasteboard generalPasteboard] setString:roomIdLabel.text];
+            }
+            
+        }];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+            }
+            
+        }];
+        
+        currentAlert.sourceView = roomIdLabel;
+        [currentAlert showInViewController:self];
+    }
 }
 
 - (void)retrieveActualDirectoryVisibility
@@ -1421,9 +1465,7 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         {
             MXKTableViewCellWithLabelAndSwitch *roomNotifCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
             
-            UIEdgeInsets separatorInset = roomNotifCell.separatorInset;
-            
-            roomNotifCell.mxkLabelLeadingConstraint.constant = separatorInset.left;
+            roomNotifCell.mxkLabelLeadingConstraint.constant = roomNotifCell.separatorInset.left;
             roomNotifCell.mxkSwitchTrailingConstraint.constant = 15;
             
             [roomNotifCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
@@ -1448,7 +1490,7 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         {
             MXKTableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            roomPhotoCell.mxkLabelLeadingConstraint.constant = 15;
+            roomPhotoCell.mxkLabelLeadingConstraint.constant = roomPhotoCell.separatorInset.left;
             roomPhotoCell.mxkImageViewTrailingConstraint.constant = 10;
             
             roomPhotoCell.mxkImageViewWidthConstraint.constant = roomPhotoCell.mxkImageViewHeightConstraint.constant = 30;
@@ -1485,6 +1527,8 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsTopicCellViewIdentifier forIndexPath:indexPath];
             
+            roomTopicCell.labelLeadingConstraint.constant = roomTopicCell.separatorInset.left;
+            
             roomTopicCell.label.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
             
             topicTextView = roomTopicCell.textView;
@@ -1513,9 +1557,7 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         {
             MXKTableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsNameCellViewIdentifier forIndexPath:indexPath];
             
-            UIEdgeInsets separatorInset = roomNameCell.separatorInset;
-            
-            roomNameCell.mxkLabelLeadingConstraint.constant = separatorInset.left;
+            roomNameCell.mxkLabelLeadingConstraint.constant = roomNameCell.separatorInset.left;
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
@@ -1552,6 +1594,8 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TAG)
         {
             roomTagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            roomTagCell.mainContainerLeadingConstraint.constant = roomTagCell.separatorInset.left;
             
             roomTagCell.checkBoxesNumber = 2;
             
@@ -1614,9 +1658,7 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         {
             MXKTableViewCellWithLabelAndSwitch *directoryToggleCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
             
-            UIEdgeInsets separatorInset = directoryToggleCell.separatorInset;
-            
-            directoryToggleCell.mxkLabelLeadingConstraint.constant = separatorInset.left;
+            directoryToggleCell.mxkLabelLeadingConstraint.constant = directoryToggleCell.separatorInset.left;
             directoryToggleCell.mxkSwitchTrailingConstraint.constant = 15;
             
             directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
@@ -1645,6 +1687,8 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
         else
         {
             TableViewCellWithCheckBoxAndLabel *roomAccessCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            roomAccessCell.checkBoxLeadingConstraint.constant = roomAccessCell.separatorInset.left;
             
             // Retrieve the potential updated values for joinRule and guestAccess
             NSString *joinRule = [updatedItemsDict objectForKey:kRoomSettingsJoinRuleKey];
@@ -1698,6 +1742,8 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
     else if (indexPath.section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
     {
         TableViewCellWithCheckBoxAndLabel *historyVisibilityCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
+        
+        historyVisibilityCell.checkBoxLeadingConstraint.constant = historyVisibilityCell.separatorInset.left;
         
         // Retrieve first the potential updated value for history visibility
         NSString *visibility = [updatedItemsDict objectForKey:kRoomSettingsHistoryVisibilityKey];
@@ -1760,10 +1806,8 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
             // Retrieve the current edited value if any
             NSString *currentValue = (addAddressTextField ? addAddressTextField.text : nil);
             
-            UIEdgeInsets separatorInset = addAddressCell.separatorInset;
-            
             addAddressCell.mxkLabelLeadingConstraint.constant = 0;
-            addAddressCell.mxkTextFieldLeadingConstraint.constant = separatorInset.left;
+            addAddressCell.mxkTextFieldLeadingConstraint.constant = addAddressCell.separatorInset.left;
             addAddressCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             addAddressCell.mxkLabel.text = nil;
@@ -1840,14 +1884,22 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
     }
     else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
-        MXKTableViewCell *roomIdCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
+        }
         
-        roomIdCell.textLabel.font = [UIFont systemFontOfSize:16];
-        roomIdCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil), mxRoomState.roomId];
-        roomIdCell.textLabel.textColor = kVectorTextColorBlack;
-        roomIdCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
+        cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+        cell.textLabel.textColor = kVectorTextColorBlack;
         
-        cell = roomIdCell;
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+        cell.detailTextLabel.text = mxRoomState.roomId;
+        cell.detailTextLabel.textColor = kVectorTextColorGray;
+        cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     // Sanity check
@@ -2117,6 +2169,14 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
                         }
                     }
                 }
+            }
+        }
+        else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
+        {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (cell)
+            {
+                [self promptUserToCopyRoomId:cell.detailTextLabel];
             }
         }
         

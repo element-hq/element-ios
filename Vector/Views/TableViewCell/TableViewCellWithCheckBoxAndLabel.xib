@@ -38,6 +38,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="checkBox" destination="2Q4-aT-dLb" id="Rh8-NI-beY"/>
+                <outlet property="checkBoxLeadingConstraint" destination="3Th-py-oa7" id="CpM-em-CVk"/>
                 <outlet property="label" destination="Xx4-AP-OQs" id="9lG-Ne-bbb"/>
             </connections>
         </tableViewCell>

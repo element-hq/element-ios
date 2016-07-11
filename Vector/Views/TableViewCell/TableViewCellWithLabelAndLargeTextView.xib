@@ -46,6 +46,7 @@
             </constraints>
             <connections>
                 <outlet property="label" destination="DE7-uC-Oz2" id="xmR-kD-5aJ"/>
+                <outlet property="labelLeadingConstraint" destination="qse-r7-x6e" id="MaG-lx-KhS"/>
                 <outlet property="labelTrailingMinConstraint" destination="oCm-jb-bm0" id="tK1-sl-BS3"/>
                 <outlet property="textView" destination="6xh-yB-9FP" id="dus-5x-CwT"/>
                 <outlet property="textViewTrailingConstraint" destination="hIh-cS-5Lj" id="iVx-5Q-LSe"/>

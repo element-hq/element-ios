@@ -23,4 +23,6 @@
 
 @property (nonatomic, getter=isEnabled) BOOL enabled;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *checkBoxLeadingConstraint;
+
 @end

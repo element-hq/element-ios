@@ -136,6 +136,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     self.tableView.backgroundColor = kVectorColorLightGrey;
     
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+    
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -559,19 +563,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return count;
 }
 
-- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview
+- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+    MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
     
-    if (!cell)
-    {
-        cell = [[MXKTableViewCellWithLabelAndTextField alloc] init];
-        
-        UIEdgeInsets separatorInset = cell.separatorInset;
-        
-        cell.mxkLabelLeadingConstraint.constant = separatorInset.left;
-        cell.mxkTextFieldTrailingConstraint.constant = 15;
-    }
+    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkTextFieldTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kVectorTextColorBlack;
     
@@ -589,19 +586,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return cell;
 }
 
-- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
     
-    if (!cell)
-    {
-        cell = [[MXKTableViewCellWithLabelAndSwitch alloc] init];
-        
-        UIEdgeInsets separatorInset = cell.separatorInset;
-        
-        cell.mxkLabelLeadingConstraint.constant = separatorInset.left;
-        cell.mxkSwitchTrailingConstraint.constant = 15;
-    }
+    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kVectorTextColorBlack;
     
@@ -653,19 +643,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (row == userSettingsProfilePictureIndex)
         {
-            MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
+            MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            if (!profileCell)
+            profileCell.mxkLabelLeadingConstraint.constant = profileCell.separatorInset.left;
+            profileCell.mxkImageViewTrailingConstraint.constant = 10;
+            
+            profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
+            profileCell.mxkImageViewDisplayBoxType = MXKTableViewCellDisplayBoxTypeCircle;
+            
+            if (!profileCell.mxkImageView.gestureRecognizers.count)
             {
-                profileCell = [[MXKTableViewCellWithLabelAndMXKImageView alloc] init];
-                
-                profileCell.mxkLabelLeadingConstraint.constant = 15;
-                profileCell.mxkImageViewTrailingConstraint.constant = 10;
-                
-                profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
-                
-                profileCell.mxkImageViewDisplayBoxType = MXKTableViewCellDisplayBoxTypeCircle;
-                
                 // tap on avatar to update it
                 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onProfileAvatarTap:)];
                 [profileCell.mxkImageView addGestureRecognizer:tap];
@@ -699,7 +686,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsDisplayNameIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
             displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_display_name", @"Vector", nil);
             displaynameCell.mxkTextField.text = myUser.displayname;
@@ -712,7 +699,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsFirstNameIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *firstCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *firstCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
         
             firstCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_first_name", @"Vector", nil);
             firstCell.mxkTextField.userInteractionEnabled = NO;
@@ -721,7 +708,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsSurnameIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *surnameCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *surnameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
             surnameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_surname", @"Vector", nil);
             surnameCell.mxkTextField.userInteractionEnabled = NO;
@@ -730,7 +717,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
             emailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_email_address", @"Vector", nil);
             emailCell.mxkTextField.text = account.linkedEmails[row - userSettingsEmailStartIndex];
@@ -740,7 +727,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsNewEmailIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *newEmailCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *newEmailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
 
             // Render the cell according to the `newEmailEditingEnabled` property
             if (!_newEmailEditingEnabled)
@@ -782,7 +769,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsChangePasswordIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
             passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
             passwordCell.mxkTextField.text = @"*********";
@@ -792,7 +779,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsPhoneNumberIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *phonenumberCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *phonenumberCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
             phonenumberCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
             phonenumberCell.mxkTextField.userInteractionEnabled = NO;
@@ -808,7 +795,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == userSettingsNightModeIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *nightModeCell = [self getLabelAndTextFieldCell:tableView];
+            MXKTableViewCellWithLabelAndTextField *nightModeCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
                                                                     
             nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
             nightModeCell.mxkTextField.userInteractionEnabled = NO;
@@ -824,7 +811,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView];
+            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
             enableAllCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
@@ -845,63 +832,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             globalInfoCell.textLabel.numberOfLines = 0;
             cell = globalInfoCell;
         }
-//        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
-//            
-//            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_user_name", @"Vector", nil);
-//            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
-//            cell = myNameCell;
-//        }
-//        else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* myNameCell = [self getLabelAndSwitchCell:tableView];
-//            
-//            myNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_my_display_name", @"Vector", nil);
-//            rule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
-//            cell = myNameCell;
-//        }
-//        else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* sentToMeCell = [self getLabelAndSwitchCell:tableView];
-//            sentToMeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_messages_sent_to_me", @"Vector", nil);
-//            rule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
-//            cell = sentToMeCell;
-//        }
-//        else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* invitedToARoom = [self getLabelAndSwitchCell:tableView];
-//            invitedToARoom.mxkLabel.text = NSLocalizedStringFromTable(@"settings_invited_to_room", @"Vector", nil);
-//            rule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
-//            cell = invitedToARoom;
-//        }
-//        else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* peopleJoinLeaveCell = [self getLabelAndSwitchCell:tableView];
-//            peopleJoinLeaveCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_join_leave_rooms", @"Vector", nil);
-//            rule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
-//            cell = peopleJoinLeaveCell;
-//        }
-//        else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* callInvitationCell = [self getLabelAndSwitchCell:tableView];
-//            callInvitationCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_call_invitations", @"Vector", nil);
-//            rule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
-//            cell = callInvitationCell;
-//        }
-        
-//        // common management
-//        MXKTableViewCellWithLabelAndSwitch* switchCell = (MXKTableViewCellWithLabelAndSwitch*)cell;
-//        switchCell.mxkSwitch.tag = row;
-//        
-//        if (rule)
-//        {
-//            switchCell.mxkSwitch.on = rule.enabled;
-//        }
-//        
-//        [switchCell.mxkSwitch  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-//        [switchCell.mxkSwitch addTarget:self action:@selector(onRuleUpdate:) forControlEvents:UIControlEventTouchUpInside];
-    
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -983,7 +913,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         }
         else if (row == OTHER_CRASH_REPORT_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView];
+            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
             sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
