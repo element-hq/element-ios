@@ -26,6 +26,7 @@
 #import "VectorDesignValues.h"
 
 #import "AvatarGenerator.h"
+#import "Tools.h"
 
 #import "MXRoom+Vector.h"
 
@@ -76,6 +77,7 @@ NSString *const kRoomSettingsCanonicalAliasKey = @"kRoomSettingsCanonicalAliasKe
 
 NSString *const kRoomSettingsNameCellViewIdentifier = @"kRoomSettingsNameCellViewIdentifier";
 NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellViewIdentifier";
+NSString *const kRoomSettingsNewAddressCellViewIdentifier = @"kRoomSettingsNewAddressCellViewIdentifier";
 NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvancedCellViewIdentifier";
 
@@ -162,6 +164,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     updatedItemsDict = [[NSMutableDictionary alloc] init];
     historyVisibilityTickCells = [[NSMutableDictionary alloc] initWithCapacity:4];
     
+    roomAddresses = [NSMutableArray array];
+    
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     
@@ -169,7 +173,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     // on the text input field without being disturbed by the cell dequeuing process.
     [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:kRoomSettingsNameCellViewIdentifier];
     [self.tableView registerClass:TableViewCellWithLabelAndLargeTextView.class forCellReuseIdentifier:kRoomSettingsTopicCellViewIdentifier];
-    [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:kRoomSettingsAddressCellViewIdentifier];
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:kRoomSettingsNewAddressCellViewIdentifier];
+    [self.tableView registerClass:UITableViewCell.class forCellReuseIdentifier:kRoomSettingsAddressCellViewIdentifier];
     
     [self.tableView registerClass:MXKTableViewCellWithButton.class forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
@@ -494,6 +499,72 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         }];
         
         currentAlert.sourceView = roomIdLabel;
+        [currentAlert showInViewController:self];
+    }
+}
+
+- (void)promptUserOnSelectedRoomAlias:(UILabel*)roomAliasLabel
+{
+    if (roomAliasLabel)
+    {
+        [currentAlert dismiss:NO];
+        
+        __weak typeof(self) weakSelf = self;
+        
+        currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+        
+        [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_details_copy_room_address", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+                
+                [[UIPasteboard generalPasteboard] setString:roomAliasLabel.text];
+            }
+            
+        }];
+        
+        [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_details_copy_room_url", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+                
+                // Create a room url that is common to all Vector.im clients
+                NSString *roomURL = [NSString stringWithFormat:@"%@/#/room/%@",
+                                       [Tools webAppUrl],
+                                       roomAliasLabel.text];
+                
+                [[UIPasteboard generalPasteboard] setString:roomURL];
+            }
+            
+        }];
+        
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+                
+                [strongSelf removeRoomAlias:roomAliasLabel.text];
+            }
+            
+        }];
+        
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+            
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+            }
+            
+        }];
+        
+        currentAlert.sourceView = roomAliasLabel;
         [currentAlert showInViewController:self];
     }
 }
@@ -1352,7 +1423,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     }
     else if (section == ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX)
     {
-        roomAddresses = nil;
+        [roomAddresses removeAllObjects];
         localAddressesCount = 0;
         roomAddressNewAliasIndex = -1;
         
@@ -1361,8 +1432,6 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         NSArray *aliases = mxRoomState.aliases;
         if (aliases)
         {
-            roomAddresses = [NSMutableArray arrayWithCapacity:aliases.count];
-            
             for (NSString *alias in aliases)
             {
                 // Check whether the user did not remove it
@@ -1801,7 +1870,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         if (indexPath.row == roomAddressNewAliasIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *addAddressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndTextField *addAddressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsNewAddressCellViewIdentifier forIndexPath:indexPath];
             
             // Retrieve the current edited value if any
             NSString *currentValue = (addAddressTextField ? addAddressTextField.text : nil);
@@ -1816,7 +1885,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
             
             addAddressTextField = addAddressCell.mxkTextField;
-            addAddressTextField.placeholder = NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil);
+            addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
             addAddressTextField.userInteractionEnabled = YES;
             addAddressTextField.text = currentValue;
             addAddressTextField.textColor = kVectorTextColorGray;
@@ -1834,7 +1903,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         }
         else
         {
-            MXKTableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+            UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
             
             addressCell.textLabel.font = [UIFont systemFontOfSize:16];
             addressCell.textLabel.textColor = kVectorTextColorBlack;
@@ -1842,6 +1911,12 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             addressCell.accessoryView = nil;
             addressCell.accessoryType = UITableViewCellAccessoryNone;
             addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            while (addressCell.textLabel.gestureRecognizers.count)
+            {
+                [addressCell.textLabel removeGestureRecognizer:addressCell.textLabel.gestureRecognizers[0]];
+            }
+            addressCell.textLabel.userInteractionEnabled = NO;
             
             // Check whether there is no local addresses
             if (localAddressesCount == 0 && indexPath.row == 0)
@@ -1876,6 +1951,11 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
                             addressCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_alias_icon"]];
                         }
                     }
+                    
+                    // Add a long gesture recognizer on alias label
+                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+                    [addressCell.textLabel addGestureRecognizer:longPress];
+                    addressCell.textLabel.userInteractionEnabled = YES;
                 }
             }
             
@@ -2456,6 +2536,21 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
 }
 
+- (IBAction)onLongPressGesture:(UILongPressGestureRecognizer*)longPressGestureRecognizer
+{
+    if (longPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        UIView* view = longPressGestureRecognizer.view;
+        
+        if ([view isKindOfClass:UILabel.class])
+        {
+            UILabel *aliasLabel = (UILabel*)view;
+            
+            [self promptUserOnSelectedRoomAlias:aliasLabel];
+        }
+    }
+}
+
 - (void)removeAddressAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = (localAddressesCount ? indexPath.row : indexPath.row - 1);
@@ -2540,7 +2635,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             }
         }
         // Check whether this alias is not already defined for this room
-        else if (roomAddresses && [roomAddresses indexOfObject:roomAlias] == NSNotFound)
+        else if ([roomAddresses indexOfObject:roomAlias] == NSNotFound)
         {
             NSMutableArray<NSString *> *addedAlias = [updatedItemsDict objectForKey:kRoomSettingsNewAliasesKey];
             if (!addedAlias)
@@ -2550,6 +2645,12 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             }
             
             [addedAlias addObject:roomAlias];
+            
+            if (!roomAddresses.count)
+            {
+                // The first created alias is defined as the main address by default
+                [updatedItemsDict setObject:roomAlias forKey:kRoomSettingsCanonicalAliasKey];
+            }
         }
         
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX, 1)];

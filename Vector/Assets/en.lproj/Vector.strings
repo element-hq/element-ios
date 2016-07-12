@@ -264,7 +264,7 @@
 "room_details_addresses_section"="Addresses";
 "room_details_no_local_addresses" = "This room has no local addresses";
 "room_details_new_address" = "Add new address";
-"room_details_new_address_placeholder" = "Add new address (e.g. #foo:example.org)";
+"room_details_new_address_placeholder" = "Add new address (e.g. #foo%@)";
 "room_details_addresses_invalid_address_prompt_title" = "Invalid alias format";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
@@ -283,6 +283,8 @@
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
 "room_details_save_changes_prompt" = "Do you want to save changes?";
 "room_details_copy_room_id" = "Copy Room ID";
+"room_details_copy_room_address" = "Copy Room Address";
+"room_details_copy_room_url" = "Copy Room URL";
 
 // Media picker
 "media_picker_library" = "Library";
