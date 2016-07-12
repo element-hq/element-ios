@@ -166,6 +166,9 @@
 		F067F2BC1CF6F0EA00F35EE8 /* third_party_licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */; };
 		F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */ = {isa = PBXBuildFile; fileRef = F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */; };
 		F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */; };
+		F07ECA521D2D730D0060C09F /* main_alias_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA4F1D2D730D0060C09F /* main_alias_icon.png */; };
+		F07ECA531D2D730D0060C09F /* main_alias_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA501D2D730D0060C09F /* main_alias_icon@2x.png */; };
+		F07ECA541D2D730D0060C09F /* main_alias_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA511D2D730D0060C09F /* main_alias_icon@3x.png */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -469,6 +472,9 @@
 		F07ECA4A1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithCheckBoxes.h; path = TableViewCell/TableViewCellWithCheckBoxes.h; sourceTree = "<group>"; };
 		F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithCheckBoxes.m; path = TableViewCell/TableViewCellWithCheckBoxes.m; sourceTree = "<group>"; };
 		F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithCheckBoxes.xib; path = TableViewCell/TableViewCellWithCheckBoxes.xib; sourceTree = "<group>"; };
+		F07ECA4F1D2D730D0060C09F /* main_alias_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_alias_icon.png; sourceTree = "<group>"; };
+		F07ECA501D2D730D0060C09F /* main_alias_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main_alias_icon@2x.png"; sourceTree = "<group>"; };
+		F07ECA511D2D730D0060C09F /* main_alias_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main_alias_icon@3x.png"; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -1067,6 +1073,9 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F07ECA4F1D2D730D0060C09F /* main_alias_icon.png */,
+				F07ECA501D2D730D0060C09F /* main_alias_icon@2x.png */,
+				F07ECA511D2D730D0060C09F /* main_alias_icon@3x.png */,
 				F0CC255E1D099F30000819CA /* newmessages.png */,
 				F0CC255F1D099F30000819CA /* newmessages@2x.png */,
 				F0CC25601D099F30000819CA /* newmessages@3x.png */,
@@ -1285,6 +1294,7 @@
 				F0B7037F1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
 				F056418C1C7CBEBD002276ED /* group.png in Resources */,
+				F07ECA541D2D730D0060C09F /* main_alias_icon@3x.png in Resources */,
 				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F0CC256F1D099F30000819CA /* scrollup@3x.png in Resources */,
 				F0026B631C916E68001D2C04 /* priorityLow@3x.png in Resources */,
@@ -1309,6 +1319,7 @@
 				F02528FC1C11B6FC00E1FE1B /* selection_tick@3x.png in Resources */,
 				F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */,
 				F025290B1C11B6FC00E1FE1B /* upload_icon@3x.png in Resources */,
+				F07ECA531D2D730D0060C09F /* main_alias_icon@2x.png in Resources */,
 				F0CC25691D099F30000819CA /* newmessages@3x.png in Resources */,
 				F02529011C11B6FC00E1FE1B /* settings_icon@2x.png in Resources */,
 				F0026B511C916E68001D2C04 /* favourite@3x.png in Resources */,
@@ -1382,6 +1393,7 @@
 				325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */,
 				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
 				F02529031C11B6FC00E1FE1B /* typing.png in Resources */,
+				F07ECA521D2D730D0060C09F /* main_alias_icon.png in Resources */,
 				32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */,
 				F056418D1C7CBEBD002276ED /* group@2x.png in Resources */,
 				F0026B501C916E68001D2C04 /* favourite@2x.png in Resources */,

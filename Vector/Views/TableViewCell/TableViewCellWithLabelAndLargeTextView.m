@@ -44,7 +44,7 @@
     
     CGFloat maxTextViewWidth = cellWidth - minTextViewPosX - _textViewTrailingConstraint.constant;
     
-    if (_textView.isFirstResponder)
+    if (_textView.isEditable && _textView.isFirstResponder)
     {
         // Use the full available width when the field is edited
         _textViewWidthConstraint.constant = maxTextViewWidth;
