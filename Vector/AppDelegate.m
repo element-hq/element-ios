@@ -360,7 +360,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
-    self.isOffline = NO;
+    _isOffline = NO;
     
     // check if some media must be released to reduce the cache size
     [MXKMediaManager reduceCacheSizeToInsert:0];
