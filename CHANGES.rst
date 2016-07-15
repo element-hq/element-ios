@@ -1,3 +1,25 @@
+Changes in Vector iOS in 0.1.12 (2016-07-15)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.11).
+ * Chat Screen: Set the right tint color of the "send" button.
+ * Messages: Add pink red badge on each invitation #426.
+ * Add 'leave' button to room settings #417.
+ * Settings: Set the right label text color.
+ * Room Settings: Add "Addresses" section #412.
+ * Messages: switch decline and preview buttons on invites #447.
+ 
+Bug fixes:
+ * App crashes when the user leaves Settings whereas an email binding is in progress.
+ * App crashes during [AppDelegate applicationDidEnterBackground:] #452.
+ * Room Participants: Admin badge is missing sometimes.
+ * Room Participants: The swipe to Leave/Kick is broken.
+ * Markdown swallows leading #'s even if there are less than 3 #423.
+ * HTML blockquote is badly rendered: some characters can miss #437.
+ * Room Settings: check room permissions and grey out those boxes (disable) if you can't change them #430.
+ * Room Settings: if there isn't a topic (new rooms) you can't actually change/set it. #441.
+
 Changes in Vector iOS in 0.1.11 (2016-07-01)
 ===============================================
 

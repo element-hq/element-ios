@@ -920,7 +920,9 @@
                 
                 if (disambiguatedDisplayName)
                 {
-                    contact = [[Contact alloc] initMatrixContactWithDisplayName:disambiguatedDisplayName andMatrixID:contact.mxMember.userId];
+                    MXRoomMember* mxMember = contact.mxMember;
+                    contact = [[Contact alloc] initMatrixContactWithDisplayName:disambiguatedDisplayName andMatrixID:mxMember.userId];
+                    contact.mxMember = mxMember;
                 }
             }
             
