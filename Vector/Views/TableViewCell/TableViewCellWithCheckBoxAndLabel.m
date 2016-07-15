@@ -14,13 +14,32 @@
  limitations under the License.
  */
 
-#import "MXKTableViewCell.h"
+#import "TableViewCellWithCheckBoxAndLabel.h"
 
-@interface TableViewCellWithTickAndLabel : MXKTableViewCell
+#import "VectorDesignValues.h"
 
-@property (strong, nonatomic) IBOutlet UIImageView *tick;
-@property (strong, nonatomic) IBOutlet UILabel *label;
+@implementation TableViewCellWithCheckBoxAndLabel
 
-@property (nonatomic, getter=isEnabled) BOOL enabled;
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    _label.textColor = kVectorTextColorBlack;
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    if (enabled)
+    {
+        _checkBox.image = [UIImage imageNamed:@"selection_tick"];
+    }
+    else
+    {
+        _checkBox.image = [UIImage imageNamed:@"selection_untick"];
+    }
+    
+    _enabled = enabled;
+}
 
 @end
+

@@ -116,8 +116,8 @@
 "room_participants_add_participant" = "Add participant";
 "room_participants_one_participant" = "1 participant";
 "room_participants_multi_participants" = "%d participants";
-"room_participants_leave_prompt_title" = "Leave?";
-"room_participants_leave_prompt_msg" = "Are you sure you want to leave this chat?";
+"room_participants_leave_prompt_title" = "Leave room";
+"room_participants_leave_prompt_msg" = "Are you sure you want to leave the room?";
 "room_participants_remove_prompt_title" = "Remove?";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_invite_prompt_title" = "Invite?";
@@ -249,18 +249,29 @@
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
 "room_details_mute_notifs" = "Mute notifications";
-"room_details_access_section"="WHO CAN ACCESS THIS ROOM?";
+"room_details_access_section"="Who can access this room?";
 "room_details_access_section_invited_only"="Only people who have been invited";
 "room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
 "room_details_access_section_anyone"="Anyone who knows the room's link, including guests";
+"room_details_access_section_no_address_warning" = "To link to a room it must have an address";
 "room_details_access_section_directory_toggle"="List this room in room directory";
-"room_details_history_section"="WHO CAN READ HISTORY?";
+"room_details_history_section"="Who can read history?";
 "room_details_history_section_anyone"="Anyone";
 "room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
 "room_details_history_section_members_only_since_invited"="Members only (since they were invited)";
 "room_details_history_section_members_only_since_joined"="Members only (since they joined)";
 "room_details_history_section_prompt_title" = "Privacy warning";
 "room_details_history_section_prompt_msg" = "Changes to who can read history will only apply to future messages in this room. The visibility of existing history will be unchanged.";
+"room_details_addresses_section"="Addresses";
+"room_details_no_local_addresses" = "This room has no local addresses";
+"room_details_new_address" = "Add new address";
+"room_details_new_address_placeholder" = "Add new address (e.g. #foo%@)";
+"room_details_addresses_invalid_address_prompt_title" = "Invalid alias format";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
+"room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
+"room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_advanced_section"="Advanced";
+"room_details_advanced_room_id"="Room ID:";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
@@ -268,7 +279,13 @@
 "room_details_fail_to_update_room_join_rule" = "Fail to update the join rule";
 "room_details_fail_to_update_room_directory_visibility" = "Fail to update the room directory visibility";
 "room_details_fail_to_update_history_visibility" = "Fail to update the history visibility";
-"room_details_with_updates" = "Do you want to save changes?";
+"room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
+"room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
+"room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_save_changes_prompt" = "Do you want to save changes?";
+"room_details_copy_room_id" = "Copy Room ID";
+"room_details_copy_room_address" = "Copy Room Address";
+"room_details_copy_room_url" = "Copy Room URL";
 
 // Media picker
 "media_picker_library" = "Library";

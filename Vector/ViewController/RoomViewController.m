@@ -1982,8 +1982,9 @@
         selectedRoomDetailsIndex = 0;
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
-    else if (view == previewHeader.leftButton)
+    else if (view == previewHeader.rightButton)
     {
+        // 'Join' button has been pressed
         if (roomPreviewData)
         {
             // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
@@ -2045,8 +2046,9 @@
             }];
         }
     }
-    else if (view == previewHeader.rightButton)
+    else if (view == previewHeader.leftButton)
     {
+        // 'Decline' button has been pressed
         if (roomPreviewData)
         {
             // Decline this invitation = leave this page

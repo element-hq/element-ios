@@ -1,24 +1,18 @@
 PODS:
-  - AFNetworking (2.6.3):
-    - AFNetworking/NSURLConnection (= 2.6.3)
-    - AFNetworking/NSURLSession (= 2.6.3)
-    - AFNetworking/Reachability (= 2.6.3)
-    - AFNetworking/Security (= 2.6.3)
-    - AFNetworking/Serialization (= 2.6.3)
-    - AFNetworking/UIKit (= 2.6.3)
-  - AFNetworking/NSURLConnection (2.6.3):
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.3):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.3)
-  - AFNetworking/Security (2.6.3)
-  - AFNetworking/Serialization (2.6.3)
-  - AFNetworking/UIKit (2.6.3):
-    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - DTCoreText (1.6.17):
     - DTFoundation/Core (~> 1.7.5)
@@ -38,22 +32,22 @@ PODS:
   - GoogleAnalytics (3.14.0)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.8.14)
-  - MatrixKit (0.3.10):
+  - MatrixKit (0.3.11):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (~> 0.6.9)
-  - MatrixSDK (0.6.9):
-    - AFNetworking (~> 2.6.0)
+    - MatrixSDK (~> 0.6.10)
+  - MatrixSDK (0.6.10):
+    - AFNetworking (~> 3.1.0)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
-  - MatrixKit (~> 0.3.10)
+  - MatrixKit (~> 0.3.11)
 
 SPEC CHECKSUMS:
-  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
   DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
   GBDeviceInfo: e50df975a95e21faec93e2bf98376846fe17d307
@@ -61,9 +55,9 @@ SPEC CHECKSUMS:
   GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: fb165271ebe7fb32e55da97b83219382f2f9d409
-  MatrixKit: f777a251efb4c62d6b6414dab032998add4a415e
-  MatrixSDK: 46b12fd15ef0d50c6ac189989897855b47ce6ba2
+  MatrixKit: 711c7b8c1a0751432de3b718f948d25b736925be
+  MatrixSDK: 39f5fd09a729e88ce7f159a66f2d2515c7252664
 
-PODFILE CHECKSUM: 812ddb9e9f6d58c224447005986ba00c3a441ae8
+PODFILE CHECKSUM: fd4aa6cba642bed3736613be8b2d9b3c64b62327
 
 COCOAPODS: 1.0.1

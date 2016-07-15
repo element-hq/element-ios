@@ -40,17 +40,20 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
     self.leftButton.backgroundColor = kVectorColorGreen;
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.leftButton addTarget:self action:@selector(onPreviewPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
+    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     self.rightButton.backgroundColor = kVectorColorGreen;
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.rightButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateNormal];
+    [self.rightButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.rightButton addTarget:self action:@selector(onPreviewPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.noticeBadgeView.backgroundColor = kVectorColorPinkRed;
+    [self.noticeBadgeView.layer setCornerRadius:10];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }

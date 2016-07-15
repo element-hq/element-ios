@@ -17,8 +17,9 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import "MediaPickerViewController.h"
+#import "TableViewCellWithCheckBoxes.h"
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController<UITextViewDelegate, MediaPickerViewControllerDelegate>
+@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate, MediaPickerViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
 
 @end
 

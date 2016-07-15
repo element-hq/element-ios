@@ -63,6 +63,9 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
+    [self.rightInputToolbarButton setTitleColor:kVectorColorGreen forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitleColor:kVectorColorGreen forState:UIControlStateHighlighted];
+    
     self.separatorView.backgroundColor = kVectorColorSilver;
     
     // Custom the growingTextView display
@@ -72,6 +75,7 @@
     
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = kVectorTextColorBlack;
+    growingTextView.tintColor = kVectorColorGreen;
     
     self.placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
 }

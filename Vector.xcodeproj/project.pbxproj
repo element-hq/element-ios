@@ -164,8 +164,11 @@
 		F05641941C7DF9DE002276ED /* error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F05641911C7DF9DE002276ED /* error@3x.png */; };
 		F05895001B8B7E6600B73E85 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */; };
 		F067F2BC1CF6F0EA00F35EE8 /* third_party_licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */; };
-		F072E9A01D217C2C002921AF /* TableViewCellWithSwitches.m in Sources */ = {isa = PBXBuildFile; fileRef = F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */; };
-		F072E9A21D217EA0002921AF /* TableViewCellWithSwitches.xib in Resources */ = {isa = PBXBuildFile; fileRef = F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */; };
+		F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */ = {isa = PBXBuildFile; fileRef = F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */; };
+		F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */; };
+		F07ECA521D2D730D0060C09F /* main_alias_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA4F1D2D730D0060C09F /* main_alias_icon.png */; };
+		F07ECA531D2D730D0060C09F /* main_alias_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA501D2D730D0060C09F /* main_alias_icon@2x.png */; };
+		F07ECA541D2D730D0060C09F /* main_alias_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA511D2D730D0060C09F /* main_alias_icon@3x.png */; };
 		F08BE09E1B87025B00C480FB /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE09D1B87025B00C480FB /* EventFormatter.m */; };
 		F08BE0A21B87064000C480FB /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F08BE0A11B87064000C480FB /* RoomDataSource.m */; };
 		F094A9A81B78D8F000B1FBBF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F094A9A71B78D8F000B1FBBF /* main.m */; };
@@ -200,8 +203,8 @@
 		F0A2413A1CB7E28F00E150C3 /* RoomParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A241391CB7E28F00E150C3 /* RoomParticipantsViewController.xib */; };
 		F0AF11F51D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AF11F31D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m */; };
 		F0AF11F61D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0AF11F41D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib */; };
-		F0B7037E1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */; };
-		F0B7037F1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */; };
+		F0B7037E1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B7037C1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.m */; };
+		F0B7037F1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7037D1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib */; };
 		F0BE3DF01C6CE17200AC3111 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */; };
 		F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */; };
 		F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */; };
@@ -466,9 +469,12 @@
 		F05894FE1B8B7E6600B73E85 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
 		F05894FF1B8B7E6600B73E85 /* RoomBubbleCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBubbleCellData.m; sourceTree = "<group>"; };
 		F067F2BB1CF6F0EA00F35EE8 /* third_party_licenses.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = third_party_licenses.html; sourceTree = "<group>"; };
-		F072E99E1D217C2C002921AF /* TableViewCellWithSwitches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithSwitches.h; path = TableViewCell/TableViewCellWithSwitches.h; sourceTree = "<group>"; };
-		F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithSwitches.m; path = TableViewCell/TableViewCellWithSwitches.m; sourceTree = "<group>"; };
-		F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithSwitches.xib; path = TableViewCell/TableViewCellWithSwitches.xib; sourceTree = "<group>"; };
+		F07ECA4A1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithCheckBoxes.h; path = TableViewCell/TableViewCellWithCheckBoxes.h; sourceTree = "<group>"; };
+		F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithCheckBoxes.m; path = TableViewCell/TableViewCellWithCheckBoxes.m; sourceTree = "<group>"; };
+		F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithCheckBoxes.xib; path = TableViewCell/TableViewCellWithCheckBoxes.xib; sourceTree = "<group>"; };
+		F07ECA4F1D2D730D0060C09F /* main_alias_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_alias_icon.png; sourceTree = "<group>"; };
+		F07ECA501D2D730D0060C09F /* main_alias_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main_alias_icon@2x.png"; sourceTree = "<group>"; };
+		F07ECA511D2D730D0060C09F /* main_alias_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main_alias_icon@3x.png"; sourceTree = "<group>"; };
 		F08BE09C1B87025B00C480FB /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F08BE09D1B87025B00C480FB /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F08BE0A01B87064000C480FB /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -523,9 +529,9 @@
 		F0AF11F21D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIdOrAliasTableViewCell.h; sourceTree = "<group>"; };
 		F0AF11F31D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIdOrAliasTableViewCell.m; sourceTree = "<group>"; };
 		F0AF11F41D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIdOrAliasTableViewCell.xib; sourceTree = "<group>"; };
-		F0B7037B1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithTickAndLabel.h; path = TableViewCell/TableViewCellWithTickAndLabel.h; sourceTree = "<group>"; };
-		F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithTickAndLabel.m; path = TableViewCell/TableViewCellWithTickAndLabel.m; sourceTree = "<group>"; };
-		F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithTickAndLabel.xib; path = TableViewCell/TableViewCellWithTickAndLabel.xib; sourceTree = "<group>"; };
+		F0B7037B1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithCheckBoxAndLabel.h; path = TableViewCell/TableViewCellWithCheckBoxAndLabel.h; sourceTree = "<group>"; };
+		F0B7037C1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithCheckBoxAndLabel.m; path = TableViewCell/TableViewCellWithCheckBoxAndLabel.m; sourceTree = "<group>"; };
+		F0B7037D1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithCheckBoxAndLabel.xib; path = TableViewCell/TableViewCellWithCheckBoxAndLabel.xib; sourceTree = "<group>"; };
 		F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberDetailsViewController.h; sourceTree = "<group>"; };
 		F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberDetailsViewController.m; sourceTree = "<group>"; };
 		F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberDetailsViewController.xib; sourceTree = "<group>"; };
@@ -660,12 +666,12 @@
 		7179283B1C0384DE00407D96 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				F0B7037B1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.h */,
-				F0B7037C1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m */,
-				F0B7037D1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib */,
-				F072E99E1D217C2C002921AF /* TableViewCellWithSwitches.h */,
-				F072E99F1D217C2C002921AF /* TableViewCellWithSwitches.m */,
-				F072E9A11D217EA0002921AF /* TableViewCellWithSwitches.xib */,
+				F07ECA4A1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.h */,
+				F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */,
+				F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */,
+				F0B7037B1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.h */,
+				F0B7037C1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.m */,
+				F0B7037D1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib */,
 				F05641781C7C9FD7002276ED /* TableViewCellWithButton.h */,
 				F05641791C7C9FD7002276ED /* TableViewCellWithButton.m */,
 				F056417A1C7C9FD7002276ED /* TableViewCellWithButton.xib */,
@@ -1067,6 +1073,9 @@
 		F0DD7D1B1B7AA8C900C4BE02 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F07ECA4F1D2D730D0060C09F /* main_alias_icon.png */,
+				F07ECA501D2D730D0060C09F /* main_alias_icon@2x.png */,
+				F07ECA511D2D730D0060C09F /* main_alias_icon@3x.png */,
 				F0CC255E1D099F30000819CA /* newmessages.png */,
 				F0CC255F1D099F30000819CA /* newmessages@2x.png */,
 				F0CC25601D099F30000819CA /* newmessages@3x.png */,
@@ -1282,9 +1291,10 @@
 				F008D6FC1D0180FB0049444D /* GoogleService-Info.plist in Resources */,
 				F02528E01C11B6FC00E1FE1B /* create_room.png in Resources */,
 				F02528DF1C11B6FC00E1FE1B /* camera_video.png in Resources */,
-				F0B7037F1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.xib in Resources */,
+				F0B7037F1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				F02BB04C1CBE2EE70022A025 /* PreviewRoomTitleView.xib in Resources */,
 				F056418C1C7CBEBD002276ED /* group.png in Resources */,
+				F07ECA541D2D730D0060C09F /* main_alias_icon@3x.png in Resources */,
 				F0C34B681C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				F0CC256F1D099F30000819CA /* scrollup@3x.png in Resources */,
 				F0026B631C916E68001D2C04 /* priorityLow@3x.png in Resources */,
@@ -1309,6 +1319,7 @@
 				F02528FC1C11B6FC00E1FE1B /* selection_tick@3x.png in Resources */,
 				F03FBCCD1CBBF521000A5770 /* mod_icon@3x.png in Resources */,
 				F025290B1C11B6FC00E1FE1B /* upload_icon@3x.png in Resources */,
+				F07ECA531D2D730D0060C09F /* main_alias_icon@2x.png in Resources */,
 				F0CC25691D099F30000819CA /* newmessages@3x.png in Resources */,
 				F02529011C11B6FC00E1FE1B /* settings_icon@2x.png in Resources */,
 				F0026B511C916E68001D2C04 /* favourite@3x.png in Resources */,
@@ -1382,6 +1393,7 @@
 				325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */,
 				F001D76E1B83156000A162C3 /* MediaPickerViewController.xib in Resources */,
 				F02529031C11B6FC00E1FE1B /* typing.png in Resources */,
+				F07ECA521D2D730D0060C09F /* main_alias_icon.png in Resources */,
 				32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */,
 				F056418D1C7CBEBD002276ED /* group@2x.png in Resources */,
 				F0026B501C916E68001D2C04 /* favourite@2x.png in Resources */,
@@ -1434,10 +1446,10 @@
 				F0026B521C916E68001D2C04 /* favouriteOff.png in Resources */,
 				32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */,
 				F02528FD1C11B6FC00E1FE1B /* selection_untick.png in Resources */,
+				F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */,
 				F0026B5C1C916E68001D2C04 /* notificationsOff@2x.png in Resources */,
 				F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */,
 				F02528DD1C11B6FC00E1FE1B /* camera_switch@2x.png in Resources */,
-				F072E9A21D217EA0002921AF /* TableViewCellWithSwitches.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1508,7 +1520,6 @@
 				F094A9AB1B78D8F000B1FBBF /* AppDelegate.m in Sources */,
 				32C52BF61CBE4B0A00863B33 /* RoomEmailInvitation.m in Sources */,
 				F047DBB91C576F6600952DA2 /* AuthInputsView.m in Sources */,
-				F072E9A01D217C2C002921AF /* TableViewCellWithSwitches.m in Sources */,
 				323A520B1C3183CC00010773 /* UIViewController+VectorSearch.m in Sources */,
 				32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */,
 				F056417B1C7C9FD7002276ED /* TableViewCellWithButton.m in Sources */,
@@ -1542,7 +1553,7 @@
 				F094A9A81B78D8F000B1FBBF /* main.m in Sources */,
 				F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */,
 				F0CC4DCA1C4E594C003BBE45 /* MediaAlbumContentViewController.m in Sources */,
-				F0B7037E1D22D4AD00B63766 /* TableViewCellWithTickAndLabel.m in Sources */,
+				F0B7037E1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				32AAC3E61C3525DE007A3B5B /* RoomSearchViewController.m in Sources */,
 				32F2E61B1C230D4D003BDEA5 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				3235CD851C341FAA0084EA40 /* HomeSearchViewController.m in Sources */,
@@ -1569,6 +1580,7 @@
 				F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				F0D2D9851C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				71046D5E1C0C639300DCA984 /* RoomTitleView.m in Sources */,
+				F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */,
 				F02BB04B1CBE2EE70022A025 /* PreviewRoomTitleView.m in Sources */,
 				F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				F09EE0061C5134BE0078712F /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,

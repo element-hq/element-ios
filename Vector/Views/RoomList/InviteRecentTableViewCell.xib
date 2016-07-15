@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -71,12 +71,33 @@
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="top" secondItem="tjf-WP-vTl" secondAttribute="top" id="rLo-t4-61H"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCG-UR-b2u">
+                        <rect key="frame" x="563" y="14" width="27" height="20"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ztl-w2-d20">
+                                <rect key="frame" x="11" y="2" width="5" height="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="27" id="1PJ-E8-qkY"/>
+                            <constraint firstItem="Ztl-w2-d20" firstAttribute="centerX" secondItem="gCG-UR-b2u" secondAttribute="centerX" id="jzA-xv-12e"/>
+                            <constraint firstAttribute="height" constant="20" id="l2J-Uf-lxI"/>
+                            <constraint firstItem="Ztl-w2-d20" firstAttribute="centerY" secondItem="gCG-UR-b2u" secondAttribute="centerY" id="nQM-He-36A"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="1ka-cr-uZP"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="3EJ-qT-J8r"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
+                    <constraint firstItem="gCG-UR-b2u" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="Vb6-hc-Bsk"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
+                    <constraint firstAttribute="trailing" secondItem="gCG-UR-b2u" secondAttribute="trailing" constant="10" id="Zf3-3f-SWg"/>
+                    <constraint firstItem="gCG-UR-b2u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="4" id="e2Q-RZ-IF2"/>
                     <constraint firstAttribute="trailing" secondItem="tjf-WP-vTl" secondAttribute="trailing" constant="54" id="kFW-Fa-ibz"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
@@ -91,6 +112,7 @@
             <connections>
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="leftButton" destination="Fc3-Id-aaG" id="cx4-98-B32"/>
+                <outlet property="noticeBadgeView" destination="gCG-UR-b2u" id="hTT-qW-DMa"/>
                 <outlet property="rightButton" destination="lGf-lB-FsE" id="DDr-zp-yX9"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>
                 <outlet property="roomTitle" destination="Lg1-xQ-AGn" id="q7Q-TM-5C8"/>

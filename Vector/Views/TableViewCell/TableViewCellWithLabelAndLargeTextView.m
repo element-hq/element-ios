@@ -16,11 +16,15 @@
 
 #import "TableViewCellWithLabelAndLargeTextView.h"
 
+#import "VectorDesignValues.h"
+
 @implementation TableViewCellWithLabelAndLargeTextView
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    _label.textColor = kVectorTextColorBlack;
     
     // Adjust text view
     // Remove the container inset: this operation impacts only the vertical margin.
@@ -40,7 +44,7 @@
     
     CGFloat maxTextViewWidth = cellWidth - minTextViewPosX - _textViewTrailingConstraint.constant;
     
-    if (_textView.isFirstResponder)
+    if (_textView.isEditable && _textView.isFirstResponder)
     {
         // Use the full available width when the field is edited
         _textViewWidthConstraint.constant = maxTextViewWidth;
