@@ -560,17 +560,17 @@
         {
             case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
             {
-                [self setPowerLevel:self.mxRoom.state.powerLevels.usersDefault];
+                [self setPowerLevel:self.mxRoom.state.powerLevels.usersDefault promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionSetModerator:
             {
-                [self setPowerLevel:kVectorRoomModeratorLevel];
+                [self setPowerLevel:kVectorRoomModeratorLevel promptUser:YES];
                 break;
             }
             case MXKRoomMemberDetailsActionSetAdmin:
             {
-                [self setPowerLevel:kVectorRoomAdminLevel];
+                [self setPowerLevel:kVectorRoomAdminLevel promptUser:YES];
                 break;
             }
             default:
