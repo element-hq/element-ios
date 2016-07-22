@@ -26,5 +26,8 @@ pod 'GBDeviceInfo', '~> 4.1.0'
 
 pod 'GoogleAnalytics'
 
+# The Google WebRTC stack
+pod 'libjingle_peerconnection'
+
 end
 

@@ -48,6 +48,8 @@
 #import <MatrixEndpointWrapper/MatrixEndpointWrapper.h>
 #endif
 
+#include <MatrixSDK/MXJingleCallStack.h>
+
 #import "VectorDesignValues.h"
 
 #define MAKE_STRING(x) #x
@@ -1244,6 +1246,9 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 #endif
 #ifdef MX_CALL_STACK_ENDPOINT
             callStack = [[MXEndpointCallStack alloc] initWithMatrixId:mxSession.myUser.userId];
+#endif
+#ifdef MX_CALL_STACK_JINGLE
+            callStack = [[MXJingleCallStack alloc] init];
 #endif
             if (callStack)
             {
