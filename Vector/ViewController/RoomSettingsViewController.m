@@ -1966,7 +1966,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
                 
                 if (row < roomAddresses.count)
                 {
-                    NSString *alias = roomAddresses[indexPath.row];
+                    NSString *alias = roomAddresses[row];
                     NSString *canonicalAlias;
                     
                     if ([updatedItemsDict objectForKey:kRoomSettingsCanonicalAliasKey])
