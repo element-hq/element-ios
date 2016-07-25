@@ -1788,6 +1788,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.textLabel.textColor = kVectorColorPinkRed;
+            cell.textLabel.numberOfLines = 0;
             cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
