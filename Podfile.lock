@@ -31,37 +31,22 @@ PODS:
   - GHMarkdownParser (0.1.2)
   - GoogleAnalytics (3.14.0)
   - HPGrowingTextView (1.1)
-  - libPhoneNumber-iOS (0.8.14)
-  - MatrixKit (0.3.11):
+  - libjingle_peerconnection (11177.2.0)
+  - libPhoneNumber-iOS (0.8.15)
+  - MatrixKit (0.3.12):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
     - MatrixSDK (~> 0.6.10)
-  - MatrixSDK (0.6.10):
+  - MatrixSDK (0.6.11):
     - AFNetworking (~> 3.1.0)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-
-EXTERNAL SOURCES:
-  MatrixKit:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-
-CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: 97ce46f9bd6d5aa24bb7c6d75cce7cd44d8772dc
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :commit: c40327d49a2f6485cd1e9aacbf4ecf98f15e6551
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
+  - libjingle_peerconnection
+  - MatrixKit (= 0.3.12)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -71,10 +56,11 @@ SPEC CHECKSUMS:
   GHMarkdownParser: 14cbf59d0ab9450017d843dffd4a3ef691e5bd77
   GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  libPhoneNumber-iOS: fb165271ebe7fb32e55da97b83219382f2f9d409
-  MatrixKit: 711c7b8c1a0751432de3b718f948d25b736925be
-  MatrixSDK: 39f5fd09a729e88ce7f159a66f2d2515c7252664
+  libjingle_peerconnection: 3458f646ddd61f08a9f3a0c43fb01fff5c165eb8
+  libPhoneNumber-iOS: 62a740e1ea5741060f5cec0f788b52071115cf31
+  MatrixKit: e5c86154bb7995d063e2c35665fe57e252abde91
+  MatrixSDK: 22c13b3d2e16954944977eb1093c4e6926a339a5
 
-PODFILE CHECKSUM: 9934e23b9bf229801b392898e91b2d5e635b7b1b
+PODFILE CHECKSUM: 33afb8666c6570b3cf0c991450b878e1a6d9366e
 
 COCOAPODS: 1.0.1

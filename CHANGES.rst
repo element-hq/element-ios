@@ -1,3 +1,14 @@
+Changes in Vector iOS in 0.1.12 (2016-07-26)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.12).
+ * Enable VoIP for 1:1 room #454.
+ 
+Bug fixes:
+ * Confirmation prompt before opping someone to same power level #461.
+ * Room Settings: The room privacy setting text doesn't fit in phone mode #429.
+
 Changes in Vector iOS in 0.1.12 (2016-07-15)
 ===============================================
 
