@@ -802,7 +802,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = (self.roomDataSource.mxSession.callManager != nil);
+        roomInputToolbarView.supportCallOption = (self.roomDataSource.mxSession.callManager != nil && self.roomDataSource.room.state.members.count == 2);
         
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
