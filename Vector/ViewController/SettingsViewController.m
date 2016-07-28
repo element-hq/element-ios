@@ -954,8 +954,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_voip", @"Vector", nil);
-            sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableVoIP"];
+            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_outgoing_voip", @"Vector", nil);
+            sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
             [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleLabsVoIP:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1169,17 +1169,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)toggleLabsVoIP:(id)sender
 {
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableVoIP"];
+    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
     if (enable)
     {
         NSLog(@"[SettingsViewController] Disable VoIP");
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"labsEnableVoIP"];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"labsEnableOutgoingVoIP"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else
     {
         NSLog(@"[SettingsViewController] Enable VoIP");
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"labsEnableVoIP"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"labsEnableOutgoingVoIP"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }

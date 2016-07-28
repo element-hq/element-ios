@@ -802,7 +802,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableVoIP"]
+        roomInputToolbarView.supportCallOption = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
                                                     && self.roomDataSource.mxSession.callManager != nil
                                                     && self.roomDataSource.room.state.members.count == 2;
         

@@ -241,7 +241,7 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_labs_voip" = "VoIP";
+"settings_labs_outgoing_voip" = "Placing VoIP/Video calls";
 
 // Room Details
 "room_details_title" = "Room Details";
