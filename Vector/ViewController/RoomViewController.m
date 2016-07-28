@@ -804,7 +804,7 @@
         // Check whether the call option is supported
         roomInputToolbarView.supportCallOption = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
                                                     && self.roomDataSource.mxSession.callManager != nil
-                                                    && self.roomDataSource.room.state.members.count == 2;
+                                                    && self.roomDataSource.room.state.joinedMembers.count == 2;
         
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
