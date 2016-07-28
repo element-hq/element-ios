@@ -32,7 +32,8 @@
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
 #define SETTINGS_SECTION_ADVANCED_INDEX                 3
 #define SETTINGS_SECTION_OTHER_INDEX                    4
-#define SETTINGS_SECTION_COUNT                          5
+#define SETTINGS_SECTION_LABS_INDEX                     5
+#define SETTINGS_SECTION_COUNT                          6
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -51,6 +52,9 @@
 #define OTHER_CRASH_REPORT_INDEX    4
 #define OTHER_CLEAR_CACHE_INDEX     5
 #define OTHER_COUNT                 6
+
+#define LABS_VOIP_INDEX     0
+#define LABS_COUNT          1
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
@@ -559,7 +563,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = OTHER_COUNT;
     }
-    
+    else if (section == SETTINGS_SECTION_LABS_INDEX)
+    {
+        count = LABS_COUNT;
+    }
     return count;
 }
 
@@ -941,6 +948,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = clearCacheBtnCell;
         }
     }
+    else if (section == SETTINGS_SECTION_LABS_INDEX)
+    {
+        if (row == LABS_VOIP_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_voip", @"Vector", nil);
+            sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableVoIP"];
+            [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleLabsVoIP:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = sendCrashReportCell;
+        }
+    }
 
     return cell;
 }
@@ -1009,7 +1030,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
     }
-    
+    else if (section == SETTINGS_SECTION_LABS_INDEX)
+    {
+        sectionLabel.text = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+    }
+
     [sectionLabel sizeToFit];
     sectionLabel.frame = CGRectMake(10,  sectionHeader.frame.size.height - sectionLabel.frame.size.height - 5, sectionHeader.frame.size.width - 20, sectionLabel.frame.size.height);
     [sectionHeader addSubview:sectionLabel];
@@ -1139,6 +1164,23 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
+- (void)toggleLabsVoIP:(id)sender
+{
+    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableVoIP"];
+    if (enable)
+    {
+        NSLog(@"[SettingsViewController] Disable VoIP");
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"labsEnableVoIP"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    else
+    {
+        NSLog(@"[SettingsViewController] Enable VoIP");
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"labsEnableVoIP"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
