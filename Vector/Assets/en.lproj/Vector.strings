@@ -202,6 +202,7 @@
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
+"settings_labs" = "LABS";
 
 "settings_sign_out" = "Sign Out";
 "settings_profile_picture" = "Profile Picture";
@@ -239,6 +240,8 @@
 "settings_confirm_password" = "confirm password";
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
+
+"settings_labs_outgoing_voip" = "Placing VoIP/Video calls";
 
 // Room Details
 "room_details_title" = "Room Details";
