@@ -346,8 +346,16 @@
     if ([AppDelegate theDelegate].visibleRoomId)
     {
         [AppDelegate theDelegate].visibleRoomId = nil;
-        
-        [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
+
+        // Sanity check: Use a try..catch to prevent the app from crashing if there is no
+        // registered observer which happens if the provided self.roomDataSource is unexpectedly nil
+        @try
+        {
+            [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
+        }
+        @catch (id anException)
+        {
+        }
     }
 }
 
