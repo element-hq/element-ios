@@ -235,32 +235,18 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)checkDeviceAuthorizationStatus
 {
-    NSString *mediaType = AVMediaTypeVideo;
-    
-    [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
-        if (!granted)
-        {
-            // Not granted access to mediaType
-            __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                alert = [[MXKAlert alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil) style:MXKAlertStyleAlert];
-                alert.cancelButtonIndex = [alert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
-                    strongSelf->alert = nil;
-                }];
-                [alert showInViewController:self];
-            });
-        }
-        else
+    [MXKTools checkAccessForMediaType:AVMediaTypeVideo manualChangeMessage:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil) showPopUpInViewController:self completionHandler:^(BOOL granted) {
+
+        if (granted)
         {
             // Load recent captures if this is not already done
             if (!recentCaptures.count)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    
+
                     [self reloadRecentCapturesCollection];
                     [self reloadUserLibraryAlbums];
-                    
+
                 });
             }
         }

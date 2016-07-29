@@ -1823,7 +1823,23 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
-    [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+    // Check app permissions before placing the call
+    [MXKTools checkAccessForCall:video
+     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+       showPopUpInViewController:self completionHandler:^(BOOL granted) {
+
+           if (granted)
+           {
+               [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
+           }
+           else
+           {
+               NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
+           }
+       }];
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
