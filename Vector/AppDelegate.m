@@ -418,6 +418,12 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     
     remoteNotificationRoomId = nil;
 
+    // Check if there is crash log to send
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"])
+    {
+        [self checkExceptionToReport];
+    }
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
     // Start monitoring reachability
@@ -693,9 +699,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
             
             // Set Google Analytics dispatch interval to e.g. 20 seconds.
             gai.dispatchInterval = 20;
-            
-            // Check if there is crash log to send to GA
-            [self checkExceptionToReport];
         }
         else
         {
@@ -745,9 +748,10 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                         createExceptionWithDescription:description
                         withFatal:[NSNumber numberWithBool:YES]] build]];
         [[GAI sharedInstance] dispatch];
-        
-        // The crash file can be removed now
-        [MXLogger deleteCrashLog];
+
+        // Ask the user to send a crash report by email too
+        // The email will provide logs and thus more context to the crash
+        [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
     }
 }
 
