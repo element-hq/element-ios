@@ -33,20 +33,20 @@ PODS:
   - HPGrowingTextView (1.1)
   - libjingle_peerconnection (11177.2.0)
   - libPhoneNumber-iOS (0.8.15)
-  - MatrixKit (0.3.12):
+  - MatrixKit (0.3.13):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (~> 0.6.10)
-  - MatrixSDK (0.6.11):
+    - MatrixSDK (= 0.6.12)
+  - MatrixSDK (0.6.12):
     - AFNetworking (~> 3.1.0)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
   - libjingle_peerconnection
-  - MatrixKit (= 0.3.12)
+  - MatrixKit (= 0.3.13)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -58,9 +58,9 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libjingle_peerconnection: 3458f646ddd61f08a9f3a0c43fb01fff5c165eb8
   libPhoneNumber-iOS: 62a740e1ea5741060f5cec0f788b52071115cf31
-  MatrixKit: e5c86154bb7995d063e2c35665fe57e252abde91
-  MatrixSDK: 22c13b3d2e16954944977eb1093c4e6926a339a5
+  MatrixKit: 4ed4963069510e2be2349d3310602a03b9d3a043
+  MatrixSDK: 15f165271e3c677060be1f131edef9e643067677
 
-PODFILE CHECKSUM: 33afb8666c6570b3cf0c991450b878e1a6d9366e
+PODFILE CHECKSUM: 0f4ac1211874e84d41b66ba970dd2d15eb65242c
 
 COCOAPODS: 1.0.1

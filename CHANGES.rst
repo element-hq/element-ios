@@ -1,4 +1,25 @@
-Changes in Vector iOS in 0.1.12 (2016-07-26)
+Changes in Vector iOS in 0.1.14 (2016-08-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.13).
+ * The "Placing VoIP/Video call" feature in now under the LABS settings of the settings page.
+ * Call: Check permissions before accessing to the camera and the microphone.
+ * Call Better handle call invites when the app resumes.
+ * Call: Improve the sending of local ICE candidates to avoid HTTP 429(Too Many Requests) response
+ * Crash report: In addition to GA report, prompt the user to report the crash by email.
+ 
+Bug fixes:
+ * Call: Fixed the missing return_to_call translation.
+ * Call: Make audio continue to work when backgrounding the app.
+ * Call: Added sanity check on creation of RTCICEServer objects as crashes have been reported.
+ * Vector is turning off my music now that VoIP is implemented #476
+ * Call button should be greyed or not be displayed in room with more than 2 users #477.
+ * Call: call must be available in 1:1 rooms (invited and banned users do not count).
+ * Fixed crash in the room screen reported by GA.
+ * Fixed crash in [AppDelegate applicationDidBecomeActive:] #489.
+
+Changes in Vector iOS in 0.1.13 (2016-07-26)
 ===============================================
 
 Improvements:
