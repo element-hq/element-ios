@@ -441,8 +441,11 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
             {
                 self.isOffline = NO;
             }
-            
-            [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
+
+            // Use a dispatch to avoid to kill ourselves
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
+            });
         }
         
     }];
