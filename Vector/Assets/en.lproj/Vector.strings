@@ -228,6 +228,8 @@
 //"settings_join_leave_rooms" = "When people join or leave rooms";
 //"settings_call_invitations" = "Call invitations";
 
+"settings_unignore_user" = "Show all messages from %@?";
+
 "settings_version" = "Version %@";
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";

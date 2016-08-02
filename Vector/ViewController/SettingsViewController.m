@@ -857,7 +857,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
         }
 
-        privacyPolicyCell.textLabel.text = session.ignoredUsers[indexPath.row];
+        NSString *ignoredUserId;
+        if (indexPath.row < session.ignoredUsers.count)
+        {
+            ignoredUserId = session.ignoredUsers[indexPath.row];
+        }
+        privacyPolicyCell.textLabel.text = ignoredUserId;
         privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
 
         cell = privacyPolicyCell;
@@ -1110,7 +1115,63 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-        
+
+        if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+        {
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+            NSString *ignoredUserId;
+            if (indexPath.row < session.ignoredUsers.count)
+            {
+                ignoredUserId = session.ignoredUsers[indexPath.row];
+            }
+
+            if (ignoredUserId)
+            {
+                [currentAlert dismiss:NO];
+
+                __weak typeof(self) weakSelf = self;
+
+                currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_unignore_user", @"Vector", nil), ignoredUserId]
+                                                       message:nil
+                                                         style:MXKAlertStyleAlert];
+
+                [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+
+                    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+                    // Remove the member from the ignored user list
+                    [strongSelf startActivityIndicator];
+                    [session unIgnoreUsers:@[ignoredUserId] success:^{
+
+                        [strongSelf stopActivityIndicator];
+
+                    } failure:^(NSError *error) {
+
+                        [strongSelf stopActivityIndicator];
+
+                        NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", ignoredUserId, error);
+
+                        // Notify MatrixKit user
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+
+                    }];
+                }];
+
+                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+                    
+                }];
+                
+                [currentAlert showInViewController:self];
+            }
+        }
+        else
         if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
            if (row == OTHER_TERM_CONDITIONS_INDEX)
