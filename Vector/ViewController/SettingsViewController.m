@@ -30,10 +30,11 @@
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
-#define SETTINGS_SECTION_ADVANCED_INDEX                 3
-#define SETTINGS_SECTION_OTHER_INDEX                    4
-#define SETTINGS_SECTION_LABS_INDEX                     5
-#define SETTINGS_SECTION_COUNT                          6
+#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
+#define SETTINGS_SECTION_ADVANCED_INDEX                 4
+#define SETTINGS_SECTION_OTHER_INDEX                    5
+#define SETTINGS_SECTION_LABS_INDEX                     6
+#define SETTINGS_SECTION_COUNT                          7
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -55,6 +56,8 @@
 
 #define LABS_VOIP_INDEX     0
 #define LABS_COUNT          1
+
+#define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
@@ -555,6 +558,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        count = session.ignoredUsers.count;
+    }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
         count = 1;
@@ -840,6 +848,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = globalInfoCell;
         }
     }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXKTableViewCell *privacyPolicyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!privacyPolicyCell)
+        {
+            privacyPolicyCell = [[MXKTableViewCell alloc] init];
+            privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
+        }
+
+        NSString *ignoredUserId;
+        if (indexPath.row < session.ignoredUsers.count)
+        {
+            ignoredUserId = session.ignoredUsers[indexPath.row];
+        }
+        privacyPolicyCell.textLabel.text = ignoredUserId;
+        privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
+
+        cell = privacyPolicyCell;
+    }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
         MXKTableViewCell *configCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
@@ -996,8 +1023,32 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         return 30;
     }
-    
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count == 0)
+        {
+            // Hide this section
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
+
     return 60;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count == 0)
+        {
+            // Hide this section
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
+    }
+
+    return [super tableView:tableView heightForFooterInSection:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -1022,6 +1073,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count)
+        {
+            sectionLabel.text = NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+        }
+        else
+        {
+            // Hide this section
+            sectionHeader = nil;
+        }
+    }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
@@ -1035,9 +1099,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         sectionLabel.text = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
     }
 
-    [sectionLabel sizeToFit];
-    sectionLabel.frame = CGRectMake(10,  sectionHeader.frame.size.height - sectionLabel.frame.size.height - 5, sectionHeader.frame.size.width - 20, sectionLabel.frame.size.height);
-    [sectionHeader addSubview:sectionLabel];
+    if (sectionHeader)
+    {
+        [sectionLabel sizeToFit];
+        sectionLabel.frame = CGRectMake(10,  sectionHeader.frame.size.height - sectionLabel.frame.size.height - 5, sectionHeader.frame.size.width - 20, sectionLabel.frame.size.height);
+        [sectionHeader addSubview:sectionLabel];
+    }
 
     return sectionHeader;
 }
@@ -1048,7 +1115,63 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-        
+
+        if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+        {
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+            NSString *ignoredUserId;
+            if (indexPath.row < session.ignoredUsers.count)
+            {
+                ignoredUserId = session.ignoredUsers[indexPath.row];
+            }
+
+            if (ignoredUserId)
+            {
+                [currentAlert dismiss:NO];
+
+                __weak typeof(self) weakSelf = self;
+
+                currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_unignore_user", @"Vector", nil), ignoredUserId]
+                                                       message:nil
+                                                         style:MXKAlertStyleAlert];
+
+                [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+
+                    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+                    // Remove the member from the ignored user list
+                    [strongSelf startActivityIndicator];
+                    [session unIgnoreUsers:@[ignoredUserId] success:^{
+
+                        [strongSelf stopActivityIndicator];
+
+                    } failure:^(NSError *error) {
+
+                        [strongSelf stopActivityIndicator];
+
+                        NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", ignoredUserId, error);
+
+                        // Notify MatrixKit user
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+
+                    }];
+                }];
+
+                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+                    
+                }];
+                
+                [currentAlert showInViewController:self];
+            }
+        }
+        else
         if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
            if (row == OTHER_TERM_CONDITIONS_INDEX)
