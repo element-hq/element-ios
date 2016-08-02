@@ -139,6 +139,9 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id appDelegateDidTapStatusBarNotificationObserver;
+
+    // A copy of the banned members
+    NSArray<MXRoomMember*> *bannedMembers;
 }
 @end
 
@@ -156,6 +159,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             [self updateRoomState:mxRoom.state];
         }
     }];
+}
+
+- (void)updateRoomState:(MXRoomState *)newRoomState
+{
+    [super updateRoomState:newRoomState];
+
+    bannedMembers = [mxRoomState membersWithMembership:MXMembershipBan];
 }
 
 - (UINavigationItem*)getNavigationItem
@@ -1531,7 +1541,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     }
     else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
     {
-        count = [mxRoomState membersWithMembership:MXMembershipBan].count;
+        count = bannedMembers.count;
     }
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
@@ -1557,7 +1567,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     }
     else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
     {
-        if ([mxRoomState membersWithMembership:MXMembershipBan].count)
+        if (bannedMembers.count)
         {
             return NSLocalizedStringFromTable(@"room_details_banned_users_section", @"Vector", nil);
         }
@@ -1577,7 +1587,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && [mxRoomState membersWithMembership:MXMembershipBan].count == 0)
+    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && bannedMembers.count == 0)
     {
         // Hide this section
         return SECTION_TITLE_PADDING_WHEN_HIDDEN;
@@ -1590,7 +1600,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && [mxRoomState membersWithMembership:MXMembershipBan].count == 0)
+    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && bannedMembers.count == 0)
     {
         // Hide this section
         return SECTION_TITLE_PADDING_WHEN_HIDDEN;
@@ -2084,8 +2094,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         }
         addressCell.textLabel.userInteractionEnabled = NO;
 
-        MXRoomMember *bannedMember = [mxRoomState membersWithMembership:MXMembershipBan][indexPath.row];
-        addressCell.textLabel.text = bannedMember.userId;
+        addressCell.textLabel.text = bannedMembers[indexPath.row].userId;
 
         cell = addressCell;
     }
@@ -2404,7 +2413,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             // Show the RoomMemberDetailsViewController on this member so that 
             // if the user has enough power level, he will be able to unban him
             RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
-            [roomMemberDetailsViewController displayRoomMember:[mxRoomState membersWithMembership:MXMembershipBan][indexPath.row] withMatrixRoom:mxRoom];
+            [roomMemberDetailsViewController displayRoomMember:bannedMembers[indexPath.row] withMatrixRoom:mxRoom];
             roomMemberDetailsViewController.delegate = self;
 
             [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
