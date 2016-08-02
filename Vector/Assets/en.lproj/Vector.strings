@@ -274,6 +274,7 @@
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";

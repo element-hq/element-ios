@@ -36,8 +36,9 @@
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX        1
 #define ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX 2
 #define ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX     3
-#define ROOM_SETTINGS_ADVANCED_SECTION_INDEX           4
-#define ROOM_SETTINGS_SECTION_COUNT                    5
+#define ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX       4
+#define ROOM_SETTINGS_ADVANCED_SECTION_INDEX           5
+#define ROOM_SETTINGS_SECTION_COUNT                    6
 
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO               0
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_NAME                1
@@ -59,6 +60,8 @@
 #define ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_COUNT                      4
 
 #define ROOM_TOPIC_CELL_HEIGHT 124
+
+#define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 NSString *const kRoomSettingsAvatarKey = @"kRoomSettingsAvatarKey";
 NSString *const kRoomSettingsAvatarURLKey = @"kRoomSettingsAvatarURLKey";
@@ -1504,6 +1507,10 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             }
         }
     }
+    else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    {
+        count = [mxRoomState membersWithMembership:MXMembershipBan].count;
+    }
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
         count = 1;
@@ -1526,12 +1533,50 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         return NSLocalizedStringFromTable(@"room_details_addresses_section", @"Vector", nil);
     }
+    else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    {
+        if ([mxRoomState membersWithMembership:MXMembershipBan].count)
+        {
+            return NSLocalizedStringFromTable(@"room_details_banned_users_section", @"Vector", nil);
+        }
+        else
+        {
+            // Hide this section
+            return nil;
+        }
+    }
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
         return NSLocalizedStringFromTable(@"room_details_advanced_section", @"Vector", nil);
     }
     
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && [mxRoomState membersWithMembership:MXMembershipBan].count == 0)
+    {
+        // Hide this section
+        return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+    }
+    else
+    {
+        return [super tableView:tableView heightForHeaderInSection:section];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && [mxRoomState membersWithMembership:MXMembershipBan].count == 0)
+    {
+        // Hide this section
+        return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+    }
+    else
+    {
+        return [super tableView:tableView heightForFooterInSection:section];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1999,6 +2044,28 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             
             cell = addressCell;
         }
+    }
+    else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    {
+        UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
+
+        addressCell.textLabel.font = [UIFont systemFontOfSize:16];
+        addressCell.textLabel.textColor = kVectorTextColorBlack;
+        addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        addressCell.accessoryView = nil;
+        addressCell.accessoryType = UITableViewCellAccessoryNone;
+        addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        while (addressCell.textLabel.gestureRecognizers.count)
+        {
+            [addressCell.textLabel removeGestureRecognizer:addressCell.textLabel.gestureRecognizers[0]];
+        }
+        addressCell.textLabel.userInteractionEnabled = NO;
+
+        MXRoomMember *bannedMember = [mxRoomState membersWithMembership:MXMembershipBan][indexPath.row];
+        addressCell.textLabel.text = bannedMember.userId;
+
+        cell = addressCell;
     }
     else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
