@@ -200,6 +200,7 @@
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_ignored_users" = "IGNORED USERS";
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
