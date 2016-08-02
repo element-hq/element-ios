@@ -32,6 +32,8 @@
 
 #import "AppDelegate.h"
 
+#import "RoomMemberDetailsViewController.h"
+
 #define ROOM_SETTINGS_MAIN_SECTION_INDEX               0
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX        1
 #define ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX 2
@@ -2397,6 +2399,16 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
                 }
             }
         }
+        else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+        {
+            // Show the RoomMemberDetailsViewController on this member so that 
+            // if the user has enough power level, he will be able to unban him
+            RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            [roomMemberDetailsViewController displayRoomMember:[mxRoomState membersWithMembership:MXMembershipBan][indexPath.row] withMatrixRoom:mxRoom];
+            roomMemberDetailsViewController.delegate = self;
+
+            [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
+        }
         else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -2580,6 +2592,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 {
     // this method should not be called
     [self dismissMediaPicker];
+}
+
+#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
+{
+    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
 }
 
 #pragma mark - actions
