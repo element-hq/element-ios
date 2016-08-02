@@ -142,6 +142,20 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 @implementation RoomSettingsViewController
 
+- (void)initWithSession:(MXSession *)session andRoomId:(NSString *)roomId
+{
+    [super initWithSession:session andRoomId:roomId];
+
+    // Add an additional listener to update banned users
+    extraEventsListener = [mxRoom.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+
+        if (direction == MXTimelineDirectionForwards)
+        {
+            [self updateRoomState:mxRoom.state];
+        }
+    }];
+}
+
 - (UINavigationItem*)getNavigationItem
 {
     // Check whether the view controller is currently displayed inside a segmented view controller or not.
@@ -293,7 +307,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     historyVisibilityTickCells = nil;
     
     roomAddresses = nil;
-    
+
+    if (extraEventsListener)
+    {
+        [mxRoom.liveTimeline removeListener:extraEventsListener];
+        extraEventsListener = nil;
+    }
+
     [super destroy];
 }
 
