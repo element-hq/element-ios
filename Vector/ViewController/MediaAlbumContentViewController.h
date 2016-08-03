@@ -26,12 +26,20 @@
 @protocol MediaAlbumContentViewControllerDelegate <NSObject>
 
 /**
- Tells the delegate that the user select an asset.
+ Tells the delegate that the user has selected an asset.
  
  @param mediaAlbumContentViewController the `MediaAlbumContentViewController` instance.
- @param asset the selected asset .
+ @param asset the selected asset.
  */
 - (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAsset:(PHAsset*)asset;
+
+/**
+ Tells the delegate that the user has selected multiple assets.
+
+ @param mediaAlbumContentViewController the `MediaAlbumContentViewController` instance.
+ @param assets the selected assets.
+ */
+- (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAssets:(NSArray<PHAsset*>*)assets;
 
 @end
 

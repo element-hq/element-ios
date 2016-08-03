@@ -1515,6 +1515,12 @@ static void *RecordingContext = &RecordingContext;
     [self didSelectAsset:asset];
 }
 
+- (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAssets:(NSArray<PHAsset *> *)assets
+{
+    // @TODO
+    //[self didSelectAssets:assets];
+}
+
 #pragma mark - Movie player observer
 
 - (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
