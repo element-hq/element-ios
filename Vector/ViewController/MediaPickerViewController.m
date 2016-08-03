@@ -1356,7 +1356,7 @@ static void *RecordingContext = &RecordingContext;
         option.synchronous = NO;
         cell.tag = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFill options:option resultHandler:^(UIImage *result, NSDictionary *info) {
             
-            cell.mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
+            cell.mxkImageView.imageView.contentMode = UIViewContentModeScaleAspectFill;
             cell.mxkImageView.image = result;
             cell.tag = 0;
             
