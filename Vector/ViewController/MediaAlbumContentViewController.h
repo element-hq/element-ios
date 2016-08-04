@@ -81,5 +81,11 @@
  */
 @property (nonatomic) PHAssetCollection *assetsCollection;
 
+/**
+ A Boolean value that determines whether users can select more than one item.
+ Default is NO.
+ */
+@property (nonatomic) BOOL allowsMultipleSelection;
+
 @end
 
