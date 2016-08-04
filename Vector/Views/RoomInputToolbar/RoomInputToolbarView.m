@@ -257,6 +257,13 @@
     [self sendSelectedVideo:videoURL isPhotoLibraryAsset:isPhotoLibraryAsset];
 }
 
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray<PHAsset*>*)assets
+{
+    [self dismissMediaPicker];
+
+    [self sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
+}
+
 #pragma mark - Media picker handling
 
 - (void)dismissMediaPicker

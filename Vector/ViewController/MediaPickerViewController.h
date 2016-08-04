@@ -42,6 +42,15 @@
  */
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL;
 
+@optional
+/**
+ Tells the delegate that the user select multiple media.
+
+ @param mediaPickerController the `MediaPickerViewController` instance.
+ @param assets the selected media.
+ */
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray<PHAsset*>*)assets;
+
 @end
 
 /**
