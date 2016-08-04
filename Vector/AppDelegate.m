@@ -482,7 +482,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
-    BOOL continueUserActivity;
+    BOOL continueUserActivity = NO;
 
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
     {
