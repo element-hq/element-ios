@@ -702,7 +702,7 @@
                 // Place the call directly if the room exists
                 if (oneToOneRoom)
                 {
-                    [self.mainSession.callManager placeCallInRoom:oneToOneRoom.state.roomId withVideo:isVideoCall];
+                    [oneToOneRoom placeCallWithVideo:isVideoCall success:nil failure:nil];
                     [self removePendingActionMask];
                 }
                 else
@@ -719,7 +719,7 @@
                                                  
                                                  // Delay the call in order to be sure that the room is ready
                                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                                     [self.mainSession.callManager placeCallInRoom:room.state.roomId withVideo:isVideoCall];
+                                                     [room placeCallWithVideo:isVideoCall success:nil failure:nil];
                                                      [self removePendingActionMask];
                                                  });
                                                  

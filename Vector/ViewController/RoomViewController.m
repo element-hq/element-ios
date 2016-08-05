@@ -1833,7 +1833,7 @@
 
            if (granted)
            {
-               [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
+               [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
            }
            else
            {
