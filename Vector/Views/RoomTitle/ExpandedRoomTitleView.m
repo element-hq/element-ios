@@ -62,7 +62,9 @@
         NSUInteger memberCount = 0;
         for (MXRoomMember *mxMember in members)
         {
-            if (mxMember.membership == MXMembershipJoin)
+            // Filter out conference users from non conference user rooms
+            if (mxMember.membership == MXMembershipJoin
+                && !(self.mxRoom.state.isConferenceUserRoom && [MXCallManager isConferenceUser:mxMember.userId]))
             {
                 memberCount ++;
                 
