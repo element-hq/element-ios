@@ -55,6 +55,14 @@
 - (void)displayTypingNotification:(NSString*)labelText;
 
 /**
+ Display an ongoing conference call.
+ Replace the current notification if any.
+
+ @param labelText the current typing message.
+ */
+- (void)displayOngoingConferenceCall:(NSString*)labelText;
+
+/**
  Remove any displayed information.
  */
 - (void)reset;

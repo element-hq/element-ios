@@ -28,6 +28,8 @@
 
 #import "Contact.h"
 
+#import "MXCallManager.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Search session
@@ -449,7 +451,11 @@
             }
             else
             {
-                [self handleRoomMember:mxMember];
+                // Filter out conference users from non conference user rooms
+                if (!(self.mxRoom.state.isConferenceUserRoom && [MXCallManager isConferenceUser:mxMember.userId]))
+                {
+                    [self handleRoomMember:mxMember];
+               }
             }
         }
 
