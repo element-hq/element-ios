@@ -810,10 +810,12 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
-                                                    && self.roomDataSource.mxSession.callManager != nil
-                                                    && self.roomDataSource.room.state.joinedMembers.count > 1;
-        
+        roomInputToolbarView.supportCallOption =
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
+        && self.roomDataSource.mxSession.callManager != nil
+        && (self.roomDataSource.room.state.joinedMembers.count == 2
+            || ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"] && self.roomDataSource.room.state.joinedMembers.count > 2));
+
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
         if (userPictureView)
