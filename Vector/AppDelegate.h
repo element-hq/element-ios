@@ -111,5 +111,9 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
 
+#pragma mark - Call status handling
+
+- (void)returnToCallView;
+
 @end
 

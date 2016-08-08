@@ -97,6 +97,11 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+
+    // Observers to manage ongoing conference call banner
+    id kMXCallManagerNewCallObserver;
+    id kMXCallManagerConferenceStartedObserver;
+    id kMXCallManagerConferenceFinishedObserver;
 }
 
 @end
@@ -288,6 +293,31 @@
         [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
         
     }];
+
+    kMXCallManagerNewCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXCall *call = notif.object;
+        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+        }
+    }];
+    kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        NSString *roomId = notif.object;
+        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+        }
+    }];
+    kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        NSString *roomId = notif.object;
+        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+        }
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -320,6 +350,22 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+
+    if (kMXCallManagerNewCallObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerNewCallObserver];
+        kMXCallManagerNewCallObserver = nil;
+    }
+    if (kMXCallManagerConferenceStartedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceStartedObserver];
+        kMXCallManagerConferenceStartedObserver = nil;
+    }
+    if (kMXCallManagerConferenceFinishedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceFinishedObserver];
+        kMXCallManagerConferenceFinishedObserver = nil;
     }
 }
 
@@ -706,7 +752,23 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
-    
+
+    if (kMXCallManagerNewCallObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerNewCallObserver];
+        kMXCallManagerNewCallObserver = nil;
+    }
+    if (kMXCallManagerConferenceStartedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceStartedObserver];
+        kMXCallManagerConferenceStartedObserver = nil;
+    }
+    if (kMXCallManagerConferenceFinishedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceFinishedObserver];
+        kMXCallManagerConferenceFinishedObserver = nil;
+    }
+
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
         // Here [destroy] is called before [viewWillDisappear:]
@@ -1904,6 +1966,22 @@
     }
 }
 
+- (void)onActivitiesViewOngoingConferenceCallTap:(UITapGestureRecognizer*)sender
+{
+    NSLog(@"[Vector RoomVC] onActivitiesViewOngoingConferenceCallTap");
+
+    // Make sure there is not yet a call
+    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
+    {
+        [customizedRoomDataSource.room placeCallWithVideo:YES success:nil failure:nil];
+    }
+    else
+    {
+        // Return to the call screen
+        [[AppDelegate theDelegate] returnToCallView];
+    }
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2234,9 +2312,26 @@
 {
     if (self.activitiesView)
     {
+        RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
+
+        // Reset the button to join a conf call
+        roomActivitiesView.userInteractionEnabled = NO;
+
         if ([AppDelegate theDelegate].isOffline)
         {
-            [((RoomActivitiesView*) self.activitiesView) displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+            [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+        }
+        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        {
+            [roomActivitiesView displayOngoingConferenceCall:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil)];
+
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onActivitiesViewOngoingConferenceCallTap:)];
+            [tapGesture setNumberOfTouchesRequired:1];
+            [tapGesture setNumberOfTapsRequired:1];
+            [tapGesture setDelegate:self];
+            [roomActivitiesView addGestureRecognizer:tapGesture];
+
+            roomActivitiesView.userInteractionEnabled = YES;
         }
         else if ([self checkUnsentMessages] == NO)
         {
