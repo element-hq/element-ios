@@ -299,6 +299,7 @@
 
 // Media picker
 "media_picker_library" = "Library";
+"media_picker_select" = "Select";
 
 // Directory
 "directory_title" = "Directory";
