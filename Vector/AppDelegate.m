@@ -1837,7 +1837,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];
     callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
     
-    [callStatusBarButton setBackgroundColor:[UIColor blueColor]];
+    [callStatusBarButton setBackgroundColor:kVectorColorGreen];
     [callStatusBarButton addTarget:self action:@selector(returnToCallView) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
