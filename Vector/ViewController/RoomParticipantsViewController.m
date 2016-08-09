@@ -431,7 +431,7 @@
     if (self.mxRoom)
     {
         // Retrieve the current members from the room state
-        NSArray *members = self.mxRoom.state.members;
+        NSArray *members = [self.mxRoom.state membersWithoutConferenceUser];
         NSString *userId = self.mxRoom.mxSession.myUser.userId;
         NSArray *roomThirdPartyInvites = self.mxRoom.state.thirdPartyInvites;
         
@@ -451,11 +451,7 @@
             }
             else
             {
-                // Filter out conference users from non conference user rooms
-                if (!(self.mxRoom.state.isConferenceUserRoom && [MXCallManager isConferenceUser:mxMember.userId]))
-                {
-                    [self handleRoomMember:mxMember];
-               }
+                [self handleRoomMember:mxMember];
             }
         }
 
