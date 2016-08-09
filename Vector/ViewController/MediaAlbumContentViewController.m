@@ -313,7 +313,14 @@
 
 - (void)onSelectionSend:(id)sender
 {
-    [self.delegate mediaAlbumContentViewController:self didSelectAssets:selectedAssets];
+    if (selectedAssets.count > 1)
+    {
+        [self.delegate mediaAlbumContentViewController:self didSelectAssets:selectedAssets];
+    }
+    else
+    {
+        [self.delegate mediaAlbumContentViewController:self didSelectAsset:selectedAssets[0]];
+    }
 }
 
 - (void)onSelectionCancel:(id)sender
