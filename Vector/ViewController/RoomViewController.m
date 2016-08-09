@@ -97,6 +97,11 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+
+    // Observers to manage ongoing conference call banner
+    id kMXCallStateDidChangeObserver;
+    id kMXCallManagerConferenceStartedObserver;
+    id kMXCallManagerConferenceFinishedObserver;
 }
 
 @end
@@ -276,6 +281,7 @@
     }
     
     [self listenTypingNotifications];
+    [self listenCallNotifications];
     
     if (self.showExpandedHeader)
     {
@@ -321,6 +327,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
+
+    [self removeCallNotificationsListeners];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -706,7 +714,9 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
-    
+
+    [self removeCallNotificationsListeners];
+
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
         // Here [destroy] is called before [viewWillDisappear:]
@@ -810,10 +820,12 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
-                                                    && self.roomDataSource.mxSession.callManager != nil
-                                                    && self.roomDataSource.room.state.joinedMembers.count == 2;
-        
+        roomInputToolbarView.supportCallOption =
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
+        && self.roomDataSource.mxSession.callManager != nil
+        && (self.roomDataSource.room.state.joinedMembers.count == 2
+            || ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"] && self.roomDataSource.room.state.joinedMembers.count > 2));
+
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
         if (userPictureView)
@@ -829,6 +841,17 @@
             [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
             [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
             userPictureView.clipsToBounds = YES;
+        }
+
+        // Show the hangup button if there is an active call
+        MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
+        if (callInRoom && callInRoom.state != MXCallStateEnded)
+        {
+            roomInputToolbarView.activeCall = YES;
+        }
+        else
+        {
+            roomInputToolbarView.activeCall = NO;
         }
     }
 }
@@ -1833,13 +1856,22 @@
 
            if (granted)
            {
-               [self.mainSession.callManager placeCallInRoom:self.roomDataSource.roomId withVideo:video];
+               [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
            }
            else
            {
                NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
            }
        }];
+}
+
+- (void)roomInputToolbarViewHangupCall:(MXKRoomInputToolbarView *)toolbarView
+{
+    MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
+    if (callInRoom)
+    {
+        [callInRoom hangup];
+    }
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
@@ -1899,6 +1931,17 @@
     if (sender == self.navigationItem.rightBarButtonItem)
     {
         [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
+    }
+}
+
+- (void)onActivitiesViewOngoingConferenceCallTap:(UITapGestureRecognizer*)sender
+{
+    NSLog(@"[Vector RoomVC] onActivitiesViewOngoingConferenceCallTap");
+
+    // Make sure there is not yet a call
+    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
+    {
+        [customizedRoomDataSource.room placeCallWithVideo:YES success:nil failure:nil];
     }
 }
 
@@ -2212,6 +2255,64 @@
     }
 }
 
+#pragma mark - Call notifications management
+
+- (void)removeCallNotificationsListeners
+{
+    if (kMXCallStateDidChangeObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallStateDidChangeObserver];
+        kMXCallStateDidChangeObserver = nil;
+    }
+    if (kMXCallManagerConferenceStartedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceStartedObserver];
+        kMXCallManagerConferenceStartedObserver = nil;
+    }
+    if (kMXCallManagerConferenceFinishedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceFinishedObserver];
+        kMXCallManagerConferenceFinishedObserver = nil;
+    }
+}
+
+- (void)listenCallNotifications
+{
+    kMXCallStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXCall *call = notif.object;
+        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            if (call.state == MXCallStateEnded)
+            {
+                // Workaround to manage the "back to call" banner: go back temporary the call screen.
+                // It will correctly manage the hide of this banner
+                [[AppDelegate theDelegate] returnToCallView];
+            }
+
+            [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
+        }
+    }];
+    kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        NSString *roomId = notif.object;
+        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+        }
+    }];
+    kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        NSString *roomId = notif.object;
+        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
+        }
+    }];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -2232,9 +2333,38 @@
 {
     if (self.activitiesView)
     {
+        RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
+
+        // Reset the button to join a conf call
+        roomActivitiesView.userInteractionEnabled = NO;
+
         if ([AppDelegate theDelegate].isOffline)
         {
-            [((RoomActivitiesView*) self.activitiesView) displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+            [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+        }
+        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        {
+            // Show the "Ongoing conference call" banner only if the user is not in the conference
+            MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
+            if (callInRoom && callInRoom.state != MXCallStateEnded)
+            {
+                if ([self checkUnsentMessages] == NO)
+                {
+                    [self refreshTypingNotification];
+                }
+            }
+            else
+            {
+                [roomActivitiesView displayOngoingConferenceCall:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil)];
+
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onActivitiesViewOngoingConferenceCallTap:)];
+                [tapGesture setNumberOfTouchesRequired:1];
+                [tapGesture setNumberOfTapsRequired:1];
+                [tapGesture setDelegate:self];
+                [roomActivitiesView addGestureRecognizer:tapGesture];
+
+                roomActivitiesView.userInteractionEnabled = YES;
+            }
         }
         else if ([self checkUnsentMessages] == NO)
         {

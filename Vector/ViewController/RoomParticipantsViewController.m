@@ -28,6 +28,8 @@
 
 #import "Contact.h"
 
+#import "MXCallManager.h"
+
 @interface RoomParticipantsViewController ()
 {
     // Search session
@@ -429,7 +431,7 @@
     if (self.mxRoom)
     {
         // Retrieve the current members from the room state
-        NSArray *members = self.mxRoom.state.members;
+        NSArray *members = [self.mxRoom.state membersWithoutConferenceUser];
         NSString *userId = self.mxRoom.mxSession.myUser.userId;
         NSArray *roomThirdPartyInvites = self.mxRoom.state.thirdPartyInvites;
         

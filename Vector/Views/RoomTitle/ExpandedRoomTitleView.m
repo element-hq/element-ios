@@ -57,25 +57,22 @@
         self.roomTopic.text = [MXTools stripNewlineCharacters:self.mxRoom.state.topic];
         
         // Compute active members count
-        NSArray *members = self.mxRoom.state.members;
+        NSArray *members = [self.mxRoom.state membersWithMembership:MXMembershipJoin includeConferenceUser:NO];
         NSUInteger activeCount = 0;
         NSUInteger memberCount = 0;
         for (MXRoomMember *mxMember in members)
         {
-            if (mxMember.membership == MXMembershipJoin)
+            memberCount ++;
+
+            // Get the user that corresponds to this member
+            MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
+            // existing user ?
+            if (user && user.presence == MXPresenceOnline)
             {
-                memberCount ++;
-                
-                // Get the user that corresponds to this member
-                MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
-                // existing user ?
-                if (user && user.presence == MXPresenceOnline)
-                {
-                    activeCount ++;
-                }
+                activeCount ++;
             }
         }
-        
+
         if (memberCount)
         {
             // Check whether the logged in user is alone in this room
