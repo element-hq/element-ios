@@ -1943,11 +1943,6 @@
     {
         [customizedRoomDataSource.room placeCallWithVideo:YES success:nil failure:nil];
     }
-    else
-    {
-        // Return to the call screen
-        [[AppDelegate theDelegate] returnToCallView];
-    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -2349,15 +2344,27 @@
         }
         else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
         {
-            [roomActivitiesView displayOngoingConferenceCall:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil)];
+            // Show the "Ongoing conference call" banner only if the user is not in the conference
+            MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
+            if (callInRoom && callInRoom.state != MXCallStateEnded)
+            {
+                if ([self checkUnsentMessages] == NO)
+                {
+                    [self refreshTypingNotification];
+                }
+            }
+            else
+            {
+                [roomActivitiesView displayOngoingConferenceCall:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil)];
 
-            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onActivitiesViewOngoingConferenceCallTap:)];
-            [tapGesture setNumberOfTouchesRequired:1];
-            [tapGesture setNumberOfTapsRequired:1];
-            [tapGesture setDelegate:self];
-            [roomActivitiesView addGestureRecognizer:tapGesture];
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onActivitiesViewOngoingConferenceCallTap:)];
+                [tapGesture setNumberOfTouchesRequired:1];
+                [tapGesture setNumberOfTapsRequired:1];
+                [tapGesture setDelegate:self];
+                [roomActivitiesView addGestureRecognizer:tapGesture];
 
-            roomActivitiesView.userInteractionEnabled = YES;
+                roomActivitiesView.userInteractionEnabled = YES;
+            }
         }
         else if ([self checkUnsentMessages] == NO)
         {
