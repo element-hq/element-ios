@@ -99,7 +99,7 @@
     id kAppDelegateDidTapStatusBarNotificationObserver;
 
     // Observers to manage ongoing conference call banner
-    id kMXCallManagerNewCallObserver;
+    id kMXCallStateDidChangeObserver;
     id kMXCallManagerConferenceStartedObserver;
     id kMXCallManagerConferenceFinishedObserver;
 }
@@ -281,6 +281,7 @@
     }
     
     [self listenTypingNotifications];
+    [self listenCallNotifications];
     
     if (self.showExpandedHeader)
     {
@@ -292,33 +293,6 @@
         
         [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
         
-    }];
-
-    kMXCallManagerNewCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
-        MXCall *call = notif.object;
-        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
-        {
-            [self refreshActivitiesViewDisplay];
-            [self refreshRoomInputToolbar];
-        }
-    }];
-    kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
-        NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
-        {
-            [self refreshActivitiesViewDisplay];
-        }
-    }];
-    kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
-        NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
-        {
-            [self refreshActivitiesViewDisplay];
-            [self refreshRoomInputToolbar];
-        }
     }];
 }
 
@@ -354,21 +328,7 @@
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
 
-    if (kMXCallManagerNewCallObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerNewCallObserver];
-        kMXCallManagerNewCallObserver = nil;
-    }
-    if (kMXCallManagerConferenceStartedObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceStartedObserver];
-        kMXCallManagerConferenceStartedObserver = nil;
-    }
-    if (kMXCallManagerConferenceFinishedObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceFinishedObserver];
-        kMXCallManagerConferenceFinishedObserver = nil;
-    }
+    [self removeCallNotificationsListeners];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -755,21 +715,7 @@
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
 
-    if (kMXCallManagerNewCallObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerNewCallObserver];
-        kMXCallManagerNewCallObserver = nil;
-    }
-    if (kMXCallManagerConferenceStartedObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceStartedObserver];
-        kMXCallManagerConferenceStartedObserver = nil;
-    }
-    if (kMXCallManagerConferenceFinishedObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceFinishedObserver];
-        kMXCallManagerConferenceFinishedObserver = nil;
-    }
+    [self removeCallNotificationsListeners];
 
     if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
     {
@@ -1921,19 +1867,10 @@
 
 - (void)roomInputToolbarViewHangupCall:(MXKRoomInputToolbarView *)toolbarView
 {
-    RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)toolbarView;
-
     MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
     if (callInRoom)
     {
-        // Go back to the call screen.
-        // It will correctly manage the hide of the "back to call" banner
-        [[AppDelegate theDelegate] returnToCallView];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [callInRoom hangup];
-            roomInputToolbarView.activeCall = NO;
-        });
+        [callInRoom hangup];
     }
 }
 
@@ -2321,6 +2258,64 @@
         
         [((RoomActivitiesView*) self.activitiesView) displayTypingNotification:text];
     }
+}
+
+#pragma mark - Call notifications management
+
+- (void)removeCallNotificationsListeners
+{
+    if (kMXCallStateDidChangeObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallStateDidChangeObserver];
+        kMXCallStateDidChangeObserver = nil;
+    }
+    if (kMXCallManagerConferenceStartedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceStartedObserver];
+        kMXCallManagerConferenceStartedObserver = nil;
+    }
+    if (kMXCallManagerConferenceFinishedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXCallManagerConferenceFinishedObserver];
+        kMXCallManagerConferenceFinishedObserver = nil;
+    }
+}
+
+- (void)listenCallNotifications
+{
+    kMXCallStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXCall *call = notif.object;
+        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            if (call.state == MXCallStateEnded)
+            {
+                // Workaround to manage the "back to call" banner: go back temporary the call screen.
+                // It will correctly manage the hide of this banner
+                [[AppDelegate theDelegate] returnToCallView];
+            }
+
+            [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
+        }
+    }];
+    kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        NSString *roomId = notif.object;
+        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+        }
+    }];
+    kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        NSString *roomId = notif.object;
+        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        {
+            [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
+        }
+    }];
 }
 
 #pragma mark - KVO
