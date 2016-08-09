@@ -36,6 +36,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *voiceCallButton;
+@property (weak, nonatomic) IBOutlet UIButton *hangupCallButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *voiceCallButtonWidthConstraint;
 
@@ -43,5 +44,10 @@
  Tell whether the call option is supported. YES by default.
  */
 @property (nonatomic) BOOL supportCallOption;
+
+/**
+ Tell whether a call is active.
+ */
+@property (nonatomic) BOOL activeCall;
 
 @end

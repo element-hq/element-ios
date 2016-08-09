@@ -300,6 +300,7 @@
         if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
         }
     }];
     kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -316,6 +317,7 @@
         if ([roomId isEqualToString:customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
+            [self refreshRoomInputToolbar];
         }
     }];
 }
@@ -893,6 +895,17 @@
             [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
             [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
             userPictureView.clipsToBounds = YES;
+        }
+
+        // Show the hangup button if there is an active call
+        MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
+        if (callInRoom && callInRoom.state != MXCallStateEnded)
+        {
+            roomInputToolbarView.activeCall = YES;
+        }
+        else
+        {
+            roomInputToolbarView.activeCall = NO;
         }
     }
 }
@@ -1904,6 +1917,24 @@
                NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
            }
        }];
+}
+
+- (void)roomInputToolbarViewHangupCall:(MXKRoomInputToolbarView *)toolbarView
+{
+    RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)toolbarView;
+
+    MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
+    if (callInRoom)
+    {
+        // Go back to the call screen.
+        // It will correctly manage the hide of the "back to call" banner
+        [[AppDelegate theDelegate] returnToCallView];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [callInRoom hangup];
+            roomInputToolbarView.activeCall = NO;
+        });
+    }
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
