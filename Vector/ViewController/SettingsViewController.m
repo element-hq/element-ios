@@ -1330,10 +1330,59 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
 
-    NSLog(@"[SettingsViewController] %@ connference call", enable ? @"Disable" : @"Enable");
+    if (sender && !enable)
+    {
+        // Ask confirmation to the user before enabling it
+        UISwitch *switchButton;
+        if ([sender isKindOfClass:UISwitch.class])
+        {
+            switchButton = (UISwitch*)sender;
 
-    [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableConferenceCall"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+
+        // Prevent the toggle from toggling without the user confirmation
+        [switchButton setOn:NO animated:YES];
+
+        [currentAlert dismiss:NO];
+        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                               message:NSLocalizedStringFromTable(@"settings_labs_conference_call_warning", @"Vector", nil)
+                                                 style:MXKAlertStyleAlert];
+
+        __weak typeof(self) weakSelf = self;
+
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+            }
+        }];
+
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]  style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+
+                // Apply the change
+                [switchButton setOn:YES animated:YES];
+                [strongSelf toggleLabsConferenceCall:nil];
+            }
+        }];
+
+        [currentAlert showInViewController:self];
+
+
+    }
+    else
+    {
+        NSLog(@"[SettingsViewController] %@ connference call", enable ? @"Disable" : @"Enable");
+
+        [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableConferenceCall"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 - (void)onClearCache:(id)sender

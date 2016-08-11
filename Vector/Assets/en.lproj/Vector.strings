@@ -247,6 +247,7 @@
 
 "settings_labs_outgoing_voip" = "Placing VoIP/Video calls";
 "settings_labs_conference_call" = "Conference Call";
+"settings_labs_conference_call_warning" = "Conference calling in Vector is in development and may not be reliable";
 
 // Room Details
 "room_details_title" = "Room Details";
