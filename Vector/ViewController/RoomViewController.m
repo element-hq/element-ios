@@ -97,6 +97,9 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+    
+    // Observe kAppDelegateNetworkStatusDidChangeNotification to handle network status change.
+    id kAppDelegateNetworkStatusDidChangeNotificationObserver;
 
     // Observers to manage ongoing conference call banner
     id kMXCallStateDidChangeObserver;
@@ -288,7 +291,7 @@
         [self showExpandedHeader:YES];
     }
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.contentInset.left, -self.bubblesTableView.contentInset.top) animated:YES];
@@ -339,11 +342,15 @@
     {
         // Set visible room id
         [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
-        
-        // Observe network reachability
-        [[AppDelegate theDelegate]  addObserver:self forKeyPath:@"isOffline" options:0 context:nil];
-        [self refreshActivitiesViewDisplay];
     }
+    
+    // Observe network reachability
+    kAppDelegateNetworkStatusDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateNetworkStatusDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self refreshActivitiesViewDisplay];
+        
+    }];
+    [self refreshActivitiesViewDisplay];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -351,19 +358,12 @@
     [super viewDidDisappear:animated];
     
     // Reset visible room id
-    if ([AppDelegate theDelegate].visibleRoomId)
+    [AppDelegate theDelegate].visibleRoomId = nil;
+    
+    if (kAppDelegateNetworkStatusDidChangeNotificationObserver)
     {
-        [AppDelegate theDelegate].visibleRoomId = nil;
-
-        // Sanity check: Use a try..catch to prevent the app from crashing if there is no
-        // registered observer which happens if the provided self.roomDataSource is unexpectedly nil
-        @try
-        {
-            [[AppDelegate theDelegate] removeObserver:self forKeyPath:@"isOffline"];
-        }
-        @catch (id anException)
-        {
-        }
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateNetworkStatusDidChangeNotificationObserver];
+        kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
 }
 
@@ -713,6 +713,11 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    if (kAppDelegateNetworkStatusDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateNetworkStatusDidChangeNotificationObserver];
+        kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
 
     [self removeCallNotificationsListeners];
@@ -2311,20 +2316,6 @@
             [self refreshRoomInputToolbar];
         }
     }];
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"isOffline" isEqualToString:keyPath])
-    {
-        [self refreshActivitiesViewDisplay];
-    }
-    else
-    {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark - Unreachable Network Handling
