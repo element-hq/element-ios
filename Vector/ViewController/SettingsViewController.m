@@ -1015,6 +1015,56 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return cell;
 }
 
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count)
+        {
+            return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+        }
+        else
+        {
+            // Hide this section
+            return nil;
+        }
+    }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_OTHER_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_LABS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+    }
+    
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    {
+        // Customize label style
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
+        tableViewHeaderFooterView.textLabel.textColor = kVectorTextColorBlack;
+        tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+    }
+}
+
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1039,13 +1089,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return 50;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
-    {
-        return 30;
-    }
-    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
         if (session.ignoredUsers.count == 0)
@@ -1054,8 +1100,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
-
-    return 60;
+    
+    return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -1071,64 +1117,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 
     return [super tableView:tableView heightForFooterInSection:section];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.backgroundColor = kVectorColorLightGrey;
-    
-    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
-    {
-        return sectionHeader;
-    }
-    
-    UILabel *sectionLabel = [[UILabel alloc] init];
-    sectionLabel.font = [UIFont boldSystemFontOfSize:16];
-    sectionLabel.backgroundColor = [UIColor clearColor];
-    
-    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
-    {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        if (session.ignoredUsers.count)
-        {
-            sectionLabel.text = NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
-        }
-        else
-        {
-            // Hide this section
-            sectionHeader = nil;
-        }
-    }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_OTHER_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
-    }
-
-    if (sectionHeader)
-    {
-        [sectionLabel sizeToFit];
-        sectionLabel.frame = CGRectMake(10,  sectionHeader.frame.size.height - sectionLabel.frame.size.height - 5, sectionHeader.frame.size.width - 20, sectionLabel.frame.size.height);
-        [sectionHeader addSubview:sectionLabel];
-    }
-
-    return sectionHeader;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
