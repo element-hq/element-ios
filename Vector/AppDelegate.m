@@ -56,6 +56,7 @@
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
+NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
 @interface AppDelegate ()
 {
@@ -222,7 +223,12 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         }];
     }
     
-    _isOffline = isOffline;
+    if (_isOffline != isOffline)
+    {
+        _isOffline = isOffline;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateNetworkStatusDidChangeNotification object:nil];
+    }
 }
 
 #pragma mark - UIApplicationDelegate
@@ -362,7 +368,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
-    _isOffline = NO;
     
     // check if some media must be released to reduce the cache size
     [MXKMediaManager reduceCacheSizeToInsert:0];
