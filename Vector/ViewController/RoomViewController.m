@@ -2342,7 +2342,8 @@
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
-        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"]
+                 && customizedRoomDataSource.room.state.isOngoingConferenceCall)
         {
             // Show the "Ongoing conference call" banner only if the user is not in the conference
             MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
