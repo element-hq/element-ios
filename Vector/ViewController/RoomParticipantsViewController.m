@@ -59,8 +59,8 @@
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
     
-    // Observe kMXRoomDidFlushMessagesNotification to take into account the updated room members when the room history is flushed.
-    id roomDidFlushMessagesNotificationObserver;
+    // Observe kMXRoomDidFlushDataNotification to take into account the updated room members when the room history is flushed.
+    id roomDidFlushDataNotificationObserver;
 
     RoomMemberDetailsViewController *memberDetailsViewController;
     
@@ -154,10 +154,10 @@
         leaveRoomNotificationObserver = nil;
     }
     
-    if (roomDidFlushMessagesNotificationObserver)
+    if (roomDidFlushDataNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushMessagesNotificationObserver];
-        roomDidFlushMessagesNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
+        roomDidFlushDataNotificationObserver = nil;
     }
     
     if (membersListener)
@@ -266,10 +266,10 @@
         [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
         leaveRoomNotificationObserver = nil;
     }
-    if (roomDidFlushMessagesNotificationObserver)
+    if (roomDidFlushDataNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushMessagesNotificationObserver];
-        roomDidFlushMessagesNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
+        roomDidFlushDataNotificationObserver = nil;
     }
     if (membersListener)
     {
@@ -300,7 +300,7 @@
         }];
         
         // Observe room history flush (sync with limited timeline, or state event redaction)
-        roomDidFlushMessagesNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushMessagesNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
             
             MXRoom *room = notif.object;
             if (_mxRoom.mxSession == room.mxSession && [_mxRoom.state.roomId isEqualToString:room.state.roomId])
