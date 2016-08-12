@@ -58,6 +58,9 @@
     
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     id leaveRoomNotificationObserver;
+    
+    // Observe kMXRoomDidFlushDataNotification to take into account the updated room members when the room history is flushed.
+    id roomDidFlushDataNotificationObserver;
 
     RoomMemberDetailsViewController *memberDetailsViewController;
     
@@ -149,6 +152,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
         leaveRoomNotificationObserver = nil;
+    }
+    
+    if (roomDidFlushDataNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
+        roomDidFlushDataNotificationObserver = nil;
     }
     
     if (membersListener)
@@ -257,6 +266,11 @@
         [[NSNotificationCenter defaultCenter] removeObserver:leaveRoomNotificationObserver];
         leaveRoomNotificationObserver = nil;
     }
+    if (roomDidFlushDataNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
+        roomDidFlushDataNotificationObserver = nil;
+    }
     if (membersListener)
     {
         [_mxRoom.liveTimeline removeListener:membersListener];
@@ -283,6 +297,20 @@
                     [self withdrawViewControllerAnimated:YES completion:nil];
                 }
             }
+        }];
+        
+        // Observe room history flush (sync with limited timeline, or state event redaction)
+        roomDidFlushDataNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomDidFlushDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            MXRoom *room = notif.object;
+            if (_mxRoom.mxSession == room.mxSession && [_mxRoom.state.roomId isEqualToString:room.state.roomId])
+            {
+                // The existing room history has been flushed during server sync. Take into account the updated room members list.
+                [self refreshParticipantsFromRoomMembers];
+                
+                [self.tableView reloadData];
+            }
+            
         }];
         
         // Register a listener for events that concern room members

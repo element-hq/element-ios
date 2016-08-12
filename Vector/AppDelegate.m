@@ -1361,6 +1361,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
     }];
     
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionDidCorruptDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+        
+        NSLog(@"[AppDelegate] kMXSessionDidCorruptDataNotification received. Reload the app");
+        
+        // Reload entirely the app when a session has corrupted its data
+        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+        
+    }];
+    
     // Observe settings changes
     [[MXKAppSettings standardAppSettings]  addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
