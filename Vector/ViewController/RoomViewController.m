@@ -2326,9 +2326,6 @@
     {
         RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
 
-        // Reset the button to join a conf call
-        roomActivitiesView.userInteractionEnabled = NO;
-
         if ([AppDelegate theDelegate].isOffline)
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
