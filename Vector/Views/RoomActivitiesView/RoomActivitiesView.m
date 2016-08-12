@@ -162,6 +162,11 @@
     }
     self.iconImageView.userInteractionEnabled = NO;
     
+    while (self.gestureRecognizers.count)
+    {
+        [self removeGestureRecognizer:self.gestureRecognizers[0]];
+    }
+    
     objc_removeAssociatedObjects(self.iconImageView);
     objc_removeAssociatedObjects(self.messageTextView);
 }
