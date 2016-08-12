@@ -1525,7 +1525,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             currentCallViewController = [MXKCallViewController callViewController:mxCall];
             currentCallViewController.delegate = self;
             
-            // FIXME GFO Check whether present call from self.window.rootViewController is working
             [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
                 currentCallViewController.isPresented = YES;
             }];
@@ -1880,7 +1879,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 {
     [self removeCallStatusBar];
     
-    // FIXME GFO check whether self.window.rootViewController may present the call
     [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
         currentCallViewController.isPresented = YES;
     }];
