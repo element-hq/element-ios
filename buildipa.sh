@@ -9,6 +9,9 @@ sdk="iphoneos"
 basecmd="xcodebuild -scheme Vector -workspace Vector.xcworkspace -configuration Release -sdk $sdk -derivedDataPath $builddir"
 vars=""
 
+# Clean the Xcode build folder to avoid caching issues that happens sometimes
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
+
 if [ -n "$GIT_BRANCH" ]
 then
 	vars="$vars GIT_BRANCH=`echo $GIT_BRANCH | sed -e 's#origin\/##'`"
