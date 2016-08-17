@@ -1272,6 +1272,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
+            // Ignore the room member profile changes during the last message process in each room.
+            mxSession.ignoreProfileChangesDuringLastMessageProcessing = YES;
+            
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
         }
