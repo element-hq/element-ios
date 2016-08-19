@@ -1851,11 +1851,10 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
-    // In case of conference call, check that the user has enou
+    // In case of conference call, check that the user has enough power level
     if (self.roomDataSource.room.state.joinedMembers.count > 2 &&
         ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
     {
-        // The user has not enough power level in this room to create the conf
         [currentAlert dismiss:NO];
 
         __weak __typeof(self) weakSelf = self;
