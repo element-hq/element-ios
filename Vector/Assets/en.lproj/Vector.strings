@@ -35,6 +35,7 @@
 "save" = "Save";
 "join" = "Join";
 "decline" = "Decline";
+"accept" = "Accept";
 "preview" = "Preview";
 "camera" = "Camera";
 "voice" = "Voice";
@@ -321,6 +322,10 @@
 "room_displayname_two_members" = "%@ and %@";
 "room_displayname_more_than_two_members" = "%@ and %u others";
 "room_displayname_no_title" = "Empty room";
+
+// Call
+"call_incoming_voice_prompt" = "Incoming voice call from %@";
+"call_incoming_video_prompt" = "Incoming video call from %@";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";
