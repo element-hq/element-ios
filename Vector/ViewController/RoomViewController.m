@@ -1851,23 +1851,44 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo:(BOOL)video
 {
-    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    // In case of conference call, check that the user has enou
+    if (self.roomDataSource.room.state.joinedMembers.count > 2 &&
+        ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room])
+    {
+        // The user has not enough power level in this room to create the conf
+        [currentAlert dismiss:NO];
 
-    // Check app permissions before placing the call
-    [MXKTools checkAccessForCall:video
-     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
-       showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        __weak __typeof(self) weakSelf = self;
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_power_to_create_conference_call"]  message:nil style:MXKAlertStyleAlert];
 
-           if (granted)
-           {
-               [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
-           }
-           else
-           {
-               NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
-           }
-       }];
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            strongSelf->currentAlert = nil;
+        }];
+
+        [currentAlert showInViewController:self];
+    }
+    else
+    {
+        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+        // Check app permissions before placing the call
+        [MXKTools checkAccessForCall:video
+         manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+         manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+           showPopUpInViewController:self completionHandler:^(BOOL granted) {
+
+               if (granted)
+               {
+                   [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+               }
+               else
+               {
+                   NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
+               }
+           }];
+    }
 }
 
 - (void)roomInputToolbarViewHangupCall:(MXKRoomInputToolbarView *)toolbarView
