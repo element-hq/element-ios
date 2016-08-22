@@ -88,9 +88,13 @@
     // Typing notifications listener.
     id typingNotifListener;
     
-    // The first tab is selected by default in room details screen in of case 'showRoomDetails' segue.
+    // The first tab is selected by default in room details screen in case of 'showRoomDetails' segue.
     // Use this flag to select a specific tab (0: people, 1: settings).
     NSUInteger selectedRoomDetailsIndex;
+    
+    // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
+    // Use this value to select a specific field in room settings.
+    RoomSettingsViewControllerField selectedRoomSettingsField;
 
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
@@ -1802,8 +1806,12 @@
             segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
             [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
             
-            // to display a red navbar when the home server cannot be reached.
+            // Add the current session to be able to observe its state change.
             [segmentedViewController addMatrixSession:session];
+            
+            // Preselect the tapped field if any
+            settingsViewController.selectedRoomSettingsField = selectedRoomSettingsField;
+            selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
         }
     }
     else if ([[segue identifier] isEqualToString:@"showRoomSearch"])
@@ -2054,9 +2062,9 @@
 
 - (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
 {
-    UIView *view = tapGestureRecognizer.view;
+    UIView *tappedView = tapGestureRecognizer.view;
     
-    if (view == titleView.titleMask)
+    if (tappedView == titleView.titleMask)
     {
         if (self.expandedHeaderContainer.isHidden)
         {
@@ -2065,18 +2073,56 @@
         }
         else
         {
+            selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
+            
+            CGPoint point = [tapGestureRecognizer locationInView:self.expandedHeaderContainer];
+            
+            CGRect roomNameArea = expandedHeader.displayNameTextField.frame;
+            roomNameArea.origin.x -= 10;
+            roomNameArea.origin.y -= 10;
+            roomNameArea.size.width += 20;
+            roomNameArea.size.height += 15;
+            if (CGRectContainsPoint(roomNameArea, point))
+            {
+                // Starting to move the local preview view
+                selectedRoomSettingsField = RoomSettingsViewControllerFieldName;
+            }
+            else
+            {
+                CGRect roomTopicArea = expandedHeader.roomTopic.frame;
+                roomTopicArea.origin.x -= 10;
+                roomTopicArea.size.width += 20;
+                roomTopicArea.size.height += 10;
+                if (CGRectContainsPoint(roomTopicArea, point))
+                {
+                    // Starting to move the local preview view
+                    selectedRoomSettingsField = RoomSettingsViewControllerFieldTopic;
+                }
+                else if ([self.titleView isKindOfClass:[RoomAvatarTitleView class]])
+                {
+                    RoomAvatarTitleView *avatarTitleView = (RoomAvatarTitleView*)self.titleView;
+                    CGRect roomAvatarFrame = avatarTitleView.roomAvatar.frame;
+                    roomAvatarFrame.origin = [avatarTitleView convertPoint:roomAvatarFrame.origin toView:self.expandedHeaderContainer];
+                    if (CGRectContainsPoint(roomAvatarFrame, point))
+                    {
+                        // Starting to move the local preview view
+                        selectedRoomSettingsField = RoomSettingsViewControllerFieldAvatar;
+                    }
+                }
+            }
+            
             // Open room settings
             selectedRoomDetailsIndex = 1;
             [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
         }
     }
-    else if (view == titleView.roomDetailsMask)
+    else if (tappedView == titleView.roomDetailsMask)
     {
         // Open room details by selecting member list
         selectedRoomDetailsIndex = 0;
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
-    else if (view == previewHeader.rightButton)
+    else if (tappedView == previewHeader.rightButton)
     {
         // 'Join' button has been pressed
         if (roomPreviewData)
@@ -2140,7 +2186,7 @@
             }];
         }
     }
-    else if (view == previewHeader.leftButton)
+    else if (tappedView == previewHeader.leftButton)
     {
         // 'Decline' button has been pressed
         if (roomPreviewData)

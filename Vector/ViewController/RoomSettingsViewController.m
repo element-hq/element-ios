@@ -147,6 +147,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 @implementation RoomSettingsViewController
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    _selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
+}
+
 - (void)initWithSession:(MXSession *)session andRoomId:(NSString *)roomId
 {
     [super initWithSession:session andRoomId:roomId];
@@ -242,6 +249,17 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
         
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Edit the selected field if any
+    if (_selectedRoomSettingsField != RoomSettingsViewControllerFieldNone)
+    {
+        self.selectedRoomSettingsField = _selectedRoomSettingsField;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -371,6 +389,44 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     }
 }
 
+#pragma mark - 
+
+- (void)setSelectedRoomSettingsField:(RoomSettingsViewControllerField)selectedRoomSettingsField
+{
+    // Check whether the view controller is already embedded inside a navigation controller
+    if (self.navigationController)
+    {
+        [self dismissFirstResponder];
+        
+        switch (selectedRoomSettingsField)
+        {
+            case RoomSettingsViewControllerFieldName:
+            {
+                [self editRoomName];
+                break;
+            }
+            case RoomSettingsViewControllerFieldTopic:
+            {
+                [self editRoomTopic];
+                break;
+            }
+            case RoomSettingsViewControllerFieldAvatar:
+            {
+                [self onRoomAvatarTap:nil];
+                break;
+            }
+                
+            default:
+                break;
+        }
+    }
+    else
+    {
+        // This selection will be applied when the view controller will become active (see 'viewDidAppear')
+        _selectedRoomSettingsField = selectedRoomSettingsField;
+    }
+}
+
 #pragma mark - private
 
 - (void)editRoomName
@@ -428,6 +484,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         [addAddressTextField resignFirstResponder];
     }
+    
+    _selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
 }
 
 - (void)startActivityIndicator
