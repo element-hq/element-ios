@@ -16,6 +16,7 @@
                 <outlet property="callStatusLabel" destination="29y-MK-OWH" id="Kcn-MX-MUH"/>
                 <outlet property="callerImageView" destination="v1I-LH-wvv" id="dpZ-KD-4Hg"/>
                 <outlet property="callerNameLabel" destination="IW8-8P-mS3" id="eaa-oo-l01"/>
+                <outlet property="cameraSwitchButton" destination="Iiz-W1-oNW" id="bsM-mH-ti8"/>
                 <outlet property="chatButton" destination="xCi-hD-FBs" id="h3w-6I-Agn"/>
                 <outlet property="endCallButton" destination="lVK-d8-Dqf" id="zgE-Go-bo6"/>
                 <outlet property="gradientMaskContainerView" destination="STO-VX-5VW" id="9s2-wN-gIY"/>
@@ -209,7 +210,7 @@
                                 <constraint firstItem="IW8-8P-mS3" firstAttribute="leading" secondItem="W2P-Hy-nV2" secondAttribute="leading" id="peb-77-Gi5"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nff-fB-sTq" userLabel="BackToApp">
+                        <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nff-fB-sTq">
                             <rect key="frame" x="10" y="5" width="44" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -230,6 +231,27 @@
                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="yKw-Aj-XkE"/>
                             </connections>
                         </button>
+                        <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iiz-W1-oNW">
+                            <rect key="frame" x="546" y="5" width="44" height="44"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="2ci-nt-cgP"/>
+                                <constraint firstAttribute="width" constant="44" id="owR-ds-wTp"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <inset key="titleEdgeInsets" minX="-69" minY="61" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" image="camera_switch.png">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="UaC-FO-rmW"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -238,7 +260,9 @@
                         <constraint firstItem="W2P-Hy-nV2" firstAttribute="leading" secondItem="JAR-tn-sGN" secondAttribute="leading" id="Dow-OM-vNZ"/>
                         <constraint firstAttribute="bottom" secondItem="nk9-Un-LVP" secondAttribute="bottom" id="bpc-m3-acb"/>
                         <constraint firstAttribute="trailing" secondItem="W2P-Hy-nV2" secondAttribute="trailing" id="hPw-CT-hcl"/>
+                        <constraint firstAttribute="trailing" secondItem="Iiz-W1-oNW" secondAttribute="trailing" constant="10" id="hze-F3-Pyo"/>
                         <constraint firstItem="nff-fB-sTq" firstAttribute="leading" secondItem="JAR-tn-sGN" secondAttribute="leading" constant="10" id="ubP-7v-uDn"/>
+                        <constraint firstItem="Iiz-W1-oNW" firstAttribute="top" secondItem="JAR-tn-sGN" secondAttribute="top" constant="5" id="x8C-b1-k4g"/>
                         <constraint firstAttribute="trailing" secondItem="nk9-Un-LVP" secondAttribute="trailing" id="yES-yI-i3m"/>
                         <constraint firstItem="W2P-Hy-nV2" firstAttribute="top" secondItem="JAR-tn-sGN" secondAttribute="top" id="yj4-Vr-mIA"/>
                     </constraints>
@@ -271,5 +295,6 @@
     <resources>
         <image name="back_icon.png" width="12" height="23"/>
         <image name="call_hangup_icon.png" width="26" height="27"/>
+        <image name="camera_switch.png" width="32" height="24"/>
     </resources>
 </document>

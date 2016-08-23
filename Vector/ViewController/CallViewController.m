@@ -69,6 +69,9 @@
     [self.backToAppButton setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
     [self.backToAppButton setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateHighlighted];
     
+    [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateNormal];
+    [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateHighlighted];
+    
     [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_icon"] forState:UIControlStateNormal];
     [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_icon"] forState:UIControlStateHighlighted];
     [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_icon"] forState:UIControlStateSelected];
@@ -76,7 +79,6 @@
     [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateHighlighted];
     [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_icon"] forState:UIControlStateSelected];
     [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"] forState:UIControlStateNormal];
-    [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"] forState:UIControlStateHighlighted];
     [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"] forState:UIControlStateSelected];
     [self.chatButton setImage:[UIImage imageNamed:@"call_chat_icon"] forState:UIControlStateNormal];
     [self.chatButton setImage:[UIImage imageNamed:@"call_chat_icon"] forState:UIControlStateHighlighted];
