@@ -1,3 +1,13 @@
+Changes in Vector iOS in 0.1.16 (2016-08-25)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.15).
+
+Bug fixes:
+ * Rooms list: Fix crash when computing recents.
+ * Settings: Fix crash when logging out.
+
 Changes in Vector iOS in 0.1.15 (2016-08-25)
 ===============================================
 
