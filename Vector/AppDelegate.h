@@ -30,6 +30,11 @@
  */
 extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
+/**
+ Posted when the property 'isOffline' has changed. This property is related to the network reachability status.
+ */
+extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate>
 {
     BOOL isAPNSRegistered;
@@ -110,6 +115,10 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
  @return YES in case of processing success.
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
+
+#pragma mark - Call status handling
+
+- (void)returnToCallView;
 
 @end
 

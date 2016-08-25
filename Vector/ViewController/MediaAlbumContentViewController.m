@@ -33,6 +33,11 @@
      The current list of assets retrieved from collection.
      */
     PHFetchResult *assets;
+
+    /**
+     The currently selected media. Nil when the multiselection is not active.
+     */
+    NSMutableArray <PHAsset*> *selectedAssets;
 }
 
 @end
@@ -81,6 +86,11 @@
         self.assetsCollection = _assetsCollection;
         
     }];
+
+    if (_allowsMultipleSelection)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"media_picker_select", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
+    }
 }
 
 - (void)dealloc
@@ -211,7 +221,7 @@
         option.synchronous = NO;
         cell.tag = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFill options:option resultHandler:^(UIImage *result, NSDictionary *info) {
             
-            cell.mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
+            cell.mxkImageView.imageView.contentMode = UIViewContentModeScaleAspectFill;
             cell.mxkImageView.image = result;
             cell.tag = 0;
             
@@ -219,7 +229,10 @@
         
         cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
-        
+
+        cell.bottomRightIcon.image = [UIImage imageNamed:@"selection_tick"];
+        cell.bottomRightIcon.hidden = !selectedAssets || (NSNotFound == [selectedAssets indexOfObject:asset]);
+
         // Disable user interaction in mxkImageView, in order to let collection handle user selection
         cell.mxkImageView.userInteractionEnabled = NO;
     }
@@ -233,7 +246,32 @@
 {
     if (indexPath.item < assets.count && self.delegate)
     {
-        [self.delegate mediaAlbumContentViewController:self didSelectAsset:assets[indexPath.item]];
+        PHAsset *asset = assets[indexPath.item];
+
+        // Are we in multiselection mode ?
+        if (!selectedAssets)
+        {
+            // NO
+            [self.delegate mediaAlbumContentViewController:self didSelectAsset:asset];
+        }
+        else
+        {
+            // YES. Toggle the selection of the cell
+            MXKMediaCollectionViewCell *cell = (MXKMediaCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+
+            if (NSNotFound == [selectedAssets indexOfObject:asset])
+            {
+                cell.bottomRightIcon.hidden = NO;
+                [selectedAssets addObject:asset];
+            }
+            else
+            {
+                cell.bottomRightIcon.hidden = YES;
+                [selectedAssets removeObject:asset];
+            }
+
+            self.navigationItem.rightBarButtonItem.enabled = (0 < selectedAssets.count);
+        }
     }
 }
 
@@ -259,6 +297,47 @@
         return cellSize;
     }
     return CGSizeZero;
+}
+
+#pragma mark - Actions
+
+- (void)onSelect:(id)sender
+{
+    selectedAssets = [NSMutableArray array];
+
+    // Update the nav buttons
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onSelectionCancel:)];
+}
+
+- (void)onSelectionSend:(id)sender
+{
+    if (selectedAssets.count > 1)
+    {
+        [self.delegate mediaAlbumContentViewController:self didSelectAssets:selectedAssets];
+    }
+    else
+    {
+        [self.delegate mediaAlbumContentViewController:self didSelectAsset:selectedAssets[0]];
+    }
+}
+
+- (void)onSelectionCancel:(id)sender
+{
+    selectedAssets = nil;
+
+    // Update the nav buttons
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"media_picker_select", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    self.navigationItem.leftBarButtonItem = nil;
+
+    // Do not use [UICollectionView reloadData] because it creates flickering
+    // Unselecting manually the cells is more efficient
+    for (MXKMediaCollectionViewCell *cell in self.assetsCollectionView.visibleCells)
+    {
+        cell.bottomRightIcon.hidden = YES;
+    }
 }
 
 @end

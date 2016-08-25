@@ -30,10 +30,11 @@
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
-#define SETTINGS_SECTION_ADVANCED_INDEX                 3
-#define SETTINGS_SECTION_OTHER_INDEX                    4
-#define SETTINGS_SECTION_LABS_INDEX                     5
-#define SETTINGS_SECTION_COUNT                          6
+#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
+#define SETTINGS_SECTION_ADVANCED_INDEX                 4
+#define SETTINGS_SECTION_OTHER_INDEX                    5
+#define SETTINGS_SECTION_LABS_INDEX                     6
+#define SETTINGS_SECTION_COUNT                          7
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -53,8 +54,11 @@
 #define OTHER_CLEAR_CACHE_INDEX     5
 #define OTHER_COUNT                 6
 
-#define LABS_VOIP_INDEX     0
-#define LABS_COUNT          1
+#define LABS_VOIP_INDEX                 0
+#define LABS_CONFERENCE_CALL_INDEX      1
+#define LABS_COUNT                      2
+
+#define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
@@ -555,6 +559,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        count = session.ignoredUsers.count;
+    }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
         count = 1;
@@ -840,6 +849,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = globalInfoCell;
         }
     }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXKTableViewCell *privacyPolicyCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+        if (!privacyPolicyCell)
+        {
+            privacyPolicyCell = [[MXKTableViewCell alloc] init];
+            privacyPolicyCell.textLabel.font = [UIFont systemFontOfSize:17];
+        }
+
+        NSString *ignoredUserId;
+        if (indexPath.row < session.ignoredUsers.count)
+        {
+            ignoredUserId = session.ignoredUsers[indexPath.row];
+        }
+        privacyPolicyCell.textLabel.text = ignoredUserId;
+        privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
+
+        cell = privacyPolicyCell;
+    }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
         MXKTableViewCell *configCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
@@ -952,18 +980,89 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         if (row == LABS_VOIP_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_outgoing_voip", @"Vector", nil);
-            sendCrashReportCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
-            [sendCrashReportCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleLabsVoIP:) forControlEvents:UIControlEventTouchUpInside];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_outgoing_voip", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsVoIP:) forControlEvents:UIControlEventTouchUpInside];
 
-            cell = sendCrashReportCell;
+            cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_CONFERENCE_CALL_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_conference_call", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
+
+            // VoIP must be enabled on order to change this settings
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"])
+            {
+                [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsConferenceCall:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            else
+            {
+                labelAndSwitchCell.mxkLabel.enabled = NO;
+                labelAndSwitchCell.mxkSwitch.enabled = NO;
+            }
+
+            cell = labelAndSwitchCell;
         }
     }
 
     return cell;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    {
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count)
+        {
+            return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+        }
+        else
+        {
+            // Hide this section
+            return nil;
+        }
+    }
+    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_OTHER_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_LABS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+    }
+    
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    {
+        // Customize label style
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
+        tableViewHeaderFooterView.textLabel.textColor = kVectorTextColorBlack;
+        tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+    }
 }
 
 #pragma mark - UITableView delegate
@@ -990,56 +1089,34 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     return 50;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
+    if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        return 30;
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count == 0)
+        {
+            // Hide this section
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
     }
     
-    return 60;
+    return [super tableView:tableView heightForHeaderInSection:section];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    UIView *sectionHeader = [[UIView alloc] initWithFrame:[tableView rectForHeaderInSection:section]];
-    sectionHeader.backgroundColor = kVectorColorLightGrey;
-    
-    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
+    if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        return sectionHeader;
-    }
-    
-    UILabel *sectionLabel = [[UILabel alloc] init];
-    sectionLabel.font = [UIFont boldSystemFontOfSize:16];
-    sectionLabel.backgroundColor = [UIColor clearColor];
-    
-    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_OTHER_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        sectionLabel.text = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+        if (session.ignoredUsers.count == 0)
+        {
+            // Hide this section
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+        }
     }
 
-    [sectionLabel sizeToFit];
-    sectionLabel.frame = CGRectMake(10,  sectionHeader.frame.size.height - sectionLabel.frame.size.height - 5, sectionHeader.frame.size.width - 20, sectionLabel.frame.size.height);
-    [sectionHeader addSubview:sectionLabel];
-
-    return sectionHeader;
+    return [super tableView:tableView heightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1048,7 +1125,63 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-        
+
+        if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+        {
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+            NSString *ignoredUserId;
+            if (indexPath.row < session.ignoredUsers.count)
+            {
+                ignoredUserId = session.ignoredUsers[indexPath.row];
+            }
+
+            if (ignoredUserId)
+            {
+                [currentAlert dismiss:NO];
+
+                __weak typeof(self) weakSelf = self;
+
+                currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_unignore_user", @"Vector", nil), ignoredUserId]
+                                                       message:nil
+                                                         style:MXKAlertStyleAlert];
+
+                [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+
+                    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+                    // Remove the member from the ignored user list
+                    [strongSelf startActivityIndicator];
+                    [session unIgnoreUsers:@[ignoredUserId] success:^{
+
+                        [strongSelf stopActivityIndicator];
+
+                    } failure:^(NSError *error) {
+
+                        [strongSelf stopActivityIndicator];
+
+                        NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", ignoredUserId, error);
+
+                        // Notify MatrixKit user
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+
+                    }];
+                }];
+
+                currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert){
+
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+                    strongSelf->currentAlert = nil;
+                    
+                }];
+                
+                [currentAlert showInViewController:self];
+            }
+        }
+        else
         if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
            if (row == OTHER_TERM_CONDITIONS_INDEX)
@@ -1170,16 +1303,72 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)toggleLabsVoIP:(id)sender
 {
     BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
-    if (enable)
+
+    NSLog(@"[SettingsViewController] %@ VoIP", enable ? @"Disable" : @"Enable");
+
+    [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableOutgoingVoIP"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    // Refresh the "Conference Call" button
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:LABS_CONFERENCE_CALL_INDEX inSection:SETTINGS_SECTION_LABS_INDEX]]
+                          withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)toggleLabsConferenceCall:(id)sender
+{
+    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
+
+    if (sender && !enable)
     {
-        NSLog(@"[SettingsViewController] Disable VoIP");
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"labsEnableOutgoingVoIP"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        // Ask confirmation to the user before enabling it
+        UISwitch *switchButton;
+        if ([sender isKindOfClass:UISwitch.class])
+        {
+            switchButton = (UISwitch*)sender;
+
+        }
+
+        // Prevent the toggle from toggling without the user confirmation
+        [switchButton setOn:NO animated:YES];
+
+        [currentAlert dismiss:NO];
+        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                               message:NSLocalizedStringFromTable(@"settings_labs_conference_call_warning", @"Vector", nil)
+                                                 style:MXKAlertStyleAlert];
+
+        __weak typeof(self) weakSelf = self;
+
+        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+            }
+        }];
+
+        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]  style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+            if (weakSelf)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf->currentAlert = nil;
+
+                // Apply the change
+                [switchButton setOn:YES animated:YES];
+                [strongSelf toggleLabsConferenceCall:nil];
+            }
+        }];
+
+        [currentAlert showInViewController:self];
+
+
     }
     else
     {
-        NSLog(@"[SettingsViewController] Enable VoIP");
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"labsEnableOutgoingVoIP"];
+        NSLog(@"[SettingsViewController] %@ connference call", enable ? @"Disable" : @"Enable");
+
+        [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableConferenceCall"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }

@@ -127,8 +127,26 @@
     }
 }
 
+- (void)displayOngoingConferenceCall:(NSString *)labelText
+{
+    [self reset];
+
+    if (labelText.length)
+    {
+        self.backgroundColor = kVectorColorPinkRed;
+
+        self.iconImageView.image = [UIImage imageNamed:@"typing"];
+        self.messageLabel.text = labelText;
+        self.messageLabel.textColor = UIColor.whiteColor;
+
+        self.messageLabel.hidden = NO;
+    }
+}
+
 - (void)reset
 {
+    self.backgroundColor = UIColor.clearColor;
+
     self.iconImageView.hidden = YES;
     self.messageLabel.hidden = YES;
     
@@ -143,6 +161,11 @@
         [self.iconImageView removeGestureRecognizer:self.iconImageView.gestureRecognizers[0]];
     }
     self.iconImageView.userInteractionEnabled = NO;
+    
+    while (self.gestureRecognizers.count)
+    {
+        [self removeGestureRecognizer:self.gestureRecognizers[0]];
+    }
     
     objc_removeAssociatedObjects(self.iconImageView);
     objc_removeAssociatedObjects(self.messageTextView);

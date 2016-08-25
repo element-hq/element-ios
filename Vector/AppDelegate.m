@@ -39,6 +39,8 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#import "CallViewController.h"
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -56,6 +58,7 @@
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
+NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
 @interface AppDelegate ()
 {
@@ -88,7 +91,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     /**
      The current call view controller (if any).
      */
-    MXKCallViewController *currentCallViewController;
+    CallViewController *currentCallViewController;
     
     /**
      Call status window displayed when user goes back to app during a call.
@@ -148,6 +151,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 }
 
 @property (strong, nonatomic) MXKAlert *mxInAppNotification;
+@property (strong, nonatomic) MXKAlert *incomingCallNotification;
 
 @end
 
@@ -222,7 +226,12 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         }];
     }
     
-    _isOffline = isOffline;
+    if (_isOffline != isOffline)
+    {
+        _isOffline = isOffline;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateNetworkStatusDidChangeNotification object:nil];
+    }
 }
 
 #pragma mark - UIApplicationDelegate
@@ -362,7 +371,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     }
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:nil];
     [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
-    _isOffline = NO;
     
     // check if some media must be released to reduce the cache size
     [MXKMediaManager reduceCacheSizeToInsert:0];
@@ -482,7 +490,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
 {
-    BOOL continueUserActivity;
+    BOOL continueUserActivity = NO;
 
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
     {
@@ -1267,6 +1275,9 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
+            // Ignore the room member profile changes during the last message process in each room.
+            mxSession.ignoreProfileChangesDuringLastMessageProcessing = YES;
+            
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
         }
@@ -1354,6 +1365,15 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         // Reload entirely the app when a user has been ignored or unignored
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
 
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionDidCorruptDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+        
+        NSLog(@"[AppDelegate] kMXSessionDidCorruptDataNotification received. Reload the app");
+        
+        // Reload entirely the app when a session has corrupted its data
+        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+        
     }];
     
     // Observe settings changes
@@ -1517,17 +1537,88 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
         {
             MXCall *mxCall = (MXCall*)notif.object;
             
-            currentCallViewController = [MXKCallViewController callViewController:mxCall];
+            // Prepare the call view controller
+            currentCallViewController = [CallViewController callViewController:mxCall];
             currentCallViewController.delegate = self;
             
-            // FIXME GFO Check whether present call from self.window.rootViewController is working
-            [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
-                currentCallViewController.isPresented = YES;
-            }];
-            
-            // Hide system status bar
-            [UIApplication sharedApplication].statusBarHidden = YES;
+            if (mxCall.isIncoming)
+            {
+                // Prompt user before presenting the call view controller
+                NSString *callPromptFormat = mxCall.isVideoCall ? NSLocalizedStringFromTable(@"call_incoming_video_prompt", @"Vector", nil) : NSLocalizedStringFromTable(@"call_incoming_voice_prompt", @"Vector", nil);
+                NSString *callerName = currentCallViewController.peer.displayname;
+                if (!callerName.length)
+                {
+                    callerName = currentCallViewController.peer.userId;
+                }
+                NSString *callPrompt = [NSString stringWithFormat:callPromptFormat, callerName];
+                
+                __weak typeof(self) weakSelf = self;
+                
+                // Removing existing notification (if any)
+                [_incomingCallNotification dismiss:NO];
+                
+                
+                
+                _incomingCallNotification = [[MXKAlert alloc] initWithTitle:callPrompt
+                                                                    message:nil
+                                                                      style:MXKAlertStyleAlert];
+                
+                _incomingCallNotification.cancelButtonIndex = [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
+                                                                                                      style:MXKAlertActionStyleDefault
+                                                                                                    handler:^(MXKAlert *alert) {
+                                                                                                        
+                                                                                                        if (weakSelf)
+                                                                                                        {
+                                                                                                            __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                                                            
+                                                                                                            strongSelf.incomingCallNotification = nil;
+                                                                                                            
+                                                                                                            [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
+                                                                                                            
+                                                                                                            mxCall.delegate = nil;
+                                                                                                            currentCallViewController = nil;
+                                                                                                        }
+                                                                                                        
+                                                                                                    }];
+                
+                [_incomingCallNotification addActionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
+                                                        style:MXKAlertActionStyleDefault
+                                                      handler:^(MXKAlert *alert) {
+                                                          if (weakSelf)
+                                                          {
+                                                              __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                              
+                                                              strongSelf.incomingCallNotification = nil;
+                                                              
+                                                              [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
+                                                              
+                                                              [strongSelf.window.rootViewController presentViewController:strongSelf->currentCallViewController animated:YES completion:^{
+                                                                  
+                                                                  strongSelf->currentCallViewController.isPresented = YES;
+                                                                  
+                                                              }];
+                                                              
+                                                              // Hide system status bar
+                                                              [UIApplication sharedApplication].statusBarHidden = YES;
+                                                              
+                                                          }
+                                                      }];
+                
+                [_incomingCallNotification showInViewController:self.window.rootViewController];
+            }
+            else
+            {
+                [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
+                    
+                    currentCallViewController.isPresented = YES;
+                    
+                }];
+                
+                // Hide system status bar
+                [UIApplication sharedApplication].statusBarHidden = YES;
+            }
         }
+        
     }];
 }
 
@@ -1776,12 +1867,28 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 
 #pragma mark - MXKCallViewControllerDelegate
 
-- (void)dismissCallViewController:(MXKCallViewController *)callViewController
+- (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)())completion
 {
     if (callViewController == currentCallViewController)
     {
-        
-        if (callViewController.isPresented)
+        if (_incomingCallNotification)
+        {
+            // The user was prompted for an incoming call which ended
+            // The call view controller was not presented yet.
+            [_incomingCallNotification dismiss:NO];
+            _incomingCallNotification = nil;
+            
+            // Release properly
+            currentCallViewController.mxCall.delegate = nil;
+            currentCallViewController.delegate = nil;
+            currentCallViewController = nil;
+            
+            if (completion)
+            {
+                completion();
+            }
+        }
+        else if (callViewController.isPresented)
         {
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
             NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
@@ -1792,6 +1899,11 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                 if (!callIsEnded)
                 {
                     [self addCallStatusBar];
+                }
+                
+                if (completion)
+                {
+                    completion();
                 }
             }];
             
@@ -1807,12 +1919,13 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
                 currentCallViewController.delegate = nil;
                 currentCallViewController = nil;
             }
-        } else
+        }
+        else
         {
             // Here the presentation of the call view controller is in progress
             // Postpone the dismiss
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self dismissCallViewController:callViewController];
+                [self dismissCallViewController:callViewController completion:completion];
             });
         }
     }
@@ -1837,7 +1950,7 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
     [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];
     callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
     
-    [callStatusBarButton setBackgroundColor:[UIColor blueColor]];
+    [callStatusBarButton setBackgroundColor:kVectorColorGreen];
     [callStatusBarButton addTarget:self action:@selector(returnToCallView) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
@@ -1875,7 +1988,6 @@ NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapSt
 {
     [self removeCallStatusBar];
     
-    // FIXME GFO check whether self.window.rootViewController may present the call
     [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
         currentCallViewController.isPresented = YES;
     }];

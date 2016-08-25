@@ -99,6 +99,17 @@
     }
 }
 
+- (void)setActiveCall:(BOOL)activeCall
+{
+    if (_activeCall != activeCall)
+    {
+        _activeCall = activeCall;
+
+        self.voiceCallButton.hidden = _activeCall;
+        self.hangupCallButton.hidden = !activeCall;
+    }
+}
+
 #pragma mark - HPGrowingTextView delegate
 
 //- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)hpGrowingTextView
@@ -222,7 +233,14 @@
             [callActionSheet showInViewController:self.window.rootViewController];
         }
     }
-    
+    else if (button == self.hangupCallButton)
+    {
+        if ([self.delegate respondsToSelector:@selector(roomInputToolbarViewHangupCall:)])
+        {
+            [self.delegate roomInputToolbarViewHangupCall:self];
+        }
+    }
+
     [super onTouchUpInside:button];
 }
 
@@ -255,6 +273,13 @@
     
     BOOL isPhotoLibraryAsset = ![videoURL.path hasPrefix:NSTemporaryDirectory()];
     [self sendSelectedVideo:videoURL isPhotoLibraryAsset:isPhotoLibraryAsset];
+}
+
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray<PHAsset*>*)assets
+{
+    [self dismissMediaPicker];
+
+    [self sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
 }
 
 #pragma mark - Media picker handling

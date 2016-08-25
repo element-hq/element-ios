@@ -1,3 +1,33 @@
+Changes in Vector iOS in 0.1.15 (2016-08-25)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.14).
+ * Add conference call.
+ * Add the Vector VoIP call screen #455.
+ * Speed up app startup #376.
+ * Call: Update the libjingle lib to its latest version. We now use the pod from https://github.com/Anakros/WebRTC-iOS.
+ * Conference call: Add an enabler button in Settings > LABS.
+ * Conference call: Add ongoing conference call banner.
+ * Banned user list are shown in room settings #450.
+ * Display the list of ignored users in user settings #451.
+ * Media Picker: Allow multi selection of pictures #301.
+ * Settings: Adjust the section header display.
+ 
+Bug fixes:
+ * Redacting membership events should immediately reset the displayname & avatar of room members #443.
+ * Profile changes shouldn't reorder the room list #494.
+ * Media album: The aspect fill ratio is not respected #495.
+ * "Return to call" banner: Use the Vector green for the background #482.
+ * Tapping on the room details for Matrix HQ freezes the app for about 5s #499.
+ * Crash in [AppDelegate applicationDidBecomeActive:] #489.
+ * Chat screen: tapping resend now does nothing #510.
+ * Conference call: The initialisation of a conference call silently fails when the room member has not enough power level (https://github.com/vector-im/vector-im/vector-web#1948).
+ * When the last message is redacted, [MXKRecentCellData update] makes paginations loops #520.
+ * MXSession: Do not send kMXSessionIgnoredUsersDidChangeNotification when the session loads the data from the store #491.
+ * MXHTTPClient: Fix crash: "Task created in a session that has been invalidated" #490.
+ * Call: the remote and local video are not scaled to fill the video container #537.
+ 
 Changes in Vector iOS in 0.1.14 (2016-08-01)
 ===============================================
 

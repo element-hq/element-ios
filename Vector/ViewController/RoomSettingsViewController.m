@@ -32,12 +32,15 @@
 
 #import "AppDelegate.h"
 
+#import "RoomMemberDetailsViewController.h"
+
 #define ROOM_SETTINGS_MAIN_SECTION_INDEX               0
 #define ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX        1
 #define ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX 2
 #define ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX     3
-#define ROOM_SETTINGS_ADVANCED_SECTION_INDEX           4
-#define ROOM_SETTINGS_SECTION_COUNT                    5
+#define ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX       4
+#define ROOM_SETTINGS_ADVANCED_SECTION_INDEX           5
+#define ROOM_SETTINGS_SECTION_COUNT                    6
 
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO               0
 #define ROOM_SETTINGS_MAIN_SECTION_ROW_NAME                1
@@ -59,6 +62,8 @@
 #define ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_COUNT                      4
 
 #define ROOM_TOPIC_CELL_HEIGHT 124
+
+#define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 NSString *const kRoomSettingsAvatarKey = @"kRoomSettingsAvatarKey";
 NSString *const kRoomSettingsAvatarURLKey = @"kRoomSettingsAvatarURLKey";
@@ -134,10 +139,41 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id appDelegateDidTapStatusBarNotificationObserver;
+
+    // A copy of the banned members
+    NSArray<MXRoomMember*> *bannedMembers;
 }
 @end
 
 @implementation RoomSettingsViewController
+
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    _selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
+}
+
+- (void)initWithSession:(MXSession *)session andRoomId:(NSString *)roomId
+{
+    [super initWithSession:session andRoomId:roomId];
+
+    // Add an additional listener to update banned users
+    extraEventsListener = [mxRoom.liveTimeline listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+
+        if (direction == MXTimelineDirectionForwards)
+        {
+            [self updateRoomState:mxRoom.state];
+        }
+    }];
+}
+
+- (void)updateRoomState:(MXRoomState *)newRoomState
+{
+    [super updateRoomState:newRoomState];
+
+    bannedMembers = [mxRoomState membersWithMembership:MXMembershipBan];
+}
 
 - (UINavigationItem*)getNavigationItem
 {
@@ -167,6 +203,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     historyVisibilityTickCells = [[NSMutableDictionary alloc] initWithCapacity:4];
     
     roomAddresses = [NSMutableArray array];
+    
+    self.tableView.backgroundColor = kVectorColorLightGrey;
     
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
@@ -211,6 +249,17 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         [self.tableView setContentOffset:CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top) animated:YES];
         
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Edit the selected field if any
+    if (_selectedRoomSettingsField != RoomSettingsViewControllerFieldNone)
+    {
+        self.selectedRoomSettingsField = _selectedRoomSettingsField;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -290,7 +339,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     historyVisibilityTickCells = nil;
     
     roomAddresses = nil;
-    
+
+    if (extraEventsListener)
+    {
+        [mxRoom.liveTimeline removeListener:extraEventsListener];
+        extraEventsListener = nil;
+    }
+
     [super destroy];
 }
 
@@ -331,6 +386,44 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     else if (isAddressEdited)
     {
         [self editAddRoomAddress];
+    }
+}
+
+#pragma mark - 
+
+- (void)setSelectedRoomSettingsField:(RoomSettingsViewControllerField)selectedRoomSettingsField
+{
+    // Check whether the view controller is already embedded inside a navigation controller
+    if (self.navigationController)
+    {
+        [self dismissFirstResponder];
+        
+        switch (selectedRoomSettingsField)
+        {
+            case RoomSettingsViewControllerFieldName:
+            {
+                [self editRoomName];
+                break;
+            }
+            case RoomSettingsViewControllerFieldTopic:
+            {
+                [self editRoomTopic];
+                break;
+            }
+            case RoomSettingsViewControllerFieldAvatar:
+            {
+                [self onRoomAvatarTap:nil];
+                break;
+            }
+                
+            default:
+                break;
+        }
+    }
+    else
+    {
+        // This selection will be applied when the view controller will become active (see 'viewDidAppear')
+        _selectedRoomSettingsField = selectedRoomSettingsField;
     }
 }
 
@@ -391,6 +484,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         [addAddressTextField resignFirstResponder];
     }
+    
+    _selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
 }
 
 - (void)startActivityIndicator
@@ -1504,6 +1599,10 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             }
         }
     }
+    else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    {
+        count = bannedMembers.count;
+    }
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
         count = 1;
@@ -1526,12 +1625,61 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         return NSLocalizedStringFromTable(@"room_details_addresses_section", @"Vector", nil);
     }
+    else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    {
+        if (bannedMembers.count)
+        {
+            return NSLocalizedStringFromTable(@"room_details_banned_users_section", @"Vector", nil);
+        }
+        else
+        {
+            // Hide this section
+            return nil;
+        }
+    }
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
         return NSLocalizedStringFromTable(@"room_details_advanced_section", @"Vector", nil);
     }
     
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    {
+        // Customize label style
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
+        tableViewHeaderFooterView.textLabel.textColor = kVectorTextColorBlack;
+        tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && bannedMembers.count == 0)
+    {
+        // Hide this section
+        return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+    }
+    else
+    {
+        return [super tableView:tableView heightForHeaderInSection:section];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX && bannedMembers.count == 0)
+    {
+        // Hide this section
+        return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+    }
+    else
+    {
+        return [super tableView:tableView heightForFooterInSection:section];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2000,6 +2148,27 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             cell = addressCell;
         }
     }
+    else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    {
+        UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
+
+        addressCell.textLabel.font = [UIFont systemFontOfSize:16];
+        addressCell.textLabel.textColor = kVectorTextColorBlack;
+        addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        addressCell.accessoryView = nil;
+        addressCell.accessoryType = UITableViewCellAccessoryNone;
+        addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        while (addressCell.textLabel.gestureRecognizers.count)
+        {
+            [addressCell.textLabel removeGestureRecognizer:addressCell.textLabel.gestureRecognizers[0]];
+        }
+        addressCell.textLabel.userInteractionEnabled = NO;
+
+        addressCell.textLabel.text = bannedMembers[indexPath.row].userId;
+
+        cell = addressCell;
+    }
     else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
@@ -2310,6 +2479,16 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
                 }
             }
         }
+        else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+        {
+            // Show the RoomMemberDetailsViewController on this member so that 
+            // if the user has enough power level, he will be able to unban him
+            RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            [roomMemberDetailsViewController displayRoomMember:bannedMembers[indexPath.row] withMatrixRoom:mxRoom];
+            roomMemberDetailsViewController.delegate = self;
+
+            [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
+        }
         else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -2493,6 +2672,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 {
     // this method should not be called
     [self dismissMediaPicker];
+}
+
+#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
+
+- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
+{
+    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
 }
 
 #pragma mark - actions

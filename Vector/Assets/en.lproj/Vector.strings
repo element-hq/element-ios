@@ -35,6 +35,7 @@
 "save" = "Save";
 "join" = "Join";
 "decline" = "Decline";
+"accept" = "Accept";
 "preview" = "Preview";
 "camera" = "Camera";
 "voice" = "Voice";
@@ -158,6 +159,7 @@
 "room_message_placeholder" = "Type a message...";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages not sent.";
+"room_ongoing_conference_call" = "Ongoing conference call";
 "room_prompt_resend" = "Resend now?";
 "room_resend_unsent_messages" = "Resend unsent messages";
 "room_delete_unsent_messages" = "Delete unsent messages";
@@ -200,6 +202,7 @@
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_ignored_users" = "IGNORED USERS";
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
@@ -227,6 +230,8 @@
 //"settings_join_leave_rooms" = "When people join or leave rooms";
 //"settings_call_invitations" = "Call invitations";
 
+"settings_unignore_user" = "Show all messages from %@?";
+
 "settings_version" = "Version %@";
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";
@@ -242,6 +247,8 @@
 "settings_password_updated" = "Your password has been updated";
 
 "settings_labs_outgoing_voip" = "Placing VoIP/Video calls";
+"settings_labs_conference_call" = "Conference Call";
+"settings_labs_conference_call_warning" = "Conference calling in Vector is in development and may not be reliable";
 
 // Room Details
 "room_details_title" = "Room Details";
@@ -274,6 +281,7 @@
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is not a valid format for an alias";
 "room_details_addresses_disable_main_address_prompt_title" = "Main address warning";
 "room_details_addresses_disable_main_address_prompt_msg"="You will have no main address specified. The default main address for this room will be picked randomly";
+"room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
@@ -293,6 +301,7 @@
 
 // Media picker
 "media_picker_library" = "Library";
+"media_picker_select" = "Select";
 
 // Directory
 "directory_title" = "Directory";
@@ -313,6 +322,10 @@
 "room_displayname_two_members" = "%@ and %@";
 "room_displayname_more_than_two_members" = "%@ and %u others";
 "room_displayname_no_title" = "Empty room";
+
+// Call
+"call_incoming_voice_prompt" = "Incoming voice call from %@";
+"call_incoming_video_prompt" = "Incoming video call from %@";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";

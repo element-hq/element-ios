@@ -1356,7 +1356,7 @@ static void *RecordingContext = &RecordingContext;
         option.synchronous = NO;
         cell.tag = [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:cellSize contentMode:PHImageContentModeAspectFill options:option resultHandler:^(UIImage *result, NSDictionary *info) {
             
-            cell.mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
+            cell.mxkImageView.imageView.contentMode = UIViewContentModeScaleAspectFill;
             cell.mxkImageView.image = result;
             cell.tag = 0;
             
@@ -1490,7 +1490,13 @@ static void *RecordingContext = &RecordingContext;
         albumContentViewController.mediaTypes = self.mediaTypes;
         albumContentViewController.assetsCollection = userAlbums[indexPath.item];
         albumContentViewController.delegate = self;
-        
+
+        // Enable multiselection only if the delegate is configured to receive them
+        if ([_delegate respondsToSelector:@selector(mediaPickerController:didSelectAssets:)])
+        {
+            albumContentViewController.allowsMultipleSelection = YES;
+        }
+
         // Hide back button title
         self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
@@ -1513,6 +1519,14 @@ static void *RecordingContext = &RecordingContext;
 - (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAsset:(PHAsset*)asset
 {
     [self didSelectAsset:asset];
+}
+
+- (void)mediaAlbumContentViewController:(MediaAlbumContentViewController *)mediaAlbumContentViewController didSelectAssets:(NSArray<PHAsset *> *)assets
+{
+    if ([self.delegate respondsToSelector:@selector(mediaPickerController:didSelectAssets:)])
+    {
+        [self.delegate mediaPickerController:self didSelectAssets:assets];
+    }
 }
 
 #pragma mark - Movie player observer
