@@ -29,24 +29,24 @@ PODS:
     - GBDeviceInfo/Core (= 4.1.0)
   - GBDeviceInfo/Core (4.1.0)
   - GHMarkdownParser (0.1.2)
-  - GoogleAnalytics (3.14.0)
+  - GoogleAnalytics (3.16.0)
   - HPGrowingTextView (1.1)
-  - libjingle_peerconnection (11177.2.0)
-  - libPhoneNumber-iOS (0.8.15)
-  - MatrixKit (0.3.13):
+  - libPhoneNumber-iOS (0.8.16)
+  - MatrixKit (0.3.14):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (= 0.6.12)
-  - MatrixSDK (0.6.12):
+    - MatrixSDK (= 0.6.13)
+  - MatrixSDK (0.6.13):
     - AFNetworking (~> 3.1.0)
+  - WebRTC (1.0.13807)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
-  - libjingle_peerconnection
-  - MatrixKit (= 0.3.13)
+  - MatrixKit (= 0.3.14)
+  - WebRTC (= 1.0.13807)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -54,13 +54,13 @@ SPEC CHECKSUMS:
   DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
   GBDeviceInfo: e50df975a95e21faec93e2bf98376846fe17d307
   GHMarkdownParser: 14cbf59d0ab9450017d843dffd4a3ef691e5bd77
-  GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
+  GoogleAnalytics: 3de986b2fa29012c69fa415566006a9c9cf25320
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  libjingle_peerconnection: 3458f646ddd61f08a9f3a0c43fb01fff5c165eb8
-  libPhoneNumber-iOS: 62a740e1ea5741060f5cec0f788b52071115cf31
-  MatrixKit: 4ed4963069510e2be2349d3310602a03b9d3a043
-  MatrixSDK: 15f165271e3c677060be1f131edef9e643067677
+  libPhoneNumber-iOS: acb5805f67892db37adc3440290a367923672b51
+  MatrixKit: c8855ccd0186e2e2c1dd359767d87a056bdcb17e
+  MatrixSDK: d848e4050411f66061f98b77f8bcb1a1eca377a2
+  WebRTC: 5263e2983d21b6c53e0e6859aaf8aabeee6bafdf
 
-PODFILE CHECKSUM: 0f4ac1211874e84d41b66ba970dd2d15eb65242c
+PODFILE CHECKSUM: d21a2f5518b49b8812b1a9cfa94a094aa41e17c8
 
 COCOAPODS: 1.0.1
