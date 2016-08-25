@@ -561,8 +561,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        count = session.ignoredUsers.count;
+        if ([AppDelegate theDelegate].mxSessions.count > 0)
+        {
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            count = session.ignoredUsers.count;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -1027,16 +1034,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        if (session.ignoredUsers.count)
+        if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            if (session.ignoredUsers.count)
+            {
+                return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+            }
         }
-        else
-        {
-            // Hide this section
-            return nil;
-        }
+
+        // Hide this section
+        return nil;
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -1108,11 +1116,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        if (session.ignoredUsers.count == 0)
+        if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            // Hide this section
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            if (session.ignoredUsers.count == 0)
+            {
+                // Hide this section
+                return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+            }
         }
     }
 
