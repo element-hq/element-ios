@@ -46,13 +46,14 @@
 //#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
 #define NOTIFICATION_SETTINGS_COUNT                             2
 
-#define OTHER_VERSION_INDEX         0
-#define OTHER_TERM_CONDITIONS_INDEX 1
-#define OTHER_PRIVACY_INDEX         2
-#define OTHER_THIRD_PARTY_INDEX     3
-#define OTHER_CRASH_REPORT_INDEX    4
-#define OTHER_CLEAR_CACHE_INDEX     5
-#define OTHER_COUNT                 6
+#define OTHER_VERSION_INDEX          0
+#define OTHER_TERM_CONDITIONS_INDEX  1
+#define OTHER_PRIVACY_INDEX          2
+#define OTHER_THIRD_PARTY_INDEX      3
+#define OTHER_CRASH_REPORT_INDEX     4
+#define OTHER_MARK_ALL_AS_READ_INDEX 5
+#define OTHER_CLEAR_CACHE_INDEX      6
+#define OTHER_COUNT                  7
 
 #define LABS_VOIP_INDEX                 0
 #define LABS_CONFERENCE_CALL_INDEX      1
@@ -653,7 +654,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
         [signOutCell.mxkButton setTintColor:kVectorColorGreen];
-        signOutCell.mxkButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        signOutCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
         [signOutCell.mxkButton addTarget:self action:@selector(onSignout:) forControlEvents:UIControlEventTouchUpInside];
@@ -964,6 +965,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = sendCrashReportCell;
         }
+        else if (row == OTHER_MARK_ALL_AS_READ_INDEX)
+        {
+            MXKTableViewCellWithButton *markAllBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!markAllBtnCell)
+            {
+                markAllBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
+            [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [markAllBtnCell.mxkButton setTintColor:kVectorColorGreen];
+            markAllBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+            
+            [markAllBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [markAllBtnCell.mxkButton addTarget:self action:@selector(markAllAsRead:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = markAllBtnCell;
+        }
         else if (row == OTHER_CLEAR_CACHE_INDEX)
         {
             MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -972,13 +992,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 clearCacheBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
             
-            NSString *btnTitle = [NSString stringWithFormat:@"%@", NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil)];
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             [clearCacheBtnCell.mxkButton setTintColor:kVectorColorGreen];
+            clearCacheBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [clearCacheBtnCell.mxkButton addTarget:self action:@selector(onClearCache:) forControlEvents:UIControlEventTouchUpInside];
+            [clearCacheBtnCell.mxkButton addTarget:self action:@selector(clearCache:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = clearCacheBtnCell;
         }
@@ -1238,13 +1259,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)onSignout:(id)sender
 {
-    UIButton *signOutButton = (UIButton*)sender;
-    [signOutButton setTintColor:[UIColor lightGrayColor]];
-    signOutButton.enabled = NO;
-    
+    // Feedback: disable button and run activity indicator
+    UIButton *button = (UIButton*)sender;
+    button.enabled = NO;
     [self startActivityIndicator];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         
         [[MXKAccountManager sharedManager] logout];
         
@@ -1384,9 +1404,35 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
-- (void)onClearCache:(id)sender
+- (void)markAllAsRead:(id)sender
 {
-    [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+    // Feedback: disable button and run activity indicator
+    UIButton *button = (UIButton*)sender;
+    button.enabled = NO;
+    [self startActivityIndicator];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        
+        [[AppDelegate theDelegate] markAllMessagesAsRead];
+        
+        [self stopActivityIndicator];
+        button.enabled = YES;
+        
+    });
+}
+
+- (void)clearCache:(id)sender
+{
+    // Feedback: disable button and run activity indicator
+    UIButton *button = (UIButton*)sender;
+    button.enabled = NO;
+    [self startActivityIndicator];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        
+        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
+        
+    });
 }
 
 //- (void)onRuleUpdate:(id)sender

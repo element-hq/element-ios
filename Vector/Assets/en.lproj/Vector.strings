@@ -20,7 +20,6 @@
 
 // Actions
 "view" = "View";
-"mark_all_as_read_prompt" = "Mark all as read?";
 "next" = "Next";
 "back" = "Back";
 "continue" = "Continue";
@@ -195,6 +194,7 @@
 "account_logout_all" = "Logout all accounts";
 
 "settings_config_no_build_info" = "(no build info)";
+"settings_mark_all_as_read" = "Mark all messages as read";
 "settings_clear_cache" = "Clear cache";
 "settings_config_home_server" = "Home server is %@";
 "settings_config_identity_server" = "Identity server is %@";

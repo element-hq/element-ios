@@ -1457,6 +1457,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     [mxSessionArray removeObject:mxSession];
 }
 
+- (void)markAllMessagesAsRead
+{
+    [MXKRoomDataSourceManager markAllMessagesAsRead];
+}
+
 - (void)reloadMatrixSessions:(BOOL)clearCache
 {
     // Reload all running matrix sessions
