@@ -2205,14 +2205,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         if (localAddressesCount != 0 || indexPath.row != 0)
         {
-            // Check user's power level to know whether the user is allowed to remove room alias
-            MXRoomPowerLevels *powerLevels = [mxRoom.state powerLevels];
-            NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
-            
-            if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAliases])
-            {
-                return YES;
-            }
+            // The user is allowed to remove a room alias only if he is allowed to create alias too.
+            return (roomAddressNewAliasIndex != -1);
         }
     }
     return NO;
@@ -2432,7 +2426,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             {
                 NSInteger row = (localAddressesCount ? indexPath.row : indexPath.row - 1);
                 
-                if (row < roomAddresses.count)
+                // Ignore the selection if the user is not allowed to modify aliases.
+                if ((roomAddressNewAliasIndex != -1) && (row < roomAddresses.count))
                 {
                     NSString *alias = roomAddresses[row];
                     NSString *currentCanonicalAlias = mxRoomState.canonicalAlias;
@@ -2475,6 +2470,16 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
                             
                             [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
                         }
+                    }
+                    else
+                    {
+                        // Define the main room alias
+                        [updatedItemsDict setObject:alias forKey:kRoomSettingsCanonicalAliasKey];
+                        
+                        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
+                        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+                        
+                        [self getNavigationItem].rightBarButtonItem.enabled = YES;
                     }
                 }
             }
