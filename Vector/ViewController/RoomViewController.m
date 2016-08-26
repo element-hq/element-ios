@@ -36,6 +36,7 @@
 #import "PreviewRoomTitleView.h"
 
 #import "RoomMemberDetailsViewController.h"
+#import "ContactDetailsViewController.h"
 
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
@@ -79,8 +80,11 @@
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
-    // the user taps on a member thumbnail
+    // The user taps on a member thumbnail
     MXRoomMember *selectedRoomMember;
+
+    // The user taps on a user id contained in a message
+    MXKContact *selectedContact;
 
     // List of members who are typing in the room.
     NSArray *currentTypingUsers;
@@ -1741,6 +1745,46 @@
 
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
         }
+        // Open a detail screen about the clicked user
+        else if ([MXTools isMatrixUserIdentifier:url.absoluteString])
+        {
+            shouldDoAction = NO;
+
+            NSString *userId = url.absoluteString;
+
+            MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:userId];
+            if (member)
+            {
+                // Use the room member detail VC for room members
+                selectedRoomMember = member;
+                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+            }
+            else
+            {
+                // Use the contact detail VC for other users
+                MXUser *user = [self.roomDataSource.room.mxSession userWithUserId:userId];
+                if (user)
+                {
+                    selectedContact = [[MXKContact alloc] initMatrixContactWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) andMatrixID:user.userId];
+                }
+                else
+                {
+                    selectedContact = [[MXKContact alloc] initMatrixContactWithDisplayName:userId andMatrixID:userId];
+                }
+                [self performSegueWithIdentifier:@"showContactDetails" sender:self];
+            }
+        }
+        // Open the clicked room
+        else if ([MXTools isMatrixRoomIdentifier:url.absoluteString] || [MXTools isMatrixRoomAlias:url.absoluteString])
+        {
+            shouldDoAction = NO;
+
+            NSString *roomIdOrAlias = url.absoluteString;
+
+            // Open the room or preview it
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        }
     }
 
     return shouldDoAction;
@@ -1837,6 +1881,16 @@
             [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
             
             selectedRoomMember = nil;
+        }
+    }
+    else if ([[segue identifier] isEqualToString:@"showContactDetails"])
+    {
+        if (selectedContact)
+        {
+            ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.contact = selectedContact;
+
+            selectedContact = nil;
         }
     }
 
