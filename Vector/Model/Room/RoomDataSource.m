@@ -34,7 +34,11 @@
         
         // Replace event formatter
         self.eventFormatter = [[EventFormatter alloc] initWithMatrixSession:self.mxSession];
-        
+        self.eventFormatter.treatMatrixUserIdAsLink = YES;
+        self.eventFormatter.treatMatrixRoomIdAsLink = YES;
+        self.eventFormatter.treatMatrixRoomAliasAsLink = YES;
+        self.eventFormatter.treatMatrixEventIdAsLink = YES;
+
         // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
         self.useCustomReceipts = YES;
