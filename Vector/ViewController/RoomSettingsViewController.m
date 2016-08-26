@@ -1946,7 +1946,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
             [leaveCell.mxkButton setTintColor:kVectorColorGreen];
-            leaveCell.mxkButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+            leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [leaveCell.mxkButton addTarget:self action:@selector(onLeave:) forControlEvents:UIControlEventTouchUpInside];

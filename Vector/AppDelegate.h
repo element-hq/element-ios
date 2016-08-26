@@ -83,6 +83,9 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 // Remove a matrix session.
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
+// Mark all messages as read in the running matrix sessions.
+- (void)markAllMessagesAsRead;
+
 // Reload all running matrix sessions
 - (void)reloadMatrixSessions:(BOOL)clearCache;
 
