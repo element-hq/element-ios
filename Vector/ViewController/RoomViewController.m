@@ -1745,7 +1745,7 @@
 
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
         }
-        // Open the detail screen of the clicked user
+        // Open a detail screen about the clicked user
         else if ([MXTools isMatrixUserIdentifier:url.absoluteString])
         {
             shouldDoAction = NO;
