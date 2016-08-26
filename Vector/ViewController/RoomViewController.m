@@ -1774,6 +1774,17 @@
                 [self performSegueWithIdentifier:@"showContactDetails" sender:self];
             }
         }
+        // Open the clicked room
+        else if ([MXTools isMatrixRoomIdentifier:url.absoluteString] || [MXTools isMatrixRoomAlias:url.absoluteString])
+        {
+            shouldDoAction = NO;
+
+            NSString *roomIdOrAlias = url.absoluteString;
+
+            // Open the room or preview it
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        }
     }
 
     return shouldDoAction;
