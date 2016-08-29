@@ -72,7 +72,8 @@
 {
     BOOL isUniversalLink = NO;
 
-    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"])
+    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
+        || [url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
     {
         // iOS Patch: fix vector.im urls before using it
         NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
