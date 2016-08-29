@@ -1590,12 +1590,10 @@
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
                         [strongSelf cancelEventSelection];
 
-                        // Create a permalink that is common to all Vector.im clients
-                        NSString *permalink = [NSString stringWithFormat:@"%@/#/room/%@/%@",
-                                              [Tools webAppUrl],
-                                              selectedEvent.roomId,
-                                              selectedEvent.eventId];
+                        // Create a matrix.to permalink that is common to all matrix clients
+                        NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
 
+                        // Create a room matrix.to permalink
                         [[UIPasteboard generalPasteboard] setString:permalink];
                     }];
                     

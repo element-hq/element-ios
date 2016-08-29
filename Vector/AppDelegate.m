@@ -986,17 +986,29 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return NO;
     }
 
-    // Check the action to do
+    NSString *roomIdOrAlias;
+    NSString *eventId;
+
+    // Check permalink to room or event
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
     {
+        // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
+        roomIdOrAlias = pathParams[1];
+
+        // Is it a link to an event of a room?
+        eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+    }
+    else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
+    {
+        // The link is the form of "/#/[roomIdOrAlias]" or "/#/[roomIdOrAlias]/[eventId]"
+        // Such links come from matrix.to permalinks
+        roomIdOrAlias = pathParams[0];
+        eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
+    }
+    if (roomIdOrAlias)
+     {
         if (accountManager.activeAccounts.count)
         {
-            // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
-            NSString *roomIdOrAlias = pathParams[1];
-
-            // Is it a link to an event of a room?
-            NSString *eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-
             // Check there is an account that knows this room
             MXKAccount *account = [accountManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
             if (account)
