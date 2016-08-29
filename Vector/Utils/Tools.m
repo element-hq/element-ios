@@ -82,6 +82,16 @@
             isUniversalLink = YES;
         }
     }
+    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
+    {
+        // iOS Patch: fix matrix.to urls before using it
+        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+
+        if ([fixedURL.path isEqualToString:@"/"])
+        {
+            isUniversalLink = YES;
+        }
+    }
 
     return isUniversalLink;
 }

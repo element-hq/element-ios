@@ -686,12 +686,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 strongSelf->currentAlert = nil;
                 
-                // Create a room url that is common to all Vector.im clients
-                NSString *roomURL = [NSString stringWithFormat:@"%@/#/room/%@",
-                                     [Tools webAppUrl],
-                                     roomAliasLabel.text];
-                
-                [[UIPasteboard generalPasteboard] setString:roomURL];
+                // Create a matrix.to permalink to the room
+                [[UIPasteboard generalPasteboard] setString:[MXTools permalinkToRoom:roomAliasLabel.text]];
             }
             
         }];
