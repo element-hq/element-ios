@@ -95,7 +95,6 @@
         [self.iconImageView addGestureRecognizer:tapGesture];
         self.iconImageView.userInteractionEnabled = YES;
     }
-
 }
 
 - (void)displayNetworkErrorNotification:(NSString*)labelText
@@ -143,17 +142,66 @@
     }
 }
 
+- (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture
+{
+    if (newMessagesCount)
+    {
+        [self reset];
+        
+        self.iconImageView.image = [UIImage imageNamed:@"newmessages"];
+        
+        NSString *notification;
+        if (newMessagesCount > 1)
+        {
+            notification = NSLocalizedStringFromTable(@"room_new_messages_notification", @"Vector", nil);
+        }
+        else
+        {
+            notification = NSLocalizedStringFromTable(@"room_new_message_notification", @"Vector", nil);
+        }
+        self.messageLabel.text = [NSString stringWithFormat:notification, newMessagesCount];
+        self.messageLabel.textColor = kVectorColorPinkRed;
+        self.messageLabel.hidden = NO;
+    }
+    else
+    {
+        // We keep the current message if any
+        [self resetIcon];
+        
+        self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
+    }
+    self.iconImageView.hidden = NO;
+    
+    if (onIconTapGesture)
+    {
+        objc_setAssociatedObject(self.iconImageView, "onIconTapGesture", [onIconTapGesture copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        
+        // Listen to icon tap
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onIconTap:)];
+        [tapGesture setNumberOfTouchesRequired:1];
+        [tapGesture setNumberOfTapsRequired:1];
+        [tapGesture setDelegate:self];
+        [self.iconImageView addGestureRecognizer:tapGesture];
+        self.iconImageView.userInteractionEnabled = YES;
+    }
+}
+
 - (void)reset
 {
     self.backgroundColor = UIColor.clearColor;
+    
+    [self resetIcon];
+    [self resetMessage];
+    
+    while (self.gestureRecognizers.count)
+    {
+        [self removeGestureRecognizer:self.gestureRecognizers[0]];
+    }
+}
 
+- (void)resetIcon
+{
     self.iconImageView.hidden = YES;
-    self.messageLabel.hidden = YES;
-    
-    [self.messageTextView resignFirstResponder];
-    self.messageTextView.hidden = YES;
-    
-    self.messageLabel.textColor = kVectorTextColorGray;
     
     // Remove all gesture recognizers
     while (self.iconImageView.gestureRecognizers.count)
@@ -162,12 +210,18 @@
     }
     self.iconImageView.userInteractionEnabled = NO;
     
-    while (self.gestureRecognizers.count)
-    {
-        [self removeGestureRecognizer:self.gestureRecognizers[0]];
-    }
-    
     objc_removeAssociatedObjects(self.iconImageView);
+}
+
+- (void)resetMessage
+{
+    self.messageLabel.hidden = YES;
+    
+    [self.messageTextView resignFirstResponder];
+    self.messageTextView.hidden = YES;
+    
+    self.messageLabel.textColor = kVectorTextColorGray;
+
     objc_removeAssociatedObjects(self.messageTextView);
 }
 

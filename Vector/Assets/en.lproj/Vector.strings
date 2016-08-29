@@ -152,6 +152,8 @@
 "room_participants_action_mention" = "Mention";
 
 // Chat
+"room_new_message_notification" = "%d new message";
+"room_new_messages_notification" = "%d new messages";
 "room_one_user_is_typing" = "%@ is typing...";
 "room_two_users_are_typing" = "%@ & %@ are typing...";
 "room_many_users_are_typing" = "%@, %@ & others are typing...";
