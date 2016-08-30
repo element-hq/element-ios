@@ -2072,6 +2072,8 @@
     {
         // Handle swipe on expanded header
         [self onScrollViewDidEndScrolling:scrollView];
+        
+        [self refreshActivitiesViewDisplay];
     }
     else
     {
@@ -2083,6 +2085,26 @@
             
         });
     }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewDidEndDecelerating:)])
+    {
+        [super scrollViewDidEndDecelerating:scrollView];
+    }
+    
+    [self refreshActivitiesViewDisplay];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewDidEndScrollingAnimation:)])
+    {
+        [super scrollViewDidEndScrollingAnimation:scrollView];
+    }
+    
+    [self refreshActivitiesViewDisplay];
 }
 
 - (void)onScrollViewDidEndScrolling:(UIScrollView *)scrollView
@@ -2329,7 +2351,7 @@
 
 - (void)refreshTypingNotification
 {
-    if (self.activitiesView)
+    if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         // Prepare here typing notification
         NSString* text = nil;
@@ -2440,7 +2462,7 @@
 
 - (void)refreshActivitiesViewDisplay
 {
-    if (self.activitiesView)
+    if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
 
@@ -2475,7 +2497,29 @@
         }
         else if ([self checkUnsentMessages] == NO)
         {
-            [self refreshTypingNotification];
+            // Show "scroll to bottom" icon when the most recent message is not visible
+            if ([self isBubblesTableScrollViewAtTheBottom] == NO)
+            {
+                // Retrieve the unread messages count
+                NSUInteger unreadCount = [self.roomDataSource.room localUnreadEventCount];
+                
+                if (unreadCount == 0)
+                {
+                    // Refresh the typing notification here
+                    // We will keep visible this notification (if any) beside the "scroll to bottom" icon.
+                    [self refreshTypingNotification];
+                }
+                
+                [roomActivitiesView displayScrollToBottomIcon:unreadCount onIconTapGesture:^{
+                    
+                    [self scrollBubblesTableViewToBottomAnimated:YES];
+                    
+                }];
+            }
+            else
+            {
+                [self refreshTypingNotification];
+            }
         }
     }
 }
@@ -2487,7 +2531,7 @@
 {
     BOOL hasUnsent = NO;
     
-    if (self.activitiesView)
+    if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
         

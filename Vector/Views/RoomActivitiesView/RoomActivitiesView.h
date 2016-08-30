@@ -63,6 +63,15 @@
 - (void)displayOngoingConferenceCall:(NSString*)labelText;
 
 /**
+ Display a "scroll to bottom" icon.
+ Replace the current notification if any.
+ 
+ @param newMessagesCount the count of the unread messages.
+ @param onIconTapGesture block called when user taps on notification icon.
+ */
+- (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture;
+
+/**
  Remove any displayed information.
  */
 - (void)reset;
