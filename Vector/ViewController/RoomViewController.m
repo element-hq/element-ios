@@ -2601,6 +2601,12 @@
 {
     NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
     
+    if (count && self.roomDataSource.notificationCount)
+    {
+        // Remove the current room from the missed discussion counter
+        count--;
+    }
+    
     if (force || missedDiscussionsCount != count)
     {
         missedDiscussionsCount = count;
