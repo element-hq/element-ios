@@ -103,12 +103,12 @@
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
     
-    // Missed discussion
+    // Missed discussions badge
     NSUInteger missedDiscussionsCount;
     UIBarButtonItem *missedDiscussionsButton;
     UILabel *missedDiscussionsBadgeLabel;
     UIView  *missedDiscussionsBadgeLabelBgView;
-    UIView  *missedDiscussionsBadgeBgView;
+    UIView  *missedDiscussionsBarButtonCustomView;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -265,15 +265,15 @@
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     
     // Prepare missed dicussion badge
-    missedDiscussionsBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
-    missedDiscussionsBadgeBgView.backgroundColor = [UIColor clearColor];
-    missedDiscussionsBadgeBgView.clipsToBounds = NO;
+    missedDiscussionsBarButtonCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
+    missedDiscussionsBarButtonCustomView.backgroundColor = [UIColor clearColor];
+    missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
     
     missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
     missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorPinkRed;
     [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
     
-    [missedDiscussionsBadgeBgView addSubview:missedDiscussionsBadgeLabelBgView];
+    [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
     
     missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
     missedDiscussionsBadgeLabel.textColor = [UIColor whiteColor];
@@ -814,7 +814,7 @@
     
     roomPreviewData = nil;
     
-    missedDiscussionsBadgeBgView = nil;
+    missedDiscussionsBarButtonCustomView = nil;
     missedDiscussionsBadgeLabelBgView = nil;
     missedDiscussionsBadgeLabel = nil;
     
@@ -2599,6 +2599,12 @@
 
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
+    // Ignore this action when no room is displayed
+    if (!self.roomDataSource)
+    {
+        return;
+    }
+    
     NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
     
     if (count && self.roomDataSource.notificationCount)
@@ -2612,10 +2618,6 @@
         missedDiscussionsCount = count;
         
         NSMutableArray *leftBarButtonItems = [NSMutableArray arrayWithArray: self.navigationItem.leftBarButtonItems];
-        if (missedDiscussionsButton)
-        {
-            [leftBarButtonItems removeObject:missedDiscussionsButton];
-        }
         
         if (count)
         {
@@ -2627,7 +2629,8 @@
             }
             UINavigationItem *backItem = mainNavigationController.navigationBar.backItem;
             UIBarButtonItem *backButton = backItem.backBarButtonItem;
-            
+
+            // Refresh missed discussions count label
             if (count > 99)
             {
                 missedDiscussionsBadgeLabel.text = @"99+";
@@ -2639,8 +2642,9 @@
             
             [missedDiscussionsBadgeLabel sizeToFit];
             
+            // Update the label background view frame
             CGRect frame = missedDiscussionsBadgeLabelBgView.frame;
-            frame.size.width = missedDiscussionsBadgeLabel.frame.size.width + 18;
+            frame.size.width = round(missedDiscussionsBadgeLabel.frame.size.width + 18);
             if (backButton && !backButton.title.length)
             {
                 // Shift the badge on the left to be close the back icon
@@ -2650,12 +2654,30 @@
             {
                 frame.origin.x = 0;
             }
-            missedDiscussionsBadgeLabelBgView.frame = frame;
+            // Caution: set label background view frame only in case of changes to prevent from looping on 'viewDidLayoutSubviews'.
+            if (!CGRectEqualToRect(missedDiscussionsBadgeLabelBgView.frame, frame))
+            {
+                missedDiscussionsBadgeLabelBgView.frame = frame;
+                
+                // Adjust the custom view width of the associated bar button
+                CGRect bgFrame = missedDiscussionsBarButtonCustomView.frame;
+                CGFloat width = frame.size.width + frame.origin.x;
+                bgFrame.size.width = (width > 0 ? width : 0);
+                missedDiscussionsBarButtonCustomView.frame = bgFrame;
+            }
             
-            missedDiscussionsButton = [[UIBarButtonItem alloc] initWithCustomView:missedDiscussionsBadgeBgView];
-            
-            // Add it in left bar items
-            [leftBarButtonItems addObject:missedDiscussionsButton];
+            if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)
+            {
+                missedDiscussionsButton = [[UIBarButtonItem alloc] initWithCustomView:missedDiscussionsBarButtonCustomView];
+                
+                // Add it in left bar items
+                [leftBarButtonItems addObject:missedDiscussionsButton];
+            }
+        }
+        else if (missedDiscussionsButton)
+        {
+            [leftBarButtonItems removeObject:missedDiscussionsButton];
+            missedDiscussionsButton = nil;
         }
         
         self.navigationItem.leftBarButtonItems = leftBarButtonItems;
