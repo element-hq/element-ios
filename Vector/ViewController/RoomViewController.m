@@ -103,6 +103,13 @@
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
     
+    // Missed discussion
+    NSUInteger missedDiscussionsCount;
+    UIBarButtonItem *missedDiscussionsButton;
+    UILabel *missedDiscussionsBadgeLabel;
+    UIView  *missedDiscussionsBadgeLabelBgView;
+    UIView  *missedDiscussionsBadgeBgView;
+    
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
@@ -113,6 +120,9 @@
     id kMXCallStateDidChangeObserver;
     id kMXCallManagerConferenceStartedObserver;
     id kMXCallManagerConferenceFinishedObserver;
+    
+    // Observer kMXKRoomDataSourceMetaDataChanged to keep updated the missed discussion count
+    id kMXKRoomDataSourceMetaDataChangedObserver;
 }
 
 @end
@@ -254,6 +264,42 @@
     self.navigationItem.rightBarButtonItem.target = self;
     self.navigationItem.rightBarButtonItem.action = @selector(onButtonPressed:);
     
+    // Prepare missed dicussion badge
+    missedDiscussionsBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
+    missedDiscussionsBadgeBgView.backgroundColor = [UIColor clearColor];
+    missedDiscussionsBadgeBgView.clipsToBounds = NO;
+    
+    missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
+    missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorPinkRed;
+    [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
+    
+    [missedDiscussionsBadgeBgView addSubview:missedDiscussionsBadgeLabelBgView];
+    
+    missedDiscussionsBadgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 2, 17, 17)];
+    missedDiscussionsBadgeLabel.textColor = [UIColor whiteColor];
+    missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
+    missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
+    
+    missedDiscussionsBadgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [missedDiscussionsBadgeLabelBgView addSubview:missedDiscussionsBadgeLabel];
+    
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:missedDiscussionsBadgeLabelBgView
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1.0
+                                                                          constant:0];
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedDiscussionsBadgeLabel
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:missedDiscussionsBadgeLabelBgView
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                        multiplier:1.0
+                                                                          constant:0];
+    
+    [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
+    
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
     
@@ -359,6 +405,14 @@
         
     }];
     [self refreshActivitiesViewDisplay];
+    
+    // Observe missed notifications
+    kMXKRoomDataSourceMetaDataChangedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKRoomDataSourceMetaDataChanged object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self refreshMissedDiscussionsCount:NO];
+        
+    }];
+    [self refreshMissedDiscussionsCount:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -372,6 +426,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateNetworkStatusDidChangeNotificationObserver];
         kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
+    }
+    
+    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
+        kMXKRoomDataSourceMetaDataChangedObserver = nil;
     }
 }
 
@@ -435,6 +495,8 @@
         
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.contentInset.top;
     }
+    
+    [self refreshMissedDiscussionsCount:YES];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -727,6 +789,11 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateNetworkStatusDidChangeNotificationObserver];
         kAppDelegateNetworkStatusDidChangeNotificationObserver = nil;
     }
+    if (kMXKRoomDataSourceMetaDataChangedObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXKRoomDataSourceMetaDataChangedObserver];
+        kMXKRoomDataSourceMetaDataChangedObserver = nil;
+    }
 
     [self removeCallNotificationsListeners];
 
@@ -746,6 +813,10 @@
     expandedHeader = nil;
     
     roomPreviewData = nil;
+    
+    missedDiscussionsBadgeBgView = nil;
+    missedDiscussionsBadgeLabelBgView = nil;
+    missedDiscussionsBadgeLabel = nil;
     
     [super destroy];
 }
@@ -2524,6 +2595,66 @@
     }
 }
 
+#pragma mark - Missed discussions handling
+
+- (void)refreshMissedDiscussionsCount:(BOOL)force
+{
+    NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
+    
+    if (force || missedDiscussionsCount != count)
+    {
+        missedDiscussionsCount = count;
+        
+        NSMutableArray *leftBarButtonItems = [NSMutableArray arrayWithArray: self.navigationItem.leftBarButtonItems];
+        if (missedDiscussionsButton)
+        {
+            [leftBarButtonItems removeObject:missedDiscussionsButton];
+        }
+        
+        if (count)
+        {
+            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+            UINavigationController *mainNavigationController = self.navigationController;
+            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+            {
+                mainNavigationController = self.splitViewController.viewControllers.firstObject;
+            }
+            UINavigationItem *backItem = mainNavigationController.navigationBar.backItem;
+            UIBarButtonItem *backButton = backItem.backBarButtonItem;
+            
+            if (count > 99)
+            {
+                missedDiscussionsBadgeLabel.text = @"99+";
+            }
+            else
+            {
+                missedDiscussionsBadgeLabel.text = [NSString stringWithFormat:@"%tu", count];
+            }
+            
+            [missedDiscussionsBadgeLabel sizeToFit];
+            
+            CGRect frame = missedDiscussionsBadgeLabelBgView.frame;
+            frame.size.width = missedDiscussionsBadgeLabel.frame.size.width + 18;
+            if (backButton && !backButton.title.length)
+            {
+                // Shift the badge on the left to be close the back icon
+                frame.origin.x = ([GBDeviceInfo deviceInfo].displayInfo.display > GBDeviceDisplay4Inch ? -35 : -25);
+            }
+            else
+            {
+                frame.origin.x = 0;
+            }
+            missedDiscussionsBadgeLabelBgView.frame = frame;
+            
+            missedDiscussionsButton = [[UIBarButtonItem alloc] initWithCustomView:missedDiscussionsBadgeBgView];
+            
+            // Add it in left bar items
+            [leftBarButtonItems addObject:missedDiscussionsButton];
+        }
+        
+        self.navigationItem.leftBarButtonItems = leftBarButtonItems;
+    }
+}
 
 #pragma mark - Unsent Messages Handling
 
