@@ -808,10 +808,13 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     {
         NSString* currentTopic = mxRoomState.topic;
         
+        // Remove white space from both ends
+        NSString* topic = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
         // Check whether the topic has been actually changed
-        if ((textView.text || currentTopic) && ([textView.text isEqualToString:currentTopic] == NO))
+        if ((topic || currentTopic) && ([topic isEqualToString:currentTopic] == NO))
         {
-            [updatedItemsDict setObject:(textView.text ? textView.text : @"") forKey:kRoomSettingsTopicKey];
+            [updatedItemsDict setObject:(topic ? topic : @"") forKey:kRoomSettingsTopicKey];
         }
         else
         {
@@ -826,7 +829,11 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == addAddressTextField)
+    if (textField == nameTextField)
+    {
+        nameTextField.textAlignment = NSTextAlignmentLeft;
+    }
+    else if (textField == addAddressTextField)
     {
         if (textField.text.length == 0)
         {
@@ -836,7 +843,11 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == addAddressTextField)
+    if (textField == nameTextField)
+    {
+        nameTextField.textAlignment = NSTextAlignmentRight;
+    }
+    else if (textField == addAddressTextField)
     {
         if (textField.text.length < 2)
         {
@@ -907,7 +918,12 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == addAddressTextField)
+    if (textField == nameTextField)
+    {
+        // Dismiss the keyboard
+        [nameTextField resignFirstResponder];
+    }
+    else if (textField == addAddressTextField)
     {
         // Dismiss the keyboard
         [addAddressTextField resignFirstResponder];
@@ -929,12 +945,15 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 {
     if (textField == nameTextField)
     {
-        NSString* currentName = mxRoomState.name;
+        NSString *currentName = mxRoomState.name;
+        
+        // Remove white space from both ends
+        NSString *displayName = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         // Check whether the name has been actually changed
-        if ((textField.text || currentName) && ([textField.text isEqualToString:currentName] == NO))
+        if ((displayName || currentName) && ([displayName isEqualToString:currentName] == NO))
         {
-            [updatedItemsDict setObject:(textField.text ? textField.text : @"") forKey:kRoomSettingsNameKey];
+            [updatedItemsDict setObject:(displayName ? displayName : @"") forKey:kRoomSettingsNameKey];
         }
         else
         {
@@ -1856,6 +1875,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             MXKTableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsNameCellViewIdentifier forIndexPath:indexPath];
             
             roomNameCell.mxkLabelLeadingConstraint.constant = roomNameCell.separatorInset.left;
+            roomNameCell.mxkTextFieldLeadingConstraint.constant = 16;
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
@@ -1870,6 +1890,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             nameTextField.font = [UIFont systemFontOfSize:17];
             nameTextField.borderStyle = UITextBorderStyleNone;
             nameTextField.textAlignment = NSTextAlignmentRight;
+            nameTextField.delegate = self;
             
             if ([updatedItemsDict objectForKey:kRoomSettingsNameKey])
             {

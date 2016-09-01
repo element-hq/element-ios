@@ -592,6 +592,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
     
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = kVectorTextColorBlack;
@@ -716,6 +717,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             displaynameCell.mxkTextField.text = myUser.displayname;
             
             displaynameCell.mxkTextField.tag = row;
+            displaynameCell.mxkTextField.delegate = self;
             [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             
@@ -1781,7 +1783,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     
     if (textField.tag == userSettingsDisplayNameIndex)
     {
-        newDisplayName = textField.text;
+        // Remove white space from both ends
+        newDisplayName = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         [self updateSaveButtonStatus];
     }
     else if (textField.tag == userSettingsNewEmailIndex)
@@ -1802,9 +1805,33 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 }
 
 #pragma mark - UITextField delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField.tag == userSettingsDisplayNameIndex)
+    {
+        textField.textAlignment = NSTextAlignmentLeft;
+    }
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField.tag == userSettingsDisplayNameIndex)
+    {
+        textField.textAlignment = NSTextAlignmentRight;
+    }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self onAddNewEmail:textField];
+    if (textField.tag == userSettingsDisplayNameIndex)
+    {
+        [textField resignFirstResponder];
+    }
+    else if (textField.tag == userSettingsNewEmailIndex)
+    {
+        [self onAddNewEmail:textField];
+    }
+    
     return YES;
 }
 

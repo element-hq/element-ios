@@ -34,7 +34,7 @@
                     </textView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="6xh-yB-9FP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DE7-uC-Oz2" secondAttribute="trailing" constant="8" id="oCm-jb-bm0"/>
+                    <constraint firstItem="6xh-yB-9FP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DE7-uC-Oz2" secondAttribute="trailing" constant="16" id="oCm-jb-bm0"/>
                     <constraint firstItem="DE7-uC-Oz2" firstAttribute="leading" secondItem="hCm-wd-Yup" secondAttribute="leading" constant="15" id="qse-r7-x6e"/>
                 </constraints>
             </tableViewCellContentView>
