@@ -216,6 +216,27 @@
     self.gradientMaskContainerView.hidden = self.overlayContainerView.isHidden;
 }
 
+#pragma mark - Sounds
+
+- (NSURL*)audioURLWithName:(NSString*)soundName
+{
+    NSURL *audioUrl;
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:soundName ofType:@"mp3"];
+    if (path)
+    {
+        audioUrl = [NSURL fileURLWithPath:path];
+    }
+    
+    // Use by default the matrix kit sounds.
+    if (!audioUrl)
+    {
+        audioUrl = [super audioURLWithName:soundName];
+    }
+    
+    return audioUrl;
+}
+
 #pragma mark - Actions
 
 - (IBAction)onButtonPressed:(id)sender

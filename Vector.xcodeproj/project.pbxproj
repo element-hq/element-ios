@@ -228,6 +228,11 @@
 		F0C34CB31C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34CAF1C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m */; };
 		F0C34CB41C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34CB01C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib */; };
 		F0C34CB81C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */; };
+		F0C47F041D7766F200A7929E /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F0C47EFF1D7766F200A7929E /* busy.mp3 */; };
+		F0C47F051D7766F200A7929E /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F0C47F001D7766F200A7929E /* callend.mp3 */; };
+		F0C47F061D7766F200A7929E /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F0C47F011D7766F200A7929E /* message.mp3 */; };
+		F0C47F071D7766F200A7929E /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F0C47F021D7766F200A7929E /* ring.mp3 */; };
+		F0C47F081D7766F200A7929E /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F0C47F031D7766F200A7929E /* ringback.mp3 */; };
 		F0CC25671D099F30000819CA /* newmessages.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC255E1D099F30000819CA /* newmessages.png */; };
 		F0CC25681D099F30000819CA /* newmessages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC255F1D099F30000819CA /* newmessages@2x.png */; };
 		F0CC25691D099F30000819CA /* newmessages@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0CC25601D099F30000819CA /* newmessages@3x.png */; };
@@ -598,6 +603,11 @@
 		F0C34CB01C16269D00C36F09 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib; sourceTree = "<group>"; };
 		F0C34CB61C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXKRoomBubbleTableViewCell+Vector.h"; sourceTree = "<group>"; };
 		F0C34CB71C17145F00C36F09 /* MXKRoomBubbleTableViewCell+Vector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Vector.m"; sourceTree = "<group>"; };
+		F0C47EFF1D7766F200A7929E /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
+		F0C47F001D7766F200A7929E /* callend.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = callend.mp3; sourceTree = "<group>"; };
+		F0C47F011D7766F200A7929E /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
+		F0C47F021D7766F200A7929E /* ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ring.mp3; sourceTree = "<group>"; };
+		F0C47F031D7766F200A7929E /* ringback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringback.mp3; sourceTree = "<group>"; };
 		F0CC255E1D099F30000819CA /* newmessages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newmessages.png; sourceTree = "<group>"; };
 		F0CC255F1D099F30000819CA /* newmessages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newmessages@2x.png"; sourceTree = "<group>"; };
 		F0CC25601D099F30000819CA /* newmessages@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newmessages@3x.png"; sourceTree = "<group>"; };
@@ -1029,6 +1039,7 @@
 		F094AA0A1B78E42600B1FBBF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F0C47EFE1D7766F200A7929E /* Sounds */,
 				F0DD7D1B1B7AA8C900C4BE02 /* Images */,
 				F094AA0B1B78E42600B1FBBF /* Localizable.strings */,
 				F094AA0D1B78E42600B1FBBF /* Vector.strings */,
@@ -1128,6 +1139,18 @@
 				323A520A1C3183CC00010773 /* UIViewController+VectorSearch.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		F0C47EFE1D7766F200A7929E /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F0C47EFF1D7766F200A7929E /* busy.mp3 */,
+				F0C47F001D7766F200A7929E /* callend.mp3 */,
+				F0C47F011D7766F200A7929E /* message.mp3 */,
+				F0C47F021D7766F200A7929E /* ring.mp3 */,
+				F0C47F031D7766F200A7929E /* ringback.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		F0CC4DBC1C4E26FA003BBE45 /* MediaAlbum */ = {
@@ -1452,6 +1475,7 @@
 				F0FE6FB61D66115C0004E747 /* back_icon@2x.png in Resources */,
 				F0DD2C721D141B0600654345 /* ContactPickerViewController.xib in Resources */,
 				F0DD2C7C1D18386300654345 /* ContactDetailsViewController.xib in Resources */,
+				F0C47F071D7766F200A7929E /* ring.mp3 in Resources */,
 				F02528D51C11B6FC00E1FE1B /* camera_capture.png in Resources */,
 				F05641851C7CBB58002276ED /* bubbles_bg_landscape@3x.png in Resources */,
 				F0FE6FAC1D6496B40004E747 /* call_speaker_off_icon.png in Resources */,
@@ -1460,6 +1484,7 @@
 				F03FBCCE1CBBF521000A5770 /* shrink_icon.png in Resources */,
 				F0FE6FAF1D6496B40004E747 /* call_speaker_on_icon.png in Resources */,
 				F003AA811C690628008B430C /* RoomAvatarTitleView.xib in Resources */,
+				F0C47F081D7766F200A7929E /* ringback.mp3 in Resources */,
 				F0026B551C916E68001D2C04 /* leave.png in Resources */,
 				F0C34B701C15CA2E00C36F09 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				F0CC256A1D099F30000819CA /* scrolldown.png in Resources */,
@@ -1487,6 +1512,7 @@
 				F0FE6FAE1D6496B40004E747 /* call_speaker_off_icon@3x.png in Resources */,
 				F02528E21C11B6FC00E1FE1B /* create_room@3x.png in Resources */,
 				F0CC25681D099F30000819CA /* newmessages@2x.png in Resources */,
+				F0C47F051D7766F200A7929E /* callend.mp3 in Resources */,
 				F02528E11C11B6FC00E1FE1B /* create_room@2x.png in Resources */,
 				F03FBCD71CBC49B6000A5770 /* disclosure_icon.png in Resources */,
 				F094AA2E1B78E42600B1FBBF /* countryCodes.plist in Resources */,
@@ -1519,6 +1545,7 @@
 				32D200851C15C56A00A4E396 /* search_bg@3x.png in Resources */,
 				F056418D1C7CBEBD002276ED /* group@2x.png in Resources */,
 				F0026B501C916E68001D2C04 /* favourite@2x.png in Resources */,
+				F0C47F061D7766F200A7929E /* message.mp3 in Resources */,
 				71EBE66E1C04C4D300E7D953 /* RoomActivitiesView.xib in Resources */,
 				F02528F31C11B6FC00E1FE1B /* remove_icon@2x.png in Resources */,
 				F0FE6F951D6486960004E747 /* call_video_icon@2x.png in Resources */,
@@ -1567,6 +1594,7 @@
 				F0C34B661C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				F0989F4F1CD7769000FA6EAC /* ForgotPasswordInputsView.xib in Resources */,
 				F0D2D9841C197DCB007B8C96 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
+				F0C47F041D7766F200A7929E /* busy.mp3 in Resources */,
 				F0026B571C916E68001D2C04 /* leave@3x.png in Resources */,
 				F0026B561C916E68001D2C04 /* leave@2x.png in Resources */,
 				F094AA2C1B78E42600B1FBBF /* Vector.strings in Resources */,
