@@ -956,15 +956,21 @@
 
 - (void)showExpandedHeader:(BOOL)isVisible
 {
-    // Check conditions before applying change on room header.
-    // This operation is ignored:
-    // - if a screen rotation is in progress.
-    // - if the room data source has been removed.
-    // - if the room data source does not manage a live timeline.
-    // - if the user's membership is not 'join'.
-    // - if the view controller is not embedded inside a split view controller yet.
-    if (self.expandedHeaderContainer.isHidden == isVisible && isSizeTransitionInProgress == NO && self.roomDataSource && self.roomDataSource.isLive && self.roomDataSource.room.state.membership == MXMembershipJoin && self.splitViewController)
+    if (self.expandedHeaderContainer.isHidden == isVisible)
     {
+        // Check conditions before making the expanded room header visible.
+        // This operation is ignored:
+        // - if a screen rotation is in progress.
+        // - if the room data source has been removed.
+        // - if the room data source does not manage a live timeline.
+        // - if the user's membership is not 'join'.
+        // - if the view controller is not embedded inside a split view controller yet.
+        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.state.membership != MXMembershipJoin) || !self.splitViewController))
+        {
+            NSLog(@"[Vector RoomVC] Show expanded header ignored");
+            return;
+        }
+        
         self.expandedHeaderContainer.hidden = !isVisible;
         
         // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
