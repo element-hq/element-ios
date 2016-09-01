@@ -1124,11 +1124,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        if (session.ignoredUsers.count == 0)
+        if ([AppDelegate theDelegate].mxSessions.count > 0)
         {
-            // Hide this section
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            if (session.ignoredUsers.count == 0)
+            {
+                // Hide this section
+                return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+            }
         }
     }
     
