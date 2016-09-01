@@ -96,7 +96,7 @@
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = kVectorTextColorBlack;
+    self.remotePreviewContainerView.backgroundColor = [UIColor whiteColor];
     
     // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
     gradientMaskLayer = [CAGradientLayer layer];
