@@ -92,8 +92,18 @@
     self.navigationItem.rightBarButtonItem = nil;
     self.navigationItem.leftBarButtonItem = nil;
 
-    // Add the search bar and
+    // Add the search bar
     self.navigationItem.titleView = self.searchBar;
+
+    // On iPad, there is no cancel button inside the UISearchBar
+    // So, add a classic cancel right bar button
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    {
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onIPadCancelPressed:)];
+        [self.navigationItem setRightBarButtonItem: cancelButton animated:YES];
+    }
+
+    // And display the keyboard
     [self.searchBar becomeFirstResponder];
 }
 
@@ -213,6 +223,17 @@
         }
     });
     return YES;
+}
+
+#pragma mark - Private methods
+
+- (void)onIPadCancelPressed:(id)sender
+{
+    // Mimic the same behavior as  on iPhones and call the UISearchBar cancel delegate method
+    if ([self.searchBar.delegate respondsToSelector:@selector(searchBarCancelButtonClicked:)])
+    {
+        [self.searchBar.delegate searchBarCancelButtonClicked:self.searchBar];
+    }
 }
 
 #pragma mark - Internal associated object
