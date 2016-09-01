@@ -679,6 +679,13 @@
     }
 }
 
+- (void)leaveRoomOnEvent:(MXEvent*)event
+{
+    [self showExpandedHeader:NO];
+    
+    [super leaveRoomOnEvent:event];
+}
+
 - (void)setRoomInputToolbarViewClass:(Class)roomInputToolbarViewClass
 {
     // Do not show toolbar in case of preview
