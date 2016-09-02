@@ -165,6 +165,7 @@
 "room_resend_unsent_messages" = "Resend unsent messages";
 "room_delete_unsent_messages" = "Delete unsent messages";
 "room_event_action_copy" = "Copy";
+"room_event_action_quote" = "Quote";
 "room_event_action_share" = "Share";
 "room_event_action_redact" = "Redact";
 "room_event_action_permalink" = "Permalink";

@@ -1488,7 +1488,19 @@
                         [[UIPasteboard generalPasteboard] setString:selectedComponent.textMessage];
                         
                     }];
-                    
+
+                    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_quote", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        [strongSelf cancelEventSelection];
+
+                        // Quote the message a la Markdown into the input toolbar composer
+                        strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@">%@\n\n", selectedComponent.textMessage];
+
+                        // And display the keyboard
+                        [strongSelf.inputToolbarView becomeFirstResponder];
+                    }];
+
                     [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
                         
                         __strong __typeof(weakSelf)strongSelf = weakSelf;
