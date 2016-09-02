@@ -1750,6 +1750,18 @@
 
         if (level == 1)
         {
+            [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf cancelEventSelection];
+
+                // Display event details
+                [strongSelf showEventDetails:selectedEvent];
+            }];
+        }
+
+        if (level == 1)
+        {
             [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
 
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
