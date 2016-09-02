@@ -934,7 +934,7 @@
             userPictureView.clipsToBounds = YES;
         }
 
-        // Show the hangup button if there is an active call
+        // Show the hangup button if there is an active call in the current room
         MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
         if (callInRoom && callInRoom.state != MXCallStateEnded)
         {
@@ -943,6 +943,9 @@
         else
         {
             roomInputToolbarView.activeCall = NO;
+            
+            // Hide the call button if there is an active call in another room
+            roomInputToolbarView.supportCallOption &= ([[AppDelegate theDelegate] callStatusBarWindow] == nil);
         }
     }
 }

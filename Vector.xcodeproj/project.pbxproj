@@ -22,9 +22,6 @@
 		325F6A491C21D4C100C12F51 /* chevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 325F6A461C21D4C100C12F51 /* chevron@3x.png */; };
 		327F8DB51C64DB9D00581CA3 /* VectorDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */; };
 		32952C5B1D59D38C0039DC0C /* settings_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32952C5A1D59D38C0039DC0C /* settings_icon@3x.png */; };
-		32952C5F1D59D3C80039DC0C /* hangUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 32952C5C1D59D3C80039DC0C /* hangUp.png */; };
-		32952C601D59D3C80039DC0C /* hangUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32952C5D1D59D3C80039DC0C /* hangUp@2x.png */; };
-		32952C611D59D3C80039DC0C /* hangUp@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32952C5E1D59D3C80039DC0C /* hangUp@3x.png */; };
 		329D08101CD26177007CECC6 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 329D080F1CD26177007CECC6 /* Tools.m */; };
 		32A887211C89B9580037DC17 /* SimpleRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32A8871F1C89B9580037DC17 /* SimpleRoomTitleView.m */; };
 		32A887221C89B9580037DC17 /* SimpleRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32A887201C89B9580037DC17 /* SimpleRoomTitleView.xib */; };
@@ -332,9 +329,6 @@
 		325F6A461C21D4C100C12F51 /* chevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chevron@3x.png"; sourceTree = "<group>"; };
 		327F8DB41C64DB9C00581CA3 /* VectorDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VectorDesignValues.m; sourceTree = "<group>"; };
 		32952C5A1D59D38C0039DC0C /* settings_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings_icon@3x.png"; sourceTree = "<group>"; };
-		32952C5C1D59D3C80039DC0C /* hangUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hangUp.png; sourceTree = "<group>"; };
-		32952C5D1D59D3C80039DC0C /* hangUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hangUp@2x.png"; sourceTree = "<group>"; };
-		32952C5E1D59D3C80039DC0C /* hangUp@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hangUp@3x.png"; sourceTree = "<group>"; };
 		329D080E1CD26177007CECC6 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		329D080F1CD26177007CECC6 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		32A8871E1C89B9580037DC17 /* SimpleRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleRoomTitleView.h; path = RoomTitle/SimpleRoomTitleView.h; sourceTree = "<group>"; };
@@ -1279,9 +1273,6 @@
 				F02528A41C11B6FC00E1FE1B /* create_room.png */,
 				F02528A51C11B6FC00E1FE1B /* create_room@2x.png */,
 				F02528A61C11B6FC00E1FE1B /* create_room@3x.png */,
-				32952C5C1D59D3C80039DC0C /* hangUp.png */,
-				32952C5D1D59D3C80039DC0C /* hangUp@2x.png */,
-				32952C5E1D59D3C80039DC0C /* hangUp@3x.png */,
 				F02528AB1C11B6FC00E1FE1B /* logo.png */,
 				F02528AC1C11B6FC00E1FE1B /* logo@2x.png */,
 				F02528B31C11B6FC00E1FE1B /* placeholder.png */,
@@ -1435,7 +1426,6 @@
 				F001D7631B8207C000A162C3 /* RoomInputToolbarView.xib in Resources */,
 				F02528DE1C11B6FC00E1FE1B /* camera_switch@3x.png in Resources */,
 				F02529091C11B6FC00E1FE1B /* upload_icon.png in Resources */,
-				32952C601D59D3C80039DC0C /* hangUp@2x.png in Resources */,
 				F03FBCD91CBC49B6000A5770 /* disclosure_icon@3x.png in Resources */,
 				F05641931C7DF9DE002276ED /* error@2x.png in Resources */,
 				F0D2D9861C197DCB007B8C96 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -1469,7 +1459,6 @@
 				F05641831C7CBB58002276ED /* bubbles_bg_landscape.png in Resources */,
 				F02528D61C11B6FC00E1FE1B /* camera_capture@2x.png in Resources */,
 				32D0A4BE1CA44509008F3451 /* plus_icon@3x.png in Resources */,
-				32952C5F1D59D3C80039DC0C /* hangUp.png in Resources */,
 				71046D601C0C86C600DCA984 /* RoomTitleView.xib in Resources */,
 				F0026B5A1C916E68001D2C04 /* notifications@3x.png in Resources */,
 				F0FE6FB61D66115C0004E747 /* back_icon@2x.png in Resources */,
@@ -1608,7 +1597,6 @@
 				F02528FD1C11B6FC00E1FE1B /* selection_untick.png in Resources */,
 				F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */,
 				F0026B5C1C916E68001D2C04 /* notificationsOff@2x.png in Resources */,
-				32952C611D59D3C80039DC0C /* hangUp@3x.png in Resources */,
 				F0CC4DC11C4E26FA003BBE45 /* MediaAlbumTableCell.xib in Resources */,
 				F02528DD1C11B6FC00E1FE1B /* camera_switch@2x.png in Resources */,
 			);

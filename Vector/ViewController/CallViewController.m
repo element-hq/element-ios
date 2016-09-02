@@ -21,6 +21,8 @@
 #import "AvatarGenerator.h"
 #import "VectorDesignValues.h"
 
+#import "MXRoom+Vector.h"
+
 @interface CallViewController ()
 {
     // Display a gradient view above the screen
@@ -190,7 +192,7 @@
     }
     else if (self.mxCall.isConferenceCall)
     {
-        peerDisplayName = self.mxCall.room.state.displayname;
+        peerDisplayName = self.mxCall.room.vectorDisplayname;
         peerAvatarURL = self.mxCall.room.state.avatar;
     }
     
