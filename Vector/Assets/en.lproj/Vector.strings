@@ -165,9 +165,12 @@
 "room_resend_unsent_messages" = "Resend unsent messages";
 "room_delete_unsent_messages" = "Delete unsent messages";
 "room_event_action_copy" = "Copy";
-"room_event_action_share" = "Share";
+"room_event_action_quote" = "Quote";
 "room_event_action_redact" = "Redact";
+"room_event_action_more" = "More";
+"room_event_action_share" = "Share";
 "room_event_action_permalink" = "Permalink";
+"room_event_action_view_source" = "View Source";
 "room_event_action_report" = "Report content";
 "room_event_action_report_prompt_reason" = "Reason for reporting this content";
 "room_event_action_report_prompt_ignore_user" = "Do you want to hide all messages from this user?";
