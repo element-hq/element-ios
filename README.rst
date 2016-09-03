@@ -19,11 +19,20 @@ CocoaPods command::
         $ cd Vector
         $ pod install
 
-This will load all dependencies for the Vector source code, including MatrixKit and MatrixSDK.
+This will load all dependencies for the Vector source code, including MatrixKit 
+and MatrixSDK.  You will need an recent and updated (``pod update``) install of
+CocoaPods.
 
 Then, open ``Vector.xcworkspace`` with Xcode
 
         $ open Vector.xcworkspace
+
+Developing
+==========
+
+Uncomment the right definitions of ``pod 'MatrixSDK'`` and ``pod 'MatrixKit'``
+in ``Podfile`` for the versions you want to develop and build against, and
+``pod install``.
 
 Copyright & License
 ==================
