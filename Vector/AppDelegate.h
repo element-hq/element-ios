@@ -121,6 +121,12 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 #pragma mark - Call status handling
 
+/**
+ Call status window displayed when user goes back to app during a call.
+ */
+@property (nonatomic, readonly) UIWindow* callStatusBarWindow;
+@property (nonatomic, readonly) UIButton* callStatusBarButton;
+
 - (void)returnToCallView;
 
 @end

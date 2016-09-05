@@ -54,6 +54,8 @@
 
 #import "VectorDesignValues.h"
 
+#define CALL_STATUS_BAR_HEIGHT 44
+
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
@@ -92,12 +94,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
      The current call view controller (if any).
      */
     CallViewController *currentCallViewController;
-    
-    /**
-     Call status window displayed when user goes back to app during a call.
-     */
-    UIWindow* callStatusBarWindow;
-    UIButton* callStatusBarButton;
     
     /**
      Account picker used in case of multiple account.
@@ -1915,7 +1911,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 if (!callIsEnded)
                 {
-                    [self addCallStatusBar];
+                    NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), callViewController.callerNameLabel.text];
+                    [self addCallStatusBar:btnTitle];
                 }
                 
                 if (completion)
@@ -1950,30 +1947,58 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 #pragma mark - Call status handling
 
-- (void)addCallStatusBar
+- (void)addCallStatusBar:(NSString*)buttonTitle
 {
     // Add a call status bar
-    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] applicationFrame].size.width, 44);
+    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, CALL_STATUS_BAR_HEIGHT);
     
-    callStatusBarWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0,0, topBarSize.width,topBarSize.height)];
-    callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
+    _callStatusBarWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, topBarSize.width, topBarSize.height)];
+    _callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
     
     // Create statusBarButton
-    callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width,topBarSize.height);
-    NSString *btnTitle = NSLocalizedStringFromTable(@"return_to_call", @"Vector", nil);
+    _callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width, topBarSize.height);
     
-    [callStatusBarButton setTitle:btnTitle forState:UIControlStateNormal];
-    [callStatusBarButton setTitle:btnTitle forState:UIControlStateHighlighted];
-    callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
+    [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
+    [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
+    _callStatusBarButton.titleLabel.textColor = [UIColor whiteColor];
     
-    [callStatusBarButton setBackgroundColor:kVectorColorGreen];
-    [callStatusBarButton addTarget:self action:@selector(returnToCallView) forControlEvents:UIControlEventTouchUpInside];
+    if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+    {
+        _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+    }
+    else
+    {
+        _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    }
+    
+    [_callStatusBarButton setBackgroundColor:kVectorColorGreen];
+    [_callStatusBarButton addTarget:self action:@selector(returnToCallView) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
-    [callStatusBarWindow addSubview:callStatusBarButton];
+    [_callStatusBarButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_callStatusBarWindow addSubview:_callStatusBarButton];
     
-    callStatusBarWindow.hidden = NO;
+    // Force callStatusBarButton to fill the window (to handle auto-layout in case of screen rotation)
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_callStatusBarButton
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:_callStatusBarWindow
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                       multiplier:1.0
+                                                                         constant:0];
+    
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:_callStatusBarButton
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:_callStatusBarWindow
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                       multiplier:1.0
+                                                                         constant:0];
+    
+    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint]];
+    
+    _callStatusBarWindow.hidden = NO;
     [self statusBarDidChangeFrame];
     
     // We need to listen to the system status bar size change events to refresh the root controller frame.
@@ -1986,18 +2011,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)removeCallStatusBar
 {
-    if (callStatusBarWindow)
+    if (_callStatusBarWindow)
     {
-        
-        // Hide & destroy it
-        callStatusBarWindow.hidden = YES;
-        [self statusBarDidChangeFrame];
-        [callStatusBarButton removeFromSuperview];
-        callStatusBarButton = nil;
-        callStatusBarWindow = nil;
-        
         // No more need to listen to system status bar changes
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+        
+        // Hide & destroy it
+        _callStatusBarWindow.hidden = YES;
+        [_callStatusBarButton removeFromSuperview];
+        _callStatusBarButton = nil;
+        _callStatusBarWindow = nil;
+        
+        [self statusBarDidChangeFrame];
     }
 }
 
@@ -2016,17 +2041,40 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     UIViewController *rootController = app.keyWindow.rootViewController;
     
     // Refresh the root view controller frame
-    CGRect frame = [[UIScreen mainScreen] applicationFrame];
-    if (callStatusBarWindow)
+    CGRect rootControllerFrame = [[UIScreen mainScreen] bounds];
+    
+    if (_callStatusBarWindow)
     {
-        // Substract the height of call status bar from the frame.
-        CGFloat callBarStatusHeight = callStatusBarWindow.frame.size.height;
+        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
         
-        CGFloat delta = callBarStatusHeight - frame.origin.y;
-        frame.origin.y = callBarStatusHeight;
-        frame.size.height -= delta;
+        switch (statusBarOrientation)
+        {
+            case UIInterfaceOrientationLandscapeLeft:
+            {
+                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
+                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width / 2);
+                break;
+            }
+            case UIInterfaceOrientationLandscapeRight:
+            {
+                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
+                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width / 2);
+                break;
+            }
+            default:
+            {
+                _callStatusBarWindow.transform = CGAffineTransformIdentity;
+                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
+                break;
+            }
+        }
+        
+        // Apply the vertical offset due to call status bar
+        rootControllerFrame.origin.y = CALL_STATUS_BAR_HEIGHT;
+        rootControllerFrame.size.height -= CALL_STATUS_BAR_HEIGHT;
     }
-    rootController.view.frame = frame;
+    
+    rootController.view.frame = rootControllerFrame;
     [rootController.view setNeedsLayout];
 }
 

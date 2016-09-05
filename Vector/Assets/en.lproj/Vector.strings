@@ -39,7 +39,8 @@
 "camera" = "Camera";
 "voice" = "Voice";
 "video" = "Video";
-"return_to_call" = "Return to call";
+"active_call" = "Active Call";
+"active_call_details" = "Active Call (%@)";
 
 // Authentication
 "auth_login" = "Log in";

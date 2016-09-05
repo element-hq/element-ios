@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -90,10 +90,10 @@
                                 <constraint firstAttribute="width" secondItem="2nY-YP-BvA" secondAttribute="height" multiplier="1:1" id="59L-Jf-tXO"/>
                                 <constraint firstAttribute="width" constant="46" id="p4p-x1-Puf"/>
                             </constraints>
-                            <state key="normal" image="hangUp.png">
+                            <state key="normal" image="call_hangup_icon.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <state key="highlighted" image="voice_call_icon.png"/>
+                            <state key="highlighted" image="call_hangup_icon.png"/>
                             <connections>
                                 <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="PB3-d8-Kbf"/>
                             </connections>
@@ -160,7 +160,7 @@
         </view>
     </objects>
     <resources>
-        <image name="hangUp.png" width="27" height="27"/>
+        <image name="call_hangup_icon.png" width="26" height="27"/>
         <image name="upload_icon.png" width="21" height="26"/>
         <image name="voice_call_icon.png" width="24" height="27"/>
     </resources>
