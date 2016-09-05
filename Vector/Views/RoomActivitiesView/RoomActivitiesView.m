@@ -192,11 +192,6 @@
     
     [self resetIcon];
     [self resetMessage];
-    
-    while (self.gestureRecognizers.count)
-    {
-        [self removeGestureRecognizer:self.gestureRecognizers[0]];
-    }
 }
 
 - (void)resetIcon

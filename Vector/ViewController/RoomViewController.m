@@ -960,6 +960,11 @@
         // We reset here the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
         self.showExpandedHeader = NO;
     }
+    else if (view == self.activitiesView)
+    {
+        // Dismiss the keyboard when user swipes down on activities view.
+        [self.inputToolbarView dismissKeyboard];
+    }
 }
 
 #pragma mark - Hide/Show expanded header
@@ -2628,6 +2633,12 @@
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
+        
+        // Reset gesture recognizers
+        while (roomActivitiesView.gestureRecognizers.count)
+        {
+            [roomActivitiesView removeGestureRecognizer:roomActivitiesView.gestureRecognizers[0]];
+        }
 
         if ([AppDelegate theDelegate].isOffline)
         {
@@ -2654,8 +2665,6 @@
                 [tapGesture setNumberOfTapsRequired:1];
                 [tapGesture setDelegate:self];
                 [roomActivitiesView addGestureRecognizer:tapGesture];
-
-                roomActivitiesView.userInteractionEnabled = YES;
             }
         }
         else if ([self checkUnsentMessages] == NO)
@@ -2684,6 +2693,12 @@
                 [self refreshTypingNotification];
             }
         }
+        
+        // Recognize swipe downward to dismiss keyboard if any
+        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeGesture:)];
+        [swipe setNumberOfTouchesRequired:1];
+        [swipe setDirection:UISwipeGestureRecognizerDirectionDown];
+        [roomActivitiesView addGestureRecognizer:swipe];
     }
 }
 
