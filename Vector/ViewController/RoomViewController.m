@@ -2374,9 +2374,9 @@
             
             // We promote here join by room alias instead of room id when an alias is available.
             NSString *roomIdOrAlias = roomPreviewData.roomId;
-            if (roomPreviewData.roomDataSource.room.state.aliases.count)
+            if (roomPreviewData.roomAliases.count)
             {
-                roomIdOrAlias = roomPreviewData.roomDataSource.room.state.aliases.firstObject;
+                roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
             }
             
             // Note in case of simple link to a room the signUrl param is nil
