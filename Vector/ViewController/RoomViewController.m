@@ -912,8 +912,7 @@
         
         // Check whether the call option is supported
         roomInputToolbarView.supportCallOption =
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
-        && self.roomDataSource.mxSession.callManager != nil
+        self.roomDataSource.mxSession.callManager != nil
         && (self.roomDataSource.room.state.joinedMembers.count == 2
             || ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"] && self.roomDataSource.room.state.joinedMembers.count > 2));
 

@@ -55,9 +55,8 @@
 #define OTHER_CLEAR_CACHE_INDEX      6
 #define OTHER_COUNT                  7
 
-#define LABS_VOIP_INDEX                 0
-#define LABS_CONFERENCE_CALL_INDEX      1
-#define LABS_COUNT                      2
+#define LABS_CONFERENCE_CALL_INDEX      0
+#define LABS_COUNT                      1
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -1008,35 +1007,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_VOIP_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_outgoing_voip", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsVoIP:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_CONFERENCE_CALL_INDEX)
+        if (row == LABS_CONFERENCE_CALL_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_conference_call", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
 
-            // VoIP must be enabled on order to change this settings
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"])
-            {
-                [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsConferenceCall:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            else
-            {
-                labelAndSwitchCell.mxkLabel.enabled = NO;
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-            }
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsConferenceCall:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
         }
@@ -1334,20 +1313,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
     }
-}
-
-- (void)toggleLabsVoIP:(id)sender
-{
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
-
-    NSLog(@"[SettingsViewController] %@ VoIP", enable ? @"Disable" : @"Enable");
-
-    [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableOutgoingVoIP"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    // Refresh the "Conference Call" button
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:LABS_CONFERENCE_CALL_INDEX inSection:SETTINGS_SECTION_LABS_INDEX]]
-                          withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)toggleLabsConferenceCall:(id)sender
