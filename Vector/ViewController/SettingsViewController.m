@@ -34,7 +34,7 @@
 #define SETTINGS_SECTION_ADVANCED_INDEX                 4
 #define SETTINGS_SECTION_OTHER_INDEX                    5
 #define SETTINGS_SECTION_LABS_INDEX                     6
-#define SETTINGS_SECTION_COUNT                          7
+#define SETTINGS_SECTION_COUNT                          6   // Not 7 because the LABS section is currently hidden
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -55,8 +55,7 @@
 #define OTHER_CLEAR_CACHE_INDEX      6
 #define OTHER_COUNT                  7
 
-#define LABS_CONFERENCE_CALL_INDEX      0
-#define LABS_COUNT                      1
+#define LABS_COUNT                   0
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -1007,18 +1006,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_CONFERENCE_CALL_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_conference_call", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
-
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsConferenceCall:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
     }
 
     return cell;
@@ -1312,65 +1299,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
-    }
-}
-
-- (void)toggleLabsConferenceCall:(id)sender
-{
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
-
-    if (sender && !enable)
-    {
-        // Ask confirmation to the user before enabling it
-        UISwitch *switchButton;
-        if ([sender isKindOfClass:UISwitch.class])
-        {
-            switchButton = (UISwitch*)sender;
-
-        }
-
-        // Prevent the toggle from toggling without the user confirmation
-        [switchButton setOn:NO animated:YES];
-
-        [currentAlert dismiss:NO];
-        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
-                                               message:NSLocalizedStringFromTable(@"settings_labs_conference_call_warning", @"Vector", nil)
-                                                 style:MXKAlertStyleAlert];
-
-        __weak typeof(self) weakSelf = self;
-
-        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-            if (weakSelf)
-            {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->currentAlert = nil;
-            }
-        }];
-
-        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]  style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-            if (weakSelf)
-            {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->currentAlert = nil;
-
-                // Apply the change
-                [switchButton setOn:YES animated:YES];
-                [strongSelf toggleLabsConferenceCall:nil];
-            }
-        }];
-
-        [currentAlert showInViewController:self];
-
-
-    }
-    else
-    {
-        NSLog(@"[SettingsViewController] %@ connference call", enable ? @"Disable" : @"Enable");
-
-        [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableConferenceCall"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 

@@ -912,9 +912,8 @@
         
         // Check whether the call option is supported
         roomInputToolbarView.supportCallOption =
-        self.roomDataSource.mxSession.callManager != nil
-        && (self.roomDataSource.room.state.joinedMembers.count == 2
-            || ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"] && self.roomDataSource.room.state.joinedMembers.count > 2));
+        self.roomDataSource.mxSession.callManager
+        && self.roomDataSource.room.state.joinedMembers.count >= 2;
 
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
@@ -2643,8 +2642,7 @@
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
-        else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"]
-                 && customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
         {
             // Show the "Ongoing conference call" banner only if the user is not in the conference
             MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
