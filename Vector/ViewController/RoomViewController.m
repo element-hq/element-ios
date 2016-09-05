@@ -105,6 +105,7 @@
     
     // Missed discussions badge
     NSUInteger missedDiscussionsCount;
+    NSUInteger missedHighlightCount;
     UIBarButtonItem *missedDiscussionsButton;
     UILabel *missedDiscussionsBadgeLabel;
     UIView  *missedDiscussionsBadgeLabelBgView;
@@ -270,7 +271,6 @@
     missedDiscussionsBarButtonCustomView.clipsToBounds = NO;
     
     missedDiscussionsBadgeLabelBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 21, 21)];
-    missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorPinkRed;
     [missedDiscussionsBadgeLabelBgView.layer setCornerRadius:10];
     
     [missedDiscussionsBarButtonCustomView addSubview:missedDiscussionsBadgeLabelBgView];
@@ -2712,21 +2712,33 @@
         return;
     }
     
-    NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
-    
-    if (count && self.roomDataSource.notificationCount)
+    NSUInteger highlightCount = 0;
+    NSUInteger missedCount = [MXKRoomDataSourceManager missedDiscussionsCount];
+    if (missedCount && self.roomDataSource.notificationCount)
     {
         // Remove the current room from the missed discussion counter
-        count--;
+        missedCount--;
     }
     
-    if (force || missedDiscussionsCount != count)
+    if (missedCount)
     {
-        missedDiscussionsCount = count;
+        // Compute the missed highlight count
+        highlightCount = [MXKRoomDataSourceManager missedHighlightDiscussionsCount];
+        if (highlightCount && self.roomDataSource.highlightCount)
+        {
+            // Remove the current room from the missed highlight counter
+            highlightCount--;
+        }
+    }
+    
+    if (force || missedDiscussionsCount != missedCount || missedHighlightCount != highlightCount)
+    {
+        missedDiscussionsCount = missedCount;
+        missedHighlightCount = highlightCount;
         
         NSMutableArray *leftBarButtonItems = [NSMutableArray arrayWithArray: self.navigationItem.leftBarButtonItems];
         
-        if (count)
+        if (missedCount)
         {
             // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
             UINavigationController *mainNavigationController = self.navigationController;
@@ -2738,13 +2750,13 @@
             UIBarButtonItem *backButton = backItem.backBarButtonItem;
 
             // Refresh missed discussions count label
-            if (count > 99)
+            if (missedCount > 99)
             {
                 missedDiscussionsBadgeLabel.text = @"99+";
             }
             else
             {
-                missedDiscussionsBadgeLabel.text = [NSString stringWithFormat:@"%tu", count];
+                missedDiscussionsBadgeLabel.text = [NSString stringWithFormat:@"%tu", missedCount];
             }
             
             [missedDiscussionsBadgeLabel sizeToFit];
@@ -2771,6 +2783,16 @@
                 CGFloat width = frame.size.width + frame.origin.x;
                 bgFrame.size.width = (width > 0 ? width : 0);
                 missedDiscussionsBarButtonCustomView.frame = bgFrame;
+            }
+            
+            // Set the right background color
+            if (highlightCount)
+            {
+                missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorPinkRed;
+            }
+            else
+            {
+                missedDiscussionsBadgeLabelBgView.backgroundColor = kVectorColorGreen;
             }
             
             if (!missedDiscussionsButton || [leftBarButtonItems indexOfObject:missedDiscussionsButton] == NSNotFound)
