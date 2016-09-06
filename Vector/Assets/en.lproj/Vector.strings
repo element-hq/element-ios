@@ -24,6 +24,7 @@
 "back" = "Back";
 "continue" = "Continue";
 "create" = "Create";
+"start" = "Start";
 "leave" = "Leave";
 "remove" = "Remove";
 "invite" = "Invite";
@@ -99,6 +100,8 @@
 "room_recents_conversations" = "ROOMS";
 "room_recents_low_priority" = "LOW PRIORITY";
 "room_recents_invites" = "INVITES";
+"room_recents_start_chat_with" = "Select people";
+"room_recents_create_empty_room" = "Create room";
 
 // Search
 "search_rooms" = "Rooms";

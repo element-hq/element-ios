@@ -208,6 +208,8 @@
 		F0B7037F1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0B7037D1D22D4AD00B63766 /* TableViewCellWithCheckBoxAndLabel.xib */; };
 		F0BE3DF01C6CE17200AC3111 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */; };
 		F0BE3DF21C6CE28300AC3111 /* RoomMemberDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */; };
+		F0C11E901D7DA907006697A7 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C11E8F1D7DA907006697A7 /* StartChatViewController.m */; };
+		F0C11E921D7DC629006697A7 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C11E911D7DC629006697A7 /* StartChatViewController.xib */; };
 		F0C34B611C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */; };
 		F0C34B621C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0C34B571C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib */; };
 		F0C34B631C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C34B591C15C28300C36F09 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m */; };
@@ -571,6 +573,9 @@
 		F0BE3DEE1C6CE17200AC3111 /* RoomMemberDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMemberDetailsViewController.h; sourceTree = "<group>"; };
 		F0BE3DEF1C6CE17200AC3111 /* RoomMemberDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMemberDetailsViewController.m; sourceTree = "<group>"; };
 		F0BE3DF11C6CE28300AC3111 /* RoomMemberDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMemberDetailsViewController.xib; sourceTree = "<group>"; };
+		F0C11E8E1D7DA907006697A7 /* StartChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartChatViewController.h; sourceTree = "<group>"; };
+		F0C11E8F1D7DA907006697A7 /* StartChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartChatViewController.m; sourceTree = "<group>"; };
+		F0C11E911D7DC629006697A7 /* StartChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartChatViewController.xib; sourceTree = "<group>"; };
 		F0C34B551C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingAttachmentBubbleCell.h; sourceTree = "<group>"; };
 		F0C34B561C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomOutgoingAttachmentBubbleCell.m; sourceTree = "<group>"; };
 		F0C34B571C15C28300C36F09 /* RoomOutgoingAttachmentBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentBubbleCell.xib; sourceTree = "<group>"; };
@@ -1062,6 +1067,9 @@
 		F094AA151B78E42600B1FBBF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F0C11E8E1D7DA907006697A7 /* StartChatViewController.h */,
+				F0C11E8F1D7DA907006697A7 /* StartChatViewController.m */,
+				F0C11E911D7DC629006697A7 /* StartChatViewController.xib */,
 				F0FE6F771D63752A0004E747 /* CallViewController.h */,
 				F0FE6F781D63752A0004E747 /* CallViewController.m */,
 				F0FE6F791D63752A0004E747 /* CallViewController.xib */,
@@ -1520,6 +1528,7 @@
 				3235CD8A1C3426D10084EA40 /* HomeSearchTableViewCell.xib in Resources */,
 				F056417C1C7C9FD7002276ED /* TableViewCellWithButton.xib in Resources */,
 				F05641841C7CBB58002276ED /* bubbles_bg_landscape@2x.png in Resources */,
+				F0C11E921D7DC629006697A7 /* StartChatViewController.xib in Resources */,
 				F02528F81C11B6FC00E1FE1B /* search_icon@2x.png in Resources */,
 				325F6A481C21D4C100C12F51 /* chevron@2x.png in Resources */,
 				F0026B541C916E68001D2C04 /* favouriteOff@3x.png in Resources */,
@@ -1684,6 +1693,7 @@
 				32492DB21C293C8900035C79 /* PublicRoomTableViewCell.m in Sources */,
 				F0A1CD221B9F4BBA00F9C15C /* RoomParticipantsViewController.m in Sources */,
 				F09EE0021C5134BE0078712F /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				F0C11E901D7DA907006697A7 /* StartChatViewController.m in Sources */,
 				F001D76C1B821E4F00A162C3 /* MediaPickerViewController.m in Sources */,
 				71F7F5151C218D8900E7ED8F /* RecentCellData.m in Sources */,
 				F0AF11F51D1029CF00FEE52F /* RoomIdOrAliasTableViewCell.m in Sources */,
