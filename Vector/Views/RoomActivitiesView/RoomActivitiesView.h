@@ -58,9 +58,11 @@
  Display an ongoing conference call.
  Replace the current notification if any.
 
- @param labelText the current typing message.
+ @param ongoingConferenceCallPressed the block called when the user clicks on the banner.
+                                     video is YES if the user chose to join the conf in video mode.
  */
-- (void)displayOngoingConferenceCall:(NSString*)labelText;
+- (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed;
+
 
 /**
  Display a "scroll to bottom" icon.

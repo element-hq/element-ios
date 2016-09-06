@@ -126,20 +126,42 @@
     }
 }
 
-- (void)displayOngoingConferenceCall:(NSString *)labelText
+- (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed
 {
     [self reset];
 
-    if (labelText.length)
-    {
-        self.backgroundColor = kVectorColorPinkRed;
+    objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed", [onOngoingConferenceCallPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-        self.iconImageView.image = [UIImage imageNamed:@"typing"];
-        self.messageLabel.text = labelText;
-        self.messageLabel.textColor = UIColor.whiteColor;
+    // Build the string to display in the banner
+    NSString *onGoingConferenceCall =
+    [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
+     NSLocalizedStringFromTable(@"voice", @"Vector", nil),
+     NSLocalizedStringFromTable(@"video", @"Vector", nil)];
 
-        self.messageLabel.hidden = NO;
-    }
+    NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
+
+    // Add a link on the "voice" string
+    NSRange voiceRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"voice", @"Vector", nil)];
+    [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:voiceRange];
+    [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVoicePressed" range:voiceRange];
+
+    // Add a link on the "video" string
+    NSRange videoRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
+    [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
+
+    // Display the string in white on pink red
+    NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
+    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:UIColor.whiteColor range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:kVectorColorPinkRed range:wholeString];
+    [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
+
+    self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
+    self.messageTextView.tintColor = UIColor.whiteColor;
+    self.messageTextView.hidden = NO;
+
+    self.backgroundColor = kVectorColorPinkRed;
+    self.messageTextView.backgroundColor = kVectorColorPinkRed;
 }
 
 - (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture
@@ -232,6 +254,26 @@
             onResendLinkPressed ();
         }
         
+        return NO;
+    }
+    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallWithVoicePressed"])
+    {
+        void (^onOngoingConferenceCallPressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed");
+        if (onOngoingConferenceCallPressed)
+        {
+            onOngoingConferenceCallPressed(NO);
+        }
+
+        return NO;
+    }
+    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallWithVideoPressed"])
+    {
+        void (^onOngoingConferenceCallPressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed");
+        if (onOngoingConferenceCallPressed)
+        {
+            onOngoingConferenceCallPressed(YES);
+        }
+
         return NO;
     }
     return YES;

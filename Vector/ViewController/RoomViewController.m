@@ -2185,17 +2185,6 @@
     }
 }
 
-- (void)onActivitiesViewOngoingConferenceCallTap:(UITapGestureRecognizer*)sender
-{
-    NSLog(@"[Vector RoomVC] onActivitiesViewOngoingConferenceCallTap");
-
-    // Make sure there is not yet a call
-    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
-    {
-        [customizedRoomDataSource.room placeCallWithVideo:YES success:nil failure:nil];
-    }
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2655,13 +2644,16 @@
             }
             else
             {
-                [roomActivitiesView displayOngoingConferenceCall:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil)];
+                [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
 
-                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onActivitiesViewOngoingConferenceCallTap:)];
-                [tapGesture setNumberOfTouchesRequired:1];
-                [tapGesture setNumberOfTapsRequired:1];
-                [tapGesture setDelegate:self];
-                [roomActivitiesView addGestureRecognizer:tapGesture];
+                    NSLog(@"[Vector RoomVC] onOngoingConferenceCallPressed");
+
+                    // Make sure there is not yet a call
+                    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
+                    {
+                        [customizedRoomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+                    }
+                }];
             }
         }
         else if ([self checkUnsentMessages] == NO)
