@@ -1585,11 +1585,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                                                                                                             
                                                                                                             strongSelf.incomingCallNotification = nil;
-                                                                                                            
-                                                                                                            [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
+
+                                                                                                            if (strongSelf->currentCallViewController)
+                                                                                                            {
+                                                                                                                [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
+
+                                                                                                                currentCallViewController = nil;
+                                                                                                            }
                                                                                                             
                                                                                                             mxCall.delegate = nil;
-                                                                                                            currentCallViewController = nil;
                                                                                                         }
                                                                                                         
                                                                                                     }];
@@ -1602,14 +1606,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                               __strong __typeof(weakSelf)strongSelf = weakSelf;
                                                               
                                                               strongSelf.incomingCallNotification = nil;
-                                                              
-                                                              [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
-                                                              
-                                                              [strongSelf.window.rootViewController presentViewController:strongSelf->currentCallViewController animated:YES completion:^{
-                                                                  
-                                                                  strongSelf->currentCallViewController.isPresented = YES;
-                                                                  
-                                                              }];
+
+                                                              if (strongSelf->currentCallViewController)
+                                                              {
+                                                                  [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
+
+                                                                  [strongSelf.window.rootViewController presentViewController:strongSelf->currentCallViewController animated:YES completion:^{
+
+                                                                      strongSelf->currentCallViewController.isPresented = YES;
+
+                                                                  }];
+                                                              }
                                                               
                                                               // Hide system status bar
                                                               [UIApplication sharedApplication].statusBarHidden = YES;
@@ -2029,10 +2036,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 - (void)returnToCallView
 {
     [self removeCallStatusBar];
-    
-    [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
-        currentCallViewController.isPresented = YES;
-    }];
+
+    if (currentCallViewController)
+    {
+        [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
+            currentCallViewController.isPresented = YES;
+        }];
+    }
 }
 
 - (void)statusBarDidChangeFrame
