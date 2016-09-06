@@ -162,6 +162,9 @@
 
     self.backgroundColor = kVectorColorPinkRed;
     self.messageTextView.backgroundColor = kVectorColorPinkRed;
+
+    // Hide the separator to display correctly the red pink conf call banner
+    self.separatorView.hidden = YES;
 }
 
 - (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture
@@ -210,8 +213,10 @@
 
 - (void)reset
 {
+    self.separatorView.hidden = NO;
+
     self.backgroundColor = UIColor.clearColor;
-    
+
     [self resetIcon];
     [self resetMessage];
 }
