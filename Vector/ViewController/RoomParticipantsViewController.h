@@ -75,6 +75,10 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
 
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
+
 /**
  A matrix room (nil by default).
  */

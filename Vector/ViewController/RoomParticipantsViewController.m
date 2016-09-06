@@ -100,6 +100,27 @@
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
+    // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
+    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    
+    _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.searchBarHeader
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.tableView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    
+    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
@@ -1668,8 +1689,23 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    // "Done" key has been pressed. Cancel the invitation process
-    [self searchBarCancelButtonClicked:searchBar];
+    // "Done" key has been pressed.
+    
+    // Check whether the current search input is a valid email or a Matrix user ID
+    if (currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
+    {
+        // Select this contact rather than having to hit +
+        MXKContact *contact = invitableContacts[0];
+        
+        // Sanity check
+        if (contact)
+        {
+            [self didSelectInvitableContact:contact];
+        }
+    }
+    
+    // Dismiss keyboard
+    [_searchBarView resignFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
