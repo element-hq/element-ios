@@ -2587,7 +2587,7 @@
             {
                 // Workaround to manage the "back to call" banner: go back temporary the call screen.
                 // It will correctly manage the hide of this banner
-                [[AppDelegate theDelegate] returnToCallView];
+                [[AppDelegate theDelegate] presentCallViewController];
             }
 
             [self refreshActivitiesViewDisplay];
