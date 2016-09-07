@@ -1613,6 +1613,9 @@
     
     currentSearchText = searchText;
     
+    // Check whether the search input is a valid email or a Matrix user ID
+    BOOL isValidInput = ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]);
+    
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
     
     // Update invitable contacts list:
@@ -1624,9 +1627,13 @@
         {
             if ([contact hasPrefix:currentSearchText])
             {
-                [invitableContacts addObject:contact];
-                
-                isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                // Ignore the contact if it corresponds to the search input
+                if (!isValidInput || [contact.displayName isEqualToString:currentSearchText] == NO)
+                {
+                    [invitableContacts addObject:contact];
+                    
+                    isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                }
             }
         }
         

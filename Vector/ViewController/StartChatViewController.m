@@ -36,10 +36,11 @@
     // The contact used to describe the current user.
     MXKContact *userContact;
     
-    //
+    // Navigation bar items
     UIBarButtonItem *cancelBarButtonItem;
     UIBarButtonItem *createBarButtonItem;
     
+    // HTTP Request
     MXHTTPOperation *roomCreationRequest;
     
     // Search session
