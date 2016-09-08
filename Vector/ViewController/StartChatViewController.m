@@ -657,7 +657,7 @@
     else if (sender == self.navigationItem.leftBarButtonItem)
     {
         // Cancel has been pressed
-        if (_isAddParticipantSearchBarEditing)
+        if (_isAddParticipantSearchBarEditing && participants.count)
         {
             // Cancel the search process
             [self searchBarCancelButtonClicked:_searchBarView];
