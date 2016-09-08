@@ -354,8 +354,8 @@
     {
         if (!currentSearchText.length)
         {
-            // Display the list of contacts for whom a 1:1 room exists by default
-            invitableContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].oneToOneMatrixContacts];
+            // Display by default all the contacts who share a private room with the current user
+            invitableContacts = [NSMutableArray arrayWithArray:[[MXKContactManager sharedManager] privateMatrixContacts:self.mainSession]];
             
             // Sort the refreshed list of the invitable contacts
             [self sortInvitableContacts];
