@@ -32,20 +32,20 @@ PODS:
   - GoogleAnalytics (3.16.0)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.8.16)
-  - MatrixKit (0.3.15):
+  - MatrixKit (0.3.16):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (= 0.6.13)
-  - MatrixSDK (0.6.13):
+    - MatrixSDK (= 0.6.14)
+  - MatrixSDK (0.6.14):
     - AFNetworking (~> 3.1.0)
   - WebRTC (1.0.13807)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
-  - MatrixKit (= 0.3.15)
+  - MatrixKit (= 0.3.16)
   - WebRTC (= 1.0.13807)
 
 SPEC CHECKSUMS:
@@ -57,10 +57,10 @@ SPEC CHECKSUMS:
   GoogleAnalytics: 3de986b2fa29012c69fa415566006a9c9cf25320
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: acb5805f67892db37adc3440290a367923672b51
-  MatrixKit: e1ad20b1570cdd1b847af921e940910bd4cc3a97
-  MatrixSDK: d848e4050411f66061f98b77f8bcb1a1eca377a2
+  MatrixKit: 6bab7a45a776ff3b0a570bff5440fb476ca89432
+  MatrixSDK: 913f5fcae81f6d9eb80734536dae76a6922050f2
   WebRTC: 5263e2983d21b6c53e0e6859aaf8aabeee6bafdf
 
-PODFILE CHECKSUM: beaabaf63d7ef87b4561b160e55c7a0b8f0c927c
+PODFILE CHECKSUM: 3eb2379ab1b8db7af27e643c226e9cbbe1f0eed1
 
 COCOAPODS: 1.0.1

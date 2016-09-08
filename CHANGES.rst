@@ -1,3 +1,56 @@
+Changes in Vector iOS in 0.1.17 (2016-09-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.16).
+ * Enhancement: Improve room creation process #529
+ * VoIP and conference call features are enabled by default.
+ * Custom audio call sounds.
+ * Hyperlink mxids and room aliases: open room member detail or contact detail screen when clicking on a mxid #442.
+ * Intercept and create matrix.to URLs within the app #547.
+ * Chat screen: We should put an unread room count next to the back button #467.
+ * Chat screen: New message(s) notification #532.
+ * Chat screen: Add "view source" option on the selected event #459.
+ * Chat screen: Context menu should have option to quote a message #502.
+ * Chat screen: Cut the context menu in 2 pages. The 2nd page of options is displayed when pressing "More" #502.
+ * Room Settings: Ability to copy permalinks for rooms and msgs #276.
+ * Call screen: use white as the background colour on VC on iOS.
+ * Conference call: Let users join confs as voice or video #574.
+ * Settings: Add 'mark all as read' option #541.
+
+Bug fixes:
+ * Fix crash in [SettingsViewController heightForHeaderInSection:].
+ * Fix crash with incoming calls: "Application tried to present a nil modal view controller on target <UISplitViewController: 0x13f833800>".
+ * On iPad, after you use room search, there's no way to leave the search view #440.
+ * Chat screen: The navigation bar is missing #414.
+ * Chat screen: Hide the expanded header when user has left the current room.
+ * Chat screen: The collapse point for scrolling down the keyboard should include the activities view #280.
+ * Chat screen: missed discussions badge would go red only if the user missed a highlight #563.
+ * Chat screen: Conference call banner: hide the 1px separator view that rendered badly with the banner.
+ * Chat screen: wrong attachment is opened #387.
+ * Chat screen: mention the member name at the cursor position (not a the end) #385.
+ * Chat screen: Add feedback when user clicks on attached files #534.
+ * Chat screen: Attachment viewer: Video controls are buggy #460.
+ * Chat screen: Preview on world readable room failed #556.
+ * Chat screen: Until e2e is impl'd, encrypted msgs should be shown in the UI as unencryptable warning text #559.
+ * Chat screen: Kick reason should displayed like the webclient #549.
+ * Room screen: mention the member name at the cursor position (not a the end) #163.
+ * Room activities: Allow to display the info on 2 lines so that "Connectivity to the server has been lost" can be displayed on iPhone5 in portrait.
+ * Room Settings: tap on existing room address is ignored #503.
+ * Room Settings: some addresses are missing #528.
+ * Room members: a member is displayed offline by mistake #406.
+ * Room participants: the same email address is coming up twice #367.
+ * Room participants: Folks expect hitting 'done' when entering an mxid to invite, rather than having to hit + #487.
+ * Call: The "Return to call" banner does not rotate with the device #482.
+ * Call: there is no timeout on outgoing call #577.
+ * Call: When screen is locked, rotating the screen landscape makes local video preview go upside down #519.
+ * Call: Locking phone whilst setting up a call interrupts the call setup #161.
+ * AppDelegate: Notification display failed when a view controller is presented modally.
+ * Settings: Trim leading/trailing space when setting display names #554.
+ * Vector automatically marks incoming messages as read in background #558.
+ * Sync has got stuck while the app was backgrounded #506.
+ * Handle 404 (Event not found) on permalinks #484.
+
 Changes in Vector iOS in 0.1.16 (2016-08-25)
 ===============================================
 
