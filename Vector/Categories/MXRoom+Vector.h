@@ -27,9 +27,14 @@
 @property(nonatomic, readonly) NSString* vectorDisplayname;
 
 /**
- Tell whether the notifications are disabled for the room.
+ Tell whether all the notifications are disabled for the room.
  */
 @property(nonatomic, readonly, getter=isMute) BOOL mute;
+
+/**
+ Tell whether the regular notifications are disabled for the room.
+ */
+@property(nonatomic, readonly, getter=isMentionsOnly) BOOL mentionsOnly;
 
 /*
  Observer when a rules deletion fails.
@@ -62,12 +67,27 @@
 - (void)setRoomTag:(NSString*)tag completion:(void (^)())completion;
 
 /**
- Enable/disable room notifications.
+ Disable all the room notifications.
  
- @param mute YES to disable room notification
  @param completion the block to execute at the end of the operation (independently if it succeeded or not).
  You may specify nil for this parameter.
  */
-- (void)setMute:(BOOL)mute completion:(void (^)())completion;
+- (void)mute:(void (^)())completion;
+
+/**
+ Set the room notifications in mention only mode.
+ 
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ You may specify nil for this parameter.
+ */
+- (void)mentionsOnly:(void (^)())completion;
+
+/**
+ Enable the room notifications.
+ 
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ You may specify nil for this parameter.
+ */
+- (void)allMessages:(void (^)())completion;
 
 @end

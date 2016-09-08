@@ -241,8 +241,42 @@
 
 - (BOOL)isMute
 {
-    MXPushRule* rule = [self getRoomPushRule];
+    // Check whether an override rule has been defined with the roomm id as rule id.
+    // This kind of rule is created to mute the room
+    MXPushRule* rule = [self getOverrideRoomPushRule];
+    if (rule)
+    {
+        for (MXPushRuleAction *ruleAction in rule.actions)
+        {
+            if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
+            {
+                for (MXPushRuleCondition *ruleCondition in rule.conditions)
+                {
+                    if (ruleCondition.kindType == MXPushRuleConditionTypeEventMatch)
+                    {
+                        NSString *key;
+                        NSString *pattern;
+                        
+                        MXJSONModelSetString(key, ruleCondition.parameters[@"key"]);
+                        MXJSONModelSetString(pattern, ruleCondition.parameters[@"pattern"]);
+                        
+                        if (key && pattern && [key isEqualToString:@"room_id"] && [pattern isEqualToString:self.state.roomId])
+                        {
+                            return rule.enabled;
+                        }
+                    }
+                }
+            }
+        }
+    }
     
+    return NO;
+}
+
+- (BOOL)isMentionsOnly
+{
+    // Check push rules at room level
+    MXPushRule *rule = [self getRoomPushRule];
     if (rule)
     {
         for (MXPushRuleAction *ruleAction in rule.actions)
@@ -257,10 +291,10 @@
     return NO;
 }
 
-- (void)setMute:(BOOL)mute completion:(void (^)())completion
+- (void)mute:(void (^)())completion
 {
     // Check the current notification mode
-    if (self.isMute == mute)
+    if (self.isMute)
     {
         if (completion)
         {
@@ -269,64 +303,189 @@
         return;
     }
     
-    MXPushRule* rule = [self getRoomPushRule];
-    
-    if (!mute)
+    // Check whether a rule at room level must be removed first
+    if (self.isMentionsOnly)
     {
-        // let the other notification rules manage the pushes.
-        [self removePushRule:rule completion:completion];
+        MXPushRule* rule = [self getRoomPushRule];
+        
+        [self removePushRule:rule completion:^{
+            
+            [self mute:completion];
+            
+        }];
+        
+        return;
+    }
+    
+    // The user does not want to have push at all
+    MXPushRule* rule = [self getOverrideRoomPushRule];
+    
+    // Check if no rule is already defined.
+    if (!rule)
+    {
+        // Add a new one
+        [self addPushRuleToMute:completion];
     }
     else
     {
-        // User does not want to have push
-        
-        // Check if no rule is already defined.
-        if (!rule)
+        // Check whether there is no pending update for this room
+        if (self.notificationCenterDidUpdateObserver)
         {
-            // Add a new one
-            [self addPushRuleToDisableNotification:completion];
+            NSLog(@"[MXRoom+Vector] Request in progress: ignore push rule update");
+            if (completion)
+            {
+                completion();
+            }
+            return;
+        }
+        
+        // check if the user did not define one
+        BOOL hasDontNotifyRule = NO;
+        
+        for (MXPushRuleAction *ruleAction in rule.actions)
+        {
+            if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
+            {
+                hasDontNotifyRule = YES;
+                break;
+            }
+        }
+        
+        // if the user defined one, use it
+        if (hasDontNotifyRule)
+        {
+            [self enablePushRule:rule completion:completion];
         }
         else
         {
-            // Check whether there is no pending update for this room
-            if (self.notificationCenterDidUpdateObserver)
-            {
-                NSLog(@"[MXRoom+Vector] Request in progress: ignore push rule update");
-                if (completion)
-                {
-                    completion();
-                }
-                return;
-            }
+            // If the user has defined a room rule, the rule is deleted before adding new one.
+            [self removePushRule:rule completion:^{
+                
+                // Add new rule to disable notification
+                [self addPushRuleToMute:completion];
+                
+            }];
+        }
+    }
+}
+
+- (void)mentionsOnly:(void (^)())completion
+{
+    // Check the current notification mode
+    if (self.isMentionsOnly)
+    {
+        if (completion)
+        {
+            completion();
+        }
+        return;
+    }
+    
+    // Check whether an override rule must be removed first
+    if (self.mute)
+    {
+        MXPushRule* rule = [self getOverrideRoomPushRule];
+        
+        [self removePushRule:rule completion:^{
             
-            // check if the user did not define one
-            BOOL hasDontNotifyRule = NO;
+            [self mentionsOnly:completion];
             
-            for (MXPushRuleAction *ruleAction in rule.actions)
+        }];
+        
+        return;
+    }
+    
+    // The user wants to have push only for highlighted notifications
+    MXPushRule* rule = [self getRoomPushRule];
+    
+    // Check if no rule is already defined.
+    if (!rule)
+    {
+        // Add a new one
+        [self addPushRuleToMentionsOnly:completion];
+    }
+    else
+    {
+        // Check whether there is no pending update for this room
+        if (self.notificationCenterDidUpdateObserver)
+        {
+            NSLog(@"[MXRoom+Vector] Request in progress: ignore push rule update");
+            if (completion)
             {
-                if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
-                {
-                    hasDontNotifyRule = YES;
-                    break;
-                }
+                completion();
             }
-            
-            // if the user defined one, use it
-            if (hasDontNotifyRule)
+            return;
+        }
+        
+        // check if the user did not define one
+        BOOL hasDontNotifyRule = NO;
+        
+        for (MXPushRuleAction *ruleAction in rule.actions)
+        {
+            if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
             {
-                [self enablePushRule:rule completion:completion];
-            }
-            else
-            {
-                // If the user has defined a room rule, the rule is deleted before adding new one.
-                [self removePushRule:rule completion:^{
-                    
-                    // Add new rule to disable notification
-                    [self addPushRuleToDisableNotification:completion];
-                    
-                }];
+                hasDontNotifyRule = YES;
+                break;
             }
         }
+        
+        // if the user defined one, use it
+        if (hasDontNotifyRule)
+        {
+            [self enablePushRule:rule completion:completion];
+        }
+        else
+        {
+            // If the user has defined a room rule, the rule is deleted before adding new one.
+            [self removePushRule:rule completion:^{
+                
+                // Add new rule to disable notification
+                [self addPushRuleToMentionsOnly:completion];
+                
+            }];
+        }
+    }
+}
+
+- (void)allMessages:(void (^)())completion
+{
+    // Check the current notification mode
+    if (!self.isMentionsOnly && !self.isMute)
+    {
+        // Nothing to do
+        if (completion)
+        {
+            completion();
+        }
+        return;
+    }
+    
+    // Check whether an override rule must be removed first
+    if (self.isMute)
+    {
+        MXPushRule* rule = [self getOverrideRoomPushRule];
+        
+        [self removePushRule:rule completion:^{
+            
+            // Check the push rule at room level now
+            [self allMessages:completion];
+            
+        }];
+        
+        return;
+    }
+    
+    // Check whether a rule at room level must be removed
+    if (self.isMentionsOnly)
+    {
+        MXPushRule* rule = [self getRoomPushRule];
+        
+        [self removePushRule:rule completion:^{
+            
+            // let the other notification rules manage the pushes.
+            [self removePushRule:rule completion:completion];
+            
+        }];
     }
 }
 
@@ -353,7 +512,28 @@
     return nil;
 }
 
-- (void)addPushRuleToDisableNotification:(void (^)())completion
+- (MXPushRule*)getOverrideRoomPushRule
+{
+    NSArray* rules = self.mxSession.notificationCenter.rules.global.override;
+    
+    // sanity checks
+    if (rules)
+    {
+        for(MXPushRule* rule in rules)
+        {
+            // the rule id is the room Id
+            // it is the server trick to avoid duplicated rule on the same room.
+            if ([rule.ruleId isEqualToString:self.state.roomId])
+            {
+                return rule;
+            }
+        }
+    }
+    
+    return nil;
+}
+
+- (void)addPushRuleToMentionsOnly:(void (^)())completion
 {
     MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
     
@@ -410,6 +590,66 @@
                              notify:NO
                               sound:NO
                           highlight:NO];
+}
+
+- (void)addPushRuleToMute:(void (^)())completion
+{
+    MXNotificationCenter* notificationCenter = self.mxSession.notificationCenter;
+    
+    // Define notificationCenter observers if a completion block is defined.
+    if (completion)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        self.notificationCenterDidUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            // Check whether the rule has been added
+            BOOL isAdded = ([self getOverrideRoomPushRule] != nil);
+            if (isAdded)
+            {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                
+                if (strongSelf.notificationCenterDidUpdateObserver)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                    strongSelf.notificationCenterDidUpdateObserver = nil;
+                }
+                
+                if (strongSelf.notificationCenterDidFailObserver)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                    strongSelf.notificationCenterDidFailObserver = nil;
+                }
+                
+                completion();
+            }
+        }];
+        
+        self.notificationCenterDidFailObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidFailRulesUpdate object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            
+            if (strongSelf.notificationCenterDidUpdateObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidUpdateObserver];
+                strongSelf.notificationCenterDidUpdateObserver = nil;
+            }
+            
+            if (strongSelf.notificationCenterDidFailObserver)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf.notificationCenterDidFailObserver];
+                strongSelf.notificationCenterDidFailObserver = nil;
+            }
+            
+            completion();
+        }];
+    }
+    
+    [notificationCenter addOverrideRuleWithId:self.state.roomId
+                                   conditions:@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.state.roomId}
+                                       notify:NO
+                                        sound:NO
+                                    highlight:NO];
 }
 
 - (void)removePushRule:(MXPushRule *)rule completion:(void (^)())completion
