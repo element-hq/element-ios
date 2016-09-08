@@ -154,6 +154,9 @@
     {
         // Disable auto join
         self.autoJoinInvitedRoom = NO;
+        
+        // Disable auto scroll to bottom on keyboard presentation
+        self.scrollHistoryToTheBottomOnKeyboardPresentation = NO;
     }
     
     return self;
@@ -166,6 +169,9 @@
     {
         // Disable auto join
         self.autoJoinInvitedRoom = NO;
+        
+        // Disable auto scroll to bottom on keyboard presentation
+        self.scrollHistoryToTheBottomOnKeyboardPresentation = NO;
     }
     
     return self;
