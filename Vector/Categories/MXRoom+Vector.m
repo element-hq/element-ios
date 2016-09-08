@@ -646,7 +646,7 @@
     }
     
     [notificationCenter addOverrideRuleWithId:self.state.roomId
-                                   conditions:@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.state.roomId}
+                                   conditions:@[@{@"kind":@"event_match", @"key":@"room_id", @"pattern":self.state.roomId}]
                                        notify:NO
                                         sound:NO
                                     highlight:NO];
