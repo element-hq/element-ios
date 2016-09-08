@@ -821,6 +821,15 @@
     
     if (section == invitableSection)
     {
+        if (!currentSearchText.length && self.mxRoom)
+        {
+            // Display by default all the contacts who share a private room with the current user
+            invitableContacts = [NSMutableArray arrayWithArray:[[MXKContactManager sharedManager] privateMatrixContacts:self.mxRoom.mxSession]];
+            
+            // Sort alphabetically this list of contacts
+            [self sortAlphabeticallyInvitableContacts];
+        }
+        
         count = invitableContacts.count;
     }
     else if (section == participantsSection)
@@ -991,13 +1000,11 @@
         // in order to make it more understandable for the end user
         if (indexPath.section == invitableSection)
         {
-            if (indexPath.row == 0)
+            if (currentSearchText.length && indexPath.row == 0)
             {
                 // This is the text entered by the user
-                NSString *searchText = mxkContact.displayName;
-                
-                // Check whether this input is a valid email or a Matrix user ID before adding the plus icon.
-                if (![MXTools isEmailAddress:searchText] && ![MXTools isMatrixUserIdentifier:searchText])
+                // Check whether the search input is a valid email or a Matrix user ID before adding the plus icon.
+                if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
                 {
                     participantCell.contentView.alpha = 0.5;
                     participantCell.userInteractionEnabled = NO;
@@ -1730,6 +1737,31 @@
 }
 
 #pragma mark -
+
+- (void)sortAlphabeticallyInvitableContacts
+{
+    // Sort invitable contacts by displaying local email first
+    // ...and then alphabetically.
+    NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
+        
+        BOOL isLocalEmailA = !contactA.matrixIdentifiers.count;
+        BOOL isLocalEmailB = !contactB.matrixIdentifiers.count;
+        
+        if (!isLocalEmailA && isLocalEmailB)
+        {
+            return NSOrderedDescending;
+        }
+        if (isLocalEmailA && !isLocalEmailB)
+        {
+            return NSOrderedAscending;
+        }
+        
+        return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+    };
+    
+    // Sort invitable contacts list
+    [invitableContacts sortUsingComparator:comparator];
+}
 
 - (void)sortInvitableContacts
 {
