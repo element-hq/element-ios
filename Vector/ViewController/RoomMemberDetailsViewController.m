@@ -215,7 +215,7 @@
     if (self.mxRoomMember)
     {
         // Use the vector style placeholder
-        return [AvatarGenerator generateRoomMemberAvatar:self.mxRoomMember.userId displayName:self.mxRoomMember.displayname];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxRoomMember.userId withDisplayName:self.mxRoomMember.displayname];
     }
     
     return [UIImage imageNamed:@"placeholder"];

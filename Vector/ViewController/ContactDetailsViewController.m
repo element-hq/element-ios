@@ -376,7 +376,7 @@
         
         if (matrixId)
         {
-            image = [AvatarGenerator generateRoomMemberAvatar:matrixId displayName:_contact.displayName];
+            image = [AvatarGenerator generateAvatarForMatrixItem:matrixId withDisplayName:_contact.displayName];
         }
         else
         {

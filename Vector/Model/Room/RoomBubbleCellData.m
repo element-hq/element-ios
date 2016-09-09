@@ -34,7 +34,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
     if (self)
     {
         // Use the vector style placeholder
-        self.senderAvatarPlaceholder = [AvatarGenerator generateRoomMemberAvatar:self.senderId displayName:self.senderDisplayName];
+        self.senderAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:self.senderId withDisplayName:self.senderDisplayName];
         
         // Increase maximum number of components
         self.maxComponentCount = 20;

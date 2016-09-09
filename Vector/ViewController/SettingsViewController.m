@@ -691,7 +691,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else
             {
-                UIImage* avatarImage = [AvatarGenerator generateRoomMemberAvatar:myUser.userId displayName:myUser.displayname];
+                UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:myUser.userId withDisplayName:myUser.displayname];
                 
                 if (myUser.avatarUrl)
                 {
