@@ -1303,11 +1303,21 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)toggleLocalContactsSync:(id)sender
 {
-    [MXKAppSettings standardAppSettings].syncLocalContacts = ![MXKAppSettings standardAppSettings].syncLocalContacts;
+    UISwitch *switchButton = (UISwitch*)sender;
 
-    // And refresh the corresponding table view cell
-    MXKTableViewCellWithLabelAndSwitch* cell = [self getLabelAndSwitchCell:self.tableView forIndexPath:[NSIndexPath indexPathForRow:CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC inSection:SETTINGS_SECTION_CONTACTS_INDEX]];
-    cell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
+    if (switchButton.on)
+    {
+        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+
+            [MXKAppSettings standardAppSettings].syncLocalContacts = granted;
+            switchButton.on = granted;
+        }];
+    }
+    else
+    {
+        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+        switchButton.on = NO;
+    }
 }
 
 - (void)toggleSendCrashReport:(id)sender
