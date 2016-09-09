@@ -35,7 +35,7 @@
 #define SETTINGS_SECTION_ADVANCED_INDEX                 5
 #define SETTINGS_SECTION_OTHER_INDEX                    6
 #define SETTINGS_SECTION_LABS_INDEX                     7
-#define SETTINGS_SECTION_COUNT                          7   // Not * because the LABS section is currently hidden
+#define SETTINGS_SECTION_COUNT                          7   // Not 8 because the LABS section is currently hidden
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
