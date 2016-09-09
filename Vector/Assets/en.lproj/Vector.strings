@@ -212,6 +212,7 @@
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_ignored_users" = "IGNORED USERS";
+"settings_contacts" = "LOCAL CONTACTS";
 "settings_advanced" = "ADVANCED";
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
@@ -240,6 +241,8 @@
 //"settings_call_invitations" = "Call invitations";
 
 "settings_unignore_user" = "Show all messages from %@?";
+
+"settings_contacts_discover_matrix_users_with_local_emails" = "Use emails to discover users";
 
 "settings_version" = "Version %@";
 "settings_term_conditions" = "Terms & conditions";
