@@ -27,7 +27,7 @@ pod 'GBDeviceInfo', '~> 4.1.0'
 pod 'GoogleAnalytics'
 
 # The Google WebRTC stack
-pod 'WebRTC', '1.0.13807'
+pod 'WebRTC', '13869.6.0'
 
 end
 

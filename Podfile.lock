@@ -40,13 +40,13 @@ PODS:
     - MatrixSDK (= 0.6.14)
   - MatrixSDK (0.6.14):
     - AFNetworking (~> 3.1.0)
-  - WebRTC (1.0.13807)
+  - WebRTC (13869.6.0)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
   - MatrixKit (= 0.3.16)
-  - WebRTC (= 1.0.13807)
+  - WebRTC (= 13869.6.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -59,8 +59,8 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: acb5805f67892db37adc3440290a367923672b51
   MatrixKit: 6bab7a45a776ff3b0a570bff5440fb476ca89432
   MatrixSDK: 913f5fcae81f6d9eb80734536dae76a6922050f2
-  WebRTC: 5263e2983d21b6c53e0e6859aaf8aabeee6bafdf
+  WebRTC: ee369681c4f06e868fa45a7a6abbbf2c865c49ae
 
-PODFILE CHECKSUM: 3eb2379ab1b8db7af27e643c226e9cbbe1f0eed1
+PODFILE CHECKSUM: 88ca050feb1d656ce9b2fdea0c5a4f15493be1f9
 
 COCOAPODS: 1.0.1
