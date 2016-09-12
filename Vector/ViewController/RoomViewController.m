@@ -443,6 +443,8 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+    
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
     contentInset.bottom = self.bottomLayoutGuide.length;
     self.bubblesTableView.contentInset = contentInset;
