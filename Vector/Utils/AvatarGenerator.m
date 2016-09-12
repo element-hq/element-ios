@@ -64,8 +64,26 @@ static UILabel* backgroundLabel = nil;
 }
 
 /**
- Create an UIImage with the text and the background color.
+ Return the first valid character for avatar creation.
  */
++ (NSString *)firstChar:(NSString *)text
+{
+    if ([text hasPrefix:@"@"] || [text hasPrefix:@"#"] || [text hasPrefix:@"!"])
+    {
+        text = [text substringFromIndex:1];
+    }
+    
+    // default firstchar
+    NSString* firstChar = @" ";
+    
+    if (text.length > 0)
+    {
+        firstChar = [[text substringToIndex:1] uppercaseString];
+    }
+    
+    return firstChar;
+}
+
 + (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color
 {
     if (!backgroundLabel)
@@ -93,24 +111,37 @@ static UILabel* backgroundLabel = nil;
     return image;
 }
 
++ (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color size:(CGFloat)size andFontSize:(CGFloat)fontSize
+{
+    UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size, size)];
+    bgLabel.textColor = [UIColor whiteColor];
+    bgLabel.textAlignment = NSTextAlignmentCenter;
+    bgLabel.font = [UIFont boldSystemFontOfSize:fontSize];
+    
+    bgLabel.text = text;
+    bgLabel.backgroundColor = color;
+    
+    // Create a "canvas" (image context) to draw in.
+    UIGraphicsBeginImageContextWithOptions(bgLabel.frame.size, NO, 0);
+    
+    // set to the top quality
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    [[bgLabel layer] renderInContext: UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // Return the image.
+    return image;
+}
+
 /**
  Returns the UIImage for the text and a selected color.
  It checks first if it is not yet cached before generating one.
  */
-+ (UIImage*)avatarForText:(NSString*)aText andColorIndex:(NSUInteger)colorIndex
++ (UIImage*)avatarForText:(NSString*)text andColorIndex:(NSUInteger)colorIndex
 {
-    if ([aText hasPrefix:@"@"] || [aText hasPrefix:@"#"] || [aText hasPrefix:@"!"])
-    {
-        aText = [aText substringFromIndex:1];
-    }
-
-    // default firstchar
-    NSString* firstChar = @" ";
-    
-    if (aText.length > 0)
-    {
-        firstChar = [[aText substringToIndex:1] uppercaseString];
-    }
+    NSString* firstChar = [AvatarGenerator firstChar:text];
     
     // the images are cached to avoid create them several times
     // the key is <first upper character><index in the colors array>
@@ -138,18 +169,17 @@ static UILabel* backgroundLabel = nil;
     return [AvatarGenerator avatarForText:text andColorIndex:[AvatarGenerator colorIndexForText:text]];
 }
 
-+ (UIImage*)generateRoomMemberAvatar:(NSString*)userId displayName:(NSString*)displayname
++ (UIImage*)generateAvatarForMatrixItem:(NSString*)itemId withDisplayName:(NSString*)displayname
 {
-    // the selected color is based on the userId
-    NSUInteger index = [AvatarGenerator colorIndexForText:userId];
-    NSString* text = displayname ? displayname : userId;
-    
-    return [AvatarGenerator avatarForText:text andColorIndex:index];
+    return [AvatarGenerator avatarForText:(displayname ? displayname : itemId) andColorIndex:[AvatarGenerator colorIndexForText:itemId]];
 }
 
-+ (UIImage*)generateRoomAvatar:(NSString*)roomId andDisplayName:(NSString*)displayName
++ (UIImage*)generateAvatarForMatrixItem:(NSString*)itemId withDisplayName:(NSString*)displayname size:(CGFloat)size andFontSize:(CGFloat)fontSize
 {
-    return [AvatarGenerator avatarForText:displayName andColorIndex:[AvatarGenerator colorIndexForText:roomId]];
+    NSString* firstChar = [AvatarGenerator firstChar:(displayname ? displayname : itemId)];
+    NSUInteger colorIndex = [AvatarGenerator colorIndexForText:itemId];
+    
+    return [AvatarGenerator imageFromText:firstChar withBackgroundColor:[colorsList objectAtIndex:colorIndex] size:size andFontSize:fontSize];
 }
 
 @end

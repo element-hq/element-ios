@@ -27,7 +27,7 @@
     // replace the identicon icon by the Vector style one
     if (_mxMember && ([_mxMember.avatarUrl rangeOfString:@"identicon"].location != NSNotFound))
     {        
-        thumbnail = [AvatarGenerator generateRoomMemberAvatar:_mxMember.userId displayName:_mxMember.displayname];
+        thumbnail = [AvatarGenerator generateAvatarForMatrixItem:_mxMember.userId withDisplayName:_mxMember.displayname];
     }
     else
     {

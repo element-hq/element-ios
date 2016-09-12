@@ -925,7 +925,7 @@
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
         if (userPictureView)
         {
-            UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
+            UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
             NSString *avatarThumbURL = nil;
             if (self.mainSession.myUser.avatarUrl)
             {
@@ -1204,7 +1204,7 @@
             }
             else if (roomPreviewData.roomId && roomPreviewData.roomName)
             {
-                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateRoomAvatar:roomPreviewData.roomId andDisplayName:roomPreviewData.roomName];
+                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
             }
             else
             {

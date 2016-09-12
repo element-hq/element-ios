@@ -49,7 +49,7 @@
         }
     }
     
-    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:self.state.roomId andDisplayName:self.vectorDisplayname];
+    UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.state.roomId withDisplayName:self.vectorDisplayname];
     
     if (roomAvatarUrl)
     {
