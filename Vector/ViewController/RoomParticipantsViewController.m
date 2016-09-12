@@ -1684,13 +1684,21 @@
 {
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
-    
-    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+
+    // If not requested yet, ask user permission to sync their local contacts
+    if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
     {
-        // Allow local contacts sync in order to add address book emails in search result
-        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+        [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+
+        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+             if (granted)
+             {
+                 // Allow local contacts sync in order to add address book emails in search result
+                 [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+             }
+         }];
     }
-    
+
     return YES;
 }
 

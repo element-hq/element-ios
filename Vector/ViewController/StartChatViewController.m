@@ -803,8 +803,19 @@
     
     if (![MXKAppSettings standardAppSettings].syncLocalContacts)
     {
-        // Allow local contacts sync in order to add address book emails in search result
-        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+        // If not requested yet, ask user permission to sync their local contacts
+        if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
+        {
+            [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+
+            [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+                if (granted)
+                {
+                    // Allow local contacts sync in order to add address book emails in search result
+                    [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+                }
+            }];
+        }
     }
     
     return YES;

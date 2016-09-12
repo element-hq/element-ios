@@ -31,10 +31,11 @@
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
 #define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
-#define SETTINGS_SECTION_ADVANCED_INDEX                 4
-#define SETTINGS_SECTION_OTHER_INDEX                    5
-#define SETTINGS_SECTION_LABS_INDEX                     6
-#define SETTINGS_SECTION_COUNT                          6   // Not 7 because the LABS section is currently hidden
+#define SETTINGS_SECTION_CONTACTS_INDEX                 4
+#define SETTINGS_SECTION_ADVANCED_INDEX                 5
+#define SETTINGS_SECTION_OTHER_INDEX                    6
+#define SETTINGS_SECTION_LABS_INDEX                     7
+#define SETTINGS_SECTION_COUNT                          7   // Not 8 because the LABS section is currently hidden
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -45,6 +46,9 @@
 //#define NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX           5
 //#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
 #define NOTIFICATION_SETTINGS_COUNT                             2
+
+#define CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC    0
+#define CONTACTS_SETTINGS_COUNT                         1
 
 #define OTHER_VERSION_INDEX          0
 #define OTHER_TERM_CONDITIONS_INDEX  1
@@ -570,6 +574,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             count = 0;
         }
     }
+    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        count = CONTACTS_SETTINGS_COUNT;
+    }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
         count = 1;
@@ -830,9 +838,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
-        
-//        MXPushRule *rule;
-        
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -875,6 +880,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
 
         cell = privacyPolicyCell;
+    }
+    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        if (row == CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC)
+        {
+            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users_with_local_emails", @"Vector", nil);
+             enableAllCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
+            [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [enableAllCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = enableAllCell;
+        }
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -1034,6 +1053,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         // Hide this section
         return nil;
+    }
+    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -1275,6 +1298,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         // toggle the pushes
         [account setEnablePushNotifications:!account.pushNotificationServiceIsActive];
+    }
+}
+
+- (void)toggleLocalContactsSync:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+
+    if (switchButton.on)
+    {
+        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+
+            [MXKAppSettings standardAppSettings].syncLocalContacts = granted;
+            switchButton.on = granted;
+        }];
+    }
+    else
+    {
+        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+        switchButton.on = NO;
     }
 }
 
