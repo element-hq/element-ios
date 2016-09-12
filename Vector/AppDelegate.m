@@ -906,6 +906,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     completionHandler(UIBackgroundFetchResultNoData);
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // iOS 10 (at least up to GM beta release) does not call application:didReceiveRemoteNotification:fetchCompletionHandler:
+    // when the user clicks on a notification but it calls this deprecated version
+    // of didReceiveRemoteNotification.
+    // Use this method as a workaround as adviced at http://stackoverflow.com/a/39419245
+    NSLog(@"[AppDelegate] didReceiveRemoteNotification (deprecated version)");
+
+    [self application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult result) {
+    }];
+}
+
 - (void)refreshApplicationIconBadgeNumber
 {
     NSUInteger count = [MXKRoomDataSourceManager missedDiscussionsCount];
