@@ -83,7 +83,15 @@
     
     memberTitleView = [RoomMemberTitleView roomMemberTitleView];
     self.memberThumbnail = memberTitleView.memberAvatar;
-    
+
+    // Add tap to show the room member avatar in fullscreen
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.memberThumbnail addGestureRecognizer:tap];
+    self.memberThumbnail.userInteractionEnabled = YES;
+
     // Add the title view and define edge constraints
     memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.navigationItem.titleView addSubview:memberTitleView];
@@ -598,7 +606,32 @@
             self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
         }
     }
-}
+    else if (view == self.self.memberThumbnail)
+    {
+        // Show the avatar in full screen
+        __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
+        avatarFullScreenView.stretchable = YES;
 
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+            [avatarFullScreenView dismissSelection];
+            [avatarFullScreenView removeFromSuperview];
+
+            avatarFullScreenView = nil;
+        }];
+
+        NSString *avatarURL = nil;
+        if (self.mxRoomMember.avatarUrl)
+        {
+            avatarURL = [self.mainSession.matrixRestClient urlOfContent:self.mxRoomMember.avatarUrl];
+        }
+
+        [avatarFullScreenView setImageURL:avatarURL
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                             previewImage:((MXKImageView*)view).image];
+
+        [avatarFullScreenView showFullScreen];
+    }
+}
 
 @end
