@@ -856,8 +856,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 globalInfoCell = [[MXKTableViewCell alloc] init];
             }
-            
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil);
+
+            NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+            globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
             cell = globalInfoCell;
         }
@@ -1273,8 +1275,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [currentAlert dismiss:NO];
         
         __weak typeof(self) weakSelf = self;
-        
-        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil)
+
+        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName]
                                                message:nil
                                                  style:MXKAlertStyleAlert];
         

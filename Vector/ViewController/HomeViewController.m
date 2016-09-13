@@ -577,8 +577,10 @@
     __weak typeof(self) weakSelf = self;
     
     [currentAlert dismiss:NO];
-    
-    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil)
+
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+    currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName]
                                            message:nil
                                              style:MXKAlertStyleAlert];
     

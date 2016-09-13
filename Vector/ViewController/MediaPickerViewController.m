@@ -235,7 +235,12 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)checkDeviceAuthorizationStatus
 {
-    [MXKTools checkAccessForMediaType:AVMediaTypeVideo manualChangeMessage:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil) showPopUpInViewController:self completionHandler:^(BOOL granted) {
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+    [MXKTools checkAccessForMediaType:AVMediaTypeVideo
+                  manualChangeMessage:[NSString stringWithFormat:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil), appDisplayName]
+            showPopUpInViewController:self
+                    completionHandler:^(BOOL granted) {
 
         if (granted)
         {

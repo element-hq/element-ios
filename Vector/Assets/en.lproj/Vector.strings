@@ -230,8 +230,8 @@
 "settings_fail_to_update_profile" = "Fail to update profile";
 
 "settings_enable_push_notif" = "Notifications on this device";
-"settings_global_settings_info" = "Global notification settings are available on your Vector web client";
-"settings_on_denied_notification" = "Notifications are denied for Vector, please allow them in your device settings";
+"settings_global_settings_info" = "Global notification settings are available on your %@ web client";
+"settings_on_denied_notification" = "Notifications are denied for %@, please allow them in your device settings";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
 //"settings_messages_my_user_name" = "Msg containing my user name";
@@ -324,7 +324,7 @@
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
-"camera_access_not_granted" = "Vector doesn't have permission to use Camera, please change privacy settings";
+"camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
 
 // room display name
 "room_displayname_invite_from" = "Invite from %@";
@@ -339,8 +339,8 @@
 
 // No VoIP support
 "no_voip_title" = "Incoming call";
-"no_voip" = "%@ is calling you but the iOS Vector app does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
+"no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
 
 // Crash report
-"google_analytics_use_prompt" = "Would you like to help improve Vector by automatically reporting anonymous crash reports and usage data?";
+"google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
 
