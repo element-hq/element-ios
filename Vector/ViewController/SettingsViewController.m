@@ -1229,17 +1229,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://riot.im/copyright"];
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
                 [self.navigationController pushViewController:webViewViewController animated:YES];
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://riot.im/tac"];
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
                 [self.navigationController pushViewController:webViewViewController animated:YES];
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://riot.im/privacy"];
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
                 [self.navigationController pushViewController:webViewViewController animated:YES];
             }
             else if (row == OTHER_THIRD_PARTY_INDEX)
