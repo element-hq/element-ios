@@ -43,7 +43,7 @@
 + (BOOL)isUniversalLink:(NSURL*)url;
 
 /**
- Fix a http://vector.im path url.
+ Fix a http://vector.im or http://vector.im path url.
 
  This method fixes the issue with iOS which handles URL badly when there are several hash
  keys ('%23') in the link.
