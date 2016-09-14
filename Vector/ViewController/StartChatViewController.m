@@ -589,11 +589,11 @@
                                                                // Invite this user if a room is defined
                                                                [room inviteUser:participantId success:^{
                                                                    
-                                                                   NSLog(@"[RoomCreation] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                   NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
-                                                                   NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                   NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
                                                                    // Alert user
                                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                    
@@ -609,11 +609,11 @@
                                                                {
                                                                    [room inviteUserByEmail:participantId success:^{
                                                                        
-                                                                       NSLog(@"[RoomCreation] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                       NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
-                                                                       NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                       NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        
@@ -623,11 +623,11 @@
                                                                {
                                                                    [room inviteUser:participantId success:^{
                                                                        
-                                                                       NSLog(@"[RoomCreation] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                       NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
-                                                                       NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                       NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        
@@ -647,7 +647,7 @@
                                                        roomCreationRequest = nil;
                                                        [self stopActivityIndicator];
                                                        
-                                                       NSLog(@"[RoomCreation] Create room failed");
+                                                       NSLog(@"[StartChatViewController] Create room failed");
                                                        
                                                        // Alert user
                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
