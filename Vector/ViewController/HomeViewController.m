@@ -108,6 +108,8 @@
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+    
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 }
 
 - (void)dealloc
