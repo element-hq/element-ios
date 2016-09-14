@@ -63,8 +63,8 @@
 
 + (NSString *)webAppUrl
 {
-    // FIXME: When available, use the prod Vector web app URL
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
+    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
     //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
 }
 
