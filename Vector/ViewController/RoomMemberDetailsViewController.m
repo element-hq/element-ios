@@ -92,6 +92,15 @@
     [self.memberThumbnail addGestureRecognizer:tap];
     self.memberThumbnail.userInteractionEnabled = YES;
 
+    // Need to listen tap gesture on the area part of the avatar image that is outside
+    // of the navigation bar, its parent but smaller view.
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.roomMemberAvatarMask addGestureRecognizer:tap];
+    self.roomMemberAvatarMask.userInteractionEnabled = YES;
+
     // Add the title view and define edge constraints
     memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.navigationItem.titleView addSubview:memberTitleView];
@@ -606,7 +615,7 @@
             self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
         }
     }
-    else if (view == self.self.memberThumbnail)
+    else if (view == self.memberThumbnail || view == self.roomMemberAvatarMask)
     {
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
@@ -628,7 +637,7 @@
         [avatarFullScreenView setImageURL:avatarURL
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:((MXKImageView*)view).image];
+                             previewImage:self.memberThumbnail.image];
 
         [avatarFullScreenView showFullScreen];
     }
