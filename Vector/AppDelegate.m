@@ -1633,9 +1633,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                   [strongSelf presentCallViewController];
                                                               }
                                                               
-                                                              // Hide system status bar
-                                                              [UIApplication sharedApplication].statusBarHidden = YES;
-                                                              
                                                           }
                                                       }];
                 
@@ -1644,9 +1641,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             else
             {
                 [self presentCallViewController];
-                
-                // Hide system status bar
-                [UIApplication sharedApplication].statusBarHidden = YES;
             }
         }
         
@@ -1920,6 +1914,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
             NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
             
+            if (callIsEnded)
+            {
+                // Restore system status bar
+                [UIApplication sharedApplication].statusBarHidden = NO;
+            }
+            
             [callViewController dismissViewControllerAnimated:YES completion:^{
                 callViewController.isPresented = NO;
                 
@@ -1938,9 +1938,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (callIsEnded)
             {
                 [self removeCallStatusBar];
-                
-                // Restore system status bar
-                [UIApplication sharedApplication].statusBarHidden = NO;
                 
                 // Release properly
                 currentCallViewController.mxCall.delegate = nil;
@@ -2052,6 +2049,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
                 currentCallViewController.isPresented = YES;
                 
+                // Hide system status bar
+                [UIApplication sharedApplication].statusBarHidden = YES;
+                
             }];
         }
         else
@@ -2059,6 +2059,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
                 
                 currentCallViewController.isPresented = YES;
+                
+                // Hide system status bar
+                [UIApplication sharedApplication].statusBarHidden = YES;
                 
             }];
         }
