@@ -245,6 +245,7 @@
 "settings_contacts_discover_matrix_users_with_local_emails" = "Use emails to discover users";
 
 "settings_version" = "Version %@";
+"settings_copyright" = "Copyright";
 "settings_term_conditions" = "Terms & conditions";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_third_party_notices" = "Third-party Notices";
