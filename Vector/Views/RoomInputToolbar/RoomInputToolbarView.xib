@@ -88,7 +88,6 @@
                             <rect key="frame" x="554" y="0.0" width="46" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="2nY-YP-BvA" secondAttribute="height" multiplier="1:1" id="59L-Jf-tXO"/>
-                                <constraint firstAttribute="width" constant="46" id="p4p-x1-Puf"/>
                             </constraints>
                             <state key="normal" image="call_hangup_icon.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -116,6 +115,7 @@
                         <constraint firstAttribute="bottom" secondItem="2nY-YP-BvA" secondAttribute="bottom" id="asf-hj-bby"/>
                         <constraint firstAttribute="trailing" secondItem="2nY-YP-BvA" secondAttribute="trailing" id="gNM-BS-Uwc"/>
                         <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="95" id="hXO-cY-Jgz"/>
+                        <constraint firstItem="2nY-YP-BvA" firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="width" id="mHj-eR-atg"/>
                         <constraint firstItem="Hga-l8-Wua" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="pPH-Fp-phr"/>
                         <constraint firstAttribute="trailing" secondItem="Owf-M8-qJi" secondAttribute="trailing" id="vCd-Md-dvr"/>
                         <constraint firstAttribute="bottom" secondItem="G8Z-CM-tGs" secondAttribute="bottom" id="vpk-lw-TnO"/>
