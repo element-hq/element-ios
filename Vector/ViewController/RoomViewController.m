@@ -2060,6 +2060,7 @@
         if (selectedContact)
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
 
             selectedContact = nil;
