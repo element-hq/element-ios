@@ -742,6 +742,7 @@
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
         }
         else if ([[segue identifier] isEqualToString:@"showAuth"])
