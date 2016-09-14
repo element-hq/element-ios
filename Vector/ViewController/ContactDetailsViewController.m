@@ -120,7 +120,24 @@
     contactAvatar = contactTitleView.memberAvatar;
     contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
     contactAvatar.backgroundColor = [UIColor clearColor];
-    
+
+    // Add tap to show the contact avatar in fullscreen
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [contactAvatar addGestureRecognizer:tap];
+    contactAvatar.userInteractionEnabled = YES;
+
+    // Need to listen tap gesture on the area part of the avatar image that is outside
+    // of the navigation bar, its parent but smaller view.
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.contactAvatarMask addGestureRecognizer:tap];
+    self.contactAvatarMask.userInteractionEnabled = YES;
+
     // Add the title view and define edge constraints
     contactTitleView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.navigationItem.titleView addSubview:contactTitleView];
@@ -856,6 +873,35 @@
             // Restore display name
             self.contactNameLabel.text = _contact.displayName;
         }
+    }
+    else if (view == contactAvatar || view == self.contactAvatarMask)
+    {
+        // Show the avatar in full screen
+        __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
+        avatarFullScreenView.stretchable = YES;
+
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+            [avatarFullScreenView dismissSelection];
+            [avatarFullScreenView removeFromSuperview];
+
+            avatarFullScreenView = nil;
+        }];
+
+        NSString *avatarURL = nil;
+        if (self.firstMatrixId)
+        {
+            MXUser *user = [self.mainSession userWithUserId:self.firstMatrixId];
+            avatarURL = [self.mainSession.matrixRestClient urlOfContent:user.avatarUrl];
+        }
+
+        // TODO: Display the orignal contact avatar when the contast is not a Matrix user
+
+        [avatarFullScreenView setImageURL:avatarURL
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                             previewImage:contactAvatar.image];
+
+        [avatarFullScreenView showFullScreen];
     }
 }
 
