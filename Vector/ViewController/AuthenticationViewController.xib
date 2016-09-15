@@ -75,10 +75,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="415"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8r-TX-pwX" userLabel="Welcome Image View">
-                                    <rect key="frame" x="280" y="30" width="40" height="40"/>
+                                    <rect key="frame" x="228" y="15" width="145" height="60"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="40" id="ZFx-Mn-Kzq"/>
-                                        <constraint firstAttribute="height" constant="40" id="zA1-WN-LdU"/>
+                                        <constraint firstAttribute="width" constant="145" id="ZFx-Mn-Kzq"/>
+                                        <constraint firstAttribute="height" constant="60" id="zA1-WN-LdU"/>
                                     </constraints>
                                 </imageView>
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWb-IJ-v7F" userLabel="AuthInputsContainerView">
@@ -313,7 +313,7 @@
                                 <constraint firstAttribute="width" constant="600" placeholder="YES" id="hOT-Wn-hIb"/>
                                 <constraint firstAttribute="trailing" secondItem="xWb-IJ-v7F" secondAttribute="trailing" id="hko-ol-XDd"/>
                                 <constraint firstItem="xWb-IJ-v7F" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="76" id="khR-Uj-OTH"/>
-                                <constraint firstItem="d8r-TX-pwX" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="30" id="l68-Ta-YKg"/>
+                                <constraint firstItem="d8r-TX-pwX" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="15" id="l68-Ta-YKg"/>
                                 <constraint firstAttribute="centerX" secondItem="d8r-TX-pwX" secondAttribute="centerX" id="l6k-EH-Yb8"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="rS3-go-zbf"/>
                             </constraints>
@@ -379,7 +379,7 @@
         </view>
     </objects>
     <resources>
-        <image name="logo.png" width="40" height="40"/>
-        <image name="selection_untick.png" width="24" height="24"/>
+        <image name="logo.png" width="145" height="60"/>
+        <image name="selection_untick.png" width="22" height="22"/>
     </resources>
 </document>
