@@ -1,8 +1,20 @@
-Changes in  in 0.2.0 (2016-09-)
+Changes in 0.2.0 (2016-09-15)
 ===============================================
 
 Improvements:
+ * Update name & icons
  * Upgrade MatrixKit version (v0.3.17).
+ * Screen when placing a voip call can be incredibly ugly #597.
+ * Tap on avatar in Member Info page to zoom to view avatar full page #517.
+ * Change the message edit edit like in web #591
+ * Messages: "Start chat" is the suggestion to replace 'invite people'.
+ * Contact details: Enable voip call options.
+ * People tab: support email and matrix id selection.
+ 
+Bug fixes:
+ * Tapping notifications doesn't take you to the right room in iOS 10 #599.
+ * iOS10: App crashes when it wants to access user's data (Photos, Contacts, Camera, Mic) #605.
+ * Chat screen: Hang up icon overlap the send button #614.
 
 Changes in Vector iOS in 0.1.17 (2016-09-08)
 ===============================================
