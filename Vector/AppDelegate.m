@@ -41,6 +41,9 @@
 
 #import "CallViewController.h"
 
+// Uncomment the following line to use local contacts to discover matrix users.
+//#define MX_USE_CONTACTS_SERVER_SYNC
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -313,6 +316,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Configure Google Analytics here if the option is enabled
     [self startGoogleAnalytics];
     
+    // Configure local contacts management
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+    
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -469,9 +475,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [account resume];
     }
     
-    // refresh the contacts list
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-    [[MXKContactManager sharedManager] loadLocalContacts];
+    // Check if the application is allowed to access the local contacts
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    {
+        // Refresh the local contacts list by reloading it
+        [[MXKContactManager sharedManager] loadLocalContacts];
+    }
     
     _isAppForeground = YES;
 }

@@ -108,6 +108,37 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshContactsList) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
     
     [self refreshContactsList];
+    
+    // Handle here local contacts
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
+    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+    {
+        // If not requested yet, ask user permission to sync their local contacts
+        if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
+        {
+            [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+            
+            [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+                if (granted)
+                {
+                    // Allow local contacts sync in order to add address book emails in search result
+                    [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+                }
+            }];
+        }
+    }
+#else
+    // If not requested yet, ask user permission to access their local contacts
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        // Try to load the local contacts list
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[MXKContactManager sharedManager] loadLocalContacts];
+            
+        });
+    }
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
