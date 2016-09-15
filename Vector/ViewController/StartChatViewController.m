@@ -139,7 +139,7 @@
     
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
-    _searchBarView.autocapitalizationType = NO;
+    _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self refreshSearchBarItemsColor:_searchBarView];
     
     _searchBarHeaderBorder.backgroundColor = kVectorColorSilver;
@@ -589,11 +589,11 @@
                                                                // Invite this user if a room is defined
                                                                [room inviteUser:participantId success:^{
                                                                    
-                                                                   NSLog(@"[RoomCreation] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                   NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
-                                                                   NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                   NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
                                                                    // Alert user
                                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                    
@@ -609,11 +609,11 @@
                                                                {
                                                                    [room inviteUserByEmail:participantId success:^{
                                                                        
-                                                                       NSLog(@"[RoomCreation] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                       NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
-                                                                       NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                       NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        
@@ -623,11 +623,11 @@
                                                                {
                                                                    [room inviteUser:participantId success:^{
                                                                        
-                                                                       NSLog(@"[RoomCreation] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                       NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
-                                                                       NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                       NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        
@@ -647,7 +647,7 @@
                                                        roomCreationRequest = nil;
                                                        [self stopActivityIndicator];
                                                        
-                                                       NSLog(@"[RoomCreation] Create room failed");
+                                                       NSLog(@"[StartChatViewController] Create room failed");
                                                        
                                                        // Alert user
                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -801,13 +801,15 @@
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = NO;
     
+    // Handle here local contacts
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
     if (![MXKAppSettings standardAppSettings].syncLocalContacts)
     {
         // If not requested yet, ask user permission to sync their local contacts
         if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
         {
             [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
-
+            
             [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
                 if (granted)
                 {
@@ -817,6 +819,18 @@
             }];
         }
     }
+#else
+    // If not requested yet, ask user permission to access their local contacts
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        // Try to load the local contacts list
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[MXKContactManager sharedManager] loadLocalContacts];
+            
+        });
+    }
+#endif
     
     return YES;
 }

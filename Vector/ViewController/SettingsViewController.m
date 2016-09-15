@@ -27,6 +27,8 @@
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
+
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
@@ -36,6 +38,20 @@
 #define SETTINGS_SECTION_OTHER_INDEX                    6
 #define SETTINGS_SECTION_LABS_INDEX                     7
 #define SETTINGS_SECTION_COUNT                          7   // Not 8 because the LABS section is currently hidden
+
+#else
+
+#define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
+#define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
+#define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
+#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
+#define SETTINGS_SECTION_ADVANCED_INDEX                 4
+#define SETTINGS_SECTION_OTHER_INDEX                    5
+#define SETTINGS_SECTION_CONTACTS_INDEX                 6
+#define SETTINGS_SECTION_LABS_INDEX                     7
+#define SETTINGS_SECTION_COUNT                          6   // Not 8 because the CONTACTS and LABS section is currently hidden
+
+#endif
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1

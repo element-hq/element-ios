@@ -108,6 +108,8 @@
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+    
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 }
 
 - (void)dealloc
@@ -742,6 +744,7 @@
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
         }
         else if ([[segue identifier] isEqualToString:@"showAuth"])
