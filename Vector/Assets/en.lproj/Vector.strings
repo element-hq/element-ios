@@ -248,14 +248,12 @@
 "settings_copyright" = "Copyright";
 "settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Terms & conditions";
-"settings_term_conditions_url" = "https://riot.im/tac";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Third-party Notices";
 "settings_send_crash_report" = "Send anon crash & usage data";
 "settings_clear_cache" = "Clear cache";
-
-
 
 "settings_change_password" = "Change password";
 "settings_old_password" = "old password";
