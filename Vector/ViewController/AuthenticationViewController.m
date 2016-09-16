@@ -287,7 +287,7 @@
     // Homeserver migration: When the default homeserver url is different from matrix.org,
     // the login (or forgot pwd) process with an existing matrix.org accounts will then fail.
     // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"matrix.org"])
+    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"])
     {
         MXError *mxError = [[MXError alloc] initWithNSError:error];
         
