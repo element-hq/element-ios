@@ -74,12 +74,12 @@
     [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateNormal];
     [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateHighlighted];
     
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_icon"] forState:UIControlStateNormal];
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_icon"] forState:UIControlStateHighlighted];
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_icon"] forState:UIControlStateSelected];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateNormal];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateHighlighted];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_icon"] forState:UIControlStateSelected];
+    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_off_icon"] forState:UIControlStateNormal];
+    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_off_icon"] forState:UIControlStateHighlighted];
+    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_on_icon"] forState:UIControlStateSelected];
+    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_off_icon"] forState:UIControlStateNormal];
+    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_off_icon"] forState:UIControlStateHighlighted];
+    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_on_icon"] forState:UIControlStateSelected];
     [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"] forState:UIControlStateNormal];
     [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"] forState:UIControlStateSelected];
     [self.chatButton setImage:[UIImage imageNamed:@"call_chat_icon"] forState:UIControlStateNormal];
