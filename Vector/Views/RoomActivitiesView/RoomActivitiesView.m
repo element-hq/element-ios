@@ -72,6 +72,7 @@
         self.messageTextView.attributedText = tappableNotif;
         self.messageTextView.tintColor = kVectorColorPinkRed;
         self.messageTextView.hidden = NO;
+        self.messageTextView.backgroundColor = [UIColor clearColor];
     }
     else
     {
