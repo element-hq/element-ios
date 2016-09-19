@@ -1473,12 +1473,22 @@ static void *RecordingContext = &RecordingContext;
                 cell.albumThumbnail.image = result;
                 cell.tag = 0;
                 
+                if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumVideos)
+                {
+                    cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+                    cell.bottomLeftIcon.hidden = NO;
+                }
+                else
+                {
+                    cell.bottomLeftIcon.hidden = YES;
+                }
             }];
         }
         else
         {
             cell.albumThumbnail.image = nil;
             cell.albumThumbnail.backgroundColor = [UIColor lightGrayColor];
+            cell.bottomLeftIcon.hidden = YES;
         }
     }
     
