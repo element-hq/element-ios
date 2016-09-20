@@ -129,6 +129,12 @@ static void *RecordingContext = &RecordingContext;
     // Set camera preview background
     self.cameraPreviewContainerView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
     
+    // The top buttons background is circular
+    self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width / 2;
+    self.closeButton.clipsToBounds = YES;
+    self.cameraSwitchButton.layer.cornerRadius = self.cameraSwitchButton.frame.size.width / 2;
+    self.cameraSwitchButton.clipsToBounds = YES;
+    
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
