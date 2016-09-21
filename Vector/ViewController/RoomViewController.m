@@ -1543,7 +1543,7 @@
                 [strongSelf cancelEventSelection];
 
                 // Quote the message a la Markdown into the input toolbar composer
-                strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@">%@\n\n", selectedComponent.textMessage];
+                strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", strongSelf.inputToolbarView.textMessage, selectedComponent.textMessage];
 
                 // And display the keyboard
                 [strongSelf.inputToolbarView becomeFirstResponder];
