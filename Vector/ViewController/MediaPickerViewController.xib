@@ -10,9 +10,11 @@
             <connections>
                 <outlet property="cameraActivityIndicator" destination="dxP-iB-dWk" id="HBu-hw-Cx9"/>
                 <outlet property="cameraCaptureButton" destination="uRG-b0-CjY" id="3Qc-PU-LUY"/>
+                <outlet property="cameraCaptureButtonWidthConstraint" destination="gmN-48-HHd" id="NQ1-3b-Oz7"/>
                 <outlet property="cameraPreviewContainerAspectRatio" destination="QDd-Tq-4zL" id="qNb-5w-GnM"/>
                 <outlet property="cameraPreviewContainerView" destination="w7z-f3-kdT" id="iqZ-I1-ZcW"/>
                 <outlet property="cameraSwitchButton" destination="PXk-ZD-TYS" id="i6p-yB-8HG"/>
+                <outlet property="cameraVideoCaptureProgressView" destination="aXP-Vh-zUp" id="yvj-G0-8oa"/>
                 <outlet property="captureViewContainer" destination="cE0-0g-Su5" id="cr5-6S-9rj"/>
                 <outlet property="closeButton" destination="sO8-Ds-mXZ" id="lkx-5W-NN9"/>
                 <outlet property="libraryViewContainer" destination="QeN-lu-6hK" id="hHu-hn-fXS"/>
@@ -85,11 +87,19 @@
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dxP-iB-dWk" userLabel="Camera Activity Indicator">
                                     <rect key="frame" x="290" y="430" width="20" height="20"/>
                                 </activityIndicatorView>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXP-Vh-zUp" customClass="MXKPieChartView">
+                                    <rect key="frame" x="255" y="763" width="92" height="92"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="92" id="xVc-PA-ekx"/>
+                                        <constraint firstAttribute="width" constant="92" id="xcR-cZ-E3Z"/>
+                                    </constraints>
+                                </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRG-b0-CjY" userLabel="Capture Button">
-                                    <rect key="frame" x="265" y="779" width="71" height="71"/>
+                                    <rect key="frame" x="259" y="767" width="83" height="83"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="uRG-b0-CjY" secondAttribute="height" multiplier="1:1" id="1aP-D4-EI5"/>
-                                        <constraint firstAttribute="width" constant="71" id="gmN-48-HHd"/>
+                                        <constraint firstAttribute="width" constant="83" id="gmN-48-HHd"/>
                                     </constraints>
                                     <state key="normal" image="camera_capture.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -106,11 +116,13 @@
                                 <constraint firstAttribute="trailing" secondItem="w7z-f3-kdT" secondAttribute="trailing" id="5lY-ez-A5W"/>
                                 <constraint firstAttribute="bottom" secondItem="uRG-b0-CjY" secondAttribute="bottom" constant="30" id="F15-CU-duW"/>
                                 <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerY" secondItem="sO8-Ds-mXZ" secondAttribute="centerY" id="Fze-aW-Jg3"/>
+                                <constraint firstItem="aXP-Vh-zUp" firstAttribute="centerX" secondItem="uRG-b0-CjY" secondAttribute="centerX" id="IWo-s2-YaV"/>
                                 <constraint firstAttribute="bottom" secondItem="w7z-f3-kdT" secondAttribute="bottom" id="Odc-BN-d37"/>
                                 <constraint firstAttribute="width" secondItem="cE0-0g-Su5" secondAttribute="height" multiplier="15:22" id="QDd-Tq-4zL"/>
                                 <constraint firstItem="VA2-Cu-dX6" firstAttribute="centerX" secondItem="sO8-Ds-mXZ" secondAttribute="centerX" id="Xmg-sf-k4n"/>
                                 <constraint firstItem="etc-h5-0u2" firstAttribute="centerY" secondItem="PXk-ZD-TYS" secondAttribute="centerY" id="cW6-ue-5Vb"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="leading" secondItem="cE0-0g-Su5" secondAttribute="leading" id="eH4-0j-WXi"/>
+                                <constraint firstItem="aXP-Vh-zUp" firstAttribute="centerY" secondItem="uRG-b0-CjY" secondAttribute="centerY" id="iNa-wg-YTJ"/>
                                 <constraint firstItem="w7z-f3-kdT" firstAttribute="top" secondItem="cE0-0g-Su5" secondAttribute="top" id="kXk-s5-NTi"/>
                                 <constraint firstItem="dxP-iB-dWk" firstAttribute="centerY" secondItem="cE0-0g-Su5" secondAttribute="centerY" id="lut-Up-d2d"/>
                                 <constraint firstAttribute="trailing" secondItem="PXk-ZD-TYS" secondAttribute="trailing" constant="12" id="nlx-eq-jfm"/>

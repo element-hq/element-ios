@@ -36,11 +36,12 @@ static void *RecordingContext = &RecordingContext;
 @interface MediaPickerViewController ()
 {
     /**
-     Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
+     Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
      */
     id UIApplicationWillEnterForegroundNotificationObserver;
     
-    BOOL isVideoCaptureMode;
+    BOOL isPictureCaptureEnabled;
+    BOOL isVideoCaptureEnabled;
     
     AVCaptureSession *captureSession;
     AVCaptureDeviceInput *frontCameraInput;
@@ -73,6 +74,10 @@ static void *RecordingContext = &RecordingContext;
     UIButton *videoPlayerControl;
     
     BOOL isValidationInProgress;
+    
+    NSTimer *updateVideoRecordingTimer;
+    NSDate *videoRecordStartDate;
+
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
@@ -134,6 +139,10 @@ static void *RecordingContext = &RecordingContext;
     self.closeButton.clipsToBounds = YES;
     self.cameraSwitchButton.layer.cornerRadius = self.cameraSwitchButton.frame.size.width / 2;
     self.cameraSwitchButton.clipsToBounds = YES;
+    
+    self.cameraVideoCaptureProgressView.progressColor = [UIColor whiteColor];
+    self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
+    self.cameraVideoCaptureProgressView.progress = 0;
     
     [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
     
@@ -264,37 +273,67 @@ static void *RecordingContext = &RecordingContext;
     }];
 }
 
+- (void)updateVideoRecordingDuration
+{
+    NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:videoRecordStartDate];
+    
+    // The progress animation makes a turn in 30 sec.
+    NSUInteger loopNb = (int)(duration/30);
+    
+    // Switch progress color at each turn
+    if (loopNb & 0x01)
+    {
+        if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
+        {
+            self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
+            self.cameraVideoCaptureProgressView.unprogressColor = [UIColor whiteColor];
+        }
+    }
+    else if (self.cameraVideoCaptureProgressView.progressColor != [UIColor whiteColor])
+    {
+        self.cameraVideoCaptureProgressView.progressColor = [UIColor whiteColor];
+        self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
+    }
+    
+    duration -= loopNb * 30;
+    
+    self.cameraVideoCaptureProgressView.progress = duration / 30;
+}
+
 #pragma mark -
 
 - (void)setMediaTypes:(NSArray *)mediaTypes
 {
     if ([mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
     {
+        isPictureCaptureEnabled = YES;
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
+        
+        // Check whether video capture should be enabled too
         if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
         {
-            self.cameraModeButton.hidden = NO;
-            isVideoCaptureMode = NO;
+            isVideoCaptureEnabled = YES;
         }
         else
         {
-            self.cameraModeButton.hidden = YES;
-            isVideoCaptureMode = NO;
+            isVideoCaptureEnabled = NO;
         }
-        
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateHighlighted];
     }
     else if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
     {
-        self.cameraModeButton.hidden = YES;
-        isVideoCaptureMode = YES;
+        isPictureCaptureEnabled = NO;
+        isVideoCaptureEnabled = YES;
         
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateHighlighted];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateHighlighted];
+    }
+    
+    if (isVideoCaptureEnabled)
+    {
+        // Add a long gesture recognizer on cameraCaptureButton (in order to handle video recording)
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+        [self.cameraCaptureButton addGestureRecognizer:longPress];
     }
     
     if (_mediaTypes != mediaTypes)
@@ -548,24 +587,38 @@ static void *RecordingContext = &RecordingContext;
     });
 }
 
-- (void)reset
+- (void)launchPreview
 {
-    if (UIApplicationWillEnterForegroundNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillEnterForegroundNotificationObserver];
-        UIApplicationWillEnterForegroundNotificationObserver = nil;
-    }
-    
     [self.cameraActivityIndicator stopAnimating];
     
-    self.cameraModeButton.enabled = YES;
     self.cameraSwitchButton.enabled = YES;
     
-    if (isVideoCaptureMode)
+    if (isPictureCaptureEnabled)
     {
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
+        self.cameraCaptureButtonWidthConstraint.constant = 83;
+        
+        // Switch back to picture mode by default
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
+        
+        if (captureSession)
+        {
+            [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+        }
     }
+    else
+    {
+        self.cameraCaptureButtonWidthConstraint.constant = 93;
+        
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateNormal];
+        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateHighlighted];
+        
+        if (captureSession)
+        {
+            [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+        }
+    }
+    
     self.cameraCaptureButton.enabled = YES;
 }
 
@@ -784,9 +837,19 @@ static void *RecordingContext = &RecordingContext;
 {
     [self stopAVCapture];
     
-    [self reset];
+    if (UIApplicationWillEnterForegroundNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillEnterForegroundNotificationObserver];
+        UIApplicationWillEnterForegroundNotificationObserver = nil;
+    }
     
     [self dismissImageValidationView];
+    
+    if (updateVideoRecordingTimer)
+    {
+        [updateVideoRecordingTimer invalidate];
+        updateVideoRecordingTimer = nil;
+    }
     
     cameraQueue = nil;
     userAlbumsQueue = nil;
@@ -797,6 +860,35 @@ static void *RecordingContext = &RecordingContext;
 
 #pragma mark - Action
 
+- (IBAction)onLongPressGesture:(UILongPressGestureRecognizer*)longPressGestureRecognizer
+{
+    if (longPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        UIView* view = longPressGestureRecognizer.view;
+        
+        // Check the view on which long press has been detected
+        if (view == self.cameraCaptureButton)
+        {
+            self.cameraCaptureButtonWidthConstraint.constant = 93;
+            
+            [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateNormal];
+            [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateHighlighted];
+            
+            if (captureSession)
+            {
+                [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+            }
+            
+            // Record a new video
+            [self startMovieRecording];
+        }
+    }
+    else if (longPressGestureRecognizer.state == UIGestureRecognizerStateEnded || longPressGestureRecognizer.state == UIGestureRecognizerStateCancelled || longPressGestureRecognizer.state == UIGestureRecognizerStateFailed)
+    {
+        [self stopMovieRecording];
+    }
+}
+
 - (IBAction)onButtonPressed:(id)sender
 {
     if (sender == self.closeButton)
@@ -804,22 +896,13 @@ static void *RecordingContext = &RecordingContext;
         // Close has been pressed
         [self withdrawViewControllerAnimated:YES completion:nil];
     }
-    else if (sender == self.cameraModeButton)
-    {
-        [self toggleCaptureMode];
-    }
     else if (sender == self.cameraSwitchButton)
     {
         [self toggleCamera];
     }
     else if (sender == self.cameraCaptureButton)
     {
-        if (isVideoCaptureMode)
-        {
-            // Record a new video
-            [self toggleMovieRecording];
-        }
-        else
+        if (isPictureCaptureEnabled)
         {
             [self snapStillImage];
         }
@@ -932,13 +1015,13 @@ static void *RecordingContext = &RecordingContext;
             // Create the AVCapture Session
             captureSession = [[AVCaptureSession alloc] init];
             
-            if (isVideoCaptureMode)
-            {
-                [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-            }
-            else
+            if (isPictureCaptureEnabled)
             {
                 [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+            }
+            else if (isVideoCaptureEnabled)
+            {
+                [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
             }
             
             cameraPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
@@ -1074,38 +1157,6 @@ static void *RecordingContext = &RecordingContext;
     [self tearDownAVCapture];
 }
 
-- (void)toggleCaptureMode
-{
-    if (isVideoCaptureMode)
-    {
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateNormal];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_video"] forState:UIControlStateHighlighted];
-        
-        if (captureSession)
-        {
-            [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
-        }
-        
-        isVideoCaptureMode = NO;
-    }
-    else
-    {
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateNormal];
-        [self.cameraModeButton setImage:[UIImage imageNamed:@"camera_picture"] forState:UIControlStateHighlighted];
-        
-        if (captureSession)
-        {
-            [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-        }
-        
-        isVideoCaptureMode = YES;
-    }
-}
-
 - (void)toggleCamera
 {
     if (frontCameraInput && backCameraInput)
@@ -1154,7 +1205,7 @@ static void *RecordingContext = &RecordingContext;
     }
 }
 
-- (void)toggleMovieRecording
+- (void)startMovieRecording
 {
     self.cameraCaptureButton.enabled = NO;
     
@@ -1167,10 +1218,12 @@ static void *RecordingContext = &RecordingContext;
             {
                 // Setup background task. This is needed because the captureOutput:didFinishRecordingToOutputFileAtURL: callback is not received until the App returns to the foreground unless you request background execution time.
                 [self setBackgroundRecordingID:[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+                    
                     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundRecordingID];
                     self.backgroundRecordingID = UIBackgroundTaskInvalid;
                     
                     NSLog(@"[MediaPickerVC] pauseInBackgroundTask : %08lX expired", (unsigned long)self.backgroundRecordingID);
+                    
                 }]];
                 
                 NSLog(@"[MediaPickerVC] pauseInBackgroundTask : %08lX starts", (unsigned long)self.backgroundRecordingID);
@@ -1186,7 +1239,13 @@ static void *RecordingContext = &RecordingContext;
             NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
             [movieFileOutput startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
         }
-        else
+    });
+}
+
+- (void)stopMovieRecording
+{
+   dispatch_async(cameraQueue, ^{
+        if ([movieFileOutput isRecording])
         {
             [movieFileOutput stopRecording];
         }
@@ -1224,7 +1283,7 @@ static void *RecordingContext = &RecordingContext;
                 }];
                 
                 // Relaunch preview
-                [self reset];
+                [self launchPreview];
             }
         }];
     });
@@ -1276,19 +1335,26 @@ static void *RecordingContext = &RecordingContext;
         BOOL isRecording = [change[NSKeyValueChangeNewKey] boolValue];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             if (isRecording)
             {
-                self.cameraModeButton.enabled = NO;
                 self.cameraSwitchButton.enabled = NO;
-                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
-                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateHighlighted];
+                
+                videoRecordStartDate = [NSDate date];
+                
+                self.cameraVideoCaptureProgressView.hidden = NO;
+                updateVideoRecordingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateVideoRecordingDuration) userInfo:nil repeats:YES];
+                
                 self.cameraCaptureButton.enabled = YES;
             }
             else
             {
-                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateNormal];
-                [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_record"] forState:UIControlStateHighlighted];
-                self.cameraCaptureButton.enabled = YES;
+                self.cameraVideoCaptureProgressView.hidden = YES;
+                [updateVideoRecordingTimer invalidate];
+                updateVideoRecordingTimer = nil;
+                self.cameraVideoCaptureProgressView.progress = 0;
+                
+                // The preview will be restored during captureOutput:didFinishRecordingToOutputFileAtURL: callback.
             }
         });
     }
@@ -1326,7 +1392,7 @@ static void *RecordingContext = &RecordingContext;
     }];
     
     // Relaunch preview
-    [self reset];
+    [self launchPreview];
     
     UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
     if (backgroundRecordingID != UIBackgroundTaskInvalid)
