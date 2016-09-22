@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "UINavigationController+Vector.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 #import <Photos/Photos.h>
