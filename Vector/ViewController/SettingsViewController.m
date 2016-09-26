@@ -519,13 +519,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [account load3PIDs:^{
 
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self.tableView reloadData];
 
     } failure:^(NSError *error) {
         
         // Display the data that has been loaded last time
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
         
     }];
 }
