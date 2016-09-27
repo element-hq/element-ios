@@ -1,3 +1,20 @@
+Changes in 0.2.2 (2016-09-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.18).
+ * Media picker: Support video capture #533.
+ * VoIP call screen: Update call controls icons #598.
+ * Media picker: Switching camera button and exit button are not very visible #610.
+ 
+Bug fixes:
+ * Login screen: Stuck on flashing loading wheel in case of invalid credentials #637.
+ * Settings screen headers slide down over the already fully displayed screen #636.
+ * Chat screen: Wrong display after placing a conf call in a room with unsent messages #633.
+ * Quoting a msg overrides what I already typed #641.
+ * Crash due to a race condition in read receipts management #645.
+ * App may crash when the user logs out while a request is pending.
+
 Changes in 0.2.1 (2016-09-15)
 ===============================================
 
