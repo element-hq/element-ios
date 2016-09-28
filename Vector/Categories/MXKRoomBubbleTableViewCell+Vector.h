@@ -52,6 +52,11 @@ extern NSString *const kMXKRoomBubbleCellVectorEditButtonPressed;
 - (void)markComponent:(NSUInteger)componentIndex;
 
 /**
+ Add a label to display the date of the cell.
+ */
+- (void)addDateLabel;
+
+/**
  Blur the view by adding a transparent overlay. Default is NO.
  */
 @property(nonatomic) BOOL blurred;

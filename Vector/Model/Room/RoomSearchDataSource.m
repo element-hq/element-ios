@@ -18,6 +18,8 @@
 
 #import "RoomBubbleCellData.h"
 
+#import "MXKRoomBubbleTableViewCell+Vector.h"
+
 @interface RoomSearchDataSource ()
 {
     MXKRoomDataSource *roomDataSource;
@@ -59,6 +61,22 @@
             [cellDataArray insertObject:cellData atIndex:0];
         }
     }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    // Finalize cell view customization here
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
+        
+        // Display date for each message
+        [bubbleCell addDateLabel];
+    }
+    
+    return cell;
 }
 
 @end

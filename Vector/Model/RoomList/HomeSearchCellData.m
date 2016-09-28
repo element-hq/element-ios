@@ -30,7 +30,7 @@
 
         // We are displaying a search over all user's rooms
         // As title, display the room name of this search result
-        MXRoom *room = [searchDataSource.mxSession roomWithRoomId:searchResult2.result.roomId];
+        MXRoom *room = [searchDataSource.mxSession roomWithRoomId:searchResult.result.roomId];
         if (room)
         {
             title = room.vectorDisplayname;
@@ -41,13 +41,26 @@
         }
         else
         {
-            title = searchResult2.result.roomId;
+            title = searchResult.result.roomId;
         }
 
-        date = [searchDataSource.eventFormatter dateStringFromEvent:searchResult2.result withTime:YES];
+        date = [searchDataSource.eventFormatter dateStringFromEvent:searchResult.result withTime:YES];
 
-        // Code from [MXEventFormatter stringFromEvent] for the particular case of a text message
-        message = [searchResult2.result.content[@"body"] isKindOfClass:[NSString class]] ? searchResult2.result.content[@"body"] : nil;
+        // Use the event formatter to display correctly the message in case of formatted body.
+        if (searchResult.result.eventType == MXEventTypeRoomMessage)
+        {
+            MXKEventFormatterError error;
+            message = [searchDataSource.eventFormatter stringFromEvent:searchResult.result withRoomState:nil error:&error];
+            if (error != MXKEventFormatterErrorNone)
+            {
+                message = nil;
+            }
+        }
+        
+        if (!message.length)
+        {
+            message = [searchResult.result.content[@"body"] isKindOfClass:[NSString class]] ? searchResult.result.content[@"body"] : nil;
+        }
     }
     return self;
 }
