@@ -18,6 +18,8 @@
 
 #import "RoomBubbleCellData.h"
 
+#import "VectorDesignValues.h"
+
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 
 @interface RoomSearchDataSource ()
@@ -48,6 +50,9 @@
 
 - (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults
 {
+    // Prepare text font used to highlight the search pattern.
+    UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
+    
     // Convert the HS results into `RoomViewController` cells
     for (MXSearchResult *result in roomEventResults.results)
     {
@@ -58,6 +63,9 @@
         RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.room.state andRoomDataSource:roomDataSource];
         if (cellData)
         {
+            // Highlight the search pattern
+            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:kVectorColorGreen andFont:patternFont];
+            
             [cellDataArray insertObject:cellData atIndex:0];
         }
     }

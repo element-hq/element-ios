@@ -88,12 +88,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             {
                 NSLog(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    attributedTextMessage = [self refreshAttributedTextMessage];
+                    self.attributedTextMessage = [self refreshAttributedTextMessage];
                 });
             }
             else
             {
-                attributedTextMessage = [self refreshAttributedTextMessage];
+                self.attributedTextMessage = [self refreshAttributedTextMessage];
             }
         }
     }
