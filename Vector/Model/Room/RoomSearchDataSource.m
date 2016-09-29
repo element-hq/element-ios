@@ -31,9 +31,9 @@
 
 @implementation RoomSearchDataSource
 
-- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2 andMatrixSession:(MXSession *)mxSession
+- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2
 {
-    self = [super initWithRoomId:roomDataSource2.roomId andMatrixSession:mxSession];
+    self = [super initWithRoomId:roomDataSource2.roomId andMatrixSession:roomDataSource2.mxSession];
     if (self)
     {
         roomDataSource = roomDataSource2;

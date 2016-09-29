@@ -2037,7 +2037,7 @@
 
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
 
-        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource andMatrixSession:self.mainSession];
+        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource];
         [roomSearchViewController displaySearch:roomSearchDataSource];
     }
     else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
