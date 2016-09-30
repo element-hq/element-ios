@@ -1906,6 +1906,10 @@
     {
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
+        
+        // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
+        // to be able to convert it into a legal URL string.
+        NSString *absoluteURLString = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
         // If the link can be open it by the app, let it do
         if ([Tools isUniversalLink:url])
@@ -1918,11 +1922,11 @@
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
         }
         // Open a detail screen about the clicked user
-        else if ([MXTools isMatrixUserIdentifier:url.absoluteString])
+        else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
             shouldDoAction = NO;
 
-            NSString *userId = url.absoluteString;
+            NSString *userId = absoluteURLString;
 
             MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:userId];
             if (member)
@@ -1947,11 +1951,11 @@
             }
         }
         // Open the clicked room
-        else if ([MXTools isMatrixRoomIdentifier:url.absoluteString] || [MXTools isMatrixRoomAlias:url.absoluteString])
+        else if ([MXTools isMatrixRoomIdentifier:absoluteURLString] || [MXTools isMatrixRoomAlias:absoluteURLString])
         {
             shouldDoAction = NO;
 
-            NSString *roomIdOrAlias = url.absoluteString;
+            NSString *roomIdOrAlias = absoluteURLString;
 
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
