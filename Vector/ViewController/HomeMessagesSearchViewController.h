@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- `HomeSearchViewController` displays messages search in user's rooms under a `HomeViewController` segment.
+ `HomeMessagesSearchViewController` displays messages search in user's rooms under a `HomeViewController` segment.
  */
-@interface HomeSearchViewController : MXKSearchViewController
+@interface HomeMessagesSearchViewController : MXKSearchViewController
 
 /**
  The event selected in the search results
