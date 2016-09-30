@@ -100,6 +100,27 @@
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
+    // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
+    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    
+    _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.searchBarHeader
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.tableView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    
+    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
     self.enableBarTintColorStatusChange = NO;
@@ -118,7 +139,7 @@
     
     _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
-    _searchBarView.autocapitalizationType = NO;
+    _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self refreshSearchBarItemsColor:_searchBarView];
     
     _searchBarHeaderBorder.backgroundColor = kVectorColorSilver;
@@ -800,6 +821,15 @@
     
     if (section == invitableSection)
     {
+        if (!currentSearchText.length && self.mxRoom)
+        {
+            // Display by default all the contacts who share a private room with the current user
+            invitableContacts = [NSMutableArray arrayWithArray:[[MXKContactManager sharedManager] privateMatrixContacts:self.mxRoom.mxSession]];
+            
+            // Sort alphabetically this list of contacts
+            [self sortAlphabeticallyInvitableContacts];
+        }
+        
         count = invitableContacts.count;
     }
     else if (section == participantsSection)
@@ -970,13 +1000,11 @@
         // in order to make it more understandable for the end user
         if (indexPath.section == invitableSection)
         {
-            if (indexPath.row == 0)
+            if (currentSearchText.length && indexPath.row == 0)
             {
                 // This is the text entered by the user
-                NSString *searchText = mxkContact.displayName;
-                
-                // Check whether this input is a valid email or a Matrix user ID before adding the plus icon.
-                if (![MXTools isEmailAddress:searchText] && ![MXTools isMatrixUserIdentifier:searchText])
+                // Check whether the search input is a valid email or a Matrix user ID before adding the plus icon.
+                if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
                 {
                     participantCell.contentView.alpha = 0.5;
                     participantCell.userInteractionEnabled = NO;
@@ -1592,6 +1620,9 @@
     
     currentSearchText = searchText;
     
+    // Check whether the search input is a valid email or a Matrix user ID
+    BOOL isValidInput = ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]);
+    
     isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
     
     // Update invitable contacts list:
@@ -1603,9 +1634,13 @@
         {
             if ([contact hasPrefix:currentSearchText])
             {
-                [invitableContacts addObject:contact];
-                
-                isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                // Ignore the contact if it corresponds to the search input
+                if (!isValidInput || [contact.displayName isEqualToString:currentSearchText] == NO)
+                {
+                    [invitableContacts addObject:contact];
+                    
+                    isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                }
             }
         }
         
@@ -1650,12 +1685,34 @@
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = YES;
     
-    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+    // Handle here local contacts
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
+    // If not requested yet, ask user permission to sync their local contacts
+    if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
     {
-        // Allow local contacts sync in order to add address book emails in search result
-        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+        [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+        
+        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+            if (granted)
+            {
+                // Allow local contacts sync in order to add address book emails in search result
+                [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+            }
+        }];
     }
-    
+#else
+    // If not requested yet, ask user permission to access their local contacts
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        // Try to load the local contacts list
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[MXKContactManager sharedManager] loadLocalContacts];
+            
+        });
+    }
+#endif
+
     return YES;
 }
 
@@ -1668,8 +1725,23 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    // "Done" key has been pressed. Cancel the invitation process
-    [self searchBarCancelButtonClicked:searchBar];
+    // "Done" key has been pressed.
+    
+    // Check whether the current search input is a valid email or a Matrix user ID
+    if (currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
+    {
+        // Select this contact rather than having to hit +
+        MXKContact *contact = invitableContacts[0];
+        
+        // Sanity check
+        if (contact)
+        {
+            [self didSelectInvitableContact:contact];
+        }
+    }
+    
+    // Dismiss keyboard
+    [_searchBarView resignFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -1687,6 +1759,31 @@
 }
 
 #pragma mark -
+
+- (void)sortAlphabeticallyInvitableContacts
+{
+    // Sort invitable contacts by displaying local email first
+    // ...and then alphabetically.
+    NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
+        
+        BOOL isLocalEmailA = !contactA.matrixIdentifiers.count;
+        BOOL isLocalEmailB = !contactB.matrixIdentifiers.count;
+        
+        if (!isLocalEmailA && isLocalEmailB)
+        {
+            return NSOrderedDescending;
+        }
+        if (isLocalEmailA && !isLocalEmailB)
+        {
+            return NSOrderedAscending;
+        }
+        
+        return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+    };
+    
+    // Sort invitable contacts list
+    [invitableContacts sortUsingComparator:comparator];
+}
 
 - (void)sortInvitableContacts
 {

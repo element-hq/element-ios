@@ -157,7 +157,7 @@
                             if (roomMember)
                             {
                                 [roomMembers addObject:roomMember];
-                                [placeholders addObject:[AvatarGenerator generateRoomMemberAvatar:roomMember.userId displayName:roomMember.displayname]];
+                                [placeholders addObject:[AvatarGenerator generateAvatarForMatrixItem:roomMember.userId withDisplayName:roomMember.displayname]];
                             }
                         }
                     }

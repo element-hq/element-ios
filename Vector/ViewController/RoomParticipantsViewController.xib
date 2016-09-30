@@ -9,8 +9,10 @@
             <connections>
                 <outlet property="searchBarHeader" destination="Zm7-AB-ZtE" id="6ee-P0-twi"/>
                 <outlet property="searchBarHeaderBorder" destination="gcy-W7-89G" id="tsy-SP-KaJ"/>
+                <outlet property="searchBarTopConstraint" destination="sUb-hD-qXJ" id="rzi-JJ-nnP"/>
                 <outlet property="searchBarView" destination="bsq-3U-VjV" id="x3M-wX-RW8"/>
                 <outlet property="tableView" destination="kNf-Ll-jvH" id="uzM-uQ-peQ"/>
+                <outlet property="tableViewBottomConstraint" destination="jLY-ml-Psl" id="Q2b-sC-Yqn"/>
                 <outlet property="view" destination="iN0-l3-epB" id="csR-cn-S4h"/>
             </connections>
         </placeholder>

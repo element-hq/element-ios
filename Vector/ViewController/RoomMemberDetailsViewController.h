@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMemberAvatarHeaderBackgroundHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *memberHeaderView;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarMask;
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
 @property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
 

@@ -203,6 +203,66 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     }
 }
 
+- (void)addDateLabel
+{
+    self.bubbleInfoContainer.hidden = NO;
+    
+    NSDate *date = bubbleData.date;
+    if (date)
+    {
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width , 18)];
+        
+        timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
+        timeLabel.textAlignment = NSTextAlignmentRight;
+        timeLabel.textColor = kVectorTextColorGray;
+        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+        {
+            timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
+        }
+        else
+        {
+            timeLabel.font = [UIFont systemFontOfSize:12];
+        }
+        timeLabel.adjustsFontSizeToFitWidth = YES;
+        
+        [timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.bubbleInfoContainer addSubview:timeLabel];
+        
+        // Define timeLabel constraints (to handle auto-layout in case of screen rotation)
+        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.bubbleInfoContainer
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                          multiplier:1.0
+                                                                            constant:0];
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.bubbleInfoContainer
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0
+                                                                          constant:0];
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.bubbleInfoContainer
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                          multiplier:1.0
+                                                                            constant:0];
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:18];
+        
+        // Available on iOS 8 and later
+        [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
+    }
+}
+
 - (void)setBlurred:(BOOL)blurred
 {
     objc_setAssociatedObject(self, @selector(blurred), [NSNumber numberWithBool:blurred], OBJC_ASSOCIATION_RETAIN_NONATOMIC);

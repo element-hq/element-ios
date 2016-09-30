@@ -154,6 +154,9 @@
     {
         // Disable auto join
         self.autoJoinInvitedRoom = NO;
+        
+        // Disable auto scroll to bottom on keyboard presentation
+        self.scrollHistoryToTheBottomOnKeyboardPresentation = NO;
     }
     
     return self;
@@ -166,6 +169,9 @@
     {
         // Disable auto join
         self.autoJoinInvitedRoom = NO;
+        
+        // Disable auto scroll to bottom on keyboard presentation
+        self.scrollHistoryToTheBottomOnKeyboardPresentation = NO;
     }
     
     return self;
@@ -437,6 +443,8 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+    
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
     contentInset.bottom = self.bottomLayoutGuide.length;
     self.bubblesTableView.contentInset = contentInset;
@@ -912,16 +920,14 @@
         
         // Check whether the call option is supported
         roomInputToolbarView.supportCallOption =
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"]
-        && self.roomDataSource.mxSession.callManager != nil
-        && (self.roomDataSource.room.state.joinedMembers.count == 2
-            || ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"] && self.roomDataSource.room.state.joinedMembers.count > 2));
+        self.roomDataSource.mxSession.callManager
+        && self.roomDataSource.room.state.joinedMembers.count >= 2;
 
         // Set user picture in input toolbar
         MXKImageView *userPictureView = roomInputToolbarView.pictureView;
         if (userPictureView)
         {
-            UIImage *preview = [AvatarGenerator generateRoomMemberAvatar:self.mainSession.myUser.userId displayName:self.mainSession.myUser.displayname];
+            UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
             NSString *avatarThumbURL = nil;
             if (self.mainSession.myUser.avatarUrl)
             {
@@ -1200,7 +1206,7 @@
             }
             else if (roomPreviewData.roomId && roomPreviewData.roomName)
             {
-                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateRoomAvatar:roomPreviewData.roomId andDisplayName:roomPreviewData.roomName];
+                roomAvatarTitleView.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
             }
             else
             {
@@ -1537,7 +1543,7 @@
                 [strongSelf cancelEventSelection];
 
                 // Quote the message a la Markdown into the input toolbar composer
-                strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@">%@\n\n", selectedComponent.textMessage];
+                strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", strongSelf.inputToolbarView.textMessage, selectedComponent.textMessage];
 
                 // And display the keyboard
                 [strongSelf.inputToolbarView becomeFirstResponder];
@@ -1900,6 +1906,10 @@
     {
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
+        
+        // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
+        // to be able to convert it into a legal URL string.
+        NSString *absoluteURLString = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
         // If the link can be open it by the app, let it do
         if ([Tools isUniversalLink:url])
@@ -1912,11 +1922,11 @@
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
         }
         // Open a detail screen about the clicked user
-        else if ([MXTools isMatrixUserIdentifier:url.absoluteString])
+        else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
             shouldDoAction = NO;
 
-            NSString *userId = url.absoluteString;
+            NSString *userId = absoluteURLString;
 
             MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:userId];
             if (member)
@@ -1941,11 +1951,11 @@
             }
         }
         // Open the clicked room
-        else if ([MXTools isMatrixRoomIdentifier:url.absoluteString] || [MXTools isMatrixRoomAlias:url.absoluteString])
+        else if ([MXTools isMatrixRoomIdentifier:absoluteURLString] || [MXTools isMatrixRoomAlias:absoluteURLString])
         {
             shouldDoAction = NO;
 
-            NSString *roomIdOrAlias = url.absoluteString;
+            NSString *roomIdOrAlias = absoluteURLString;
 
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -2031,7 +2041,7 @@
 
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
 
-        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource andMatrixSession:self.mainSession];
+        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource];
         [roomSearchViewController displaySearch:roomSearchDataSource];
     }
     else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
@@ -2054,6 +2064,7 @@
         if (selectedContact)
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
 
             selectedContact = nil;
@@ -2184,17 +2195,6 @@
     if (sender == self.navigationItem.rightBarButtonItem)
     {
         [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
-    }
-}
-
-- (void)onActivitiesViewOngoingConferenceCallTap:(UITapGestureRecognizer*)sender
-{
-    NSLog(@"[Vector RoomVC] onActivitiesViewOngoingConferenceCallTap");
-
-    // Make sure there is not yet a call
-    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
-    {
-        [customizedRoomDataSource.room placeCallWithVideo:YES success:nil failure:nil];
     }
 }
 
@@ -2600,7 +2600,7 @@
             {
                 // Workaround to manage the "back to call" banner: go back temporary the call screen.
                 // It will correctly manage the hide of this banner
-                [[AppDelegate theDelegate] returnToCallView];
+                [[AppDelegate theDelegate] presentCallViewController];
             }
 
             [self refreshActivitiesViewDisplay];
@@ -2644,8 +2644,7 @@
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
-        else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"]
-                 && customizedRoomDataSource.room.state.isOngoingConferenceCall)
+        else if (customizedRoomDataSource.room.state.isOngoingConferenceCall)
         {
             // Show the "Ongoing conference call" banner only if the user is not in the conference
             MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
@@ -2658,13 +2657,16 @@
             }
             else
             {
-                [roomActivitiesView displayOngoingConferenceCall:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil)];
+                [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
 
-                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onActivitiesViewOngoingConferenceCallTap:)];
-                [tapGesture setNumberOfTouchesRequired:1];
-                [tapGesture setNumberOfTapsRequired:1];
-                [tapGesture setDelegate:self];
-                [roomActivitiesView addGestureRecognizer:tapGesture];
+                    NSLog(@"[Vector RoomVC] onOngoingConferenceCallPressed");
+
+                    // Make sure there is not yet a call
+                    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
+                    {
+                        [customizedRoomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+                    }
+                }];
             }
         }
         else if ([self checkUnsentMessages] == NO)

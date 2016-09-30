@@ -41,6 +41,9 @@
 
 #import "CallViewController.h"
 
+// Uncomment the following line to use local contacts to discover matrix users.
+//#define MX_USE_CONTACTS_SERVER_SYNC
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -313,6 +316,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Configure Google Analytics here if the option is enabled
     [self startGoogleAnalytics];
     
+    // Configure local contacts management
+    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
+    
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -469,9 +475,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         [account resume];
     }
     
-    // refresh the contacts list
-    [MXKContactManager sharedManager].enableFullMatrixIdSyncOnLocalContactsDidLoad = NO;
-    [[MXKContactManager sharedManager] loadLocalContacts];
+    // Check if the application is allowed to access the local contacts
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    {
+        // Refresh the local contacts list by reloading it
+        [[MXKContactManager sharedManager] loadLocalContacts];
+    }
     
     _isAppForeground = YES;
 }
@@ -522,18 +531,24 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     completion();
                 }
                 
-                // Restore noCallSupportAlert if any
-                if (noCallSupportAlert)
+                // Enable error notifications
+                isErrorNotificationSuspended = NO;
+                
+                // Restore call alert if any
+                if (_incomingCallNotification)
+                {
+                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible incoming call alert");
+                    [self showNotificationAlert:_incomingCallNotification];
+                }
+                else if (noCallSupportAlert)
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
-                    [noCallSupportAlert showInViewController:self.window.rootViewController];
+                    [self showNotificationAlert:noCallSupportAlert];
                 }
-                
-                // Enable error notification (Check whether a notification is pending)
-                isErrorNotificationSuspended = NO;
-                if (self.errorNotification)
+                // Check whether an error notification is pending
+                else if (_errorNotification)
                 {
-                    [self showErrorNotification];
+                    [self showNotificationAlert:_errorNotification];
                 }
                 
             }];
@@ -551,9 +566,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             
             // Enable error notification (Check whether a notification is pending)
             isErrorNotificationSuspended = NO;
-            if (self.errorNotification)
+            if (_errorNotification)
             {
-                [self showErrorNotification];
+                [self showNotificationAlert:_errorNotification];
             }
         }];
     }
@@ -573,10 +588,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return nil;
     }
     
-    if (self.errorNotification)
-    {
-        [self.errorNotification dismiss:NO];
-    }
+    [_errorNotification dismiss:NO];
     
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
@@ -593,13 +605,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
     
-    self.errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
-    self.errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-                                                    [AppDelegate theDelegate].errorNotification = nil;
-                                                }];
+    _errorNotification = [[MXKAlert alloc] initWithTitle:title message:msg style:MXKAlertStyleAlert];
+    _errorNotification.cancelButtonIndex = [self.errorNotification addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        [AppDelegate theDelegate].errorNotification = nil;
+        
+    }];
     
     // Display the error notification
-    [self showErrorNotification];
+    if (!isErrorNotificationSuspended)
+    {
+        [self showNotificationAlert:_errorNotification];
+    }
     
     // Switch in offline mode in case of network reachability error
     if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
@@ -610,18 +627,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     return self.errorNotification;
 }
 
-- (void)showErrorNotification
+- (void)showNotificationAlert:(MXKAlert*)alert
 {
-    if (!isErrorNotificationSuspended)
+    if (self.window.rootViewController.presentedViewController)
     {
-        if (self.window.rootViewController.presentedViewController)
-        {
-            [self.errorNotification showInViewController:self.window.rootViewController.presentedViewController];
-        }
-        else
-        {
-            [self.errorNotification showInViewController:self.window.rootViewController];
-        }
+        alert.sourceView = self.window.rootViewController.presentedViewController.view;
+        [alert showInViewController:self.window.rootViewController.presentedViewController];
+    }
+    else
+    {
+        alert.sourceView = self.window.rootViewController.view;
+        [alert showInViewController:self.window.rootViewController];
     }
 }
 
@@ -897,6 +913,18 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         }
     }
     completionHandler(UIBackgroundFetchResultNoData);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // iOS 10 (at least up to GM beta release) does not call application:didReceiveRemoteNotification:fetchCompletionHandler:
+    // when the user clicks on a notification but it calls this deprecated version
+    // of didReceiveRemoteNotification.
+    // Use this method as a workaround as adviced at http://stackoverflow.com/a/39419245
+    NSLog(@"[AppDelegate] didReceiveRemoteNotification (deprecated version)");
+
+    [self application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult result) {
+    }];
 }
 
 - (void)refreshApplicationIconBadgeNumber
@@ -1585,11 +1613,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                                                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                                                                                                             
                                                                                                             strongSelf.incomingCallNotification = nil;
-                                                                                                            
-                                                                                                            [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
+
+                                                                                                            if (strongSelf->currentCallViewController)
+                                                                                                            {
+                                                                                                                [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.rejectCallButton];
+
+                                                                                                                currentCallViewController = nil;
+                                                                                                            }
                                                                                                             
                                                                                                             mxCall.delegate = nil;
-                                                                                                            currentCallViewController = nil;
                                                                                                         }
                                                                                                         
                                                                                                     }];
@@ -1602,33 +1634,22 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                               __strong __typeof(weakSelf)strongSelf = weakSelf;
                                                               
                                                               strongSelf.incomingCallNotification = nil;
-                                                              
-                                                              [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
-                                                              
-                                                              [strongSelf.window.rootViewController presentViewController:strongSelf->currentCallViewController animated:YES completion:^{
-                                                                  
-                                                                  strongSelf->currentCallViewController.isPresented = YES;
-                                                                  
-                                                              }];
-                                                              
-                                                              // Hide system status bar
-                                                              [UIApplication sharedApplication].statusBarHidden = YES;
+
+                                                              if (strongSelf->currentCallViewController)
+                                                              {
+                                                                  [strongSelf->currentCallViewController onButtonPressed:strongSelf->currentCallViewController.answerCallButton];
+
+                                                                  [strongSelf presentCallViewController];
+                                                              }
                                                               
                                                           }
                                                       }];
                 
-                [_incomingCallNotification showInViewController:self.window.rootViewController];
+                [self showNotificationAlert:_incomingCallNotification];
             }
             else
             {
-                [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
-                    
-                    currentCallViewController.isPresented = YES;
-                    
-                }];
-                
-                // Hide system status bar
-                [UIApplication sharedApplication].statusBarHidden = YES;
+                [self presentCallViewController];
             }
         }
         
@@ -1728,10 +1749,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     else if (mxAccounts.count > 1)
     {
-        if (accountPicker)
-        {
-            [accountPicker dismiss:NO];
-        }
+        [accountPicker dismiss:NO];
         
         accountPicker = [[MXKAlert alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"select_account"] message:nil style:MXKAlertStyleActionSheet];
         
@@ -1761,8 +1779,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
         }];
         
-        accountPicker.sourceView = self.window.rootViewController.view;
-        [accountPicker showInViewController:self.window.rootViewController];
+        [self showNotificationAlert:accountPicker];
     }
 }
 
@@ -1906,6 +1923,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
             NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
             
+            if (callIsEnded)
+            {
+                // Restore system status bar
+                [UIApplication sharedApplication].statusBarHidden = NO;
+            }
+            
             [callViewController dismissViewControllerAnimated:YES completion:^{
                 callViewController.isPresented = NO;
                 
@@ -1924,9 +1947,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             if (callIsEnded)
             {
                 [self removeCallStatusBar];
-                
-                // Restore system status bar
-                [UIApplication sharedApplication].statusBarHidden = NO;
                 
                 // Release properly
                 currentCallViewController.mxCall.delegate = nil;
@@ -1973,7 +1993,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     [_callStatusBarButton setBackgroundColor:kVectorColorGreen];
-    [_callStatusBarButton addTarget:self action:@selector(returnToCallView) forControlEvents:UIControlEventTouchUpInside];
+    [_callStatusBarButton addTarget:self action:@selector(presentCallViewController) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
     [_callStatusBarButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -2026,13 +2046,35 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
 }
 
-- (void)returnToCallView
+- (void)presentCallViewController
 {
     [self removeCallStatusBar];
-    
-    [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
-        currentCallViewController.isPresented = YES;
-    }];
+
+    if (currentCallViewController)
+    {
+        if (self.window.rootViewController.presentedViewController)
+        {
+            [self.window.rootViewController.presentedViewController presentViewController:currentCallViewController animated:YES completion:^{
+                
+                currentCallViewController.isPresented = YES;
+                
+                // Hide system status bar
+                [UIApplication sharedApplication].statusBarHidden = YES;
+                
+            }];
+        }
+        else
+        {
+            [self.window.rootViewController presentViewController:currentCallViewController animated:YES completion:^{
+                
+                currentCallViewController.isPresented = YES;
+                
+                // Hide system status bar
+                [UIApplication sharedApplication].statusBarHidden = YES;
+                
+            }];
+        }
+    }
 }
 
 - (void)statusBarDidChangeFrame
@@ -2075,6 +2117,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }
     
     rootController.view.frame = rootControllerFrame;
+    if (rootController.presentedViewController)
+    {
+        rootController.presentedViewController.view.frame = rootControllerFrame;
+    }
     [rootController.view setNeedsLayout];
 }
 
@@ -2199,7 +2245,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                         callerDisplayname = event.sender;
                     }
 
-                    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"no_voip", @"Vector", nil), callerDisplayname];
+                    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+                    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"no_voip", @"Vector", nil), callerDisplayname, appDisplayName];
 
                     noCallSupportAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"no_voip_title", @"Vector", nil)
                                                                  message:message
@@ -2231,7 +2279,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
                     }];
 
-                    [noCallSupportAlert showInViewController:self.window.rootViewController];
+                    [self showNotificationAlert:noCallSupportAlert];
                     break;
                 }
 

@@ -74,12 +74,12 @@
     [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateNormal];
     [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateHighlighted];
     
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_icon"] forState:UIControlStateNormal];
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_icon"] forState:UIControlStateHighlighted];
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_icon"] forState:UIControlStateSelected];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateNormal];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateHighlighted];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_icon"] forState:UIControlStateSelected];
+    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_off_icon"] forState:UIControlStateNormal];
+    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_off_icon"] forState:UIControlStateHighlighted];
+    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_on_icon"] forState:UIControlStateSelected];
+    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_off_icon"] forState:UIControlStateNormal];
+    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_off_icon"] forState:UIControlStateHighlighted];
+    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_on_icon"] forState:UIControlStateSelected];
     [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"] forState:UIControlStateNormal];
     [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"] forState:UIControlStateSelected];
     [self.chatButton setImage:[UIImage imageNamed:@"call_chat_icon"] forState:UIControlStateNormal];
@@ -110,6 +110,11 @@
     
     gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
     gradientMaskLayer.anchorPoint = CGPointZero;
+
+    // Define caller image view size
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    CGFloat minSize = MIN(size.width, size.height);
+    self.callerImageViewWidthConstraint.constant = minSize / 2;
     
     // CAConstraint is not supported on IOS.
     // it seems only being supported on Mac OS.
@@ -136,6 +141,10 @@
             gradientMaskLayer.bounds = newBounds;
         }
     }
+
+    // The caller image view is circular
+    self.callerImageView.layer.cornerRadius = self.callerImageViewWidthConstraint.constant / 2;
+    self.callerImageView.clipsToBounds = YES;
 }
 
 - (void)dealloc
@@ -156,14 +165,16 @@
 
 - (UIImage*)picturePlaceholder
 {
+    CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);
+    
     if (self.peer)
     {
         // Use the vector style placeholder
-        return [AvatarGenerator generateRoomMemberAvatar:self.peer.userId displayName:self.peer.displayname];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId withDisplayName:self.peer.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     else if (self.mxCall.room)
     {
-        return [AvatarGenerator generateRoomAvatar:self.mxCall.room.roomId andDisplayName:self.mxCall.room.state.displayname];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.vectorDisplayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
     }
     
     return [UIImage imageNamed:@"placeholder"];

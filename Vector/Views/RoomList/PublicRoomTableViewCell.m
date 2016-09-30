@@ -42,7 +42,7 @@
     }
 
     // Set the avatar
-    UIImage* avatarImage = [AvatarGenerator generateRoomAvatar:publicRoom.roomId andDisplayName:self.roomDisplayName.text];
+    UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:publicRoom.roomId withDisplayName:self.roomDisplayName.text];
 
     if (publicRoom.avatarUrl)
     {

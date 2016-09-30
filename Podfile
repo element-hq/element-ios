@@ -8,7 +8,7 @@ target "Vector" do
 
 # Different flavours of pods to MatrixKit
 # The tagged version on which this version of Vector has been built
-pod 'MatrixKit', '0.3.15'
+pod 'MatrixKit', '0.3.19'
 
 # The lastest release available on the CocoaPods repository 
 #pod 'MatrixKit'
@@ -27,7 +27,7 @@ pod 'GBDeviceInfo', '~> 4.1.0'
 pod 'GoogleAnalytics'
 
 # The Google WebRTC stack
-pod 'WebRTC', '1.0.13807'
+pod 'WebRTC', '13869.6.0'
 
 end
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -215,6 +215,7 @@
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="vfC-8C-AsT"/>
                         <segue destination="dP6-5F-5s0" kind="show" identifier="showDirectory" id="hvq-zV-OB7"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="tcD-xb-ae8"/>
+                        <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="gZP-xE-LNh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pF2-9z-Wl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -250,6 +251,43 @@
             </objects>
             <point key="canvasLocation" x="414" y="-1081"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Fbq-8h-gyk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CtR-n9-ztG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="NCJ-FV-8di" kind="relationship" relationship="rootViewController" id="ZIA-Hu-sD4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gfz-1Q-Si0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2358" y="-3945"/>
+        </scene>
+        <!--Start Chat View Controller-->
+        <scene sceneID="rVX-eZ-8XT">
+            <objects>
+                <viewController id="NCJ-FV-8di" customClass="StartChatViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ybc-ex-KQ3"/>
+                        <viewControllerLayoutGuide type="bottom" id="0pc-6H-UO9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rVj-X8-v0f">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Sre-eV-Crk"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4YW-Hr-WyR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3346" y="-3935"/>
+        </scene>
     </scenes>
     <resources>
         <image name="search_icon.png" width="22" height="22"/>
@@ -257,6 +295,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="agy-3r-khl"/>
-        <segue reference="f5u-Y1-7nt"/>
+        <segue reference="tcD-xb-ae8"/>
     </inferredMetricsTieBreakers>
 </document>

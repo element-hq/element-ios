@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -15,6 +16,7 @@
                 <outlet property="callControlContainerView" destination="nk9-Un-LVP" id="ZV3-qr-BtW"/>
                 <outlet property="callStatusLabel" destination="29y-MK-OWH" id="Kcn-MX-MUH"/>
                 <outlet property="callerImageView" destination="v1I-LH-wvv" id="dpZ-KD-4Hg"/>
+                <outlet property="callerImageViewWidthConstraint" destination="PAF-29-Cis" id="Crz-nE-p4c"/>
                 <outlet property="callerNameLabel" destination="IW8-8P-mS3" id="eaa-oo-l01"/>
                 <outlet property="cameraSwitchButton" destination="Iiz-W1-oNW" id="bsM-mH-ti8"/>
                 <outlet property="chatButton" destination="xCi-hD-FBs" id="h3w-6I-Agn"/>
@@ -29,8 +31,8 @@
                 <outlet property="overlayContainerView" destination="JAR-tn-sGN" id="09u-3G-1UA"/>
                 <outlet property="rejectCallButton" destination="nuB-Jc-MFa" id="Y3k-kg-IgD"/>
                 <outlet property="remotePreviewContainerView" destination="Tjb-57-yB1" id="MaR-IC-ZKw"/>
-                <outlet property="speakerButton" destination="UHM-u9-ODN" id="PFN-R6-3b3"/>
-                <outlet property="videoMuteButton" destination="Yq6-d2-Ea2" id="gvL-7y-fVl"/>
+                <outlet property="speakerButton" destination="Yq6-d2-Ea2" id="4TU-8w-3FG"/>
+                <outlet property="videoMuteButton" destination="UHM-u9-ODN" id="bfQ-lc-WMB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="JDF-cz-roW"/>
             </connections>
         </placeholder>
@@ -46,8 +48,12 @@
                     <rect key="frame" x="277" y="285" width="46" height="30"/>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v1I-LH-wvv" customClass="MXKImageView">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="150" y="90" width="300" height="300"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="PAF-29-Cis"/>
+                        <constraint firstAttribute="width" secondItem="v1I-LH-wvv" secondAttribute="height" multiplier="1:1" id="pzY-9x-dH7"/>
+                    </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tjb-57-yB1">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -270,23 +276,21 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="v1I-LH-wvv" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" multiplier="0.8" id="7bF-kf-k3o"/>
                 <constraint firstAttribute="bottom" secondItem="STO-VX-5VW" secondAttribute="bottom" id="DhB-zy-SJA"/>
                 <constraint firstAttribute="trailing" secondItem="JAR-tn-sGN" secondAttribute="trailing" id="IGf-YS-JEj"/>
                 <constraint firstAttribute="bottom" secondItem="JAR-tn-sGN" secondAttribute="bottom" id="KDu-Kr-vji"/>
                 <constraint firstItem="STO-VX-5VW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Tyh-Du-Ztt"/>
-                <constraint firstItem="v1I-LH-wvv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VF9-js-1ub"/>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="750" constant="420" id="VUy-XN-XzH"/>
                 <constraint firstAttribute="trailing" secondItem="STO-VX-5VW" secondAttribute="trailing" id="X0Q-UU-v3g"/>
                 <constraint firstItem="JAR-tn-sGN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Z6W-gz-KKT"/>
+                <constraint firstItem="v1I-LH-wvv" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ZfI-qE-l2V"/>
                 <constraint firstItem="Tjb-57-yB1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aKy-Ol-bhc"/>
                 <constraint firstAttribute="bottom" secondItem="Tjb-57-yB1" secondAttribute="bottom" id="akt-pO-kWM"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="6gQ-zo-2Zw" secondAttribute="bottom" constant="74" id="bmf-4N-mLk"/>
-                <constraint firstItem="v1I-LH-wvv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cq1-0k-TFN"/>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="dq3-4E-bhT"/>
                 <constraint firstItem="STO-VX-5VW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="e4c-aG-jOB"/>
-                <constraint firstAttribute="trailing" secondItem="v1I-LH-wvv" secondAttribute="trailing" id="eL2-a4-lJd"/>
                 <constraint firstItem="Tjb-57-yB1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mW3-RA-hx2"/>
-                <constraint firstAttribute="bottom" secondItem="v1I-LH-wvv" secondAttribute="bottom" id="o10-x3-vgo"/>
                 <constraint firstItem="JAR-tn-sGN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="pei-Ab-VHX"/>
                 <constraint firstAttribute="trailing" secondItem="Tjb-57-yB1" secondAttribute="trailing" id="rXn-dm-69F"/>
             </constraints>

@@ -127,7 +127,7 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
 @property (nonatomic, readonly) UIButton* callStatusBarButton;
 
-- (void)returnToCallView;
+- (void)presentCallViewController;
 
 @end
 

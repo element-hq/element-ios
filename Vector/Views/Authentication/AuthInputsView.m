@@ -793,6 +793,7 @@
             updatedAuthSession.session = authSession.session;
             updatedAuthSession.params = authSession.params;
             updatedAuthSession.flows = supportedFlows;
+            return updatedAuthSession;
         }
     }
     

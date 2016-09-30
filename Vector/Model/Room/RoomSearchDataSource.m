@@ -18,6 +18,10 @@
 
 #import "RoomBubbleCellData.h"
 
+#import "VectorDesignValues.h"
+
+#import "MXKRoomBubbleTableViewCell+Vector.h"
+
 @interface RoomSearchDataSource ()
 {
     MXKRoomDataSource *roomDataSource;
@@ -27,9 +31,9 @@
 
 @implementation RoomSearchDataSource
 
-- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2 andMatrixSession:(MXSession *)mxSession
+- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2
 {
-    self = [super initWithRoomId:roomDataSource2.roomId andMatrixSession:mxSession];
+    self = [super initWithRoomId:roomDataSource2.roomId andMatrixSession:roomDataSource2.mxSession];
     if (self)
     {
         roomDataSource = roomDataSource2;
@@ -46,6 +50,9 @@
 
 - (void)convertHomeserverResultsIntoCells:(MXSearchRoomEventResults *)roomEventResults
 {
+    // Prepare text font used to highlight the search pattern.
+    UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
+    
     // Convert the HS results into `RoomViewController` cells
     for (MXSearchResult *result in roomEventResults.results)
     {
@@ -56,9 +63,28 @@
         RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.room.state andRoomDataSource:roomDataSource];
         if (cellData)
         {
+            // Highlight the search pattern
+            [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:kVectorColorGreen andFont:patternFont];
+            
             [cellDataArray insertObject:cellData atIndex:0];
         }
     }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    // Finalize cell view customization here
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
+        
+        // Display date for each message
+        [bubbleCell addDateLabel];
+    }
+    
+    return cell;
 }
 
 @end

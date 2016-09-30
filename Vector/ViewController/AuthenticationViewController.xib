@@ -72,17 +72,17 @@
                     <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhx-dD-4EJ" userLabel="Content View">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="415"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="485"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8r-TX-pwX" userLabel="Welcome Image View">
-                                    <rect key="frame" x="280" y="30" width="40" height="40"/>
+                                    <rect key="frame" x="235" y="15" width="130" height="130"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="40" id="ZFx-Mn-Kzq"/>
-                                        <constraint firstAttribute="height" constant="40" id="zA1-WN-LdU"/>
+                                        <constraint firstAttribute="width" constant="130" id="ZFx-Mn-Kzq"/>
+                                        <constraint firstAttribute="height" constant="130" id="zA1-WN-LdU"/>
                                     </constraints>
                                 </imageView>
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWb-IJ-v7F" userLabel="AuthInputsContainerView">
-                                    <rect key="frame" x="0.0" y="76" width="600" height="200"/>
+                                    <rect key="frame" x="0.0" y="160" width="600" height="200"/>
                                     <subviews>
                                         <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="30E-gm-z6O">
                                             <rect key="frame" x="290" y="90" width="20" height="20"/>
@@ -122,7 +122,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gg0-TE-OGb">
-                                    <rect key="frame" x="0.0" y="300" width="600" height="300"/>
+                                    <rect key="frame" x="0.0" y="384" width="600" height="300"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJ2-lJ-NUq">
                                             <rect key="frame" x="19" y="33" width="122" height="30"/>
@@ -305,15 +305,15 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="415" id="6v6-fz-e8o"/>
+                                <constraint firstAttribute="height" constant="485" id="6v6-fz-e8o"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="width" secondItem="rhx-dD-4EJ" secondAttribute="width" id="EBX-KN-pRT"/>
-                                <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" priority="250" constant="300" id="UEM-Mh-0H9"/>
+                                <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" priority="250" constant="384" id="UEM-Mh-0H9"/>
                                 <constraint firstItem="xWb-IJ-v7F" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="YnP-Nk-QxR"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xWb-IJ-v7F" secondAttribute="bottom" id="aGH-m3-xL3"/>
                                 <constraint firstAttribute="width" constant="600" placeholder="YES" id="hOT-Wn-hIb"/>
                                 <constraint firstAttribute="trailing" secondItem="xWb-IJ-v7F" secondAttribute="trailing" id="hko-ol-XDd"/>
-                                <constraint firstItem="xWb-IJ-v7F" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="76" id="khR-Uj-OTH"/>
-                                <constraint firstItem="d8r-TX-pwX" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="30" id="l68-Ta-YKg"/>
+                                <constraint firstItem="xWb-IJ-v7F" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="160" id="khR-Uj-OTH"/>
+                                <constraint firstItem="d8r-TX-pwX" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="15" id="l68-Ta-YKg"/>
                                 <constraint firstAttribute="centerX" secondItem="d8r-TX-pwX" secondAttribute="centerX" id="l6k-EH-Yb8"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="rS3-go-zbf"/>
                             </constraints>
@@ -379,7 +379,7 @@
         </view>
     </objects>
     <resources>
-        <image name="logo.png" width="40" height="40"/>
-        <image name="selection_untick.png" width="24" height="24"/>
+        <image name="logo.png" width="130" height="130"/>
+        <image name="selection_untick.png" width="22" height="22"/>
     </resources>
 </document>

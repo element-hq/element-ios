@@ -407,7 +407,7 @@
         NSString* title = @"      ";
         
         // Notification toggle
-        BOOL isMuted = room.isMute;
+        BOOL isMuted = room.isMute || room.isMentionsOnly;
         
         UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
             
@@ -593,14 +593,28 @@
         {
             [self startActivityIndicator];
             
-            [room setMute:mute completion:^{
-                
-                [self stopActivityIndicator];
-                
-                // Leave editing mode
-                [self setEditing:NO];
-                
-            }];
+            if (mute)
+            {
+                [room mentionsOnly:^{
+                    
+                    [self stopActivityIndicator];
+                    
+                    // Leave editing mode
+                    [self setEditing:NO];
+                    
+                }];
+            }
+            else
+            {
+                [room allMessages:^{
+                    
+                    [self stopActivityIndicator];
+                    
+                    // Leave editing mode
+                    [self setEditing:NO];
+                    
+                }];
+            }
         }
         else
         {

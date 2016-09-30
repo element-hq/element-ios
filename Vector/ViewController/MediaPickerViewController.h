@@ -85,7 +85,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
 @property (weak, nonatomic) IBOutlet UIButton *cameraCaptureButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraModeButton; // TODO ?
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraCaptureButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet MXKPieChartView *cameraVideoCaptureProgressView;
 
 @property (weak, nonatomic) IBOutlet UIView *recentCapturesCollectionContainerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *recentCapturesCollectionView;

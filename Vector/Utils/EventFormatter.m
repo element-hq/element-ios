@@ -64,6 +64,7 @@
         }
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
+        self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
     }
     return self;
 }

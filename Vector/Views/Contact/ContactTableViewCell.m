@@ -180,7 +180,7 @@
         
         if (matrixId)
         {
-            image = [AvatarGenerator generateRoomMemberAvatar:matrixId displayName:contact.displayName];
+            image = [AvatarGenerator generateAvatarForMatrixItem:matrixId withDisplayName:contact.displayName];
         }
         else if (contact.isThirdPartyInvite)
         {

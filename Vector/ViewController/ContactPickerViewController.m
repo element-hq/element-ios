@@ -108,6 +108,37 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshContactsList) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
     
     [self refreshContactsList];
+    
+    // Handle here local contacts
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
+    if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+    {
+        // If not requested yet, ask user permission to sync their local contacts
+        if (![MXKAppSettings standardAppSettings].syncLocalContacts && ![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
+        {
+            [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+            
+            [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+                if (granted)
+                {
+                    // Allow local contacts sync in order to add address book emails in search result
+                    [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+                }
+            }];
+        }
+    }
+#else
+    // If not requested yet, ask user permission to access their local contacts
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        // Try to load the local contacts list
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[MXKContactManager sharedManager] loadLocalContacts];
+            
+        });
+    }
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,26 +170,41 @@
 - (void)refreshContactsList
 {
     // Retrieve all known matrix users
-    matrixContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
+    NSArray *contacts = [NSArray arrayWithArray:[MXKContactManager sharedManager].matrixContacts];
     
-    // Sort alphabetically the matrix contacts
+    // Retrieve all known email addresses from local contacts
+    NSArray *localEmailContacts = [MXKContactManager sharedManager].localEmailContacts;
+    
+    matrixContacts = [NSMutableArray arrayWithCapacity:(contacts.count + localEmailContacts.count)];
+    
+    // Add first email contacts
+    if (localEmailContacts.count)
+    {
+        [matrixContacts addObjectsFromArray:localEmailContacts];
+    }
+    
+    if (contacts.count)
+    {
+        [matrixContacts addObjectsFromArray:contacts];
+    }
+    
+    // Sort invitable contacts by displaying local email first
+    // ...and then alphabetically.
     NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
         
-        // Then order by name
-        if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
-        {
-            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
-        }
-        else if (contactA.sortingDisplayName.length)
-        {
-            return NSOrderedAscending;
-        }
-        else if (contactB.sortingDisplayName.length)
+        BOOL isLocalEmailA = !contactA.matrixIdentifiers.count;
+        BOOL isLocalEmailB = !contactB.matrixIdentifiers.count;
+        
+        if (!isLocalEmailA && isLocalEmailB)
         {
             return NSOrderedDescending;
         }
-        return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+        if (isLocalEmailA && !isLocalEmailB)
+        {
+            return NSOrderedAscending;
+        }
         
+        return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
     };
     
     [matrixContacts sortUsingComparator:comparator];
@@ -212,6 +258,9 @@
     
     if (currentSearchText.length)
     {
+        // Check whether the search input is a valid email or a Matrix user ID
+        BOOL isValidInput = ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]);
+
         filteredContacts = [NSMutableArray array];
         isMultiUseNameByDisplayName = [NSMutableDictionary dictionary];
         
@@ -219,11 +268,19 @@
         {
             if ([contact matchedWithPatterns:@[currentSearchText]])
             {
-                [filteredContacts addObject:contact];
-                
-                isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                // Ignore the contact if it corresponds to the search input
+                if (!isValidInput || [contact.displayName isEqualToString:currentSearchText] == NO)
+                {
+                    [filteredContacts addObject:contact];
+                    
+                    isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                }
             }
         }
+        
+        // Show what the user is typing in a cell. So that he can click on it
+        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
+        [filteredContacts insertObject:contact atIndex:0];
     }
     else
     {
@@ -275,6 +332,20 @@
     
     if (contact)
     {
+        participantCell.contentView.alpha = 1.0;
+        participantCell.userInteractionEnabled = YES;
+        
+        if (currentSearchText.length && indexPath.row == 0)
+        {
+            // This is the text entered by the user
+            // Check whether the search input is a valid email or a Matrix user ID before adding the plus icon.
+            if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
+            {
+                participantCell.contentView.alpha = 0.5;
+                participantCell.userInteractionEnabled = NO;
+            }
+        }
+        
         // Disambiguate the display name when it appears several times.
         if (contact.displayName && [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)])
         {

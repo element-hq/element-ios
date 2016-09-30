@@ -39,10 +39,10 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6ND-Cq-ABj">
-                            <rect key="frame" x="56" y="15" width="514" height="21"/>
+                            <rect key="frame" x="56" y="4.5" width="514" height="42"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="21" id="lGP-xN-uuP"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="42" id="lGP-xN-uuP"/>
                             </constraints>
                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="calibratedRGB"/>

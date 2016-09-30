@@ -1509,18 +1509,34 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
         
         if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
         {
-            [mxRoom setMute:roomNotifSwitch.on completion:^{
-                
-                if (weakSelf)
-                {
-                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+            if (roomNotifSwitch.on)
+            {
+                [mxRoom mentionsOnly:^{
                     
-                    [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
-                    [strongSelf onSave:nil];
-                }
-                
-            }];
-            
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        
+                        [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
+                        [strongSelf onSave:nil];
+                    }
+                    
+                }];
+            }
+            else
+            {
+                [mxRoom allMessages:^{
+                    
+                    if (weakSelf)
+                    {
+                        __strong __typeof(weakSelf)strongSelf = weakSelf;
+                        
+                        [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
+                        [strongSelf onSave:nil];
+                    }
+                    
+                }];
+            }
             return;
         }
         
@@ -1798,7 +1814,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             }
             else
             {
-                roomNotifSwitch.on = mxRoom.isMute;
+                roomNotifSwitch.on = mxRoom.isMute || mxRoom.isMentionsOnly;
             }
             
             cell = roomNotifCell;
@@ -2769,7 +2785,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 {
     if (theSwitch == roomNotifSwitch)
     {
-        if (roomNotifSwitch.on == mxRoom.isMute)
+        if (roomNotifSwitch.on == (mxRoom.isMute || mxRoom.isMentionsOnly))
         {
             [updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
         }

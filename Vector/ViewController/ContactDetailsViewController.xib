@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -10,6 +10,7 @@
                 <outlet property="bottomImageView" destination="7Dc-jk-9sT" id="BVN-bt-VXI"/>
                 <outlet property="contactAvatarHeaderBackground" destination="ouj-VM-zdT" id="bEq-oW-fal"/>
                 <outlet property="contactAvatarHeaderBackgroundHeightConstraint" destination="dBL-G6-Yec" id="WWx-dy-WtS"/>
+                <outlet property="contactAvatarMask" destination="xHv-tg-mOt" id="lX8-ju-K6W"/>
                 <outlet property="contactNameLabel" destination="92g-hC-6jB" id="bL5-VA-WkR"/>
                 <outlet property="contactNameLabelMask" destination="wEo-Mk-SgZ" id="M3W-zV-ka0"/>
                 <outlet property="contactStatusLabel" destination="5le-5e-Vml" id="KBV-pM-lBj"/>
@@ -31,6 +32,13 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="117" id="dBL-G6-Yec"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xHv-tg-mOt">
+                            <rect key="frame" x="250" y="0.0" width="100" height="125"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="5BQ-kA-kNt"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92g-hC-6jB">
@@ -72,9 +80,12 @@
                         <constraint firstItem="5le-5e-Vml" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="bmA-Fq-uxO"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YXr-As-Mqh" secondAttribute="leading" constant="42" id="ioz-jk-jrE"/>
                         <constraint firstAttribute="bottom" secondItem="5le-5e-Vml" secondAttribute="bottom" constant="18" id="j10-rX-tMf"/>
+                        <constraint firstItem="xHv-tg-mOt" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="lJA-R3-SC8"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5le-5e-Vml" secondAttribute="trailing" constant="42" id="mad-qx-tHe"/>
+                        <constraint firstItem="xHv-tg-mOt" firstAttribute="bottom" secondItem="92g-hC-6jB" secondAttribute="top" id="ozQ-vh-hGU"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="top" secondItem="ouj-VM-zdT" secondAttribute="bottom" constant="8" id="rKl-Gw-ajI"/>
                         <constraint firstItem="ouj-VM-zdT" firstAttribute="leading" secondItem="YXr-As-Mqh" secondAttribute="leading" id="rWQ-Ru-7Ej"/>
+                        <constraint firstItem="xHv-tg-mOt" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="top" id="rvr-ll-VaD"/>
                         <constraint firstItem="ouj-VM-zdT" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="top" id="srY-tD-AhJ"/>
                     </constraints>
                 </view>

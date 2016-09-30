@@ -27,7 +27,8 @@
 #import "SettingsViewController.h"
 
 #import "MXKSearchDataSource.h"
-#import "HomeSearchViewController.h"
+#import "HomeMessagesSearchViewController.h"
+#import "HomeMessagesSearchDataSource.h"
 
 #import "AppDelegate.h"
 
@@ -38,8 +39,8 @@
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
 
-    HomeSearchViewController *searchViewController;
-    MXKSearchDataSource *searchDataSource;
+    HomeMessagesSearchViewController *messagesSearchViewController;
+    HomeMessagesSearchDataSource *messagesSearchDataSource;
     
     ContactPickerViewController *contactsViewController;
     MXKContact *selectedContact;
@@ -83,8 +84,8 @@
     [viewControllers addObject:recentsViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
-    searchViewController = [HomeSearchViewController searchViewController];
-    [viewControllers addObject:searchViewController];
+    messagesSearchViewController = [HomeMessagesSearchViewController searchViewController];
+    [viewControllers addObject:messagesSearchViewController];
 
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
@@ -108,6 +109,8 @@
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+    
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 }
 
 - (void)dealloc
@@ -265,8 +268,8 @@
         [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
         
         // Init the search for messages
-        searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
-        [searchViewController displaySearch:searchDataSource];
+        messagesSearchDataSource = [[HomeMessagesSearchDataSource alloc] initWithMatrixSession:mainSession];
+        [messagesSearchViewController displaySearch:messagesSearchDataSource];
         
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
@@ -279,7 +282,7 @@
                     // Add the session to the recents data source
                     [recentsDataSource addMatrixSession:mxSession];
                     
-                    // FIXME: Update searchDataSource
+                    // FIXME: Update messagesSearchDataSource
                 }
             }
         }
@@ -309,7 +312,7 @@
             // Add the session to the existing recents data source
             [recentsDataSource addMatrixSession:mxSession];
             
-            // FIXME: Update searchDataSource
+            // FIXME: Update messagesSearchDataSource
         }
     }
     
@@ -328,7 +331,7 @@
         recentsDataSource = nil;
     }
     
-    // FIXME: Handle correctly searchDataSource
+    // FIXME: Handle correctly messagesSearchDataSource
     
     [super removeMatrixSession:mxSession];
 }
@@ -453,9 +456,9 @@
     {
         self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidePublicRoomsDirectory || (self.keyboardHeight == 0));
     }
-    else if (self.selectedViewController == searchViewController)
+    else if (self.selectedViewController == messagesSearchViewController)
     {
-        self.backgroundImageView.hidden = ((searchDataSource.serverCount != 0) || !searchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == contactsViewController)
     {
@@ -577,8 +580,10 @@
     __weak typeof(self) weakSelf = self;
     
     [currentAlert dismiss:NO];
-    
-    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil)
+
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+    currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName]
                                            message:nil
                                              style:MXKAlertStyleAlert];
     
@@ -675,7 +680,7 @@
             {
                 // Live timeline or timeline from a search result?
                 MXKRoomDataSource *roomDataSource;
-                if (!searchViewController.selectedEvent)
+                if (!messagesSearchViewController.selectedEvent)
                 {
                     if (!_selectedEventId)
                     {
@@ -696,7 +701,7 @@
                 else
                 {
                     // Search result: Create a temp timeline from the selected event
-                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:messagesSearchViewController.selectedEvent.roomId initialEventId:messagesSearchViewController.selectedEvent.eventId andMatrixSession:messagesSearchDataSource.mxSession];
                     [roomDataSource finalizeInitialization];
                     
                     // Give the data source ownership to the room view controller.
@@ -740,6 +745,7 @@
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
         }
         else if ([[segue identifier] isEqualToString:@"showAuth"])
@@ -837,16 +843,16 @@
             [recentsDataSource searchWithPatterns:patterns];
             recentsViewController.shouldScrollToTopOnRefresh = YES;
         }
-        else if (self.selectedViewController == searchViewController)
+        else if (self.selectedViewController == messagesSearchViewController)
         {
             // Launch the search only if the keyboard is no more visible
             if (!self.searchBar.isFirstResponder)
             {
-                // Do it asynchronously to give time to searchViewController to be set up
+                // Do it asynchronously to give time to messagesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [searchDataSource searchMessageText:self.searchBar.text];
-                    searchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [messagesSearchDataSource searchMessageText:self.searchBar.text force:NO];
+                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
@@ -863,9 +869,9 @@
         
         // Reset search result (if any)
         [recentsDataSource searchWithPatterns:nil];
-        if (searchDataSource.searchText.length)
+        if (messagesSearchDataSource.searchText.length)
         {
-            [searchDataSource searchMessageText:nil];
+            [messagesSearchDataSource searchMessageText:nil force:NO];
         }
         [contactsViewController searchWithPattern:nil];
     }
@@ -898,7 +904,7 @@
 {
     [searchBar resignFirstResponder];
     
-    if (self.selectedViewController == searchViewController)
+    if (self.selectedViewController == messagesSearchViewController)
     {
         // As the messages search is done homeserver-side, launch it only on the "Search" button
         [self updateSearch];
@@ -936,6 +942,41 @@
 }
 
 - (void)onNewRoomPressed
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [currentAlert dismiss:NO];
+    
+    currentAlert = [[MXKAlert alloc] initWithTitle:nil message:nil style:MXKAlertStyleActionSheet];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+        
+        [strongSelf performSegueWithIdentifier:@"presentStartChat" sender:strongSelf];
+    }];
+    
+    [currentAlert addActionWithTitle:NSLocalizedStringFromTable(@"room_recents_create_empty_room", @"Vector", nil) style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+        
+        [strongSelf createEmptyRoom];
+    }];
+    
+    currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:MXKAlertActionStyleCancel handler:^(MXKAlert *alert) {
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf->currentAlert = nil;
+    }];
+    
+    currentAlert.sourceView = createNewRoomImageView;
+    
+    [currentAlert showInViewController:self];
+}
+    
+- (void)createEmptyRoom
 {
     // Sanity check
     if (self.mainSession)

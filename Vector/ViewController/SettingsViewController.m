@@ -27,14 +27,31 @@
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
+
+#define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
+#define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
+#define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
+#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
+#define SETTINGS_SECTION_CONTACTS_INDEX                 4
+#define SETTINGS_SECTION_ADVANCED_INDEX                 5
+#define SETTINGS_SECTION_OTHER_INDEX                    6
+#define SETTINGS_SECTION_LABS_INDEX                     7
+#define SETTINGS_SECTION_COUNT                          7   // Not 8 because the LABS section is currently hidden
+
+#else
+
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
 #define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
 #define SETTINGS_SECTION_ADVANCED_INDEX                 4
 #define SETTINGS_SECTION_OTHER_INDEX                    5
-#define SETTINGS_SECTION_LABS_INDEX                     6
-#define SETTINGS_SECTION_COUNT                          7
+#define SETTINGS_SECTION_CONTACTS_INDEX                 6
+#define SETTINGS_SECTION_LABS_INDEX                     7
+#define SETTINGS_SECTION_COUNT                          6   // Not 8 because the CONTACTS and LABS section is currently hidden
+
+#endif
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -46,18 +63,20 @@
 //#define NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX             6
 #define NOTIFICATION_SETTINGS_COUNT                             2
 
-#define OTHER_VERSION_INDEX          0
-#define OTHER_TERM_CONDITIONS_INDEX  1
-#define OTHER_PRIVACY_INDEX          2
-#define OTHER_THIRD_PARTY_INDEX      3
-#define OTHER_CRASH_REPORT_INDEX     4
-#define OTHER_MARK_ALL_AS_READ_INDEX 5
-#define OTHER_CLEAR_CACHE_INDEX      6
-#define OTHER_COUNT                  7
+#define CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC    0
+#define CONTACTS_SETTINGS_COUNT                         1
 
-#define LABS_VOIP_INDEX                 0
-#define LABS_CONFERENCE_CALL_INDEX      1
-#define LABS_COUNT                      2
+#define OTHER_VERSION_INDEX          0
+#define OTHER_COPYRIGHT_INDEX        1
+#define OTHER_TERM_CONDITIONS_INDEX  2
+#define OTHER_PRIVACY_INDEX          3
+#define OTHER_THIRD_PARTY_INDEX      4
+#define OTHER_CRASH_REPORT_INDEX     5
+#define OTHER_MARK_ALL_AS_READ_INDEX 6
+#define OTHER_CLEAR_CACHE_INDEX      7
+#define OTHER_COUNT                  8
+
+#define LABS_COUNT                   0
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -499,13 +518,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     [account load3PIDs:^{
 
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
 
     } failure:^(NSError *error) {
+        
         // Display the data that has been loaded last time
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
+        
     }];
 }
 
@@ -571,6 +593,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         {
             count = 0;
         }
+    }
+    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        count = CONTACTS_SETTINGS_COUNT;
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -693,7 +719,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             }
             else
             {
-                UIImage* avatarImage = [AvatarGenerator generateRoomMemberAvatar:myUser.userId displayName:myUser.displayname];
+                UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:myUser.userId withDisplayName:myUser.displayname];
                 
                 if (myUser.avatarUrl)
                 {
@@ -832,9 +858,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
-        
-//        MXPushRule *rule;
-        
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -853,8 +876,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 globalInfoCell = [[MXKTableViewCell alloc] init];
             }
-            
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil);
+
+            NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+            globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
             cell = globalInfoCell;
         }
@@ -877,6 +902,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         privacyPolicyCell.textLabel.textColor = kVectorTextColorBlack;
 
         cell = privacyPolicyCell;
+    }
+    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        if (row == CONTACTS_SETTINGS_ENABLE_LOCAL_CONTACTS_SYNC)
+        {
+            MXKTableViewCellWithLabelAndSwitch* enableAllCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            enableAllCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users_with_local_emails", @"Vector", nil);
+             enableAllCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
+            [enableAllCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [enableAllCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = enableAllCell;
+        }
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -922,11 +961,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 termAndConditionCell = [[MXKTableViewCell alloc] init];
                 termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
-            
+
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             termAndConditionCell.textLabel.textColor = kVectorTextColorBlack;
-            
+
             cell = termAndConditionCell;
+        }
+        else if (row == OTHER_COPYRIGHT_INDEX)
+        {
+            MXKTableViewCell *copyrightCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!copyrightCell)
+            {
+                copyrightCell = [[MXKTableViewCell alloc] init];
+                copyrightCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
+
+            copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
+            copyrightCell.textLabel.textColor = kVectorTextColorBlack;
+
+            cell = copyrightCell;
         }
         else if (row == OTHER_PRIVACY_INDEX)
         {
@@ -1008,38 +1061,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_VOIP_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_outgoing_voip", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
-            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsVoIP:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_CONFERENCE_CALL_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_conference_call", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
-
-            // VoIP must be enabled on order to change this settings
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"])
-            {
-                [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsConferenceCall:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            else
-            {
-                labelAndSwitchCell.mxkLabel.enabled = NO;
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
-        }
     }
 
     return cell;
@@ -1068,6 +1089,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         // Hide this section
         return nil;
+    }
+    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
     {
@@ -1221,23 +1246,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         else
         if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
-           if (row == OTHER_TERM_CONDITIONS_INDEX)
-           {
-               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/tac.html"];
-               [self.navigationController pushViewController:webViewViewController animated:YES];
-           }
-           else if (row == OTHER_PRIVACY_INDEX)
-           {
-               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/privacy.html"];
-               [self.navigationController pushViewController:webViewViewController animated:YES];
-           }
-           else if (row == OTHER_THIRD_PARTY_INDEX)
-           {
-               NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
-               
-               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
-               [self.navigationController pushViewController:webViewViewController animated:YES];
-           }
+            if (row == OTHER_COPYRIGHT_INDEX)
+            {
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
+            else if (row == OTHER_TERM_CONDITIONS_INDEX)
+            {
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
+            else if (row == OTHER_PRIVACY_INDEX)
+            {
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
+            else if (row == OTHER_THIRD_PARTY_INDEX)
+            {
+                NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
+
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
         {
@@ -1284,8 +1314,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [currentAlert dismiss:NO];
         
         __weak typeof(self) weakSelf = self;
-        
-        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil)
+
+        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName]
                                                message:nil
                                                  style:MXKAlertStyleAlert];
         
@@ -1312,6 +1344,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
+- (void)toggleLocalContactsSync:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+
+    if (switchButton.on)
+    {
+        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+
+            [MXKAppSettings standardAppSettings].syncLocalContacts = granted;
+            switchButton.on = granted;
+        }];
+    }
+    else
+    {
+        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+        switchButton.on = NO;
+    }
+}
+
 - (void)toggleSendCrashReport:(id)sender
 {
     BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableCrashReport"];
@@ -1333,79 +1384,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
-    }
-}
-
-- (void)toggleLabsVoIP:(id)sender
-{
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableOutgoingVoIP"];
-
-    NSLog(@"[SettingsViewController] %@ VoIP", enable ? @"Disable" : @"Enable");
-
-    [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableOutgoingVoIP"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    // Refresh the "Conference Call" button
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:LABS_CONFERENCE_CALL_INDEX inSection:SETTINGS_SECTION_LABS_INDEX]]
-                          withRowAnimation:UITableViewRowAnimationNone];
-}
-
-- (void)toggleLabsConferenceCall:(id)sender
-{
-    BOOL enable = [[NSUserDefaults standardUserDefaults] boolForKey:@"labsEnableConferenceCall"];
-
-    if (sender && !enable)
-    {
-        // Ask confirmation to the user before enabling it
-        UISwitch *switchButton;
-        if ([sender isKindOfClass:UISwitch.class])
-        {
-            switchButton = (UISwitch*)sender;
-
-        }
-
-        // Prevent the toggle from toggling without the user confirmation
-        [switchButton setOn:NO animated:YES];
-
-        [currentAlert dismiss:NO];
-        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
-                                               message:NSLocalizedStringFromTable(@"settings_labs_conference_call_warning", @"Vector", nil)
-                                                 style:MXKAlertStyleAlert];
-
-        __weak typeof(self) weakSelf = self;
-
-        currentAlert.cancelButtonIndex = [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"] style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-            if (weakSelf)
-            {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->currentAlert = nil;
-            }
-        }];
-
-        [currentAlert addActionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]  style:MXKAlertActionStyleDefault handler:^(MXKAlert *alert) {
-
-            if (weakSelf)
-            {
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
-                strongSelf->currentAlert = nil;
-
-                // Apply the change
-                [switchButton setOn:YES animated:YES];
-                [strongSelf toggleLabsConferenceCall:nil];
-            }
-        }];
-
-        [currentAlert showInViewController:self];
-
-
-    }
-    else
-    {
-        NSLog(@"[SettingsViewController] %@ connference call", enable ? @"Disable" : @"Enable");
-
-        [[NSUserDefaults standardUserDefaults] setBool:!enable forKey:@"labsEnableConferenceCall"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 

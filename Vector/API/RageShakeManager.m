@@ -182,23 +182,26 @@ static RageShakeManager* sharedInstance = nil;
     }
     
     if (controller) {
+
+        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
         mailComposer = [[MFMailComposeViewController alloc] init];
 
         if ([MXLogger crashLog]) {
-            [mailComposer setSubject:@"Vector crash report"];
+            [mailComposer setSubject:[NSString stringWithFormat:@"%@ crash report", appDisplayName]];
         }
         else {
-            [mailComposer setSubject:@"Vector bug report"];
+            [mailComposer setSubject:[NSString stringWithFormat:@"%@ bug report", appDisplayName]];
         }
 
-        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@vector.im"]];
+        [mailComposer setToRecipients:[NSArray arrayWithObject:@"rageshake@riot.im"]];
         
         NSString* appVersion = [AppDelegate theDelegate].appVersion;
         NSString* build = [AppDelegate theDelegate].build;
         
         NSMutableString* message = [[NSMutableString alloc] init];
         
-        [message appendFormat:@"Something went wrong on my Vector client: \n\n\n"];
+        [message appendFormat:@"Something went wrong on my Matrix client: \n\n\n"];
         
         [message appendFormat:@"-----> my comments <-----\n\n\n"];
         
@@ -220,7 +223,7 @@ static RageShakeManager* sharedInstance = nil;
         
         [message appendFormat:@"------------------------------\n"];
         [message appendFormat:@"Application info\n"];
-        [message appendFormat:@"Vector version: %@\n", appVersion];
+        [message appendString:appDisplayName];[message appendFormat:@" version: %@\n", appVersion];
         [message appendFormat:@"MatrixKit version: %@\n", MatrixKitVersion];
         [message appendFormat:@"MatrixSDK version: %@\n", MatrixSDKVersion];
         if (build.length) {

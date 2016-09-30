@@ -22,7 +22,7 @@
 @interface AvatarGenerator : NSObject
 
 /**
- Create an UIImage with the text and the background color.
+ Create a squared UIImage with the text and the background color.
  @param text the text.
  @param color the background color.
  @return the avatar image.
@@ -30,20 +30,22 @@
 + (UIImage *)imageFromText:(NSString*)text withBackgroundColor:(UIColor*)color;
 
 /**
- Generate an avatar for a room.
- @param roomId the id of the room.
- @param displayName the display name of the room.
+ Generate a squared avatar for a matrix item (room, room member...).
+ @param itemId the matrix identifier of the item
+ @param displayname the item displayname (if nil, the itemId is used by default).
  @return the avatar image
  */
-+ (UIImage*)generateRoomAvatar:(NSString*)roomId andDisplayName:(NSString*)displayName;
++ (UIImage*)generateAvatarForMatrixItem:(NSString*)itemId withDisplayName:(NSString*)displayname;
 
 /**
- Generate an avatar for a room member.
- @param userId the member userId
- @param displayname the member displayname
+ Generate a squared avatar for a matrix item (room, room member...) with a preferred size
+ @param itemId the matrix identifier of the item
+ @param displayname the item displayname (if nil, the itemId is used by default).
+ @param size the expected size of the returned image
+ @param fontSize the expected font size
  @return the avatar image
  */
-+ (UIImage*)generateRoomMemberAvatar:(NSString*)userId displayName:(NSString*)displayname;
++ (UIImage*)generateAvatarForMatrixItem:(NSString*)itemId withDisplayName:(NSString*)displayname size:(CGFloat)size andFontSize:(CGFloat)fontSize;
 
 /**
  Generate an avatar for a text.
