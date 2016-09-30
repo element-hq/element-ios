@@ -1,3 +1,16 @@
+Changes in 0.2.3 (2016-09-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.19).
+ * RoomSearchDataSource: Remove the matrix session from the parameters in `initWithRoomDataSource` API.
+ * Enhance the messages search display.
+ 
+Bug fixes:
+ * App crashes when user taps on room alias with multiple # in chat history #668.
+ * Room message search: the message date & time are not displayed #361.
+ * Room message search: the search pattern is not highlighted in results #660.
+
 Changes in 0.2.2 (2016-09-27)
 ===============================================
 
