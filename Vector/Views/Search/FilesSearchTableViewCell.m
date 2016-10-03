@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,27 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "FilesSearchTableViewCell.h"
 
-#import "MXKSearchCellDataStoring.h"
+#import "VectorDesignValues.h"
 
-/**
- `HomeSearchCellData` modelised the data a la Vector for a `HomeSearchCell` cell.
- */
-@interface HomeSearchCellData : MXKCellData <MXKSearchCellDataStoring>
+@implementation FilesSearchTableViewCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.title.textColor = kVectorTextColorBlack;
+    
+    self.message.textColor = kVectorTextColorGray;
+    
+    self.date.tintColor = kVectorTextColorGray;
+}
+
++ (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    // The height is fixed
+    return 74;
+}
 
 @end

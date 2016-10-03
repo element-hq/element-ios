@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- Each `HomeSearchTableViewCell` instance displays a search result in `HomeSearchViewController.
+ Each `FilesSearchTableViewCell` instance displays a files search result.
  */
-@interface HomeSearchTableViewCell : MXKSearchTableViewCell
+@interface FilesSearchTableViewCell : MXKSearchTableViewCell
 
 @end

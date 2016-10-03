@@ -107,6 +107,7 @@
 "search_rooms" = "Rooms";
 "search_messages" = "Messages";
 "search_people" = "People";
+"search_files" = "Files";
 
 // Directory
 "directory_cell_title" = "Browse directory";

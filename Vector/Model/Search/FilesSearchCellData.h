@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2016 OpenMarket Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  limitations under the License.
  */
 
-#import "HomeSearchTableViewCell.h"
+#import <MatrixKit/MatrixKit.h>
 
-@implementation HomeSearchTableViewCell
-
-+ (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
+/**
+ `FilesSearchCellData` prepares the data for the Vector cell used to display the files search result.
+ */
+@interface FilesSearchCellData : MXKCellData <MXKSearchCellDataStoring>
 {
-    // The height is fixed
-    return 74;
+    /**
+     The data source owner of this instance.
+     */
+    MXKSearchDataSource *searchDataSource;
 }
 
 @end

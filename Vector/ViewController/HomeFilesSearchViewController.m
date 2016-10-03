@@ -14,18 +14,15 @@
  limitations under the License.
  */
 
-#import "HomeMessagesSearchViewController.h"
+#import "HomeFilesSearchViewController.h"
 
 #import "AppDelegate.h"
 
 #import "HomeViewController.h"
 
 // Use RoomViewController cells to display results
-#import "RoomBubbleCellData.h"
-#import "MessagesSearchResultAttachmentBubbleCell.h"
-#import "MessagesSearchResultTextMsgBubbleCell.h"
-#import "RoomIncomingAttachmentBubbleCell.h"
-#import "RoomIncomingTextMsgBubbleCell.h"
+#import "FilesSearchCellData.h"
+#import "FilesSearchTableViewCell.h"
 
 #import "EventFormatter.h"
 
@@ -33,7 +30,7 @@
 
 #import "RageShakeManager.h"
 
-@implementation HomeMessagesSearchViewController
+@implementation HomeFilesSearchViewController
 
 - (void)viewDidLoad
 {
@@ -45,10 +42,7 @@
     self.rageShakeManager = [RageShakeManager sharedManager];
     
     // Reuse cells from the RoomViewController to display results
-    [self.searchTableView registerClass:MessagesSearchResultTextMsgBubbleCell.class forCellReuseIdentifier:MessagesSearchResultTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.searchTableView registerClass:MessagesSearchResultAttachmentBubbleCell.class forCellReuseIdentifier:MessagesSearchResultAttachmentBubbleCell.defaultReuseIdentifier];
-    [self.searchTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.searchTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
+    [self.searchTableView registerClass:FilesSearchTableViewCell.class forCellReuseIdentifier:FilesSearchTableViewCell.defaultReuseIdentifier];
 
     self.searchTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
@@ -64,7 +58,7 @@
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:@"MessagesGlobalSearch"];
+        [tracker set:kGAIScreenName value:@"FilesGlobalSearch"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
     
@@ -99,65 +93,20 @@
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    Class cellViewClass = nil;
-    
-    // Sanity check
-    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
-    {
-        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
-        
-        // Select the suitable table view cell class
-        if (bubbleData.isAttachmentWithThumbnail)
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellViewClass = MessagesSearchResultAttachmentBubbleCell.class;
-            }
-            else
-            {
-                cellViewClass = RoomIncomingAttachmentBubbleCell.class;
-            }
-        }
-        else if (bubbleData.isPaginationFirstBubble)
-        {
-            cellViewClass = MessagesSearchResultTextMsgBubbleCell.class;
-        }
-        else
-        {
-            cellViewClass = RoomIncomingTextMsgBubbleCell.class;
-        }
-    }
-    
-    return cellViewClass;
+    return FilesSearchTableViewCell.class;
 }
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
-    Class class = [self cellViewClassForCellData:cellData];
-    
-    if ([class respondsToSelector:@selector(defaultReuseIdentifier)])
-    {
-        return [class defaultReuseIdentifier];
-    }
-    
-    return nil;
+    return FilesSearchTableViewCell.defaultReuseIdentifier;
 }
 
 #pragma mark - Override UITableView delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // `MXKRoomBubbleTableViewCell` cells displayed by the `RoomViewController`
-    // do not have line separators.
-    // The +1 here is for the line separator which is displayed by `RoomSearchViewController`.
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Data in the cells are actually Vector RoomBubbleCellData
-    RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self.dataSource cellDataAtIndex:indexPath.row];
-    _selectedEvent = cellData.bubbleComponents[0].event;
+    FilesSearchCellData *cellData = (FilesSearchCellData*)[self.dataSource cellDataAtIndex:indexPath.row];
+    _selectedEvent = cellData.searchResult.result;
 
     // Hide the keyboard handled by the search text input which belongs to HomeViewController
     [((HomeViewController*)self.parentViewController).searchBar resignFirstResponder];
