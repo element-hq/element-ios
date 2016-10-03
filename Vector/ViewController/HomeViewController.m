@@ -29,6 +29,8 @@
 #import "MXKSearchDataSource.h"
 #import "HomeMessagesSearchViewController.h"
 #import "HomeMessagesSearchDataSource.h"
+#import "HomeFilesSearchViewController.h"
+#import "FilesSearchCellData.h"
 
 #import "AppDelegate.h"
 
@@ -41,6 +43,9 @@
 
     HomeMessagesSearchViewController *messagesSearchViewController;
     HomeMessagesSearchDataSource *messagesSearchDataSource;
+    
+    HomeFilesSearchViewController *filesSearchViewController;
+    MXKSearchDataSource *filesSearchDataSource;
     
     ContactPickerViewController *contactsViewController;
     MXKContact *selectedContact;
@@ -92,6 +97,11 @@
     contactsViewController = [ContactPickerViewController contactPickerViewController];
     contactsViewController.delegate = self;
     [viewControllers addObject:contactsViewController];
+    
+    // add Files tab
+    [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
+    filesSearchViewController = [HomeFilesSearchViewController searchViewController];
+    [viewControllers addObject:filesSearchViewController];
 
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
@@ -271,6 +281,13 @@
         messagesSearchDataSource = [[HomeMessagesSearchDataSource alloc] initWithMatrixSession:mainSession];
         [messagesSearchViewController displaySearch:messagesSearchDataSource];
         
+        // Init the search for messages
+        filesSearchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
+        filesSearchDataSource.containsURL = YES;
+        filesSearchDataSource.shouldShowRoomDisplayName = YES;
+        [filesSearchDataSource registerCellDataClass:FilesSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
+        [filesSearchViewController displaySearch:filesSearchDataSource];
+        
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)
@@ -282,7 +299,7 @@
                     // Add the session to the recents data source
                     [recentsDataSource addMatrixSession:mxSession];
                     
-                    // FIXME: Update messagesSearchDataSource
+                    // FIXME: Update messagesSearchDataSource and filesSearchDataSource
                 }
             }
         }
@@ -312,7 +329,7 @@
             // Add the session to the existing recents data source
             [recentsDataSource addMatrixSession:mxSession];
             
-            // FIXME: Update messagesSearchDataSource
+            // FIXME: Update messagesSearchDataSource and filesSearchDataSource
         }
     }
     
@@ -331,7 +348,7 @@
         recentsDataSource = nil;
     }
     
-    // FIXME: Handle correctly messagesSearchDataSource
+    // FIXME: Handle correctly messagesSearchDataSource and filesSearchDataSource
     
     [super removeMatrixSession:mxSession];
 }
@@ -463,6 +480,10 @@
     else if (self.selectedViewController == contactsViewController)
     {
         self.backgroundImageView.hidden = (([contactsViewController.contactsTableView numberOfRowsInSection:0] != 0) || !contactsViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == filesSearchViewController)
+    {
+        self.backgroundImageView.hidden = ((filesSearchDataSource.serverCount != 0) || !filesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
     else
     {
@@ -678,9 +699,18 @@
 
             if (!_selectedRoomPreviewData)
             {
-                // Live timeline or timeline from a search result?
                 MXKRoomDataSource *roomDataSource;
-                if (!messagesSearchViewController.selectedEvent)
+                
+                // Check whether an event has been selected from messages or files search tab. Live timeline or timeline from a search result?
+                MXEvent *selectedSearchEvent = messagesSearchViewController.selectedEvent;
+                MXSession *selectedSearchEventSession = messagesSearchDataSource.mxSession;
+                if (!selectedSearchEvent)
+                {
+                    selectedSearchEvent = filesSearchViewController.selectedEvent;
+                    selectedSearchEventSession = filesSearchDataSource.mxSession;
+                }
+                
+                if (!selectedSearchEvent)
                 {
                     if (!_selectedEventId)
                     {
@@ -701,7 +731,7 @@
                 else
                 {
                     // Search result: Create a temp timeline from the selected event
-                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:messagesSearchViewController.selectedEvent.roomId initialEventId:messagesSearchViewController.selectedEvent.eventId andMatrixSession:messagesSearchDataSource.mxSession];
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
                     [roomDataSource finalizeInitialization];
                     
                     // Give the data source ownership to the room view controller.
@@ -851,7 +881,7 @@
                 // Do it asynchronously to give time to messagesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [messagesSearchDataSource searchMessageText:self.searchBar.text force:NO];
+                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
                     messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
@@ -859,6 +889,19 @@
         else if (self.selectedViewController == contactsViewController)
         {
             [contactsViewController searchWithPattern:self.searchBar.text];
+        }
+        else if (self.selectedViewController == filesSearchViewController)
+        {
+            // Launch the search only if the keyboard is no more visible
+            if (!self.searchBar.isFirstResponder)
+            {
+                // Do it asynchronously to give time to filesSearchViewController to be set up
+                // so that it can display its loading wheel
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                });
+            }
         }
     }
     else
@@ -871,9 +914,13 @@
         [recentsDataSource searchWithPatterns:nil];
         if (messagesSearchDataSource.searchText.length)
         {
-            [messagesSearchDataSource searchMessageText:nil force:NO];
+            [messagesSearchDataSource searchMessages:nil force:NO];
         }
         [contactsViewController searchWithPattern:nil];
+        if (filesSearchDataSource.searchText.length)
+        {
+            [filesSearchDataSource searchMessages:nil force:NO];
+        }
     }
     
     [self checkAndShowBackgroundImage];
@@ -904,9 +951,9 @@
 {
     [searchBar resignFirstResponder];
     
-    if (self.selectedViewController == messagesSearchViewController)
+    if (self.selectedViewController == messagesSearchViewController || self.selectedViewController == filesSearchViewController)
     {
-        // As the messages search is done homeserver-side, launch it only on the "Search" button
+        // As the messages/files search is done homeserver-side, launch it only on the "Search" button
         [self updateSearch];
     }
 }
