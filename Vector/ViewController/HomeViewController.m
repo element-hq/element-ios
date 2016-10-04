@@ -26,7 +26,6 @@
 #import "ContactDetailsViewController.h"
 #import "SettingsViewController.h"
 
-#import "MXKSearchDataSource.h"
 #import "HomeMessagesSearchViewController.h"
 #import "HomeMessagesSearchDataSource.h"
 #import "HomeFilesSearchViewController.h"
@@ -209,6 +208,12 @@
             // the selected room (if any) is highlighted.
             [self refreshCurrentSelectedCellInChild:YES];
         }
+    }
+    
+    // Here the actual view size is available, check the background image display if any
+    if (!self.searchBarHidden)
+    {
+        [self checkAndShowBackgroundImage];
     }
 }
 
@@ -492,9 +497,12 @@
     
     if (!self.backgroundImageView.hidden)
     {
+        [self.backgroundImageView layoutIfNeeded];
+        [self.selectedViewController.view layoutIfNeeded];
+        
         // Check whether there is enough space to display this background
         // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
-        if ((self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
+        if (self.backgroundImageView.frame.origin.y < 0 || (self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
         {
             self.backgroundImageView.hidden = YES;
         }
