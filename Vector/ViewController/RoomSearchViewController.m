@@ -1,12 +1,12 @@
 /*
- Copyright 2015 OpenMarket Ltd
-
+ Copyright 2016 OpenMarket Ltd
+ 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
+ 
  http://www.apache.org/licenses/LICENSE-2.0
-
+ 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,29 +16,21 @@
 
 #import "RoomSearchViewController.h"
 
-#import "UIViewController+VectorSearch.h"
+#import "RoomMessagesSearchViewController.h"
+#import "RoomSearchDataSource.h"
 
-// Use RoomViewController cells to display results
-#import "RoomBubbleCellData.h"
-#import "RoomIncomingAttachmentBubbleCell.h"
-#import "RoomIncomingTextMsgBubbleCell.h"
-
-#import "RoomViewController.h"
-#import "RoomDataSource.h"
-
-#import "VectorDesignValues.h"
-
-#import "RageShakeManager.h"
+#import "RoomFilesSearchViewController.h"
+#import "FilesSearchCellData.h"
 
 #import "AppDelegate.h"
 
 @interface RoomSearchViewController ()
 {
-    // The event selected in the search results
-    MXEvent *selectedEvent;
+    RoomMessagesSearchViewController *messagesSearchViewController;
+    RoomSearchDataSource *messagesSearchDataSource;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    RoomFilesSearchViewController *filesSearchViewController;
+    MXKSearchDataSource *filesSearchDataSource;
 }
 
 @end
@@ -47,58 +39,112 @@
 
 - (void)viewDidLoad
 {
+    // Set up the SegmentedVC tabs before calling [super viewDidLoad]
+    NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
+    NSMutableArray* titles = [[NSMutableArray alloc] init];
+    
+    [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
+    messagesSearchViewController = [RoomMessagesSearchViewController searchViewController];
+    [viewControllers addObject:messagesSearchViewController];
+    
+    // add Files tab
+    [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
+    filesSearchViewController = [RoomFilesSearchViewController searchViewController];
+    [viewControllers addObject:filesSearchViewController];
+    
+    [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
+    
     [super viewDidLoad];
     
-    // Setup `MXKViewControllerHandling` properties
-    self.defaultBarTintColor = kVectorNavBarTintColor;
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
-
-    // Hide line separators of empty cells
-    self.searchTableView.tableFooterView = [[UIView alloc] init];
-
-    // Reuse cells from the RoomViewController to display results
-    [self.searchTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.searchTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
-
+    // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController)
+    
     // Add the Vector background image when search bar is empty
     [self addBackgroundImageViewToView:self.view];
+    
+    // Initialize here the data sources if a matrix session has been already set.
+    [self initializeDataSources];
+    
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+}
+
+- (void)destroy
+{
+    [super destroy];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    // Let's child display the loading not this view controller
+    if (self.activityIndicator)
+    {
+        [self.activityIndicator stopAnimating];
+        self.activityIndicator = nil;
+    }
+    
     // Screen tracking (via Google Analytics)
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     if (tracker)
     {
-        [tracker set:kGAIScreenName value:@"RoomMessagesSearch"];
+        [tracker set:kGAIScreenName value:@"RoomsSearch"];
         [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     }
-
-    // Enable the search field at the screen opening
-    if (self.searchBar.text.length == 0)
-    {
-        [self showSearch:animated];
-    }
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self.searchTableView setContentOffset:CGPointMake(-self.searchTableView.contentInset.left, -self.searchTableView.contentInset.top) animated:YES];
-        
-    }];
+    // Enable the search field by default at the screen opening
+    if (self.searchBarHidden)
+    {
+        [self showSearch:NO];
+    }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidAppear:animated];
     
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    // Refresh the search results.
+    // Note: We wait for 'viewDidAppear' call to consider the actual view size during this update.
+    [self updateSearch];
+}
+
+#pragma mark -
+
+- (void)setRoomDataSource:(MXKRoomDataSource *)roomDataSource
+{
+    // Remove existing matrix session if any
+    while (self.mainSession)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+        [self removeMatrixSession:self.mainSession];
+    }
+    
+    _roomDataSource = roomDataSource;
+    
+    [self addMatrixSession:_roomDataSource.mxSession];
+    
+    // Check whether the controller's view is already loaded into memory.
+    if (messagesSearchViewController)
+    {
+        // Prepare data sources
+        [self initializeDataSources];
+    }
+}
+
+- (void)initializeDataSources
+{
+    MXSession *mainSession = self.mainSession;
+    
+    if (mainSession && _roomDataSource)
+    {
+        // Init the search for messages
+        messagesSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:_roomDataSource];
+        [messagesSearchViewController displaySearch:messagesSearchDataSource];
+        
+        // Init the search for messages
+        filesSearchDataSource = [[MXKSearchDataSource alloc] initWithRoomId:_roomDataSource.roomId andMatrixSession:mainSession];
+        filesSearchDataSource.mediaFilter = MXMessagesSearchMediaFilterLimitedToAttachments;
+        filesSearchDataSource.shouldShowRoomDisplayName = NO;
+        [filesSearchDataSource registerCellDataClass:FilesSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
+        [filesSearchViewController displaySearch:filesSearchDataSource];
     }
 }
 
@@ -107,118 +153,193 @@
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     [self setKeyboardHeightForBackgroundImage:keyboardHeight];
-
+    
     [super setKeyboardHeight:keyboardHeight];
+    
+    [self checkAndShowBackgroundImage];
+}
+
+- (void)startActivityIndicator
+{
+    // Redirect the operation to the currently displayed VC
+    // It is a MXKViewController or a MXKTableViewController. So it supports startActivityIndicator
+    [self.selectedViewController performSelector:@selector(startActivityIndicator)];
+}
+
+- (void)stopActivityIndicator
+{
+    // The selected view controller mwy have changed since the call of [self startActivityIndicator]
+    // So, stop the activity indicator for all children
+    for (UIViewController *viewController in self.viewControllers)
+    {
+        [viewController performSelector:@selector(stopActivityIndicator)];
+    }
 }
 
 #pragma mark - Override UIViewController+VectorSearch
 
-- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
-
-    // Do not show the bubbles image if there are results already displayed
-    if (self.dataSource.serverCount)
+    if (!self.searchBar.text.length)
     {
-        self.backgroundImageView.hidden = YES;
+        // Reset current search if any
+        [self updateSearch];
     }
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar2
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [super searchBarSearchButtonClicked:searchBar2];
-
-    if (searchBar2.text.length)
+    [searchBar resignFirstResponder];
+    
+    if (self.selectedViewController == messagesSearchViewController || self.selectedViewController == filesSearchViewController)
     {
-        self.backgroundImageView.hidden = YES;
+        // As the messages/files search is done homeserver-side, launch it only on the "Search" button
+        [self updateSearch];
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar2
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    [searchBar resignFirstResponder];
+    
     // Leave the screen
-    [super searchBarCancelButtonClicked:searchBar2];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - MXKDataSourceDelegate
-
-- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
+- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
 {
-    Class cellViewClass = nil;
-
-    // Sanity check
-    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
+    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
+    
+    if (keyboardHeight > 0)
     {
-        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+        [self checkAndShowBackgroundImage];
+    }
+}
 
-        // Select the suitable table view cell class
-        if (bubbleData.isAttachmentWithThumbnail)
+// Check conditions before displaying the background
+- (void)checkAndShowBackgroundImage
+{
+    // Note: This background is hidden when keyboard is dismissed.
+    // The other conditions depend on the current selected view controller.
+    if (self.selectedViewController == messagesSearchViewController)
+    {
+        self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == filesSearchViewController)
+    {
+        self.backgroundImageView.hidden = ((filesSearchDataSource.serverCount != 0) || !filesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+    }
+    else
+    {
+        self.backgroundImageView.hidden = (self.keyboardHeight == 0);
+    }
+    
+    if (!self.backgroundImageView.hidden)
+    {
+        [self.backgroundImageView layoutIfNeeded];
+        [self.selectedViewController.view layoutIfNeeded];
+        
+        // Check whether there is enough space to display this background
+        // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
+        if (self.backgroundImageView.frame.origin.y < 0 || (self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
         {
-            cellViewClass = RoomIncomingAttachmentBubbleCell.class;
-        }
-        else
-        {
-            cellViewClass = RoomIncomingTextMsgBubbleCell.class;
+            self.backgroundImageView.hidden = YES;
         }
     }
-
-    return cellViewClass;
 }
 
-- (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
+#pragma mark - Override SegmentedViewController
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
-    Class class = [self cellViewClassForCellData:cellData];
-
-    if ([class respondsToSelector:@selector(defaultReuseIdentifier)])
-    {
-        return [class defaultReuseIdentifier];
-    }
-
-    return nil;
+    [super setSelectedIndex:selectedIndex];
+    
+    [self updateSearch];
 }
 
-
-#pragma mark - Override UITableView delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // `MXKRoomBubbleTableViewCell` cells displayed by the `RoomViewController`
-    // do not have line separators.
-    // The +1 here is for the line separator which is displayed by `RoomSearchViewController`.
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Data in the cells are actually Vector RoomBubbleCellData
-    RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self.dataSource cellDataAtIndex:indexPath.row];
-    selectedEvent = cellData.bubbleComponents[0].event;
-
-    [self.searchBar resignFirstResponder];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    // Open the RoomViewController
-    [self performSegueWithIdentifier:@"showTimeline" sender:self];
-}
-
-
-#pragma mark - Segues
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [super prepareForSegue:segue sender:sender];
-
+    
     if ([[segue identifier] isEqualToString:@"showTimeline"])
     {
-        RoomViewController *roomViewController = segue.destinationViewController;
-
-        RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedEvent.roomId initialEventId:selectedEvent.eventId andMatrixSession:self.dataSource.mxSession];
-        [roomDataSource finalizeInitialization];
-
-        [roomViewController displayRoom:roomDataSource];
-        roomViewController.hasRoomDataSourceOwnership = YES;
+        // Check whether an event has been selected from messages or files search tab
+        MXEvent *selectedSearchEvent = messagesSearchViewController.selectedEvent;
+        MXSession *selectedSearchEventSession = messagesSearchDataSource.mxSession;
+        if (!selectedSearchEvent)
+        {
+            selectedSearchEvent = filesSearchViewController.selectedEvent;
+            selectedSearchEventSession = filesSearchDataSource.mxSession;
+        }
+        
+        if (selectedSearchEvent)
+        {
+            RoomViewController *roomViewController = segue.destinationViewController;
+            RoomDataSource *roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
+            [roomDataSource finalizeInitialization];
+            
+            [roomViewController displayRoom:roomDataSource];
+            roomViewController.hasRoomDataSourceOwnership = YES;
+        }
+        
+        // Hide back button title
+        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
+}
+
+#pragma mark - Search
+
+// Update search results under the currently selected tab
+- (void)updateSearch
+{
+    if (self.searchBar.text.length)
+    {
+        self.backgroundImageView.hidden = YES;
+        
+        // Forward the search request to the data source
+        if (self.selectedViewController == messagesSearchViewController)
+        {
+            // Launch the search only if the keyboard is no more visible
+            if (!self.searchBar.isFirstResponder)
+            {
+                // Do it asynchronously to give time to messagesSearchViewController to be set up
+                // so that it can display its loading wheel
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                });
+            }
+        }
+        else if (self.selectedViewController == filesSearchViewController)
+        {
+            // Launch the search only if the keyboard is no more visible
+            if (!self.searchBar.isFirstResponder)
+            {
+                // Do it asynchronously to give time to filesSearchViewController to be set up
+                // so that it can display its loading wheel
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                });
+            }
+        }
+    }
+    else
+    {
+        // Nothing to search - Reset search result (if any)
+        if (messagesSearchDataSource.searchText.length)
+        {
+            [messagesSearchDataSource searchMessages:nil force:NO];
+        }
+        if (filesSearchDataSource.searchText.length)
+        {
+            [filesSearchDataSource searchMessages:nil force:NO];
+        }
+    }
+    
+    [self checkAndShowBackgroundImage];
 }
 
 @end

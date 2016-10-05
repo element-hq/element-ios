@@ -110,13 +110,10 @@
 - (void)hideSearch:(BOOL)animated
 {
     // Restore the screen header
-    if (self.searchInternals.backupLeftBarButtonItem)
-    {
-        self.navigationItem.hidesBackButton = NO;
-        self.navigationItem.titleView = self.searchInternals.backupTitleView;
-        self.navigationItem.leftBarButtonItem = self.searchInternals.backupLeftBarButtonItem;
-        self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
-    }
+    self.navigationItem.hidesBackButton = NO;
+    self.navigationItem.titleView = self.searchInternals.backupTitleView;
+    self.navigationItem.leftBarButtonItem = self.searchInternals.backupLeftBarButtonItem;
+    self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
 
     self.searchInternals.searchBarHidden = YES;
 }

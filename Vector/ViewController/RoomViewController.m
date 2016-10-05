@@ -2040,9 +2040,8 @@
         [self dismissKeyboard];
 
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
-
-        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource];
-        [roomSearchViewController displaySearch:roomSearchDataSource];
+        // Add the current data source to be able to search messages.
+        roomSearchViewController.roomDataSource = self.roomDataSource;
     }
     else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
     {
