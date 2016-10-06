@@ -139,9 +139,10 @@
         messagesSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:_roomDataSource];
         [messagesSearchViewController displaySearch:messagesSearchDataSource];
         
-        // Init the search for messages
-        filesSearchDataSource = [[MXKSearchDataSource alloc] initWithRoomId:_roomDataSource.roomId andMatrixSession:mainSession];
-        filesSearchDataSource.mediaFilter = MXMessagesSearchMediaFilterLimitedToAttachments;
+        // Init the search for attachments
+        filesSearchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
+        filesSearchDataSource.roomEventFilter.rooms = @[_roomDataSource.roomId];
+        filesSearchDataSource.roomEventFilter.containsURL = YES;
         filesSearchDataSource.shouldShowRoomDisplayName = NO;
         [filesSearchDataSource registerCellDataClass:FilesSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
         [filesSearchViewController displaySearch:filesSearchDataSource];

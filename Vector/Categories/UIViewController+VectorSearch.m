@@ -78,44 +78,51 @@
 
 - (void)showSearch:(BOOL)animated
 {
-    // Backup screen header before displaying the search bar in it
-    self.searchInternals.backupTitleView = self.navigationItem.titleView;
-    self.searchInternals.backupLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
-    self.searchInternals.backupRightBarButtonItem = self.navigationItem.rightBarButtonItem;
-    self.searchInternals.searchBarHidden = NO;
-
-    // Reset searches
-    self.searchBar.text = @"";
-
-    // Remove navigation buttons
-    self.navigationItem.hidesBackButton = YES;
-    self.navigationItem.rightBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = nil;
-
-    // Add the search bar
-    self.navigationItem.titleView = self.searchBar;
-
-    // On iPad, there is no cancel button inside the UISearchBar
-    // So, add a classic cancel right bar button
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    if (self.searchInternals.searchBarHidden)
     {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onIPadCancelPressed:)];
-        [self.navigationItem setRightBarButtonItem: cancelButton animated:YES];
+        // Backup screen header before displaying the search bar in it
+        self.searchInternals.backupTitleView = self.navigationItem.titleView;
+        self.searchInternals.backupLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
+        self.searchInternals.backupRightBarButtonItem = self.navigationItem.rightBarButtonItem;
+        
+        self.searchInternals.searchBarHidden = NO;
+        
+        // Reset searches
+        self.searchBar.text = @"";
+        
+        // Remove navigation buttons
+        self.navigationItem.hidesBackButton = YES;
+        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
+        
+        // Add the search bar
+        self.navigationItem.titleView = self.searchBar;
+        
+        // On iPad, there is no cancel button inside the UISearchBar
+        // So, add a classic cancel right bar button
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onIPadCancelPressed:)];
+            [self.navigationItem setRightBarButtonItem: cancelButton animated:YES];
+        }
     }
-
+    
     // And display the keyboard
     [self.searchBar becomeFirstResponder];
 }
 
 - (void)hideSearch:(BOOL)animated
 {
-    // Restore the screen header
-    self.navigationItem.hidesBackButton = NO;
-    self.navigationItem.titleView = self.searchInternals.backupTitleView;
-    self.navigationItem.leftBarButtonItem = self.searchInternals.backupLeftBarButtonItem;
-    self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
-
-    self.searchInternals.searchBarHidden = YES;
+    if (!self.searchInternals.searchBarHidden)
+    {
+        // Restore the screen header
+        self.navigationItem.hidesBackButton = NO;
+        self.navigationItem.titleView = self.searchInternals.backupTitleView;
+        self.navigationItem.leftBarButtonItem = self.searchInternals.backupLeftBarButtonItem;
+        self.navigationItem.rightBarButtonItem = self.searchInternals.backupRightBarButtonItem;
+        
+        self.searchInternals.searchBarHidden = YES;
+    }
 }
 
 - (void)addBackgroundImageViewToView:(UIView*)view
