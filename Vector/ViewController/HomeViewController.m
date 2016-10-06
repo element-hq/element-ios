@@ -288,7 +288,7 @@
         
         // Init the search for messages
         filesSearchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
-        filesSearchDataSource.containsURL = YES;
+        filesSearchDataSource.roomEventFilter.containsURL = YES;
         filesSearchDataSource.shouldShowRoomDisplayName = YES;
         [filesSearchDataSource registerCellDataClass:FilesSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
         [filesSearchViewController displaySearch:filesSearchDataSource];

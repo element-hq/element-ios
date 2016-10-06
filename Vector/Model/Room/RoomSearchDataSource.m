@@ -33,10 +33,13 @@
 
 - (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource2
 {
-    self = [super initWithRoomId:roomDataSource2.roomId andMatrixSession:roomDataSource2.mxSession];
+    self = [super initWithMatrixSession:roomDataSource2.mxSession];
     if (self)
     {
         roomDataSource = roomDataSource2;
+        
+        // The messages search is limited to the room data.
+        self.roomEventFilter.rooms = @[roomDataSource.roomId];
     }
     return self;
 }

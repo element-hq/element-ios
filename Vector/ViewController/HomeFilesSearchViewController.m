@@ -20,7 +20,6 @@
 
 #import "HomeViewController.h"
 
-// Use RoomViewController cells to display results
 #import "FilesSearchCellData.h"
 #import "FilesSearchTableViewCell.h"
 
@@ -41,7 +40,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Reuse cells from the RoomViewController to display results
+    // Register cell class used to display the files search result
     [self.searchTableView registerClass:FilesSearchTableViewCell.class forCellReuseIdentifier:FilesSearchTableViewCell.defaultReuseIdentifier];
 
     self.searchTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
