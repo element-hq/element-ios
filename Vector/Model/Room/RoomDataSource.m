@@ -131,11 +131,12 @@
             bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
             bubbleCell.bubbleOverlayContainer.hidden = NO;
             
-            NSInteger index = cellData.bubbleComponents.count;
+            NSArray *bubbleComponents = cellData.bubbleComponents;
+            NSInteger index = bubbleComponents.count;
             CGFloat bottomPositionY = bubbleCell.frame.size.height;
             while (index--)
             {
-                MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
+                MXKRoomBubbleComponent *component = bubbleComponents[index];
                 
                 if (component.event.mxkState != MXKEventStateSendingFailed)
                 {
@@ -246,10 +247,12 @@
         // Manage initial event (case of permalink or search result)
         if (self.timeline.initialEventId)
         {
+            NSArray *bubbleComponents = cellData.bubbleComponents;
+            
             // Check if the cell contains this initial event
-            for (NSUInteger index = 0; index < cellData.bubbleComponents.count; index++)
+            for (NSUInteger index = 0; index < bubbleComponents.count; index++)
             {
-                MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
+                MXKRoomBubbleComponent *component = bubbleComponents[index];
 
                 if ([component.event.eventId isEqualToString:self.timeline.initialEventId])
                 {

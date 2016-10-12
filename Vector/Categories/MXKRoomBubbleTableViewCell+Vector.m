@@ -36,9 +36,12 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     self.bubbleInfoContainer.hidden = NO;
     
     MXKRoomBubbleComponent *component;
-    if (componentIndex < bubbleData.bubbleComponents.count)
+    
+    NSArray *bubbleComponents = bubbleData.bubbleComponents;
+    
+    if (componentIndex < bubbleComponents.count)
     {
-        component  = bubbleData.bubbleComponents[componentIndex];
+        component  = bubbleComponents[componentIndex];
     }
     
     if (component && component.date)
@@ -135,15 +138,17 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
 
 - (void)markComponent:(NSUInteger)componentIndex
 {
-    if (componentIndex < bubbleData.bubbleComponents.count)
+    NSArray *bubbleComponents = bubbleData.bubbleComponents;
+    
+    if (componentIndex < bubbleComponents.count)
     {
-        MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[componentIndex];
+        MXKRoomBubbleComponent *component = bubbleComponents[componentIndex];
 
         // Define the marker frame
         CGFloat markPosY = component.position.y + self.msgTextViewTopConstraint.constant;
 
         CGFloat markHeight;
-        if (componentIndex == bubbleData.bubbleComponents.count - 1)
+        if (componentIndex == bubbleComponents.count - 1)
         {
             // There is no component after this component in the cell,
             // use the rest of the cell height
@@ -152,7 +157,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         else
         {
             // Stop the marker height to the top of the next component in the cell
-            MXKRoomBubbleComponent *nextComponent  = bubbleData.bubbleComponents[componentIndex + 1];
+            MXKRoomBubbleComponent *nextComponent  = bubbleComponents[componentIndex + 1];
             markHeight = nextComponent.position.y - component.position.y;
         }
 
@@ -342,9 +347,11 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         // Note edit button tag is equal to the index of the related component.
         NSInteger index = ((UIView*)sender).tag;
-        if (index < bubbleData.bubbleComponents.count)
+        NSArray *bubbleComponents = bubbleData.bubbleComponents;
+        
+        if (index < bubbleComponents.count)
         {
-            MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[index];
+            MXKRoomBubbleComponent *component = bubbleComponents[index];
             selectedEvent = component.event;
         }
         
