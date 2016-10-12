@@ -53,6 +53,7 @@
 		F00C47861BFF77C800DBABC9 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C47841BFF77C800DBABC9 /* RecentTableViewCell.m */; };
 		F00C47871BFF77C800DBABC9 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */; };
 		F00C478B1BFF854400DBABC9 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = F00C478A1BFF854400DBABC9 /* RecentsDataSource.m */; };
+		F01214D11DABD69D00755336 /* RoomFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F01214D01DABD69D00755336 /* RoomFilesViewController.m */; };
 		F022285B1C64D529000AF23C /* ExpandedRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F02228591C64D529000AF23C /* ExpandedRoomTitleView.m */; };
 		F022285E1C64E356000AF23C /* RoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F022285D1C64E356000AF23C /* RoomViewController.xib */; };
 		F023A00D1D9034FE00C517FB /* call_audio_mute_off_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F023A0011D9034FE00C517FB /* call_audio_mute_off_icon.png */; };
@@ -414,6 +415,8 @@
 		F00C47851BFF77C800DBABC9 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
 		F00C47891BFF854400DBABC9 /* RecentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsDataSource.h; sourceTree = "<group>"; };
 		F00C478A1BFF854400DBABC9 /* RecentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsDataSource.m; sourceTree = "<group>"; };
+		F01214CF1DABD69D00755336 /* RoomFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomFilesViewController.h; sourceTree = "<group>"; };
+		F01214D01DABD69D00755336 /* RoomFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomFilesViewController.m; sourceTree = "<group>"; };
 		F02228581C64D529000AF23C /* ExpandedRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExpandedRoomTitleView.h; path = RoomTitle/ExpandedRoomTitleView.h; sourceTree = "<group>"; };
 		F02228591C64D529000AF23C /* ExpandedRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExpandedRoomTitleView.m; path = RoomTitle/ExpandedRoomTitleView.m; sourceTree = "<group>"; };
 		F022285D1C64E356000AF23C /* RoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomViewController.xib; sourceTree = "<group>"; };
@@ -1367,6 +1370,8 @@
 				F094AA261B78E42600B1FBBF /* RoomViewController.h */,
 				F094AA271B78E42600B1FBBF /* RoomViewController.m */,
 				F022285D1C64E356000AF23C /* RoomViewController.xib */,
+				F01214CF1DABD69D00755336 /* RoomFilesViewController.h */,
+				F01214D01DABD69D00755336 /* RoomFilesViewController.m */,
 				71C5F2931C074ACC004C094B /* RoomSettingsViewController.h */,
 				71C5F2941C074ACC004C094B /* RoomSettingsViewController.m */,
 				F094AA281B78E42600B1FBBF /* SettingsViewController.h */,
@@ -1811,6 +1816,7 @@
 				F0CC4DC01C4E26FA003BBE45 /* MediaAlbumTableCell.m in Sources */,
 				F0DD2C701D1308E800654345 /* ContactPickerViewController.m in Sources */,
 				F022285B1C64D529000AF23C /* ExpandedRoomTitleView.m in Sources */,
+				F01214D11DABD69D00755336 /* RoomFilesViewController.m in Sources */,
 				F0C34B671C15C28300C36F09 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				32AAC3E91C353CEA007A3B5B /* RoomSearchDataSource.m in Sources */,
 				F0C34B651C15C28300C36F09 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,

@@ -102,14 +102,6 @@
 
 #pragma mark - Override UITableView delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // `MXKRoomBubbleTableViewCell` cells displayed by the `RoomViewController`
-    // do not have line separators.
-    // The +1 here is for the line separator which is displayed by `RoomSearchViewController`.
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Data in the cells are actually Vector RoomBubbleCellData

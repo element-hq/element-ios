@@ -40,6 +40,9 @@
 
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
+
+#import "RoomFilesViewController.h"
+
 #import "RoomSearchViewController.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
@@ -93,7 +96,7 @@
     id typingNotifListener;
     
     // The first tab is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this flag to select a specific tab (0: people, 1: settings).
+    // Use this flag to select a specific tab (0: people, 1: files, 2: settings).
     NSUInteger selectedRoomDetailsIndex;
     
     // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
@@ -1999,26 +2002,35 @@
             SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
 
             MXSession* session = self.roomDataSource.mxSession;
-            NSString* roomid = self.roomDataSource.roomId;
+            NSString* roomId = self.roomDataSource.roomId;
             NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
             NSMutableArray* titles = [[NSMutableArray alloc] init];
 
-            // members screens
+            // members tab
             [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
-
             RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
             participantsViewController.delegate = self;
             participantsViewController.enableMention = YES;
-            participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            participantsViewController.mxRoom = [session roomWithRoomId:roomId];
             [viewControllers addObject:participantsViewController];
+            
+            // Files tab
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
+            RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
+            MXKRoomDataSource *roomFilesDataSource = [[MXKRoomDataSource alloc] initWithRoomId:roomId andMatrixSession:session];
+            roomFilesDataSource.filterMessagesWithURL = YES;
+            [roomFilesDataSource finalizeInitialization];
+            [roomFilesViewController displayRoom:roomFilesDataSource];
+            [viewControllers addObject:roomFilesViewController];
 
+            // Settings tab
             [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
             RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
-            [settingsViewController initWithSession:session andRoomId:roomid];
+            [settingsViewController initWithSession:session andRoomId:roomId];
             [viewControllers addObject:settingsViewController];
 
             // Sanity check
-            if (selectedRoomDetailsIndex > 1)
+            if (selectedRoomDetailsIndex > 2)
             {
                 selectedRoomDetailsIndex = 0;
             }
@@ -2353,7 +2365,7 @@
             }
             
             // Open room settings
-            selectedRoomDetailsIndex = 1;
+            selectedRoomDetailsIndex = 2;
             [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
         }
     }

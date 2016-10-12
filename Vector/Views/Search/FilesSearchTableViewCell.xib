@@ -15,9 +15,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="600" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="tNx-NQ-DRn" customClass="MXKImageView">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3MK-Eq-5gW">
+                        <rect key="frame" x="18" y="12" width="37" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="37" id="sDo-ex-9Cy"/>
+                            <constraint firstAttribute="height" constant="50" id="vC8-Wc-ahh"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNx-NQ-DRn" customClass="MXKImageView">
                         <rect key="frame" x="0.0" y="0.0" width="73" height="73"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="tNx-NQ-DRn" secondAttribute="height" multiplier="1:1" id="9Ss-GB-MJU"/>
                             <constraint firstAttribute="width" constant="73" id="Ci0-xg-Kdh"/>
@@ -49,10 +56,12 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="baseline" secondItem="360-Go-RcG" secondAttribute="baseline" id="04A-7h-DE0"/>
+                    <constraint firstItem="3MK-Eq-5gW" firstAttribute="centerY" secondItem="tNx-NQ-DRn" secondAttribute="centerY" id="1py-uR-fnm"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="dQt-mN-T6b" secondAttribute="leading" id="5nb-s3-mcs"/>
                     <constraint firstItem="tNx-NQ-DRn" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="5z8-NN-EMn"/>
                     <constraint firstItem="tNx-NQ-DRn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" id="8bq-ki-xZo"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="84" id="9VM-Pl-fpN"/>
+                    <constraint firstItem="3MK-Eq-5gW" firstAttribute="centerX" secondItem="tNx-NQ-DRn" secondAttribute="centerX" id="Ki3-vK-sly"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="centerY" secondItem="360-Go-RcG" secondAttribute="centerY" id="MlA-PN-BWE"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="5" id="Xs8-UN-boC"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="16" id="XyO-tl-6SX"/>
@@ -65,6 +74,7 @@
             <connections>
                 <outlet property="attachmentImageView" destination="tNx-NQ-DRn" id="8cE-eQ-BEC"/>
                 <outlet property="date" destination="360-Go-RcG" id="Y0L-Dj-ZVn"/>
+                <outlet property="iconImage" destination="3MK-Eq-5gW" id="7BD-8Z-4yC"/>
                 <outlet property="message" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="title" destination="Lg1-xQ-AGn" id="q7Q-TM-5C8"/>
             </connections>
