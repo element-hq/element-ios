@@ -94,6 +94,10 @@
             }
             
             self.iconImage.image = [self attachmentIcon:bubbleData.attachment.type];
+            
+            // Disable any interactions defined in the cell
+            // because we want [tableView didSelectRowAtIndexPath:] to be called
+            self.contentView.userInteractionEnabled = NO;
         }
         else
         {

@@ -72,6 +72,26 @@
     
     // Register first customized cell view classes used to render bubbles
     [self.bubblesTableView registerClass:FilesSearchTableViewCell.class forCellReuseIdentifier:FilesSearchTableViewCell.defaultReuseIdentifier];
+    
+    self.bubblesTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    
+    [self setNavBarButtons];
+}
+
+// This method is called when the viewcontroller is added or removed from a container view controller.
+- (void)didMoveToParentViewController:(nullable UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
+    
+    [self setNavBarButtons];
+}
+
+- (void)setNavBarButtons
+{
+    // Check whether the view controller is currently displayed inside a segmented view controller or not.
+    UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
+    topViewController.navigationItem.rightBarButtonItem = nil;
+    topViewController.navigationItem.leftBarButtonItem = nil;
 }
 
 #pragma mark - MXKDataSourceDelegate
