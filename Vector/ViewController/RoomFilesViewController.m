@@ -75,6 +75,9 @@
     
     self.bubblesTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
+    // Hide line separators of empty cells
+    self.bubblesTableView.tableFooterView = [[UIView alloc] init];
+    
     [self setNavBarButtons];
 }
 
