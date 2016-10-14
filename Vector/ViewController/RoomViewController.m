@@ -40,6 +40,9 @@
 
 #import "SegmentedViewController.h"
 #import "RoomSettingsViewController.h"
+
+#import "RoomFilesViewController.h"
+
 #import "RoomSearchViewController.h"
 
 #import "RoomIncomingTextMsgBubbleCell.h"
@@ -93,7 +96,7 @@
     id typingNotifListener;
     
     // The first tab is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this flag to select a specific tab (0: people, 1: settings).
+    // Use this flag to select a specific tab (0: people, 1: files, 2: settings).
     NSUInteger selectedRoomDetailsIndex;
     
     // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
@@ -1543,7 +1546,7 @@
                 [strongSelf cancelEventSelection];
 
                 // Quote the message a la Markdown into the input toolbar composer
-                strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@">%@\n\n", selectedComponent.textMessage];
+                strongSelf.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", strongSelf.inputToolbarView.textMessage, selectedComponent.textMessage];
 
                 // And display the keyboard
                 [strongSelf.inputToolbarView becomeFirstResponder];
@@ -1906,6 +1909,10 @@
     {
         // Try to catch universal link supported by the app
         NSURL *url = userInfo[kMXKRoomBubbleCellUrl];
+        
+        // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
+        // to be able to convert it into a legal URL string.
+        NSString *absoluteURLString = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
         // If the link can be open it by the app, let it do
         if ([Tools isUniversalLink:url])
@@ -1918,11 +1925,11 @@
             [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
         }
         // Open a detail screen about the clicked user
-        else if ([MXTools isMatrixUserIdentifier:url.absoluteString])
+        else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
             shouldDoAction = NO;
 
-            NSString *userId = url.absoluteString;
+            NSString *userId = absoluteURLString;
 
             MXRoomMember* member = [self.roomDataSource.room.state memberWithUserId:userId];
             if (member)
@@ -1947,11 +1954,11 @@
             }
         }
         // Open the clicked room
-        else if ([MXTools isMatrixRoomIdentifier:url.absoluteString] || [MXTools isMatrixRoomAlias:url.absoluteString])
+        else if ([MXTools isMatrixRoomIdentifier:absoluteURLString] || [MXTools isMatrixRoomAlias:absoluteURLString])
         {
             shouldDoAction = NO;
 
-            NSString *roomIdOrAlias = url.absoluteString;
+            NSString *roomIdOrAlias = absoluteURLString;
 
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -1995,26 +2002,35 @@
             SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
 
             MXSession* session = self.roomDataSource.mxSession;
-            NSString* roomid = self.roomDataSource.roomId;
+            NSString* roomId = self.roomDataSource.roomId;
             NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
             NSMutableArray* titles = [[NSMutableArray alloc] init];
 
-            // members screens
+            // members tab
             [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
-
             RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
             participantsViewController.delegate = self;
             participantsViewController.enableMention = YES;
-            participantsViewController.mxRoom = [session roomWithRoomId:roomid];
+            participantsViewController.mxRoom = [session roomWithRoomId:roomId];
             [viewControllers addObject:participantsViewController];
+            
+            // Files tab
+            [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
+            RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
+            MXKRoomDataSource *roomFilesDataSource = [[MXKRoomDataSource alloc] initWithRoomId:roomId andMatrixSession:session];
+            roomFilesDataSource.filterMessagesWithURL = YES;
+            [roomFilesDataSource finalizeInitialization];
+            [roomFilesViewController displayRoom:roomFilesDataSource];
+            [viewControllers addObject:roomFilesViewController];
 
+            // Settings tab
             [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
             RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
-            [settingsViewController initWithSession:session andRoomId:roomid];
+            [settingsViewController initWithSession:session andRoomId:roomId];
             [viewControllers addObject:settingsViewController];
 
             // Sanity check
-            if (selectedRoomDetailsIndex > 1)
+            if (selectedRoomDetailsIndex > 2)
             {
                 selectedRoomDetailsIndex = 0;
             }
@@ -2036,9 +2052,8 @@
         [self dismissKeyboard];
 
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
-
-        RoomSearchDataSource *roomSearchDataSource = [[RoomSearchDataSource alloc] initWithRoomDataSource:self.roomDataSource andMatrixSession:self.mainSession];
-        [roomSearchViewController displaySearch:roomSearchDataSource];
+        // Add the current data source to be able to search messages.
+        roomSearchViewController.roomDataSource = self.roomDataSource;
     }
     else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
     {
@@ -2060,6 +2075,7 @@
         if (selectedContact)
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
 
             selectedContact = nil;
@@ -2349,7 +2365,7 @@
             }
             
             // Open room settings
-            selectedRoomDetailsIndex = 1;
+            selectedRoomDetailsIndex = 2;
             [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
         }
     }

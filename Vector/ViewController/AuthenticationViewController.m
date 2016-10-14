@@ -28,7 +28,7 @@
 @interface AuthenticationViewController ()
 {
     /**
-     Store the potential login error received by using the new default homeserver (vector.im)
+     Store the potential login error received by using a default homeserver different from matrix.org
      while we retry a login process against the matrix.org HS.
      */
     NSError *loginError;
@@ -61,7 +61,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.mainNavigationItem.title = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    self.mainNavigationItem.title = nil;
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
     self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
@@ -135,7 +135,7 @@
     {
         // Restore the default HS
         NSLog(@"[AuthenticationVC] Switch back to default homeserver");
-        [self setHomeServerTextFieldText: @"https://vector.im"];
+        [self setHomeServerTextFieldText:nil];
         loginError = nil;
     }
     
@@ -284,10 +284,10 @@
 
 - (void)onFailureDuringAuthRequest:(NSError *)error
 {
-    // Homeserver migration: the default homeserver url has been updated with https://vector.im.
-    // The login (or forgot pwd) process with an existing matrix.org accounts will then fail.
+    // Homeserver migration: When the default homeserver url is different from matrix.org,
+    // the login (or forgot pwd) process with an existing matrix.org accounts will then fail.
     // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if ([self.homeServerTextField.text isEqualToString:@"https://vector.im"])
+    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"])
     {
         MXError *mxError = [[MXError alloc] initWithNSError:error];
         
@@ -337,7 +337,7 @@
         NSLog(@"[AuthenticationVC] This is not an existing matrix.org accounts");
         
         // Restore the default HS
-        [self setHomeServerTextFieldText: @"https://vector.im"];
+        [self setHomeServerTextFieldText:nil];
         
         // Consider the original login error
         [super onFailureDuringAuthRequest:loginError];

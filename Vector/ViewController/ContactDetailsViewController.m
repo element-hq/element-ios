@@ -36,6 +36,9 @@
     RoomMemberTitleView* contactTitleView;
     MXKImageView *contactAvatar;
     
+    // HTTP Request
+    MXHTTPOperation *roomCreationRequest;
+    
     /**
      Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
      */
@@ -117,7 +120,24 @@
     contactAvatar = contactTitleView.memberAvatar;
     contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
     contactAvatar.backgroundColor = [UIColor clearColor];
-    
+
+    // Add tap to show the contact avatar in fullscreen
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [contactAvatar addGestureRecognizer:tap];
+    contactAvatar.userInteractionEnabled = YES;
+
+    // Need to listen tap gesture on the area part of the avatar image that is outside
+    // of the navigation bar, its parent but smaller view.
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [tap setNumberOfTouchesRequired:1];
+    [tap setNumberOfTapsRequired:1];
+    [tap setDelegate:self];
+    [self.contactAvatarMask addGestureRecognizer:tap];
+    self.contactAvatarMask.userInteractionEnabled = YES;
+
     // Add the title view and define edge constraints
     contactTitleView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.navigationItem.titleView addSubview:contactTitleView];
@@ -215,6 +235,12 @@
 {
     [super destroy];
     
+    if (roomCreationRequest)
+    {
+        [roomCreationRequest cancel];
+        roomCreationRequest = nil;
+    }
+    
     [self cancelRegistrationOnContactChangeNotifications];
     
     if (UIApplicationWillChangeStatusBarOrientationNotificationObserver)
@@ -236,6 +262,8 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
+    
     if (contactTitleView)
     {
         // Adjust the header height by taking into account the actual position of the member avatar in title view
@@ -380,7 +408,7 @@
         }
         else
         {
-            image = [UIImage imageNamed:@"placeholder"];
+            image = [AvatarGenerator generateAvatarForText:_contact.displayName];
         }
     }
     
@@ -497,6 +525,11 @@
                 [actionsArray addObject:@(ContactDetailsActionUnignore)];
             }
         }
+    }
+    // Else check whether the contact has been instantiated with an email or a matrix id
+    else if ([MXTools isEmailAddress:_contact.displayName] || [MXTools isMatrixUserIdentifier:_contact.displayName])
+    {
+        [actionsArray addObject:@(ContactDetailsActionStartChat)];
     }
     
     return actionsArray.count;
@@ -642,7 +675,7 @@
                                                     NSLog(@"[ContactDetailsViewController] Ignore %@ failed: %@", strongSelf.firstMatrixId, error);
                                                     
                                                     // Notify MatrixKit user
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                     
                                                 }];
                     
@@ -675,7 +708,7 @@
                                             NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", self.firstMatrixId, error);
                                             
                                             // Notify MatrixKit user
-                                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
                                             
                                         }];
                 break;
@@ -684,10 +717,73 @@
             {
                 [self addPendingActionMask];
                 
-                [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:self.firstMatrixId completion:^{
-                    
-                    [self removePendingActionMask];
-                }];
+                if (_contact.matrixIdentifiers.count)
+                {
+                    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:self.firstMatrixId completion:^{
+                        
+                        [self removePendingActionMask];
+                    }];
+                }
+                else
+                {
+                    // Create a new room
+                    roomCreationRequest = [self.mainSession createRoom:nil
+                                                            visibility:kMXRoomDirectoryVisibilityPrivate
+                                                             roomAlias:nil
+                                                                 topic:nil
+                                                               success:^(MXRoom *room) {
+                                                                   
+                                                                   roomCreationRequest = nil;
+                                                                   NSString *participantId = _contact.displayName;
+                                                                   
+                                                                   // Is it an email or a Matrix user ID?
+                                                                   if ([MXTools isEmailAddress:participantId])
+                                                                   {
+                                                                       [room inviteUserByEmail:participantId success:^{
+                                                                           
+                                                                           NSLog(@"[ContactDetailsViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                           
+                                                                       } failure:^(NSError *error) {
+                                                                           
+                                                                           NSLog(@"[ContactDetailsViewController] Invite %@ failed", participantId);
+                                                                           // Alert user
+                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                           
+                                                                       }];
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       [room inviteUser:participantId success:^{
+                                                                           
+                                                                           NSLog(@"[ContactDetailsViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
+                                                                           
+                                                                       } failure:^(NSError *error) {
+                                                                           
+                                                                           NSLog(@"[ContactDetailsViewController] Invite %@ failed", participantId);
+                                                                           // Alert user
+                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                           
+                                                                       }];
+                                                                   }
+                                                                   
+                                                                   [self removePendingActionMask];
+                                                                   
+                                                                   [[AppDelegate theDelegate] showRoom:room.state.roomId andEventId:nil withMatrixSession:self.mainSession];
+                                                                   
+                                                               }
+                                                               failure:^(NSError *error) {
+                                                                   
+                                                                   NSLog(@"[ContactDetailsViewController] Create room failed: %@", error);
+                                                                   
+                                                                   roomCreationRequest = nil;
+                                                                   
+                                                                   [self removePendingActionMask];
+                                                                   
+                                                                   // Notify user
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                   
+                                                               }];
+                }
                 break;
             }
             case ContactDetailsActionStartVoiceCall:
@@ -708,42 +804,46 @@
                 else
                 {
                     // Create a new room
-                    [self.mainSession createRoom:nil
-                                      visibility:kMXRoomDirectoryVisibilityPrivate
-                                       roomAlias:nil
-                                           topic:nil
-                                         success:^(MXRoom *room) {
-                                             
-                                             // Add the user
-                                             [room inviteUser:matrixId success:^{
-                                                 
-                                                 // Delay the call in order to be sure that the room is ready
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     [room placeCallWithVideo:isVideoCall success:nil failure:nil];
-                                                     [self removePendingActionMask];
-                                                 });
-                                                 
-                                             } failure:^(NSError *error) {
-                                                 
-                                                 NSLog(@"[ContactDetailsViewController] %@ invitation failed (roomId: %@): %@", matrixId, room.state.roomId, error);
-                                                 
-                                                 [self removePendingActionMask];
-                                                 
-                                                 // Notify MatrixKit user
-                                                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                                                 
-                                             }];
-                                             
-                                         } failure:^(NSError *error) {
-                                             
-                                             NSLog(@"[ContactDetailsViewController] Create room failed: %@", error);
-                                             
-                                             [self removePendingActionMask];
-                                             
-                                             // Notify MatrixKit user
-                                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
-                                             
-                                         }];
+                    roomCreationRequest = [self.mainSession createRoom:nil
+                                                            visibility:kMXRoomDirectoryVisibilityPrivate
+                                                             roomAlias:nil
+                                                                 topic:nil
+                                                               success:^(MXRoom *room) {
+                                                                   
+                                                                   roomCreationRequest = nil;
+                                                                   
+                                                                   // Add the user
+                                                                   [room inviteUser:matrixId success:^{
+                                                                       
+                                                                       // Delay the call in order to be sure that the room is ready
+                                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                                           [room placeCallWithVideo:isVideoCall success:nil failure:nil];
+                                                                           [self removePendingActionMask];
+                                                                       });
+                                                                       
+                                                                   } failure:^(NSError *error) {
+                                                                       
+                                                                       NSLog(@"[ContactDetailsViewController] %@ invitation failed (roomId: %@): %@", matrixId, room.state.roomId, error);
+                                                                       
+                                                                       [self removePendingActionMask];
+                                                                       
+                                                                       // Notify MatrixKit user
+                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                       
+                                                                   }];
+                                                                   
+                                                               } failure:^(NSError *error) {
+                                                                   
+                                                                   NSLog(@"[ContactDetailsViewController] Create room failed: %@", error);
+                                                                   
+                                                                   roomCreationRequest = nil;
+                                                                   
+                                                                   [self removePendingActionMask];
+                                                                   
+                                                                   // Notify user
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                   
+                                                               }];
                 }
                 break;
             }
@@ -773,6 +873,35 @@
             // Restore display name
             self.contactNameLabel.text = _contact.displayName;
         }
+    }
+    else if (view == contactAvatar || view == self.contactAvatarMask)
+    {
+        // Show the avatar in full screen
+        __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
+        avatarFullScreenView.stretchable = YES;
+
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+            [avatarFullScreenView dismissSelection];
+            [avatarFullScreenView removeFromSuperview];
+
+            avatarFullScreenView = nil;
+        }];
+
+        NSString *avatarURL = nil;
+        if (self.firstMatrixId)
+        {
+            MXUser *user = [self.mainSession userWithUserId:self.firstMatrixId];
+            avatarURL = [self.mainSession.matrixRestClient urlOfContent:user.avatarUrl];
+        }
+
+        // TODO: Display the orignal contact avatar when the contast is not a Matrix user
+
+        [avatarFullScreenView setImageURL:avatarURL
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                             previewImage:contactAvatar.image];
+
+        [avatarFullScreenView showFullScreen];
     }
 }
 

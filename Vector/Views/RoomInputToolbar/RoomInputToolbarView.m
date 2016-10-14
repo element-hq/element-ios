@@ -18,6 +18,8 @@
 
 #import "VectorDesignValues.h"
 
+#import "UINavigationController+Vector.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 #import <Photos/Photos.h>
@@ -105,8 +107,8 @@
     {
         _activeCall = activeCall;
 
-        self.voiceCallButton.hidden = _activeCall;
-        self.hangupCallButton.hidden = !activeCall;
+        self.voiceCallButton.hidden = (_activeCall || !self.rightInputToolbarButton.hidden);
+        self.hangupCallButton.hidden = (!_activeCall || !self.rightInputToolbarButton.hidden);
     }
 }
 
@@ -135,6 +137,7 @@
         self.rightInputToolbarButton.hidden = NO;
         self.attachMediaButton.hidden = YES;
         self.voiceCallButton.hidden = YES;
+        self.hangupCallButton.hidden = YES;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
     }
@@ -142,7 +145,8 @@
     {
         self.rightInputToolbarButton.hidden = YES;
         self.attachMediaButton.hidden = NO;
-        self.voiceCallButton.hidden = NO;
+        self.voiceCallButton.hidden = _activeCall;
+        self.hangupCallButton.hidden = !_activeCall;
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
     }

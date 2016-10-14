@@ -15,9 +15,11 @@
 	<key>homeserver</key>
 	<string>matrix.org</string>
 	<key>webAppUrlDev</key>
-	<string>https://vector.im/develop</string>
+	<string>https://riot.im/develop</string>
 	<key>webAppUrlBeta</key>
-	<string>https://vector.im/beta</string>
+	<string>https://riot.im/beta</string>
+	<key>webAppUrl</key>
+	<string>https://riot.im/app</string>
 	<key>apnsDeviceToken</key>
 	<string></string>
 	<key>showAllEventsInRoomHistory</key>

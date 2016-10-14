@@ -27,6 +27,8 @@
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#ifdef MX_USE_CONTACTS_SERVER_SYNC
+
 #define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
 #define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
 #define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
@@ -36,6 +38,20 @@
 #define SETTINGS_SECTION_OTHER_INDEX                    6
 #define SETTINGS_SECTION_LABS_INDEX                     7
 #define SETTINGS_SECTION_COUNT                          7   // Not 8 because the LABS section is currently hidden
+
+#else
+
+#define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
+#define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
+#define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
+#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
+#define SETTINGS_SECTION_ADVANCED_INDEX                 4
+#define SETTINGS_SECTION_OTHER_INDEX                    5
+#define SETTINGS_SECTION_CONTACTS_INDEX                 6
+#define SETTINGS_SECTION_LABS_INDEX                     7
+#define SETTINGS_SECTION_COUNT                          6   // Not 8 because the CONTACTS and LABS section is currently hidden
+
+#endif
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -51,13 +67,14 @@
 #define CONTACTS_SETTINGS_COUNT                         1
 
 #define OTHER_VERSION_INDEX          0
-#define OTHER_TERM_CONDITIONS_INDEX  1
-#define OTHER_PRIVACY_INDEX          2
-#define OTHER_THIRD_PARTY_INDEX      3
-#define OTHER_CRASH_REPORT_INDEX     4
-#define OTHER_MARK_ALL_AS_READ_INDEX 5
-#define OTHER_CLEAR_CACHE_INDEX      6
-#define OTHER_COUNT                  7
+#define OTHER_COPYRIGHT_INDEX        1
+#define OTHER_TERM_CONDITIONS_INDEX  2
+#define OTHER_PRIVACY_INDEX          3
+#define OTHER_THIRD_PARTY_INDEX      4
+#define OTHER_CRASH_REPORT_INDEX     5
+#define OTHER_MARK_ALL_AS_READ_INDEX 6
+#define OTHER_CLEAR_CACHE_INDEX      7
+#define OTHER_COUNT                  8
 
 #define LABS_COUNT                   0
 
@@ -501,13 +518,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     [account load3PIDs:^{
 
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
 
     } failure:^(NSError *error) {
+        
         // Display the data that has been loaded last time
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(SETTINGS_SECTION_USER_SETTINGS_INDEX, 1)];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+        // Note: The use of 'reloadData' handles the case where the account has been logged out.
+        [self.tableView reloadData];
+        
     }];
 }
 
@@ -856,8 +876,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 globalInfoCell = [[MXKTableViewCell alloc] init];
             }
-            
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil);
+
+            NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+            globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
             cell = globalInfoCell;
         }
@@ -939,11 +961,25 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 termAndConditionCell = [[MXKTableViewCell alloc] init];
                 termAndConditionCell.textLabel.font = [UIFont systemFontOfSize:17];
             }
-            
+
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             termAndConditionCell.textLabel.textColor = kVectorTextColorBlack;
-            
+
             cell = termAndConditionCell;
+        }
+        else if (row == OTHER_COPYRIGHT_INDEX)
+        {
+            MXKTableViewCell *copyrightCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+            if (!copyrightCell)
+            {
+                copyrightCell = [[MXKTableViewCell alloc] init];
+                copyrightCell.textLabel.font = [UIFont systemFontOfSize:17];
+            }
+
+            copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
+            copyrightCell.textLabel.textColor = kVectorTextColorBlack;
+
+            cell = copyrightCell;
         }
         else if (row == OTHER_PRIVACY_INDEX)
         {
@@ -1210,23 +1246,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         else
         if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
-           if (row == OTHER_TERM_CONDITIONS_INDEX)
-           {
-               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/tac.html"];
-               [self.navigationController pushViewController:webViewViewController animated:YES];
-           }
-           else if (row == OTHER_PRIVACY_INDEX)
-           {
-               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:@"https://vector.im/privacy.html"];
-               [self.navigationController pushViewController:webViewViewController animated:YES];
-           }
-           else if (row == OTHER_THIRD_PARTY_INDEX)
-           {
-               NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
-               
-               MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
-               [self.navigationController pushViewController:webViewViewController animated:YES];
-           }
+            if (row == OTHER_COPYRIGHT_INDEX)
+            {
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
+            else if (row == OTHER_TERM_CONDITIONS_INDEX)
+            {
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
+            else if (row == OTHER_PRIVACY_INDEX)
+            {
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
+            else if (row == OTHER_THIRD_PARTY_INDEX)
+            {
+                NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
+
+                MXKWebViewViewController *webViewViewController = [[MXKWebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
+                [self.navigationController pushViewController:webViewViewController animated:YES];
+            }
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
         {
@@ -1273,8 +1314,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [currentAlert dismiss:NO];
         
         __weak typeof(self) weakSelf = self;
-        
-        currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil)
+
+        NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+        currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName]
                                                message:nil
                                                  style:MXKAlertStyleAlert];
         

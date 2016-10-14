@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,6 +19,13 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="73" id="HEG-jX-hiD"/>
                             <constraint firstAttribute="width" constant="73" id="UqB-6d-nQ8"/>
+                        </constraints>
+                    </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lxw-aY-7e4" userLabel="bottomLeftIcon">
+                        <rect key="frame" x="8" y="46" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="TyE-zu-MD5"/>
+                            <constraint firstAttribute="height" constant="20" id="uGV-Rk-fZC"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single line" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AqS-OH-Gcq">
@@ -44,17 +51,20 @@
                     <constraint firstAttribute="trailing" secondItem="Dqg-OY-Nhb" secondAttribute="trailing" constant="30" id="0XL-Xv-m8p"/>
                     <constraint firstItem="6Kl-sK-vhs" firstAttribute="leading" secondItem="SeD-4h-8Bk" secondAttribute="leading" id="F70-wM-q3J"/>
                     <constraint firstItem="AqS-OH-Gcq" firstAttribute="top" secondItem="SeD-4h-8Bk" secondAttribute="top" constant="13" id="Hcm-hC-RFv"/>
+                    <constraint firstAttribute="bottom" secondItem="Lxw-aY-7e4" secondAttribute="bottom" constant="7" id="SnV-sP-Ogr"/>
                     <constraint firstItem="AqS-OH-Gcq" firstAttribute="leading" secondItem="6Kl-sK-vhs" secondAttribute="trailing" constant="11" id="XC0-Sc-FNf"/>
                     <constraint firstAttribute="trailing" secondItem="AqS-OH-Gcq" secondAttribute="trailing" constant="30" id="cn1-lM-KIz"/>
                     <constraint firstItem="Dqg-OY-Nhb" firstAttribute="leading" secondItem="6Kl-sK-vhs" secondAttribute="trailing" constant="11" id="npv-ky-n66"/>
                     <constraint firstItem="Dqg-OY-Nhb" firstAttribute="top" secondItem="AqS-OH-Gcq" secondAttribute="bottom" constant="4" id="o6L-cm-hdS"/>
                     <constraint firstItem="6Kl-sK-vhs" firstAttribute="top" secondItem="SeD-4h-8Bk" secondAttribute="top" id="t7k-nk-c4U"/>
+                    <constraint firstItem="Lxw-aY-7e4" firstAttribute="leading" secondItem="SeD-4h-8Bk" secondAttribute="leading" constant="8" id="zbS-tM-fhW"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="albumCountLabel" destination="Dqg-OY-Nhb" id="OZP-i6-IkD"/>
                 <outlet property="albumDisplayNameLabel" destination="AqS-OH-Gcq" id="61d-r8-xYF"/>
                 <outlet property="albumThumbnail" destination="6Kl-sK-vhs" id="yjp-b9-jSN"/>
+                <outlet property="bottomLeftIcon" destination="Lxw-aY-7e4" id="niY-yB-ldh"/>
             </connections>
         </tableViewCell>
     </objects>

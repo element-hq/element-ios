@@ -36,9 +36,12 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
     self.bubbleInfoContainer.hidden = NO;
     
     MXKRoomBubbleComponent *component;
-    if (componentIndex < bubbleData.bubbleComponents.count)
+    
+    NSArray *bubbleComponents = bubbleData.bubbleComponents;
+    
+    if (componentIndex < bubbleComponents.count)
     {
-        component  = bubbleData.bubbleComponents[componentIndex];
+        component  = bubbleComponents[componentIndex];
     }
     
     if (component && component.date)
@@ -135,15 +138,17 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
 
 - (void)markComponent:(NSUInteger)componentIndex
 {
-    if (componentIndex < bubbleData.bubbleComponents.count)
+    NSArray *bubbleComponents = bubbleData.bubbleComponents;
+    
+    if (componentIndex < bubbleComponents.count)
     {
-        MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[componentIndex];
+        MXKRoomBubbleComponent *component = bubbleComponents[componentIndex];
 
         // Define the marker frame
         CGFloat markPosY = component.position.y + self.msgTextViewTopConstraint.constant;
 
         CGFloat markHeight;
-        if (componentIndex == bubbleData.bubbleComponents.count - 1)
+        if (componentIndex == bubbleComponents.count - 1)
         {
             // There is no component after this component in the cell,
             // use the rest of the cell height
@@ -152,7 +157,7 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         else
         {
             // Stop the marker height to the top of the next component in the cell
-            MXKRoomBubbleComponent *nextComponent  = bubbleData.bubbleComponents[componentIndex + 1];
+            MXKRoomBubbleComponent *nextComponent  = bubbleComponents[componentIndex + 1];
             markHeight = nextComponent.position.y - component.position.y;
         }
 
@@ -200,6 +205,66 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         // Store the created button
         self.markerView = markerView;
+    }
+}
+
+- (void)addDateLabel
+{
+    self.bubbleInfoContainer.hidden = NO;
+    
+    NSDate *date = bubbleData.date;
+    if (date)
+    {
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width , 18)];
+        
+        timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
+        timeLabel.textAlignment = NSTextAlignmentRight;
+        timeLabel.textColor = kVectorTextColorGray;
+        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
+        {
+            timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightLight];
+        }
+        else
+        {
+            timeLabel.font = [UIFont systemFontOfSize:12];
+        }
+        timeLabel.adjustsFontSizeToFitWidth = YES;
+        
+        [timeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.bubbleInfoContainer addSubview:timeLabel];
+        
+        // Define timeLabel constraints (to handle auto-layout in case of screen rotation)
+        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.bubbleInfoContainer
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                          multiplier:1.0
+                                                                            constant:0];
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.bubbleInfoContainer
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0
+                                                                          constant:0];
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.bubbleInfoContainer
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                          multiplier:1.0
+                                                                            constant:0];
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:timeLabel
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0
+                                                                             constant:18];
+        
+        // Available on iOS 8 and later
+        [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
     }
 }
 
@@ -282,9 +347,11 @@ NSString *const kMXKRoomBubbleCellVectorEditButtonPressed = @"kMXKRoomBubbleCell
         
         // Note edit button tag is equal to the index of the related component.
         NSInteger index = ((UIView*)sender).tag;
-        if (index < bubbleData.bubbleComponents.count)
+        NSArray *bubbleComponents = bubbleData.bubbleComponents;
+        
+        if (index < bubbleComponents.count)
         {
-            MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[index];
+            MXKRoomBubbleComponent *component = bubbleComponents[index];
             selectedEvent = component.event;
         }
         

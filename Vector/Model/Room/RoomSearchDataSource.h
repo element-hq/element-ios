@@ -26,9 +26,8 @@
  Initialize a new `RoomSearchDataSource` instance.
  
  @param roomDataSource a datasource to be able to reuse `RoomViewController` processing and rendering.
- @param mxSession the Matrix session to get data from.
  @return the newly created instance.
  */
-- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource andMatrixSession:(MXSession *)mxSession;
+- (instancetype)initWithRoomDataSource:(MXKRoomDataSource *)roomDataSource;
 
 @end

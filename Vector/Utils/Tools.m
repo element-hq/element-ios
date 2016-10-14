@@ -63,8 +63,8 @@
 
 + (NSString *)webAppUrl
 {
-    // FIXME: When available, use the prod Vector web app URL
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
+    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
     //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
 }
 
@@ -72,9 +72,10 @@
 {
     BOOL isUniversalLink = NO;
 
-    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"])
+    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
+        || [url.host isEqualToString:@"riot.im"] || [url.host isEqualToString:@"www.riot.im"])
     {
-        // iOS Patch: fix vector.im urls before using it
+        // iOS Patch: fix vector.im/riot.im urls before using it
         NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
 
         if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])

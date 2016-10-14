@@ -31,8 +31,8 @@
                 <outlet property="overlayContainerView" destination="JAR-tn-sGN" id="09u-3G-1UA"/>
                 <outlet property="rejectCallButton" destination="nuB-Jc-MFa" id="Y3k-kg-IgD"/>
                 <outlet property="remotePreviewContainerView" destination="Tjb-57-yB1" id="MaR-IC-ZKw"/>
-                <outlet property="speakerButton" destination="UHM-u9-ODN" id="PFN-R6-3b3"/>
-                <outlet property="videoMuteButton" destination="Yq6-d2-Ea2" id="gvL-7y-fVl"/>
+                <outlet property="speakerButton" destination="Yq6-d2-Ea2" id="4TU-8w-3FG"/>
+                <outlet property="videoMuteButton" destination="UHM-u9-ODN" id="bfQ-lc-WMB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="JDF-cz-roW"/>
             </connections>
         </placeholder>

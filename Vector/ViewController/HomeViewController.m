@@ -26,8 +26,10 @@
 #import "ContactDetailsViewController.h"
 #import "SettingsViewController.h"
 
-#import "MXKSearchDataSource.h"
-#import "HomeSearchViewController.h"
+#import "HomeMessagesSearchViewController.h"
+#import "HomeMessagesSearchDataSource.h"
+#import "HomeFilesSearchViewController.h"
+#import "FilesSearchCellData.h"
 
 #import "AppDelegate.h"
 
@@ -38,8 +40,11 @@
     RecentsViewController *recentsViewController;
     RecentsDataSource *recentsDataSource;
 
-    HomeSearchViewController *searchViewController;
-    MXKSearchDataSource *searchDataSource;
+    HomeMessagesSearchViewController *messagesSearchViewController;
+    HomeMessagesSearchDataSource *messagesSearchDataSource;
+    
+    HomeFilesSearchViewController *filesSearchViewController;
+    MXKSearchDataSource *filesSearchDataSource;
     
     ContactPickerViewController *contactsViewController;
     MXKContact *selectedContact;
@@ -83,14 +88,19 @@
     [viewControllers addObject:recentsViewController];
 
     [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
-    searchViewController = [HomeSearchViewController searchViewController];
-    [viewControllers addObject:searchViewController];
+    messagesSearchViewController = [HomeMessagesSearchViewController searchViewController];
+    [viewControllers addObject:messagesSearchViewController];
 
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
     contactsViewController = [ContactPickerViewController contactPickerViewController];
     contactsViewController.delegate = self;
     [viewControllers addObject:contactsViewController];
+    
+    // add Files tab
+    [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
+    filesSearchViewController = [HomeFilesSearchViewController searchViewController];
+    [viewControllers addObject:filesSearchViewController];
 
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
@@ -108,6 +118,8 @@
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
+    
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 }
 
 - (void)dealloc
@@ -197,6 +209,12 @@
             [self refreshCurrentSelectedCellInChild:YES];
         }
     }
+    
+    // Here the actual view size is available, check the background image display if any
+    if (!self.searchBarHidden)
+    {
+        [self checkAndShowBackgroundImage];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -265,8 +283,15 @@
         [recentsViewController displayList:recentsDataSource fromHomeViewController:self];
         
         // Init the search for messages
-        searchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
-        [searchViewController displaySearch:searchDataSource];
+        messagesSearchDataSource = [[HomeMessagesSearchDataSource alloc] initWithMatrixSession:mainSession];
+        [messagesSearchViewController displaySearch:messagesSearchDataSource];
+        
+        // Init the search for messages
+        filesSearchDataSource = [[MXKSearchDataSource alloc] initWithMatrixSession:mainSession];
+        filesSearchDataSource.roomEventFilter.containsURL = YES;
+        filesSearchDataSource.shouldShowRoomDisplayName = YES;
+        [filesSearchDataSource registerCellDataClass:FilesSearchCellData.class forCellIdentifier:kMXKSearchCellDataIdentifier];
+        [filesSearchViewController displaySearch:filesSearchDataSource];
         
         // Check whether there are others sessions
         NSArray* mxSessions = self.mxSessions;
@@ -279,7 +304,7 @@
                     // Add the session to the recents data source
                     [recentsDataSource addMatrixSession:mxSession];
                     
-                    // FIXME: Update searchDataSource
+                    // FIXME: Update messagesSearchDataSource and filesSearchDataSource
                 }
             }
         }
@@ -309,7 +334,7 @@
             // Add the session to the existing recents data source
             [recentsDataSource addMatrixSession:mxSession];
             
-            // FIXME: Update searchDataSource
+            // FIXME: Update messagesSearchDataSource and filesSearchDataSource
         }
     }
     
@@ -328,7 +353,7 @@
         recentsDataSource = nil;
     }
     
-    // FIXME: Handle correctly searchDataSource
+    // FIXME: Handle correctly messagesSearchDataSource and filesSearchDataSource
     
     [super removeMatrixSession:mxSession];
 }
@@ -453,13 +478,17 @@
     {
         self.backgroundImageView.hidden = (!recentsDataSource.hideRecents || !recentsDataSource.hidePublicRoomsDirectory || (self.keyboardHeight == 0));
     }
-    else if (self.selectedViewController == searchViewController)
+    else if (self.selectedViewController == messagesSearchViewController)
     {
-        self.backgroundImageView.hidden = ((searchDataSource.serverCount != 0) || !searchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+        self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
     else if (self.selectedViewController == contactsViewController)
     {
         self.backgroundImageView.hidden = (([contactsViewController.contactsTableView numberOfRowsInSection:0] != 0) || !contactsViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
+    }
+    else if (self.selectedViewController == filesSearchViewController)
+    {
+        self.backgroundImageView.hidden = ((filesSearchDataSource.serverCount != 0) || !filesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
     }
     else
     {
@@ -468,9 +497,12 @@
     
     if (!self.backgroundImageView.hidden)
     {
+        [self.backgroundImageView layoutIfNeeded];
+        [self.selectedViewController.view layoutIfNeeded];
+        
         // Check whether there is enough space to display this background
         // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
-        if ((self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
+        if (self.backgroundImageView.frame.origin.y < 0 || (self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
         {
             self.backgroundImageView.hidden = YES;
         }
@@ -577,8 +609,10 @@
     __weak typeof(self) weakSelf = self;
     
     [currentAlert dismiss:NO];
-    
-    currentAlert = [[MXKAlert alloc] initWithTitle:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil)
+
+    NSString *appDisplayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+
+    currentAlert = [[MXKAlert alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName]
                                            message:nil
                                              style:MXKAlertStyleAlert];
     
@@ -673,9 +707,18 @@
 
             if (!_selectedRoomPreviewData)
             {
-                // Live timeline or timeline from a search result?
                 MXKRoomDataSource *roomDataSource;
-                if (!searchViewController.selectedEvent)
+                
+                // Check whether an event has been selected from messages or files search tab. Live timeline or timeline from a search result?
+                MXEvent *selectedSearchEvent = messagesSearchViewController.selectedEvent;
+                MXSession *selectedSearchEventSession = messagesSearchDataSource.mxSession;
+                if (!selectedSearchEvent)
+                {
+                    selectedSearchEvent = filesSearchViewController.selectedEvent;
+                    selectedSearchEventSession = filesSearchDataSource.mxSession;
+                }
+                
+                if (!selectedSearchEvent)
                 {
                     if (!_selectedEventId)
                     {
@@ -696,7 +739,7 @@
                 else
                 {
                     // Search result: Create a temp timeline from the selected event
-                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:searchViewController.selectedEvent.roomId initialEventId:searchViewController.selectedEvent.eventId andMatrixSession:searchDataSource.mxSession];
+                    roomDataSource = [[RoomDataSource alloc] initWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession];
                     [roomDataSource finalizeInitialization];
                     
                     // Give the data source ownership to the room view controller.
@@ -740,6 +783,7 @@
         else if ([[segue identifier] isEqualToString:@"showContactDetails"])
         {
             ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
+            contactDetailsViewController.enableVoipCall = YES;
             contactDetailsViewController.contact = selectedContact;
         }
         else if ([[segue identifier] isEqualToString:@"showAuth"])
@@ -837,22 +881,35 @@
             [recentsDataSource searchWithPatterns:patterns];
             recentsViewController.shouldScrollToTopOnRefresh = YES;
         }
-        else if (self.selectedViewController == searchViewController)
+        else if (self.selectedViewController == messagesSearchViewController)
         {
             // Launch the search only if the keyboard is no more visible
             if (!self.searchBar.isFirstResponder)
             {
-                // Do it asynchronously to give time to searchViewController to be set up
+                // Do it asynchronously to give time to messagesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [searchDataSource searchMessageText:self.searchBar.text];
-                    searchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
         else if (self.selectedViewController == contactsViewController)
         {
             [contactsViewController searchWithPattern:self.searchBar.text];
+        }
+        else if (self.selectedViewController == filesSearchViewController)
+        {
+            // Launch the search only if the keyboard is no more visible
+            if (!self.searchBar.isFirstResponder)
+            {
+                // Do it asynchronously to give time to filesSearchViewController to be set up
+                // so that it can display its loading wheel
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                });
+            }
         }
     }
     else
@@ -863,11 +920,15 @@
         
         // Reset search result (if any)
         [recentsDataSource searchWithPatterns:nil];
-        if (searchDataSource.searchText.length)
+        if (messagesSearchDataSource.searchText.length)
         {
-            [searchDataSource searchMessageText:nil];
+            [messagesSearchDataSource searchMessages:nil force:NO];
         }
         [contactsViewController searchWithPattern:nil];
+        if (filesSearchDataSource.searchText.length)
+        {
+            [filesSearchDataSource searchMessages:nil force:NO];
+        }
     }
     
     [self checkAndShowBackgroundImage];
@@ -898,9 +959,9 @@
 {
     [searchBar resignFirstResponder];
     
-    if (self.selectedViewController == searchViewController)
+    if (self.selectedViewController == messagesSearchViewController || self.selectedViewController == filesSearchViewController)
     {
-        // As the messages search is done homeserver-side, launch it only on the "Search" button
+        // As the messages/files search is done homeserver-side, launch it only on the "Search" button
         [self updateSearch];
     }
 }

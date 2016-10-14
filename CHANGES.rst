@@ -1,3 +1,58 @@
+Changes in 0.2.3 (2016-09-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.19).
+ * RoomSearchDataSource: Remove the matrix session from the parameters in `initWithRoomDataSource` API.
+ * Enhance the messages search display.
+ 
+Bug fixes:
+ * App crashes when user taps on room alias with multiple # in chat history #668.
+ * Room message search: the message date & time are not displayed #361.
+ * Room message search: the search pattern is not highlighted in results #660.
+
+Changes in 0.2.2 (2016-09-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.3.18).
+ * Media picker: Support video capture #533.
+ * VoIP call screen: Update call controls icons #598.
+ * Media picker: Switching camera button and exit button are not very visible #610.
+ 
+Bug fixes:
+ * Login screen: Stuck on flashing loading wheel in case of invalid credentials #637.
+ * Settings screen headers slide down over the already fully displayed screen #636.
+ * Chat screen: Wrong display after placing a conf call in a room with unsent messages #633.
+ * Quoting a msg overrides what I already typed #641.
+ * Crash due to a race condition in read receipts management #645.
+ * App may crash when the user logs out while a request is pending.
+
+Changes in 0.2.1 (2016-09-15)
+===============================================
+
+Bug fixes:
+ * Use Apple version for T&C.
+ * Revert the default IS.
+
+Changes in 0.2.0 (2016-09-15)
+===============================================
+
+Improvements:
+ * Update name & icons
+ * Upgrade MatrixKit version (v0.3.17).
+ * Screen when placing a voip call can be incredibly ugly #597.
+ * Tap on avatar in Member Info page to zoom to view avatar full page #517.
+ * Change the message edit edit like in web #591
+ * Messages: "Start chat" is the suggestion to replace 'invite people'.
+ * Contact details: Enable voip call options.
+ * People tab: support email and matrix id selection.
+ 
+Bug fixes:
+ * Tapping notifications doesn't take you to the right room in iOS 10 #599.
+ * iOS10: App crashes when it wants to access user's data (Photos, Contacts, Camera, Mic) #605.
+ * Chat screen: Hang up icon overlap the send button #614.
+
 Changes in Vector iOS in 0.1.17 (2016-09-08)
 ===============================================
 
