@@ -58,6 +58,9 @@
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
+    
+    // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
+    id kMXNotificationCenterDidUpdateRulesObserver;
 }
 
 @end
@@ -165,6 +168,17 @@
             [self scrollToTop:YES];
             
         }];
+        
+        // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
+        kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            
+            // Do not refresh if there is a pending recent drag and drop
+            if (!movingCellPath)
+            {
+                [self refreshRecentsTable];
+            }
+            
+        }];
     }
 }
 
@@ -179,6 +193,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
+    if (kMXNotificationCenterDidUpdateRulesObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXNotificationCenterDidUpdateRulesObserver];
+        kMXNotificationCenterDidUpdateRulesObserver = nil;
     }
 }
 

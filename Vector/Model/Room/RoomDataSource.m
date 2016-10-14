@@ -22,6 +22,8 @@
 #import "MXKRoomBubbleTableViewCell+Vector.h"
 #import "AvatarGenerator.h"
 
+#import "MXRoom+Vector.h"
+
 @implementation RoomDataSource
 
 - (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
@@ -49,6 +51,18 @@
         self.bubblesPagination = MXKRoomDataSourceBubblesPaginationPerDay;
     }
     return self;
+}
+
+// Ignore regular notification count if the room is in 'mentions only" mode
+- (NSUInteger)notificationCount
+{
+    if (self.room.isMentionsOnly)
+    {
+        // Only the highlighted missed messages are counted
+        return super.highlightCount;
+    }
+    
+    return super.notificationCount;
 }
 
 - (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
