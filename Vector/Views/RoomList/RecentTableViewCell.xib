@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -75,8 +75,17 @@
                             <constraint firstItem="mbn-A1-1Yw" firstAttribute="centerX" secondItem="OeZ-wN-eil" secondAttribute="centerX" id="ugY-V1-Ooo"/>
                         </constraints>
                     </view>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="direct_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZNW-8U-7ma">
+                        <rect key="frame" x="50" y="19" width="11" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="13" id="4Re-7i-8kN"/>
+                            <constraint firstAttribute="width" constant="11" id="aip-1x-C5a"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="ZNW-8U-7ma" firstAttribute="leading" secondItem="e7r-zL-9bw" secondAttribute="trailing" constant="45" id="4hn-ip-zxD"/>
+                    <constraint firstItem="ZNW-8U-7ma" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="19" id="6vJ-61-kfl"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="OeZ-wN-eil" secondAttribute="trailing" constant="8" id="KuE-8m-e9A"/>
                     <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
@@ -95,6 +104,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="directRoomIcon" destination="ZNW-8U-7ma" id="e2n-1R-mbc"/>
                 <outlet property="lastEventDate" destination="360-Go-RcG" id="Y0L-Dj-ZVn"/>
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="missedNotifAndUnreadBadgeBgView" destination="OeZ-wN-eil" id="tVo-8Z-hc2"/>
@@ -106,4 +116,7 @@
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="direct_icon.png" width="11" height="13"/>
+    </resources>
 </document>

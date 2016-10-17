@@ -220,6 +220,9 @@
 		F07420A31D940FA80043B679 /* UINavigationController+Vector.m in Sources */ = {isa = PBXBuildFile; fileRef = F07420A21D940FA80043B679 /* UINavigationController+Vector.m */; };
 		F07ECA4D1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m in Sources */ = {isa = PBXBuildFile; fileRef = F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */; };
 		F07ECA4E1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */; };
+		F08294681DB503FE00CEAB63 /* direct_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F08294651DB503FE00CEAB63 /* direct_icon.png */; };
+		F08294691DB503FE00CEAB63 /* direct_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F08294661DB503FE00CEAB63 /* direct_icon@2x.png */; };
+		F082946A1DB503FE00CEAB63 /* direct_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F08294671DB503FE00CEAB63 /* direct_icon@3x.png */; };
 		F083C4581D9E982900E5246C /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083C4571D9E982900E5246C /* FilesSearchCellData.m */; };
 		F083C45D1D9E9C2400E5246C /* FilesSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F083C45B1D9E9C2400E5246C /* FilesSearchTableViewCell.m */; };
 		F083C45E1D9E9C2400E5246C /* FilesSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F083C45C1D9E9C2400E5246C /* FilesSearchTableViewCell.xib */; };
@@ -591,6 +594,9 @@
 		F07ECA4A1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewCellWithCheckBoxes.h; path = TableViewCell/TableViewCellWithCheckBoxes.h; sourceTree = "<group>"; };
 		F07ECA4B1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewCellWithCheckBoxes.m; path = TableViewCell/TableViewCellWithCheckBoxes.m; sourceTree = "<group>"; };
 		F07ECA4C1D2BB0A60060C09F /* TableViewCellWithCheckBoxes.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TableViewCellWithCheckBoxes.xib; path = TableViewCell/TableViewCellWithCheckBoxes.xib; sourceTree = "<group>"; };
+		F08294651DB503FE00CEAB63 /* direct_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direct_icon.png; sourceTree = "<group>"; };
+		F08294661DB503FE00CEAB63 /* direct_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direct_icon@2x.png"; sourceTree = "<group>"; };
+		F08294671DB503FE00CEAB63 /* direct_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direct_icon@3x.png"; sourceTree = "<group>"; };
 		F083C4561D9E982900E5246C /* FilesSearchCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchCellData.h; sourceTree = "<group>"; };
 		F083C4571D9E982900E5246C /* FilesSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchCellData.m; sourceTree = "<group>"; };
 		F083C45A1D9E9C2400E5246C /* FilesSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchTableViewCell.h; sourceTree = "<group>"; };
@@ -972,6 +978,9 @@
 		F03BF5B41D8BF5B1002EF6A7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F08294651DB503FE00CEAB63 /* direct_icon.png */,
+				F08294661DB503FE00CEAB63 /* direct_icon@2x.png */,
+				F08294671DB503FE00CEAB63 /* direct_icon@3x.png */,
 				F083C4811D9EAFC500E5246C /* file_doc_icon.png */,
 				F083C4821D9EAFC500E5246C /* file_doc_icon@2x.png */,
 				F083C4831D9EAFC500E5246C /* file_doc_icon@3x.png */,
@@ -1544,6 +1553,7 @@
 				7165A25C1C05CD42003635D7 /* SegmentedViewController.xib in Resources */,
 				F03BF65F1D8BF5B1002EF6A7 /* call_speaker_off_icon@2x.png in Resources */,
 				F03BF6B41D8BF5B1002EF6A7 /* priorityLow@2x.png in Resources */,
+				F08294691DB503FE00CEAB63 /* direct_icon@2x.png in Resources */,
 				F03BF6971D8BF5B1002EF6A7 /* leave@3x.png in Resources */,
 				F03BF69A1D8BF5B1002EF6A7 /* logo@3x.png in Resources */,
 				F03BF67C1D8BF5B1002EF6A7 /* create_room@3x.png in Resources */,
@@ -1655,6 +1665,7 @@
 				F03BF65D1D8BF5B1002EF6A7 /* call_hangup_icon@3x.png in Resources */,
 				F03BF6981D8BF5B1002EF6A7 /* logo.png in Resources */,
 				F03BF6AA1D8BF5B1002EF6A7 /* placeholder.png in Resources */,
+				F082946A1DB503FE00CEAB63 /* direct_icon@3x.png in Resources */,
 				F03BF6BA1D8BF5B1002EF6A7 /* scrolldown@2x.png in Resources */,
 				F047DBB51C576F2200952DA2 /* AuthenticationViewController.xib in Resources */,
 				F03BF6D91D8BF5B1002EF6A7 /* video_icon@3x.png in Resources */,
@@ -1674,6 +1685,7 @@
 				F023A0241D91382600C517FB /* camera_video_capture@3x.png in Resources */,
 				F083C4911D9EAFC500E5246C /* file_music_icon@2x.png in Resources */,
 				F03BF6491D8BF5B1002EF6A7 /* admin_icon.png in Resources */,
+				F08294681DB503FE00CEAB63 /* direct_icon.png in Resources */,
 				F03BF6AE1D8BF5B1002EF6A7 /* plus_icon@2x.png in Resources */,
 				F03BF6AB1D8BF5B1002EF6A7 /* placeholder@2x.png in Resources */,
 				F03BF6AC1D8BF5B1002EF6A7 /* placeholder@3x.png in Resources */,
