@@ -1841,28 +1841,17 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             }
             else
             {
-                // create a new room
+                // Create a new room by inviting the other user only if it is defined and not oneself
+                NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
+                
                 [mxSession createRoom:nil
                            visibility:kMXRoomDirectoryVisibilityPrivate
                             roomAlias:nil
                                 topic:nil
+                               invite:invite
+                           invite3PID:nil
+                             isDirect:(invite.count != 0)
                               success:^(MXRoom *room) {
-                                  
-                                  // Invite the other user only if it is defined and not onself
-                                  if (userId && ![mxSession.myUser.userId isEqualToString:userId])
-                                  {
-                                      // Add the user
-                                      [room inviteUser:userId
-                                               success:^{
-                                               }
-                                               failure:^(NSError *error) {
-                                                   
-                                                   NSLog(@"[AppDelegate] %@ invitation failed (roomId: %@)", userId, room.state.roomId);
-                                                   //Alert user
-                                                   [self showErrorAsAlert:error];
-                                                   
-                                               }];
-                                  }
                                   
                                   // Open created room
                                   [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];

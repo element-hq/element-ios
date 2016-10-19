@@ -569,72 +569,69 @@
         createBarButtonItem.enabled = NO;
         [self startActivityIndicator];
         
+        // Prepare the invited participant data
+        NSMutableArray *inviteArray = [NSMutableArray array];
+        NSMutableArray *invite3PIDArray = [NSMutableArray array];
+        
+        // Check whether some users must be invited
+        for (MXKContact *contact in participants)
+        {
+            NSArray *identifiers = contact.matrixIdentifiers;
+            if (identifiers.count)
+            {
+                [inviteArray addObject:identifiers.firstObject];
+            }
+            else
+            {
+                // This is a text entered by the user, or a local email contact
+                NSString *participantId = contact.displayName;
+                
+                // Is it an email or a Matrix user ID?
+                if ([MXTools isEmailAddress:participantId])
+                {
+                    // The identity server must be defined
+                    if (!self.mainSession.matrixRestClient.identityServer)
+                    {
+                        MXError *error = [[MXError alloc] initWithErrorCode:kMXSDKErrCodeStringMissingParameters error:@"No supplied identity server URL"];
+                        NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
+                        // Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:[error createNSError]];
+                        
+                        continue;
+                    }
+                    
+                    // The hostname of the identity server must not have the protocol part
+                    NSString *identityServer = self.mainSession.matrixRestClient.identityServer;
+                    if ([identityServer hasPrefix:@"http://"] || [identityServer hasPrefix:@"https://"])
+                    {
+                        identityServer = [identityServer substringFromIndex:[identityServer rangeOfString:@"://"].location + 3];
+                    }
+                    
+                    MXInvite3PID *invite3PID = [[MXInvite3PID alloc] init];
+                    invite3PID.identityServer = identityServer;
+                    invite3PID.medium = @"email";
+                    invite3PID.address = participantId;
+                    
+                    [invite3PIDArray addObject:invite3PID];
+                }
+                else
+                {
+                    [inviteArray addObject:participantId];
+                }
+            }
+        }
+        
         // Create new room
         roomCreationRequest = [self.mainSession createRoom:nil
                                                 visibility:kMXRoomDirectoryVisibilityPrivate
                                                  roomAlias:nil
                                                      topic:nil
+                                                    invite:(inviteArray.count ? inviteArray : nil)
+                                                invite3PID:(invite3PIDArray.count ? invite3PIDArray : nil)
+                                                  isDirect:((inviteArray.count + invite3PIDArray.count == 1) ? YES : NO)
                                                    success:^(MXRoom *room) {
                                                        
                                                        roomCreationRequest = nil;
-                                                       
-                                                       // Check whether some users must be invited
-                                                       for (MXKContact *contact in participants)
-                                                       {
-                                                           NSArray *identifiers = contact.matrixIdentifiers;
-                                                           if (identifiers.count)
-                                                           {
-                                                               NSString *participantId = identifiers.firstObject;
-                                                               
-                                                               // Invite this user if a room is defined
-                                                               [room inviteUser:participantId success:^{
-                                                                   
-                                                                   NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
-                                                                   // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
-                                                           }
-                                                           else
-                                                           {
-                                                               // This is a text entered by the user, or a local email contact
-                                                               NSString *participantId = contact.displayName;
-                                                               
-                                                               // Is it an email or a Matrix user ID?
-                                                               if ([MXTools isEmailAddress:participantId])
-                                                               {
-                                                                   [room inviteUserByEmail:participantId success:^{
-                                                                       
-                                                                       NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
-                                                                       // Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                               }
-                                                               else
-                                                               {
-                                                                   [room inviteUser:participantId success:^{
-                                                                       
-                                                                       NSLog(@"[StartChatViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
-                                                                       // Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                               }
-                                                           }
-                                                       }
                                                        
                                                        [self stopActivityIndicator];
                                                        
