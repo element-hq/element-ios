@@ -1046,9 +1046,6 @@
                                                     visibility:kMXRoomDirectoryVisibilityPrivate
                                                      roomAlias:nil
                                                          topic:nil
-                                                        invite:nil
-                                                    invite3PID:nil
-                                                      isDirect:NO
                                                        success:^(MXRoom *room) {
 
                                                            roomCreationRequest = nil;
