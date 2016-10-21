@@ -390,7 +390,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@) failed", invitedRoom.state.roomId);
+            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.state.roomId);
             
         }];
     }
@@ -426,6 +426,20 @@
         
         NSString* title = @"      ";
         
+        // Direct chat toggle
+        BOOL isDirect = room.isDirect;
+        
+        UITableViewRowAction *directAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
+            [self makeDirectEditedRoom:!isDirect];
+            
+        }];
+        
+        UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
+        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        [actions insertObject:directAction atIndex:0];
+        
+        
         // Notification toggle
         BOOL isMuted = room.isMute || room.isMentionsOnly;
         
@@ -435,10 +449,9 @@
             
         }];
         
-        UIImage *actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
+        actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
         muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kVectorColorLightGrey patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
-        
         
         // Favorites management
         MXRoomTag* currentTag = nil;
@@ -556,7 +569,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[RecentsViewController] Failed to leave room (%@) failed: %@", room.state.roomId, error);
+                NSLog(@"[RecentsViewController] Failed to leave room (%@)", room.state.roomId);
                 
                 // Notify MatrixKit user
                 [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -592,6 +605,46 @@
                 // Force table refresh
                 editedRoomId = nil;
                 [self refreshRecentsTable];
+                
+            }];
+        }
+        else
+        {
+            // Leave editing mode
+            [self setEditing:NO];
+        }
+    }
+}
+
+- (void)makeDirectEditedRoom:(BOOL)isDirect
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [self startActivityIndicator];
+            
+            [room setIsDirect:isDirect success:^{
+                
+                [self stopActivityIndicator];
+                
+                // Leave editing mode
+                [self setEditing:NO];
+
+                
+            } failure:^(NSError *error) {
+                
+                [self stopActivityIndicator];
+                
+                NSLog(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
+                
+                // Notify MatrixKit user
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
+                
+                // Leave editing mode
+                [self setEditing:NO];
                 
             }];
         }
