@@ -726,45 +726,55 @@
                 }
                 else
                 {
+                    // Prepare the invited participant data
+                    NSArray *inviteArray;
+                    NSArray *invite3PIDArray;
+                    NSString *participantId = _contact.displayName;
+                    
+                    // Is it an email or a Matrix user ID?
+                    if ([MXTools isEmailAddress:participantId])
+                    {
+                        // The identity server must be defined
+                        if (!self.mainSession.matrixRestClient.identityServer)
+                        {
+                            MXError *error = [[MXError alloc] initWithErrorCode:kMXSDKErrCodeStringMissingParameters error:@"No supplied identity server URL"];
+                            NSLog(@"[ContactDetailsViewController] Invite %@ failed", participantId);
+                            // Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:[error createNSError]];
+                            
+                            return;
+                        }
+                        
+                        // The hostname of the identity server must not have the protocol part
+                        NSString *identityServer = self.mainSession.matrixRestClient.identityServer;
+                        if ([identityServer hasPrefix:@"http://"] || [identityServer hasPrefix:@"https://"])
+                        {
+                            identityServer = [identityServer substringFromIndex:[identityServer rangeOfString:@"://"].location + 3];
+                        }
+                        
+                        MXInvite3PID *invite3PID = [[MXInvite3PID alloc] init];
+                        invite3PID.identityServer = identityServer;
+                        invite3PID.medium = @"email";
+                        invite3PID.address = participantId;
+                        
+                        invite3PIDArray = @[invite3PID];
+                    }
+                    else
+                    {
+                        inviteArray = @[participantId];
+                    }
+                    
                     // Create a new room
                     roomCreationRequest = [self.mainSession createRoom:nil
                                                             visibility:kMXRoomDirectoryVisibilityPrivate
                                                              roomAlias:nil
                                                                  topic:nil
+                                                                invite:inviteArray
+                                                            invite3PID:invite3PIDArray
+                                                              isDirect:YES
                                                                success:^(MXRoom *room) {
                                                                    
                                                                    roomCreationRequest = nil;
-                                                                   NSString *participantId = _contact.displayName;
-                                                                   
-                                                                   // Is it an email or a Matrix user ID?
-                                                                   if ([MXTools isEmailAddress:participantId])
-                                                                   {
-                                                                       [room inviteUserByEmail:participantId success:^{
-                                                                           
-                                                                           NSLog(@"[ContactDetailsViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
-                                                                           
-                                                                       } failure:^(NSError *error) {
-                                                                           
-                                                                           NSLog(@"[ContactDetailsViewController] Invite %@ failed", participantId);
-                                                                           // Alert user
-                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                           
-                                                                       }];
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       [room inviteUser:participantId success:^{
-                                                                           
-                                                                           NSLog(@"[ContactDetailsViewController] %@ has been invited (roomId: %@)", participantId, room.state.roomId);
-                                                                           
-                                                                       } failure:^(NSError *error) {
-                                                                           
-                                                                           NSLog(@"[ContactDetailsViewController] Invite %@ failed", participantId);
-                                                                           // Alert user
-                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                           
-                                                                       }];
-                                                                   }
                                                                    
                                                                    [self removePendingActionMask];
                                                                    
@@ -808,29 +818,18 @@
                                                             visibility:kMXRoomDirectoryVisibilityPrivate
                                                              roomAlias:nil
                                                                  topic:nil
+                                                                invite:@[matrixId]
+                                                            invite3PID:nil
+                                                              isDirect:YES
                                                                success:^(MXRoom *room) {
                                                                    
                                                                    roomCreationRequest = nil;
                                                                    
-                                                                   // Add the user
-                                                                   [room inviteUser:matrixId success:^{
-                                                                       
-                                                                       // Delay the call in order to be sure that the room is ready
-                                                                       dispatch_async(dispatch_get_main_queue(), ^{
-                                                                           [room placeCallWithVideo:isVideoCall success:nil failure:nil];
-                                                                           [self removePendingActionMask];
-                                                                       });
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       NSLog(@"[ContactDetailsViewController] %@ invitation failed (roomId: %@): %@", matrixId, room.state.roomId, error);
-                                                                       
+                                                                   // Delay the call in order to be sure that the room is ready
+                                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                                       [room placeCallWithVideo:isVideoCall success:nil failure:nil];
                                                                        [self removePendingActionMask];
-                                                                       
-                                                                       // Notify MatrixKit user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
+                                                                   });
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
