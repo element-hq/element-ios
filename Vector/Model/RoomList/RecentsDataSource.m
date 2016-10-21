@@ -876,7 +876,7 @@
                      
                  } failure:^(NSError *error) {
                      
-                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@) failed", dstRoomTag, room.state.roomId);
+                     NSLog(@"[RecentsDataSource] Failed to update the tag %@ of room (%@)", dstRoomTag, room.state.roomId);
                      
                      if (moveFailure)
                      {

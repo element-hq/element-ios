@@ -976,7 +976,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
         } failure:^(NSError *error) {
 
-            NSLog(@"[AppDelegate] handleUniversalLink. Error: submitToken failed: %@", error);
+            NSLog(@"[AppDelegate] handleUniversalLink. Error: submitToken failed");
             [self showErrorAsAlert:error];
 
         }];
@@ -2260,7 +2260,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                                                   };
 
                         [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content success:nil failure:^(NSError *error) {
-                            NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event. Error: %@", error);
+                            NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event.");
                         }];
 
                         __strong __typeof(weakSelf)strongSelf = weakSelf;

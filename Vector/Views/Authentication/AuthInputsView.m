@@ -362,7 +362,7 @@
                                                                                
                                                                            } failure:^(NSError *error) {
                                                                                
-                                                                               NSLog(@"[AuthInputsView] Failed to request email token: %@", error);
+                                                                               NSLog(@"[AuthInputsView] Failed to request email token");
                                                                                
                                                                                // Ignore connection cancellation error
                                                                                if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))

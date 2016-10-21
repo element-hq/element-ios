@@ -672,7 +672,7 @@
                                                 } failure:^(NSError *error) {
                                                     
                                                     [strongSelf removePendingActionMask];
-                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed: %@", strongSelf.firstMatrixId, error);
+                                                    NSLog(@"[ContactDetailsViewController] Ignore %@ failed", strongSelf.firstMatrixId);
                                                     
                                                     // Notify MatrixKit user
                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -705,7 +705,7 @@
                                             
                                             __strong __typeof(weakSelf)strongSelf = weakSelf;
                                             [strongSelf removePendingActionMask];
-                                            NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", self.firstMatrixId, error);
+                                            NSLog(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
                                             
                                             // Notify MatrixKit user
                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -783,7 +783,7 @@
                                                                }
                                                                failure:^(NSError *error) {
                                                                    
-                                                                   NSLog(@"[ContactDetailsViewController] Create room failed: %@", error);
+                                                                   NSLog(@"[ContactDetailsViewController] Create room failed");
                                                                    
                                                                    roomCreationRequest = nil;
                                                                    
@@ -833,7 +833,7 @@
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
-                                                                   NSLog(@"[ContactDetailsViewController] Create room failed: %@", error);
+                                                                   NSLog(@"[ContactDetailsViewController] Create room failed");
                                                                    
                                                                    roomCreationRequest = nil;
                                                                    

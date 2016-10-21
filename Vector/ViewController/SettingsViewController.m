@@ -470,7 +470,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[SettingsViewController] Failed to bind email: %@", error);
+                NSLog(@"[SettingsViewController] Failed to bind email");
                 
                 if (weakSelf)
                 {
@@ -1225,7 +1225,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
                         [strongSelf stopActivityIndicator];
 
-                        NSLog(@"[ContactDetailsViewController] Unignore %@ failed: %@", ignoredUserId, error);
+                        NSLog(@"[ContactDetailsViewController] Unignore %@ failed", ignoredUserId);
 
                         // Notify MatrixKit user
                         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];
@@ -1683,7 +1683,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
         [self stopActivityIndicator];
 
-        NSLog(@"[SettingsViewController] Failed to request email token: %@", error);
+        NSLog(@"[SettingsViewController] Failed to request email token");
 
         // Notify MatrixKit user
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];

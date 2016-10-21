@@ -225,7 +225,7 @@
                  
              } failure:^(NSError *error) {
                  
-                 NSLog(@"[MXRoom+Vector] Failed to update the tag %@ of room (%@) failed: %@", tag, self.state.roomId, error);
+                 NSLog(@"[MXRoom+Vector] Failed to update the tag %@ of room (%@)", tag, self.state.roomId);
                  
                  // Notify user
                  [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error];

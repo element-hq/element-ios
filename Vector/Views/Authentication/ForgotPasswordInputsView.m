@@ -221,7 +221,7 @@
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
-                                                                       NSLog(@"[ForgotPasswordInputsView] Failed to request email token: %@", error);
+                                                                       NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
                                                                        
                                                                        // Ignore connection cancellation error
                                                                        if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
