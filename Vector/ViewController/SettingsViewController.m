@@ -27,31 +27,20 @@
 #import <Photos/Photos.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+enum {
+    SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
+    SETTINGS_SECTION_USER_SETTINGS_INDEX,
+    SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
+    SETTINGS_SECTION_IGNORED_USERS_INDEX,
+    SETTINGS_SECTION_CONTACTS_INDEX,
+    SETTINGS_SECTION_ADVANCED_INDEX,
+    SETTINGS_SECTION_OTHER_INDEX,
 #ifdef MX_USE_CONTACTS_SERVER_SYNC
-
-#define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
-#define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
-#define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
-#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
-#define SETTINGS_SECTION_CONTACTS_INDEX                 4
-#define SETTINGS_SECTION_ADVANCED_INDEX                 5
-#define SETTINGS_SECTION_OTHER_INDEX                    6
-#define SETTINGS_SECTION_LABS_INDEX                     7
-#define SETTINGS_SECTION_COUNT                          7   // Not 8 because the LABS section is currently hidden
-
-#else
-
-#define SETTINGS_SECTION_SIGN_OUT_INDEX                 0
-#define SETTINGS_SECTION_USER_SETTINGS_INDEX            1
-#define SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX   2
-#define SETTINGS_SECTION_IGNORED_USERS_INDEX            3
-#define SETTINGS_SECTION_ADVANCED_INDEX                 4
-#define SETTINGS_SECTION_OTHER_INDEX                    5
-#define SETTINGS_SECTION_CONTACTS_INDEX                 6
-#define SETTINGS_SECTION_LABS_INDEX                     7
-#define SETTINGS_SECTION_COUNT                          6   // Not 8 because the CONTACTS and LABS section is currently hidden
-
+    SETTINGS_SECTION_CONTACTS_INDEX,
 #endif
+    SETTINGS_SECTION_LABS_INDEX,
+    SETTINGS_SECTION_COUNT
+};
 
 #define NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX                 0
 #define NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX             1
@@ -76,7 +65,8 @@
 #define OTHER_CLEAR_CACHE_INDEX      7
 #define OTHER_COUNT                  8
 
-#define LABS_COUNT                   0
+#define LABS_CONFERENCE_CALL_INDEX   0
+#define LABS_COUNT                   1
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -1061,6 +1051,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
+        if (row == LABS_CONFERENCE_CALL_INDEX)
+        {
+            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
+
+            [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
 
     return cell;
@@ -1384,6 +1388,29 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[AppDelegate theDelegate] startGoogleAnalytics];
+    }
+}
+
+- (void)toggleLabsEndToEndEncryption:(id)sender
+{
+    if (sender && [sender isKindOfClass:UISwitch.class])
+    {
+        UISwitch *switchButton = (UISwitch*)sender;
+
+        [self startActivityIndicator];
+
+        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+		[session enableCrypto:switchButton.isOn success:^{
+
+             [self stopActivityIndicator];
+
+        } failure:^(NSError *error) {
+
+            [self stopActivityIndicator];
+
+            // Come back to previous state button
+            [switchButton setOn:!switchButton.isOn animated:YES];
+        }];
     }
 }
 

@@ -245,6 +245,8 @@
 
 "settings_contacts_discover_matrix_users_with_local_emails" = "Use emails to discover users";
 
+"settings_labs_e2e_encryption" = "End-to-End Encryption";
+
 "settings_version" = "Version %@";
 "settings_copyright" = "Copyright";
 "settings_copyright_url" = "https://riot.im/copyright";
