@@ -108,8 +108,8 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
-// Reopen an existing private OneToOne room with this userId or creates a new one (if it doesn't exist)
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+// Creates a new direct chat with the provided user id
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
 /**
  Process the fragment part of a vector.im link.

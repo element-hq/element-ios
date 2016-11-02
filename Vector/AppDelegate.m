@@ -1817,7 +1817,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     _visibleRoomId = roomId;
 }
 
-- (void)startPrivateOneToOneRoomWithUserId:(NSString*)userId completion:(void (^)(void))completion
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
 {
     // Handle here potential multiple accounts
     [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
@@ -1826,55 +1826,39 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if (mxSession)
         {
-            MXRoom* mxRoom = [mxSession privateOneToOneRoomWithUserId:userId];
+            // Create a new room by inviting the other user only if it is defined and not oneself
+            NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
             
-            // if the room exists
-            if (mxRoom)
-            {
-                // open it
-                [self showRoom:mxRoom.state.roomId andEventId:nil withMatrixSession:mxSession];
-                
-                if (completion)
-                {
-                    completion();
-                }
-            }
-            else
-            {
-                // Create a new room by inviting the other user only if it is defined and not oneself
-                NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
-                
-                [mxSession createRoom:nil
-                           visibility:kMXRoomDirectoryVisibilityPrivate
-                            roomAlias:nil
-                                topic:nil
-                               invite:invite
-                           invite3PID:nil
-                             isDirect:(invite.count != 0)
-                              success:^(MXRoom *room) {
-                                  
-                                  // Open created room
-                                  [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];
-                                  
-                                  if (completion)
-                                  {
-                                      completion();
-                                  }
-                                  
+            [mxSession createRoom:nil
+                       visibility:kMXRoomDirectoryVisibilityPrivate
+                        roomAlias:nil
+                            topic:nil
+                           invite:invite
+                       invite3PID:nil
+                         isDirect:(invite.count != 0)
+                          success:^(MXRoom *room) {
+                              
+                              // Open created room
+                              [self showRoom:room.state.roomId andEventId:nil withMatrixSession:mxSession];
+                              
+                              if (completion)
+                              {
+                                  completion();
                               }
-                              failure:^(NSError *error) {
-                                  
-                                  NSLog(@"[AppDelegate] Create room failed");
-                                  //Alert user
-                                  [self showErrorAsAlert:error];
-                                  
-                                  if (completion)
-                                  {
-                                      completion();
-                                  }
-                                  
-                              }];
-            }
+                              
+                          }
+                          failure:^(NSError *error) {
+                              
+                              NSLog(@"[AppDelegate] Create direct chat failed");
+                              //Alert user
+                              [self showErrorAsAlert:error];
+                              
+                              if (completion)
+                              {
+                                  completion();
+                              }
+                              
+                          }];
         }
         else if (completion)
         {

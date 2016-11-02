@@ -28,10 +28,33 @@
 #import "Tools.h"
 
 #import "TableViewCellWithButton.h"
+#import "RoomTableViewCell.h"
+
+#define TABLEVIEW_ROW_CELL_HEIGHT         46
+#define TABLEVIEW_SECTION_HEADER_HEIGHT   28
+#define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
 @interface RoomMemberDetailsViewController ()
 {
     RoomMemberTitleView* memberTitleView;
+    
+    /**
+     List of the admin actions on this member.
+     */
+    NSMutableArray<NSNumber*> *adminActionsArray;
+    NSInteger adminToolsIndex;
+    
+    /**
+     List of the basic actions on this member.
+     */
+    NSMutableArray<NSNumber*> *otherActionsArray;
+    NSInteger otherActionsIndex;
+    
+    /**
+     List of the direct chats (room ids) with this member.
+     */
+    NSArray<NSString*> *directChatsArray;
+    NSInteger directChatsIndex;
     
     /**
      Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
@@ -62,6 +85,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    adminActionsArray = [[NSMutableArray alloc] init];
+    otherActionsArray = [[NSMutableArray alloc] init];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
@@ -135,6 +161,10 @@
                                                                          constant:0.0f];
     [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
     
+    // Register collection view cell class
+    [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
+    [self.tableView registerClass:RoomTableViewCell.class forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
+    
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
@@ -194,6 +224,10 @@
 - (void)destroy
 {
     [super destroy];
+    
+    adminActionsArray = nil;
+    otherActionsArray = nil;
+    directChatsArray = nil;
     
     if (UIApplicationWillChangeStatusBarOrientationNotificationObserver)
     {
@@ -306,19 +340,23 @@
 
 #pragma mark - TableView data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSInteger sectionCount = 0;
+    
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [self.mxRoom.state powerLevels];
     NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
     NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
-    [actionsArray removeAllObjects];
+    [adminActionsArray removeAllObjects];
+    [otherActionsArray removeAllObjects];
+    directChatsArray = nil;
     
     // Consider the case of the user himself
     if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
     {
-        [actionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
+        [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
@@ -337,35 +375,20 @@
                 
                 if (adminCount > 1)
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
                 }
             }
             // Check whether the user is moderator (in this case he may reduce his power level to become normal user).
             else if (oneSelfPowerLevel >= kVectorRoomModeratorLevel)
             {
-                [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+                [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
             }
         }
     }
     else if (self.mxRoomMember)
     {
-        // offer to start a new chat only if the room is not a 1:1 room with this user
-        // it does not make sense : it would open the same room
-        MXRoom* room = [self.mainSession privateOneToOneRoomWithUserId:self.mxRoomMember.userId];
-        if (!room || (![room.state.roomId isEqualToString:self.mxRoom.state.roomId]))
-        {
-            [actionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];
-        }
-        
-        if (self.enableVoipCall)
-        {
-            // Offer voip call options
-            [actionsArray addObject:@(MXKRoomMemberDetailsActionStartVoiceCall)];
-            [actionsArray addObject:@(MXKRoomMemberDetailsActionStartVideoCall)];
-        }
-        
-        // Consider membership of the selected member
+        // Enumerate admin actions
         switch (self.mxRoomMember.membership)
         {
             case MXMembershipInvite:
@@ -377,45 +400,32 @@
                     // Check whether user is admin
                     if (oneSelfPowerLevel >= kVectorRoomAdminLevel)
                     {
-                        [actionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
+                        [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetAdmin)];
                     }
                     
                     // Check whether the member may become moderator
                     if (oneSelfPowerLevel >= kVectorRoomModeratorLevel && memberPowerLevel < kVectorRoomModeratorLevel)
                     {
-                        [actionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
+                        [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetModerator)];
                     }
                     
                     if (memberPowerLevel >= kVectorRoomModeratorLevel)
                     {
-                        [actionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
+                        [adminActionsArray addObject:@(MXKRoomMemberDetailsActionSetDefaultPowerLevel)];
                     }
                 }
                 
                 // Check conditions to be able to kick someone
                 if (oneSelfPowerLevel >= [powerLevels kick] && oneSelfPowerLevel > memberPowerLevel)
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionKick)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionKick)];
                 }
                 // Check conditions to be able to ban someone
                 if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel > memberPowerLevel)
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
                 }
                 
-                // Check whether the option Ignore may be presented
-                if (self.mxRoomMember.membership == MXMembershipJoin)
-                {
-                    // is he already ignored ?
-                    if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
-                    {
-                        [actionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
-                    }
-                    else
-                    {
-                        [actionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
-                    }
-                }
                 break;
             }
             case MXMembershipLeave:
@@ -423,12 +433,12 @@
                 // Check conditions to be able to invite someone
                 if (oneSelfPowerLevel >= [powerLevels invite])
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionInvite)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionInvite)];
                 }
                 // Check conditions to be able to ban someone
                 if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel > memberPowerLevel)
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionBan)];
                 }
                 break;
             }
@@ -437,7 +447,7 @@
                 // Check conditions to be able to unban someone
                 if (oneSelfPowerLevel >= [powerLevels ban] && oneSelfPowerLevel > memberPowerLevel)
                 {
-                    [actionsArray addObject:@(MXKRoomMemberDetailsActionUnban)];
+                    [adminActionsArray addObject:@(MXKRoomMemberDetailsActionUnban)];
                 }
                 break;
             }
@@ -446,15 +456,85 @@
                 break;
             }
         }
+        
+        // List the other actions
+        if (self.enableVoipCall)
+        {
+            // Offer voip call options
+            [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartVoiceCall)];
+            [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartVideoCall)];
+        }
+        
+        // Check whether the option Ignore may be presented
+        if (self.mxRoomMember.membership == MXMembershipJoin)
+        {
+            // is he already ignored ?
+            if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
+            {
+                [otherActionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
+            }
+            else
+            {
+                [otherActionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
+            }
+        }
+        
+        if (self.enableMention)
+        {
+            // Add mention option
+            [otherActionsArray addObject:@(MXKRoomMemberDetailsActionMention)];
+        }
     }
     
-    if (self.enableMention)
+    // Retrieve the existing direct chats
+    directChatsArray = self.mainSession.directRooms[self.mxRoomMember.userId];
+    
+    adminToolsIndex = otherActionsIndex = directChatsIndex = -1;
+    
+    
+    if (otherActionsArray.count)
     {
-        // Add mention option
-        [actionsArray addObject:@(MXKRoomMemberDetailsActionMention)];
+        otherActionsIndex = sectionCount++;
+    }
+    if (adminActionsArray.count)
+    {
+        adminToolsIndex = sectionCount++;
+    }
+    directChatsIndex = sectionCount++;
+    
+    return sectionCount;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == adminToolsIndex)
+    {
+        return adminActionsArray.count;
+    }
+    else if (section == otherActionsIndex)
+    {
+        return otherActionsArray.count;
+    }
+    else if (section == directChatsIndex)
+    {
+        return (directChatsArray.count + 1);
     }
     
-    return actionsArray.count;
+    return 0;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == adminToolsIndex)
+    {
+        return NSLocalizedStringFromTable(@"room_participants_action_section_admin_tools", @"Vector", nil);
+    }
+    else if (section == directChatsIndex)
+    {
+        return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
+    }
+    
+    return nil;
 }
 
 - (NSString*)actionButtonTitle:(MXKRoomMemberDetailsAction)action
@@ -514,48 +594,126 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
+    UITableViewCell *cell;
     
-    TableViewCellWithButton *cell  = [[TableViewCellWithButton alloc] init];
-    
-    if (row < actionsArray.count)
+    if (indexPath.section == adminToolsIndex || indexPath.section == otherActionsIndex)
     {
-        NSNumber *actionNumber = [actionsArray objectAtIndex:row];
+        TableViewCellWithButton *cellWithButton = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
         
-        NSString *title = [self actionButtonTitle:actionNumber.unsignedIntegerValue];
-        
-        [cell.mxkButton setTitle:title forState:UIControlStateNormal];
-        [cell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        
-        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
+        NSNumber *actionNumber;
+        if (indexPath.section == adminToolsIndex && indexPath.row < adminActionsArray.count)
         {
-            [cell.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateNormal];
-            [cell.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateHighlighted];
+            actionNumber = [adminActionsArray objectAtIndex:indexPath.row];
+        }
+        else if (indexPath.section == otherActionsIndex && indexPath.row < otherActionsArray.count)
+        {
+            actionNumber = [otherActionsArray objectAtIndex:indexPath.row];
+        }
+        
+        if (actionNumber)
+        {
+            NSString *title = [self actionButtonTitle:actionNumber.unsignedIntegerValue];
+            
+            [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
+            
+            if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
+            {
+                [cellWithButton.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:kVectorColorPinkRed forState:UIControlStateHighlighted];
+            }
+            else
+            {
+                [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+            }
+            
+            [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cellWithButton.mxkButton.tag = actionNumber.unsignedIntegerValue;
+        }
+        
+        cell = cellWithButton;
+    }
+    else if (indexPath.section == directChatsIndex)
+    {
+        RoomTableViewCell *roomCell = [tableView dequeueReusableCellWithIdentifier:[RoomTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+        
+        if (indexPath.row < directChatsArray.count)
+        {
+            MXRoom *room = [self.mainSession roomWithRoomId:directChatsArray[indexPath.row]];
+            if (room)
+            {
+                [roomCell render:room];
+            }
         }
         else
         {
-            [cell.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
-            [cell.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+            roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
+            roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
         }
         
-        [cell.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        cell.mxkButton.tag = actionNumber.unsignedIntegerValue;
+        cell = roomCell;
+    }
+    else
+    {
+        // Create a fake cell to prevent app from crashing
+        cell = [[UITableViewCell alloc] init];
     }
     
     return cell;
 }
 
-#pragma mark - TableView delegate
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == directChatsIndex)
+    {
+        return [RoomTableViewCell cellHeight];
+    }
+    
+    return TABLEVIEW_ROW_CELL_HEIGHT;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == otherActionsIndex)
+    {
+        return TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN;
+    }
+    
+    return TABLEVIEW_SECTION_HEADER_HEIGHT;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+    if (indexPath.section == directChatsIndex)
     {
-        TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
-        
-        [self onActionButtonPressed:cell.mxkButton];
+        if (indexPath.row < directChatsArray.count)
+        {
+            // Open this room
+            [[AppDelegate theDelegate] showRoom:directChatsArray[indexPath.row] andEventId:nil withMatrixSession:self.mainSession];
+        }
+        else
+        {
+            // Create a new direct chat with the member
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.tag = MXKRoomMemberDetailsActionStartChat;
+            
+            [super onActionButtonPressed:button];
+        }
+    }
+    else
+    {
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+        {
+            TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
+            
+            [self onActionButtonPressed:cell.mxkButton];
+        }
     }
 }
 

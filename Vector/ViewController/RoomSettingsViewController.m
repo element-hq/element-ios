@@ -2513,6 +2513,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
             [roomMemberDetailsViewController displayRoomMember:bannedMembers[indexPath.row] withMatrixRoom:mxRoom];
             roomMemberDetailsViewController.delegate = self;
+            roomMemberDetailsViewController.enableVoipCall = YES;
 
             [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
         }
@@ -2712,7 +2713,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
+    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
 }
 
 #pragma mark - actions
