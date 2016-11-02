@@ -1177,6 +1177,7 @@
             // Set delegate to handle action on member (start chat, mention)
             memberDetailsViewController.delegate = self;
             memberDetailsViewController.enableMention = _enableMention;
+            memberDetailsViewController.enableVoipCall = YES;
             
             [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
             
@@ -1214,7 +1215,7 @@
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:matrixId completion:completion];
+    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
 }
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member

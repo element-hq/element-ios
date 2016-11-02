@@ -141,6 +141,10 @@
 "room_participants_now" = "now";
 "room_participants_ago" = "ago";
 
+"room_participants_action_section_admin_tools" = "Admin tools";
+"room_participants_action_section_direct_chats" = "Direct chats";
+"room_participants_action_section_other" = "Other";
+
 "room_participants_action_invite" = "Invite";
 "room_participants_action_leave" = "Leave this room";
 "room_participants_action_remove" = "Remove from this room";
@@ -151,7 +155,7 @@
 "room_participants_action_set_default_power_level" = "Reset to normal user";
 "room_participants_action_set_moderator" = "Make moderator";
 "room_participants_action_set_admin" = "Make admin";
-"room_participants_action_start_chat" = "Start chat";
+"room_participants_action_start_new_chat" = "Start new chat";
 "room_participants_action_start_voice_call" = "Start voice call";
 "room_participants_action_start_video_call" = "Start video call";
 "room_participants_action_mention" = "Mention";

@@ -28,8 +28,15 @@
 #import "Tools.h"
 
 #import "TableViewCellWithButton.h"
+#import "RoomTableViewCell.h"
+
+#import "TableViewCellWithButton.h"
 
 #import "GBDeviceInfo_iOS.h"
+
+#define TABLEVIEW_ROW_CELL_HEIGHT         46
+#define TABLEVIEW_SECTION_HEADER_HEIGHT   28
+#define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
 @interface ContactDetailsViewController ()
 {
@@ -50,9 +57,16 @@
     id mxPresenceObserver;
     
     /**
-     List of the allowed actions on this member.
+     List of the basic actions on this contact.
      */
     NSMutableArray<NSNumber*> *actionsArray;
+    NSInteger actionsIndex;
+    
+    /**
+     List of the direct chats (room ids) with this contact.
+     */
+    NSArray<NSString*> *directChatsArray;
+    NSInteger directChatsIndex;
     
     /**
      mask view while processing a request
@@ -172,6 +186,10 @@
                                                                          constant:0.0f];
     [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
     
+    // Register collection view cell class
+    [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
+    [self.tableView registerClass:RoomTableViewCell.class forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
+    
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
@@ -253,6 +271,7 @@
     contactTitleView = nil;
     
     actionsArray = nil;
+    directChatsArray = nil;
     
     [self removePendingActionMask];
     
@@ -493,21 +512,27 @@
 
 #pragma mark - TableView data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [actionsArray removeAllObjects];
+    NSInteger sectionCount = 0;
     
-    if (_contact.matrixIdentifiers.count)
+    [actionsArray removeAllObjects];
+    directChatsArray = nil;
+    
+    actionsIndex = directChatsIndex = -1;
+    
+    if (!self.mainSession)
     {
-        // Consider the case of the user himself
-        if ([_contact.matrixIdentifiers indexOfObject:self.mainSession.myUser.userId] != NSNotFound)
+        return 0;
+    }
+    
+    NSString *matrixId = self.firstMatrixId;
+    
+    if (matrixId.length)
+    {
+        // Check whether the contact is not the user himself
+        if (![matrixId isEqualToString:self.mainSession.myUser.userId])
         {
-            [actionsArray addObject:@(ContactDetailsActionStartChat)];
-        }
-        else
-        {
-            [actionsArray addObject:@(ContactDetailsActionStartChat)];
-            
             if (self.enableVoipCall)
             {
                 // Offer voip call options
@@ -516,7 +541,7 @@
             }
             
             // Check whether the option Ignore may be presented
-            if (![self.mainSession isUserIgnored:self.firstMatrixId])
+            if (![self.mainSession isUserIgnored:matrixId])
             {
                 [actionsArray addObject:@(ContactDetailsActionIgnore)];
             }
@@ -524,15 +549,51 @@
             {
                 [actionsArray addObject:@(ContactDetailsActionUnignore)];
             }
+            
+            actionsIndex = sectionCount++;
         }
+        
+        // Retrieve the existing direct chats
+        directChatsArray = self.mainSession.directRooms[matrixId];
+        directChatsIndex = sectionCount++;
     }
     // Else check whether the contact has been instantiated with an email or a matrix id
-    else if ([MXTools isEmailAddress:_contact.displayName] || [MXTools isMatrixUserIdentifier:_contact.displayName])
+    else if ([MXTools isEmailAddress:_contact.displayName])
     {
-        [actionsArray addObject:@(ContactDetailsActionStartChat)];
+        directChatsIndex = sectionCount++;
+    }
+    else if ([MXTools isMatrixUserIdentifier:_contact.displayName])
+    {
+        // Retrieve the existing direct chats
+        directChatsArray = self.mainSession.directRooms[_contact.displayName];
+        directChatsIndex = sectionCount++;
     }
     
-    return actionsArray.count;
+    return sectionCount;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == actionsIndex)
+    {
+        return actionsArray.count;
+    }
+    else if (section == directChatsIndex)
+    {
+        return (directChatsArray.count + 1);
+    }
+    
+    return 0;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == directChatsIndex)
+    {
+        return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
+    }
+    
+    return nil;
 }
 
 - (NSString*)actionButtonTitle:(ContactDetailsAction)action
@@ -565,25 +626,56 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
+    UITableViewCell *cell;
     
-    TableViewCellWithButton *cell  = [[TableViewCellWithButton alloc] init];
-    
-    if (row < actionsArray.count)
+    if (indexPath.section == actionsIndex)
     {
-        NSNumber *actionNumber = [actionsArray objectAtIndex:row];
+        TableViewCellWithButton *cellWithButton = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
         
-        NSString *title = [self actionButtonTitle:actionNumber.unsignedIntegerValue];
+        if (indexPath.row < actionsArray.count)
+        {
+            NSNumber *actionNumber = [actionsArray objectAtIndex:indexPath.row];
+            
+            NSString *title = [self actionButtonTitle:actionNumber.unsignedIntegerValue];
+            
+            [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
+            
+            [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
+            [cellWithButton.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+            
+            [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cellWithButton.mxkButton.tag = actionNumber.unsignedIntegerValue;
+        }
         
-        [cell.mxkButton setTitle:title forState:UIControlStateNormal];
-        [cell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+        cell = cellWithButton;
+    }
+    else if (indexPath.section == directChatsIndex)
+    {
+        RoomTableViewCell *roomCell = [tableView dequeueReusableCellWithIdentifier:[RoomTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
         
-        [cell.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateNormal];
-        [cell.mxkButton setTitleColor:kVectorTextColorBlack forState:UIControlStateHighlighted];
+        if (indexPath.row < directChatsArray.count)
+        {
+            MXRoom *room = [self.mainSession roomWithRoomId:directChatsArray[indexPath.row]];
+            if (room)
+            {
+                [roomCell render:room];
+            }
+        }
+        else
+        {
+            roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
+            roomCell.avatarImageView.backgroundColor = [UIColor clearColor];
+            roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
+        }
         
-        [cell.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        cell.mxkButton.tag = actionNumber.unsignedIntegerValue;
+        cell = roomCell;
+    }
+    else
+    {
+        // Create a fake cell to prevent app from crashing
+        cell = [[UITableViewCell alloc] init];
     }
     
     return cell;
@@ -591,14 +683,53 @@
 
 #pragma mark - TableView delegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == directChatsIndex)
+    {
+        return [RoomTableViewCell cellHeight];
+    }
+    
+    return TABLEVIEW_ROW_CELL_HEIGHT;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == actionsIndex)
+    {
+        return TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN;
+    }
+    
+    return TABLEVIEW_SECTION_HEADER_HEIGHT;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+    if (indexPath.section == directChatsIndex)
     {
-        TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
-        
-        [self onActionButtonPressed:cell.mxkButton];
+        if (indexPath.row < directChatsArray.count)
+        {
+            // Open this room
+            [[AppDelegate theDelegate] showRoom:directChatsArray[indexPath.row] andEventId:nil withMatrixSession:self.mainSession];
+        }
+        else
+        {
+            // Create a new direct chat with the member
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.tag = ContactDetailsActionStartChat;
+            
+            [self onActionButtonPressed:button];
+        }
+    }
+    else
+    {
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+        {
+            TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
+            
+            [self onActionButtonPressed:cell.mxkButton];
+        }
     }
 }
 
@@ -719,7 +850,7 @@
                 
                 if (_contact.matrixIdentifiers.count)
                 {
-                    [[AppDelegate theDelegate] startPrivateOneToOneRoomWithUserId:self.firstMatrixId completion:^{
+                    [[AppDelegate theDelegate] createDirectChatWithUserId:self.firstMatrixId completion:^{
                         
                         [self removePendingActionMask];
                     }];

@@ -626,7 +626,7 @@
         {
             [self startActivityIndicator];
             
-            [room setIsDirect:isDirect success:^{
+            [room setIsDirect:isDirect withUserId:nil success:^{
                 
                 [self stopActivityIndicator];
                 
