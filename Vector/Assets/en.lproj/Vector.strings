@@ -300,6 +300,8 @@
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
+"room_details_advanced_enable_e2e_encryption"="Enable encryption (warning: cannot be disabled again!)";
+"room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
