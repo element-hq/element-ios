@@ -1836,6 +1836,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                            invite:invite
                        invite3PID:nil
                          isDirect:(invite.count != 0)
+                           preset:kMXRoomPresetTrustedPrivateChat
                           success:^(MXRoom *room) {
                               
                               // Open created room

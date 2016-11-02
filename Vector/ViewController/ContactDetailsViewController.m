@@ -903,6 +903,7 @@
                                                                 invite:inviteArray
                                                             invite3PID:invite3PIDArray
                                                               isDirect:YES
+                                                                preset:kMXRoomPresetTrustedPrivateChat
                                                                success:^(MXRoom *room) {
                                                                    
                                                                    roomCreationRequest = nil;
@@ -952,6 +953,7 @@
                                                                 invite:@[matrixId]
                                                             invite3PID:nil
                                                               isDirect:YES
+                                                                preset:kMXRoomPresetTrustedPrivateChat
                                                                success:^(MXRoom *room) {
                                                                    
                                                                    roomCreationRequest = nil;

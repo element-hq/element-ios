@@ -621,6 +621,10 @@
             }
         }
         
+        // Ensure direct chat are created with equal ops on both sides (the trusted_private_chat preset)
+        BOOL isDirect = ((inviteArray.count + invite3PIDArray.count == 1) ? YES : NO);
+        MXRoomPreset preset = (isDirect ? kMXRoomPresetTrustedPrivateChat : nil);
+        
         // Create new room
         roomCreationRequest = [self.mainSession createRoom:nil
                                                 visibility:kMXRoomDirectoryVisibilityPrivate
@@ -628,7 +632,8 @@
                                                      topic:nil
                                                     invite:(inviteArray.count ? inviteArray : nil)
                                                 invite3PID:(invite3PIDArray.count ? invite3PIDArray : nil)
-                                                  isDirect:((inviteArray.count + invite3PIDArray.count == 1) ? YES : NO)
+                                                  isDirect:isDirect
+                                                    preset:preset
                                                    success:^(MXRoom *room) {
                                                        
                                                        roomCreationRequest = nil;
