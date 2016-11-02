@@ -14,16 +14,22 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - DTCoreText (1.6.17):
+  - DTCoreText (1.6.19):
+    - DTCoreText/Core (= 1.6.19)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.10)
-  - DTFoundation/DTAnimatedGIF (1.7.10)
-  - DTFoundation/DTHTMLParser (1.7.10):
+  - DTCoreText/Core (1.6.19):
+    - DTFoundation/Core (~> 1.7.5)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
+    - DTFoundation/DTHTMLParser (~> 1.7.5)
+    - DTFoundation/UIKit (~> 1.7.5)
+  - DTFoundation/Core (1.7.11)
+  - DTFoundation/DTAnimatedGIF (1.7.11)
+  - DTFoundation/DTHTMLParser (1.7.11):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.10):
+  - DTFoundation/UIKit (1.7.11):
     - DTFoundation/Core
   - GBDeviceInfo (4.1.0):
     - GBDeviceInfo/Core (= 4.1.0)
@@ -31,36 +37,36 @@ PODS:
   - GHMarkdownParser (0.1.2)
   - GoogleAnalytics (3.17.0)
   - HPGrowingTextView (1.1)
-  - libPhoneNumber-iOS (0.8.16)
-  - MatrixKit (0.3.17):
+  - libPhoneNumber-iOS (0.8.17)
+  - MatrixKit (0.3.19):
     - DTCoreText (~> 1.6.17)
     - GHMarkdownParser (~> 0.1.2)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.8.14)
-    - MatrixSDK (= 0.6.16)
-  - MatrixSDK (0.6.16):
+    - MatrixSDK (= 0.6.17)
+  - MatrixSDK (0.6.17):
     - AFNetworking (~> 3.1.0)
-  - WebRTC (13869.6.0)
+  - WebRTC (54.6.13869)
 
 DEPENDENCIES:
   - GBDeviceInfo (~> 4.1.0)
   - GoogleAnalytics
-  - MatrixKit (= 0.3.17)
-  - WebRTC (= 13869.6.0)
+  - MatrixKit (= 0.3.19)
+  - WebRTC (= 54.6.13869)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  DTCoreText: 3ea8bba23dd2141ba18adb227a7dd33a822df1c4
-  DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
+  DTCoreText: 184cc2f460c2177108e8700dfb0eb1b1cb72c99d
+  DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
   GBDeviceInfo: e50df975a95e21faec93e2bf98376846fe17d307
   GHMarkdownParser: 14cbf59d0ab9450017d843dffd4a3ef691e5bd77
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  libPhoneNumber-iOS: acb5805f67892db37adc3440290a367923672b51
-  MatrixKit: 27db293322d5f7168906c5863a440d98f453d55d
-  MatrixSDK: 09b3a2362ddf9611e855dbf9d736fce36af2f635
-  WebRTC: ee369681c4f06e868fa45a7a6abbbf2c865c49ae
+  libPhoneNumber-iOS: 9f083847f8cb9b81064cff2ed2c98cbf18d9f9f2
+  MatrixKit: 6d16d7ebdcc3a7ceef382a1061d01769ac948af9
+  MatrixSDK: 05e00ed34d274d6f93411759e4f37346a927ef08
+  WebRTC: 9f23349248fd2e94a14cb4552bae6e591bb2fe28
 
-PODFILE CHECKSUM: 6eb2492ab44c8390a83af5975739ca21e3797215
+PODFILE CHECKSUM: fa9acea63845c80905319e3c12972e8b2bdb6528
 
 COCOAPODS: 1.0.1
