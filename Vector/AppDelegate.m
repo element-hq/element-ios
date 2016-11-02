@@ -1869,6 +1869,42 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     }];
 }
 
+- (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
+{
+    // Handle here potential multiple accounts
+    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
+        
+        MXSession *mxSession = selectedAccount.mxSession;
+        
+        if (mxSession)
+        {
+            NSArray *directRooms = mxSession.directRooms[userId];
+            NSString *firstDirectRoomId = directRooms.firstObject;
+            
+            // if the room exists
+            if (firstDirectRoomId)
+            {
+                // open it
+                [self showRoom:firstDirectRoomId andEventId:nil withMatrixSession:mxSession];
+                
+                if (completion)
+                {
+                    completion();
+                }
+            }
+            else
+            {
+                [self createDirectChatWithUserId:userId completion:completion];
+            }
+        }
+        else if (completion)
+        {
+            completion();
+        }
+        
+    }];
+}
+
 #pragma mark - MXKCallViewControllerDelegate
 
 - (void)dismissCallViewController:(MXKCallViewController *)callViewController completion:(void (^)())completion

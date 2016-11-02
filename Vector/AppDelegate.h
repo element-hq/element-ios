@@ -111,6 +111,9 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 // Creates a new direct chat with the provided user id
 - (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
+// Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
+- (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+
 /**
  Process the fragment part of a vector.im link.
  
