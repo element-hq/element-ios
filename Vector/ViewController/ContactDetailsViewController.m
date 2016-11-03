@@ -65,7 +65,7 @@
     /**
      List of the direct chats (room ids) with this contact.
      */
-    NSArray<NSString*> *directChatsArray;
+    NSMutableArray<NSString*> *directChatsArray;
     NSInteger directChatsIndex;
     
     /**
@@ -111,6 +111,7 @@
     }
     
     actionsArray = [[NSMutableArray alloc] init];
+    directChatsArray = [[NSMutableArray alloc] init];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
@@ -517,7 +518,7 @@
     NSInteger sectionCount = 0;
     
     [actionsArray removeAllObjects];
-    directChatsArray = nil;
+    [directChatsArray removeAllObjects];
     
     actionsIndex = directChatsIndex = -1;
     
@@ -553,8 +554,6 @@
             actionsIndex = sectionCount++;
         }
         
-        // Retrieve the existing direct chats
-        directChatsArray = self.mainSession.directRooms[matrixId];
         directChatsIndex = sectionCount++;
     }
     // Else check whether the contact has been instantiated with an email or a matrix id
@@ -564,9 +563,23 @@
     }
     else if ([MXTools isMatrixUserIdentifier:_contact.displayName])
     {
-        // Retrieve the existing direct chats
-        directChatsArray = self.mainSession.directRooms[_contact.displayName];
+        matrixId = _contact.displayName;
         directChatsIndex = sectionCount++;
+    }
+    
+    if (matrixId.length)
+    {
+        // Retrieve the existing direct chats
+        NSArray *directRoomIds = self.mainSession.directRooms[matrixId];
+        
+        // Check whether the room is still existing
+        for (NSString* directRoomId in directRoomIds)
+        {
+            if ([self.mainSession roomWithRoomId:directRoomId])
+            {
+                [directChatsArray addObject:directRoomId];
+            }
+        }
     }
     
     return sectionCount;
@@ -936,8 +949,7 @@
                 
                 NSString *matrixId = self.firstMatrixId;
                 
-                NSString *directRoomId = self.mainSession.directRooms[matrixId].firstObject;
-                MXRoom* directRoom = [self.mainSession roomWithRoomId:directRoomId];
+                MXRoom* directRoom = [self.mainSession directJoinedRoomWithUserId:matrixId];
                 
                 // Place the call directly if the room exists
                 if (directRoom)

@@ -53,7 +53,7 @@
     /**
      List of the direct chats (room ids) with this member.
      */
-    NSArray<NSString*> *directChatsArray;
+    NSMutableArray<NSString*> *directChatsArray;
     NSInteger directChatsIndex;
     
     /**
@@ -88,6 +88,7 @@
     
     adminActionsArray = [[NSMutableArray alloc] init];
     otherActionsArray = [[NSMutableArray alloc] init];
+    directChatsArray = [[NSMutableArray alloc] init];
     
     // Setup `MXKViewControllerHandling` properties
     self.defaultBarTintColor = kVectorNavBarTintColor;
@@ -351,7 +352,7 @@
     
     [adminActionsArray removeAllObjects];
     [otherActionsArray removeAllObjects];
-    directChatsArray = nil;
+    [directChatsArray removeAllObjects];
     
     // Consider the case of the user himself
     if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
@@ -487,10 +488,18 @@
     }
     
     // Retrieve the existing direct chats
-    directChatsArray = self.mainSession.directRooms[self.mxRoomMember.userId];
+    NSArray *directRoomIds = self.mainSession.directRooms[self.mxRoomMember.userId];
+    
+    // Check whether the room is still existing
+    for (NSString* directRoomId in directRoomIds)
+    {
+        if ([self.mainSession roomWithRoomId:directRoomId])
+        {
+            [directChatsArray addObject:directRoomId];
+        }
+    }
     
     adminToolsIndex = otherActionsIndex = directChatsIndex = -1;
-    
     
     if (otherActionsArray.count)
     {
