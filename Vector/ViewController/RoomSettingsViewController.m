@@ -78,6 +78,7 @@ NSString *const kRoomSettingsHistoryVisibilityKey = @"kRoomSettingsHistoryVisibi
 NSString *const kRoomSettingsNewAliasesKey = @"kRoomSettingsNewAliasesKey";
 NSString *const kRoomSettingsRemovedAliasesKey = @"kRoomSettingsRemovedAliasesKey";
 NSString *const kRoomSettingsCanonicalAliasKey = @"kRoomSettingsCanonicalAliasKey";
+NSString *const kRoomSettingsEncryptionKey = @"kRoomSettingsEncryptionKey";
 
 NSString *const kRoomSettingsNameCellViewIdentifier = @"kRoomSettingsNameCellViewIdentifier";
 NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellViewIdentifier";
@@ -85,6 +86,8 @@ NSString *const kRoomSettingsWarningCellViewIdentifier = @"kRoomSettingsWarningC
 NSString *const kRoomSettingsNewAddressCellViewIdentifier = @"kRoomSettingsNewAddressCellViewIdentifier";
 NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvancedCellViewIdentifier";
+NSString *const kRoomSettingsAdvancedEnableE2eCellViewIdentifier = @"kRoomSettingsAdvancedEnableE2eCellViewIdentifier";
+NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSettingsAdvancedE2eEnabledCellViewIdentifier";
 
 @interface RoomSettingsViewController ()
 {
@@ -136,7 +139,8 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     
     // switches
     UISwitch *roomNotifSwitch;
-    
+    UISwitch *roomEncryptionSwitch;
+
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id appDelegateDidTapStatusBarNotificationObserver;
 
@@ -1580,6 +1584,48 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             
             return;
         }
+
+        // Room encryption
+        if ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey])
+        {
+            pendingOperation = [mxRoom enableEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm success:^{
+
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+
+                    strongSelf->pendingOperation = nil;
+
+                    [strongSelf->updatedItemsDict removeObjectForKey:kRoomSettingsEncryptionKey];
+                    [strongSelf onSave:nil];
+                }
+
+            } failure:^(NSError *error) {
+
+                NSLog(@"[RoomSettingsViewController] Enabling encrytion failed. Error: %@", error);
+
+                if (weakSelf)
+                {
+                    __strong __typeof(weakSelf)strongSelf = weakSelf;
+
+                    strongSelf->pendingOperation = nil;
+
+                    dispatch_async(dispatch_get_main_queue(), ^{
+
+                        NSString* message = error.localizedDescription;
+                        if (!message.length)
+                        {
+                            message = NSLocalizedStringFromTable(@"room_details_fail_to_enable_encryption", @"Vector", nil);
+                        }
+                        [strongSelf onSaveFailed:message withKey:kRoomSettingsEncryptionKey];
+
+                    });
+                }
+
+            }];
+
+            return;
+        }
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = NO;
@@ -1693,6 +1739,11 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
         count = 1;
+
+        if (mxRoom.mxSession.crypto)
+        {
+            count++;
+        }
     }
     
     return count;
@@ -2000,7 +2051,14 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             directoryToggleCell.mxkLabel.textColor = kVectorTextColorBlack;
             
             directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
-            
+
+            // Workaround to avoid mixing between switches
+            // TODO: this is a design issue with switch within UITableViewCell that must fix everywhere
+            if (roomEncryptionSwitch == directoryVisibilitySwitch)
+            {
+                roomEncryptionSwitch = nil;
+            }
+
             [directoryVisibilitySwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
             directoryVisibilitySwitch.onTintColor = kVectorColorGreen;
             
@@ -2243,24 +2301,70 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
     }
     else if (indexPath.section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
-        if (!cell)
+        if (indexPath.row == 0)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
+            cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRoomSettingsAdvancedCellViewIdentifier];
+            }
+
+            cell.textLabel.font = [UIFont systemFontOfSize:17];
+            cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+            cell.textLabel.textColor = kVectorTextColorBlack;
+
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+            cell.detailTextLabel.text = mxRoomState.roomId;
+            cell.detailTextLabel.textColor = kVectorTextColorGray;
+            cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        
-        cell.textLabel.font = [UIFont systemFontOfSize:17];
-        cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
-        cell.textLabel.textColor = kVectorTextColorBlack;
-        
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
-        cell.detailTextLabel.text = mxRoomState.roomId;
-        cell.detailTextLabel.textColor = kVectorTextColorGray;
-        cell.detailTextLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        else if (indexPath.row == 1)
+        {
+            if (mxRoom.state.isEncrypted)
+            {
+                cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAdvancedE2eEnabledCellViewIdentifier];
+                if (!cell)
+                {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRoomSettingsAdvancedE2eEnabledCellViewIdentifier];
+                }
+
+                cell.textLabel.font = [UIFont systemFontOfSize:17];
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
+                cell.textLabel.textColor = kVectorTextColorBlack;
+
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            else
+            {
+                MXKTableViewCellWithLabelAndSwitch *roomEncryptionCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+
+                roomEncryptionCell.mxkLabelLeadingConstraint.constant = roomEncryptionCell.separatorInset.left;
+                roomEncryptionCell.mxkSwitchTrailingConstraint.constant = 15;
+
+                [roomEncryptionCell.mxkSwitch addTarget:self action:@selector(onSwitchUpdate:) forControlEvents:UIControlEventValueChanged];
+                roomEncryptionCell.mxkSwitch.onTintColor = kVectorColorGreen;
+
+                roomEncryptionCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_enable_e2e_encryption", @"Vector", nil);
+                roomEncryptionCell.mxkLabel.textColor = kVectorTextColorBlack;
+
+                roomEncryptionSwitch = roomEncryptionCell.mxkSwitch;
+
+                // Workaround to avoid mixing between switches
+                // TODO: this is a design issue with switch within UITableViewCell that must fix everywhere
+                if (directoryVisibilitySwitch == roomEncryptionSwitch)
+                {
+                    directoryVisibilitySwitch = nil;
+                }
+
+                roomEncryptionSwitch.on = [updatedItemsDict objectForKey:kRoomSettingsEncryptionKey];
+                
+                cell = roomEncryptionCell;
+            }
+        }
     }
-    
+
     // Sanity check
     if (!cell)
     {
@@ -2815,7 +2919,10 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
             [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
         }
     }
-    
+    else if (theSwitch == roomEncryptionSwitch)
+    {
+        [updatedItemsDict setObject:[NSNumber numberWithBool:roomEncryptionSwitch.on] forKey:kRoomSettingsEncryptionKey];
+    }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
 }
