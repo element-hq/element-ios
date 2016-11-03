@@ -29,5 +29,10 @@ pod 'GoogleAnalytics'
 # The Google WebRTC stack
 pod 'WebRTC', '13869.6.0'
 
+# OLMKit for crypto
+#pod 'OLMKit'
+#pod 'OLMKit', :git => 'https://matrix.org/git/olm.git', :branch => 'olmkit'
+#pod 'OLMKit', :path => '../olm/OLMKit.podspec'
+
 end
 
