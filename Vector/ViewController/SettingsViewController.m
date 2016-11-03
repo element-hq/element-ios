@@ -65,7 +65,7 @@ enum {
 #define OTHER_CLEAR_CACHE_INDEX      7
 #define OTHER_COUNT                  8
 
-#define LABS_CONFERENCE_CALL_INDEX   0
+#define LABS_CRYPTO_INDEX            0
 #define LABS_COUNT                   1
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
@@ -1051,7 +1051,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_CONFERENCE_CALL_INDEX)
+        if (row == LABS_CRYPTO_INDEX)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 
