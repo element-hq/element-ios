@@ -249,6 +249,8 @@
 
 "settings_contacts_discover_matrix_users_with_local_emails" = "Use emails to discover users";
 
+"settings_labs_e2e_encryption" = "End-to-End Encryption";
+
 "settings_version" = "Version %@";
 "settings_copyright" = "Copyright";
 "settings_copyright_url" = "https://riot.im/copyright";
@@ -302,6 +304,8 @@
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
+"room_details_advanced_enable_e2e_encryption"="Enable encryption (warning: cannot be disabled again!)";
+"room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
@@ -312,6 +316,7 @@
 "room_details_fail_to_add_room_aliases" = "Fail to add the new room addresses";
 "room_details_fail_to_remove_room_aliases" = "Fail to remove the room addresses";
 "room_details_fail_to_update_room_canonical_alias" = "Fail to update the main address";
+"room_details_fail_to_enable_encryption" = "Fail to enable encryption in this room";
 "room_details_save_changes_prompt" = "Do you want to save changes?";
 "room_details_set_main_address" = "Set as Main Address";
 "room_details_unset_main_address" = "Unset as Main Address";
