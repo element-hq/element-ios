@@ -935,12 +935,14 @@
                 [self addPendingActionMask];
                 
                 NSString *matrixId = self.firstMatrixId;
-                MXRoom* oneToOneRoom = [self.mainSession privateOneToOneRoomWithUserId:matrixId];
+                
+                NSString *directRoomId = self.mainSession.directRooms[matrixId].firstObject;
+                MXRoom* directRoom = [self.mainSession roomWithRoomId:directRoomId];
                 
                 // Place the call directly if the room exists
-                if (oneToOneRoom)
+                if (directRoom)
                 {
-                    [oneToOneRoom placeCallWithVideo:isVideoCall success:nil failure:nil];
+                    [directRoom placeCallWithVideo:isVideoCall success:nil failure:nil];
                     [self removePendingActionMask];
                 }
                 else
