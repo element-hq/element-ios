@@ -2358,7 +2358,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     directoryVisibilitySwitch = nil;
                 }
 
-                roomEncryptionSwitch.on = [updatedItemsDict objectForKey:kRoomSettingsEncryptionKey];
+                roomEncryptionSwitch.on = ([updatedItemsDict objectForKey:kRoomSettingsEncryptionKey] != nil);
                 
                 cell = roomEncryptionCell;
             }
