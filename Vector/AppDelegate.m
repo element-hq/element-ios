@@ -1878,14 +1878,13 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         if (mxSession)
         {
-            NSArray *directRooms = mxSession.directRooms[userId];
-            NSString *firstDirectRoomId = directRooms.firstObject;
+            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
             
             // if the room exists
-            if (firstDirectRoomId)
+            if (directRoom)
             {
                 // open it
-                [self showRoom:firstDirectRoomId andEventId:nil withMatrixSession:mxSession];
+                [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
                 
                 if (completion)
                 {
