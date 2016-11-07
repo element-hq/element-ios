@@ -1402,7 +1402,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
 		[session enableCrypto:switchButton.isOn success:^{
 
-             [self stopActivityIndicator];
+            // Reload all data source of encrypted rooms
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
+
+            for (MXRoom *room in session.rooms)
+            {
+                if (room.state.isEncrypted)
+                {
+                    MXKRoomDataSource *roomDataSource = [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO];
+                    [roomDataSource reload];
+                }
+            }
+
+            [self stopActivityIndicator];
 
         } failure:^(NSError *error) {
 
