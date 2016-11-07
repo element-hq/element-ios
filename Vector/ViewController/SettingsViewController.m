@@ -1063,6 +1063,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [labelAndSwitchCell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
 
+            if (session.crypto)
+            {
+                // Once crypto is enabled, it is enabled
+                labelAndSwitchCell.mxkSwitch.enabled = NO;
+            }
+
             cell = labelAndSwitchCell;
         }
     }
