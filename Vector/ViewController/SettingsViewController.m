@@ -1420,6 +1420,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                 }
             }
 
+            // Once crypto is enabled, it is enabled
+            switchButton.enabled = NO;
+
             [self stopActivityIndicator];
 
         } failure:^(NSError *error) {
