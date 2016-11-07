@@ -29,9 +29,12 @@
 @property (weak, nonatomic) IBOutlet UIView *separatorView;
 @property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
 
+@property (strong, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
@@ -44,6 +47,11 @@
  Tell whether the call option is supported. YES by default.
  */
 @property (nonatomic) BOOL supportCallOption;
+
+/**
+ Tell whether the room data is encrypted. NO by default.
+ */
+@property (nonatomic) BOOL isEncrypted;
 
 /**
  Tell whether a call is active.

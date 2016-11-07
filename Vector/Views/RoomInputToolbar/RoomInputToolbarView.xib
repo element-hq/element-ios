@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -30,11 +30,18 @@
                                 <constraint firstAttribute="height" constant="30" id="wMB-Ec-D9s"/>
                             </constraints>
                         </view>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-9x-jgw">
+                            <rect key="frame" x="46" y="17" width="10" height="12"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="12" id="JHs-nc-tML"/>
+                                <constraint firstAttribute="width" constant="10" id="K0H-Va-ZsL"/>
+                            </constraints>
+                        </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                            <rect key="frame" x="56" y="4" width="449" height="38"/>
+                            <rect key="frame" x="51" y="4" width="454" height="38"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="HPGrowingTextView">
-                                    <rect key="frame" x="0.0" y="0.0" width="449" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="454" height="38"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
@@ -103,9 +110,11 @@
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="1FO-iu-urG"/>
                         <constraint firstItem="G8Z-CM-tGs" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="8cV-eb-Kog"/>
                         <constraint firstItem="3ln-yI-ef9" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="10" id="BwP-sF-qE1"/>
-                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="56" id="ErD-eB-stF"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="51" id="ErD-eB-stF"/>
+                        <constraint firstItem="fRI-9x-jgw" firstAttribute="centerY" secondItem="dd4-pE-Es1" secondAttribute="centerY" id="Fpg-hn-3Nc"/>
                         <constraint firstItem="Owf-M8-qJi" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" id="GKh-R5-jqV"/>
                         <constraint firstItem="dd4-pE-Es1" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="13" id="Jem-U2-oEq"/>
+                        <constraint firstItem="fRI-9x-jgw" firstAttribute="leading" secondItem="dd4-pE-Es1" secondAttribute="trailing" constant="3" id="Jr8-Zb-Sce"/>
                         <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="4" id="NGr-2o-sOP"/>
                         <constraint firstAttribute="trailing" secondItem="3ln-yI-ef9" secondAttribute="trailing" constant="10" id="RXB-PN-3n8"/>
                         <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="4" id="Sua-LC-3yW"/>
@@ -120,14 +129,8 @@
                         <constraint firstAttribute="trailing" secondItem="Owf-M8-qJi" secondAttribute="trailing" id="vCd-Md-dvr"/>
                         <constraint firstAttribute="bottom" secondItem="G8Z-CM-tGs" secondAttribute="bottom" id="vpk-lw-TnO"/>
                         <constraint firstItem="dd4-pE-Es1" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="8" id="xjT-If-1cd"/>
-                        <constraint firstItem="2nY-YP-BvA" firstAttribute="width" secondItem="2nY-YP-BvA" secondAttribute="height" multiplier="1:1" id="yBV-cL-cfq"/>
                         <constraint firstItem="3ln-yI-ef9" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="yUF-5t-x03"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="yBV-cL-cfq"/>
-                        </mask>
-                    </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -142,6 +145,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="attachMediaButton" destination="Hga-l8-Wua" id="Osr-ek-c91"/>
+                <outlet property="encryptedRoomIcon" destination="fRI-9x-jgw" id="cfG-Sr-Fga"/>
                 <outlet property="growingTextView" destination="wgb-ON-N29" id="nwF-uV-Ng9"/>
                 <outlet property="hangupCallButton" destination="2nY-YP-BvA" id="a0m-xv-sVg"/>
                 <outlet property="mainToolbarHeightConstraint" destination="Yjj-ua-rbe" id="Lu8-UC-Vbo"/>
@@ -149,6 +153,7 @@
                 <outlet property="mainToolbarView" destination="a84-Vc-6ud" id="5p3-Ft-0gv"/>
                 <outlet property="messageComposerContainer" destination="QWp-NV-uh5" id="APR-B5-ogC"/>
                 <outlet property="messageComposerContainerBottomConstraint" destination="NGr-2o-sOP" id="oez-6D-IKA"/>
+                <outlet property="messageComposerContainerLeadingConstraint" destination="ErD-eB-stF" id="Ha9-DG-Nw2"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
                 <outlet property="messageComposerContainerTrailingConstraint" destination="hXO-cY-Jgz" id="lHZ-MU-vyC"/>
                 <outlet property="pictureView" destination="dd4-pE-Es1" id="rb6-z2-pJ9"/>
@@ -161,6 +166,7 @@
     </objects>
     <resources>
         <image name="call_hangup_icon.png" width="26" height="27"/>
+        <image name="e2e_verified.png" width="10" height="12"/>
         <image name="upload_icon.png" width="21" height="26"/>
         <image name="voice_call_icon.png" width="24" height="27"/>
     </resources>
