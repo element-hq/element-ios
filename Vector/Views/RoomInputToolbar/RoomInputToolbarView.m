@@ -24,6 +24,9 @@
 
 #import <Photos/Photos.h>
 
+#define ROOM_INPUT_TOOLBAR_VIEW_DEFAULT_MESSAGE_COMPOSER_CONTAINER_LEADING 51
+#define ROOM_INPUT_TOOLBAR_VIEW_ENCRYPTED_MESSAGE_COMPOSER_CONTAINER_LEADING 56
+
 @interface RoomInputToolbarView()
 {
     MediaPickerViewController *mediaPicker;
@@ -99,6 +102,22 @@
         
         [self setNeedsUpdateConstraints];
     }
+}
+
+- (void)setIsEncrypted:(BOOL)isEncrypted
+{
+    if (isEncrypted)
+    {
+        self.encryptedRoomIcon.hidden = NO;
+        self.messageComposerContainerLeadingConstraint.constant = ROOM_INPUT_TOOLBAR_VIEW_ENCRYPTED_MESSAGE_COMPOSER_CONTAINER_LEADING;
+    }
+    else
+    {
+        self.encryptedRoomIcon.hidden = YES;
+        self.messageComposerContainerLeadingConstraint.constant = ROOM_INPUT_TOOLBAR_VIEW_DEFAULT_MESSAGE_COMPOSER_CONTAINER_LEADING;
+    }
+    
+    _isEncrypted = isEncrypted;
 }
 
 - (void)setActiveCall:(BOOL)activeCall

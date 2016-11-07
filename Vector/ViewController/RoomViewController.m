@@ -956,6 +956,9 @@
             // Hide the call button if there is an active call in another room
             roomInputToolbarView.supportCallOption &= ([[AppDelegate theDelegate] callStatusBarWindow] == nil);
         }
+        
+        // Encrypted?
+        roomInputToolbarView.isEncrypted = self.roomDataSource.room.state.isEncrypted;
     }
 }
 
