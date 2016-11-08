@@ -151,8 +151,9 @@
     
     [super growingTextViewDidChange:hpGrowingTextView];
     
-    if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
+    if (self.isEncrypted)
     {
+        // Disable attachments and call options
         self.rightInputToolbarButton.hidden = NO;
         self.attachMediaButton.hidden = YES;
         self.voiceCallButton.hidden = YES;
@@ -160,14 +161,26 @@
         
         self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
     }
-    else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
+    else
     {
-        self.rightInputToolbarButton.hidden = YES;
-        self.attachMediaButton.hidden = NO;
-        self.voiceCallButton.hidden = _activeCall;
-        self.hangupCallButton.hidden = !_activeCall;
-        
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
+        if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
+        {
+            self.rightInputToolbarButton.hidden = NO;
+            self.attachMediaButton.hidden = YES;
+            self.voiceCallButton.hidden = YES;
+            self.hangupCallButton.hidden = YES;
+            
+            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
+        }
+        else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
+        {
+            self.rightInputToolbarButton.hidden = YES;
+            self.attachMediaButton.hidden = NO;
+            self.voiceCallButton.hidden = _activeCall;
+            self.hangupCallButton.hidden = !_activeCall;
+            
+            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
+        }
     }
 }
 
