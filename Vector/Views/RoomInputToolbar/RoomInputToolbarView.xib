@@ -30,11 +30,11 @@
                                 <constraint firstAttribute="height" constant="30" id="wMB-Ec-D9s"/>
                             </constraints>
                         </view>
-                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-9x-jgw">
-                            <rect key="frame" x="46" y="17" width="10" height="12"/>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified.png" translatesAutoresizingMaskIntoConstraints="NO" id="fRI-9x-jgw">
+                            <rect key="frame" x="38" y="4" width="28" height="28"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="12" id="JHs-nc-tML"/>
-                                <constraint firstAttribute="width" constant="10" id="K0H-Va-ZsL"/>
+                                <constraint firstAttribute="height" constant="28" id="JHs-nc-tML"/>
+                                <constraint firstAttribute="width" constant="28" id="K0H-Va-ZsL"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
@@ -111,11 +111,11 @@
                         <constraint firstItem="G8Z-CM-tGs" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="8cV-eb-Kog"/>
                         <constraint firstItem="3ln-yI-ef9" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="10" id="BwP-sF-qE1"/>
                         <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="51" id="ErD-eB-stF"/>
-                        <constraint firstItem="fRI-9x-jgw" firstAttribute="centerY" secondItem="dd4-pE-Es1" secondAttribute="centerY" id="Fpg-hn-3Nc"/>
                         <constraint firstItem="Owf-M8-qJi" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" id="GKh-R5-jqV"/>
+                        <constraint firstItem="fRI-9x-jgw" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="38" id="GvU-rY-bWW"/>
                         <constraint firstItem="dd4-pE-Es1" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="13" id="Jem-U2-oEq"/>
-                        <constraint firstItem="fRI-9x-jgw" firstAttribute="leading" secondItem="dd4-pE-Es1" secondAttribute="trailing" constant="3" id="Jr8-Zb-Sce"/>
                         <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="4" id="NGr-2o-sOP"/>
+                        <constraint firstItem="fRI-9x-jgw" firstAttribute="top" secondItem="3ln-yI-ef9" secondAttribute="bottom" constant="3" id="ROx-9Q-aOf"/>
                         <constraint firstAttribute="trailing" secondItem="3ln-yI-ef9" secondAttribute="trailing" constant="10" id="RXB-PN-3n8"/>
                         <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="4" id="Sua-LC-3yW"/>
                         <constraint firstAttribute="bottom" secondItem="Owf-M8-qJi" secondAttribute="bottom" id="Wo7-Qc-PSL"/>
